@@ -206,6 +206,16 @@ h4.g { color: var(--good); } h4.b { color: var(--bad); } h4.t { color: var(--acc
 .tc button { border: 0; background: none; padding: 0 0 0 2px; color: var(--muted); font-size: 14px; line-height: 1; }
 .blk { margin-top: 18px; }
 .blk > h3 { margin: 0 0 8px; font: 700 14px var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.mvs { display: grid; gap: 10px; }
+.mvtabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; background: var(--bg); border-radius: 12px; padding: 4px; }
+.mvtab { min-height: 40px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font: 700 14px/1 var(--font-display); letter-spacing: .02em; cursor: pointer; }
+.mvtab[aria-selected="true"] { background: var(--surface-2); color: var(--fg); box-shadow: inset 0 -2px 0 var(--accent); }
+.mvtab.ult[aria-selected="true"] { box-shadow: inset 0 -2px 0 #ff7a2f; }
+.mvtab:focus-visible, .mvsnd:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.mvbox { position: relative; border-radius: 12px; overflow: hidden; background: #0a0720; }
+.mvbox video { display: block; width: 100%; height: auto; aspect-ratio: var(--ar, 960 / 628); }
+.mvsnd { position: absolute; right: 8px; bottom: 8px; min-height: 34px; padding: 0 12px; border-radius: 999px; border: 0; background: rgba(8,8,20,.75); color: #fff; font: 600 13px var(--font-body, system-ui); cursor: pointer; }
+.mvname { font: 700 16px var(--font-display); } .mvtxt { color: var(--muted); font-size: 13.5px; margin: 0; }
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
 .skill + .skill { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
 .skill .k { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
@@ -624,6 +634,7 @@ function setGrade(k) {
 }
 /* card overlay: prepared background patches + live SVG text for ATK, HP, odds and grade (no canvas work at runtime) */
 const NF_IDS = new Set(["d0", "d1", "d10", "d11", "d12", "d13", "d14", "d15", "d16", "d17", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "d9", "s0", "s1", "s10", "s11", "s12", "s13", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9"]);
+const CLIPS = {"s1": ["attack", "passive", "ultimate"]};   // card id -> move clips that exist in video/ (built from clips/out)
 const GMETA_ = () => (window.__G || {}).gmeta || {};
 const SVGNS = 'http://www.w3.org/2000/svg';
 const sv = (tag, at) => { const e = document.createElementNS(SVGNS, tag); for (const k in at || {}) if (at[k] != null) e.setAttribute(k, at[k]); return e; };
@@ -994,6 +1005,7 @@ window.addEventListener('popstate', () => { if (skipPop) { skipPop--; return; } 
 function paintPage(pg) {
   if (pg.kind === 'edit' && pg.el.childNodes.length) return;
   const y = pg.el.scrollTop; pg.el.textContent = '';
+  if (pg.kind === 'card' && pg.cleanup) { pg.cleanup(); pg.cleanup = null; }
   if (pg.kind === 'card') { if (!CAT[pg.args.id]) { pg.el.append(h('div', { class: 'wrap' }, pageTop(L('ไม่พบการ์ด', 'Card not found')), h('p', { class: 'empty', text: L('การ์ดนี้ถูกลบไปแล้ว', 'This card was deleted.') }))); return; } detailPage(pg); }
   else if (pg.kind === 'edit') editPage(pg);
   pg.el.scrollTop = y;
@@ -1367,6 +1379,33 @@ function restoreDefaultBoards() {
   S.curTier = S.curTier || 'mythic'; commit(); toast(n ? L('คืนตารางเริ่มต้น ' + n + ' ตารางแล้ว', 'Restored ' + n + ' default list(s)') : L('ตารางเริ่มต้นครบอยู่แล้ว', 'Default lists are all there'));
 }
 
+/* ---------- move clips on the card page: Attack plays first, loops with a short pause, menu switches ---------- */
+const MOVE_ORDER = ['passive', 'attack', 'ultimate'], MOVE_GAP = 500;
+function movesBlock(c, pg) {
+  const have = CLIPS[c.id]; if (!have || !have.length) return null;
+  const pas = cv(c, 'pas') || ['', ''], sp = cv(c, 'sp') || ['', ''];
+  const info = { passive: ['Passive', pas[0] || 'Passive', pas[1] || ''], attack: ['Attack', 'Normal attack', 'Hits the card in front.'], ultimate: ['Ultimate', sp[0] || 'Ultimate', sp[1] && sp[1] !== '-' ? sp[1] : ''] };
+  const kinds = MOVE_ORDER.filter(k => have.includes(k)); let cur = kinds.includes('attack') ? 'attack' : kinds[0], timer = 0;
+  const src = k => 'video/' + c.id + '_' + k;
+  const v = h('video', { playsinline: '', 'webkit-playsinline': '', preload: 'auto', disablepictureinpicture: '', poster: src(cur) + '.jpg' });
+  v.playsInline = true;
+  const snd = h('button', { class: 'mvsnd', type: 'button', hidden: true, text: '🔇 Tap for sound', on: { click: () => { v.muted = false; v.play().catch(() => {}); snd.hidden = true; } } });
+  const name = h('span', { class: 'mvname' }), txt = h('p', { class: 'mvtxt' });
+  const tabs = kinds.length > 1 ? h('div', { class: 'mvtabs', role: 'tablist', 'aria-label': 'Moves' }, kinds.map(k => h('button', { class: 'mvtab' + (k === 'ultimate' ? ' ult' : ''), type: 'button', role: 'tab', data: { k }, 'aria-selected': String(k === cur), text: info[k][0], on: { click: () => show(k) } }))) : null;
+  const play = () => { v.muted = false; const p = v.play(); if (p) p.then(() => { snd.hidden = !v.muted; }).catch(() => { v.muted = true; v.play().catch(() => {}); snd.hidden = false; }); };
+  function show(k) {
+    cur = k; clearTimeout(timer);
+    if (tabs) tabs.querySelectorAll('.mvtab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.k === k)));
+    name.textContent = info[k][1]; txt.textContent = info[k][2]; txt.hidden = !info[k][2];
+    v.style.setProperty('--ar', k === 'ultimate' ? '1352 / 600' : '960 / 628');
+    v.poster = src(k) + '.jpg'; v.src = src(k) + '.mp4'; play();
+  }
+  v.addEventListener('ended', () => { timer = setTimeout(() => { if (v.isConnected) { v.currentTime = 0; v.play().catch(() => {}); } }, MOVE_GAP); });
+  v.addEventListener('playing', () => kinds.filter(k => k !== cur).forEach(k => { const l = document.createElement('link'); l.rel = 'prefetch'; l.href = src(k) + '.mp4'; document.head.append(l); }), { once: true });
+  pg.cleanup = () => { clearTimeout(timer); v.pause(); v.removeAttribute('src'); v.load(); };
+  setTimeout(() => show(cur), 0);
+  return h('section', { class: 'blk' }, h('h3', { text: 'Moves' }), h('div', { class: 'panel mvs' }, tabs, h('div', { class: 'mvbox' }, v, snd), name, txt));
+}
 /* ---------- card detail page ---------- */
 function detailPage(pg) {
   const c = CAT[pg.args.id], s = sc(c), ctx = pg.args.ctx, K = KIND(), F = FLAGS();
@@ -1379,6 +1418,7 @@ function detailPage(pg) {
     h('p', { class: 'who', text: [c.who, c.odds, cv(c, 'how')].filter(Boolean).join(' · ') || L('ไม่มีข้อมูลแหล่งที่ได้', 'No source info') }),
     )));
   w.append(gradeChips('hgr'));
+  { const mb = movesBlock(c, pg); if (mb) w.append(mb); }
   const sameR = catList().filter(x => x.r === c.r && x.atk != null && x.atk !== '');
   const mx = k => Math.max(1, ...sameR.map(x => +x[k] || 0)), rk = k => c[k] == null || c[k] === '' ? null : 1 + sameR.filter(x => +x[k] > +c[k]).length;
   const stat = (lab, k, col) => h('div', { class: 'sbar' }, h('span', { text: lab }), h('div', null, h('div', { class: 'bar', style: 'height:9px' }, h('i', { style: `width:${c[k] ? Math.round(+c[k] / mx(k) * 100) : 0}%;background:${col}` }))), h('div', null, h('b', { text: num(gv(c[k], null, c.id, k)), data: { gv: c.id + '|' + k } }), h('small', { text: rk(k) ? L('อันดับ ' + rk(k) + '/' + sameR.length + ' ใน ' + c.r, '#' + rk(k) + ' of ' + sameR.length + ' ' + rarName(c.r)) : L('ยังไม่ทราบ', 'Unknown') })));
