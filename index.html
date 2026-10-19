@@ -1397,7 +1397,7 @@ function movesBlock(c, pg) {
     cur = k; clearTimeout(timer);
     if (tabs) tabs.querySelectorAll('.mvtab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.k === k)));
     name.textContent = info[k][1]; txt.textContent = info[k][2]; txt.hidden = !info[k][2];
-    v.style.setProperty('--ar', k === 'ultimate' ? '1352 / 600' : '960 / 628');
+    v.style.setProperty('--ar', k === 'ultimate' ? '1770 / 628' : '960 / 628');
     v.poster = src(k) + '.jpg'; v.src = src(k) + '.mp4'; play();
   }
   v.addEventListener('ended', () => { timer = setTimeout(() => { if (v.isConnected) { v.currentTime = 0; v.play().catch(() => {}); } }, MOVE_GAP); });
