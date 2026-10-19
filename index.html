@@ -747,7 +747,7 @@ function gradeCard(e, id) { if (!e) return e; if (!gradeCard._r) { gradeCard._r 
   if (gradeIO) gradeIO.observe(e); else if (g[0] !== 'normal') setTimeout(() => paintGrade(e), 0); return e; }
 /* warm-up while idle: decode every grade asset and push it through drawImage once, so the first tap has nothing left to prepare */
 (function () { const idle = window.requestIdleCallback || (f => setTimeout(() => f({ timeRemaining: () => 8 }), 200)); const urls = [];
-  const collect = () => { ['hp', 'at'].forEach(k => Object.values(GASSETS_().digits[k]).forEach(v => urls.push(v[0]))); ['frame', 'pill', 'tintA', 'tintB'].forEach(k => Object.values(GASSETS_()[k]).forEach(u => urls.push(u))); Object.values(ODDSPILL_()).forEach(o => urls.push(o.L, o.M, o.R));
+  const collect = () => { if (!GASSETS_().digits) return; ['hp', 'at'].forEach(k => Object.values(GASSETS_().digits[k]).forEach(v => urls.push(v[0]))); ['frame', 'pill', 'tintA', 'tintB'].forEach(k => Object.values(GASSETS_()[k]).forEach(u => urls.push(u))); Object.values(ODDSPILL_()).forEach(o => urls.push(o.L, o.M, o.R));
     Object.values(GMETA_()).forEach(m => { m.p.forEach(p => urls.push(p[4])); if (m.nm) urls.push(m.nm[4]); if (m.op) urls.push(m.op[0], m.op[1], m.op[2]); }); };
   const wc = document.createElement('canvas'); wc.width = wc.height = 2; const wx = wc.getContext('2d');
   let i = 0; const step = dl => { while (i < urls.length && dl.timeRemaining() > 1) { const im = aimg(urls[i++]); im._p.then(() => { try { wx.drawImage(im, 0, 0, 2, 2); } catch (e) {} }); } if (i < urls.length) idle(step); };
