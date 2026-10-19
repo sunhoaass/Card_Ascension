@@ -1565,11 +1565,13 @@ const imgCache = {};
 function loadImg(src) { if (!src) return Promise.resolve(null); if (imgCache[src]) return imgCache[src]; return imgCache[src] = new Promise(r => { const i = new Image(); i.onload = () => r(i); i.onerror = () => r(null); i.src = src; }); }
 function rr(g, x, y, w, hh, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + hh, r); g.arcTo(x + w, y + hh, x, y + hh, r); g.arcTo(x, y + hh, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
 function wrap(g, text, maxW) { const words = String(text).split(/(\s+)/), lines = []; let cur = ''; words.forEach(wd => { const t = cur + wd; if (g.measureText(t).width > maxW && cur.trim()) { lines.push(cur.trim()); cur = wd.trimStart(); } else cur = t; }); if (cur.trim()) lines.push(cur.trim()); return lines.flatMap(l => { if (g.measureText(l).width <= maxW) return [l]; const out = []; let s = ''; [...l].forEach(ch => { if (g.measureText(s + ch).width > maxW && s) { out.push(s); s = ch; } else s += ch; }); if (s) out.push(s); return out; }); }
+// saved images are drawn up to 2.5x (2700 px wide) so card text stays sharp; capped at ~14 MP so phones (iPhone canvas limit ~16 MP) can still make them
+const exScale = (W, H) => Math.max(1, Math.min(2.5, Math.sqrt(14e6 / (W * H))));
 async function drawCard(g, id, x, y, w) {
   const c = CAT[id], hh = Math.round(w * 383 / 282), r = Math.round(w * .07);
   if (c && c.r === 'Secret') { const gr = g.createLinearGradient(x, y, x + w, y + hh); ['#ff5fd2', '#ffd36e', '#58e0ff', '#b77bff'].forEach((col, i) => gr.addColorStop(i / 3, col)); g.fillStyle = gr; rr(g, x - 3, y - 3, w + 6, hh + 6, r + 3); g.fill(); }
   else { g.fillStyle = c ? RHEX[c.r] || EX.line : EX.line; rr(g, x - 2.5, y - 2.5, w + 5, hh + 5, r + 2); g.fill(); }
-  const im = c ? await loadImg(c.src) : null;
+  const im = c ? await loadImg(fullOf(id) || c.src) : null;   // full-size card art, not the small thumbnail
   g.save(); rr(g, x, y, w, hh, r); g.clip();
   if (im) g.drawImage(im, x, y, w, hh); else { g.fillStyle = EX.panel; g.fillRect(x, y, w, hh); g.fillStyle = EX.fg; g.font = `600 ${Math.round(w * .11)}px ${FD}`; g.textAlign = 'center'; wrap(g, c ? c.n : '?', w - 12).slice(0, 4).forEach((l, i) => g.fillText(l, x + w / 2, y + hh / 2 + i * w * .14)); g.textAlign = 'left'; }
   g.restore();
@@ -1581,7 +1583,7 @@ async function renderTier(b) {
   const areaW = W - P * 2 - LW, per = Math.max(1, Math.floor((areaW - IN * 2 + GAP) / (CW + GAP))), CH = Math.round(CW * 383 / 282);
   const rows = b.tiers.map(t => { const n = t.cards.filter(id => CAT[id]).length; const lines = Math.max(1, Math.ceil(n / per)); return { t, hh: lines * CH + (lines - 1) * GAP + IN * 2 }; });
   const head = 150, foot = 70, H = head + rows.reduce((s, r) => s + r.hh + 8, 0) + foot;
-  const cv2 = document.createElement('canvas'); cv2.width = W; cv2.height = H; const g = cv2.getContext('2d');
+  const k = exScale(W, H), cv2 = document.createElement('canvas'); cv2.width = Math.round(W * k); cv2.height = Math.round(H * k); const g = cv2.getContext('2d'); g.scale(k, k); g.imageSmoothingQuality = 'high';
   g.fillStyle = EX.bg; g.fillRect(0, 0, W, H);
   g.fillStyle = EX.accent; g.font = `600 22px ${FD}`; g.fillText('ANIME CARD ASCENSION' + (b.scope !== 'all' ? ' · ' + b.scope.toUpperCase() : ''), P, 62);
   g.fillStyle = EX.fg; g.font = `700 52px ${FD}`; g.fillText(b.title, P, 118);
@@ -1613,7 +1615,7 @@ async function renderDeck(b, withNotes) {
     return { t, a, n, gap, sw, sh, notes, hh: 92 + sh + 58 + (a.empty ? 0 : 64) + (notesH ? notesH + 16 : 0) + IN };
   });
   const head = 150, foot = 70, H = head + blocks.reduce((s, x) => s + x.hh + 16, 0) + foot;
-  const cv2 = document.createElement('canvas'); cv2.width = W; cv2.height = H; const g = cv2.getContext('2d');
+  const k = exScale(W, H), cv2 = document.createElement('canvas'); cv2.width = Math.round(W * k); cv2.height = Math.round(H * k); const g = cv2.getContext('2d'); g.scale(k, k); g.imageSmoothingQuality = 'high';
   g.fillStyle = EX.bg; g.fillRect(0, 0, W, H);
   g.fillStyle = EX.accent; g.font = `600 22px ${FD}`; g.fillText('ANIME CARD ASCENSION · DECKS', P, 62);
   g.fillStyle = EX.fg; g.font = `700 52px ${FD}`; g.fillText(b.title, P, 118);
