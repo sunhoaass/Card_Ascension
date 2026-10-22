@@ -1,42 +1,54 @@
 # Card Battle Infinity — PROGRESS
 
-> **สำหรับ Claude:** อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง แล้ว **ถามเจ้าของก่อนเริ่มเฟสใหม่**
-> ทุกครั้งที่ให้ prompt ต้องบอกโมเดล + effort และพอทำเสร็จต้องบอกว่าอัปโหลดไฟล์ไหนไปโฟลเดอร์ไหนบน GitHub
+> **สำหรับ Claude:** อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง · ถามเจ้าของก่อนเริ่มงานใหม่หรือก่อนทำตามไอเดียของตัวเอง
+> ทุกครั้งที่ให้ prompt ต้องบอกโมเดล + effort · ทำเสร็จต้องบอกว่าอัปไฟล์ไหนไปโฟลเดอร์ไหนบน GitHub
+> ก่อนเริ่มสร้างงานใหม่ ให้เขียน prompt สำหรับเปิดแชทใหม่ให้เจ้าของก่อน (ประหยัด token)
 
 ## ภาพรวม
-- เว็บ Tier list + ฐานข้อมูลการ์ด แบบ **template ย้ายเกมได้** (แก้ `js/config.js` ไฟล์เดียว)
-- ต่อจากเว็บเก่า Anime Card Ascension (repo `sunhoaass/Card_Ascension`) ใช้ repo เดิม `sunhoaass/Card_Ascension` (ไฟล์ใหม่ทับของเดิม)
-- เงื่อนไข: **ฟรีทั้งหมด** (ไม่ใช้ AI API แบบเสียเงิน) · หน้าเว็บภาษาอังกฤษ · เจ้าของใช้มือถือเป็นหลัก
-- Stack: HTML/CSS/JS ล้วน (ไม่มี build) บน GitHub Pages อย่างเดียว — **ไม่มีฐานข้อมูล** ข้อมูลอยู่ใน `data/db.json` และรูปอยู่ใน `images/`
-- แอดมิน login ด้วย GitHub fine-grained token (Contents: read/write) เก็บใน localStorage ของเครื่องเจ้าของ แล้วบันทึกผ่าน GitHub API
+- เว็บ Tier list + ฐานข้อมูลการ์ด แบบ template ย้ายเกมได้ (แก้ `js/config.js` ไฟล์เดียว)
+- Repo: `sunhoaass/Card_Ascension` (ทับเว็บเก่า Anime Card Ascension) · เว็บ: https://sunhoaass.github.io/Card_Ascension/
+- เงื่อนไข: **ฟรีทั้งหมด** · **ไม่มีระบบวิเคราะห์ด้วย AI หรือปุ่มวิเคราะห์ใดๆ** · หน้าเว็บภาษาอังกฤษ · เจ้าของใช้มือถือ
+- Stack: HTML/CSS/JS ล้วนบน GitHub Pages ไม่มีฐานข้อมูล ข้อมูลอยู่ใน `data/db.json` รูปอยู่ใน `images/` (ระบบสร้างเอง)
 
-## โครงไฟล์
+## โครงไฟล์ใน repo
 | ไฟล์ | หน้าที่ |
 |---|---|
+| `index.html` | หน้าเว็บหลัก |
+| `admin.html` | หน้าแอดมิน |
+| `css/style.css` | หน้าตาทั้งหมด |
 | `js/config.js` | ชื่อเว็บ, GITHUB (owner/repo/branch), ขนาดรูป, STATS, TIERS, TAG_GROUPS |
-| `js/data.js` | loadAll (อ่าน db.json), normalize, statRanks, applyMutation, esc/fmt/uid |
-| `js/github.js` | token, readDb/writeDb, uploadFile/deleteFile ผ่าน GitHub API |
-| `js/app.js` | หน้าสาธารณะ: Tier List, Cards, หน้ารายละเอียดการ์ด |
-| `js/admin.js` | Login ด้วย token, เพิ่ม/แก้/ลบการ์ด, จัดการ Rarities/Mutations |
-| `js/cropper.js` | ตัดรูปให้ขนาดเท่ากัน 600×840 (ลาก/จีบนิ้ว) |
+| `js/data.js` | โหลด db.json, statRanks, applyMutation, esc/fmt/uid |
+| `js/github.js` | อ่าน/เขียนไฟล์ใน repo ผ่าน GitHub API |
+| `js/app.js` | หน้าสาธารณะ: Tier List, Cards, รายละเอียดการ์ด |
+| `js/admin.js` | หน้าแอดมิน: เพิ่ม/แก้/ลบการ์ด, Rarities, Mutations |
+| `js/cropper.js` | ตัดรูปการ์ดเป็น 600×840 |
 | `data/db.json` | `{updated, rarities[], mutations[], cards[]}` |
+| ห้ามลบ | `googleac6eef435a8d1c66.html`, `sitemap.xml` (Google Search) |
 
-card: `{id, name, image_url (images/…), rarity_id, stats{atk,hp}, passive, skill, tags["group:Option"], tier, notes, extra{}, created_at, updated_at}` · id เป็น string 12 ตัว
+card: `{id, name, image_url, rarity_id, stats{atk,hp}, passive, skill, tags["group:Option"], tier, notes, extra{}, created_at, updated_at}`
 
-## ✅ ทำแล้ว
-- **เฟส 1 (22 ต.ค. 2026)** — โครง template, login แอดมิน, เพิ่มการ์ด + ตัดรูป, Rarity/โอกาสออกแบบพิมพ์เอง, Mutation ตัวคูณแบบตั้งเอง (คูณทุก stat หรือเฉพาะตัว), จัดอันดับ ATK/HP อัตโนมัติ, หน้า Tier List แบบดูอย่างเดียว, หน้า Cards + ค้นหา/กรอง, หน้ารายละเอียดเลือก Mutation แล้วตัวเลขเปลี่ยน, จำหน้าล่าสุด, แสดงวันที่อัปเดต
-- **22 ต.ค. 2026** — เจ้าของขอแบบง่าย: ตัด Supabase ออก เปลี่ยนไปเก็บข้อมูลใน GitHub repo แทน (ทดสอบหน้าเว็บด้วยข้อมูลตัวอย่างผ่านแล้ว)
-- สถานะ: **รอเจ้าของสร้าง repo + token ตาม INSTALL.md และทดสอบหน้าแอดมินจริง**
+## ✅ ทำแล้ว (22 ต.ค. 2026)
+- เพิ่ม/แก้/ลบการ์ด + ตัดรูปขนาดเท่ากัน
+- Rarity + โอกาสออกแบบพิมพ์เอง
+- Mutation ตั้งชื่อ/ตัวคูณเองได้ ตัวเลขเปลี่ยนตามที่เลือก
+- จัดอันดับ ATK/HP อัตโนมัติ
+- หน้า Tier List (ดูอย่างเดียว), Cards (ค้นหา/กรอง), จำหน้าล่าสุด, แสดงวันที่อัปเดต
+- แอดมิน login ตอนนี้ใช้ **GitHub token** (กำลังจะเปลี่ยน ดูด้านล่าง)
 
-## ⏭️ เฟสถัดไป (ต้องถามเจ้าของก่อนเริ่ม)
-| เฟส | งาน | โมเดล / effort |
+## 🔄 การตัดสินใจล่าสุด (22 ต.ค. 2026)
+- **ตัดระบบวิเคราะห์แบบปุ่มกดออกทั้งหมด** (ทั้ง AI, OCR และวิเคราะห์ทีม)
+- **เปลี่ยนการ login แอดมินกลับเป็นรหัสผ่านแบบเดิม** (พิมพ์รหัสเอง ไม่ต้องวาง token ยาวๆ)
+  - ข้อจำกัด: เว็บ static บันทึกขึ้น GitHub ได้ต้องมี token อยู่เบื้องหลังเสมอ
+  - แนวทางที่เสนอ (รอเจ้าของยืนยัน): สร้าง token ครั้งเดียว แล้วเข้ารหัสด้วยรหัสผ่านของเจ้าของ (AES-GCM + PBKDF2) เก็บไว้ใน repo แอดมินพิมพ์แค่รหัสผ่านก็ใช้งานได้ โดยไม่มีใครเห็น token จริง
+
+## ⏭️ งานถัดไป (ถามเจ้าของก่อนเริ่ม)
+| ลำดับ | งาน | โมเดล / effort |
 |---|---|---|
-| 2 | Tier List ลากวางได้ (ต่อยอดจากเว็บเก่า) + Global tier ที่แอดมินแก้ | Sonnet 5.5 / medium |
+| 1 | เปลี่ยน login แอดมินเป็นรหัสผ่าน | Opus 5.5 / medium |
+| 2 | Tier List ลากวางได้ + แอดมินบันทึกเป็น Global tier | Sonnet 5.5 / medium |
 | 3 | หน้าการ์ดแบบเว็บเก่า + คลิปสกิล (Passive · Attack · Ultimate) | Sonnet 5.5 / medium |
-| 4 | วิเคราะห์ทีมแบบใช้กฎจาก tag (จุดเด่น/จุดอ่อน, ตำแหน่งใน 5 ใบ, แพ้ทาง) | Opus 5.5 / high |
-| 5 | OCR ฟรี (Tesseract.js) อ่านตัวเลข/ข้อความจากรูป → เติมฟอร์มเป็นร่าง | Sonnet 5.5 / high |
-| 6 | Deck builder, Card Grader, SEO/Google search | ถามก่อน |
+| 4 | Deck builder, Card Grader | ถามก่อน |
 
 ## 📝 หมายเหตุ
-- Save แล้วเว็บอัปเดตหลัง Pages build ~1 นาที · ถ้า sha ชน (409) ให้รีเฟรชหน้าแอดมิน
-- ยังไม่ได้ย้ายข้อมูล/คลิปจากเว็บเก่า เพราะเป็นเกมใหม่
+- Save แล้วเว็บอัปเดตหลัง GitHub build ประมาณ 1 นาที · ถ้าขึ้น 409 ให้รีเฟรชหน้าแอดมิน
+- ไฟล์ `js/s` เป็นไฟล์เกินที่สร้างผิด ลบได้
