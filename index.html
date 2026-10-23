@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/fx.css">
   <link rel="stylesheet" href="css/cards.css">
   <link rel="stylesheet" href="css/tier.css">
+  <link rel="stylesheet" href="css/support.css">
 </head>
 <body>
   <canvas id="starfield" aria-hidden="true"></canvas>
@@ -141,17 +142,56 @@
       </div>
     </section>
 
-    <!-- Support (step 4) -->
+    <!-- Support: list + #support/<id> detail, both in js/support.js -->
     <section id="page-support" class="page" hidden aria-labelledby="support-title">
-      <div class="page__head">
-        <h1 id="support-title" class="page__title">Support</h1>
-        <p class="page__lead">Support cards ranked by value, with the cards and decks they work best in.</p>
+      <div id="support-list-view">
+        <div class="page__head">
+          <h1 id="support-title" class="page__title">Support</h1>
+          <p class="page__lead">Support cards ranked by value, with the cards and decks they work best in. Tap one for the full breakdown.</p>
+        </div>
+
+        <div id="support-tools" class="tools" hidden>
+          <div class="tools__main">
+            <label class="field field--search">
+              <span class="sr-only">Search support cards</span>
+              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="support-search" type="search" placeholder="Search name or effect" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+            </label>
+            <div class="tools__row">
+              <label class="field">
+                <span class="sr-only">Sort by</span>
+                <select id="support-sort">
+                  <option value="value">Sort: Value</option>
+                  <option value="odds">Sort: Pull odds</option>
+                </select>
+              </label>
+              <button id="support-dir" class="iconbtn glass fx-press" type="button" data-dir="desc" aria-label="Sort order: high to low. Tap to reverse.">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="support-filters" class="chip-row" role="group" aria-label="Filter by tier"></div>
+          <p class="tools__count"><span id="support-count" aria-live="polite"></span><button id="support-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
+        </div>
+
+        <ol id="support-list" class="slist"></ol>
+        <p id="support-note" class="support-note" hidden></p>
+
+        <div id="support-none" class="panel glass empty" hidden>
+          <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <h2 class="empty__title">No support cards match</h2>
+          <p class="empty__text">Try a different search or clear the filters.</p>
+          <button id="support-none-reset" class="chip glass fx-press empty__btn" type="button">Reset filters</button>
+        </div>
+
+        <div id="support-empty" class="panel glass empty" hidden>
+          <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>
+          <h2 class="empty__title">No support cards yet</h2>
+          <p class="empty__text">Support rankings will show here once the first support cards are added.</p>
+        </div>
       </div>
-      <div class="panel glass empty">
-        <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>
-        <h2 class="empty__title">No support cards yet</h2>
-        <p class="empty__text">Support rankings will show here once the first support cards are added.</p>
-      </div>
+
+      <div id="support-detail-view" class="sdetail" hidden></div>
     </section>
 
     <!-- Grade (coming soon) -->
@@ -198,5 +238,6 @@
   <script src="js/app.js"></script>
   <script src="js/cards.js"></script>
   <script src="js/tier.js"></script>
+  <script src="js/support.js"></script>
 </body>
 </html>
