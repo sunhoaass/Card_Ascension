@@ -53,6 +53,13 @@
   --t-b: #5dffa0;
   --t-c: #5ec8ff;
   --t-d: #8e8fb5;
+  /* extra row colours for the Tier Maker (step 8) — a row stores the variable name, e.g. "--t-x-teal" */
+  --t-x-red: #ff6b6b;
+  --t-x-lime: #c6ff5d;
+  --t-x-teal: #4dffd8;
+  --t-x-blue: #7c95ff;
+  --t-x-violet: #c08bff;
+  --t-x-white: #e9ecff;
 
   /* ---- Grade palette (step 6) · 1–3 bronze · 4–6 silver · 7–9 gold · 10 rainbow
          Swap these when the owner sends screenshots of the in-game colours. ---- */

@@ -1,0 +1,345 @@
+/* ==========================================================
+   Tier Maker (step 8) · My Lists tab of the Tier List page
+   Mobile-first. Colours, spacing, type and motion come from tokens.css only.
+   .field / .iconbtn / .chip / .seg / .panel / .empty / .skeleton are shared (cards.css, base.css, fx.css).
+   ========================================================== */
+[hidden].tm-warn, [hidden].tm-editor, #tm-index[hidden], [hidden].tm-dock__filters, [hidden].tm-dock__empty, [hidden].tm-dot { display: none; }
+
+/* ---------- Shared buttons ---------- */
+.tm-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  min-height: 44px; padding: 0 18px;
+  border-radius: var(--r-pill); border: 1px solid var(--glass-line);
+  background: var(--glass);
+  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-sm); color: var(--ink);
+  white-space: nowrap;
+}
+.tm-btn svg { width: 18px; height: 18px; flex: none; }
+.tm-btn--primary {
+  color: var(--void); border-color: transparent;
+  background: linear-gradient(135deg, var(--rift), var(--flux));
+  box-shadow: 0 0 22px color-mix(in srgb, var(--rift) 28%, transparent);
+}
+.tm-btn--danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 45%, transparent); }
+.tm-btn:disabled { opacity: 0.4; cursor: default; }
+.iconbtn:disabled { opacity: 0.35; cursor: default; }
+
+.tm-warn {
+  margin-bottom: var(--s-4); padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-card); border: 1px solid color-mix(in srgb, var(--bad) 45%, transparent);
+  background: color-mix(in srgb, var(--bad) 10%, transparent);
+  color: var(--ink); font-size: var(--fs-sm);
+}
+
+/* ---------- Loading ---------- */
+.tm-skel { display: grid; gap: var(--s-3); }
+.tm-skel .skeleton { aspect-ratio: auto; height: 76px; border-radius: 18px; }
+
+/* ==========================================================
+   All lists
+   ========================================================== */
+.tm-index__head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-4); }
+[hidden].tm-index__head { display: none; }
+.tm-index__count { color: var(--ink-dim); font-size: var(--fs-sm); }
+.tm-lists { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
+@media (min-width: 760px) { .tm-lists { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tml { display: flex; align-items: center; gap: 2px; padding: var(--s-2) var(--s-2) var(--s-2) var(--s-1); border-radius: var(--r-panel); min-width: 0; }
+.tml__open {
+  flex: 1; min-width: 0; min-height: 64px;
+  display: flex; align-items: center; gap: var(--s-3);
+  padding: var(--s-1) var(--s-2); border-radius: var(--r-card); text-align: left;
+}
+.tml__stack {
+  flex: none; width: 44px; height: 54px; padding: 5px;
+  display: flex; flex-direction: column; gap: 3px;
+  border-radius: 12px; background: var(--glass-strong); border: 1px solid var(--glass-line);
+}
+.tml__stack i { flex: 1; border-radius: 3px; background: var(--c); box-shadow: 0 0 8px color-mix(in srgb, var(--c) 35%, transparent); }
+.tml__text { min-width: 0; display: grid; gap: 2px; }
+.tml__name, .tml__meta, .tml__date { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tml__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); }
+.tml__meta { font-size: var(--fs-xs); color: var(--ink-dim); }
+.tml__meta b { color: var(--rift); font-weight: 600; }
+.tml__date { font-size: var(--fs-xs); color: var(--ink-faint); }
+.tml .iconbtn { width: 40px; min-height: 40px; }
+.tml .iconbtn svg { width: 18px; height: 18px; }
+
+/* ==========================================================
+   Editor
+   ========================================================== */
+.tm-bar { display: flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-2); }
+.tm-bar .iconbtn { width: 40px; min-height: 40px; }
+.tm-title {
+  flex: 1; min-width: 0; min-height: 44px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 var(--s-2); border-radius: var(--r-chip); text-align: left;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg);
+}
+.tm-title__text { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tm-title svg { flex: none; width: 15px; height: 15px; color: var(--ink-faint); }
+
+.tm-sub { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-1) var(--s-3); margin-bottom: var(--s-2); }
+.tm-meta { font-size: var(--fs-sm); color: var(--ink-dim); }
+.tm-switch {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 40px; padding: 0 2px;
+  font-size: var(--fs-sm); font-weight: 500; color: var(--ink-dim);
+}
+[hidden].tm-switch, [hidden].rarity-picker { display: none; }
+.tm-switch__track {
+  position: relative; flex: none; width: 40px; height: 24px;
+  border-radius: var(--r-pill); background: var(--glass-strong); border: 1px solid var(--glass-line);
+  transition: background-color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+.tm-switch__dot {
+  position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--ink-dim);
+  transition: transform var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
+}
+.tm-switch[aria-checked="true"] { color: var(--ink); }
+.tm-switch[aria-checked="true"] .tm-switch__track { background: color-mix(in srgb, var(--rift) 30%, transparent); border-color: var(--rift); }
+.tm-switch[aria-checked="true"] .tm-switch__dot { transform: translateX(16px); background: var(--rift); box-shadow: 0 0 10px var(--rift); }
+
+.tm-editor .rarity-picker { margin-bottom: var(--s-2); }
+.tm-hint { margin-bottom: var(--s-3); font-size: var(--fs-xs); color: var(--ink-faint); }
+
+/* ---------- Rows ---------- */
+.tm-rows { display: flex; flex-direction: column; gap: var(--s-2); }
+.tm-row {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr);
+  border-radius: 16px; overflow: hidden;
+  scroll-margin: 90px 0 280px;
+  transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
+}
+.tm-row__label {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100%; padding: 6px 4px;
+  background: var(--tc); color: var(--void);
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xl); line-height: 1.05;
+  text-align: center; overflow-wrap: anywhere; word-break: break-word;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--tc) 40%, transparent);
+  border-radius: 0;
+}
+.tm-row__label[data-len="m"] { font-size: var(--fs-md); }
+.tm-row__label[data-len="l"] { font-size: var(--fs-xs); }
+.tm-row__items {
+  display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px;
+  min-height: 106px; padding: 8px; min-width: 0;
+}
+.tm-row__empty { align-self: center; margin: auto; color: var(--ink-faint); font-size: var(--fs-xs); pointer-events: none; }
+.has-ph .tm-row__empty { display: none; }
+/* rows you can drop into (a card is lifted or selected) glow; the one under the finger glows more */
+.tm-editor.is-dragging .tm-row, .tm-editor.is-targeting .tm-row {
+  border-color: color-mix(in srgb, var(--rift) 45%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--rift) 16%, transparent);
+}
+.tm-editor .tm-row.is-over { border-color: var(--rift); box-shadow: var(--rift-glow); }
+.tm-addrow {
+  width: 100%; min-height: 48px; margin-top: var(--s-2);
+  display: flex; align-items: center; justify-content: center; gap: var(--s-2);
+  border-radius: 16px; border: 1.5px dashed var(--glass-line);
+  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-sm); color: var(--ink-dim);
+}
+.tm-addrow svg { width: 18px; height: 18px; }
+.tm-addrow:disabled { opacity: 0.5; cursor: default; }
+.tm-editor.is-targeting .tm-addrow { margin-bottom: 88px; }   /* room for the command bar */
+
+/* ---------- Cards in rows and pool ---------- */
+.tm-item {
+  position: relative; flex: none; width: 64px;
+  border-radius: var(--r-card);
+  touch-action: manipulation; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none;
+  transition: scale var(--t-fast) var(--ease), translate var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
+}
+.tm-item[hidden], .tm-item.tm-src { display: none; }
+.tm-item .card, .tm-item .scard { width: 100%; touch-action: manipulation; }   /* .card is pan-y: let the pool scroll sideways */
+.tm-item .card__tag, .tm-item .scard__tag { display: none; }                    /* the list's rarity is in the chips above; too small to read here */
+.tm-rows .tm-item .card__tier, .tm-rows .tm-item .scard__tier { display: none; } /* in your rows, Global tier shows only with Compare on */
+.tm-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
+.tm-item.is-pressing { scale: 0.95; }
+.tm-item.is-source { opacity: 0.35; }
+.tm-item.is-selected { z-index: 2; translate: 0 -4px; }
+.tm-item.is-selected::after {
+  content: ""; position: absolute; inset: -4px; z-index: 3; pointer-events: none;
+  border-radius: calc(var(--r-card) + 4px);
+  box-shadow: 0 0 0 2px var(--rift), 0 0 18px color-mix(in srgb, var(--rift) 60%, transparent);
+  animation: fx-fade var(--t-med) var(--ease);
+}
+.tm-missing {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  aspect-ratio: var(--card-ratio); padding: 4px;
+  border-radius: var(--r-card); border: 1.5px dashed var(--glass-line);
+  font-size: 10px; line-height: 1.2; text-align: center; color: var(--ink-dim); overflow-wrap: anywhere;
+}
+.tm-missing small { font-size: 9px; color: var(--ink-faint); }
+.tm-cmp {
+  position: absolute; left: 50%; bottom: -7px; z-index: 2; transform: translateX(-50%);
+  min-width: 26px; padding: 0 5px; border-radius: var(--r-pill);
+  font-family: var(--font-display); font-weight: 700; font-size: 10px; line-height: 15px; text-align: center;
+  background: var(--void-2); border: 1px solid var(--glass-line); color: var(--ink-dim);
+  pointer-events: none; animation: fx-fade var(--t-med) var(--ease);
+}
+.tm-cmp[data-d="up"] { color: var(--good); border-color: color-mix(in srgb, var(--good) 55%, transparent); }
+.tm-cmp[data-d="down"] { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 55%, transparent); }
+.tm-row__items:has(.tm-cmp) { padding-bottom: 12px; }
+
+/* the gap where a lifted card will land */
+.tm-ph {
+  flex: none; border-radius: var(--r-card);
+  border: 2px dashed color-mix(in srgb, var(--rift) 70%, transparent);
+  background: color-mix(in srgb, var(--rift) 8%, transparent);
+  box-shadow: inset 0 0 14px color-mix(in srgb, var(--rift) 18%, transparent);
+}
+
+/* ---------- Floating layer: the card you hold + fading copies ---------- */
+.tm-layer { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
+.tm-ghost { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
+.tm-ghost__in { width: 100%; animation: tm-lift var(--t-med) var(--ease) both; }
+.tm-ghost__in .card__frame, .tm-ghost__in .scard__frame { box-shadow: 0 18px 38px color-mix(in srgb, var(--void) 92%, transparent), 0 0 0 1px color-mix(in srgb, var(--rift) 50%, transparent); }
+@keyframes tm-lift { from { transform: scale(1); } to { transform: scale(1.06); } }
+.tm-fx { position: absolute; margin: 0; pointer-events: none; }
+html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
+
+/* ==========================================================
+   Pool dock (sticks to the bottom of the screen while the list is in view)
+   ========================================================== */
+.tm-dock {
+  position: sticky; z-index: 15;
+  bottom: calc(var(--nav-h) + 20px + var(--safe-b));
+  margin-top: var(--s-4);
+  border-radius: var(--r-panel);
+  background: color-mix(in srgb, var(--void-2) 86%, transparent);
+  box-shadow: 0 -6px 30px color-mix(in srgb, var(--void) 70%, transparent);
+}
+.tm-dock__head { display: flex; align-items: center; gap: 6px; padding: var(--s-2); }
+.tm-dock__head .field input { min-height: 40px; }
+.tm-dock .iconbtn { position: relative; width: 40px; min-height: 40px; }
+.tm-dock .iconbtn svg { width: 18px; height: 18px; }
+.tm-dock .iconbtn[aria-pressed="true"], .tm-dock .iconbtn[aria-expanded="true"]:not(.tm-fold) { color: var(--rift); border-color: var(--rift); background: var(--glass-strong); }
+.tm-fold svg { transition: transform var(--t-med) var(--ease); }
+.tm-dock.is-closed .tm-fold svg { transform: rotate(180deg); }
+.tm-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--rift); box-shadow: 0 0 8px var(--rift); }
+.tm-dock__filters { display: grid; gap: var(--s-2); padding: 0 var(--s-2) var(--s-2); }
+.tm-dock__filters .field select { min-height: 40px; font-size: var(--fs-sm); }
+.tm-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.tm-chips::-webkit-scrollbar { display: none; }
+.tm-chips .chip { min-height: 36px; padding: 0 12px; font-size: var(--fs-xs); }
+.tm-pool {
+  display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain;
+  padding: 6px var(--s-3) var(--s-3); scrollbar-width: thin;
+}
+.tm-pool .tm-item { width: 60px; }
+.tm-dock__empty { padding: 0 var(--s-4) var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
+.tm-dock.is-closed .tm-pool, .tm-dock.is-closed .tm-dock__filters, .tm-dock.is-closed .tm-dock__empty { display: none; }
+
+/* lifting a card that is in the list: the pool becomes the bin */
+.tm-dock::after {
+  content: "Drop here to remove"; position: absolute; inset: 0; z-index: 4;
+  display: grid; place-items: center;
+  border-radius: inherit; border: 2px dashed color-mix(in srgb, var(--bad) 60%, transparent);
+  background: color-mix(in srgb, var(--void) 78%, transparent);
+  font-family: var(--font-display); font-weight: 600; color: var(--bad);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
+}
+.tm-editor.drag-row .tm-dock::after { opacity: 1; }
+.tm-editor.drag-row .tm-dock.is-over::after { background: color-mix(in srgb, var(--bad) 20%, var(--void)); }
+
+/* ---------- Command bar for a selected card (slides up above the pool) ---------- */
+.tm-act {
+  position: absolute; left: 0; right: 0; bottom: calc(100% + 8px); z-index: 5;
+  display: grid; gap: 6px; padding: var(--s-2);
+  border-radius: var(--r-panel); border: 1px solid var(--glass-line);
+  background: color-mix(in srgb, var(--nebula) 96%, transparent);
+  box-shadow: 0 -6px 26px color-mix(in srgb, var(--void) 70%, transparent);
+  opacity: 0; transform: translateY(14px); visibility: hidden; pointer-events: none;
+  transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease), visibility 0s linear var(--t-med);
+}
+.tm-act.is-on { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+.tm-act__text { padding: 0 4px; font-size: var(--fs-xs); color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tm-act__text b { color: var(--ink); font-weight: 600; }
+.tm-act__btns { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
+.tm-act__btns button {
+  min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 0 4px;
+  border-radius: var(--r-chip); background: var(--glass); border: 1px solid var(--glass-line);
+  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-xs); color: var(--ink);
+}
+.tm-act__btns button[hidden] { display: none; }
+.tm-act__btns button:disabled { opacity: 0.4; cursor: default; }
+.tm-act__btns svg { flex: none; width: 16px; height: 16px; color: var(--rift); }
+@media (max-width: 359px) { .tm-act__btns svg { display: none; } }   /* 4 labels still fit on a 320px phone */
+.tm-act__btns [data-act="sel-remove"] svg { color: var(--bad); }
+
+/* ==========================================================
+   Dialogs (full-screen <dialog> with its own scrim; ::backdrop can't read CSS variables in older browsers)
+   ========================================================== */
+.tm-dlg {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: var(--gutter); border: 0;
+  background: transparent; color: var(--ink);
+  overflow-y: auto; overscroll-behavior: contain;
+}
+.tm-dlg[open] { display: grid; place-items: center; }
+.tm-dlg::backdrop { background: transparent; }
+.tm-dlg__scrim {
+  position: fixed; inset: 0;
+  background: color-mix(in srgb, var(--void) 76%, transparent);
+  animation: fx-fade var(--t-med) var(--ease) both;
+}
+.tm-dlg__sheet {
+  position: relative; width: 100%; max-width: 420px;
+  display: grid; gap: var(--s-4);
+  padding: var(--s-5); border-radius: var(--r-panel);
+  background: color-mix(in srgb, var(--nebula) 94%, transparent);
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--void) 85%, transparent);
+  animation: tm-dlg-in var(--t-med) var(--ease) both;
+}
+@keyframes tm-dlg-in { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
+.tm-dlg__title { font-size: var(--fs-lg); font-weight: 700; overflow-wrap: anywhere; }
+.tm-dlg__text { color: var(--ink-dim); font-size: var(--fs-sm); }
+.tm-dlg__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--s-2); margin-top: var(--s-1); }
+.tm-dlg__pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+.tm-dlg__pair .tm-btn { padding: 0 10px; }
+.tm-menu { display: grid; gap: var(--s-2); }
+.tm-menu .tm-btn { justify-content: flex-start; }
+.tm-field { display: grid; gap: 6px; }
+.tm-field__label { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-dim); }
+.tm-field__note { font-size: var(--fs-xs); color: var(--ink-faint); min-height: 1.55em; }
+.tm-input {
+  width: 100%; min-height: 44px; padding: 0 12px;
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line);
+  background: var(--glass); color: var(--ink);
+  font: inherit; font-size: var(--fs-md);   /* 16px: no iOS zoom on focus */
+}
+.tm-input:focus { outline: none; border-color: var(--rift); background: var(--glass-strong); box-shadow: var(--rift-glow); }
+.tm-pick { max-width: none; margin: 0; }
+.tm-swatches { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-2); }
+.tm-sw {
+  min-height: 40px; border-radius: var(--r-chip);
+  background: var(--c); box-shadow: 0 0 12px color-mix(in srgb, var(--c) 30%, transparent);
+  transition: box-shadow var(--t-med) var(--ease);
+}
+.tm-sw[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--nebula), 0 0 0 4px var(--ink), 0 0 16px color-mix(in srgb, var(--c) 55%, transparent); }
+
+/* ---------- Bigger screens ---------- */
+@media (min-width: 600px) {
+  .tm-item { width: 76px; }
+  .tm-row__items { min-height: 122px; }
+  .tm-pool .tm-item { width: 72px; }
+}
+@media (min-width: 900px) {
+  .tm-row { grid-template-columns: 80px minmax(0, 1fr); }
+  .tm-item { width: 92px; }
+  .tm-row__items { min-height: 145px; gap: 8px; }
+  .tm-dock { bottom: var(--s-4); }
+  .tm-act { max-width: 560px; margin: 0 auto; }
+  .tm-pool .tm-item { width: 80px; }
+}
+
+/* ---------- Reduced motion: fades only ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .tm-item.is-selected, .tm-item.is-pressing { translate: none; scale: none; }
+  .tm-ghost__in { animation: none; }
+  .tm-act, .tm-act.is-on { transform: none; }
+  .tm-dlg__sheet { animation: fx-fade 150ms linear both !important; }
+}

@@ -223,6 +223,29 @@
 .card--mini .card__name { font-size: 11px; }
 .card--mini .card__tag { font-size: 8px; padding: 1px 5px; }
 
+/* ---------- Toast (FX.toast) ---------- */
+.fx-toast {
+  position: fixed; z-index: 45; left: 50%;
+  bottom: var(--toast-b, calc(var(--nav-h) + 24px + var(--safe-b)));
+  display: flex; align-items: center; gap: var(--s-3);
+  max-width: calc(100vw - 2 * var(--gutter)); min-height: 48px; padding: 6px 6px 6px var(--s-4);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--nebula) 92%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--void) 80%, transparent);
+  font-size: var(--fs-sm); color: var(--ink);
+  opacity: 0; transform: translate(-50%, 16px); pointer-events: none;
+  transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
+}
+.fx-toast.is-on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.fx-toast__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 0; }
+.fx-toast:not(:has(.fx-toast__btn)) { padding-right: var(--s-4); }
+.fx-toast__btn {
+  flex: none; min-height: 36px; padding: 0 14px; border-radius: var(--r-pill);
+  font-family: var(--font-display); font-weight: 700; color: var(--rift);
+  background: var(--glass-strong);
+}
+@media (min-width: 900px) { .fx-toast { bottom: var(--toast-b, 24px); } }
+
 /* ==========================================================
    Reduced motion: keep only fades
    ========================================================== */
