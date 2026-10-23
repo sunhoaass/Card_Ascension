@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/fx.css">
+  <link rel="stylesheet" href="css/cards.css">
 </head>
 <body>
   <canvas id="starfield" aria-hidden="true"></canvas>
@@ -59,19 +60,62 @@
       <div class="page__head">
         <h1 id="tier-title" class="page__title">Tier List</h1>
         <p class="page__lead">Every card ranked by its Overall score, from SS at the top to D at the bottom.</p>
-        <span class="mock-flag">Preview with 3 sample cards</span>
       </div>
       <div id="tier-list" class="tier-list"></div>
     </section>
 
-    <!-- Cards (step 2 adds search, filters and detail view) -->
+    <!-- Cards: search / filters / sort live in js/cards.js -->
     <section id="page-cards" class="page" hidden aria-labelledby="cards-title">
       <div class="page__head">
         <h1 id="cards-title" class="page__title">Cards</h1>
-        <p class="page__lead">Pick a rarity to see each card's ATK, HP and pull odds at that level.</p>
+        <p class="page__lead">Pick a rarity to see each card's ATK, HP and pull odds at that level. Tap a card for the full breakdown.</p>
       </div>
-      <div id="rarity-picker" class="rarity-picker" role="group" aria-label="Rarity"></div>
+
+      <div id="cards-tools" class="tools" hidden>
+        <div id="rarity-picker" class="rarity-picker" role="group" aria-label="Rarity"></div>
+        <div class="tools__main">
+          <label class="field field--search">
+            <span class="sr-only">Search cards</span>
+            <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="card-search" type="search" placeholder="Search name, series or ability" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+          </label>
+          <div class="tools__row">
+            <label class="field">
+              <span class="sr-only">Sort by</span>
+              <select id="card-sort">
+                <option value="overall">Sort: Overall</option>
+                <option value="atk">Sort: ATK</option>
+                <option value="hp">Sort: HP</option>
+                <option value="odds">Sort: Pull odds</option>
+              </select>
+            </label>
+            <button id="card-dir" class="iconbtn glass fx-press" type="button" data-dir="desc" aria-label="Sort order: high to low. Tap to reverse.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+            </button>
+            <label class="field" id="series-field" hidden>
+              <span class="sr-only">Series</span>
+              <select id="card-series"></select>
+            </label>
+          </div>
+        </div>
+        <div id="card-filters" class="chip-row" role="group" aria-label="Filter by tier or role"></div>
+        <p class="tools__count"><span id="card-count" aria-live="polite"></span><button id="card-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
+      </div>
+
       <div id="card-grid" class="card-grid"></div>
+
+      <div id="cards-none" class="panel glass empty" hidden>
+        <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <h2 class="empty__title">No cards match</h2>
+        <p class="empty__text">Try a different search or clear the filters.</p>
+        <button id="cards-none-reset" class="chip glass fx-press empty__btn" type="button">Reset filters</button>
+      </div>
+
+      <div id="cards-empty" class="panel glass empty" hidden>
+        <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="13" height="17" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg>
+        <h2 class="empty__title">No cards yet</h2>
+        <p class="empty__text">The card library is being filled in. Check back soon.</p>
+      </div>
     </section>
 
     <!-- Support (step 4) -->
@@ -113,7 +157,22 @@
     </section>
   </main>
 
+  <!-- Card detail (opens over any page, see js/cards.js) -->
+  <div id="detail" class="detail" hidden role="dialog" aria-modal="true" aria-label="Card details">
+    <div class="detail__scrim"></div>
+    <div class="detail__sheet">
+      <div class="detail__bar">
+        <button id="detail-close" class="detail__back fx-press" type="button" aria-label="Close card details">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          <span>Back</span>
+        </button>
+      </div>
+      <div id="detail-content" class="detail__content"></div>
+    </div>
+  </div>
+
   <script src="js/fx.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/cards.js"></script>
 </body>
 </html>
