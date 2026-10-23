@@ -7,6 +7,7 @@
      FX.stagger(listEl)    – children slide in one after another (opts: { cls, max, cleanup })
      FX.flip(el, rect)     – shared-element move: el animates from `rect` to where it is now
      FX.fade(el, to)       – fade in (1) or out (0); still works when motion is reduced
+     FX.toast(text, opts)  – short message at the bottom (opts: { action: { label, fn }, duration, bottom })
      FX.starfield(canvas)  – slow parallax star background
      FX.reduced            – true when the user asked for less motion
    ========================================================== */
@@ -121,6 +122,39 @@
       duration: FX.reduced ? Math.min(duration, 150) : duration,
       easing: "cubic-bezier(.2,.8,.2,1)", fill: "both",
     });
+  };
+
+  /* ---------- Toast (short message at the bottom, optional action button) ----------
+     FX.toast("Row deleted", { action: { label: "Undo", fn }, duration: 3200, bottom: 120 })
+     bottom: px from the bottom of the screen (to sit above something docked there); leave out for the default spot. */
+  let toastEl = null, toastTimer = 0;
+  FX.toast = function (text, { action = null, duration = 3200, bottom = null } = {}) {
+    if (!toastEl) {
+      toastEl = document.createElement("div");
+      toastEl.className = "fx-toast glass";
+      toastEl.setAttribute("role", "status");
+      toastEl.setAttribute("aria-live", "polite");
+      document.body.appendChild(toastEl);
+    }
+    const hide = () => { clearTimeout(toastTimer); toastEl.classList.remove("is-on"); };
+    clearTimeout(toastTimer);
+    toastEl.replaceChildren();
+    const msg = document.createElement("span");
+    msg.className = "fx-toast__text";
+    msg.textContent = text;
+    toastEl.appendChild(msg);
+    if (action) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "fx-toast__btn fx-press";
+      b.textContent = action.label;
+      b.addEventListener("click", () => { hide(); action.fn(); }, { once: true });
+      toastEl.appendChild(b);
+    }
+    if (bottom == null) toastEl.style.removeProperty("--toast-b");
+    else toastEl.style.setProperty("--toast-b", Math.round(bottom) + "px");
+    toastEl.classList.remove("is-on"); void toastEl.offsetWidth; toastEl.classList.add("is-on");
+    toastTimer = setTimeout(hide, duration);
   };
 
   /* ---------- Starfield (canvas, 3 parallax layers) ---------- */

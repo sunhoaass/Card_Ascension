@@ -1,6 +1,8 @@
 /* ==========================================================
    Card Battle Infinity — Tier List (step 3, reshaped in step 7)
-   · Global | My Lists tabs (#tier = Global, #tier/my = My Lists; My Lists is an empty page until step 8)
+   · Global | My Lists tabs (#tier = Global, #tier/my = My Lists, #tier/my/<id> = one list in the Tier Maker)
+   · My Lists (the Tier Maker, step 8) lives in js/tiermaker.js: this file calls C.tm.init() once and
+     C.tm.show(listId|null) every time My Lists is showing
    · Global is view-only and has a Cards | Support switch (they never share a list)
      - Cards: rows SS–D by Overall, rarity picker shared with the Cards page
      - Support: rows SS–D by Value (data/support.json), no rarity
@@ -132,6 +134,9 @@
     el.classList.remove("fx-page-in"); void el.offsetWidth; el.classList.add("fx-page-in");
   }
 
+  // #tier/my/<id> -> the list id (null = all lists)
+  const listFromHash = () => { const m = location.hash.match(/^#\/?tier\/my\/([^/?#]+)/); return m ? decodeURIComponent(m[1]) : null; };
+
   /* Global | My Lists. Called by the router on every hash change and tab tap. */
   function show(name) {
     if (!ui.root) return;
@@ -140,6 +145,7 @@
     const changed = next !== view;
     view = next;
     pageTitle();                                  // showPage() resets the title on every route, so set it every time
+    if (next === "my" && C.tm) C.tm.show(listFromHash());   // all lists, or the list in the link (also sets the title)
     if (!changed) return;
 
     ui.tabs.style.setProperty("--i", next === "my" ? 1 : 0);
@@ -242,6 +248,7 @@
     renderSupport();
     setKind(C.store.get(KIND_KEY), { animate: false });
     FX.stagger(kind === "support" ? ui.slist : ui.list);
+    if (C.tm) C.tm.init();
   }
 
   C.tier = { init, enter, show };
