@@ -10,6 +10,9 @@
 
   const SCORE_ROWS = [["atk", "ATK", 12.5], ["hp", "HP", 12.5], ["passive", "Passive", 15], ["skill", "Skill", 15], ["matchup", "Matchup", 25], ["team", "Team", 20]];
   const ROLE_ORDER = ["DPS", "Tank", "Support", "Hybrid"];
+  // Defense / Status Damage (added for the grader, step 6) · only shown when the card has them
+  const EXTRA_STATS = [["def", "DEF"], ["status", "Status DMG"]];
+  const hasBase = (card, k) => !!(card.base && Number(card.base[k]) > 0);
 
   const filters = { q: "", tier: "", role: "", series: "", sort: "overall", dir: "desc" };
   const cardById = new Map();     // id -> card data
@@ -194,7 +197,8 @@
   }
 
   function activate(el) {
-    if (el.closest(".detail__hero") || !el.closest(".main, #detail")) return;
+    // [data-no-detail]: places that use cards for something else (Grade picker + grader hero, js/grade.js)
+    if (el.closest(".detail__hero, [data-no-detail]") || !el.closest(".main, #detail")) return;
     if (isOpen && cur === el.dataset.id) return;
     C.openCard(el.dataset.id, el);
   }
@@ -254,9 +258,10 @@
 
         <div id="d-rarity" class="rarity-picker" role="group" aria-label="Rarity"></div>
 
-        <div class="dstats">
+        <div class="dstats${EXTRA_STATS.some(([k]) => hasBase(card, k)) ? " dstats--more" : ""}">
           <div class="dstat dstat--atk"><div class="dstat__label">ATK</div><div class="dstat__value" data-d="atk" data-value="0">0</div><div class="dstat__sub" data-d="atk-sub"></div></div>
           <div class="dstat dstat--hp"><div class="dstat__label">HP</div><div class="dstat__value" data-d="hp" data-value="0">0</div><div class="dstat__sub" data-d="hp-sub"></div></div>
+          ${EXTRA_STATS.filter(([k]) => hasBase(card, k)).map(([k, label]) => `<div class="dstat dstat--${k}"><div class="dstat__label">${label}</div><div class="dstat__value" data-d="${k}" data-value="0">0</div><div class="dstat__sub" data-d="${k}-sub"></div></div>`).join("")}
           <div class="dstat dstat--odds"><div class="dstat__label">Pull odds</div><div class="dstat__value" data-d="odds"></div><div class="dstat__sub" data-d="odds-sub"></div></div>
         </div>
 
@@ -265,6 +270,8 @@
           ${ranked ? `<p class="dpanel__sub">Weighted sum of six scores, each out of 100.</p>` : ""}
           ${overall}
         </section>
+
+        ${C.grade.panelHTML(card)}
 
         <section class="dpanel" aria-labelledby="d-t-abilities">
           <h3 class="dpanel__title" id="d-t-abilities">Abilities</h3>
@@ -308,6 +315,11 @@
     q("odds").textContent = C.fmtOdds(C.oddsAt(card, r));
     q("atk-sub").textContent = subStat(card, "atk", r);
     q("hp-sub").textContent = subStat(card, "hp", r);
+    EXTRA_STATS.forEach(([k]) => {
+      if (!q(k)) return;
+      FX.countTo(q(k), C.statAt(card, k, r), { format: C.fmtStat });
+      q(k + "-sub").textContent = subStat(card, k, r);
+    });
     q("odds-sub").textContent = r === "Normal" ? "Base odds" : `Normal ${C.fmtOdds(card.base.odds)} · ${info.odds}× rarer`;
   }
 
