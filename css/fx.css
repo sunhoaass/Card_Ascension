@@ -1,0 +1,231 @@
+/* ==========================================================
+   FX — shared motion + card/aura styles (§4 Motion Guide)
+   Rules: animate transform/opacity only · 150–400ms · var(--ease)
+   New buttons: add class "fx-press". Don't write new press effects.
+   ========================================================== */
+
+/* ---------- Keyframes ---------- */
+@keyframes fx-spin { to { transform: rotate(360deg); } }
+@keyframes fx-ring { from { opacity: .55; transform: scale(.6); } to { opacity: 0; transform: scale(1.35); } }
+@keyframes fx-page-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes fx-rise { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+@keyframes fx-sweep { 0%, 55% { transform: translateX(-130%) skewX(-18deg); } 100% { transform: translateX(230%) skewX(-18deg); } }
+@keyframes fx-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+@keyframes fx-halo { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+@keyframes fx-twinkle { 0%, 100% { opacity: .25; } 50% { opacity: .9; } }
+@keyframes fx-float { from { opacity: 0; transform: translateY(0) scale(.6); } 20% { opacity: 1; } to { opacity: 0; transform: translateY(-140px) scale(1); } }
+@keyframes fx-flash { 0% { opacity: 0; } 35% { opacity: .55; } 100% { opacity: 0; } }
+@keyframes fx-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fx-skel { 0%, 100% { opacity: .45; } 50% { opacity: .9; } }
+
+/* ---------- Press: scale .96 + short glow ring ---------- */
+.fx-press { position: relative; transition: transform var(--t-fast) var(--ease); }
+.fx-press:active { transform: scale(.96); }
+.fx-ring {
+  position: absolute; left: 50%; top: 50%;
+  width: 64px; height: 64px; margin: -32px 0 0 -32px;
+  border-radius: 50%; pointer-events: none;
+  box-shadow: 0 0 0 2px var(--rift), 0 0 18px var(--rift);
+  animation: fx-ring var(--t-slow) var(--ease) forwards;
+}
+
+/* ---------- Page enter ---------- */
+.fx-page-in { animation: fx-page-in var(--t-slow) var(--ease) both; }
+
+/* ---------- Stagger (tier rows) — JS sets --d per item ---------- */
+.fx-stagger > * { animation: fx-rise var(--t-slow) var(--ease) both; animation-delay: var(--d, 0ms); }
+
+/* ---------- Skeleton loading ---------- */
+.skeleton {
+  aspect-ratio: var(--card-ratio);
+  border-radius: var(--r-card);
+  background: linear-gradient(160deg, var(--glass-strong), var(--glass));
+  border: 1px solid var(--glass-line);
+  animation: fx-skel 1.2s ease-in-out infinite;
+}
+
+/* ==========================================================
+   Game card
+   ========================================================== */
+.card {
+  --rc: var(--r-normal);       /* rarity color */
+  --rc2: var(--r-normal-2);    /* rarity dark partner */
+  position: relative;
+  aspect-ratio: var(--card-ratio);
+  border-radius: var(--r-card);
+  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transition: transform var(--t-med) var(--ease);
+  cursor: pointer;
+  user-select: none; -webkit-user-select: none;
+  touch-action: pan-y;
+}
+.card.is-tilting { transition: transform 60ms linear; }
+.card:focus-visible { outline-offset: 4px; border-radius: var(--r-card); }
+
+/* frame = rotating/solid ring behind the body */
+.card__frame {
+  position: absolute; inset: 0;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: var(--rc2);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
+}
+.card__frame::before {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 220%; aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+  background: linear-gradient(135deg, var(--rc), var(--rc2) 50%, var(--rc));
+}
+.card__body {
+  position: absolute; inset: 3px;
+  border-radius: calc(var(--r-card) - 3px);
+  overflow: hidden;
+  background: #0b0d22;
+}
+.card__art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card__art svg { width: 100%; height: 100%; }
+
+.card__info {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 28px 8px 8px;
+  background: linear-gradient(180deg, transparent, rgba(5, 6, 20, .88) 45%);
+}
+.card__name {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm);
+  line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card__series { font-size: 11px; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card__stats { display: flex; gap: 8px; margin-top: 6px; font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 600; }
+.card__stats b { color: var(--ink-dim); font-weight: 500; margin-right: 3px; }
+.card__stat--atk { color: #ff9a8a; }
+.card__stat--hp { color: #8affc1; }
+.card__odds { margin-top: 2px; font-size: 11px; color: var(--ink-dim); }
+
+.card__tag {
+  position: absolute; left: 6px; top: 6px;
+  padding: 2px 7px; border-radius: 6px;
+  font-family: var(--font-display); font-size: 10px; font-weight: 700;
+  color: var(--void); background: var(--rc);
+}
+.card__tier {
+  position: absolute; right: 6px; top: 6px;
+  min-width: 26px; height: 26px; padding: 0 4px;
+  display: grid; place-items: center; border-radius: 8px;
+  font-family: var(--font-display); font-size: var(--fs-sm); font-weight: 700;
+  color: var(--void); background: var(--tc, var(--t-d));
+}
+.card__mock {
+  position: absolute; right: 6px; bottom: 6px;
+  font-size: 9px; padding: 1px 5px; border-radius: 4px;
+  color: #ffd9a0; border: 1px dashed rgba(255, 184, 77, .6);
+}
+
+/* holo glare follows the finger (moved with transform) */
+.card__glare {
+  position: absolute; left: 50%; top: 50%;
+  width: 160%; aspect-ratio: 1;
+  margin: -80% 0 0 -80%;
+  background: radial-gradient(circle, rgba(255, 255, 255, .28), rgba(160, 220, 255, .08) 30%, transparent 55%);
+  opacity: 0; mix-blend-mode: screen; pointer-events: none;
+  transform: translate(var(--gx, 0), var(--gy, 0));
+  transition: opacity var(--t-med) var(--ease);
+}
+.card.is-tilting .card__glare, .card:hover .card__glare { opacity: 1; }
+.card.is-tilting, .card:hover { --lift: -6px; }
+
+/* rarity-change flash */
+.card__flash { position: absolute; inset: 0; background: var(--rc); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
+.card.is-shifting .card__flash { animation: fx-flash var(--t-slow) var(--ease); }
+
+/* extra layers, off by default */
+.card__halo, .card__sweep, .card__stars, .card__particles { position: absolute; pointer-events: none; opacity: 0; }
+.card__halo { inset: -7px; border-radius: calc(var(--r-card) + 7px); z-index: -1; }
+.card__sweep {
+  top: -10%; bottom: -10%; left: 0; width: 38%;
+  background: linear-gradient(90deg, transparent, rgba(255, 245, 200, .55), transparent);
+}
+.card__stars {
+  inset: 0;
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 78% 12%, #cfe0ff, transparent),
+    radial-gradient(1.4px 1.4px at 64% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 24% 58%, #d8c8ff, transparent),
+    radial-gradient(1.2px 1.2px at 88% 66%, #fff, transparent),
+    radial-gradient(1px 1px at 40% 28%, #fff, transparent);
+}
+.card__particles { inset: 0; overflow: visible; }
+.card__particles i {
+  position: absolute; bottom: 8%;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 6px #b9f6ff;
+  opacity: 0;
+}
+.card__particles i:nth-child(1) { left: 12%; animation-delay: 0s; }
+.card__particles i:nth-child(2) { left: 30%; animation-delay: .9s; background: #ffd6f3; }
+.card__particles i:nth-child(3) { left: 50%; animation-delay: 1.8s; }
+.card__particles i:nth-child(4) { left: 68%; animation-delay: .4s; background: #fff2a8; }
+.card__particles i:nth-child(5) { left: 86%; animation-delay: 1.3s; background: #c9b2ff; }
+
+/* ==========================================================
+   Rarity auras (data-rarity on .card)
+   ========================================================== */
+/* Normal — silver, no glow */
+.card[data-rarity="Normal"] { --rc: var(--r-normal); --rc2: var(--r-normal-2); }
+
+/* Shiny — gold + a light sweep */
+.card[data-rarity="Shiny"] { --rc: var(--r-shiny); --rc2: var(--r-shiny-2); }
+.card[data-rarity="Shiny"] .card__frame { box-shadow: 0 0 18px rgba(255, 210, 90, .35), 0 10px 28px rgba(0, 0, 0, .45); }
+.card[data-rarity="Shiny"] .card__sweep { opacity: 1; animation: fx-sweep 3.2s var(--ease) infinite; }
+
+/* Rainbow — rotating rainbow ring */
+.card[data-rarity="Rainbow"] { --rc: #ff7ad9; --rc2: #2a1748; }
+.card[data-rarity="Rainbow"] .card__frame::before { background: var(--r-rainbow); animation: fx-spin 4s linear infinite; }
+.card[data-rarity="Rainbow"] .card__frame { box-shadow: 0 0 20px rgba(160, 120, 255, .4), 0 10px 28px rgba(0, 0, 0, .45); }
+.card[data-rarity="Rainbow"] .card__tag { background: linear-gradient(90deg, #ff4d6d, #ffb84d, #5dff9b, #4dd8ff, #b06bff); }
+
+/* Secret — black-red, red glow pulse */
+.card[data-rarity="Secret"] { --rc: var(--r-secret); --rc2: var(--r-secret-2); }
+.card[data-rarity="Secret"] .card__frame::before { background: linear-gradient(135deg, #ff3b4e, #120102 45%, #120102 55%, #ff3b4e); }
+.card[data-rarity="Secret"] .card__halo { box-shadow: 0 0 26px 6px rgba(255, 40, 60, .55); animation: fx-pulse 2.4s ease-in-out infinite; }
+.card[data-rarity="Secret"] .card__body { background: #150206; }
+
+/* Divine — white-gold with a halo ring */
+.card[data-rarity="Divine"] { --rc: var(--r-divine); --rc2: var(--r-divine-2); }
+.card[data-rarity="Divine"] .card__frame::before { background: linear-gradient(135deg, #fffdf2, #f5c66b 50%, #fffdf2); }
+.card[data-rarity="Divine"] .card__halo {
+  border: 2px solid rgba(255, 240, 200, .8);
+  box-shadow: 0 0 22px rgba(255, 228, 160, .7), inset 0 0 14px rgba(255, 228, 160, .45);
+  animation: fx-halo 3s ease-in-out infinite;
+}
+
+/* Cosmic — violet-blue, stars inside the frame */
+.card[data-rarity="Cosmic"] { --rc: #a48bff; --rc2: #12164a; }
+.card[data-rarity="Cosmic"] .card__frame::before { background: conic-gradient(from 0deg, var(--r-cosmic), var(--r-cosmic-2), #12164a, var(--r-cosmic)); animation: fx-spin 9s linear infinite; }
+.card[data-rarity="Cosmic"] .card__frame { box-shadow: 0 0 22px rgba(110, 90, 255, .45), 0 10px 28px rgba(0, 0, 0, .45); }
+.card[data-rarity="Cosmic"] .card__stars { opacity: 1; animation: fx-twinkle 2.6s ease-in-out infinite; }
+
+/* Ascended — prismatic, moving, with floating particles */
+.card[data-rarity="Ascended"] { --rc: #e9f9ff; --rc2: #2b2050; }
+.card[data-rarity="Ascended"] .card__frame::before { background: var(--r-ascended); animation: fx-spin 3s linear infinite; }
+.card[data-rarity="Ascended"] .card__frame { box-shadow: 0 0 26px rgba(190, 230, 255, .55), 0 10px 28px rgba(0, 0, 0, .45); }
+.card[data-rarity="Ascended"] .card__tag { background: linear-gradient(90deg, #8ff7ff, #b98cff, #ff9de2, #fff2a8); }
+.card[data-rarity="Ascended"] .card__particles { opacity: 1; }
+.card[data-rarity="Ascended"] .card__particles i { animation: fx-float 2.8s ease-out infinite; }
+
+/* Mini cards (tier rows): hide detail, keep aura */
+.card--mini .card__series, .card--mini .card__stats, .card--mini .card__odds, .card--mini .card__mock { display: none; }
+.card--mini .card__info { padding: 18px 6px 6px; }
+.card--mini .card__name { font-size: 11px; }
+.card--mini .card__tag { font-size: 8px; padding: 1px 5px; }
+
+/* ==========================================================
+   Reduced motion: keep only fades
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+  .fx-page-in, .fx-stagger > * { animation: fx-fade 200ms linear both !important; animation-delay: 0ms !important; }
+  .card { transform: none !important; }
+  .card__sweep, .card__particles, .fx-ring { display: none; }
+  .nav__indicator { transition: opacity var(--t-fast) linear !important; }
+}

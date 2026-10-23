@@ -1,0 +1,86 @@
+/* ==========================================================
+   Card Battle Infinity — Design tokens ("Infinity Rift")
+   Every page reads colors, type, spacing and motion from here.
+   ========================================================== */
+:root {
+  /* ---- Space (backgrounds) ---- */
+  --void: #070818;          /* page background, deep indigo-black */
+  --void-2: #0d1030;        /* gradient partner for the void */
+  --nebula: #161a3d;        /* solid raised surface (fallback for glass) */
+
+  /* ---- Glass ---- */
+  --glass: rgba(140, 155, 255, 0.07);
+  --glass-strong: rgba(140, 155, 255, 0.12);
+  --glass-line: rgba(175, 188, 255, 0.16);
+  --glass-blur: 16px;
+
+  /* ---- Ink (text) ---- */
+  --ink: #eceeff;
+  --ink-dim: #9aa1c7;
+  --ink-faint: #5e658c;
+
+  /* ---- Rift glow (brand accents) ---- */
+  --rift: #6fe7ff;          /* cyan — primary glow, active states */
+  --flux: #a879ff;          /* violet — secondary glow */
+  --rift-glow: 0 0 0 1px rgba(111, 231, 255, 0.35), 0 0 18px rgba(111, 231, 255, 0.35);
+
+  /* ---- Rarity palette (frame, tag, glow) ---- */
+  --r-normal: #b9c0cf;
+  --r-normal-2: #6d7486;
+  --r-shiny: #ffd25a;
+  --r-shiny-2: #b8860b;
+  --r-secret: #ff3b4e;
+  --r-secret-2: #1a0306;
+  --r-divine: #fff6da;
+  --r-divine-2: #f5c66b;
+  --r-cosmic: #7b5cff;
+  --r-cosmic-2: #2f6bff;
+  --r-rainbow: conic-gradient(from 0deg, #ff4d6d, #ffb84d, #f9f871, #5dff9b, #4dd8ff, #7b6bff, #ff4dd8, #ff4d6d);
+  --r-ascended: conic-gradient(from 0deg, #ffffff, #8ff7ff, #b98cff, #ff9de2, #fff2a8, #9dffcf, #ffffff);
+
+  /* ---- Tier palette ---- */
+  --t-ss: #ff5d8f;
+  --t-s: #ffb84d;
+  --t-a: #f9e66b;
+  --t-b: #5dffa0;
+  --t-c: #5ec8ff;
+  --t-d: #8e8fb5;
+
+  /* ---- Type ---- */
+  --font-display: "Chakra Petch", "Rajdhani", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* 1.25 scale */
+  --fs-xs: 0.75rem;   /* 12 */
+  --fs-sm: 0.875rem;  /* 14 */
+  --fs-md: 1rem;      /* 16 */
+  --fs-lg: 1.25rem;   /* 20 */
+  --fs-xl: 1.5625rem; /* 25 */
+  --fs-2xl: 1.953rem; /* 31 */
+  --fs-3xl: 2.441rem; /* 39 */
+  --lh-tight: 1.1;
+  --lh-body: 1.55;
+
+  /* ---- Space (4px grid) ---- */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+  --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --gutter: 16px;
+
+  /* ---- Radius (by hierarchy, not one size for everything) ---- */
+  --r-chip: 10px;     /* chips, small buttons */
+  --r-card: 14px;     /* game cards */
+  --r-panel: 22px;    /* glass panels, nav */
+  --r-pill: 999px;
+
+  /* ---- Layout ---- */
+  --nav-h: 68px;
+  --header-h: 56px;
+  --max-w: 1180px;
+  --card-ratio: 5 / 7;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+
+  /* ---- Motion (§4) ---- */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --t-fast: 150ms;
+  --t-med: 250ms;
+  --t-slow: 400ms;
+}
