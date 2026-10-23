@@ -11,14 +11,17 @@
   position: relative; display: block;
   aspect-ratio: var(--card-ratio);
   border-radius: var(--r-card);
-  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transform: translateY(var(--lift, 0px));   /* step 9.5: flat (2D) at rest, 3D only while tilting / hovered (same as .card in fx.css) */
   transition: transform var(--t-med) var(--ease);
   user-select: none; -webkit-user-select: none;
   touch-action: pan-y;
 }
 .scard.is-tilting { transition: transform 60ms linear; }
-.scard.is-tilting, .scard:hover { --lift: -6px; }
-.scard--thumb, .scard--thumb:hover { --lift: 0px; transform: none; }
+.scard.is-tilting, .scard:hover {
+  --lift: -6px;
+  transform: translateY(var(--lift, 0px)) perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+.scard--thumb, .scard--thumb:hover, .scard--thumb.is-tilting { --lift: 0px; transform: none; }
 
 .scard__frame {
   position: absolute; inset: 0; display: block;

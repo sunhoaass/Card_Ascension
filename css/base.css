@@ -7,7 +7,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   min-height: 100dvh;
-  background: radial-gradient(120% 80% at 50% 0%, var(--void-2) 0%, var(--void) 60%) fixed, var(--void);
+  background: var(--void);   /* the glow gradient lives on #starfield (step 9.5: a "fixed" page background repaints on every scroll) */
   color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--fs-md);
@@ -23,21 +23,38 @@ p { margin: 0; }
 :focus-visible { outline: 2px solid var(--rift); outline-offset: 3px; border-radius: 6px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* ---------- Starfield ---------- */
+/* ---------- Starfield (js/fx.js FX.starfield: SVG layers drawn once, moved by CSS) ---------- */
 #starfield {
   position: fixed; inset: 0; width: 100%; height: 100%;
-  z-index: 0; pointer-events: none;
+  z-index: 0; pointer-events: none; overflow: hidden;
+  background: radial-gradient(120% 80% at 50% 0%, var(--void-2) 0%, var(--void) 60%), var(--void);
 }
+.sf-layer { position: absolute; left: 0; top: 0; width: 100%; will-change: transform; }
+.sf-drift {
+  position: absolute; left: 0; top: 0; width: 100%;
+  animation: sf-drift linear infinite, sf-twinkle ease-in-out infinite;
+}
+.sf-drift svg { display: block; overflow: visible; }
+/* the SVG holds the stars 3 times: moving up by one third = one period, so the loop has no seam */
+@keyframes sf-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -33.3333%, 0); } }
+/* the old canvas: alpha × (0.7 + 0.3·sin) = 40%…100% */
+@keyframes sf-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
 
-/* ---------- Glass ---------- */
+/* ---------- Glass ----------
+   Step 9.5: backdrop-filter blur only on the header and the bottom menu (owner's choice). Every other glass box
+   gets an almost-solid underlay (--glass-under) that hides the stars the way the blur did, plus the same tint. */
 .glass {
-  background: var(--glass);
+  background-color: var(--glass-under);
+  background-image: linear-gradient(var(--glass), var(--glass));
   border: 1px solid var(--glass-line);
+}
+.topbar.glass { background-color: transparent; }
+.topbar.glass, .nav.glass {
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
   backdrop-filter: blur(var(--glass-blur)) saturate(140%);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass { background: rgba(22, 26, 61, 0.92); }
+  .topbar.glass, .nav.glass { background: rgba(22, 26, 61, 0.92); }
 }
 
 /* ---------- Header ---------- */
@@ -130,7 +147,7 @@ p { margin: 0; }
   transition: color var(--t-med) var(--ease), border-color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
 }
 .chip__swatch { width: 10px; height: 10px; border-radius: 3px; background: var(--sw); }
-.chip[aria-pressed="true"] { color: var(--ink); border-color: var(--sw-line, var(--rift)); background: var(--glass-strong); }
+.chip[aria-pressed="true"] { color: var(--ink); border-color: var(--sw-line, var(--rift)); background-image: linear-gradient(var(--glass-strong), var(--glass-strong)); }
 
 /* ---------- Segmented switch (Global | My Lists, Cards | Support, and later pages) ----------
    Set --n (number of buttons) and --i (selected index) on the .seg element; the highlight slides with transform only. */

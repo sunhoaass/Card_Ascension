@@ -12,7 +12,8 @@
   --glass: rgba(140, 155, 255, 0.07);
   --glass-strong: rgba(140, 155, 255, 0.12);
   --glass-line: rgba(175, 188, 255, 0.16);
-  --glass-blur: 16px;
+  --glass-blur: 16px;       /* only .topbar and .nav still blur (step 9.5) */
+  --glass-under: rgba(10, 12, 38, 0.86);   /* underlay of every other .glass box: stands in for the blur, hides the stars */
 
   /* ---- Ink (text) ---- */
   --ink: #eceeff;

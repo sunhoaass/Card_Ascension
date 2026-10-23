@@ -58,7 +58,11 @@
   position: relative;
   aspect-ratio: var(--card-ratio);
   border-radius: var(--r-card);
-  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  /* step 9.5: flat (2D) at rest and 3D only while a finger / the mouse is on it. A 3D transform at rest made
+     every card its own GPU layer. The rest value is the first function of the tilt list, so the tilt and the
+     settle-back still animate function by function (same look as before). Keep a 2D transform here, not "none":
+     it keeps the card's stacking context (halo z-index -1) and keeps hit-testing fast (Tier Maker drag). */
+  transform: translateY(var(--lift, 0px));
   transition: transform var(--t-med) var(--ease);
   cursor: pointer;
   user-select: none; -webkit-user-select: none;
@@ -88,7 +92,8 @@
   background: #0b0d22;
 }
 .card__art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.card__art svg { width: 100%; height: 100%; }
+.card__art svg, .card__art img { width: 100%; height: 100%; }
+.card__art img { object-fit: cover; }   /* the <img> carries width/height attributes (no layout jump); CSS sets the real size */
 
 .card__info {
   position: absolute; left: 0; right: 0; bottom: 0;
@@ -136,7 +141,10 @@
   transition: opacity var(--t-med) var(--ease);
 }
 .card.is-tilting .card__glare, .card:hover .card__glare { opacity: 1; }
-.card.is-tilting, .card:hover { --lift: -6px; }
+.card.is-tilting, .card:hover {
+  --lift: -6px;
+  transform: translateY(var(--lift, 0px)) perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
 
 /* rarity-change flash: played by CBI.setCardRarity (Web Animations) */
 .card__flash { position: absolute; inset: 0; background: var(--rc); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
@@ -173,6 +181,10 @@
 
 /* ==========================================================
    Rarity auras (data-rarity on .card)
+   Step 9.5: the looping aura animations only run on cards that are on screen. js/app.js watches every card
+   with an IntersectionObserver and gives on-screen ones the class .is-live (off-screen = no animation at all,
+   so no GPU layer and no work). Off-screen cards rest on the FIRST frame of their animation, so when one
+   scrolls in and starts moving there is no jump. Keyframes animate transform / opacity only.
    ========================================================== */
 /* Normal — silver, no glow */
 .card[data-rarity="Normal"] { --rc: var(--r-normal); --rc2: var(--r-normal-2); }
@@ -180,18 +192,21 @@
 /* Shiny — gold + a light sweep */
 .card[data-rarity="Shiny"] { --rc: var(--r-shiny); --rc2: var(--r-shiny-2); }
 .card[data-rarity="Shiny"] .card__frame { box-shadow: 0 0 18px rgba(255, 210, 90, .35), 0 10px 28px rgba(0, 0, 0, .45); }
-.card[data-rarity="Shiny"] .card__sweep { opacity: 1; animation: fx-sweep 3.2s var(--ease) infinite; }
+.card[data-rarity="Shiny"] .card__sweep { opacity: 1; }
+.card[data-rarity="Shiny"].is-live .card__sweep { animation: fx-sweep 3.2s var(--ease) infinite; }
 
 /* Rainbow — rotating rainbow ring */
 .card[data-rarity="Rainbow"] { --rc: #ff7ad9; --rc2: #2a1748; }
-.card[data-rarity="Rainbow"] .card__frame::before { background: var(--r-rainbow); animation: fx-spin 4s linear infinite; }
+.card[data-rarity="Rainbow"] .card__frame::before { background: var(--r-rainbow); }
+.card[data-rarity="Rainbow"].is-live .card__frame::before { animation: fx-spin 4s linear infinite; }
 .card[data-rarity="Rainbow"] .card__frame { box-shadow: 0 0 20px rgba(160, 120, 255, .4), 0 10px 28px rgba(0, 0, 0, .45); }
 .card[data-rarity="Rainbow"] .card__tag { background: linear-gradient(90deg, #ff4d6d, #ffb84d, #5dff9b, #4dd8ff, #b06bff); }
 
 /* Secret — black-red, red glow pulse */
 .card[data-rarity="Secret"] { --rc: var(--r-secret); --rc2: var(--r-secret-2); }
 .card[data-rarity="Secret"] .card__frame::before { background: linear-gradient(135deg, #ff3b4e, #120102 45%, #120102 55%, #ff3b4e); }
-.card[data-rarity="Secret"] .card__halo { box-shadow: 0 0 26px 6px rgba(255, 40, 60, .55); animation: fx-pulse 2.4s ease-in-out infinite; }
+.card[data-rarity="Secret"] .card__halo { box-shadow: 0 0 26px 6px rgba(255, 40, 60, .55); }
+.card[data-rarity="Secret"].is-live .card__halo { animation: fx-pulse 2.4s ease-in-out infinite; }
 .card[data-rarity="Secret"] .card__body { background: #150206; }
 
 /* Divine — white-gold with a halo ring */
@@ -200,22 +215,35 @@
 .card[data-rarity="Divine"] .card__halo {
   border: 2px solid rgba(255, 240, 200, .8);
   box-shadow: 0 0 22px rgba(255, 228, 160, .7), inset 0 0 14px rgba(255, 228, 160, .45);
-  animation: fx-halo 3s ease-in-out infinite;
 }
+.card[data-rarity="Divine"].is-live .card__halo { animation: fx-halo 3s ease-in-out infinite; }
 
 /* Cosmic — violet-blue, stars inside the frame */
 .card[data-rarity="Cosmic"] { --rc: #a48bff; --rc2: #12164a; }
-.card[data-rarity="Cosmic"] .card__frame::before { background: conic-gradient(from 0deg, var(--r-cosmic), var(--r-cosmic-2), #12164a, var(--r-cosmic)); animation: fx-spin 9s linear infinite; }
+.card[data-rarity="Cosmic"] .card__frame::before { background: conic-gradient(from 0deg, var(--r-cosmic), var(--r-cosmic-2), #12164a, var(--r-cosmic)); }
+.card[data-rarity="Cosmic"].is-live .card__frame::before { animation: fx-spin 9s linear infinite; }
 .card[data-rarity="Cosmic"] .card__frame { box-shadow: 0 0 22px rgba(110, 90, 255, .45), 0 10px 28px rgba(0, 0, 0, .45); }
-.card[data-rarity="Cosmic"] .card__stars { opacity: 1; animation: fx-twinkle 2.6s ease-in-out infinite; }
+.card[data-rarity="Cosmic"] .card__stars { opacity: 1; }
+.card[data-rarity="Cosmic"].is-live .card__stars { animation: fx-twinkle 2.6s ease-in-out infinite; }
 
 /* Ascended — prismatic, moving, with floating particles */
 .card[data-rarity="Ascended"] { --rc: #e9f9ff; --rc2: #2b2050; }
-.card[data-rarity="Ascended"] .card__frame::before { background: var(--r-ascended); animation: fx-spin 3s linear infinite; }
+.card[data-rarity="Ascended"] .card__frame::before { background: var(--r-ascended); }
+.card[data-rarity="Ascended"].is-live .card__frame::before { animation: fx-spin 3s linear infinite; }
 .card[data-rarity="Ascended"] .card__frame { box-shadow: 0 0 26px rgba(190, 230, 255, .55), 0 10px 28px rgba(0, 0, 0, .45); }
 .card[data-rarity="Ascended"] .card__tag { background: linear-gradient(90deg, #8ff7ff, #b98cff, #ff9de2, #fff2a8); }
 .card[data-rarity="Ascended"] .card__particles { opacity: 1; }
-.card[data-rarity="Ascended"] .card__particles i { animation: fx-float 2.8s ease-out infinite; }
+.card[data-rarity="Ascended"].is-live .card__particles i { animation: fx-float 2.8s ease-out infinite; }
+/* lite mode (html.lite, low-end devices): half the floating particles (3 of 5) — nothing else changes */
+html.lite .card__particles i:nth-child(2n) { display: none; }
+
+/* Off-screen cards rest on the first frame of each loop (see above). Motion-reduced users keep the old still look. */
+@media (prefers-reduced-motion: no-preference) {
+  .card[data-rarity="Shiny"]:not(.is-live) .card__sweep { transform: translateX(-130%) skewX(-18deg); }
+  .card[data-rarity="Secret"]:not(.is-live) .card__halo { opacity: .45; }
+  .card[data-rarity="Divine"]:not(.is-live) .card__halo { opacity: .55; }
+  .card[data-rarity="Cosmic"]:not(.is-live) .card__stars { opacity: .25; }
+}
 
 /* Mini cards (tier rows): hide detail, keep aura */
 .card--mini .card__series, .card--mini .card__stats, .card--mini .card__odds, .card--mini .card__mock { display: none; }

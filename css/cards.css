@@ -86,8 +86,7 @@ html.is-detail { overflow: hidden; }
   position: sticky; top: 0; z-index: 5;
   display: flex; align-items: center; height: var(--header-h);
   margin: 0 calc(var(--gutter) * -1); padding: 0 calc(var(--gutter) - 8px);
-  background: color-mix(in srgb, var(--void) 78%, transparent);
-  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+  background: color-mix(in srgb, var(--void) 93%, transparent);   /* no blur since step 9.5: more solid instead */
   border-bottom: 1px solid var(--glass-line);
 }
 .detail__back {

@@ -194,6 +194,7 @@
 /* ---------- Floating layer: the card you hold + fading copies ---------- */
 .tm-layer { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
 .tm-ghost { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
+.tm-ghost__y { width: 100%; height: 100%; }   /* step 9.5: carries the ghost's y position (js: ghostAxis) */
 .tm-ghost__in { width: 100%; animation: tm-lift var(--t-med) var(--ease) both; }
 .tm-ghost__in .card__frame, .tm-ghost__in .scard__frame { box-shadow: 0 18px 38px color-mix(in srgb, var(--void) 92%, transparent), 0 0 0 1px color-mix(in srgb, var(--rift) 50%, transparent); }
 @keyframes tm-lift { from { transform: scale(1); } to { transform: scale(1.06); } }
@@ -208,14 +209,15 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
   bottom: calc(var(--nav-h) + 20px + var(--safe-b));
   margin-top: var(--s-4);
   border-radius: var(--r-panel);
-  background: color-mix(in srgb, var(--void-2) 86%, transparent);
+  /* no blur since step 9.5 (cards scroll behind the dock): a little more solid than the old 86% so they stay hidden */
+  background: color-mix(in srgb, var(--void-2) 95%, transparent);
   box-shadow: 0 -6px 30px color-mix(in srgb, var(--void) 70%, transparent);
 }
 .tm-dock__head { display: flex; align-items: center; gap: 6px; padding: var(--s-2); }
 .tm-dock__head .field input { min-height: 40px; }
 .tm-dock .iconbtn { position: relative; width: 40px; min-height: 40px; }
 .tm-dock .iconbtn svg { width: 18px; height: 18px; }
-.tm-dock .iconbtn[aria-pressed="true"], .tm-dock .iconbtn[aria-expanded="true"]:not(.tm-fold) { color: var(--rift); border-color: var(--rift); background: var(--glass-strong); }
+.tm-dock .iconbtn[aria-pressed="true"], .tm-dock .iconbtn[aria-expanded="true"]:not(.tm-fold) { color: var(--rift); border-color: var(--rift); background-image: linear-gradient(var(--glass-strong), var(--glass-strong)); }
 .tm-fold svg { transition: transform var(--t-med) var(--ease); }
 .tm-dock.is-closed .tm-fold svg { transform: rotate(180deg); }
 .tm-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--rift); box-shadow: 0 0 8px var(--rift); }

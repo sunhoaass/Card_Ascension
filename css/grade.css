@@ -31,6 +31,7 @@
 .gorb[data-band="gold"]   { --gfill: linear-gradient(150deg, var(--g-gold), var(--g-gold-2)); --glow: var(--g-gold); color: var(--void); }
 .gorb[data-band="rainbow"] { --gfill: var(--g-rainbow); --glow: var(--g-gold); color: var(--void); }
 .gorb[data-band="rainbow"]::before { animation: fx-spin 3.2s linear infinite; }
+.card:not(.is-live) .gorb::before { animation: none; }   /* step 9.5: grade-10 badge on an off-screen card stays still */
 .gorb:not([data-band="none"]) {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .25), 0 0 14px color-mix(in srgb, var(--glow) 55%, transparent);
 }
