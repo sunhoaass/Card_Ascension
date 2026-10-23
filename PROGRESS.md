@@ -10,12 +10,13 @@
 ---
 
 ## ▶️ ขั้นถัดไป (เจ้าของ copy ไปวางในแชทใหม่)
-**ขั้นที่ 3: หน้า Tier List + Meta Decks** · โมเดล **Sonnet 5.5 / medium**
+**ขั้นที่ 4: หน้า Support** · โมเดล **Sonnet 5.5 / medium**
 ```
-อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วทำ "ขั้นที่ 3" ตามที่เขียนไว้
+อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วทำ "ขั้นที่ 4" ตามที่เขียนไว้
 ทำเสร็จให้อัปเดต PROGRESS.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน
 ```
 > ขั้น 0 (เจ้าของทำเอง): ลบ `README.md`, `ikeep.txt` และไฟล์ `js/s` (ไฟล์ว่างที่หลงอยู่) ออกจาก repo · ยังไม่ได้ลบก็ทำขั้น 3 ต่อได้
+> `data/teams.json` ตอนนี้เป็นทีมตัวอย่าง 2 ทีม (ติด `mock`) จะถูกแทนด้วยทีมจริงในงานประจำ B
 > ตอนนี้ `data/cards.json` **ว่างเปล่า** (ลบการ์ด mock แล้ว) จะเห็นของจริงเมื่อเพิ่มการ์ดด้วยงานประจำ A (§7)
 
 ---
@@ -77,11 +78,12 @@
 ### 3.3 โครงไฟล์และของกลางที่มีแล้ว
 - `index.html` — หน้าเดียว 4 section (`#page-tier`, `#page-cards`, `#page-support`, `#page-grade`) + หน้ารายละเอียดการ์ด `#detail` (วางทับทุกหน้า) · เปลี่ยนหน้าด้วย hash เช่น `#cards` · จำหน้าล่าสุดใน localStorage (`cbi:lastPage`) · ครั้งแรกเปิด Tier List
 - **Routing:** `#tier #cards #support #grade` = แท็บ (ไม่เพิ่มประวัติ) · `#card/<id>` = หน้ารายละเอียดการ์ด วางทับหน้าที่เปิดอยู่ (ไม่รู้ว่าเปิดจากไหน = ใช้ Cards) · เปิดรายละเอียดแต่ละครั้งเพิ่มประวัติ 1 รายการ ปุ่ม Back ของมือถือจึงปิดได้ · ปุ่ม ‹ Back บนหน้าจอและ Esc ปิดทั้งหมดในครั้งเดียว · ลิงก์ตรง `#card/bald-cadet` ใช้ได้ · id ที่ไม่มีอยู่ = กลับหน้าเดิม
-- `css/tokens.css` (ตัวแปร) · `css/base.css` (layout, header, เมนู, หน้า, tier row, grade, แถวชิป) · `css/fx.css` (อนิเมชั่นกลาง + การ์ด + aura 7 ระดับ) · `css/cards.css` (แถบเครื่องมือหน้า Cards + หน้ารายละเอียด + `.badge`)
+- `css/tokens.css` (ตัวแปร) · `css/base.css` (layout, header, เมนู, หน้า, grade, แถวชิป) · `css/tier.css` (แถว tier + Meta Decks) · `css/fx.css` (อนิเมชั่นกลาง + การ์ด + aura 7 ระดับ) · `css/cards.css` (แถบเครื่องมือหน้า Cards + หน้ารายละเอียด + `.badge`)
 - `js/fx.js` → `FX.press()`, `FX.tilt(card)`, `FX.countTo(el, n)`, `FX.stagger(list, gap, {cls, max, limit, cleanup})`, `FX.flip(el, rect, {reverse})` (shared element), `FX.fade(el, 1|0)`, `FX.starfield(canvas)`, `FX.reduced`
-- `js/app.js` (แกนกลาง: router, โหลดข้อมูล, การ์ด, หน้า Tier) → `window.CBI` มี `renderCard(card, rarity, {mini})`, `setCardRarity(el, card, rarity, {animate})`, `statAt / oddsAt / fmtOdds / fmtStat`, `isRanked(card)`, `esc()` (ใช้ escape ข้อความจากข้อมูลทุกครั้ง), `openCard(id, originEl)`, `closeCard()`, `state` (`meta`, `cards`, `support`, `rarity`)
+- `js/app.js` (แกนกลาง: router, โหลดข้อมูล, การ์ด) → `window.CBI` มี `renderCard(card, rarity, {mini})`, `setCardRarity(el, card, rarity, {animate})`, `statAt / oddsAt / fmtOdds / fmtStat`, `isRanked(card)`, `esc()` (ใช้ escape ข้อความจากข้อมูลทุกครั้ง), `openCard(id, originEl)`, `closeCard()`, `state` (`meta`, `cards`, `support`, `teams`, `rarity`)
+- `js/tier.js` (หน้า Tier List + Meta Decks) · โหลดหลัง cards.js · `CBI.tier = { init, enter }` · ปุ่มเลือกระดับบนหน้า Tier ใช้ระดับเดียวกับหน้า Cards (จัดการคลิกโดย cards.js แล้วส่ง event `cbi:rarity` ให้ tier.js อัปเดตการ์ดในหน้า) · การ์ดที่ id หาไม่เจอใน deck จะขึ้นช่องเปล่าเส้นประ "Not added yet" (ไม่ถูกข้าม เพื่อให้ deck ยังครบ 5 ช่อง)
 - `js/cards.js` (หน้า Cards + หน้ารายละเอียด) · โหลดหลัง app.js · ระดับที่เลือกจำใน localStorage (`cbi:rarity`) ใช้ร่วมกันทั้งหน้า Cards และหน้ารายละเอียด
-- **กดการ์ดแล้วเปิดรายละเอียด** ทำงานกับทุก `.card[data-id]` ที่อยู่ใน `<main>` อัตโนมัติ (รวมการ์ดในแถว Tier) หน้าอื่นไม่ต้องเขียนเอง · การ์ดที่เรียกจาก `renderCard` มี `role="button"` และกด Enter/Space ได้แล้ว
+- **กดการ์ดแล้วเปิดรายละเอียด** ทำงานกับทุก `.card[data-id]` ที่อยู่ใน `<main>` อัตโนมัติ (รวมการ์ดในแถว Tier) หน้าอื่นไม่ต้องเขียนเอง · การ์ดใบเดียวกันอยู่ได้หลายที่ในหน้า (แถว tier + หลาย deck) · ตอนปิดรายละเอียดการ์ดจะบินกลับไปที่ใบที่กดมา · การ์ดที่เรียกจาก `renderCard` มี `role="button"` และกด Enter/Space ได้แล้ว
 - **Unranked:** การ์ดที่ `scores.overall` เป็น 0 หรือ `tier` ว่าง = ยังไม่ได้วิเคราะห์ → เว็บแสดงป้าย Unranked ไม่มีป้าย tier ไม่ขึ้นในแถว Tier List และถูกเรียงไว้ท้ายสุดเมื่อเรียงตาม Overall
 - การ์ด: ถ้า `image` ว่างหรือโหลดรูปไม่ได้ จะวาดรูปแทน (SVG ไล่สี + ตัวย่อชื่อ) · การ์ดที่มี `"mock": true` จะมีป้าย mock (ตอนนี้ไม่มีการ์ด mock แล้ว)
 - aura: ใส่ `data-rarity="Shiny"` บน `.card` แล้ว CSS ทำที่เหลือเอง (Shiny = แสงวิ่ง, Rainbow/Cosmic/Ascended = กรอบหมุน, Secret = เรืองแดงเต้น, Divine = วงแสงรอบการ์ด, Cosmic = ดาวในกรอบ, Ascended = อนุภาคลอย)
@@ -131,13 +133,21 @@ const RARITY_MULTIPLIERS = {
 - `data/meta.json`: `{ updated, rarities, tiers }`
 - `data/cards.json`: รายการการ์ด
 - `data/support.json`: รายการการ์ด support
-- `data/teams.json`: ทีมแนะนำ (Meta Decks)
+- `data/teams.json`: ทีมแนะนำ (Meta Decks) — ดู schema ด้านล่าง
 - รูป: `images/cards/<id>.webp`, `images/support/<id>.webp` (ขนาด 600×840, อัตราส่วน 5:7)
 - `id` ใช้ตัวพิมพ์เล็ก ขีดกลาง ไม่ซ้ำกัน (เช่น `bald-cadet`) เพราะใช้ในลิงก์ `#card/<id>` และใน `beats` / `losesTo` / `bestWith` · id ที่หาไม่เจอในรายการจะถูกข้ามเงียบๆ
 - `data/support.json` ยังไม่มีไฟล์ (ขั้น 4 สร้าง) เว็บโหลดไฟล์นี้แบบไม่พังถ้าไม่มี · `team.bestSupport` แสดงชื่อจากไฟล์นี้ ถ้าไม่เจอจะแสดง id แปลงเป็นชื่อ
 - `team.position` แสดงเป็น `Slot 2` (ตัวเลขเดียว) หรือ `Slots 1–2` (เช่น `"1-2"`) · ช่องที่ว่าง/ไม่มีข้อมูลหน้าเว็บจะขึ้นว่า "Not analyzed yet"
 
 ```jsonc
+// team (ไฟล์ teams.json = array ของ team) · ตำแหน่งในทีมนับจากลำดับใน slots (ใบแรก = Slot 1 … สูงสุด 5 ใบ)
+{
+  "id": "frontline-rush", "name": "Frontline Rush",
+  "mock": true,                                   // ข้อมูลตัวอย่าง: เว็บแสดงป้าย Sample (เอาออกเมื่อเป็นทีมจริง)
+  "slots": [ { "card": "<card id>" }, { "card": "<card id>", "support": "<support id>" } ],   // support รายใบ (ไม่ใส่ก็ได้)
+  "support": ["<support id>"],                    // support แนะนำของทั้งทีม (string เดียวก็ได้)
+  "notes": "", "updated": "2026-10-23"
+}
 // card
 {
   "id": "bald-cadet", "name": "Bald Cadet", "series": "Attack on Titan",
@@ -188,7 +198,7 @@ const RARITY_MULTIPLIERS = {
 | 0 | เคลียร์ repo (เจ้าของทำเอง): ลบ `README.md`, `ikeep.txt` และของเก่าที่เหลือ · **เก็บไว้:** `googleac6eef435a8d1c66.html`, `sitemap.xml`, `PROGRESS.md` · `index.html` จะถูกแทนในขั้น 1 | — | ⬜ |
 | 1 | **Design system + โครงเว็บ**: ศึกษาสไตล์เว็บ/เกมที่ Gen Y–Gen Alpha ชอบ, ทำธีมตาม §3, พื้นหลัง, เมนูล่าง 4 เมนู, ชุดอนิเมชั่นตาม §4, aura ทั้ง 7 ระดับ, หน้า Grade เป็น "Coming soon" ที่ดูสวย, ใส่การ์ดตัวอย่าง 3 ใบ (ทำเครื่องหมาย `mock` ไว้ จะลบในขั้น 2), สรุป design tokens ลง §3 | **Opus 5.5 / high** (เป็นฐานของทุกหน้า งานออกแบบต้องใช้ฝีมือ) | ✅ |
 | 2 | **หน้า Cards + รายละเอียดการ์ด**: ตารางการ์ด, ค้นหา, กรอง, เรียงตาม (Overall / ATK / HP / โอกาส), ปุ่มเลือกระดับ 7 ระดับ (ค่าและโอกาสเปลี่ยนตาม), หน้ารายละเอียดมีครบ: รูป, ATK, HP, Passive, Skill, ระดับ, โอกาส, Overall, คะแนนแต่ละส่วน, จุดเด่น, จุดอ่อน, ชนะ/แพ้ใคร, ตำแหน่งในทีม, การ์ดที่เข้ากัน, support ที่แนะนำ · **ลบการ์ด mock 3 ใบใน `data/cards.json`** (ตอนนี้มีแค่ตารางการ์ด + ปุ่มเลือกระดับแล้ว ใช้ `CBI.renderCard` ต่อได้เลย) · หน้ารายละเอียดใช้ shared element ตาม §4 | **Sonnet 5.5 / high** | ✅ |
-| 3 | **หน้า Tier List + Meta Decks**: แถว SS–D เรียงตาม Overall, เลือกระดับที่จะดูได้, ส่วน Meta Decks (ทีม 5 ใบ + ตำแหน่ง + support) จาก `teams.json` (ยังไม่มีไฟล์ ให้สร้างพร้อมข้อมูลตัวอย่างที่ติด `mock`) · **กดการ์ดแล้วเปิดรายละเอียดได้อยู่แล้ว (§3.3) ไม่ต้องทำใหม่** · การ์ด Unranked ไม่ขึ้นในแถว tier | **Sonnet 5.5 / medium** | ⬜ |
+| 3 | **หน้า Tier List + Meta Decks**: แถว SS–D เรียงตาม Overall, เลือกระดับที่จะดูได้, ส่วน Meta Decks (ทีม 5 ใบ + ตำแหน่ง + support) จาก `teams.json` (ยังไม่มีไฟล์ ให้สร้างพร้อมข้อมูลตัวอย่างที่ติด `mock`) · **กดการ์ดแล้วเปิดรายละเอียดได้อยู่แล้ว (§3.3) ไม่ต้องทำใหม่** · การ์ด Unranked ไม่ขึ้นในแถว tier | **Sonnet 5.5 / medium** | ✅ |
 | 4 | **หน้า Support**: ตาราง, อันดับความคุ้ม, หน้ารายละเอียด (ควรใส่กับใบไหน, ทีมไหน, ห้ามใส่กับใบไหน) | **Sonnet 5.5 / medium** | ⬜ |
 | 5 | เก็บงาน: SEO (title / meta / sitemap / รูปตอนแชร์ลิงก์), ทดสอบบนมือถือ, ความเร็วโหลด | **Sonnet 5.5 / low** | ⬜ |
 | 6 | ระบบ Grade (ยังไม่ทำ รอเจ้าของบอกรายละเอียด) | ถามก่อน | ⬜ |
@@ -226,3 +236,4 @@ const RARITY_MULTIPLIERS = {
 - 2026-10-23: เริ่มแผนใหม่ทั้งหมด ยกเลิกหน้าแอดมิน, Mutation และ Rarity แบบพิมพ์เอง เปลี่ยนเป็นระดับการ์ด 7 ระดับใช้ตัวคูณคงที่ · Claude เป็นคนเพิ่มการ์ดและวิเคราะห์ผ่านแชท
 - 2026-10-23: **ขั้นที่ 1 เสร็จ** — สร้าง `index.html`, `css/tokens.css`, `css/base.css`, `css/fx.css`, `js/fx.js`, `js/app.js`, `data/meta.json`, `data/cards.json` (mock 3 ใบ: Bald Cadet, Ember Ronin, Tidecaller) · พื้นหลังดาว 3 ชั้น, เมนูล่าง 4 เมนู + ตัวชี้เลื่อน, aura 7 ระดับ, เอียงการ์ดตามนิ้ว, ตัวเลขนับ, Tier List ตัวอย่าง (แถวไล่เข้า), Support = หน้าว่าง, Grade = Coming soon · สรุป design tokens ใน §3.1–3.3 · ยังไม่มีโฟลเดอร์ `images/` (สร้างตอนมีรูปจริง)
 - 2026-10-23: **ขั้นที่ 2 เสร็จ** — หน้า Cards: ค้นหา (ชื่อ/ซีรีส์/ชื่อและคำอธิบาย Passive-Skill) · กรอง Tier / Role / Series (กดซ้ำเพื่อล้าง) · เรียงตาม Overall / ATK / HP / Pull odds + สลับทิศ · ปุ่มเลือก 7 ระดับ · สถานะว่าง 2 แบบ (ยังไม่มีการ์ด / ไม่เจอที่ค้นหา) · หน้ารายละเอียด `#card/<id>`: รูป, ATK, HP, โอกาส (บอกค่า Normal และตัวคูณ), Overall + คะแนน 6 ส่วนพร้อมน้ำหนัก, Passive, Skill, จุดเด่น/จุดอ่อน, ชนะ/แพ้ใคร, ตำแหน่งในทีม, การ์ดที่เข้ากัน, support ที่แนะนำ (กดการ์ดในรายการเพื่อข้ามไปดูใบนั้นได้) · shared element ตาม §4 · **ลบการ์ด mock 3 ใบแล้ว** (`data/cards.json` = `[]`) และเอาป้าย "Preview with 3 sample cards" ออกจากหน้า Tier · ไฟล์ใหม่ `css/cards.css`, `js/cards.js` · เพิ่ม `FX.flip`, `FX.fade`, ตัวเลือกใหม่ของ `FX.stagger` · เพิ่มสีสัญญาณใน tokens · แก้ `renderCard` ให้ escape ข้อความ, ใส่ `role="button"`, ใช้รูปสำรองเมื่อไฟล์รูปหาย · แฟลชตอนเปลี่ยนระดับเปลี่ยนเป็น Web Animations (เปลี่ยนระดับกับการ์ด 300 ใบเหลือ ~30ms) · ทดสอบใน Chromium (จอมือถือ 390px + จอคอม + reduced motion) ด้วยการ์ดทดสอบ 24 ใบและ 300 ใบ รวม 91 รายการ ผ่านทั้งหมด (การ์ดทดสอบไม่ได้อยู่ใน repo)
+- 2026-10-23: **ขั้นที่ 3 เสร็จ** — หน้า Tier List: แถว SS–D เรียงตาม Overall (เท่ากันเรียงชื่อ) แสดงจำนวนการ์ดใต้ตัวอักษร tier · ปุ่มเลือก 7 ระดับ (ใช้ระดับเดียวกับหน้า Cards และหน้ารายละเอียด เปลี่ยนที่ไหนก็ตามกันหมด) · การ์ด Unranked ไม่ขึ้นในแถว มีข้อความบอกจำนวนที่ยังไม่ได้จัดอันดับ · ถ้ายังไม่มีการ์ด/ยังไม่มีการ์ดที่ให้คะแนน จะขึ้นกล่องว่างแทนแถว · Meta Decks: การ์ด 5 ใบ + ป้าย Slot 1–5 + support แนะนำของทีม (และของรายใบถ้ามี) + หมายเหตุ · ปุ่ม "Jump to Meta Decks ↓" · **ไฟล์ใหม่:** `js/tier.js`, `css/tier.css`, `data/teams.json` (ทีมตัวอย่าง 2 ทีม ติด `mock`) · **ไฟล์ที่แก้:** `index.html` (หน้า Tier ใหม่ + โหลด tier.css/tier.js), `js/app.js` (ย้าย renderTier ไป tier.js, โหลด teams.json), `js/cards.js` (ส่ง event `cbi:rarity`, การ์ดบินกลับไปที่ใบที่กดเมื่อมีใบซ้ำในหน้า), `css/base.css` (ย้ายสไตล์ tier ไป tier.css) · ทดสอบใน Chromium (จอมือถือ 390px + คอม 1280px + reduced motion) ด้วยการ์ดทดสอบ 19 ใบ (3 ใบ Unranked) 64 รายการ ผ่านทั้งหมด (ข้อยกเว้นเดียวคือ 404 ของ `data/support.json` ที่ยังไม่มีไฟล์ ซึ่งเว็บรับมือได้ตามที่ออกแบบ) · การ์ดทดสอบไม่ได้อยู่ใน repo

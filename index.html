@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/fx.css">
   <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/tier.css">
 </head>
 <body>
   <canvas id="starfield" aria-hidden="true"></canvas>
@@ -55,13 +56,35 @@
   <main class="main">
     <p id="data-error" class="panel glass" hidden>Card data didn't load. Check your connection and refresh the page.</p>
 
-    <!-- Tier List (step 3 builds the full page) -->
+    <!-- Tier List + Meta Decks: js/tier.js -->
     <section id="page-tier" class="page" hidden aria-labelledby="tier-title">
       <div class="page__head">
         <h1 id="tier-title" class="page__title">Tier List</h1>
-        <p class="page__lead">Every card ranked by its Overall score, from SS at the top to D at the bottom.</p>
+        <p class="page__lead">Every ranked card by Overall score, from SS at the top to D at the bottom. Pick a rarity to see its stats. Tap a card for the full breakdown.</p>
+        <button id="tier-jump" class="linkbtn tier-jump" type="button" hidden>Jump to Meta Decks ↓</button>
       </div>
+
+      <div id="tier-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
       <div id="tier-list" class="tier-list"></div>
+      <p id="tier-note" class="tier-note" hidden></p>
+
+      <div id="tier-none" class="panel glass empty" hidden>
+        <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        <h2 id="tier-none-title" class="empty__title">No cards yet</h2>
+        <p id="tier-none-text" class="empty__text"></p>
+      </div>
+
+      <section id="meta-decks" class="decks" aria-labelledby="decks-title">
+        <div class="page__head">
+          <h2 id="decks-title" class="page__subtitle">Meta Decks</h2>
+          <p class="page__lead">Five-card teams that work well together, with the slot each card plays in and the support to run.</p>
+        </div>
+        <div id="deck-list" class="deck-list"></div>
+        <div id="decks-none" class="panel glass empty" hidden>
+          <h2 class="empty__title">No meta decks yet</h2>
+          <p class="empty__text">Recommended decks will show here once enough cards have been analysed.</p>
+        </div>
+      </section>
     </section>
 
     <!-- Cards: search / filters / sort live in js/cards.js -->
@@ -174,5 +197,6 @@
   <script src="js/fx.js"></script>
   <script src="js/app.js"></script>
   <script src="js/cards.js"></script>
+  <script src="js/tier.js"></script>
 </body>
 </html>
