@@ -31,6 +31,7 @@
   let supportItems = [];
   let view = null;              // "global" | "my" (null until the router calls show())
   let kind = "cards";           // which Global list is showing
+  let globalBuilt = false;      // Global rows exist (made the first time Global is on screen, step 9.5)
 
   const pretty = (id) => String(id).replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
@@ -123,6 +124,16 @@
     ui.slist.replaceChildren(buildRows(ranked, byValue, supportTile, ["support card", "support cards"]));
   }
 
+  /* step 9.5: Global's rows (cards + support tiles) are made the first time Global is actually on screen,
+     not while another tab or My Lists is showing */
+  function buildGlobal() {
+    if (globalBuilt) return;
+    globalBuilt = true;
+    renderCards();
+    renderSupport();
+    FX.stagger(kind === "support" ? ui.slist : ui.list);
+  }
+
   /* ---------- Switches ---------- */
   function pageTitle() {
     if (state.page === "tier") document.title = TITLES[view] || "Card Battle Infinity — Tier List & Card Database";
@@ -149,6 +160,7 @@
     const first = view === null;
     const changed = next !== view;
     view = next;
+    if (next === "global" && state.page === "tier") buildGlobal();
     pageTitle();                                  // showPage() resets the title on every route, so set it every time
     if (next === "my" && C.tm) C.tm.show(listFromHash(), sharedFromHash());   // all lists, the list in the link, or a shared list (also sets the title)
     setLead();
@@ -229,6 +241,7 @@
       return;
     }
     if (view === "my") return;
+    if (!globalBuilt) { buildGlobal(); return; }   // first visit: buildGlobal plays the entrance itself
     FX.stagger(kind === "support" ? ui.slist : ui.list);
   }
 
@@ -250,10 +263,7 @@
     ui.rarity.hidden = !state.cards.length;
     ui.rarity.innerHTML = C.rarityChipsHTML();
     bind();
-    renderCards();
-    renderSupport();
-    setKind(C.store.get(KIND_KEY), { animate: false });
-    FX.stagger(kind === "support" ? ui.slist : ui.list);
+    setKind(C.store.get(KIND_KEY), { animate: false });   // rows are built later by buildGlobal()
     if (C.tm) C.tm.init();
   }
 

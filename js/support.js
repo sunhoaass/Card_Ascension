@@ -17,6 +17,7 @@
   const ui = {};
   const byId = new Map();        // support id -> support
   const rowEls = new Map();      // support id -> <li> in the list (kept while filtered out)
+  let built = false;             // list rows exist (made on the first visit to the Support tab, step 9.5)
   const searchText = new Map();  // support id -> lowercase text used by the search box
   const rankOf = new Map();      // support id -> rank by Value (ties share a rank)
   const tiles = new Map();       // card id -> mini cards currently inside the detail view
@@ -59,13 +60,12 @@
     if (isRanked(s)) el.style.setProperty("--tc", tierVar(s.tier));
     el.innerHTML = `
       <span class="scard__frame"><span class="scard__body">
-        <span class="scard__art">${s.image ? `<img src="${esc(s.image)}" alt="" loading="lazy" decoding="async">` : C.placeholderArt(s)}</span>
+        <span class="scard__art">${s.image ? C.artImg(s.image) : C.placeholderArt(s)}</span>
         ${thumb ? "" : `<span class="scard__tag">Support</span>${isRanked(s) ? `<span class="scard__tier">${esc(s.tier)}</span>` : ""}
         <span class="scard__info"><span class="scard__name">${esc(s.name)}</span></span>
         <span class="scard__glare"></span>`}
       </span></span>`;
-    const img = $("img", el);
-    if (img) img.addEventListener("error", () => { img.parentElement.innerHTML = C.placeholderArt(s); }, { once: true });
+    C.bindArt(el, s);   // missing image -> the generated art
     return el;
   }
 
@@ -124,6 +124,7 @@
   }
 
   function apply({ animate = false } = {}) {
+    if (!built) return;   // the Support tab hasn't been opened yet: its rows don't exist yet
     const words = filters.q.toLowerCase().split(/\s+/).filter(Boolean);
     const out = items.filter((s) => {
       if (filters.tier && !(isRanked(s) && s.tier === filters.tier)) return false;
@@ -433,8 +434,12 @@
 
     computeRanks();
     buildFilters();
-    items.forEach((s) => rowEls.set(s.id, rowEl(s)));
-    apply({ animate: true });
+    // step 9.5: the list rows are made the first time the Support tab shows
+    C.lazy("support", () => {
+      items.forEach((s) => rowEls.set(s.id, rowEl(s)));
+      built = true;
+      apply({ animate: true });
+    });
   }
 
   // card(s): the support card art (js/tier.js draws the Global support tier list with it) · open(id, originEl): open #support/<id>

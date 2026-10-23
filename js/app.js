@@ -93,6 +93,48 @@
     </svg>`;
   }
 
+  /* ---------- Card art <img> (step 9.5) ----------
+     lazy + async decode + width/height (no layout jump). Small cards (mini: tier rows, Tier Maker pool, decks, Grade picker)
+     ask for the 300×420 thumbnail images/cards/thumb/<id>.webp first; if it isn't there they fall back to the big
+     image, and if that is missing too, to the generated art. Routine A makes both files (§7). */
+  const thumbOf = (src) => { const i = src.lastIndexOf("/"); return src.slice(0, i + 1) + "thumb/" + src.slice(i + 1); };
+  function artImg(src, small = false) {
+    const [w, h] = small ? [300, 420] : [600, 840];
+    return `<img src="${esc(small ? thumbOf(src) : src)}"${small ? ` data-full="${esc(src)}"` : ""} alt="" width="${w}" height="${h}" loading="lazy" decoding="async">`;
+  }
+  function bindArt(root, item) {
+    const img = $("img", root);
+    if (!img) return;
+    img.addEventListener("error", function onError() {
+      if (img.dataset.full) { const full = img.dataset.full; delete img.dataset.full; img.src = full; return; }   // no thumbnail -> big image
+      img.removeEventListener("error", onError);
+      img.parentElement.innerHTML = placeholderArt(item);                                                         // no image -> generated art
+    });
+  }
+
+  /* ---------- Auras only move on screen (step 9.5) ----------
+     Every card from renderCard() is watched; on-screen cards get .is-live and css/fx.css only animates those.
+     A card in a hidden tab, scrolled away or detached has no running animation at all. */
+  const liveIO = "IntersectionObserver" in window
+    ? new IntersectionObserver((list) => list.forEach((e) => e.target.classList.toggle("is-live", e.isIntersecting)), { rootMargin: "24px 0px" })
+    : null;
+  function watchLive(el) { if (liveIO) liveIO.observe(el); else el.classList.add("is-live"); }
+
+  /* ---------- Lazy tabs (step 9.5) ----------
+     lazy(page, fn): run fn the first time that tab is showing (right now if it already is).
+     Pages build their cards in it, so no cards are made for a tab nobody has opened. */
+  const lazyQ = {};
+  function lazy(page, fn) {
+    if (state.loaded && state.page === page) fn();
+    else (lazyQ[page] = lazyQ[page] || []).push(fn);
+  }
+  function runLazy(page) {
+    const q = lazyQ[page];
+    if (!q || !state.loaded) return;
+    delete lazyQ[page];
+    q.forEach((fn) => fn());
+  }
+
   /* ---------- Shared card renderer (used by every page) ---------- */
   function renderCard(card, rarity, { mini = false } = {}) {
     const el = document.createElement("article");
@@ -108,7 +150,7 @@
     el.innerHTML = `
       <span class="card__halo"></span>
       <div class="card__frame"><div class="card__body">
-        <div class="card__art">${card.image ? `<img src="${esc(card.image)}" alt="" loading="lazy" decoding="async">` : placeholderArt(card)}</div>
+        <div class="card__art">${card.image ? artImg(card.image, mini) : placeholderArt(card)}</div>
         <span class="card__stars"></span>
         <span class="card__sweep"></span>
         <span class="card__tag">${esc(rarity)}</span>
@@ -127,10 +169,10 @@
         <span class="card__flash"></span>
       </div></div>
       <span class="card__particles"><i></i><i></i><i></i><i></i><i></i></span>`;
-    // missing image file -> fall back to the generated art instead of an empty card
-    const img = $("img", el);
-    if (img) img.addEventListener("error", () => { img.parentElement.innerHTML = placeholderArt(card); }, { once: true });
+    // missing thumbnail -> big image · missing image file -> the generated art instead of an empty card
+    bindArt(el, card);
     FX.tilt(el);
+    watchLive(el);
     return el;
   }
 
@@ -189,6 +231,7 @@
     $(".nav__list").style.setProperty("--i", PAGES.indexOf(page));
     document.title = PAGE_TITLES[page];   // tab / history / share title follows the page
     store.set(STORE_KEY, page);
+    runLazy(page);   // first visit to this tab: build its cards now (step 9.5)
     if (changed && state.loaded) {
       if (page === "tier") CBI.tier.enter({ restore: keep });
       else if (page === "deck") CBI.deck.enter();
@@ -284,12 +327,14 @@
     CBI.support.init();
     CBI.grade.init();
     route();   // opens a #card/<id>, #support/<id> or #grade/<id> deep link now that the data is here
+    setTimeout(FX.probe, 800);   // lite mode check: 2 s of frames once the first page has settled (step 9.5)
   }
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
     openCard, closeCard, route,
+    lazy, artImg, bindArt, watchLive,   // step 9.5
     cards: { init() {}, open() {}, close() {} },   // replaced by js/cards.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
     deck: { init() {}, enter() {} },                 // replaced by js/deck.js

@@ -98,8 +98,8 @@
     cardById = new Map(state.cards.map((c) => [c.id, c]));
     ui.rarity.innerHTML = C.rarityChipsHTML();
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
-    renderDecks();
-    enter();
+    // step 9.5: the decks' cards are made the first time the Deck tab shows
+    C.lazy("deck", () => { renderDecks(); enter(); });
   }
 
   C.deck = { init, enter };

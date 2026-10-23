@@ -566,9 +566,16 @@
     inner.removeAttribute("tabindex");
     inner.removeAttribute("role");
     inner.setAttribute("aria-hidden", "true");
-    g.appendChild(inner);
+    // step 9.5: the ghost follows the finger with two paused animations (x on the ghost, y on .tm-ghost__y) whose
+    // currentTime is the position in px. Writing style.transform on every move made Chrome re-layer the whole page.
+    const gy = document.createElement("div");
+    gy.className = "tm-ghost__y";
+    gy.appendChild(inner);
+    g.appendChild(gy);
     ui.layer.appendChild(g);
     drag.ghost = g;
+    drag.ax = ghostAxis(g, "X");
+    drag.ay = ghostAxis(gy, "Y");
     moveGhost();
     // the gap that shows where it will land
     const ph = document.createElement("div");
@@ -599,8 +606,24 @@
     });
   }
 
+  const GHOST_R = 20000;   // px range of the ghost's position animations (−R … +R)
+  function ghostAxis(el, axis) {
+    if (!el.animate) return null;
+    const a = el.animate([{ transform: `translate${axis}(${-GHOST_R}px)` }, { transform: `translate${axis}(${GHOST_R}px)` }], { duration: 2 * GHOST_R, fill: "both" });
+    a.pause();
+    return a;
+  }
   function moveGhost() {
-    if (drag.ghost) drag.ghost.style.transform = `translate(${lastX - drag.offX}px, ${lastY - drag.offY}px)`;
+    if (!drag.ghost) return;
+    drag.gx = lastX - drag.offX; drag.gy = lastY - drag.offY;
+    if (drag.ax && drag.ay) { drag.ax.currentTime = drag.gx + GHOST_R; drag.ay.currentTime = drag.gy + GHOST_R; }
+    else drag.ghost.style.transform = `translate(${drag.gx}px, ${drag.gy}px)`;
+  }
+  // the drag is over: swap the position animations for a plain transform so the landing animations start from there
+  function settleGhost(g) {
+    if (drag.ax) { drag.ax.cancel(); drag.ax = null; }
+    if (drag.ay) { drag.ay.cancel(); drag.ay = null; }
+    g.style.transform = `translate(${drag.gx}px, ${drag.gy}px)`;
   }
   function queue() { if (drag.on && !drag.raf) drag.raf = requestAnimationFrame(track); }
 
@@ -702,6 +725,7 @@
     if (ok) { const t = hit(lastX, lastY); if (t && t.row) { drag.lastMove = 0; placePh(t.row); } else if (drag.ph.parentNode) movePh(null); setOver(t); }
     const t = ok ? drag.over : null;
     const g = drag.ghost, gr = g.firstElementChild.getBoundingClientRect();
+    settleGhost(g);
     const { fromPool, uid: u, id, el, ph } = drag;
     drag.on = false;
     drag.ghost = null;

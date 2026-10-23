@@ -27,6 +27,7 @@
   const ui = {};
   const byId = new Map();
   const tiles = new Map();                // id -> mini card in the picker
+  let built = false;                      // picker cards exist (made on the first visit to the Grade tab, step 9.5)
   let saved = {};                         // id -> [atk, def, status, hp]
   let items = [];                         // cards in picker order
   let cur = null, grades = ZERO(), shared = false, hero = null;
@@ -178,6 +179,7 @@
   }
 
   function applyList({ animate = false } = {}) {
+    if (!built) return;   // the Grade tab hasn't been opened yet: the picker's cards don't exist yet
     const words = filter.q.toLowerCase().split(/\s+/).filter(Boolean);
     const out = items.filter((c) => {
       if (filter.graded && !saved[c.id]) return false;
@@ -533,14 +535,18 @@
     ui.empty.hidden = items.length > 0;
     if (!items.length) return;
 
-    items.forEach((c) => {
-      const el = C.renderCard(c, state.rarity, { mini: true });
-      el.setAttribute("aria-label", `Grade ${c.name}`);
-      if (saved[c.id]) cardBadge(el, overall(saved[c.id]));
-      tiles.set(c.id, el);
-    });
     bindList();
-    applyList({ animate: true });
+    // step 9.5: the picker's cards are made the first time the Grade tab shows
+    C.lazy("grade", () => {
+      items.forEach((c) => {
+        const el = C.renderCard(c, state.rarity, { mini: true });
+        el.setAttribute("aria-label", `Grade ${c.name}`);
+        if (saved[c.id]) cardBadge(el, overall(saved[c.id]));
+        tiles.set(c.id, el);
+      });
+      built = true;
+      applyList({ animate: true });
+    });
   }
 
   C.grade = { init, show, panelHTML, overall, band, get };

@@ -20,6 +20,7 @@
   const searchText = new Map();   // id -> lowercase text used by the search box
   const ui = {};
   let shown = [];                 // ids currently in the grid, in order
+  let built = false;              // grid cards exist (made on the first visit to the Cards tab, step 9.5)
   let cur = null, isOpen = false, hiddenEl = null, curTarget = null, prevFocus = null, token = 0, baseTitle = "";
 
   const clamp = (v) => Math.max(0, Math.min(100, Number(v) || 0));
@@ -55,9 +56,13 @@
 
     rarityChips(ui.rarity);
     buildFilters();
-    state.cards.forEach((c) => cardEls.set(c.id, C.renderCard(c, state.rarity)));
     bindTools();
-    apply({ animate: true });
+    // step 9.5: the grid's cards are made the first time the Cards tab shows (not while you're on another tab)
+    C.lazy("cards", () => {
+      state.cards.forEach((c) => cardEls.set(c.id, C.renderCard(c, state.rarity)));
+      built = true;
+      apply({ animate: true });
+    });
   }
 
   function rarityChips(container) {
@@ -133,6 +138,7 @@
   }
 
   function apply({ animate = false } = {}) {
+    if (!built) return;   // the Cards tab hasn't been opened yet: its cards don't exist yet
     const words = filters.q.toLowerCase().split(/\s+/).filter(Boolean);
     const out = state.cards.filter((c) => {
       if (filters.tier && !(C.isRanked(c) && c.tier === filters.tier)) return false;
