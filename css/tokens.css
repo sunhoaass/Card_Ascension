@@ -38,6 +38,12 @@
   --r-rainbow: conic-gradient(from 0deg, #ff4d6d, #ffb84d, #f9f871, #5dff9b, #4dd8ff, #7b6bff, #ff4dd8, #ff4d6d);
   --r-ascended: conic-gradient(from 0deg, #ffffff, #8ff7ff, #b98cff, #ff9de2, #fff2a8, #9dffcf, #ffffff);
 
+  /* ---- Signal colors (stats, strengths / weaknesses) ---- */
+  --atk: #ff9a8a;
+  --hp: #8affc1;
+  --good: #5dffa0;
+  --bad: #ff6b7d;
+
   /* ---- Tier palette ---- */
   --t-ss: #ff5d8f;
   --t-s: #ffb84d;

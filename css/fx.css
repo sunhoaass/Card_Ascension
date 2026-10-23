@@ -14,9 +14,10 @@
 @keyframes fx-halo { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 @keyframes fx-twinkle { 0%, 100% { opacity: .25; } 50% { opacity: .9; } }
 @keyframes fx-float { from { opacity: 0; transform: translateY(0) scale(.6); } 20% { opacity: 1; } to { opacity: 0; transform: translateY(-140px) scale(1); } }
-@keyframes fx-flash { 0% { opacity: 0; } 35% { opacity: .55; } 100% { opacity: 0; } }
 @keyframes fx-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fx-skel { 0%, 100% { opacity: .45; } 50% { opacity: .9; } }
+@keyframes fx-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes fx-bar { from { transform: scaleX(0); } }
 
 /* ---------- Press: scale .96 + short glow ring ---------- */
 .fx-press { position: relative; transition: transform var(--t-fast) var(--ease); }
@@ -34,6 +35,10 @@
 
 /* ---------- Stagger (tier rows) — JS sets --d per item ---------- */
 .fx-stagger > * { animation: fx-rise var(--t-slow) var(--ease) both; animation-delay: var(--d, 0ms); }
+
+/* Grid / sections: fill-mode "backwards" so the card's own tilt transform is not locked after the animation.
+   FX.stagger(list, gap, { cls, max, cleanup }) sets --d and (with cleanup) removes the class when done. */
+.fx-grid-in > *, .fx-up > * { animation: fx-up var(--t-slow) var(--ease) backwards; animation-delay: var(--d, 0ms); }
 
 /* ---------- Skeleton loading ---------- */
 .skeleton {
@@ -97,8 +102,8 @@
 .card__series { font-size: 11px; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card__stats { display: flex; gap: 8px; margin-top: 6px; font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 600; }
 .card__stats b { color: var(--ink-dim); font-weight: 500; margin-right: 3px; }
-.card__stat--atk { color: #ff9a8a; }
-.card__stat--hp { color: #8affc1; }
+.card__stat--atk { color: var(--atk); }
+.card__stat--hp { color: var(--hp); }
 .card__odds { margin-top: 2px; font-size: 11px; color: var(--ink-dim); }
 
 .card__tag {
@@ -133,9 +138,8 @@
 .card.is-tilting .card__glare, .card:hover .card__glare { opacity: 1; }
 .card.is-tilting, .card:hover { --lift: -6px; }
 
-/* rarity-change flash */
+/* rarity-change flash: played by CBI.setCardRarity (Web Animations) */
 .card__flash { position: absolute; inset: 0; background: var(--rc); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
-.card.is-shifting .card__flash { animation: fx-flash var(--t-slow) var(--ease); }
 
 /* extra layers, off by default */
 .card__halo, .card__sweep, .card__stars, .card__particles { position: absolute; pointer-events: none; opacity: 0; }
@@ -225,6 +229,7 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
   .fx-page-in, .fx-stagger > * { animation: fx-fade 200ms linear both !important; animation-delay: 0ms !important; }
+  .fx-grid-in > *, .fx-up > * { animation: fx-fade 200ms linear backwards !important; animation-delay: 0ms !important; }
   .card { transform: none !important; }
   .card__sweep, .card__particles, .fx-ring { display: none; }
   .nav__indicator { transition: opacity var(--t-fast) linear !important; }
