@@ -2,6 +2,7 @@
    Card Battle Infinity — app core
    Router (4 tabs + card detail hash) · data loading · shared card renderer
    The Cards page (search / filters / sort) and the card detail view live in js/cards.js
+   The Tier List page and Meta Decks live in js/tier.js
    ========================================================== */
 (function () {
   const PAGES = ["tier", "cards", "support", "grade"];
@@ -17,7 +18,7 @@
   };
 
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
-  const state = { meta: null, cards: [], support: [], rarity: "Normal", page: null, loaded: false, origin: null };
+  const state = { meta: null, cards: [], support: [], teams: [], rarity: "Normal", page: null, loaded: false, origin: null };
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -142,25 +143,6 @@
     $('[data-k="odds"]', el).textContent = fmtOdds(oddsAt(card, rarity));
   }
 
-  /* ---------- Tier page (step 3 builds the full version) ---------- */
-  function renderTier() {
-    const list = $("#tier-list");
-    list.innerHTML = "";
-    state.meta.tiers.forEach((t) => {
-      const row = document.createElement("section");
-      row.className = "tier-row glass";
-      row.style.setProperty("--tc", `var(${TIER_COLOR[t.name]})`);
-      row.setAttribute("aria-label", `Tier ${t.name}`);
-      const cards = state.cards.filter((c) => isRanked(c) && c.tier === t.name).sort((a, b) => b.scores.overall - a.scores.overall);
-      row.innerHTML = `<div class="tier-row__label">${t.name}</div><div class="tier-row__cards"></div>`;
-      const wrap = $(".tier-row__cards", row);
-      if (cards.length) cards.forEach((c) => wrap.appendChild(renderCard(c, "Normal", { mini: true })));
-      else wrap.innerHTML = `<p class="tier-row__empty">No cards in this tier yet</p>`;
-      list.appendChild(row);
-    });
-    FX.stagger(list);
-  }
-
   function showSkeletons() {
     $("#card-grid").innerHTML = '<div class="skeleton"></div>'.repeat(4);
   }
@@ -185,7 +167,7 @@
     });
     $(".nav__list").style.setProperty("--i", PAGES.indexOf(page));
     store.set(STORE_KEY, page);
-    if (changed && page === "tier" && state.meta) FX.stagger($("#tier-list"));
+    if (changed && page === "tier" && state.loaded) CBI.tier.enter();
     if (changed || scroll) window.scrollTo({ top: 0 });
   }
 
@@ -239,12 +221,13 @@
     route();
 
     try {
-      const [meta, cards, support] = await Promise.all([
+      const [meta, cards, support, teams] = await Promise.all([
         loadJSON("data/meta.json"),
         loadJSON("data/cards.json"),
         loadJSON("data/support.json").catch(() => []),   // added in step 4
+        loadJSON("data/teams.json").catch(() => []),     // Meta Decks; the page copes without it
       ]);
-      state.meta = meta; state.cards = cards; state.support = support;
+      state.meta = meta; state.cards = cards; state.support = support; state.teams = teams;
     } catch (err) {
       console.error(err);
       $("#card-grid").innerHTML = "";
@@ -259,7 +242,7 @@
     $("#updated").parentElement.setAttribute("title", "Data last updated " + state.meta.updated);
 
     state.loaded = true;
-    renderTier();
+    CBI.tier.init();
     CBI.cards.init();
     route();   // opens a #card/<id> deep link now that the data is here
   }
@@ -269,6 +252,7 @@
     renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf,
     openCard, closeCard,
     cards: { init() {}, open() {}, close() {} },   // replaced by js/cards.js
+    tier: { init() {}, enter() {} },                // replaced by js/tier.js
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

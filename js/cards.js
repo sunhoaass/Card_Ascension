@@ -17,7 +17,7 @@
   const searchText = new Map();   // id -> lowercase text used by the search box
   const ui = {};
   let shown = [];                 // ids currently in the grid, in order
-  let cur = null, isOpen = false, hiddenEl = null, prevFocus = null, token = 0, baseTitle = "";
+  let cur = null, isOpen = false, hiddenEl = null, curTarget = null, prevFocus = null, token = 0, baseTitle = "";
 
   const clamp = (v) => Math.max(0, Math.min(100, Number(v) || 0));
   const list = (a) => (Array.isArray(a) ? a.filter(Boolean) : []);
@@ -169,6 +169,7 @@
       const card = cardById.get(el.dataset.id);
       if (card) C.setCardRarity(el, card, name, { animate: true });
     });
+    document.dispatchEvent(new CustomEvent("cbi:rarity", { detail: name }));   // js/tier.js listens
     if (isOpen) fillStats(cardById.get(cur));
     if (filters.sort !== "overall") apply();   // exact game values can change the order; no-op when it doesn't
   }
@@ -374,7 +375,8 @@
     ui.detail.scrollTop = 0;
     ui.detail.setAttribute("aria-label", `${card.name} details`);
     document.title = `${card.name} — ${baseTitle}`;
-    const t = returnTarget(id);
+    const t = origin && origin.closest(".main") ? origin : returnTarget(id);
+    curTarget = t;
     if (t) { t.style.visibility = "hidden"; hiddenEl = t; }
 
     const flight = fromRect && rectVisible(fromRect) ? FX.flip(ui.hero, fromRect) : null;
@@ -390,7 +392,8 @@
     const mine = ++token;
 
     let toRect = null;
-    const target = returnTarget(id);
+    // the exact tile the card grew from (a card can sit in a tier row and in decks on the same page)
+    const target = curTarget && curTarget.isConnected && curTarget.dataset.id === id ? curTarget : returnTarget(id);
     if (target) {
       let r = target.getBoundingClientRect();
       if (r.width && !rectVisible(r)) { target.scrollIntoView({ block: "center", behavior: "instant" }); r = target.getBoundingClientRect(); }
