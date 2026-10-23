@@ -4,7 +4,9 @@
      FX.press(root)        – press glow ring on every .fx-press inside root
      FX.tilt(cardEl)       – 3D tilt + holo glare that follows the finger
      FX.countTo(el, to)    – number counts from current value to `to`
-     FX.stagger(listEl)    – children slide in one after another
+     FX.stagger(listEl)    – children slide in one after another (opts: { cls, max, cleanup })
+     FX.flip(el, rect)     – shared-element move: el animates from `rect` to where it is now
+     FX.fade(el, to)       – fade in (1) or out (0); still works when motion is reduced
      FX.starfield(canvas)  – slow parallax star background
      FX.reduced            – true when the user asked for less motion
    ========================================================== */
@@ -74,11 +76,51 @@
   };
 
   /* ---------- Stagger children ---------- */
-  FX.stagger = function (list, gap = 60) {
-    list.classList.remove("fx-stagger");
-    [...list.children].forEach((c, i) => c.style.setProperty("--d", i * gap + "ms"));
+  // cls: "fx-stagger" (tier rows) | "fx-grid-in" | "fx-up"   max: cap the delay (items after it start together)
+  // limit: only the first N children animate (big grids: the rest are off-screen anyway)
+  // cleanup: remove the class once finished so re-inserted children don't replay the animation
+  FX.stagger = function (list, gap = 60, { cls = "fx-stagger", max = Infinity, limit = Infinity, cleanup = false } = {}) {
+    list.classList.remove(cls);
+    [...list.children].forEach((c, i) => {
+      c.style.setProperty("--d", Math.min(i, max) * gap + "ms");
+      c.style.animation = i >= limit ? "none" : "";
+    });
     void list.offsetWidth; // restart animation
-    list.classList.add("fx-stagger");
+    list.classList.add(cls);
+    if (cleanup) {
+      clearTimeout(list._fxStagger);
+      list._fxStagger = setTimeout(() => list.classList.remove(cls), Math.min(list.children.length, max + 1) * gap + 520);
+    }
+  };
+
+  /* ---------- Shared-element move (FLIP) ----------
+     Animates `el` from `rect` (a DOMRect of where it used to be) to its current place.
+     reverse: true plays it the other way (current place -> rect) and keeps the end state.
+     Uses transform only. Returns the Animation, or null when motion is reduced. */
+  FX.flip = function (el, rect, { duration = 400, reverse = false } = {}) {
+    if (FX.reduced || !rect || !el.animate) return null;
+    const to = el.getBoundingClientRect();
+    if (!to.width || !rect.width) return null;
+    const moved = `translate(${rect.left - to.left}px, ${rect.top - to.top}px) scale(${rect.width / to.width})`;
+    el.style.transformOrigin = "0 0";
+    const anim = el.animate(
+      reverse ? [{ transform: "none" }, { transform: moved }] : [{ transform: moved }, { transform: "none" }],
+      { duration, easing: "cubic-bezier(.2,.8,.2,1)", fill: reverse ? "forwards" : "none" }
+    );
+    if (!reverse) {
+      const reset = () => { el.style.transformOrigin = ""; };
+      anim.addEventListener("finish", reset); anim.addEventListener("cancel", reset);
+    }
+    return anim;
+  };
+
+  /* ---------- Fade in / out (opacity only) ---------- */
+  FX.fade = function (el, to, { duration = 250 } = {}) {
+    if (!el.animate) return null;
+    return el.animate([{ opacity: to ? 0 : 1 }, { opacity: to ? 1 : 0 }], {
+      duration: FX.reduced ? Math.min(duration, 150) : duration,
+      easing: "cubic-bezier(.2,.8,.2,1)", fill: "both",
+    });
   };
 
   /* ---------- Starfield (canvas, 3 parallax layers) ---------- */
