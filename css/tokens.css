@@ -41,6 +41,8 @@
   /* ---- Signal colors (stats, strengths / weaknesses) ---- */
   --atk: #ff9a8a;
   --hp: #8affc1;
+  --def: #8fb8ff;           /* Defense (grade step) */
+  --status: #e3a2ff;        /* Status Damage (grade step) */
   --good: #5dffa0;
   --bad: #ff6b7d;
 
@@ -51,6 +53,18 @@
   --t-b: #5dffa0;
   --t-c: #5ec8ff;
   --t-d: #8e8fb5;
+
+  /* ---- Grade palette (step 6) · 1–3 bronze · 4–6 silver · 7–9 gold · 10 rainbow
+         Swap these when the owner sends screenshots of the in-game colours. ---- */
+  --g-bronze: #c98a52;
+  --g-bronze-2: #6e3f1c;
+  --g-silver: #e6ebf5;
+  --g-silver-2: #8a93a8;
+  --g-gold: #ffd864;
+  --g-gold-2: #c08a12;
+  --g-rainbow: conic-gradient(from 0deg, #ff4d6d, #ffb84d, #f9f871, #5dff9b, #4dd8ff, #7b6bff, #ff4dd8, #ff4d6d);
+  --g-rainbow-line: linear-gradient(90deg, #ff4d6d, #ffb84d, #f9f871, #5dff9b, #4dd8ff, #7b6bff, #ff4dd8);   /* grade-10 bar, spread across the 10 segments */
+  --g-empty: rgba(175, 188, 255, 0.14);   /* unfilled bar segment / no grade yet */
 
   /* ---- Type ---- */
   --font-display: "Chakra Petch", "Rajdhani", system-ui, sans-serif;

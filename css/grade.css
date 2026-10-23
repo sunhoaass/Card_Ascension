@@ -1,0 +1,171 @@
+/* ==========================================================
+   Card Grader (step 6) — picker grid, grader, grade orbs, card-detail panel
+   Mobile-first. Colors come from tokens.css only (--g-* = grade palette).
+   ========================================================== */
+
+/* ---------- Grade orb (round number badge) ----------
+   data-band: none · bronze (1–3) · silver (4–6) · gold (7–9) · rainbow (10) */
+.gorb {
+  --gs: 32px;
+  position: relative; isolation: isolate; overflow: hidden; flex: none;
+  display: inline-grid; place-items: center;
+  width: var(--gs); height: var(--gs); border-radius: 50%;
+  font-family: var(--font-display); font-weight: 700; font-size: calc(var(--gs) * 0.5); line-height: 1;
+  color: var(--ink-dim);
+  box-shadow: inset 0 0 0 1px var(--glass-line);
+}
+.gorb::before {   /* fill (spins on rainbow) */
+  content: ""; position: absolute; inset: -30%; z-index: -2;
+  background: var(--gfill, var(--g-empty));
+}
+.gorb::after {    /* glossy top light, like a game medal */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%;
+  background: radial-gradient(circle at 34% 26%, rgba(255, 255, 255, .55), transparent 46%);
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, .35);
+  opacity: 0;
+}
+.gorb b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.gorb:not([data-band="none"])::after { opacity: 1; }
+.gorb[data-band="bronze"] { --gfill: linear-gradient(150deg, var(--g-bronze), var(--g-bronze-2)); --glow: var(--g-bronze); color: var(--ink); }
+.gorb[data-band="silver"] { --gfill: linear-gradient(150deg, var(--g-silver), var(--g-silver-2)); --glow: var(--g-silver); color: var(--void); }
+.gorb[data-band="gold"]   { --gfill: linear-gradient(150deg, var(--g-gold), var(--g-gold-2)); --glow: var(--g-gold); color: var(--void); }
+.gorb[data-band="rainbow"] { --gfill: var(--g-rainbow); --glow: var(--g-gold); color: var(--void); }
+.gorb[data-band="rainbow"]::before { animation: fx-spin 3.2s linear infinite; }
+.gorb:not([data-band="none"]) {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .25), 0 0 14px color-mix(in srgb, var(--glow) 55%, transparent);
+}
+.gorb[data-band="bronze"] b { text-shadow: 0 1px 2px rgba(0, 0, 0, .5); }
+.gorb--sm { --gs: 26px; }
+.gorb--lg { --gs: 48px; }
+.gorb--xl { --gs: 76px; }
+.gorb.is-pop { animation: g-orb 360ms var(--ease); }
+@keyframes g-orb { 0% { transform: scale(.7); } 60% { transform: scale(1.14); } 100% { transform: scale(1); } }
+
+/* grade badge on a card (picker tiles + grader hero) · under the tier badge, or in its place */
+.card__grade { position: absolute; right: 6px; top: 38px; z-index: 3; --gs: 28px; }
+.card:not(:has(.card__tier)) .card__grade { top: 6px; }
+.card--mini .card__grade { --gs: 22px; top: 34px; }
+.card--mini:not(:has(.card__tier)) .card__grade { top: 6px; }
+
+/* ---------- Picker ---------- */
+.grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
+@media (min-width: 600px) { .grade-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .grade-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+#grade-tools .chip-row { margin-bottom: 0; }
+.chip__n {
+  min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--r-pill);
+  display: inline-grid; place-items: center;
+  font-size: var(--fs-xs); background: var(--glass-strong); color: var(--ink);
+}
+
+/* ---------- Grader ---------- */
+.gdetail[hidden] { display: none; }
+.gdetail__bar { margin: calc(var(--s-2) * -1) 0 var(--s-2) -8px; }
+.gdetail__grid { display: grid; gap: var(--s-5); padding-top: var(--s-3); }
+.gdetail__hero { display: grid; place-items: center; }
+.gdetail__hero .card { width: min(52vw, 230px); cursor: default; }
+.gdetail__main { display: grid; gap: var(--s-4); min-width: 0; align-content: start; }
+.gdetail .rarity-picker { margin-bottom: 0; }
+.gdetail h1:focus { outline: none; }
+
+/* overall card grade */
+.goverall {
+  display: flex; align-items: center; gap: var(--s-4);
+  padding: var(--s-4) var(--s-5); border-radius: var(--r-panel);
+  background: var(--glass); border: 1px solid var(--glass-line);
+}
+.goverall__label { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); }
+.goverall__sub { margin-top: 2px; font-size: var(--fs-xs); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.goverall[data-band="rainbow"] { border-color: transparent; background: linear-gradient(var(--nebula), var(--nebula)) padding-box, var(--g-rainbow-line) border-box; }
+.goverall[data-band="gold"] { border-color: color-mix(in srgb, var(--g-gold) 55%, transparent); }
+.goverall[data-band="silver"] { border-color: color-mix(in srgb, var(--g-silver) 40%, transparent); }
+.goverall[data-band="bronze"] { border-color: color-mix(in srgb, var(--g-bronze) 50%, transparent); }
+
+/* one stat row */
+.gstats { display: grid; gap: var(--s-3); }
+.gstat {
+  --seg: var(--g-empty);
+  padding: var(--s-4); border-radius: var(--r-card);
+  background: var(--glass); border: 1px solid var(--glass-line);
+}
+.gstat[data-band="bronze"] { --seg: linear-gradient(180deg, var(--g-bronze), var(--g-bronze-2)); }
+.gstat[data-band="silver"] { --seg: linear-gradient(180deg, var(--g-silver), var(--g-silver-2)); }
+.gstat[data-band="gold"]   { --seg: linear-gradient(180deg, var(--g-gold), var(--g-gold-2)); }
+.gstat__top { display: flex; align-items: center; gap: var(--s-3); }
+.gstat__name { flex: 1; min-width: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-md); }
+.gstat__pct { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-sm); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.gstat__val { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px var(--s-2); margin-top: 2px; }
+.gstat__num { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xl); line-height: 1.15; font-variant-numeric: tabular-nums; }
+.gstat__val small { font-size: 11px; color: var(--ink-faint); }
+.gstat--atk .gstat__num { color: var(--atk); }
+.gstat--def .gstat__num { color: var(--def); }
+.gstat--status .gstat__num { color: var(--status); }
+.gstat--hp .gstat__num { color: var(--hp); }
+.gstat.is-missing .gstat__num { color: var(--ink-dim); }
+
+/* the 10-step bar: every segment is a button (tap = set grade, tap the current one again = clear) */
+.gbar { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin-top: var(--s-2); }
+.gbar__seg { position: relative; height: 40px; border-radius: 6px; -webkit-tap-highlight-color: transparent; }
+.gbar__seg::before {
+  content: ""; position: absolute; inset: 12px 0; border-radius: 4px;
+  background: var(--g-empty);
+  transition: transform var(--t-fast) var(--ease);
+}
+.gbar__seg.is-on::before { background: var(--seg); }
+.gstat[data-band="rainbow"] .gbar__seg.is-on::before {
+  background: var(--g-rainbow-line); background-size: 1000% 100%;
+  background-position: calc(var(--i) * 100% / 9) 0;
+}
+.gstat:not([data-band="none"]) .gbar__seg.is-on[aria-pressed="true"]::before {
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ink) 35%, transparent);
+}
+.gbar__seg:active::before { transform: scaleY(1.25); }
+.gbar__seg:focus-visible { outline: 2px solid var(--rift); outline-offset: 1px; }
+.gbar__seg.is-pop::before { animation: g-seg 300ms var(--ease) backwards; animation-delay: var(--d, 0ms); }
+@keyframes g-seg { from { transform: scaleY(.2); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* shared-link banner */
+.gshare {
+  display: grid; gap: var(--s-3);
+  padding: var(--s-4); border-radius: var(--r-card);
+  background: var(--glass-strong); border: 1px solid color-mix(in srgb, var(--rift) 50%, transparent);
+}
+.gshare[hidden] { display: none; }
+.gshare__text { font-size: var(--fs-sm); color: var(--ink-dim); }
+.gshare__text b { color: var(--ink); }
+.gshare__btns { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+/* actions */
+.gactions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.gactions .chip { color: var(--ink); }
+.gactions__share svg { width: 16px; height: 16px; color: var(--rift); }
+.gactions__status { font-size: var(--fs-xs); color: var(--good); overflow-wrap: anywhere; min-width: 0; }
+.gnote { font-size: var(--fs-xs); color: var(--ink-faint); max-width: 60ch; }
+
+@media (min-width: 900px) {
+  .gdetail__grid { grid-template-columns: 300px minmax(0, 1fr); gap: var(--s-8); padding-top: var(--s-6); }
+  .gdetail__hero { align-self: start; position: sticky; top: calc(var(--header-h) + var(--s-6)); }
+  .gdetail__hero .card { width: 280px; }
+  .gstats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Card detail: Grade panel + extra stat tiles ---------- */
+.gsum { display: flex; align-items: center; gap: var(--s-4); }
+.gsum__overall { display: grid; justify-items: center; gap: 4px; flex: none; }
+.gsum__overall small { font-size: 11px; color: var(--ink-dim); }
+.gsum__list { flex: 1; min-width: 0; display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.gsum__list li { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); font-size: var(--fs-sm); }
+.gsum__name { color: var(--ink-dim); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dpanel .gsum__btn { margin-top: var(--s-4); color: var(--ink); }
+.gsum__btn svg { width: 16px; height: 16px; color: var(--rift); }
+
+.dstat--def .dstat__value { color: var(--def); }
+.dstat--status .dstat__value { color: var(--status); }
+@media (min-width: 600px) {
+  .dstats--more { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .dstats--more .dstat--odds { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gorb[data-band="rainbow"]::before { animation: none; }
+}

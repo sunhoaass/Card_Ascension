@@ -145,41 +145,6 @@ p { margin: 0; }
 .empty__title { font-size: var(--fs-xl); }
 .empty__text { color: var(--ink-dim); font-size: var(--fs-sm); margin: var(--s-2) auto 0; max-width: 40ch; }
 
-/* ---------- Grade: coming soon ---------- */
-.grade {
-  position: relative; overflow: hidden;
-  min-height: 62dvh;
-  display: grid; place-items: center; text-align: center;
-  border-radius: var(--r-panel);
-  padding: var(--s-10) var(--s-6);
-}
-.grade__orbit { position: relative; width: 220px; height: 220px; margin: 0 auto var(--s-6); }
-.grade__ring {
-  position: absolute; inset: 0; border-radius: 50%;
-  border: 1px solid rgba(111, 231, 255, 0.25);
-}
-.grade__ring--2 { inset: 28px; border-color: rgba(168, 121, 255, 0.3); }
-.grade__spin { position: absolute; inset: 0; animation: fx-spin 18s linear infinite; }
-.grade__letter {
-  position: absolute; left: 50%; top: 50%;
-  width: 36px; height: 36px; margin: -18px 0 0 -18px;
-  display: grid; place-items: center;
-  border-radius: 10px;
-  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md);
-  color: var(--void); background: var(--tc);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--tc) 60%, transparent);
-  transform: rotate(var(--a)) translateY(-110px) rotate(calc(var(--a) * -1));
-}
-.grade__letter > span { display: block; animation: fx-spin 18s linear infinite reverse; }
-.grade__core {
-  position: absolute; inset: 60px; border-radius: 50%;
-  display: grid; place-items: center;
-  background: radial-gradient(circle, rgba(111, 231, 255, 0.22), rgba(168, 121, 255, 0.08) 60%, transparent 70%);
-}
-.grade__core svg { width: 44px; height: 44px; color: var(--rift); filter: drop-shadow(0 0 10px rgba(111, 231, 255, .7)); }
-.grade__title { font-size: var(--fs-2xl); }
-.grade__text { color: var(--ink-dim); margin: var(--s-3) auto 0; max-width: 34ch; font-size: var(--fs-sm); }
-
 /* ---------- Desktop: nav moves to the top ---------- */
 @media (min-width: 900px) {
   :root { --gutter: 28px; }
