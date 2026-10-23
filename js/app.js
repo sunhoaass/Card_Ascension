@@ -1,17 +1,19 @@
 /* ==========================================================
    Card Battle Infinity — app core
-   Router (4 tabs + card detail hash) · data loading · shared card renderer
+   Router (5 tabs + card detail hash) · data loading · shared card renderer
    The Cards page (search / filters / sort) and the card detail view live in js/cards.js
-   The Tier List page and Meta Decks live in js/tier.js
+   The Tier List page (Global cards / support + My Lists) lives in js/tier.js
+   The Deck page (Meta Decks, later the deck builder) lives in js/deck.js
    The Support page (list + #support/<id> detail) lives in js/support.js
    The Grade page (card picker + #grade/<id>/<grades> grader) lives in js/grade.js
    ========================================================== */
 (function () {
-  const PAGES = ["tier", "cards", "support", "grade"];
+  const PAGES = ["tier", "cards", "support", "deck", "grade"];
   const PAGE_TITLES = {
     tier: "Card Battle Infinity — Tier List & Card Database",
     cards: "Cards — Card Battle Infinity",
     support: "Support — Card Battle Infinity",
+    deck: "Deck — Card Battle Infinity",
     grade: "Card Grader — Card Battle Infinity",
   };
   const STORE_KEY = "cbi:lastPage";
@@ -151,6 +153,13 @@
     $('[data-k="odds"]', el).textContent = fmtOdds(oddsAt(card, rarity));
   }
 
+  /* Rarity chip buttons (the click is handled once for the whole site in js/cards.js) */
+  function rarityChipsHTML() {
+    return state.meta.rarities.map((r) =>
+      `<button type="button" class="chip glass fx-press" data-rarity="${esc(r.name)}" aria-pressed="${r.name === state.rarity}" style="--sw:${RARITY_SWATCH[r.name] || "var(--r-normal)"}"><span class="chip__swatch"></span>${esc(r.name)}</button>`
+    ).join("");
+  }
+
   function showSkeletons() {
     $("#card-grid").innerHTML = '<div class="skeleton"></div>'.repeat(4);
   }
@@ -162,6 +171,8 @@
   function showPage(page, { scroll = false } = {}) {
     if (!PAGES.includes(page)) page = "tier";
     const changed = state.page !== page;
+    // Back from a support detail opened on the Tier List: put the Tier List back where it was (js/tier.js saved the position)
+    const keep = !scroll && page === "tier" && !!(history.state && typeof history.state.tierY === "number");
     state.page = page;
     document.querySelectorAll(".page").forEach((p) => {
       const on = p.id === "page-" + page;
@@ -177,14 +188,20 @@
     $(".nav__list").style.setProperty("--i", PAGES.indexOf(page));
     document.title = PAGE_TITLES[page];   // tab / history / share title follows the page
     store.set(STORE_KEY, page);
-    if (changed && page === "tier" && state.loaded) CBI.tier.enter();
-    if (changed || scroll) window.scrollTo({ top: 0 });
+    if (changed && state.loaded) {
+      if (page === "tier") CBI.tier.enter({ restore: keep });
+      else if (page === "deck") CBI.deck.enter();
+    }
+    if ((changed || scroll) && !keep) window.scrollTo({ top: 0 });
   }
 
   const pageFromHash = () => {
     const seg = location.hash.replace(/^#\/?/, "").split("/")[0];
     return PAGES.includes(seg) ? seg : null;
   };
+
+  // #tier = Global · #tier/my = My Lists
+  const tierViewFromHash = () => (/^#\/?tier\/my(?:[/?#]|$)/.test(location.hash) ? "my" : "global");
 
   function route() {
     const m = location.hash.match(/^#\/?card\/([^/?#]+)/);
@@ -195,6 +212,7 @@
     }
     if (state.loaded) CBI.cards.close();
     showPage(pageFromHash() || (state.page === null ? store.get(STORE_KEY) || "tier" : "tier"));
+    if (state.loaded) CBI.tier.show(tierViewFromHash());
     // #support/<id> = support detail inside the Support tab · any other hash = back to the support list
     const sm = location.hash.match(/^#\/?support\/([^/?#]+)/);
     if (state.loaded) CBI.support.show(sm ? decodeURIComponent(sm[1]) : null);
@@ -203,11 +221,11 @@
     if (state.loaded) CBI.grade.show(gm ? decodeURIComponent(gm[1]) : null, gm ? gm[2] : null);
   }
 
-  // Tab buttons: no history entries, same as before · tapping a tab always lands on its list
+  // Tab buttons: no history entries, same as before · tapping a tab always lands on its list (Tier List = Global)
   function go(page) {
     showPage(page, { scroll: true });
     if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
-    if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); }
+    if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); }
   }
 
   // Card detail: each open pushes a history entry so the phone's Back button closes it
@@ -260,6 +278,7 @@
 
     state.loaded = true;
     CBI.tier.init();
+    CBI.deck.init();
     CBI.cards.init();
     CBI.support.init();
     CBI.grade.init();
@@ -268,10 +287,11 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt,
+    renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML,
     openCard, closeCard, route,
     cards: { init() {}, open() {}, close() {} },   // replaced by js/cards.js
-    tier: { init() {}, enter() {} },                // replaced by js/tier.js
+    tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
+    deck: { init() {}, enter() {} },                 // replaced by js/deck.js
     support: { init() {}, show() {} },              // replaced by js/support.js
     grade: { init() {}, show() {}, panelHTML() { return ""; } },   // replaced by js/grade.js
   };

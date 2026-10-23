@@ -437,5 +437,6 @@
     apply({ animate: true });
   }
 
-  C.support = { init, show };
+  // card(s): the support card art (js/tier.js draws the Global support tier list with it) · open(id, originEl): open #support/<id>
+  C.support = { init, show, card: supportCard, open: openSupport };
 })();
