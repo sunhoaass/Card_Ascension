@@ -1,0 +1,129 @@
+/* ==========================================================
+   Support page (step 4): ranked list + support detail
+   Toolbar, panels, stat tiles, score bars and mini cards are shared with
+   cards.css / tier.css. Colors, spacing, type and motion come from tokens.css.
+   ========================================================== */
+
+/* ---------- Support card art (no rarity: one fixed rift/flux frame) ---------- */
+.scard {
+  --sc: var(--rift);
+  --sc2: var(--flux);
+  position: relative; display: block;
+  aspect-ratio: var(--card-ratio);
+  border-radius: var(--r-card);
+  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transition: transform var(--t-med) var(--ease);
+  user-select: none; -webkit-user-select: none;
+  touch-action: pan-y;
+}
+.scard.is-tilting { transition: transform 60ms linear; }
+.scard.is-tilting, .scard:hover { --lift: -6px; }
+.scard--thumb, .scard--thumb:hover { --lift: 0px; transform: none; }
+
+.scard__frame {
+  position: absolute; inset: 0; display: block;
+  border-radius: var(--r-card); overflow: hidden;
+  background: linear-gradient(135deg, var(--sc), var(--sc2) 50%, var(--sc));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--sc2) 32%, transparent), 0 10px 28px rgba(0, 0, 0, .45);
+}
+.scard__body {
+  position: absolute; inset: 3px; display: block;
+  border-radius: calc(var(--r-card) - 3px); overflow: hidden;
+  background: var(--void);
+}
+.scard--thumb .scard__frame { box-shadow: 0 4px 12px rgba(0, 0, 0, .4); }
+.scard--thumb .scard__body { inset: 2px; border-radius: calc(var(--r-card) - 2px); }
+.scard__art { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.scard__art img { width: 100%; height: 100%; object-fit: cover; }
+.scard__art svg { width: 100%; height: 100%; }
+
+.scard__tag {
+  position: absolute; left: 6px; top: 6px;
+  padding: 2px 7px; border-radius: 6px;
+  font-family: var(--font-display); font-size: 10px; font-weight: 700;
+  color: var(--void); background: var(--sc);
+}
+.scard__tier {
+  position: absolute; right: 6px; top: 6px;
+  min-width: 26px; height: 26px; padding: 0 4px;
+  display: grid; place-items: center; border-radius: 8px;
+  font-family: var(--font-display); font-size: var(--fs-sm); font-weight: 700;
+  color: var(--void); background: var(--tc, var(--t-d));
+}
+.scard__info {
+  position: absolute; left: 0; right: 0; bottom: 0; display: block;
+  padding: 28px 8px 8px;
+  background: linear-gradient(180deg, transparent, rgba(5, 6, 20, .88) 45%);
+}
+.scard__name {
+  display: block;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm);
+  line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* holo glare follows the finger, same as game cards */
+.scard__glare {
+  position: absolute; left: 50%; top: 50%; display: block;
+  width: 160%; aspect-ratio: 1;
+  margin: -80% 0 0 -80%;
+  background: radial-gradient(circle, rgba(255, 255, 255, .28), rgba(160, 220, 255, .08) 30%, transparent 55%);
+  opacity: 0; mix-blend-mode: screen; pointer-events: none;
+  transform: translate(var(--gx, 0), var(--gy, 0));
+  transition: opacity var(--t-med) var(--ease);
+}
+.scard.is-tilting .scard__glare, .scard:hover .scard__glare { opacity: 1; }
+
+/* ---------- Ranked list (a table on a phone: one row per support card) ---------- */
+.slist { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
+.slist:empty { display: none; }
+.srow {
+  width: 100%; min-height: 96px;
+  display: grid; grid-template-columns: 28px 52px minmax(0, 1fr) auto; align-items: center; gap: var(--s-3);
+  padding: var(--s-3);
+  border-radius: var(--r-panel);
+  background: var(--glass); border: 1px solid var(--glass-line);
+  text-align: left; color: var(--ink);
+  transition: transform var(--t-fast) var(--ease), border-color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
+}
+.srow:hover { border-color: color-mix(in srgb, var(--rift) 45%, var(--glass-line)); background: var(--glass-strong); }
+.srow__rank { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.srow__thumb { display: block; }
+.srow__main { display: grid; gap: 2px; min-width: 0; }
+.srow__nameline { display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
+.srow__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srow__sample { flex: none; min-height: 20px; padding: 0 6px; font-size: 11px; }
+.srow__effect {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+  color: var(--ink-dim); font-size: var(--fs-sm); line-height: 1.35; overflow-wrap: anywhere;
+}
+.srow__odds { color: var(--ink-faint); font-size: var(--fs-xs); }
+.srow__bar { display: block; height: 6px; margin-top: 6px; border-radius: var(--r-pill); background: var(--glass-strong); overflow: hidden; }
+.srow__bar i {
+  display: block; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, var(--rift), var(--flux));
+  transform: scaleX(var(--v, 0)); transform-origin: left;
+}
+.srow__score { display: grid; justify-items: center; gap: 2px; min-width: 56px; }
+.srow__score .badge--tier { min-height: 32px; min-width: 40px; justify-content: center; font-size: var(--fs-md); }
+.srow__score .badge--muted { font-size: var(--fs-xs); }
+.srow__value { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); line-height: 1; font-variant-numeric: tabular-nums; }
+.srow__score small { color: var(--ink-faint); font-size: 11px; }
+
+.support-note { margin-top: var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
+
+/* ---------- Detail (inside the page) ---------- */
+.sdetail__bar { margin: calc(var(--s-2) * -1) 0 var(--s-2) -8px; }
+.sdetail .detail__content { padding-top: var(--s-3); }
+/* fixed-width column: without it the 5-slot deck rows widen the grid past the phone screen */
+.sdetail .detail__main { grid-template-columns: minmax(0, 1fr); }
+.sdetail .detail__hero .scard { width: min(64vw, 270px); }
+.sdetail .deck-list { margin-top: var(--s-2); }
+.sdetail .group > .muted, .sdetail .group > div > .muted { margin-top: var(--s-2); }
+.sdetail .deck__name { font-size: var(--fs-md); }
+.deck__sup--here { color: var(--rift); font-weight: 600; }
+.sdetail h2:focus { outline: none; }
+
+@media (min-width: 900px) {
+  .slist { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+  .srow { padding: var(--s-4); grid-template-columns: 32px 64px minmax(0, 1fr) auto; }
+  .sdetail .detail__hero .scard { width: 300px; }
+}
