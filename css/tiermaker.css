@@ -3,7 +3,7 @@
    Mobile-first. Colours, spacing, type and motion come from tokens.css only.
    .field / .iconbtn / .chip / .seg / .panel / .empty / .skeleton are shared (cards.css, base.css, fx.css).
    ========================================================== */
-[hidden].tm-warn, [hidden].tm-editor, #tm-index[hidden], [hidden].tm-dock__filters, [hidden].tm-dock__empty, [hidden].tm-dot { display: none; }
+[hidden].tm-warn, [hidden].tm-editor, #tm-index[hidden], [hidden].tm-dock__filters, [hidden].tm-dock__empty, [hidden].tm-dot, [hidden].tm-skel { display: none; }
 
 /* ---------- Shared buttons ---------- */
 .tm-btn {
@@ -320,6 +320,44 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
   transition: box-shadow var(--t-med) var(--ease);
 }
 .tm-sw[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--nebula), 0 0 0 4px var(--ink), 0 0 16px color-mix(in srgb, var(--c) 55%, transparent); }
+
+/* ==========================================================
+   Share (step 9): backup button, shared (view-only) list, image preview, link + backup dialogs
+   ========================================================== */
+.tm-index__btns { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--s-2); }
+.tm-empty__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-3); margin-top: var(--s-5); }
+
+.tm-title--static { margin: 0; cursor: default; }
+.tm-badge {
+  display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.04em;
+  color: var(--rift);
+  border: 1px solid color-mix(in srgb, var(--rift) 40%, transparent);
+  background: color-mix(in srgb, var(--rift) 10%, transparent);
+}
+.tm-shbar { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: var(--s-2) 0 var(--s-3); }
+.tm-shared .tm-item { cursor: pointer; }
+.tm-shared .tm-hint { margin-bottom: var(--s-3); }
+.tm-shared #tm-sh-note { margin-top: var(--s-3); margin-bottom: 0; }
+
+/* image dialog: wider so the picture is readable */
+.tm-dlg__sheet:has(.tm-prev) { max-width: 560px; }
+.tm-prev {
+  display: flex; align-items: center; justify-content: center; gap: var(--s-3);
+  min-height: 140px; padding: var(--s-3);
+  border-radius: var(--r-card); border: 1px solid var(--glass-line); background: var(--glass);
+}
+.tm-prev.is-ready { padding: var(--s-2); min-height: 0; }
+.tm-prev__msg { color: var(--ink-dim); font-size: var(--fs-sm); }
+.tm-prev__img {
+  display: block; width: auto; max-width: 100%; height: auto; max-height: 50vh;
+  object-fit: contain; border-radius: var(--r-chip); background: var(--void);
+}
+.tm-dlg__pair--one { grid-template-columns: 1fr; }
+.tm-dlg__sum { font-size: var(--fs-sm); color: var(--ink); }
+.tm-file { position: relative; cursor: pointer; }
+.tm-file:focus-within { border-color: var(--rift); box-shadow: var(--rift-glow); }
 
 /* ---------- Bigger screens ---------- */
 @media (min-width: 600px) {

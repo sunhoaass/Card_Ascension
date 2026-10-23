@@ -246,6 +246,21 @@
 }
 @media (min-width: 900px) { .fx-toast { bottom: var(--toast-b, 24px); } }
 
+/* ---------- Flash (FX.flash) and small loader ---------- */
+.fx-flash {
+  position: absolute; inset: -6px; z-index: 3; pointer-events: none; opacity: 0;
+  border-radius: var(--r-panel);
+  border: 2px solid var(--rift);
+  background: color-mix(in srgb, var(--rift) 8%, transparent);
+  box-shadow: var(--rift-glow), inset 0 0 40px color-mix(in srgb, var(--rift) 22%, transparent);
+}
+.fx-loader {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  border: 2.5px solid var(--glass-line); border-top-color: var(--rift);
+  animation: fx-loader-spin .8s linear infinite;
+}
+@keyframes fx-loader-spin { to { transform: rotate(360deg); } }
+
 /* ==========================================================
    Reduced motion: keep only fades
    ========================================================== */
