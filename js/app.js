@@ -7,6 +7,12 @@
    ========================================================== */
 (function () {
   const PAGES = ["tier", "cards", "support", "grade"];
+  const PAGE_TITLES = {
+    tier: "Card Battle Infinity — Tier List & Card Database",
+    cards: "Cards — Card Battle Infinity",
+    support: "Support — Card Battle Infinity",
+    grade: "Grade (coming soon) — Card Battle Infinity",
+  };
   const STORE_KEY = "cbi:lastPage";
   const RARITY_KEY = "cbi:rarity";
   const TIER_COLOR = { SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d" };
@@ -167,6 +173,7 @@
       else b.removeAttribute("aria-current");
     });
     $(".nav__list").style.setProperty("--i", PAGES.indexOf(page));
+    document.title = PAGE_TITLES[page];   // tab / history / share title follows the page
     store.set(STORE_KEY, page);
     if (changed && page === "tier" && state.loaded) CBI.tier.enter();
     if (changed || scroll) window.scrollTo({ top: 0 });
