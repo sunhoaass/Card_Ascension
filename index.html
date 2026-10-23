@@ -56,6 +56,7 @@
   <link rel="stylesheet" href="css/deck.css">
   <link rel="stylesheet" href="css/support.css">
   <link rel="stylesheet" href="css/grade.css">
+  <link rel="stylesheet" href="css/tiermaker.css">
 </head>
 <body>
   <canvas id="starfield" aria-hidden="true"></canvas>
@@ -146,12 +147,73 @@
         </div>
       </div>
 
-      <!-- My Lists: empty for now, the Tier Maker arrives in step 8 -->
+      <!-- My Lists: the Tier Maker (js/tiermaker.js). #tier/my = all lists · #tier/my/<id> = one list -->
       <div id="tier-my" role="tabpanel" aria-labelledby="tier-tab-my" hidden>
-        <div class="panel glass empty">
-          <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
-          <h2 class="empty__title">No lists yet</h2>
-          <p class="empty__text">Your own tier lists will live here, saved on this device. The tier maker is coming soon.</p>
+        <div id="tm" class="tm" data-no-detail>
+          <p id="tm-warn" class="tm-warn" role="status" hidden>Your lists can’t be saved on this device right now (private browsing, or storage is blocked or full). Anything you make will be gone when you leave the page.</p>
+
+          <div id="tm-loading" class="tm-skel" aria-hidden="true"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+
+          <!-- All lists -->
+          <div id="tm-index" hidden>
+            <div id="tm-index-head" class="tm-index__head">
+              <span id="tm-count" class="tm-index__count"></span>
+              <button class="tm-btn tm-btn--primary fx-press" type="button" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New list</button>
+            </div>
+            <ul id="tm-lists" class="tm-lists"></ul>
+            <div id="tm-empty" class="panel glass empty" hidden>
+              <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M8 3v18"/></svg>
+              <h2 class="empty__title">No lists yet</h2>
+              <p class="empty__text">Make your own tier list. Start with blank rows, or copy the Global ranking and move cards around. Lists are saved on this device.</p>
+              <button class="tm-btn tm-btn--primary fx-press empty__btn" type="button" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New list</button>
+            </div>
+          </div>
+
+          <!-- One list -->
+          <div id="tm-editor" class="tm-editor" hidden>
+            <div class="tm-bar">
+              <button class="iconbtn glass fx-press" type="button" data-act="back" aria-label="All lists"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+              <button id="tm-name" class="tm-title fx-press" type="button" data-act="rename"><span id="tm-name-text" class="tm-title__text"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></svg></button>
+              <button id="tm-undo" class="iconbtn glass fx-press" type="button" data-act="undo" aria-label="Undo" title="Undo (Ctrl+Z)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg></button>
+              <button id="tm-redo" class="iconbtn glass fx-press" type="button" data-act="redo" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"/></svg></button>
+              <button class="iconbtn glass fx-press" type="button" data-act="menu" aria-label="List options"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+            </div>
+            <div class="tm-sub">
+              <span id="tm-meta" class="tm-meta"></span>
+              <button id="tm-compare" class="tm-switch fx-press" type="button" role="switch" aria-checked="false" data-act="compare"><span class="tm-switch__track" aria-hidden="true"><span class="tm-switch__dot"></span></span>Compare with Global</button>
+            </div>
+            <div id="tm-rarity" class="rarity-picker" role="group" aria-label="Rarity for this list"></div>
+            <p id="tm-hint" class="tm-hint"></p>
+
+            <div id="tm-rows" class="tm-rows"></div>
+            <button id="tm-addrow" class="tm-addrow fx-press" type="button" data-act="add-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span id="tm-addrow-text">Add row</span></button>
+
+            <!-- Card pool, docked at the bottom of the screen while the list is in view -->
+            <div id="tm-dock" class="tm-dock glass">
+              <div id="tm-act" class="tm-act" role="toolbar" aria-label="Selected card">
+                <p class="tm-act__text" aria-live="polite"><b id="tm-act-name"></b> <span id="tm-act-hint"></span></p>
+                <div class="tm-act__btns">
+                  <button id="tm-act-details" class="fx-press" type="button" data-act="sel-details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Details</button>
+                  <button id="tm-act-dup" class="fx-press" type="button" data-act="sel-dup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Duplicate</button>
+                  <button id="tm-act-remove" class="fx-press" type="button" data-act="sel-remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>Remove</button>
+                  <button class="fx-press" type="button" data-act="sel-cancel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cancel</button>
+                </div>
+              </div>
+              <div class="tm-dock__head">
+                <label class="field field--search">
+                  <span class="sr-only">Search the pool</span>
+                  <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                  <input id="tm-q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Search cards">
+                </label>
+                <button id="tm-filter" class="iconbtn glass fx-press" type="button" data-act="pool-filter" aria-expanded="false" aria-controls="tm-filters" aria-label="Filters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg><span id="tm-filter-dot" class="tm-dot" hidden></span></button>
+                <button id="tm-hide" class="iconbtn glass fx-press" type="button" data-act="pool-hide" aria-pressed="false" aria-label="Hide cards already in the list" title="Hide placed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+                <button id="tm-fold" class="iconbtn glass fx-press tm-fold" type="button" data-act="pool-fold" aria-expanded="true" aria-controls="tm-pool" aria-label="Hide the card pool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+              </div>
+              <div id="tm-filters" class="tm-dock__filters" hidden></div>
+              <div id="tm-pool" class="tm-pool"></div>
+              <p id="tm-pool-empty" class="tm-dock__empty" hidden></p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -343,5 +405,6 @@
   <script src="js/deck.js"></script>
   <script src="js/support.js"></script>
   <script src="js/grade.js"></script>
+  <script src="js/tiermaker.js"></script>
 </body>
 </html>
