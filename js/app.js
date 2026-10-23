@@ -6,6 +6,7 @@
    The Deck page (Meta Decks, later the deck builder) lives in js/deck.js
    The Support page (list + #support/<id> detail) lives in js/support.js
    The Grade page (card picker + #grade/<id>/<grades> grader) lives in js/grade.js
+   Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
   const PAGES = ["tier", "cards", "support", "deck", "grade"];
@@ -200,8 +201,8 @@
     return PAGES.includes(seg) ? seg : null;
   };
 
-  // #tier = Global · #tier/my = My Lists
-  const tierViewFromHash = () => (/^#\/?tier\/my(?:[/?#]|$)/.test(location.hash) ? "my" : "global");
+  // #tier = Global · #tier/my = My Lists · #tier/s/<data> = a shared list (shown inside My Lists, view only)
+  const tierViewFromHash = () => (/^#\/?tier\/(?:my|s)(?:[/?#]|$)/.test(location.hash) ? "my" : "global");
 
   function route() {
     const m = location.hash.match(/^#\/?card\/([^/?#]+)/);
@@ -287,7 +288,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML,
+    renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
     openCard, closeCard, route,
     cards: { init() {}, open() {}, close() {} },   // replaced by js/cards.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js

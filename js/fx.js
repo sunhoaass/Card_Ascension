@@ -8,6 +8,7 @@
      FX.flip(el, rect)     – shared-element move: el animates from `rect` to where it is now
      FX.fade(el, to)       – fade in (1) or out (0); still works when motion is reduced
      FX.toast(text, opts)  – short message at the bottom (opts: { action: { label, fn }, duration, bottom })
+     FX.flash(el)          – short glow around el after it was saved / copied (image saved, link copied)
      FX.starfield(canvas)  – slow parallax star background
      FX.reduced            – true when the user asked for less motion
    ========================================================== */
@@ -155,6 +156,27 @@
     else toastEl.style.setProperty("--toast-b", Math.round(bottom) + "px");
     toastEl.classList.remove("is-on"); void toastEl.offsetWidth; toastEl.classList.add("is-on");
     toastTimer = setTimeout(hide, duration);
+  };
+
+  /* ---------- Flash (a short glow around something that was just saved / copied) ----------
+     FX.flash(boardEl) · transform + opacity only · motion reduced = a plain fade */
+  FX.flash = function (el) {
+    if (!el || !el.isConnected || !el.animate) return null;
+    const ring = document.createElement("span");
+    ring.className = "fx-flash";
+    ring.setAttribute("aria-hidden", "true");
+    const restore = getComputedStyle(el).position === "static";
+    if (restore) el.style.position = "relative";
+    el.appendChild(ring);
+    const a = ring.animate(
+      FX.reduced
+        ? [{ opacity: 0 }, { opacity: 0.8, offset: 0.3 }, { opacity: 0 }]
+        : [{ opacity: 0, transform: "scale(.985)" }, { opacity: 1, transform: "scale(1)", offset: 0.3 }, { opacity: 0, transform: "scale(1.01)" }],
+      { duration: FX.reduced ? 450 : 700, easing: "cubic-bezier(.2,.8,.2,1)" }
+    );
+    const done = () => { ring.remove(); if (restore) el.style.position = ""; };
+    a.addEventListener("finish", done); a.addEventListener("cancel", done);
+    return a;
   };
 
   /* ---------- Starfield (canvas, 3 parallax layers) ---------- */

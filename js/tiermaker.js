@@ -6,6 +6,8 @@
    · Moving cards: drag (Pointer Events: mouse moves right away, touch = hold ~0.26s) or tap a card, then tap a row.
      The pool always holds the whole library: dragging out of it makes a copy, so a card can sit in a list more than once.
    · Undo / Redo: 50 steps per list (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
+   · Step 9 (js/share.js): list menu has Save as image / Share link · #tier/s/<data> opens a shared list view only
+     (with "Save a copy") · Backup button (export / import everything) · registers its lists with the backup file
    Loaded after every other page script (needs C.renderCard from app.js and C.support.card from support.js).
    tier.js calls C.tm.init() once and C.tm.show(listId|null) whenever the My Lists tab is showing.
    ========================================================== */
@@ -16,6 +18,7 @@
   const KEY = "cbi:tierlists";
   const PREF_KEY = "cbi:tmPrefs";                 // { compare, poolOpen, hidePlaced }
   const HISTORY_MAX = 50, ROW_MAX = 20, LABEL_MAX = 24, NAME_MAX = 40;
+  const LIST_MAX = 200, ITEM_MAX = 600;            // most lists / cards we accept from a backup or a shared link
   const HOLD_MS = 260;                             // touch: hold this long before a card lifts
   const SLOP = 10;                                 // touch: moving further than this before the lift = scrolling
   const EASE = "cubic-bezier(.2,.8,.2,1)";
@@ -34,13 +37,18 @@
     down: svg('<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>'),
     eraser: svg('<path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/>'),
     pencil: svg('<path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/>'),
+    ...((C.share && C.share.icons) || {}),         // image, link, download, check... (js/share.js)
   };
 
   const ui = {};
   let ready = false, canSave = true;
   let lists = [];                 // every saved list, in the order shown
   let cur = null;                 // the list open in the editor
-  let mode = null;                // "index" | "editor"
+  let mode = null;                // "index" | "editor" | "shared"
+  let shared = null;              // the list in a #tier/s/<data> link: { data, list, copyId } (view only)
+  let shData = null;              // the link data being shown or loaded
+  let shToken = 0;                // newest link load (an older one that finishes late is ignored)
+  const shCopies = new Map();     // link data -> id of the copy saved from it (so Save a copy never makes a second one)
   let sel = null;                 // { el, uid } a placed card · { el, pool: id } a pool card
   let live = null;                // rows snapshot while the row dialog edits live (one undo step for the whole dialog)
   let indexY = 0;
@@ -474,10 +482,10 @@
     clearSel();
     if (commit((rows) => { const f = locate(rows, s.uid); if (f) f.row.items.splice(f.index, 1); }, { anim: true })) undoToast(`Removed ${s.el.dataset.name}`);
   }
-  function details(el) {
+  function details(el, type = cur.type) {
     const id = el.dataset.id;
-    if (!lookup(cur.type, id)) return;
-    if (cur.type === "card") { C.openCard(id, $(".card", el)); return; }
+    if (!lookup(type, id)) return;
+    if (type === "card") { C.openCard(id, $(".card", el)); return; }
     // support detail lives in the Support tab; keep our scroll position so Back lands exactly here (app.js reads tierY)
     try { history.replaceState({ ...(history.state || {}), tierY: window.scrollY }, ""); } catch {}
     C.support.open(id, $(".scard", el));
@@ -1068,10 +1076,53 @@
     FX.toast(`Deleted “${l.name}”`);
   }
 
+  /* ==========================================================
+     Share (step 9): save as image · share link · open a shared list · backup
+     ========================================================== */
+  // what the image needs to know about a list (js/share.js draws it)
+  const boardSpec = (l) => ({ id: l.id, title: l.name, type: l.type, rarity: l.type === "card" ? l.rarity : null, rows: l.rows.map((r) => ({ label: r.label, color: r.color, items: r.items.map((it) => it.id) })) });
+
+  // a list packed for a link: palette colours by position in COLORS (never reorder that list), ids as they are
+  function toPayload(l) {
+    const p = { v: 1, t: l.type, n: l.name, rows: l.rows.map((r) => [r.label, Math.max(0, COLORS.indexOf(r.color)), r.items.map((it) => it.id)]) };
+    if (l.type === "card") p.r = l.rarity;
+    return p;
+  }
+  // ...and back, checking everything (a link is typed by strangers). Returns a clean list or null.
+  function fromPayload(p) {
+    if (!p || p.v !== 1 || (p.t !== "card" && p.t !== "support") || typeof p.n !== "string" || !Array.isArray(p.rows) || !p.rows.length || p.rows.length > ROW_MAX) return null;
+    let total = 0;
+    const rows = [];
+    for (const r of p.rows) {
+      if (!Array.isArray(r) || typeof r[0] !== "string" || !Array.isArray(r[2])) return null;
+      const items = r[2].filter((x) => typeof x === "string" && x && x.length <= 80);
+      total += items.length;
+      if (total > ITEM_MAX) return null;
+      const color = Number.isInteger(r[1]) && r[1] >= 0 && r[1] < COLORS.length ? COLORS[r[1]] : "--t-d";
+      rows.push({ id: newId("r"), label: r[0], color, items: items.map((id) => ({ uid: newId("i"), id })) });
+    }
+    return clean({ id: newId("tl_"), name: p.n, type: p.t, rarity: p.r, rows, created: now(), updated: now() });
+  }
+
+  async function saveImage(l, flashEl) {
+    if (!C.share) return;
+    await C.share.imageDialog(boardSpec(l), { flashEl });
+  }
+  async function shareLink(l, flashEl) {
+    if (!C.share) return;
+    let url;
+    try { url = await C.share.makeLink("tier", toPayload(l)); } catch { FX.toast("Couldn’t make the link"); return; }
+    await C.share.linkDialog({ url, title: l.name, flashEl });
+  }
+
   async function listMenu() {
+    const empty = !countItems(cur);
     const res = await dialog({
       title: cur.name,
       html: `<div class="tm-menu">
+          <button type="button" class="tm-btn fx-press" data-dlg="image"${empty ? " disabled" : ""}>${ICON.image || ""}Save as image</button>
+          <button type="button" class="tm-btn fx-press" data-dlg="link"${empty ? " disabled" : ""}>${ICON.link || ""}Share link</button>
+          ${empty ? `<p class="tm-field__note">Add a card to share this list.</p>` : ""}
           <button type="button" class="tm-btn fx-press" data-dlg="rename">${ICON.pencil}Rename</button>
           <button type="button" class="tm-btn fx-press" data-dlg="dup">${ICON.copy}Duplicate</button>
           <button type="button" class="tm-btn tm-btn--danger fx-press" data-dlg="del">${ICON.trash}Delete list</button>
@@ -1079,9 +1130,130 @@
       actions: [{ label: "Close", value: "cancel" }],
     });
     if (!res || !cur) return;
-    if (res.action === "rename") renameList();
+    if (res.action === "image") saveImage(cur, ui.rows);
+    else if (res.action === "link") shareLink(cur, ui.rows);
+    else if (res.action === "rename") renameList();
     else if (res.action === "dup") duplicateList(cur.id);
     else if (res.action === "del") deleteList(cur.id);
+  }
+
+  /* ---------- A shared list (#tier/s/<data>): view only, "Save a copy" makes it yours ---------- */
+  function showBad(browser) {
+    ui.shBadTitle.textContent = browser ? "Your browser can’t open this link" : "This link can’t be opened";
+    ui.shBadText.textContent = browser
+      ? "It uses a feature your browser doesn’t have yet. Update the browser, or try another one."
+      : "The link may be cut off or mistyped. Ask for it again, and make sure you copy all of it.";
+    ui.shBad.hidden = false;
+    FX.fade(ui.shBad, 1, { duration: 300 });
+  }
+
+  function paintSharedMeta() {
+    const l = shared.list, card = l.type === "card";
+    ui.shName.textContent = l.name;
+    ui.shMeta.textContent = `${card ? "Cards" : "Support"}${card ? " · " + l.rarity : ""} · ${plural(l.rows.length, "row", "rows")} · ${nounOf(l.type, countItems(l))}`;
+    const mine = shared.copyId && lists.some((x) => x.id === shared.copyId);
+    ui.shCopyText.textContent = mine ? "Open my copy" : "Save a copy";
+  }
+  function paintSharedRows() {
+    const l = shared.list;
+    let missing = 0;
+    const kids = l.rows.map((r) => {
+      const el = document.createElement("section");
+      el.className = "tm-row glass";
+      el.style.setProperty("--tc", `var(${r.color})`);
+      const text = r.label.trim();
+      el.setAttribute("aria-label", `Row ${text || "with no label"}, ${nounOf(l.type, r.items.length)}`);
+      el.innerHTML = `<div class="tm-row__label" data-len="${text.length <= 2 ? "s" : text.length <= 5 ? "m" : "l"}"><span class="tm-row__text"></span></div><div class="tm-row__items"></div>`;
+      el.firstElementChild.firstElementChild.textContent = text;
+      const wrap = el.lastElementChild;
+      if (!r.items.length) {
+        const p = document.createElement("p");
+        p.className = "tm-row__empty";
+        p.textContent = "Empty row";
+        wrap.appendChild(p);
+      }
+      r.items.forEach((it) => {
+        const item = makeItem(it.id, l.type, l.rarity);
+        if (item.classList.contains("tm-item--missing")) missing++;
+        item.setAttribute("aria-label", `${item.dataset.name}, row ${text || "with no label"}`);
+        wrap.appendChild(item);
+      });
+      return el;
+    });
+    ui.shRows.replaceChildren(...kids);
+    ui.shNote.hidden = !missing;
+    ui.shNote.textContent = missing ? `${plural(missing, "card here isn’t", "cards here aren’t")} in the library yet, so ${missing === 1 ? "it shows" : "they show"} as a dashed slot.` : "";
+  }
+
+  async function openShared(data) {
+    if (mode === "shared" && shData === data) return;       // same link again (Back from a card's details): leave it exactly as it is
+    const token = ++shToken;
+    endLive(); clearSel();
+    if (drag.on) finishDrag(false);
+    mode = "shared"; shData = data; cur = null; shared = null;
+    ui.index.hidden = true; ui.editor.hidden = true; ui.shared.hidden = true; ui.shBad.hidden = true; ui.shLoad.hidden = false;
+    window.scrollTo({ top: 0 });
+    setTitle();
+    const res = C.share ? await C.share.readLink(data) : null;
+    if (token !== shToken || mode !== "shared") return;      // the person already went somewhere else
+    ui.shLoad.hidden = true;
+    const list = res && res.payload ? fromPayload(res.payload) : null;
+    if (!list) { showBad(!!(res && res.error === "browser")); setTitle(); return; }
+    shared = { data, list, copyId: shCopies.get(data) || null };
+    paintSharedMeta();
+    paintSharedRows();
+    ui.shared.hidden = false;
+    ui.shared.classList.remove("fx-page-in"); void ui.shared.offsetWidth; ui.shared.classList.add("fx-page-in");
+    FX.stagger(ui.shRows, 45, { cls: "fx-up", max: 8, cleanup: true });
+    setTitle();
+  }
+
+  function saveCopy() {
+    if (mode !== "shared" || !shared) return;
+    const had = shared.copyId && lists.find((x) => x.id === shared.copyId);
+    if (had) { openList(had.id); return; }                  // already saved once: open that copy, never a second one
+    const src = shared.list, t = now();
+    const taken = new Set(lists.map((x) => x.name));
+    const l = {
+      id: newId("tl_"), name: taken.has(src.name) ? copyName(src.name) : src.name, type: src.type, rarity: src.rarity,
+      rows: src.rows.map((r) => ({ id: newId("r"), label: r.label, color: r.color, items: r.items.map((it) => ({ uid: newId("i"), id: it.id })) })),
+      created: t, updated: t,
+    };
+    lists.unshift(l);
+    save();
+    shared.copyId = l.id;
+    shCopies.set(shared.data, l.id);
+    paintSharedMeta();
+    FX.flash(ui.shRows);
+    FX.toast(canSave ? `Saved “${l.name}” to My Lists` : `Copied “${l.name}” for this visit only`, { action: { label: "Open", fn: () => openList(l.id) } });
+  }
+
+  /* ---------- Backup file: the lists, in and out (js/share.js asks for these) ---------- */
+  // merge: add lists you don't have; the same list in both keeps the one edited last · replace: the backup is all there is
+  function importLists(data, how) {
+    const incoming = (Array.isArray(data) ? data : []).slice(0, LIST_MAX).map(clean).filter(Boolean);
+    let changed = 0;
+    if (how === "replace") {
+      const seen = new Set();
+      lists = incoming.filter((l) => !seen.has(l.id) && seen.add(l.id));
+      changed = lists.length;
+      hist.clear();
+    } else {
+      const added = [];
+      incoming.forEach((n) => {
+        const i = lists.findIndex((l) => l.id === n.id);
+        if (i < 0) { if (!added.some((a) => a.id === n.id)) { added.push(n); changed++; } }
+        else if (String(n.updated) > String(lists[i].updated)) { lists[i] = n; hist.delete(n.id); changed++; }
+      });
+      lists = [...added, ...lists].slice(0, LIST_MAX);
+    }
+    save();
+    if (mode === "editor" && cur) {
+      const again = lists.find((l) => l.id === cur.id);
+      if (!again) back();
+      else if (again !== cur) { cur = again; fillHeader(); renderRows(); }
+    } else if (mode === "index") flipIndex(() => renderIndex(false));
+    return changed;
   }
 
   /* Row settings: label, colour, order (applied as you go), clear / delete */
@@ -1217,7 +1389,9 @@
     ui.rows.replaceChildren();
     rowEls.clear();
     itemEls.clear();
+    shToken++; shData = null; shared = null;
     ui.index.hidden = true;
+    ui.shared.hidden = ui.shBad.hidden = ui.shLoad.hidden = true;
     ui.editor.hidden = false;
     fillHeader();
     buildPool();
@@ -1232,24 +1406,31 @@
     endLive();
     clearSel();
     if (drag.on) finishDrag(false);
+    const fromShared = mode === "shared";
+    shToken++; shData = null; shared = null;
     mode = "index";
     cur = null;
     ui.editor.hidden = true;
+    ui.shared.hidden = ui.shBad.hidden = ui.shLoad.hidden = true;
     ui.index.hidden = false;
     renderIndex(true);
-    if (fromEditor) {
+    if (fromEditor || fromShared) {
       ui.index.classList.remove("fx-page-in"); void ui.index.offsetWidth; ui.index.classList.add("fx-page-in");
       window.scrollTo({ top: indexY });
     }
   }
   function setTitle() {
     if (state.page !== "tier" || !mode) return;
-    document.title = mode === "editor" && cur ? `${cur.name} — My Tier Lists — Card Battle Infinity` : "My Tier Lists — Card Battle Infinity";
+    document.title = mode === "editor" && cur ? `${cur.name} — My Tier Lists — Card Battle Infinity`
+      : mode === "shared" ? `${shared ? shared.list.name + " — " : ""}Shared Tier List — Card Battle Infinity`
+      : "My Tier Lists — Card Battle Infinity";
   }
 
-  /* Called by tier.js every time My Lists is showing (id = the list in #tier/my/<id>, or null for all lists) */
-  function show(id) {
+  /* Called by tier.js every time My Lists is showing (id = the list in #tier/my/<id>, or null for all lists;
+     sharedData = the packed list in #tier/s/<data>, or null) */
+  function show(id, sharedData) {
     if (!ready) return;
+    if (sharedData) { openShared(sharedData); return; }       // #tier/s/<data> (openShared sets the title itself)
     if (id && !lists.some((l) => l.id === id)) {            // unknown or deleted list in the link -> all lists
       try { history.replaceState(null, "", "#tier/my"); } catch {}
       id = null;
@@ -1272,6 +1453,9 @@
       case "back": back(); break;
       case "rename": renameList(); break;
       case "menu": listMenu(); break;
+      case "backup": if (C.share) C.share.backupDialog(); break;
+      case "sh-copy": saveCopy(); break;
+      case "sh-image": if (shared) saveImage(shared.list, ui.shRows); break;
       case "undo": step(-1); break;
       case "redo": step(1); break;
       case "compare": setCompare(!prefs.compare); break;
@@ -1301,6 +1485,11 @@
     if (fb) { pf[fb.dataset.pf] = pf[fb.dataset.pf] === fb.dataset.v ? "" : fb.dataset.v; applyPool(); return; }
     const b = e.target.closest("[data-act]");
     if (b && ui.root.contains(b)) { act(b.dataset.act, b); return; }
+    if (mode === "shared") {                                    // view only: a tap on a card = its details
+      const it = e.target.closest(".tm-item");
+      if (it && shared && ui.shRows.contains(it)) details(it, shared.list.type);
+      return;
+    }
     if (mode !== "editor") return;
     const item = e.target.closest(".tm-item");
     if (item && (ui.rows.contains(item) || ui.pool.contains(item))) { select(item); return; }
@@ -1317,7 +1506,12 @@
     const t = e.target;
     const inField = t.matches && t.matches("input, textarea, select");
     const item = t.closest && t.closest(".tm-item");
-    if (item && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); select(item); return; }
+    if (item && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      if (mode === "shared") { if (shared && ui.shRows.contains(item)) details(item, shared.list.type); }
+      else if (mode === "editor") select(item);
+      return;
+    }
     if (e.key === "Escape" && sel) { e.preventDefault(); clearSel(); return; }
     if ((e.key === "Delete" || e.key === "Backspace") && sel && sel.uid && !inField) { e.preventDefault(); const f = sel.el; removeSelected(); if (f.isConnected) f.focus(); }
   }
@@ -1369,6 +1563,8 @@
       actDetails: $("#tm-act-details"), actDup: $("#tm-act-dup"), actRemove: $("#tm-act-remove"),
       q: $("#tm-q"), filterBtn: $("#tm-filter"), filterDot: $("#tm-filter-dot"), hide: $("#tm-hide"), fold: $("#tm-fold"),
       filters: $("#tm-filters"), pool: $("#tm-pool"), poolEmpty: $("#tm-pool-empty"),
+      shared: $("#tm-shared"), shLoad: $("#tm-sh-load"), shBad: $("#tm-sh-bad"), shBadTitle: $("#tm-sh-bad-title"), shBadText: $("#tm-sh-bad-text"),
+      shName: $("#tm-sh-name"), shMeta: $("#tm-sh-meta"), shCopyText: $("#tm-sh-copy-text"), shRows: $("#tm-sh-rows"), shNote: $("#tm-sh-note"),
     });
     if (!ui.root) return;
     cardById = new Map(state.cards.map((c) => [c.id, c]));
@@ -1392,11 +1588,19 @@
     loadPrefs();
     load();
     ui.warn.hidden = canSave;
+    C.dialog = dialog;                                    // js/share.js (and the Deck page later) use the same in-page dialogs
+    if (C.share) C.share.provide("tierlists", {
+      label: "Tier lists", kind: "array",
+      get: () => JSON.parse(JSON.stringify(lists)),
+      count: (v) => v.length,
+      noun: (n) => plural(n, "tier list", "tier lists"),
+      apply: importLists,
+    });
     ui.rarity.innerHTML = rarityChips();
     bind();
     ui.loading.remove();
     ready = true;
   }
 
-  C.tm = { init, show };
+  C.tm = { init, show, mode: () => mode };
 })();

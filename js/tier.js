@@ -1,8 +1,9 @@
 /* ==========================================================
    Card Battle Infinity — Tier List (step 3, reshaped in step 7)
-   · Global | My Lists tabs (#tier = Global, #tier/my = My Lists, #tier/my/<id> = one list in the Tier Maker)
+   · Global | My Lists tabs (#tier = Global, #tier/my = My Lists, #tier/my/<id> = one list in the Tier Maker,
+     #tier/s/<data> = a list someone shared, view only, shown inside My Lists)
    · My Lists (the Tier Maker, step 8) lives in js/tiermaker.js: this file calls C.tm.init() once and
-     C.tm.show(listId|null) every time My Lists is showing
+     C.tm.show(listId|null, sharedData|null) every time My Lists is showing
    · Global is view-only and has a Cards | Support switch (they never share a list)
      - Cards: rows SS–D by Overall, rarity picker shared with the Cards page
      - Support: rows SS–D by Value (data/support.json), no rarity
@@ -21,6 +22,7 @@
     cards: "Every ranked card by Overall score, from SS at the top to D at the bottom. Pick a rarity to see its stats. Tap a card for the full breakdown.",
     support: "Every ranked support card by Value, from SS at the top to D at the bottom. Tap one for the full breakdown.",
     my: "Your own tier lists, saved on this device.",
+    shared: "A tier list someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
 
   const ui = {};
@@ -127,7 +129,8 @@
   }
 
   function setLead() {
-    ui.lead.textContent = view === "my" ? LEADS.my : LEADS[kind];
+    const shared = view === "my" && C.tm && C.tm.mode && C.tm.mode() === "shared";
+    ui.lead.textContent = shared ? LEADS.shared : view === "my" ? LEADS.my : LEADS[kind];
   }
 
   function animateIn(el) {
@@ -136,6 +139,8 @@
 
   // #tier/my/<id> -> the list id (null = all lists)
   const listFromHash = () => { const m = location.hash.match(/^#\/?tier\/my\/([^/?#]+)/); return m ? decodeURIComponent(m[1]) : null; };
+  // #tier/s/<data> -> a list somebody shared (packed in the link by js/share.js), or null
+  const sharedFromHash = () => { const m = location.hash.match(/^#\/?tier\/s\/([^/?#]+)/); return m ? m[1] : null; };
 
   /* Global | My Lists. Called by the router on every hash change and tab tap. */
   function show(name) {
@@ -145,7 +150,8 @@
     const changed = next !== view;
     view = next;
     pageTitle();                                  // showPage() resets the title on every route, so set it every time
-    if (next === "my" && C.tm) C.tm.show(listFromHash());   // all lists, or the list in the link (also sets the title)
+    if (next === "my" && C.tm) C.tm.show(listFromHash(), sharedFromHash());   // all lists, the list in the link, or a shared list (also sets the title)
+    setLead();
     if (!changed) return;
 
     ui.tabs.style.setProperty("--i", next === "my" ? 1 : 0);

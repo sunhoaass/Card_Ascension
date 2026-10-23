@@ -75,6 +75,34 @@
   }
   const get = (id) => (saved[id] ? saved[id].slice() : null);
 
+  /* ---------- Backup (js/share.js): everything graded goes in / comes out as one object { id: [4 grades] } ---------- */
+  // merge: grades you already have stay, the backup fills in the cards you haven't graded · replace: the backup is all there is
+  function importGrades(data, how) {
+    const incoming = {};
+    Object.keys(data && typeof data === "object" ? data : {}).slice(0, 5000).forEach((id) => {
+      const a = data[id];
+      if (!Array.isArray(a) || a.length !== 4) return;
+      const g = a.map(clampG);
+      if (any(g)) incoming[String(id).slice(0, 80)] = g;
+    });
+    const before = saved;
+    saved = how === "replace" ? incoming : { ...incoming, ...before };
+    C.store.set(KEY, JSON.stringify(saved));
+    tiles.forEach((el, id) => cardBadge(el, saved[id] ? overall(saved[id]) : 0));
+    if (items.length && ui.grid) applyList();                       // the "My graded cards" filter may have changed
+    return how === "replace" ? Object.keys(incoming).length : Object.keys(saved).filter((id) => !before[id]).length;
+  }
+  function provideBackup() {
+    if (!C.share) return;
+    C.share.provide("grades", {
+      label: "Card grades", kind: "object",
+      get: () => JSON.parse(JSON.stringify(saved)),
+      count: (v) => Object.keys(v).length,
+      noun: (n) => `${n} graded ${n === 1 ? "card" : "cards"}`,
+      apply: importGrades,
+    });
+  }
+
   /* ---------- Shared bits ---------- */
   function orbHTML(g, { size = "", label = "" } = {}) {
     const b = band(g);
@@ -496,6 +524,7 @@
       search: $("#grade-search"), gradedChip: $("#grade-graded"), count: $("#grade-count"), reset: $("#grade-reset"),
     });
     saved = load();
+    provideBackup();
     items = state.cards.filter((c) => c && c.id && c.base).slice().sort(compare);
     items.forEach((c) => byId.set(c.id, c));
     bindDetail();
