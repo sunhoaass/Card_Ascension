@@ -53,6 +53,7 @@
   <link rel="stylesheet" href="css/fx.css">
   <link rel="stylesheet" href="css/cards.css">
   <link rel="stylesheet" href="css/tier.css">
+  <link rel="stylesheet" href="css/deck.css">
   <link rel="stylesheet" href="css/support.css">
   <link rel="stylesheet" href="css/grade.css">
 </head>
@@ -88,6 +89,9 @@
       <li><button class="nav__btn fx-press" data-page="support" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>
         Support</button></li>
+      <li><button class="nav__btn fx-press" data-page="deck" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="11" height="15" rx="2" transform="rotate(-9 8.5 13.5)"/><rect x="10" y="3" width="11" height="15" rx="2" transform="rotate(8 15.5 10.5)"/></svg>
+        Deck</button></li>
       <li><button class="nav__btn fx-press" data-page="grade" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
         Grade</button></li>
@@ -97,31 +101,75 @@
   <main class="main">
     <p id="data-error" class="panel glass" hidden>Card data didn't load. Check your connection and refresh the page.</p>
 
-    <!-- Tier List + Meta Decks: js/tier.js -->
+    <!-- Tier List: Global (Cards | Support) + My Lists, in js/tier.js -->
     <section id="page-tier" class="page" hidden aria-labelledby="tier-title">
       <div class="page__head">
         <h1 id="tier-title" class="page__title">Tier List</h1>
-        <p class="page__lead">Every ranked card by Overall score, from SS at the top to D at the bottom. Pick a rarity to see its stats. Tap a card for the full breakdown.</p>
-        <button id="tier-jump" class="linkbtn tier-jump" type="button" hidden>Jump to Meta Decks ↓</button>
+        <p id="tier-lead" class="page__lead"></p>
       </div>
 
-      <div id="tier-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
-      <div id="tier-list" class="tier-list"></div>
-      <p id="tier-note" class="tier-note" hidden></p>
-
-      <div id="tier-none" class="panel glass empty" hidden>
-        <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
-        <h2 id="tier-none-title" class="empty__title">No cards yet</h2>
-        <p id="tier-none-text" class="empty__text"></p>
+      <div id="tier-tabs" class="seg glass" role="tablist" aria-label="Tier list type" style="--n:2;--i:0">
+        <span class="seg__ind" aria-hidden="true"></span>
+        <button id="tier-tab-global" class="seg__btn fx-press" type="button" role="tab" data-tab="global" aria-selected="true" aria-controls="tier-global">Global</button>
+        <button id="tier-tab-my" class="seg__btn fx-press" type="button" role="tab" data-tab="my" aria-selected="false" aria-controls="tier-my" tabindex="-1">My Lists</button>
       </div>
+
+      <!-- Global: view only, ranked by the site -->
+      <div id="tier-global" role="tabpanel" aria-labelledby="tier-tab-global">
+        <div id="tier-kind" class="seg seg--sub glass" role="group" aria-label="Show cards or support" style="--n:2;--i:0">
+          <span class="seg__ind" aria-hidden="true"></span>
+          <button class="seg__btn fx-press" type="button" data-kind="cards" aria-pressed="true">Cards</button>
+          <button class="seg__btn fx-press" type="button" data-kind="support" aria-pressed="false">Support</button>
+        </div>
+
+        <div id="tier-cards-view">
+          <div id="tier-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
+          <div id="tier-list" class="tier-list"></div>
+          <p id="tier-note" class="tier-note" hidden></p>
+
+          <div id="tier-none" class="panel glass empty" hidden>
+            <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+            <h2 id="tier-none-title" class="empty__title">No cards yet</h2>
+            <p id="tier-none-text" class="empty__text"></p>
+          </div>
+        </div>
+
+        <div id="tier-support-view" hidden>
+          <div id="tier-slist" class="tier-list"></div>
+          <p id="tier-snote" class="tier-note" hidden></p>
+
+          <div id="tier-snone" class="panel glass empty" hidden>
+            <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>
+            <h2 id="tier-snone-title" class="empty__title">No support cards yet</h2>
+            <p id="tier-snone-text" class="empty__text"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Lists: empty for now, the Tier Maker arrives in step 8 -->
+      <div id="tier-my" role="tabpanel" aria-labelledby="tier-tab-my" hidden>
+        <div class="panel glass empty">
+          <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
+          <h2 class="empty__title">No lists yet</h2>
+          <p class="empty__text">Your own tier lists will live here, saved on this device. The tier maker is coming soon.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deck: Meta Decks for now (js/deck.js), the deck builder comes in step 10 -->
+    <section id="page-deck" class="page" hidden aria-labelledby="deck-title">
+      <div class="page__head">
+        <h1 id="deck-title" class="page__title">Deck</h1>
+        <p class="page__lead">Meta decks: five-card teams that work well together, with the slot each card plays in and the support to run. Pick a rarity to see the stats. Tap a card for the full breakdown. Building your own decks is coming soon.</p>
+      </div>
+
+      <div id="deck-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
 
       <section id="meta-decks" class="decks" aria-labelledby="decks-title">
-        <div class="page__head">
-          <h2 id="decks-title" class="page__subtitle">Meta Decks</h2>
-          <p class="page__lead">Five-card teams that work well together, with the slot each card plays in and the support to run.</p>
-        </div>
+        <h2 id="decks-title" class="page__subtitle">Meta Decks</h2>
         <div id="deck-list" class="deck-list"></div>
         <div id="decks-none" class="panel glass empty" hidden>
+          <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="11" height="15" rx="2" transform="rotate(-9 8.5 13.5)"/><rect x="10" y="3" width="11" height="15" rx="2" transform="rotate(8 15.5 10.5)"/></svg>
           <h2 class="empty__title">No meta decks yet</h2>
           <p class="empty__text">Recommended decks will show here once enough cards have been analysed.</p>
         </div>
@@ -292,6 +340,7 @@
   <script src="js/app.js"></script>
   <script src="js/cards.js"></script>
   <script src="js/tier.js"></script>
+  <script src="js/deck.js"></script>
   <script src="js/support.js"></script>
   <script src="js/grade.js"></script>
 </body>
