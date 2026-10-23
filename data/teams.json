@@ -1,0 +1,32 @@
+[
+  {
+    "id": "mock-frontline-rush",
+    "name": "Frontline Rush",
+    "mock": true,
+    "slots": [
+      { "card": "tidecaller" },
+      { "card": "bald-cadet" },
+      { "card": "ember-ronin" },
+      { "card": "stone-warden" },
+      { "card": "void-archer" }
+    ],
+    "support": ["heal-orb"],
+    "notes": "Sample deck. Real decks are added after the cards are analysed.",
+    "updated": "2026-10-23"
+  },
+  {
+    "id": "mock-slow-burn",
+    "name": "Slow Burn",
+    "mock": true,
+    "slots": [
+      { "card": "stone-warden" },
+      { "card": "tidecaller" },
+      { "card": "void-archer", "support": "shield-rune" },
+      { "card": "ember-ronin" },
+      { "card": "bald-cadet" }
+    ],
+    "support": ["shield-rune", "heal-orb"],
+    "notes": "Sample deck. Slot 3 shows a per-card support pick.",
+    "updated": "2026-10-23"
+  }
+]
