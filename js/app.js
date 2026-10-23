@@ -3,6 +3,7 @@
    Router (4 tabs + card detail hash) · data loading · shared card renderer
    The Cards page (search / filters / sort) and the card detail view live in js/cards.js
    The Tier List page and Meta Decks live in js/tier.js
+   The Support page (list + #support/<id> detail) lives in js/support.js
    ========================================================== */
 (function () {
   const PAGES = ["tier", "cards", "support", "grade"];
@@ -185,12 +186,16 @@
     }
     if (state.loaded) CBI.cards.close();
     showPage(pageFromHash() || (state.page === null ? store.get(STORE_KEY) || "tier" : "tier"));
+    // #support/<id> = support detail inside the Support tab · any other hash = back to the support list
+    const sm = location.hash.match(/^#\/?support\/([^/?#]+)/);
+    if (state.loaded) CBI.support.show(sm ? decodeURIComponent(sm[1]) : null);
   }
 
-  // Tab buttons: no history entries, same as before
+  // Tab buttons: no history entries, same as before · tapping a tab always lands on its list
   function go(page) {
     showPage(page, { scroll: true });
     if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
+    if (state.loaded) CBI.support.show(null, { restore: false });
   }
 
   // Card detail: each open pushes a history entry so the phone's Back button closes it
@@ -224,7 +229,7 @@
       const [meta, cards, support, teams] = await Promise.all([
         loadJSON("data/meta.json"),
         loadJSON("data/cards.json"),
-        loadJSON("data/support.json").catch(() => []),   // added in step 4
+        loadJSON("data/support.json").catch(() => []),   // support cards (step 4); the page copes without it
         loadJSON("data/teams.json").catch(() => []),     // Meta Decks; the page copes without it
       ]);
       state.meta = meta; state.cards = cards; state.support = support; state.teams = teams;
@@ -244,15 +249,17 @@
     state.loaded = true;
     CBI.tier.init();
     CBI.cards.init();
-    route();   // opens a #card/<id> deep link now that the data is here
+    CBI.support.init();
+    route();   // opens a #card/<id> or #support/<id> deep link now that the data is here
   }
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf,
-    openCard, closeCard,
+    renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt,
+    openCard, closeCard, route,
     cards: { init() {}, open() {}, close() {} },   // replaced by js/cards.js
     tier: { init() {}, enter() {} },                // replaced by js/tier.js
+    support: { init() {}, show() {} },              // replaced by js/support.js
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
