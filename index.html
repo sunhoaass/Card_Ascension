@@ -48,15 +48,15 @@
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"></noscript>
-  <link rel="stylesheet" href="css/tokens.css?v=9.6">
-  <link rel="stylesheet" href="css/base.css?v=9.6">
-  <link rel="stylesheet" href="css/fx.css?v=9.6">
-  <link rel="stylesheet" href="css/cards.css?v=9.6">
-  <link rel="stylesheet" href="css/tier.css?v=9.6">
-  <link rel="stylesheet" href="css/deck.css?v=9.6">
-  <link rel="stylesheet" href="css/support.css?v=9.6">
-  <link rel="stylesheet" href="css/grade.css?v=9.6">
-  <link rel="stylesheet" href="css/tiermaker.css?v=9.6">
+  <link rel="stylesheet" href="css/tokens.css?v=10">
+  <link rel="stylesheet" href="css/base.css?v=10">
+  <link rel="stylesheet" href="css/fx.css?v=10">
+  <link rel="stylesheet" href="css/cards.css?v=10">
+  <link rel="stylesheet" href="css/tier.css?v=10">
+  <link rel="stylesheet" href="css/deck.css?v=10">
+  <link rel="stylesheet" href="css/support.css?v=10">
+  <link rel="stylesheet" href="css/grade.css?v=10">
+  <link rel="stylesheet" href="css/tiermaker.css?v=10">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -296,26 +296,123 @@
       </div>
     </section>
 
-    <!-- Deck: Meta Decks for now (js/deck.js), the deck builder comes in step 10 -->
+    <!-- Deck: My Decks = the deck builder (step 10) · Meta Decks = recommended teams (step 7). All in js/deck.js -->
     <section id="page-deck" class="page" hidden aria-labelledby="deck-title">
       <div class="page__head">
         <p class="page__eyebrow">The Casebook</p>
         <h1 id="deck-title" class="page__title">Deck</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead">Meta decks: five-card teams that work well together, with the slot each card plays in and the support to run. Pick a rarity to see the stats. Tap a card for the full breakdown. Building your own decks is coming soon.</p>
+        <p id="deck-lead" class="page__lead">Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. Decks are saved on this device.</p>
       </div>
 
-      <div id="deck-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
+      <div id="deck-tabs" class="seg glass" role="tablist" aria-label="Deck type" style="--n:2;--i:0">
+        <span class="seg__ind" aria-hidden="true"></span>
+        <button id="deck-tab-my" class="seg__btn fx-press" type="button" role="tab" data-tab="my" aria-selected="true" aria-controls="deck-my">My Decks</button>
+        <button id="deck-tab-meta" class="seg__btn fx-press" type="button" role="tab" data-tab="meta" aria-selected="false" aria-controls="deck-meta" tabindex="-1">Meta Decks</button>
+      </div>
 
-      <section id="meta-decks" class="decks" aria-labelledby="decks-title">
-        <h2 id="decks-title" class="page__subtitle">Meta Decks</h2>
-        <div id="deck-list" class="deck-list"></div>
-        <div id="decks-none" class="panel glass empty" hidden>
-          <svg class="empty__icon" aria-hidden="true"><use href="#i-book"/></svg>
-          <h2 class="empty__title">No meta decks yet</h2>
-          <p class="empty__text">Recommended decks will show here once enough cards have been analysed.</p>
+      <!-- My Decks: the deck builder (js/deck.js). #deck = all decks · #deck/my/<id> = one deck · #deck/s/<data> = a shared deck -->
+      <div id="deck-my" role="tabpanel" aria-labelledby="deck-tab-my">
+        <div id="dk" class="dk" data-no-detail>
+          <p id="dk-warn" class="tm-warn" role="status" hidden>Your decks can’t be saved on this device right now (private browsing, or storage is blocked or full). Anything you make will be gone when you leave the page.</p>
+          <div id="dk-loading" class="tm-skel" aria-hidden="true"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+
+          <!-- All decks -->
+          <div id="dk-index" hidden>
+            <div id="dk-index-head" class="tm-index__head">
+              <span id="dk-count" class="tm-index__count"></span>
+              <div class="tm-index__btns">
+                <button class="tm-btn fx-press" type="button" data-act="backup" aria-label="Backup and restore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>Backup</button>
+                <button class="tm-btn tm-btn--primary fx-press" type="button" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New deck</button>
+              </div>
+            </div>
+            <ul id="dk-lists" class="tm-lists dk-lists"></ul>
+            <div id="dk-empty" class="panel glass empty" hidden>
+              <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="4.5" height="14" rx="1"/><rect x="7.5" y="5" width="4.5" height="14" rx="1"/><rect x="13" y="5" width="4.5" height="14" rx="1"/><rect x="18.5" y="5" width="3" height="14" rx="1"/></svg>
+              <h2 class="empty__title">No decks yet</h2>
+              <p class="empty__text">Build a team of five cards with a support under each one. Start from scratch, or copy a Meta Deck and make it yours. Decks are saved on this device.</p>
+              <div class="tm-empty__btns">
+                <button class="tm-btn tm-btn--primary fx-press" type="button" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New deck</button>
+                <button class="tm-btn fx-press" type="button" data-act="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>Restore from backup</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- A deck someone shared (#deck/s/<data>): view only -->
+          <div id="dk-sh-load" class="tm-skel" aria-hidden="true" hidden><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+          <div id="dk-sh-bad" class="panel glass empty" hidden>
+            <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><path d="m2 2 20 20"/></svg>
+            <h2 id="dk-sh-bad-title" class="empty__title">This link can’t be opened</h2>
+            <p id="dk-sh-bad-text" class="empty__text"></p>
+            <button class="tm-btn tm-btn--primary fx-press empty__btn" type="button" data-act="back">Go to My Decks</button>
+          </div>
+          <div id="dk-shared" class="dk-editor dk-shared" hidden>
+            <div class="tm-bar">
+              <button class="iconbtn glass fx-press" type="button" data-act="back" aria-label="My decks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+              <h2 class="tm-title tm-title--static"><span id="dk-sh-name" class="tm-title__text"></span></h2>
+            </div>
+            <div class="tm-sub">
+              <span id="dk-sh-meta" class="tm-meta"></span>
+              <span class="tm-badge">Shared deck · view only</span>
+            </div>
+            <div class="tm-shbar">
+              <button id="dk-sh-copy" class="tm-btn tm-btn--primary fx-press" type="button" data-act="sh-copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span id="dk-sh-copy-text">Save a copy</span></button>
+              <button class="tm-btn fx-press" type="button" data-act="sh-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Save image</button>
+            </div>
+            <p class="tm-hint">Tap a card to see its details.</p>
+            <div id="dk-sh-board" class="dk-board"></div>
+            <p id="dk-sh-note" class="tm-hint" hidden></p>
+          </div>
+
+          <!-- One deck -->
+          <div id="dk-editor" class="dk-editor" hidden>
+            <div class="tm-bar">
+              <button class="iconbtn glass fx-press" type="button" data-act="back" aria-label="All decks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+              <button id="dk-name" class="tm-title fx-press" type="button" data-act="rename"><span id="dk-name-text" class="tm-title__text"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></svg></button>
+              <button id="dk-undo" class="iconbtn glass fx-press" type="button" data-act="undo" aria-label="Undo" title="Undo (Ctrl+Z)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg></button>
+              <button id="dk-redo" class="iconbtn glass fx-press" type="button" data-act="redo" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"/></svg></button>
+              <button class="iconbtn glass fx-press" type="button" data-act="menu" aria-label="Deck options"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+            </div>
+            <div class="dk-top">
+              <div id="dk-score" class="dk-scorebox" role="img" aria-label="Team score: not available yet"></div>
+              <div class="dk-top__main">
+                <span id="dk-meta" class="tm-meta"></span>
+                <div id="dk-mode" class="seg glass dk-mode" role="group" aria-label="Mode" style="--n:4;--i:0"><span class="seg__ind" aria-hidden="true"></span></div>
+              </div>
+            </div>
+            <div id="dk-rarity" class="rarity-picker dk-rarity" role="group" aria-label="Rarity for this deck"></div>
+            <p id="dk-hint" class="tm-hint"></p>
+            <div id="dk-board" class="dk-board"></div>
+
+            <!-- Command bar for a card you tapped -->
+            <div id="dk-dock" class="dk-dock">
+              <div id="dk-act" class="tm-act" role="toolbar" aria-label="Selected card">
+                <p class="tm-act__text" aria-live="polite"><b id="dk-act-name"></b> <span id="dk-act-hint"></span></p>
+                <div class="tm-act__btns">
+                  <button id="dk-act-details" class="fx-press" type="button" data-act="sel-details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Details</button>
+                  <button class="fx-press" type="button" data-act="sel-replace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>Replace</button>
+                  <button class="fx-press" type="button" data-act="sel-remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>Remove</button>
+                  <button class="fx-press" type="button" data-act="sel-cancel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
+
+      <!-- Meta Decks: recommended teams from data/teams.json, each with "Copy to My Decks" -->
+      <div id="deck-meta" role="tabpanel" aria-labelledby="deck-tab-meta" hidden>
+        <div id="deck-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
+        <section id="meta-decks" class="decks" aria-labelledby="decks-title">
+          <h2 id="decks-title" class="page__subtitle">Meta Decks</h2>
+          <div id="deck-list" class="deck-list"></div>
+          <div id="decks-none" class="panel glass empty" hidden>
+            <svg class="empty__icon" aria-hidden="true"><use href="#i-book"/></svg>
+            <h2 class="empty__title">No meta decks yet</h2>
+            <p class="empty__text">Recommended decks will show here once enough cards have been analysed.</p>
+          </div>
+        </section>
+      </div>
     </section>
 
     <!-- Cards: search / filters / sort live in js/cards.js -->
@@ -484,15 +581,15 @@
     </div>
   </div>
 
-  <script src="js/fx.js?v=9.6"></script>
-  <script src="js/app.js?v=9.6"></script>
-  <script src="js/share.js?v=9.6"></script>
-  <script src="js/cards.js?v=9.6"></script>
-  <script src="js/tier.js?v=9.6"></script>
-  <script src="js/deck.js?v=9.6"></script>
-  <script src="js/support.js?v=9.6"></script>
-  <script src="js/grade.js?v=9.6"></script>
-  <script src="js/tiermaker.js?v=9.6"></script>
-  <script src="js/music.js?v=9.6"></script>
+  <script src="js/fx.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/share.js?v=10"></script>
+  <script src="js/cards.js?v=10"></script>
+  <script src="js/tier.js?v=10"></script>
+  <script src="js/deck.js?v=10"></script>
+  <script src="js/support.js?v=10"></script>
+  <script src="js/grade.js?v=10"></script>
+  <script src="js/tiermaker.js?v=10"></script>
+  <script src="js/music.js?v=10"></script>
 </body>
 </html>
