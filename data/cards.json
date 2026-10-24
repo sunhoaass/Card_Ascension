@@ -1,1 +1,178 @@
-[]
+[
+  {
+    "id": "dragon-emperor-monarch",
+    "name": "Dragon Emperor Monarch",
+    "series": "Solo Leveling",
+    "image": "images/cards/dragon-emperor-monarch.webp",
+    "base": {
+      "atk": 763942,
+      "hp": 5092944,
+      "def": 0,
+      "status": 0,
+      "odds": 5523945238
+    },
+    "exact": {},
+    "passive": {
+      "name": "Monarch of Destruction",
+      "desc": "Antares' dragon fear: every enemy card starts with -25% damage, his breath burns the whole enemy deck (burning for 3 turns) and hits the whole bench for 45%, he takes 30% less damage and finishes enemies under 20% HP (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "role": "",
+    "strengths": [],
+    "weaknesses": [],
+    "beats": [],
+    "losesTo": [],
+    "team": {
+      "position": "",
+      "bestWith": [],
+      "bestSupport": []
+    },
+    "notes": "",
+    "updated": "2026-10-24"
+  },
+  {
+    "id": "moon-eye-ghost",
+    "name": "Moon Eye Ghost",
+    "series": "Naruto",
+    "image": "images/cards/moon-eye-ghost.webp",
+    "base": {
+      "atk": 438047,
+      "hp": 2920312,
+      "def": 0,
+      "status": 0,
+      "odds": 3679415015
+    },
+    "exact": {},
+    "passive": {
+      "name": "Infinite Tsukuyomi",
+      "desc": "Madara casts the Infinite Tsukuyomi on the whole enemy deck when the fight starts (every enemy card -20% damage), Limbo clones hit 2x, his Perfect Susanoo hits the whole bench for 40% and blocks 3 hits, and he revives once with 50% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "role": "",
+    "strengths": [],
+    "weaknesses": [],
+    "beats": [],
+    "losesTo": [],
+    "team": {
+      "position": "",
+      "bestWith": [],
+      "bestSupport": []
+    },
+    "notes": "",
+    "updated": "2026-10-24"
+  },
+  {
+    "id": "atomic-shadow-lord",
+    "name": "Atomic Shadow Lord",
+    "series": "The Eminence in Shadow",
+    "image": "images/cards/atomic-shadow-lord.webp",
+    "base": {
+      "atk": 484946,
+      "hp": 3232976,
+      "def": 0,
+      "status": 0,
+      "odds": 9496060703
+    },
+    "exact": {},
+    "passive": {
+      "name": "I AM ATOMIC",
+      "desc": "Cid Kagenou, the Eminence in Shadow: his first hit on every new enemy does 3x and blows through the whole enemy bench for 40%, ignores every defense, he dodges 30%, and the whole Shadow Garden gets +25% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "role": "",
+    "strengths": [],
+    "weaknesses": [],
+    "beats": [],
+    "losesTo": [],
+    "team": {
+      "position": "",
+      "bestWith": [],
+      "bestSupport": []
+    },
+    "notes": "",
+    "updated": "2026-10-24"
+  },
+  {
+    "id": "beast-emperor",
+    "name": "Beast Emperor",
+    "series": "One Piece",
+    "image": "images/cards/beast-emperor.webp",
+    "base": {
+      "atk": 862040,
+      "hp": 5746932,
+      "def": 0,
+      "status": 0,
+      "odds": 2806284629
+    },
+    "exact": {},
+    "passive": {
+      "name": "Strongest Creature",
+      "desc": "Kaido can't die: he survives the first killing blow at 1 HP, takes 30% less damage, can't be stunned or frozen, and his Thunder Bagua does 2.5x every 3rd attack. He gets stronger every time he is hit (+6% damage per hit)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "role": "",
+    "strengths": [],
+    "weaknesses": [],
+    "beats": [],
+    "losesTo": [],
+    "team": {
+      "position": "",
+      "bestWith": [],
+      "bestSupport": []
+    },
+    "notes": "",
+    "updated": "2026-10-24"
+  }
+]
