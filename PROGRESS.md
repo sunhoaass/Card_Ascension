@@ -11,6 +11,7 @@
 ---
 
 ## ▶️ ขั้นถัดไป (เจ้าของ copy ไปวางในแชทใหม่)
+**ย้ายเว็บไป Cloudflare Pages แล้ว (2026-10-24)** → ลิงก์เว็บใหม่ https://card-battle-infinity.pages.dev/ (ดู §1) · เปลี่ยนลิงก์ใน `index.html` / `robots.txt` / `sitemap.xml` แล้ว + มีสคริปต์พาคนจาก github.io มาลิงก์ใหม่ + **ไอคอนเว็บใหม่** (การ์ด 2 ใบไขว้เป็น ∞ · `images/favicon*.png|svg`, `apple-touch-icon.png`, `icon-192/512.png`, `site.webmanifest`) · อัปไฟล์ตามรายการใน **§9 (รายการ 2026-10-24 ย้ายเว็บ)**
 **ขั้น 11 เสร็จแล้ว (คะแนนทีม)** → อัปไฟล์ตามรายการใน **§10.7** แล้วเปิดหน้า Deck บนมือถือ (ไม่ต้องล้างแคช ไฟล์มีเลข `?v=11`) · **แผนขั้น 0–11 ครบแล้ว**
 - ตอนนี้ `data/cards.json` ยังว่าง คะแนนจึงยังไม่ขึ้นจริง → ขั้นต่อไปคือ**เพิ่มการ์ดจริง (งานประจำ A)** · **Sonnet 5.5 / medium**:
 ```
@@ -37,12 +38,15 @@
 ## 1. ภาพรวม
 - เว็บ Tier list + คลังการ์ดของเกม card battle บน Roblox ให้ความรู้สึกเหมือน "เข้าไปอยู่ในโลกเกมอีกใบ" กลุ่มเป้าหมายคือ Gen Y ถึง Gen Alpha
 - ชื่อเว็บ: **Card Battle Infinity** · หน้าเว็บเป็นภาษาอังกฤษ
-- Repo: `sunhoaass/Card_Ascension` (ใช้ตัวเดิม) · เว็บ: https://sunhoaass.github.io/Card_Ascension/
-  - **ไม่เปลี่ยนชื่อ repo** เพราะถ้าเปลี่ยน URL จะเปลี่ยน และ Google Search ต้องเริ่มนับใหม่ (ถ้าจะเปลี่ยนให้ถามเจ้าของก่อน)
+- Repo: `sunhoaass/Card_Ascension` (ใช้ตัวเดิม) · **เว็บ (ลิงก์ใหม่ตั้งแต่ 2026-10-24): https://card-battle-infinity.pages.dev/** (Cloudflare Pages ดึงไฟล์จาก repo นี้อัตโนมัติ)
+  - ลิงก์เก่า `https://sunhoaass.github.io/Card_Ascension/` ยังเปิดได้ แต่มีสคริปต์ใน `<head>` ของ `index.html` พาไปลิงก์ใหม่ (รักษา `#hash` และ `?query` ไว้ ลิงก์แชร์เก่าจึงยังใช้ได้) · **สคริปต์ทำงานเฉพาะเมื่อ hostname ลงท้าย `github.io` เท่านั้น ห้ามแก้ให้ทำงานบน `pages.dev` (จะวนไม่จบ)**
+  - ทุกที่ที่เป็นลิงก์เว็บ (`canonical`, `og:url`, `og:image`, `twitter:image`, JSON-LD ใน `index.html`, `robots.txt`, `sitemap.xml`) ใช้ลิงก์ใหม่แล้ว · ขั้นต่อไปถ้าเพิ่มลิงก์เต็ม ให้ใช้ `https://card-battle-infinity.pages.dev/`
+  - `googleac6eef435a8d1c66.html` (ไฟล์ยืนยัน Google) **ห้ามลบ**
+  - **ไม่เปลี่ยนชื่อ repo** เพราะ Cloudflare Pages เชื่อมกับ repo นี้อยู่ (ถ้าจะเปลี่ยนให้ถามเจ้าของก่อน)
 - เงื่อนไข: **ฟรีทั้งหมด** · ไม่มีฐานข้อมูล · **ไม่มีหน้าแอดมิน ไม่ใช้ AI** (Claude เป็นคนเพิ่มการ์ดและวิเคราะห์ในแชท แล้วเขียนผลลงไฟล์ JSON)
   - ยกเว้น (เจ้าของสั่ง 2026-10-23): **คะแนนทีมในหน้า Deck** คำนวณด้วยสูตรในเบราว์เซอร์ โดยใช้ข้อมูลที่ Claude วิเคราะห์ไว้แล้ว คะแนนจะอัปเดตเองทันทีที่เปลี่ยนการ์ด ไม่มีปุ่มกดวิเคราะห์ และไม่ใช้ AI
 - Tier list และ deck ที่ผู้ใช้จัดเอง **เก็บในเครื่องของผู้ใช้คนนั้น (localStorage)** คนอื่นจะไม่เห็น เว้นแต่ผู้ใช้กดแชร์ลิงก์ให้เอง
-- Stack: HTML / CSS / JS ล้วนบน GitHub Pages · ฟอนต์ Google Fonts · ไอคอน SVG ฝังในโค้ด (เช่น Lucide) · ไม่ใช้ framework
+- Stack: HTML / CSS / JS ล้วน (โฮสต์บน Cloudflare Pages ดึงจาก GitHub repo · เดิมอยู่บน GitHub Pages) · ฟอนต์ Google Fonts · ไอคอน SVG ฝังในโค้ด (เช่น Lucide) · ไม่ใช้ framework
 
 ## 2. วิธีทำงานแบบประหยัด token
 - **1 ขั้น = 1 แชทใหม่** โดยวาง prompt สั้นๆ จาก "▶️ ขั้นถัดไป" รายละเอียดทั้งหมดอยู่ในไฟล์นี้ ไม่ต้อง copy ข้อความยาวๆ
@@ -56,6 +60,7 @@
 - พื้นหลัง: ท้องฟ้ายามค่ำ + ดาวจาง + พระจันทร์ + เงาเมือง 2 ชั้น (โดมวัง, หอนาฬิกาหน้าปัดเรืองแสง, หน้าต่างไฟติด) + แสงตะเกียง + หมอกเลื่อน + ละอองไฟลอยขึ้น (`FX.backdrop`) · กล่องเป็นพื้นทึบ + เส้นทองบาง + มุมตัดเฉียง + ลายมุมวิกตอเรียน · blur เฉพาะหัวเว็บกับเมนู
 - ฟอนต์: หัวข้อ/ตัวเลข **Cinzel** (Google Fonts) · เนื้อหา **Inter**
 - เมนู: มือถือ/แท็บเล็ต (< 1100px) = **แถบล่าง 5 ปุ่มแผ่นทองเหลือง** · คอม (≥ 1100px) = **เมนูแนวตั้งด้านซ้าย** (ตรา + ชื่อเว็บด้านบน, ปุ่มเพลง + วันที่ด้านล่าง) · ไอคอนวาดเอง: Tier = มงกุฎ · Cards = พัดไพ่ · Support = ขวดยา · Deck = หนังสือ · Grade = แว่นขยาย
+- ไอคอนเว็บ (favicon / ไอคอนหน้าจอโฮม): การ์ด 2 ใบ ฟ้า (`--t-c`) + ม่วง (`--flux`) ไขว้กันเป็น ∞ สีทอง ขอบทอง · ไฟล์อยู่ใน `images/` + `site.webmanifest` ที่ root (รายละเอียดใน §9 รายการ 2026-10-24 ย้ายเว็บ)
 - จำหน้าล่าสุดของผู้ใช้ไว้ใน localStorage · เข้าเว็บครั้งแรกให้เปิดหน้า Tier List
 - แสดงวันที่อัปเดตข้อมูลล่าสุดที่หัวเว็บ (คอม: ท้ายเมนูซ้าย)
 - หน้าโหลด: ตราวงกลม + นาฬิกาพกเข็มหมุน + "Loading…" (หายเมื่อข้อมูลมา, หายเองหลัง 8 วิเสมอ)
@@ -684,3 +689,16 @@ const RARITY_MULTIPLIERS = {
   - **ไฟล์ใหม่:** `js/teamscore.js` · **ไฟล์ที่แก้:** `js/deck.js`, `css/deck.css`, `css/tokens.css` (`--score-*`), `index.html` (markup คะแนน + โหลด teamscore.js + `?v=11` ทุกบรรทัด), `data/meta.json`, `PROGRESS.md`
   - **เจอระหว่างทำ (แก้แล้ว):** กล่อง Compare ถูก `max-width: 420px` ของ `.tm-dlg__sheet` ทับ (tiermaker.css โหลดทีหลัง) → ใช้ selector `.tm-dlg__sheet.dk-cmp-sheet` · เปิดรายละเอียดจากชิปแล้วปิดกลับ หน้าเลื่อนไปหาการ์ดใบอื่น → ใช้ชิปเป็นจุดเริ่ม/จุดกลับ
   - **ข้อสังเกต (ยังไม่แก้ นอกขอบเขต):** `.dk-pick-sheet { max-width: 560px }` ของตัวเลือกการ์ดขั้น 10 น่าจะโดน 420px ทับแบบเดียวกัน (บนคอมกล่องเลือกการ์ดแคบกว่าที่ตั้งใจ) แก้ได้ด้วย `.tm-dlg__sheet.dk-pick-sheet`
+- 2026-10-24: **ย้ายเว็บไป Cloudflare Pages** (ลิงก์ใหม่ https://card-battle-infinity.pages.dev/ · Cloudflare ดึงไฟล์จาก repo เดิมอัตโนมัติ) — **เปลี่ยนลิงก์:** `index.html` (`canonical`, `og:url`, `og:image`, `twitter:image`, JSON-LD `url`), `robots.txt` (บรรทัด Sitemap), `sitemap.xml` (`<loc>` + `lastmod` เป็น 2026-10-24) · **สคริปต์ redirect** ใน `<head>` ของ `index.html` (อยู่ก่อน `<title>`): ถ้า hostname เป็น `github.io` (`/(^|\.)github\.io$/`) → `location.replace("https://card-battle-infinity.pages.dev/" + search + hash)` รักษา `#hash` (เช่น `#card/...`, `#tier/s/...`) · บน `pages.dev`, `localhost`, ลิงก์ preview ไม่ทำอะไร จึงไม่วน · `googleac6eef435a8d1c66.html` ไม่ได้แตะ · `js/share.js` ไม่ต้องแก้ (ลายน้ำอ่านจาก canonical อัตโนมัติ ส่วนลิงก์แชร์ใช้ `location.origin` จึงเป็นลิงก์ใหม่เอง)
+  - **ทดสอบ:** จำลองสคริปต์กับ hostname 8 แบบ (github.io พร้อม/ไม่มี hash/query, pages.dev, preview subdomain, localhost, `github.io.evil.com`) → redirect เฉพาะ `sunhoaass.github.io` และรักษา hash · ค้น `github.io` / `Card_Ascension` ใน `index.html`, `robots.txt`, `sitemap.xml` ไม่เหลือลิงก์เก่า
+  - **ไอคอนเว็บใหม่ (เจ้าของดูภาพตัวอย่างแล้วอนุมัติ):** การ์ด 2 ใบ (ฟ้า + ม่วง) ไขว้กันเป็น ∞ สีทอง มีขอบทองและลายข้าวหลามตัดในแต่ละการ์ด วาดเองด้วย SVG (ไม่ใช้ของจากเกม) · สีมาจาก `css/tokens.css`: ฟ้า `--t-c` `#62a5d8`, ม่วง `--flux` `#9b86d6`, ทอง `--gold` `#d8b46a` / `--gold-hi` / `--gold-lo`, พื้น `--void` `#0b1020` / `--nebula` `#1a2238` · **หมายเหตุ:** `--rift` ตอนนี้เป็นสีทอง (ธีม Gilded Nocturne) ไม่ใช่สีฟ้าแล้ว จึงใช้ `--t-c` เป็นสีฟ้าของการ์ด
+    - ไฟล์: `images/favicon.svg` (เวอร์ชันเรียบ ไม่มีกรอบ/แสงฟุ้ง), `images/favicon-48.png`, `images/apple-touch-icon.png` (180px พื้นทึบเต็มช่อง ไม่โปร่งใส เพราะ iOS ตัดมุมเอง), `images/icon-192.png` (**ทับของเดิม**), `images/icon-512.png`, `site.webmanifest` (root: ชื่อ, `start_url` `./`, `display: standalone`, สีพื้น/ธีม `#0b1020`, ไอคอน 192 + 512)
+    - `index.html`: แทนที่ลิงก์ไอคอนเดิม 3 บรรทัด (รวม favicon แบบ data URI เดิม) ด้วย `favicon.svg`, `favicon-48.png`, `icon-192.png`, `apple-touch-icon.png` (180) และ `<link rel="manifest">` · ทุกลิงก์ต่อท้าย `?v=2` เพื่อให้เบราว์เซอร์ทิ้งไอคอนเก่าที่จำไว้ · `images/og.png` (รูปตอนแชร์ลิงก์) **ไม่ได้เปลี่ยน**
+    - ถ้าจะแก้ไอคอนอีก: เปลี่ยนเลข `?v=2` เป็น `?v=3` ทุกลิงก์ไอคอนใน `index.html` และใน `site.webmanifest`
+  - **ไฟล์ที่ต้องอัปขึ้น GitHub:**
+
+    | ไฟล์ | โฟลเดอร์บน GitHub |
+    |---|---|
+    | `index.html`, `robots.txt`, `sitemap.xml`, `site.webmanifest` **(ใหม่)**, `PROGRESS.md` | หน้าแรกของ repo (root) |
+    | `favicon.svg` **(ใหม่)**, `favicon-48.png` **(ใหม่)**, `apple-touch-icon.png` **(ใหม่)**, `icon-512.png` **(ใหม่)**, `icon-192.png` (**ทับของเดิม**) | `images/` |
+  - ไม่ต้องใส่เลข `?v=` ใหม่ของ CSS/JS (ไม่ได้แก้ CSS/JS) · ไม่แตะ `googleac6eef435a8d1c66.html`, `images/og.png`, `css/`, `js/`, `data/`, `mockup/` · ใน zip มีโครงโฟลเดอร์ตรงกับ repo (แตก zip แล้วลากทับของเดิม)

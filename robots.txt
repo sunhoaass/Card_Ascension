@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sunhoaass.github.io/Card_Ascension/sitemap.xml
+Sitemap: https://card-battle-infinity.pages.dev/sitemap.xml

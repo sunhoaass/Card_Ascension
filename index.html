@@ -3,20 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- The site moved to Cloudflare Pages. Old GitHub Pages visitors are sent to the new address (the #hash is kept).
+       Runs ONLY on *.github.io, so it can never loop on card-battle-infinity.pages.dev. -->
+  <script>
+    (function () {
+      try {
+        if (/(^|\.)github\.io$/i.test(location.hostname)) {
+          location.replace("https://card-battle-infinity.pages.dev/" + location.search + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <title>Card Battle Infinity — Tier List &amp; Card Database</title>
   <meta name="description" content="Tier list, card stats for all 7 rarities, support rankings, meta decks and a card grader for the Roblox card battle game.">
   <meta name="theme-color" content="#0b1020">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <link rel="canonical" href="https://sunhoaass.github.io/Card_Ascension/">
+  <link rel="canonical" href="https://card-battle-infinity.pages.dev/">
 
   <!-- Link previews (Facebook, LINE, Discord, X) -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Card Battle Infinity">
   <meta property="og:title" content="Card Battle Infinity — Tier List &amp; Card Database">
   <meta property="og:description" content="Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.">
-  <meta property="og:url" content="https://sunhoaass.github.io/Card_Ascension/">
-  <meta property="og:image" content="https://sunhoaass.github.io/Card_Ascension/images/og.png">
+  <meta property="og:url" content="https://card-battle-infinity.pages.dev/">
+  <meta property="og:image" content="https://card-battle-infinity.pages.dev/images/og.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -25,7 +36,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Card Battle Infinity — Tier List &amp; Card Database">
   <meta name="twitter:description" content="Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.">
-  <meta name="twitter:image" content="https://sunhoaass.github.io/Card_Ascension/images/og.png">
+  <meta name="twitter:image" content="https://card-battle-infinity.pages.dev/images/og.png">
   <meta name="twitter:image:alt" content="Card Battle Infinity: tier list, card stats and support picks for the Roblox card battle game">
 
   <script type="application/ld+json">
@@ -34,15 +45,18 @@
     "@type": "WebSite",
     "name": "Card Battle Infinity",
     "alternateName": "Card Battle Infinity Tier List",
-    "url": "https://sunhoaass.github.io/Card_Ascension/",
+    "url": "https://card-battle-infinity.pages.dev/",
     "description": "Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.",
     "inLanguage": "en"
   }
   </script>
 
-  <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
-  <link rel="apple-touch-icon" href="images/icon-192.png">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14.5' fill='%23121830' stroke='%23d8b46a' stroke-width='2'/%3E%3Cpath d='M16 6.5 20 14 16 25.5 12 14z' fill='%231d2542' stroke='%23d8b46a' stroke-width='1.4' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='14' r='1.8' fill='%23f3dca0'/%3E%3C/svg%3E">
+  <!-- Site icon: two cards crossing into an infinity sign (blue + violet cards, gold edge). ?v=2 makes browsers drop the old cached icon. -->
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg?v=2">
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48.png?v=2">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png?v=2">
+  <link rel="manifest" href="site.webmanifest?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
