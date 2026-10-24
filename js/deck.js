@@ -14,9 +14,13 @@
      ~0.26s) or tap a card, then tap the slot it should go to (swaps when that slot has a card). × clears a slot.
    · Undo / Redo: 50 steps per deck (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
    · Step 9 tools (js/share.js) are reused: Save as image (C.share.deckImageDialog), Share link (#deck/s/<data>),
-     backup file (registers "decks"). Dialogs are the Tier Maker's C.dialog. Step 11 fills the team score ring (paintScore).
-   Needs js/fx.js, js/app.js, js/share.js, js/cards.js loaded first (C.dialog / C.support.card are made by later scripts and
-   only used when something is tapped).
+     backup file (registers "decks"). Dialogs are the Tier Maker's C.dialog.
+   · Step 11: team score (js/teamscore.js does the maths, this file paints it). refresh() runs after every commit() / step() /
+     setRarity() / setMode() and paints: the score ring (paintScore), "Score breakdown" (5 parts), "Strengths & weaknesses"
+     (Strong vs / Weak vs / Fits modes), "Fill the gaps" (3 best cards / support for the empty slots, tap = add) and the
+     score pill on each row of My Decks. "Compare" = a dialog with two decks side by side (stacked on a phone).
+   Needs js/fx.js, js/app.js, js/teamscore.js, js/share.js, js/cards.js loaded first (C.dialog / C.support.card are made by later
+   scripts and only used when something is tapped).
    ========================================================== */
 (function () {
   const C = window.CBI;
@@ -36,7 +40,7 @@
     { id: "boss", name: "Boss", short: "Boss", enabled: false },
   ];
   const LEADS = {
-    my: "Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. Decks are saved on this device.",
+    my: "Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. The team score updates as you build. Decks are saved on this device.",
     meta: "Meta decks: five-card teams that work well together, with the slot each card plays in and the support to run. Pick a rarity to see the stats. Tap a card for the full breakdown, or copy a deck to My Decks to make it yours.",
     shared: "A deck someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
@@ -56,6 +60,7 @@
   };
 
   const ui = {};
+  const TS = () => C.teamScore;                    // js/teamscore.js (step 11)
   const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
   let cardById = new Map(), supById = new Map();
   let libs = { cards: [], support: [] };      // the whole library per kind, best first (picker order)
@@ -351,22 +356,320 @@
   const paintBoard = (b, d, opts) => KINDS.forEach((k) => paintKind(b, k, d, opts));
 
   /* ==========================================================
-     Team score ring. Step 10 shows "—"; step 11 calls paintScore(el, { score, band, label }) with the real number.
+     Team score ring (step 11). paintScore(el, { score, band, label }, { animate, note })
+     band: "bad" 1–49 · "mid" 50–79 · "good" 80–99 · "perfect" 100 · "none" (no cards yet). Colours: css/deck.css [data-band].
+     Motion (§4): the number counts to the new value · the arc cross-fades to the new length and colour (two arcs, opacity
+     only) · 100 = rainbow ring that turns while on screen (.is-live) + one burst of sparks.
      ========================================================== */
+  const EMPTY_NOTE = "Add cards and support to see how strong this team is.";
   function scoreHTML() {
+    const arc = (k) => `<circle class="dk-score__val" data-arc="${k}" cx="40" cy="40" r="34" pathLength="100" stroke-dasharray="0 100"${k ? ' style="opacity:0"' : ""}/>`;
     return `<div class="dk-score" data-band="none">
-      <span class="dk-score__ring"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="dk-score__track" cx="40" cy="40" r="34"/><circle class="dk-score__val" cx="40" cy="40" r="34" pathLength="100" stroke-dasharray="0 100"/></svg><span class="dk-score__num" data-score-num>—</span></span>
-      <span class="dk-score__text"><b>Team score</b><small data-score-note>Coming soon. Your cards, support and mode will be scored here.</small></span>
+      <span class="dk-score__ring"><span class="dk-score__halo" aria-hidden="true"></span><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="dk-score__track" cx="40" cy="40" r="34"/>${arc(0)}${arc(1)}</svg><span class="dk-score__num" data-score-num>—</span></span>
+      <span class="dk-score__text"><b>Team score</b><span class="dk-score__label" data-score-label></span><small data-score-note>${EMPTY_NOTE}</small></span>
     </div>`;
   }
-  function paintScore(el, s) {
+  function paintScore(el, s, { animate = false, note } = {}) {
     if (!el) return;
-    const has = s && Number.isFinite(s.score);
-    el.dataset.band = has ? s.band || "none" : "none";
-    $("[data-score-num]", el).textContent = has ? String(s.score) : "—";
-    $(".dk-score__val", el).setAttribute("stroke-dasharray", has ? `${Math.max(0, Math.min(100, s.score))} 100` : "0 100");
-    $("[data-score-note]", el).textContent = has ? s.label || "" : "Coming soon. Your cards, support and mode will be scored here.";
-    el.setAttribute("aria-label", has ? `Team score ${s.score}${s.label ? ", " + s.label : ""}` : "Team score: not available yet");
+    const has = !!s && Number.isFinite(s.score);
+    const band = has ? s.band || "none" : "none";
+    const was = el.dataset.band || "none";
+    el.dataset.band = band;
+    const num = $("[data-score-num]", el);
+    if (has && animate && num.textContent !== "—") FX.countTo(num, s.score, { duration: 450 });
+    else { num.textContent = has ? String(s.score) : "—"; num.dataset.value = has ? s.score : 0; }
+    // arc: paint the hidden one with the new value, then cross-fade
+    const key = has ? `${s.score}|${band}` : "none";
+    if (el._arcKey !== key) {
+      el._arcKey = key;
+      const arcs = el.querySelectorAll(".dk-score__val"), a = el._arc || 0, b = 1 - a;
+      arcs[b].setAttribute("stroke-dasharray", has ? `${Math.max(0, Math.min(100, s.score))} 100` : "0 100");
+      arcs[b].dataset.band = band;
+      arcs[b].style.opacity = "1";
+      arcs[a].style.opacity = "0";
+      el._arc = b;
+      if (animate && arcs[b].animate) {
+        arcs[b].animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: EASE });
+        arcs[a].animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: EASE });
+      }
+    }
+    const ring = $(".dk-score__ring", el);
+    if (animate && band !== was && !FX.reduced) anim(ring, [{ transform: "scale(1)" }, { transform: "scale(1.08)", offset: 0.4 }, { transform: "scale(1)" }], { duration: 300 });
+    if (animate && band === "perfect" && was !== "perfect") sparkle(ring);
+    $("[data-score-label]", el).textContent = has ? s.label || "" : "";
+    $("[data-score-note]", el).textContent = note != null ? note : has ? "" : EMPTY_NOTE;
+    (el.closest("[role=img]") || el).setAttribute("aria-label", has ? `Team score ${s.score} out of 100${s.label ? ", " + s.label : ""}` : "Team score: add cards to see it");
+  }
+  // one burst of sparks when the team reaches 100 (transform / opacity only, removed when done)
+  function sparkle(ring) {
+    if (FX.reduced || !ring.animate) return;
+    for (let k = 0; k < 10; k++) {
+      const s = document.createElement("i");
+      s.className = "dk-spark";
+      ring.appendChild(s);
+      const ang = (k / 10) * Math.PI * 2, d = 34 + (k % 3) * 6;
+      const a = s.animate([
+        { transform: "translate(-50%, -50%) scale(.4)", opacity: 0 },
+        { transform: `translate(calc(-50% + ${Math.cos(ang) * d * 0.6}px), calc(-50% + ${Math.sin(ang) * d * 0.6}px)) scale(1)`, opacity: 1, offset: 0.35 },
+        { transform: `translate(calc(-50% + ${Math.cos(ang) * d}px), calc(-50% + ${Math.sin(ang) * d}px)) scale(.3)`, opacity: 0 },
+      ], { duration: 760, delay: (k % 2) * 60, easing: EASE, fill: "both" });
+      a.onfinish = a.oncancel = () => s.remove();
+    }
+  }
+
+  /* ==========================================================
+     Team analysis (step 11): breakdown · strengths & weaknesses · fits modes · fill the gaps
+     The same panel is used by the editor (editable) and the shared view (read only); the compare dialog reuses the parts.
+     ========================================================== */
+  const fmtPts = (n) => { const r = Math.floor(n * 10 + 1e-6) / 10; return Number.isInteger(r) ? String(r) : r.toFixed(1); };
+  const LIMIT = 4;
+  function partsHTML(cls = "") {
+    return `<ul class="dk-parts ${cls}">${TS().PARTS.map((p) => `
+      <li class="dk-part" data-part="${p.key}">
+        <span class="dk-part__name">${esc(p.name)}<span class="dk-part__flag" data-flag hidden></span></span>
+        <span class="dk-part__pts" data-pts></span>
+        <span class="dk-part__track" aria-hidden="true"><i></i></span>
+        <span class="dk-part__note" data-note></span>
+      </li>`).join("")}</ul>`;
+  }
+  function paintParts(ul, r, other) {
+    r.parts.forEach((p, k) => {
+      const li = $(`[data-part="${p.key}"]`, ul);
+      if (!li) return;
+      $("[data-pts]", li).innerHTML = `${fmtPts(p.pts)}<small> / ${fmtPts(p.max)}</small>`;
+      $(".dk-part__track i", li).style.setProperty("--v", Math.max(0, Math.min(1, p.v)).toFixed(4));
+      const flag = $("[data-flag]", li);
+      flag.hidden = !(p.noData || p.partial);
+      flag.textContent = p.noData ? "Not enough data yet" : p.partial ? "Partly estimated" : "";
+      $("[data-note]", li).textContent = p.note;
+      li.classList.toggle("is-full", p.v >= 1 - 1e-9);
+      if (other) {                                       // compare: mark the deck that is ahead in this part
+        const o = other.parts[k];
+        li.classList.toggle("is-ahead", p.pts > o.pts + 0.05);
+        li.classList.toggle("is-behind", p.pts + 0.05 < o.pts);
+      }
+      li.setAttribute("aria-label", `${p.name}: ${fmtPts(p.pts)} of ${fmtPts(p.max)}. ${p.note}${p.noData ? ". Not enough data yet" : ""}`);
+    });
+  }
+  function chip(text, { id, tier, count, interactive } = {}) {
+    const t = tier ? `<b class="dk-chip__tier" style="--tc:var(${C.TIER_COLOR[tier] || "--t-d"})">${esc(tier)}</b>` : "";
+    const n = count ? `<small>×${count}</small>` : "";
+    if (id && interactive) return `<button type="button" class="dk-chip dk-chip--card fx-press" data-open-card="${esc(id)}" data-id="${esc(id)}" aria-label="${esc(text)}${tier ? ", tier " + esc(tier) : ""}. Open details">${esc(text)}${t}</button>`;
+    return `<span class="dk-chip${id ? " dk-chip--card" : ""}">${esc(text)}${t}${n}</span>`;
+  }
+  const more = (n) => (n > 0 ? `<span class="dk-chip dk-chip--more">+${n} more</span>` : "");
+  function swHTML(a, r, interactive) {
+    const none = (t) => `<p class="dk-sw__none">${esc(t)}</p>`;
+    const sc = a.strong.cards, st = a.strong.tags, tm = a.strong.teams;
+    let strong = "";
+    if (!a.members) strong = none("Add cards to see what this team beats.");
+    else if (!a.data.beats) strong = none("Not enough data yet");
+    else if (!sc.length && !st.length && !tm.length) strong = none("Nothing stands out yet. Pick cards that beat the same targets.");
+    else strong = st.slice(0, LIMIT).map((t) => chip(t.name, { count: t.count })).join("")
+      + sc.slice(0, LIMIT).map((c) => chip(c.name, { id: c.id, tier: c.tier, interactive })).join("") + more(sc.length - LIMIT)
+      + tm.slice(0, 3).map((t) => `<span class="dk-chip dk-chip--team">Deck: ${esc(t.name)}</span>`).join("");
+    const wt = a.weak.tags, wc = a.weak.cards;
+    let weak = "";
+    if (!a.members) weak = none("Add cards to see what this team struggles with.");
+    else if (!a.data.beats && !a.data.weakTo) weak = none("Not enough data yet");
+    else if (!wt.length && !wc.length) weak = none("No clear weakness found.");
+    else weak = wt.map((t) => chip(t.name, { count: t.count })).join("")
+      + wc.slice(0, LIMIT).map((c) => chip(c.name, { id: c.id, tier: c.tier, interactive })).join("") + more(wc.length - LIMIT);
+    return { strong, weak, note: wc.length ? `${wc.length} SS/S ${wc.length === 1 ? "card has" : "cards have"} no answer in this team.` : "" };
+  }
+  function fitsHTML(a, deck, editable) {
+    if (!a.modes.length) return "";
+    return a.modes.map((m, k) => {
+      const on = m.id === deck.mode;
+      const inner = `<span class="dk-fit__rank">${k + 1}</span><span class="dk-fit__name">${esc(m.name)}</span>${on ? '<span class="dk-fit__now">Current</span>' : ""}<span class="dk-pill" data-band="${m.band}">${m.score == null ? "—" : m.score}</span>`;
+      return `<li class="dk-fit${on ? " is-on" : ""}">${editable && !on
+        ? `<button type="button" class="dk-fit__btn fx-press" data-dk-mode="${esc(m.id)}" aria-label="${esc(m.name)}: ${m.score == null ? "no score" : m.score}. Switch this deck to ${esc(m.name)}">${inner}</button>`
+        : `<span class="dk-fit__btn" aria-label="${esc(m.name)}: ${m.score == null ? "no score" : m.score}${on ? ", current mode" : ""}">${inner}</span>`}</li>`;
+    }).join("");
+  }
+  function anaHTML(editable) {
+    return `<div class="dk-ana">
+      <section class="panel glass dk-box" data-box="parts" aria-label="Score breakdown">
+        <div class="dk-box__head"><h3 class="dk-box__title">Score breakdown</h3><span class="dk-box__sub" data-ana-mode></span></div>
+        ${partsHTML()}
+        <ul class="dk-notes" data-notes hidden></ul>
+      </section>
+      <section class="panel glass dk-box" data-box="sw" aria-label="Strengths and weaknesses">
+        <div class="dk-box__head"><h3 class="dk-box__title">Strengths &amp; weaknesses</h3></div>
+        <div class="dk-sw"><h4 class="dk-sw__h dk-sw__h--good">Strong vs</h4><div class="dk-chips" data-strong></div></div>
+        <div class="dk-sw"><h4 class="dk-sw__h dk-sw__h--bad">Weak vs</h4><div class="dk-chips" data-weak></div><p class="dk-sw__note" data-weak-note hidden></p></div>
+        <div class="dk-sw"><h4 class="dk-sw__h">Fits modes</h4><ol class="dk-fits" data-fits></ol></div>
+      </section>
+      ${editable ? `<section class="panel glass dk-box dk-box--wide" data-box="sug" aria-label="Fill the gaps">
+        <div class="dk-box__head"><h3 class="dk-box__title">Fill the gaps</h3></div>
+        <p class="dk-box__lead" data-sug-lead></p>
+        ${KINDS.map((k) => `<div class="dk-sug" data-sug-kind="${k}" hidden><h4 class="dk-sw__h">${k === "cards" ? "Cards" : "Support"}</h4><div class="dk-sug__row" data-sug-row></div></div>`).join("")}
+      </section>
+      <div class="dk-box--wide dk-ana__foot"><button type="button" class="tm-btn fx-press" data-act="compare">${ICON.swap}Compare with another deck</button></div>` : ""}
+    </div>`;
+  }
+  // swap html only when it changed, with a short fade (opacity only) so updates are noticed but never jump
+  function setHTML(el, html, animate) {
+    if (el._html === html) return;
+    el._html = html;
+    el.innerHTML = html;
+    if (animate && el.animate) el.animate([{ opacity: 0.25 }, { opacity: 1 }], { duration: 220, easing: EASE });
+  }
+  function paintAnalysis(root, deck, r, { animate = false, editable = false } = {}) {
+    if (!root || !TS()) return;
+    const a = TS().analyze(deck);
+    $("[data-ana-mode]", root).textContent = `${modeOf(deck.mode).name} weights`;
+    paintParts($(".dk-parts", root), r);
+    const notes = $("[data-notes]", root);
+    notes.hidden = !r.notes.length;
+    setHTML(notes, r.notes.map((n) => `<li>${esc(n)}</li>`).join(""), animate);
+    const sw = swHTML(a, r, true);
+    setHTML($("[data-strong]", root), sw.strong, animate);
+    setHTML($("[data-weak]", root), sw.weak, animate);
+    const wn = $("[data-weak-note]", root);
+    wn.hidden = !sw.note;
+    wn.textContent = sw.note;
+    setHTML($("[data-fits]", root), fitsHTML(a, deck, editable), animate);
+  }
+
+  /* Fill the gaps: the 3 cards and 3 support that raise the score the most, tried in every empty slot (js/teamscore.js).
+     Worked out just after the board is painted, so a tap never waits for it. Tiles are reused by id. */
+  let sugTimer = 0;
+  const sugCache = new Map();                    // "cards:<id>" -> tile
+  function scheduleSuggest() {
+    clearTimeout(sugTimer);
+    sugTimer = setTimeout(paintSuggest, 90);
+  }
+  function sugTile(kind, s) {
+    const k = `${kind}:${s.id}`;
+    let el = sugCache.get(k);
+    const x = lookup(kind, s.id);
+    if (!el) {
+      el = document.createElement("button");
+      el.type = "button";
+      el.className = "dk-sug__item fx-press";
+      el.dataset.sugKind = kind;
+      el.dataset.id = s.id;
+      const art = kind === "cards" ? C.renderCard(x, cur.rarity, { mini: true }) : C.support.card(x);
+      art.tabIndex = -1;
+      art.removeAttribute("role");
+      art.setAttribute("aria-hidden", "true");
+      el._rarity = cur.rarity;
+      el.appendChild(art);
+      el.insertAdjacentHTML("beforeend", `<span class="dk-sug__gain"></span><span class="dk-sug__slot"></span>`);
+      if (sugCache.size > 60) sugCache.clear();
+      sugCache.set(k, el);
+    }
+    if (kind === "cards" && el._rarity !== cur.rarity) { const card = $(".card", el); if (card) C.setCardRarity(card, x, cur.rarity, { animate: false }); el._rarity = cur.rarity; }
+    const d = (s.after || 0) - (s.before || 0);
+    const gain = d >= 1 ? `+${d}` : "+<1";
+    el.dataset.slot = s.slot;
+    $(".dk-sug__gain", el).textContent = gain;
+    $(".dk-sug__slot", el).textContent = `${kind === "cards" ? "Slot" : "Support"} ${s.slot + 1}`;
+    el.setAttribute("aria-label", `Add ${x.name} to ${kind === "cards" ? "slot" : "support slot"} ${s.slot + 1}. Team score ${gain}`);
+    return el;
+  }
+  function paintSuggest() {
+    sugTimer = 0;
+    if (mode !== "editor" || !cur || !ui.ana || !TS()) return;
+    const box = $('[data-box="sug"]', ui.ana);
+    let any = false, anyEmpty = false;
+    KINDS.forEach((kind) => {
+      const wrap = $(`[data-sug-kind="${kind}"]`, box), row = $("[data-sug-row]", wrap);
+      const empty = cur[kind].some((x) => !x);
+      if (empty) anyEmpty = true;
+      const picks = empty && libs[kind].length ? TS().suggest(cur, kind, 3) : [];
+      wrap.hidden = !picks.length;
+      if (picks.length) any = true;
+      const before = new Set(row.children);
+      const els = picks.map((s) => sugTile(kind, s));
+      if (els.length !== row.children.length || els.some((el, i) => row.children[i] !== el)) row.replaceChildren(...els);
+      els.forEach((el) => { if (!before.has(el) && !FX.reduced) anim(el, [{ opacity: 0, transform: "scale(.9)" }, { opacity: 1, transform: "none" }], { duration: 220 }); });
+    });
+    $("[data-sug-lead]", box).textContent = !anyEmpty ? "Every slot is filled. Remove a card to see what would fit best."
+      : !libs.cards.length && !libs.support.length ? "No cards in the library yet."
+      : any ? "The picks that raise the team score the most. Tap one to add it." : "Nothing in the library would raise the score right now.";
+  }
+  function addSuggested(kind, id, slot) {
+    if (!cur || mode !== "editor" || !lookup(kind, id)) return;
+    let i = Number(slot);
+    if (!(i >= 0 && i < SLOTS) || cur[kind][i]) i = cur[kind].indexOf(null);
+    if (i < 0 || (kind === "cards" && cur.cards.includes(id))) return;
+    const name = lookup(kind, id).name;
+    if (commit((d) => { d[kind][i] = id; })) undoToast(`Added ${name} to ${kind === "cards" ? "slot" : "support"} ${i + 1}`);
+  }
+
+  // score + analysis of the deck in the editor; called after every change
+  function refresh({ animate = true } = {}) {
+    if (!cur || !TS()) return;
+    const r = TS().score(cur);
+    paintScore(ui.score, r, { animate, note: r.empty ? null : `${modeOf(cur.mode).name}${r.notes.length ? " · see the notes below" : ""}` });
+    paintAnalysis(ui.ana, cur, r, { animate, editable: true });
+    scheduleSuggest();
+  }
+
+  /* ==========================================================
+     Compare two decks (a dialog: two columns side by side on a computer, stacked on a phone)
+     ========================================================== */
+  function cmpDeckHTML(tag) {
+    return `<article class="dk-cmp__deck" data-cmp-deck="${tag}">
+      <header class="dk-cmp__head"><span class="dk-cmp__tag">${tag.toUpperCase()}</span><span class="dk-cmp__name" data-cmp-name></span><span class="dk-cmp__meta" data-cmp-meta></span></header>
+      <div class="dk-scorebox" role="img">${scoreHTML()}</div>
+      ${partsHTML("dk-parts--cmp")}
+      <div class="dk-sw"><h4 class="dk-sw__h dk-sw__h--good">Strong vs</h4><div class="dk-chips" data-strong></div></div>
+      <div class="dk-sw"><h4 class="dk-sw__h dk-sw__h--bad">Weak vs</h4><div class="dk-chips" data-weak></div></div>
+      <div class="dk-sw"><h4 class="dk-sw__h">Fits modes</h4><ol class="dk-fits" data-fits></ol></div>
+    </article>`;
+  }
+  async function compareDialog(firstId) {
+    if (decks.length < 2) { FX.toast("Make a second deck to compare"); return; }
+    let a = decks.some((d) => d.id === firstId) ? firstId : decks[0].id;
+    let b = (decks.find((d) => d.id !== a) || decks[0]).id;
+    const options = (pick) => decks.map((d) => `<option value="${esc(d.id)}"${d.id === pick ? " selected" : ""}>${esc(d.name)}</option>`).join("");
+    await dialog({
+      title: "Compare decks",
+      html: `<div class="dk-cmp">
+          <div class="dk-cmp__pick">
+            <label class="field"><span class="tm-field__label">Deck A</span><select data-cmp="a">${options(a)}</select></label>
+            <label class="field"><span class="tm-field__label">Deck B</span><select data-cmp="b">${options(b)}</select></label>
+          </div>
+          <p class="dk-cmp__verdict" data-verdict aria-live="polite"></p>
+          <div class="dk-cmp__cols">${cmpDeckHTML("a")}${cmpDeckHTML("b")}</div>
+        </div>`,
+      actions: [{ label: "Close", value: "cancel" }],
+      onMount(d) {
+        $(".tm-dlg__sheet", d).classList.add("dk-cmp-sheet");
+        const cols = $(".dk-cmp__cols", d);
+        const paint = (animate) => {
+          const da = decks.find((x) => x.id === a), db = decks.find((x) => x.id === b);
+          if (!da || !db) return;
+          const ra = TS().score(da), rb = TS().score(db);
+          [[da, ra, rb, "a"], [db, rb, ra, "b"]].forEach(([dk, r, o, tag]) => {
+            const art = $(`[data-cmp-deck="${tag}"]`, d);
+            $("[data-cmp-name]", art).textContent = dk.name;
+            $("[data-cmp-meta]", art).textContent = `${modeOf(dk.mode).name} · ${countOf(dk.cards)}/${SLOTS} cards · ${countOf(dk.support)}/${SLOTS} support`;
+            paintScore($(".dk-score", art), r, { animate, note: r.empty ? null : "" });
+            paintParts($(".dk-parts", art), r, o);
+            const an = TS().analyze(dk);
+            const sw = swHTML(an, r, false);
+            setHTML($("[data-strong]", art), sw.strong, false);
+            setHTML($("[data-weak]", art), sw.weak, false);
+            setHTML($("[data-fits]", art), fitsHTML(an, dk, false), false);
+          });
+          const sa = ra.score || 0, sb = rb.score || 0;
+          $("[data-verdict]", d).textContent = a === b ? "Same deck on both sides. Pick another one to compare."
+            : sa === sb ? `Even: both score ${sa || "—"}.` : `${sa > sb ? decks.find((x) => x.id === a).name : decks.find((x) => x.id === b).name} is ahead by ${Math.abs(sa - sb)}.`;
+          if (animate) animateIn(cols);
+        };
+        d.addEventListener("change", (e) => {
+          const s = e.target.closest("select[data-cmp]");
+          if (!s) return;
+          if (s.dataset.cmp === "a") a = s.value; else b = s.value;
+          paint(true);
+        });
+        paint(false);
+      },
+    });
   }
 
   /* ==========================================================
@@ -401,6 +704,7 @@
     const els = ed.shown.cards.filter(Boolean).map((o) => o.el);
     const seen = els.map((el) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
     els.forEach((el, i) => { const c = cardById.get(el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
+    refresh();                                     // the score doesn't depend on rarity; this keeps the ring and the picks in step
   }
 
   /* ==========================================================
@@ -422,6 +726,7 @@
     }
     paintBoard(ed, cur, { animate, land });
     chrome();
+    refresh();
     return changed;
   }
   function step(dir) {
@@ -437,6 +742,7 @@
     touch();
     paintBoard(ed, cur, { animate: true });
     chrome();
+    refresh();
   }
   // toast with Undo that only undoes this exact change (not something done after it)
   function undoToast(text) {
@@ -910,6 +1216,7 @@
           <button type="button" class="tm-btn fx-press" data-dlg="image"${empty ? " disabled" : ""}>${ICON.image || ""}Save as image</button>
           <button type="button" class="tm-btn fx-press" data-dlg="link"${empty ? " disabled" : ""}>${ICON.link || ""}Share link</button>
           ${empty ? `<p class="tm-field__note">Add a card to share this deck.</p>` : ""}
+          <button type="button" class="tm-btn fx-press" data-dlg="compare"${decks.length < 2 ? " disabled" : ""}>${ICON.swap}Compare with another deck</button>
           <button type="button" class="tm-btn fx-press" data-dlg="rename">${ICON.pencil}Rename</button>
           <button type="button" class="tm-btn fx-press" data-dlg="dup">${ICON.copy}Duplicate</button>
           <button type="button" class="tm-btn tm-btn--danger fx-press" data-dlg="del">${ICON.trash}Delete deck</button>
@@ -919,6 +1226,7 @@
     if (!res || !cur) return;
     if (res.action === "image") saveImage(cur, ed.root);
     else if (res.action === "link") shareLink(cur, ed.root);
+    else if (res.action === "compare") compareDialog(cur.id);
     else if (res.action === "rename") renameDeck();
     else if (res.action === "dup") duplicateDeck(cur.id);
     else if (res.action === "del") deleteDeck(cur.id);
@@ -986,6 +1294,11 @@
     shared = { data, deck, copyId: shCopies.get(data) || null };
     paintSharedMeta();
     paintBoard(sh, deck, { animate: false });
+    if (TS()) {
+      const r = TS().score(deck);
+      paintScore(ui.shScore, r, { note: r.empty ? null : modeOf(deck.mode).name });
+      paintAnalysis(ui.shAna, deck, r, { editable: false });
+    }
     sh.root.querySelectorAll(".dk-item").forEach((it) => it.setAttribute("aria-label", `${it.dataset.name}, ${it.closest(".dk-slot").dataset.kind === "cards" ? "slot" : "support"} ${Number(it.closest(".dk-slot").dataset.i) + 1}`));
     ui.shared.hidden = false;
     animateIn(ui.shared);
@@ -1032,7 +1345,7 @@
       if (mode === "editor" && cur) {
         const again = decks.find((d) => d.id === cur.id);
         if (!again) back();
-        else if (again !== cur) { cur = again; clearSel(); paintBoard(ed, cur, { animate: false }); chrome(); }
+        else if (again !== cur) { cur = again; clearSel(); paintBoard(ed, cur, { animate: false }); chrome(); refresh({ animate: false }); }
       } else if (mode === "index") flipIndex(() => renderIndex(false));
     }
     return changed;
@@ -1062,14 +1375,16 @@
     li.className = "tml dkl glass";
     li.dataset.deck = d.id;
     const nc = countOf(d.cards), ns = countOf(d.support), m = modeOf(d.mode);
+    const r = TS() ? TS().score(d) : null, sc = r && r.score != null ? r.score : null;
     li.innerHTML = `
-      <button type="button" class="tml__open dkl__open fx-press" data-act="open" aria-label="Open ${esc(d.name)}, ${esc(m.name)}, ${nc} of ${SLOTS} cards, ${ns} of ${SLOTS} support">
+      <button type="button" class="tml__open dkl__open fx-press" data-act="open" aria-label="Open ${esc(d.name)}, ${esc(m.name)}, ${nc} of ${SLOTS} cards, ${ns} of ${SLOTS} support${sc != null ? `, team score ${sc}` : ""}">
         <span class="tml__text">
           <span class="tml__name">${esc(d.name)}</span>
           <span class="tml__meta"><b>${esc(m.name)}</b> · ${esc(d.rarity)} · ${nc}/${SLOTS} cards · ${ns}/${SLOTS} support</span>
           <span class="dkl__strip" aria-hidden="true"></span>
           <span class="tml__date">Edited ${esc(fmtDate(d.updated))}</span>
         </span>
+        <span class="dkl__score" data-band="${r ? r.band : "none"}" aria-hidden="true"><b>${sc != null ? sc : "—"}</b><small>Score</small></span>
       </button>
       <button type="button" class="iconbtn fx-press" data-act="dup" aria-label="Duplicate ${esc(d.name)}">${ICON.copy}</button>
       <button type="button" class="iconbtn fx-press" data-act="del" aria-label="Delete ${esc(d.name)}">${ICON.trash}</button>`;
@@ -1079,6 +1394,7 @@
   }
   function renderIndex(animate) {
     ui.count.textContent = plural(decks.length, "deck", "decks");
+    if (ui.cmpBtn) { ui.cmpBtn.disabled = decks.length < 2; ui.cmpBtn.title = decks.length < 2 ? "Make a second deck to compare" : ""; }
     ui.indexHead.hidden = !decks.length;
     ui.empty.hidden = !!decks.length;
     ui.lists.replaceChildren(...decks.map(deckRow));
@@ -1116,8 +1432,8 @@
     ui.editor.hidden = false;
     KINDS.forEach((k) => { ed.shown[k].forEach((o) => o && o.el.remove()); ed.shown[k] = new Array(SLOTS).fill(null); });
     paintBoard(ed, cur, { animate: false });
-    paintScore(ui.score, null);
     chrome();
+    refresh({ animate: false });
     animateIn(ui.editor);
     FX.stagger($(".dk-row", ed.root), 45, { cls: "fx-up", max: 8, cleanup: true });
     window.scrollTo({ top: 0 });
@@ -1322,6 +1638,7 @@
       case "rename": if (cur) renameDeck(); break;
       case "menu": if (cur) deckMenu(); break;
       case "backup": if (C.share) C.share.backupDialog(); break;
+      case "compare": compareDialog(cur ? cur.id : null); break;
       case "sh-copy": saveCopy(); break;
       case "sh-image": if (shared) saveImage(shared.deck, sh.root); break;
       case "undo": step(-1); break;
@@ -1336,6 +1653,10 @@
 
   function onClick(e) {
     if (blockClick) { e.preventDefault(); e.stopPropagation(); return; }
+    const oc = e.target.closest("[data-open-card]");
+    if (oc && ui.root.contains(oc)) { if (cardById.has(oc.dataset.openCard)) C.openCard(oc.dataset.openCard, oc); return; }   // the card grows from the chip and returns to it
+    const sg = e.target.closest(".dk-sug__item");
+    if (sg && ui.root.contains(sg)) { addSuggested(sg.dataset.sugKind, sg.dataset.id, sg.dataset.slot); return; }
     const rb = e.target.closest("[data-dk-rarity]");
     if (rb && ui.root.contains(rb)) { setRarity(rb.dataset.dkRarity); return; }
     const mb = e.target.closest("[data-dk-mode]");
@@ -1437,6 +1758,14 @@
     ui.mode.style.setProperty("--n", modes().length);
     ui.score.innerHTML = scoreHTML();
     ui.score = $(".dk-score", ui.score);
+    C.watchLive(ui.score);                          // the rainbow ring of a 100 only turns while it's on screen
+    ui.shScore.innerHTML = scoreHTML();
+    ui.shScore = $(".dk-score", ui.shScore);
+    C.watchLive(ui.shScore);
+    if (TS()) {
+      ui.ana.innerHTML = anaHTML(true);
+      ui.shAna.innerHTML = anaHTML(false);
+    } else { ui.ana.hidden = true; ui.shAna.hidden = true; }
     ui.loading.remove();
     ui.warn.hidden = canSave;
     apply(parse());
@@ -1454,6 +1783,7 @@
       shLoad: $("#dk-sh-load"), shBad: $("#dk-sh-bad"), shBadTitle: $("#dk-sh-bad-title"), shBadText: $("#dk-sh-bad-text"),
       shared: $("#dk-shared"), shName: $("#dk-sh-name"), shMeta: $("#dk-sh-meta"), shCopyText: $("#dk-sh-copy-text"), shNote: $("#dk-sh-note"),
       metaList: $("#deck-list"), metaNone: $("#decks-none"), metaRarity: $("#deck-rarity"),
+      ana: $("#dk-analysis"), shAna: $("#dk-sh-analysis"), shScore: $("#dk-sh-score"), cmpBtn: $("#dk-compare"),
     });
     if (!ui.root) return;
     cardById = new Map(state.cards.map((c) => [c.id, c]));
