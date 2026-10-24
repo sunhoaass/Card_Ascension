@@ -62,15 +62,16 @@
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"></noscript>
-  <link rel="stylesheet" href="css/tokens.css?v=11">
-  <link rel="stylesheet" href="css/base.css?v=11">
-  <link rel="stylesheet" href="css/fx.css?v=11">
-  <link rel="stylesheet" href="css/cards.css?v=11">
-  <link rel="stylesheet" href="css/tier.css?v=11">
-  <link rel="stylesheet" href="css/deck.css?v=11">
-  <link rel="stylesheet" href="css/support.css?v=11">
-  <link rel="stylesheet" href="css/grade.css?v=11">
-  <link rel="stylesheet" href="css/tiermaker.css?v=11">
+  <link rel="stylesheet" href="css/tokens.css?v=12">
+  <link rel="stylesheet" href="css/base.css?v=12">
+  <link rel="stylesheet" href="css/fx.css?v=12">
+  <link rel="stylesheet" href="css/cards.css?v=12">
+  <link rel="stylesheet" href="css/tier.css?v=12">
+  <link rel="stylesheet" href="css/deck.css?v=12">
+  <link rel="stylesheet" href="css/support.css?v=12">
+  <link rel="stylesheet" href="css/grade.css?v=12">
+  <link rel="stylesheet" href="css/tiermaker.css?v=12">
+  <link rel="stylesheet" href="css/detail.css?v=12">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -588,30 +589,101 @@
     </section>
   </main>
 
-  <!-- Card detail (opens over any page, see js/cards.js) -->
-  <div id="detail" class="detail" hidden role="dialog" aria-modal="true" aria-label="Card details">
-    <div class="detail__scrim"></div>
-    <div class="detail__sheet">
-      <div class="detail__bar">
-        <button id="detail-close" class="detail__back fx-press" type="button" aria-label="Close card details">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-          <span>Back</span>
-        </button>
-      </div>
-      <div id="detail-content" class="detail__content"></div>
+  <!-- Card detail: the "Black Sun" scene (opens over any page, see js/detail.js + css/detail.css) -->
+  <div id="detail" class="bs" hidden role="dialog" aria-modal="true" aria-label="Card details">
+    <div class="bs-stage" id="bs-stage" aria-hidden="true">
+      <div class="bs-par" id="bs-skyX"><div class="bs-par" id="bs-skyY">
+        <div class="bs-sky" id="bs-sky">
+          <img class="bs-bg" id="bs-bg" alt="">
+          <div class="bs-pulse" id="bs-pulse"><i></i><i></i></div>
+          <img class="bs-corona" id="bs-coronaA" alt="">
+          <img class="bs-corona" id="bs-coronaB" alt="">
+        </div>
+      </div></div>
+      <div class="bs-par" id="bs-sparkX"><div class="bs-par" id="bs-sparkY"><div class="bs-sparks" id="bs-sparks"></div></div></div>
+      <div class="bs-par" id="bs-fogX"><div class="bs-fogwrap"><div class="bs-fog" id="bs-fog"></div></div></div>
+      <canvas class="bs-dust" id="bs-dust" hidden></canvas>
     </div>
+
+    <header class="bs-top">
+      <button id="detail-close" class="detail__back fx-press" type="button" aria-label="Close card details">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        <span>Back</span>
+      </button>
+      <div class="bs-top__t"><b id="bs-name">Card</b><small id="bs-pager"></small></div>
+      <button class="bs-ibtn fx-press" id="bs-tilt" type="button" hidden aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2" transform="rotate(-14 12 12)"/><path d="M3 9a10 10 0 0 0 0 6M21 9a10 10 0 0 1 0 6"/></svg><span class="bs-ibtn__txt">Tilt</span>
+      </button>
+      <button class="bs-ibtn fx-press" id="bs-replay" type="button" aria-label="Replay intro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/></svg><span class="bs-ibtn__txt">Replay</span>
+      </button>
+    </header>
+
+    <div class="bs-fore" id="bs-fore">
+      <div class="bs-par" id="bs-foreX"><div class="bs-par" id="bs-foreY">
+        <div class="bs-callouts" id="bs-callouts"></div>
+        <div class="bs-wrap" id="bs-wrap" tabindex="0" role="button" aria-describedby="bs-help">
+          <div class="bs-zoom" id="bs-zoom">
+            <div class="bs-motes"><div class="bs-swirl" id="bs-swirl"></div></div>
+            <div class="bs-mat" id="bs-mat"></div>
+            <div class="bs-tilt" id="bs-tiltEl"><div class="bs-rotor" id="bs-rotor">
+              <div class="bs-face bs-face--front" id="bs-faceF"></div>
+              <div class="bs-face bs-face--back" id="bs-faceB"></div>
+              <i class="bs-edge bs-edge--l"></i><i class="bs-edge bs-edge--r"></i><i class="bs-edge bs-edge--t"></i><i class="bs-edge bs-edge--b"></i>
+            </div></div>
+          </div>
+        </div>
+        <div class="bs-ovr" id="bs-ovr" aria-hidden="true">
+          <svg viewBox="0 0 60 60"><circle class="bs-ovr__bg" cx="30" cy="30" r="26"/><circle class="bs-ovr__arc" id="bs-ovrArc" cx="30" cy="30" r="26" pathLength="100" stroke-dasharray="0 100"/></svg>
+          <b id="bs-ovrNum">0</b><small id="bs-ovrLbl">OVERALL</small>
+        </div>
+        <button class="bs-dbtn fx-press" id="bs-details" type="button" aria-haspopup="dialog">Details
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+      </div></div>
+      <p class="sr-only" id="bs-help">Tap to spin. Drag to turn. Double tap to zoom. Swipe outside the card or use the arrow keys for the next card.</p>
+    </div>
+
+    <p class="bs-hint" id="bs-hint"><b>Tap</b> spin · <b>Drag</b> turn · <b>Double-tap</b> zoom · <b>Swipe outside</b> next card</p>
+
+    <nav class="bs-dock" id="bs-dock" aria-label="Card level">
+      <div class="bs-dock__l" id="bs-dockL"></div>
+      <div class="bs-dock__mid">
+        <div class="bs-dock__row">
+          <button class="bs-ibtn bs-arrow fx-press" id="bs-prev" type="button" aria-label="Previous card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+          <div class="bs-lv" id="bs-lv" role="group" aria-label="Level"><span class="bs-lv__ind" id="bs-lvInd"></span></div>
+          <button class="bs-ibtn bs-arrow fx-press" id="bs-next" type="button" aria-label="Next card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+        <div class="bs-lv__name" id="bs-lvName" aria-live="polite"></div>
+      </div>
+      <div class="bs-dock__r" id="bs-dockR"></div>
+    </nav>
+
+    <div class="bs-scrim" id="bs-scrim" hidden></div>
+    <section class="bs-sheet" id="bs-sheet" role="dialog" aria-modal="true" aria-labelledby="bs-shTitle" inert>
+      <div class="bs-sheet__head" id="bs-sheetHead">
+        <span class="bs-sheet__grip"></span>
+        <div class="bs-sheet__row">
+          <div class="bs-sheet__thumb" id="bs-shThumb"></div>
+          <div class="bs-sheet__title"><h2 id="bs-shTitle">Card</h2><p id="bs-shSub"></p></div>
+          <button class="bs-sheet__x fx-press" id="bs-sheetX" type="button" aria-label="Close details">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        </div>
+      </div>
+      <div class="bs-sheet__body" id="bs-sheetBody"></div>
+    </section>
   </div>
 
-  <script src="js/fx.js?v=11"></script>
-  <script src="js/app.js?v=11"></script>
-  <script src="js/teamscore.js?v=11"></script>
-  <script src="js/share.js?v=11"></script>
-  <script src="js/cards.js?v=11"></script>
-  <script src="js/tier.js?v=11"></script>
-  <script src="js/deck.js?v=11"></script>
-  <script src="js/support.js?v=11"></script>
-  <script src="js/grade.js?v=11"></script>
-  <script src="js/tiermaker.js?v=11"></script>
-  <script src="js/music.js?v=11"></script>
+  <script src="js/fx.js?v=12"></script>
+  <script src="js/app.js?v=12"></script>
+  <script src="js/teamscore.js?v=12"></script>
+  <script src="js/share.js?v=12"></script>
+  <script src="js/cards.js?v=12"></script>
+  <script src="js/detail.js?v=12"></script>
+  <script src="js/tier.js?v=12"></script>
+  <script src="js/deck.js?v=12"></script>
+  <script src="js/support.js?v=12"></script>
+  <script src="js/grade.js?v=12"></script>
+  <script src="js/tiermaker.js?v=12"></script>
+  <script src="js/music.js?v=12"></script>
 </body>
 </html>
