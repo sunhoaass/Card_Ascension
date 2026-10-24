@@ -48,15 +48,15 @@
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"></noscript>
-  <link rel="stylesheet" href="css/tokens.css?v=10">
-  <link rel="stylesheet" href="css/base.css?v=10">
-  <link rel="stylesheet" href="css/fx.css?v=10">
-  <link rel="stylesheet" href="css/cards.css?v=10">
-  <link rel="stylesheet" href="css/tier.css?v=10">
-  <link rel="stylesheet" href="css/deck.css?v=10">
-  <link rel="stylesheet" href="css/support.css?v=10">
-  <link rel="stylesheet" href="css/grade.css?v=10">
-  <link rel="stylesheet" href="css/tiermaker.css?v=10">
+  <link rel="stylesheet" href="css/tokens.css?v=11">
+  <link rel="stylesheet" href="css/base.css?v=11">
+  <link rel="stylesheet" href="css/fx.css?v=11">
+  <link rel="stylesheet" href="css/cards.css?v=11">
+  <link rel="stylesheet" href="css/tier.css?v=11">
+  <link rel="stylesheet" href="css/deck.css?v=11">
+  <link rel="stylesheet" href="css/support.css?v=11">
+  <link rel="stylesheet" href="css/grade.css?v=11">
+  <link rel="stylesheet" href="css/tiermaker.css?v=11">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -302,7 +302,7 @@
         <p class="page__eyebrow">The Casebook</p>
         <h1 id="deck-title" class="page__title">Deck</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p id="deck-lead" class="page__lead">Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. Decks are saved on this device.</p>
+        <p id="deck-lead" class="page__lead">Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. The team score updates as you build. Decks are saved on this device.</p>
       </div>
 
       <div id="deck-tabs" class="seg glass" role="tablist" aria-label="Deck type" style="--n:2;--i:0">
@@ -323,6 +323,7 @@
               <span id="dk-count" class="tm-index__count"></span>
               <div class="tm-index__btns">
                 <button class="tm-btn fx-press" type="button" data-act="backup" aria-label="Backup and restore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>Backup</button>
+                <button id="dk-compare" class="tm-btn fx-press" type="button" data-act="compare" aria-label="Compare two decks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>Compare</button>
                 <button class="tm-btn tm-btn--primary fx-press" type="button" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New deck</button>
               </div>
             </div>
@@ -359,9 +360,12 @@
               <button id="dk-sh-copy" class="tm-btn tm-btn--primary fx-press" type="button" data-act="sh-copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span id="dk-sh-copy-text">Save a copy</span></button>
               <button class="tm-btn fx-press" type="button" data-act="sh-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Save image</button>
             </div>
+            <div id="dk-sh-score" class="dk-scorebox dk-scorebox--shared" role="img" aria-label="Team score"></div>
             <p class="tm-hint">Tap a card to see its details.</p>
             <div id="dk-sh-board" class="dk-board"></div>
             <p id="dk-sh-note" class="tm-hint" hidden></p>
+            <!-- Step 11: the team score, read only -->
+            <div id="dk-sh-analysis" class="dk-analysis"></div>
           </div>
 
           <!-- One deck -->
@@ -374,7 +378,7 @@
               <button class="iconbtn glass fx-press" type="button" data-act="menu" aria-label="Deck options"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
             </div>
             <div class="dk-top">
-              <div id="dk-score" class="dk-scorebox" role="img" aria-label="Team score: not available yet"></div>
+              <div id="dk-score" class="dk-scorebox" role="img" aria-label="Team score"></div>
               <div class="dk-top__main">
                 <span id="dk-meta" class="tm-meta"></span>
                 <div id="dk-mode" class="seg glass dk-mode" role="group" aria-label="Mode" style="--n:4;--i:0"><span class="seg__ind" aria-hidden="true"></span></div>
@@ -383,6 +387,9 @@
             <div id="dk-rarity" class="rarity-picker dk-rarity" role="group" aria-label="Rarity for this deck"></div>
             <p id="dk-hint" class="tm-hint"></p>
             <div id="dk-board" class="dk-board"></div>
+
+            <!-- Step 11: score breakdown · strengths & weaknesses · fits modes · fill the gaps · compare (js/deck.js + js/teamscore.js) -->
+            <div id="dk-analysis" class="dk-analysis"></div>
 
             <!-- Command bar for a card you tapped -->
             <div id="dk-dock" class="dk-dock">
@@ -581,15 +588,16 @@
     </div>
   </div>
 
-  <script src="js/fx.js?v=10"></script>
-  <script src="js/app.js?v=10"></script>
-  <script src="js/share.js?v=10"></script>
-  <script src="js/cards.js?v=10"></script>
-  <script src="js/tier.js?v=10"></script>
-  <script src="js/deck.js?v=10"></script>
-  <script src="js/support.js?v=10"></script>
-  <script src="js/grade.js?v=10"></script>
-  <script src="js/tiermaker.js?v=10"></script>
-  <script src="js/music.js?v=10"></script>
+  <script src="js/fx.js?v=11"></script>
+  <script src="js/app.js?v=11"></script>
+  <script src="js/teamscore.js?v=11"></script>
+  <script src="js/share.js?v=11"></script>
+  <script src="js/cards.js?v=11"></script>
+  <script src="js/tier.js?v=11"></script>
+  <script src="js/deck.js?v=11"></script>
+  <script src="js/support.js?v=11"></script>
+  <script src="js/grade.js?v=11"></script>
+  <script src="js/tiermaker.js?v=11"></script>
+  <script src="js/music.js?v=11"></script>
 </body>
 </html>
