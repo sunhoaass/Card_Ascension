@@ -21,26 +21,60 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 75.0,
+      "hp": 75.0,
+      "passive": 93,
+      "skill": 93,
+      "matchup": 55.4,
+      "team": 92,
+      "overall": 78.9
     },
-    "tier": "",
-    "role": "",
-    "strengths": [],
-    "weaknesses": [],
-    "beats": [],
-    "losesTo": [],
+    "tier": "A",
+    "role": "Hybrid",
+    "tags": [
+      "aoe",
+      "debuff",
+      "burn",
+      "execute",
+      "damage-reduction"
+    ],
+    "weakTo": [
+      "undying",
+      "scaling"
+    ],
+    "modes": {
+      "tower": 90,
+      "pvp": 88,
+      "story": 92,
+      "boss": 76
+    },
+    "strengths": [
+      "Whole enemy deck deals 25% less damage from the start",
+      "Burns the whole enemy deck and hits the bench for 45%",
+      "Takes 30% less damage",
+      "Finishes enemies under 20% HP"
+    ],
+    "weaknesses": [
+      "Loses 1-on-1 to Beast Emperor: its undying passive survives the execute",
+      "Execute does nothing against bosses",
+      "Lower base stats than Beast Emperor"
+    ],
+    "beats": [
+      "moon-eye-ghost",
+      "atomic-shadow-lord"
+    ],
+    "losesTo": [
+      "beast-emperor"
+    ],
     "team": {
-      "position": "",
-      "bestWith": [],
+      "position": "1",
+      "bestWith": [
+        "moon-eye-ghost",
+        "atomic-shadow-lord"
+      ],
       "bestSupport": []
     },
-    "notes": "",
+    "notes": "Best opener: its fear, burn and bench hit weaken every enemy card before the rest of the team fights.",
     "updated": "2026-10-24"
   },
   {
@@ -65,26 +99,60 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 25.0,
+      "hp": 25.0,
+      "passive": 88,
+      "skill": 88,
+      "matchup": 47.0,
+      "team": 88,
+      "overall": 62.0
     },
-    "tier": "",
-    "role": "",
-    "strengths": [],
-    "weaknesses": [],
-    "beats": [],
-    "losesTo": [],
+    "tier": "B",
+    "role": "DPS",
+    "tags": [
+      "aoe",
+      "debuff",
+      "multi-hit",
+      "block",
+      "revive"
+    ],
+    "weakTo": [
+      "damage-reduction",
+      "undying"
+    ],
+    "modes": {
+      "tower": 86,
+      "pvp": 82,
+      "story": 88,
+      "boss": 72
+    },
+    "strengths": [
+      "Hits twice per attack (Limbo clones)",
+      "Whole enemy deck deals 20% less damage",
+      "Blocks 3 hits and revives once at 50% HP",
+      "Perfect Susanoo hits the whole bench for 40%"
+    ],
+    "weaknesses": [
+      "Lowest base ATK and HP of the current cards",
+      "Damage-reduction tanks cut both of its hits",
+      "Ignore-defense attacks skip its Susanoo blocks"
+    ],
+    "beats": [
+      "atomic-shadow-lord"
+    ],
+    "losesTo": [
+      "dragon-emperor-monarch",
+      "beast-emperor"
+    ],
     "team": {
-      "position": "",
-      "bestWith": [],
+      "position": "2",
+      "bestWith": [
+        "dragon-emperor-monarch",
+        "beast-emperor"
+      ],
       "bestSupport": []
     },
-    "notes": "",
+    "notes": "Stack its -20% with Dragon Emperor Monarch's -25%: enemies then deal only 60% damage.",
     "updated": "2026-10-24"
   },
   {
@@ -109,26 +177,60 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 50.0,
+      "hp": 50.0,
+      "passive": 82,
+      "skill": 82,
+      "matchup": 28.8,
+      "team": 72,
+      "overall": 58.7
     },
-    "tier": "",
-    "role": "",
-    "strengths": [],
-    "weaknesses": [],
+    "tier": "C",
+    "role": "DPS",
+    "tags": [
+      "burst",
+      "aoe",
+      "ignore-defense",
+      "dodge",
+      "shadow-garden"
+    ],
+    "weakTo": [
+      "aoe",
+      "debuff",
+      "execute"
+    ],
+    "modes": {
+      "tower": 70,
+      "pvp": 80,
+      "story": 86,
+      "boss": 58
+    },
+    "strengths": [
+      "First hit on every new enemy does 3x",
+      "Blows through the whole enemy bench for 40%",
+      "Ignores every defense (damage reduction and blocks)",
+      "Dodges 30% of attacks"
+    ],
+    "weaknesses": [
+      "Lowest HP after Moon Eye Ghost: falls fast in long fights",
+      "The 3x only works once per enemy, so it is weak against bosses",
+      "Shadow Garden +25% does nothing yet (no other Shadow Garden cards)"
+    ],
     "beats": [],
-    "losesTo": [],
+    "losesTo": [
+      "dragon-emperor-monarch",
+      "moon-eye-ghost",
+      "beast-emperor"
+    ],
     "team": {
-      "position": "",
-      "bestWith": [],
+      "position": "3",
+      "bestWith": [
+        "dragon-emperor-monarch",
+        "moon-eye-ghost"
+      ],
       "bestSupport": []
     },
-    "notes": "",
+    "notes": "Cleaner: put it after the openers so its 3x hits finish cards that are already burned and splashed. Rank goes up if Shadow Garden cards are added.",
     "updated": "2026-10-24"
   },
   {
@@ -153,26 +255,59 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 100.0,
+      "hp": 100.0,
+      "passive": 86,
+      "skill": 86,
+      "matchup": 68.8,
+      "team": 78,
+      "overall": 83.6
     },
-    "tier": "",
-    "role": "",
-    "strengths": [],
-    "weaknesses": [],
-    "beats": [],
+    "tier": "S",
+    "role": "Tank",
+    "tags": [
+      "damage-reduction",
+      "undying",
+      "cc-immune",
+      "scaling",
+      "burst"
+    ],
+    "weakTo": [
+      "ignore-defense",
+      "debuff"
+    ],
+    "modes": {
+      "tower": 88,
+      "pvp": 90,
+      "story": 82,
+      "boss": 92
+    },
+    "strengths": [
+      "Highest ATK and HP of the current cards",
+      "Survives the first killing blow at 1 HP",
+      "Takes 30% less damage and cannot be stunned or frozen",
+      "Gets +6% damage every time it is hit; 2.5x every 3rd attack"
+    ],
+    "weaknesses": [
+      "No team effect: only helps itself",
+      "Ignore-defense attacks skip its 30% damage reduction",
+      "No AoE: kills one enemy at a time"
+    ],
+    "beats": [
+      "dragon-emperor-monarch",
+      "moon-eye-ghost",
+      "atomic-shadow-lord"
+    ],
     "losesTo": [],
     "team": {
-      "position": "",
-      "bestWith": [],
+      "position": "4-5",
+      "bestWith": [
+        "dragon-emperor-monarch",
+        "moon-eye-ghost"
+      ],
       "bestSupport": []
     },
-    "notes": "",
+    "notes": "Wins every 1-on-1 among the current cards. Best as the anchor at the back: it cannot die the first time and keeps getting stronger.",
     "updated": "2026-10-24"
   }
 ]
