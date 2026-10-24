@@ -64,7 +64,7 @@
         ${thumb ? "" : `<span class="scard__tag">Support</span>${isRanked(s) ? `<span class="scard__tier">${esc(s.tier)}</span>` : ""}
         <span class="scard__info"><span class="scard__name">${esc(s.name)}</span></span>
         <span class="scard__glare"></span>`}
-      </span></span>`;
+      </span>${thumb ? "" : `<span class="scard__orn"></span>`}</span>`;
     C.bindArt(el, s);   // missing image -> the generated art
     return el;
   }

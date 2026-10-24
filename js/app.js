@@ -22,10 +22,10 @@
   const TIER_COLOR = { SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d" };
   const RARITY_SWATCH = {
     Normal: "var(--r-normal)", Shiny: "var(--r-shiny)",
-    Rainbow: "linear-gradient(135deg,#ff4d6d,#ffb84d,#5dff9b,#4dd8ff,#b06bff)",
+    Rainbow: "linear-gradient(135deg,#e8607a,#e9a75a,#7fd39a,#69b9e0,#8a7be0)",
     Secret: "var(--r-secret)", Divine: "var(--r-divine-2)",
     Cosmic: "linear-gradient(135deg,var(--r-cosmic),var(--r-cosmic-2))",
-    Ascended: "linear-gradient(135deg,#8ff7ff,#b98cff,#ff9de2,#fff2a8)",
+    Ascended: "linear-gradient(135deg,#a9eef5,#c5a8f5,#f5b4dc,#f8e7a8)",
   };
 
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
@@ -69,27 +69,30 @@
   const isRanked = (card) => !!(card.scores && card.scores.overall > 0 && card.tier);
   const cardLabel = (card, rarity) => `${card.name}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", not ranked yet"}`;
 
-  /* ---------- Placeholder art (until real images exist) ---------- */
+  /* ---------- Placeholder art (until real images exist) ----------
+     Step 9.6b: jewel-tone gradient + a gothic arch window + the initials in Cinzel.
+     js/share.js drawPlaceholder() draws the same picture into saved images (keep the two in step). */
   function hash(str) { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) | 0; return Math.abs(h); }
+  const ART_HUES = [222, 260, 330, 350, 200, 160, 30];
   let artSeq = 0;
   function placeholderArt(card) {
     const uid = card.id.replace(/[^a-z0-9]/gi, "") + "-" + (artSeq++);
-    const h = hash(card.id) % 360, h2 = (h + 60) % 360;
+    const h = ART_HUES[hash(card.id) % ART_HUES.length], h2 = (h + 40) % 360;
     const initials = esc(card.name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase());
     return `<svg viewBox="0 0 100 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
-        <linearGradient id="g${uid}" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="hsl(${h} 70% 32%)"/><stop offset="1" stop-color="hsl(${h2} 65% 12%)"/>
+        <linearGradient id="g${uid}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="hsl(${h} 45% 24%)"/><stop offset="1" stop-color="hsl(${h2} 40% 8%)"/>
         </linearGradient>
-        <radialGradient id="r${uid}" cx=".5" cy=".38" r=".5">
-          <stop offset="0" stop-color="hsl(${h} 90% 70% / .55)"/><stop offset="1" stop-color="transparent"/>
+        <radialGradient id="r${uid}" cx=".5" cy=".42" r=".5">
+          <stop offset="0" stop-color="hsl(42 90% 75% / .45)"/><stop offset="1" stop-color="transparent"/>
         </radialGradient>
       </defs>
       <rect width="100" height="140" fill="url(#g${uid})"/>
-      <circle cx="50" cy="52" r="46" fill="url(#r${uid})"/>
-      <path d="M50 22 L74 52 L50 82 L26 52 Z" fill="none" stroke="hsl(${h} 90% 80% / .35)" stroke-width="1"/>
-      <path d="M50 30 L66 52 L50 74 L34 52 Z" fill="hsl(${h} 90% 80% / .08)" stroke="hsl(${h} 90% 85% / .5)" stroke-width=".6"/>
-      <text x="50" y="58" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="17" fill="hsl(${h} 100% 92% / .9)">${initials}</text>
+      <circle cx="50" cy="56" r="44" fill="url(#r${uid})"/>
+      <path d="M28 104V52a22 22 0 0 1 44 0v52z" fill="hsl(${h} 40% 12% / .55)" stroke="hsl(42 70% 70% / .55)" stroke-width="1"/>
+      <path d="M33 104V54a17 17 0 0 1 34 0v50M50 37v67M33 72h34" fill="none" stroke="hsl(42 70% 70% / .25)" stroke-width=".7"/>
+      <text x="50" y="76" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="17" fill="hsl(42 80% 88% / .92)">${initials}</text>
     </svg>`;
   }
 
@@ -167,7 +170,7 @@
         ${card.mock ? `<span class="card__mock">mock</span>` : ""}
         <span class="card__glare"></span>
         <span class="card__flash"></span>
-      </div></div>
+      </div><span class="card__orn"></span></div>
       <span class="card__particles"><i></i><i></i><i></i><i></i><i></i></span>`;
     // missing thumbnail -> big image · missing image file -> the generated art instead of an empty card
     bindArt(el, card);
@@ -288,7 +291,7 @@
   /* ---------- Boot ---------- */
   async function boot() {
     FX.press(document);
-    FX.starfield($("#starfield"));
+    FX.backdrop($("#backdrop"));   // step 9.6b: the night city (was FX.starfield)
 
     document.querySelector(".nav").addEventListener("click", (e) => {
       const b = e.target.closest(".nav__btn");
@@ -311,14 +314,18 @@
       console.error(err);
       $("#card-grid").innerHTML = "";
       $("#data-error").hidden = false;
+      hideBoot();
       return;
     }
     const savedRarity = store.get(RARITY_KEY);
     if (state.meta.rarities.some((r) => r.name === savedRarity)) state.rarity = savedRarity;
 
     const d = new Date(state.meta.updated + "T00:00:00");
-    $("#updated").textContent = "Updated " + d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-    $("#updated").parentElement.setAttribute("title", "Data last updated " + state.meta.updated);
+    const when = "Updated " + d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    document.querySelectorAll("[data-updated]").forEach((el) => {   // top bar + PC menu rail
+      el.textContent = when;
+      el.setAttribute("title", "Data last updated " + state.meta.updated);
+    });
 
     state.loaded = true;
     CBI.tier.init();
@@ -327,7 +334,21 @@
     CBI.support.init();
     CBI.grade.init();
     route();   // opens a #card/<id>, #support/<id> or #grade/<id> deep link now that the data is here
+    hideBoot();
     setTimeout(FX.probe, 800);   // lite mode check: 2 s of frames once the first page has settled (step 9.5)
+  }
+
+  /* Boot screen (crest + pocket watch, step 9.6b): fades out once the data is in and the fonts are ready
+     (at most 1.2 s wait for fonts). base.css also hides it by itself after 8 s, so it can never get stuck. */
+  function hideBoot() {
+    const el = $("#boot");
+    if (!el || el.classList.contains("is-out")) return;
+    const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    Promise.race([fonts, new Promise((r) => setTimeout(r, 1200))]).then(() => {
+      el.classList.add("is-out");
+      el.setAttribute("aria-hidden", "true");
+      setTimeout(() => el.remove(), 600);
+    });
   }
 
   const CBI = window.CBI = {

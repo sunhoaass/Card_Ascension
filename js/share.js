@@ -163,19 +163,21 @@
     CARD_W: 114, CARD_H: 160, HEAD: 150, FOOT: 96, MIN_ROW: 100,
   };
 
-  // Rarity frames. Keep in step with the rarity auras in css/fx.css (frame gradient + glow). Tokens are read from tokens.css.
+  // Rarity frames. Keep in step with the gilded frames in css/fx.css (frame gradient, ornament colour, glow).
+  // Tokens are read from tokens.css. orn = colour of the corner ornaments (.card__orn), line = the thin inner line.
   function frameSpec(rarity, kind) {
     const t = cssVar;
     const stopsOf = (token) => cssVar(token).match(/#[0-9a-f]{3,8}/gi) || [];
-    if (kind === "support") return { stops: [[0, t("--rift")], [0.5, t("--flux")], [1, t("--rift")]], glow: "rgba(168, 121, 255, .32)", body: t("--void") };
+    const metal = (a, b) => [[0, a], [0.3, b], [0.5, a], [0.7, b], [1, a]];   // linear-gradient(135deg, rc, rc2 30%, rc 50%, rc2 70%, rc)
+    if (kind === "support") return { stops: [[0, t("--gold-hi")], [0.3, t("--gold-lo")], [0.5, t("--gold")], [0.7, t("--gold-lo")], [1, t("--gold-hi")]], glow: "rgba(216, 180, 106, .28)", body: t("--void"), orn: t("--gold-hi"), line: t("--gold") };
     switch (rarity) {
-      case "Shiny": return { stops: [[0, t("--r-shiny")], [0.5, t("--r-shiny-2")], [1, t("--r-shiny")]], glow: "rgba(255, 210, 90, .38)" };
-      case "Rainbow": return { conic: stopsOf("--r-rainbow"), glow: "rgba(160, 120, 255, .42)" };
-      case "Secret": return { stops: [[0, t("--r-secret")], [0.45, "#120102"], [0.55, "#120102"], [1, t("--r-secret")]], glow: "rgba(255, 40, 60, .55)", body: "#150206" };
-      case "Divine": return { stops: [[0, "#fffdf2"], [0.5, t("--r-divine-2")], [1, "#fffdf2"]], glow: "rgba(255, 224, 150, .5)" };
-      case "Cosmic": return { conic: [t("--r-cosmic"), t("--r-cosmic-2"), "#12164a", t("--r-cosmic")], glow: "rgba(110, 90, 255, .45)" };
-      case "Ascended": return { conic: stopsOf("--r-ascended"), glow: "rgba(190, 230, 255, .55)" };
-      default: return { stops: [[0, t("--r-normal")], [0.5, t("--r-normal-2")], [1, t("--r-normal")]], glow: null };
+      case "Shiny": return { stops: metal(t("--r-shiny"), t("--r-shiny-2")), glow: "rgba(236, 199, 104, .38)", orn: t("--r-shiny"), line: t("--r-shiny") };
+      case "Rainbow": return { conic: stopsOf("--r-rainbow"), glow: "rgba(200, 140, 220, .4)", orn: "#fff1e0", line: "#f0b6d0" };
+      case "Secret": return { stops: [[0, "#e0485e"], [0.35, "#120206"], [0.5, "#4a0c17"], [0.65, "#120206"], [1, "#e0485e"]], glow: "rgba(201, 52, 75, .55)", body: "#14040a", orn: "#e0485e", line: t("--r-secret") };
+      case "Divine": return { stops: [[0, "#fffdf4"], [0.5, "#e2bd6c"], [1, "#fffdf4"]], glow: "rgba(255, 226, 160, .55)", orn: "#f2d488", line: t("--r-divine") };
+      case "Cosmic": return { conic: [t("--r-cosmic"), t("--r-cosmic-2"), "#14184a", t("--r-cosmic")], glow: "rgba(120, 100, 255, .45)", orn: "#c9c0ff", line: "#a796ff" };
+      case "Ascended": return { conic: stopsOf("--r-ascended"), glow: "rgba(220, 210, 255, .55)", orn: "#fffaf0", line: "#f4ecff" };
+      default: return { stops: metal(t("--r-normal"), t("--r-normal-2")), glow: null, orn: t("--r-normal"), line: t("--r-normal") };
     }
   }
   const evenStops = (cols) => cols.map((c, i) => [i / (cols.length - 1), c]);
@@ -206,6 +208,17 @@
       return g;
     }
     return lin135(ctx, x, y, w, h, spec.conic ? evenStops(spec.conic) : spec.stops);
+  }
+  // CSS color-mix(in srgb, a t, b) for two hex colours (tier plates)
+  function mix(a, b, t) {
+    const rgb = (c) => {
+      let h = String(c || "").trim().replace("#", "");
+      if (h.length === 3) h = h.split("").map((x) => x + x).join("");
+      const n = parseInt(h.slice(0, 6), 16);
+      return Number.isFinite(n) ? [(n >> 16) & 255, (n >> 8) & 255, n & 255] : [140, 143, 165];
+    };
+    const A = rgb(a), B = rgb(b);
+    return `rgb(${A.map((v, i) => Math.round(v * t + B[i] * (1 - t))).join(", ")})`;
   }
   // a flat gradient across a pill / bar for specs that are conic in the card frame
   function flatFill(ctx, x, y, w, spec) {
@@ -257,32 +270,60 @@
     const wait = new Promise((r) => setTimeout(r, 2500));
     try {
       await Promise.race([Promise.all([
-        document.fonts.load('700 20px "Chakra Petch"'), document.fonts.load('600 14px "Chakra Petch"'),
+        document.fonts.load('700 20px "Cinzel"'), document.fonts.load('600 14px "Cinzel"'),
         document.fonts.load('500 14px Inter'), document.fonts.ready,
       ]), wait]);
     } catch {}
   }
   function rng(seed) { let s = (seed >>> 0) || 1; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
 
-  /* Same generated art as the page shows for a card without an image (see C.placeholderArt in app.js) */
+  /* Same generated art as the page shows for a card without an image (see C.placeholderArt in app.js):
+     jewel-tone gradient + gothic arch window + initials (step 9.6b) */
+  const ART_HUES = [222, 260, 330, 350, 200, 160, 30];
   function drawPlaceholder(ctx, x, y, w, h, item, fonts) {
-    const hue = C.hash(item.id) % 360, hue2 = (hue + 60) % 360;
+    const hue = ART_HUES[C.hash(item.id) % ART_HUES.length], hue2 = (hue + 40) % 360;
     const sx = w / 100, sy = h / 140;
-    const g = ctx.createLinearGradient(x, y, x + w, y + h);
-    g.addColorStop(0, `hsl(${hue}, 70%, 32%)`); g.addColorStop(1, `hsl(${hue2}, 65%, 12%)`);
+    const P = (px, py) => [x + px * sx, y + py * sy];
+    const g = ctx.createLinearGradient(x, y, x, y + h);
+    g.addColorStop(0, `hsl(${hue}, 45%, 24%)`); g.addColorStop(1, `hsl(${hue2}, 40%, 8%)`);
     ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
-    const rg = ctx.createRadialGradient(x + 50 * sx, y + 52 * sy, 0, x + 50 * sx, y + 52 * sy, 46 * sx);
-    rg.addColorStop(0, `hsla(${hue}, 90%, 70%, .55)`); rg.addColorStop(1, "rgba(0, 0, 0, 0)");
+    const rg = ctx.createRadialGradient(...P(50, 56), 0, ...P(50, 56), 44 * sx);
+    rg.addColorStop(0, "hsla(42, 90%, 75%, .45)"); rg.addColorStop(1, "rgba(0, 0, 0, 0)");
     ctx.fillStyle = rg; ctx.fillRect(x, y, w, h);
-    const diamond = (a) => { ctx.beginPath(); ctx.moveTo(x + 50 * sx, y + a[0] * sy); ctx.lineTo(x + a[1] * sx, y + 52 * sy); ctx.lineTo(x + 50 * sx, y + a[2] * sy); ctx.lineTo(x + a[3] * sx, y + 52 * sy); ctx.closePath(); };
-    diamond([22, 74, 82, 26]); ctx.strokeStyle = `hsla(${hue}, 90%, 80%, .35)`; ctx.lineWidth = sx; ctx.stroke();
-    diamond([30, 66, 74, 34]); ctx.fillStyle = `hsla(${hue}, 90%, 80%, .08)`; ctx.fill(); ctx.strokeStyle = `hsla(${hue}, 90%, 85%, .5)`; ctx.lineWidth = 0.6 * sx; ctx.stroke();
+    // arch window: M28 104 V52 a22 22 0 0 1 44 0 V104 z
+    const arch = (l, r, top) => {
+      const rad = ((r - l) / 2) * sx, [cx, cy] = P((l + r) / 2, top);
+      ctx.beginPath(); ctx.moveTo(...P(l, 104)); ctx.lineTo(...P(l, top));
+      ctx.ellipse(cx, cy, rad, rad * (sy / sx), 0, Math.PI, 0); ctx.lineTo(...P(r, 104)); ctx.closePath();
+    };
+    arch(28, 72, 52);
+    ctx.fillStyle = `hsla(${hue}, 40%, 12%, .55)`; ctx.fill();
+    ctx.strokeStyle = "hsla(42, 70%, 70%, .55)"; ctx.lineWidth = sx; ctx.stroke();
+    arch(33, 67, 54);
+    ctx.strokeStyle = "hsla(42, 70%, 70%, .25)"; ctx.lineWidth = 0.7 * sx; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(...P(50, 37)); ctx.lineTo(...P(50, 104)); ctx.moveTo(...P(33, 72)); ctx.lineTo(...P(67, 72)); ctx.stroke();
     const initials = String(item.name).split(/\s+/).map((s) => s[0] || "").join("").slice(0, 2).toUpperCase();
-    ctx.fillStyle = `hsla(${hue}, 100%, 92%, .9)`;
+    ctx.fillStyle = "hsla(42, 80%, 88%, .92)";
     ctx.font = `700 ${17 * sx}px ${fonts.display}`;
     ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-    ctx.fillText(initials, x + 50 * sx, y + 58 * sy);
+    ctx.fillText(initials, ...P(50, 76));
     ctx.textAlign = "left";
+  }
+  /* Victorian corner ornament (same path as --orn-* in tokens.css), drawn in a size × size box at a corner */
+  const ORN = typeof Path2D === "function" ? [new Path2D("M2 31V13Q2 2 13 2H31"), new Path2D("M7 31V17Q7 7 17 7H31"), new Path2D("M12.5 12.5c3.6-2.4 7.4.2 6 3.6-1.1 2.7-5.3 2.2-4.6-.9")] : null;
+  function drawOrnaments(ctx, x, y, w, h, size, color) {
+    if (!ORN) return;
+    const k = size / 32;
+    [[x, y, 1, 1], [x + w, y, -1, 1], [x, y + h, 1, -1], [x + w, y + h, -1, -1]].forEach(([ox, oy, fx, fy]) => {
+      ctx.save();
+      ctx.translate(ox, oy); ctx.scale(fx * k, fy * k);
+      ctx.strokeStyle = color; ctx.lineCap = "round";
+      ctx.lineWidth = 1.7; ctx.stroke(ORN[0]);
+      ctx.lineWidth = 0.9; ctx.stroke(ORN[1]);
+      ctx.lineWidth = 1.7; ctx.stroke(ORN[2]);
+      ctx.beginPath(); ctx.arc(4.6, 4.6, 2.5, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
+      ctx.restore();
+    });
   }
   function drawCoverImage(ctx, img, x, y, w, h) {
     const ir = img.naturalWidth / img.naturalHeight, br = w / h;
@@ -294,7 +335,7 @@
 
   /* One mini card: rarity frame (3px) + art + name. item = card / support object, or { missing: true, id } */
   function drawCard(ctx, x, y, w, h, item, spec, art, k, pal) {
-    const R = 12, inset = 3;
+    const R = 8, inset = 4;
     if (item.missing) {                                  // not in the library any more: a dashed slot, like in the editor
       roundRect(ctx, x + 1, y + 1, w - 2, h - 2, R);
       ctx.fillStyle = pal.glass; ctx.fill();
@@ -325,19 +366,26 @@
     // body
     const bx = x + inset, by = y + inset, bw = w - inset * 2, bh = h - inset * 2;
     ctx.save();
-    roundRect(ctx, bx, by, bw, bh, R - inset);
+    roundRect(ctx, bx, by, bw, bh, 4);
     ctx.clip();
-    ctx.fillStyle = spec.body || "#0b0d22"; ctx.fillRect(bx, by, bw, bh);
+    ctx.fillStyle = spec.body || "#0d1020"; ctx.fillRect(bx, by, bw, bh);
     if (art) drawCoverImage(ctx, art, bx, by, bw, bh);
     else drawPlaceholder(ctx, bx, by, bw, bh, item, pal);
     // name strip
     const infoH = Math.round(bh * 0.3);
     const gr = ctx.createLinearGradient(0, by + bh - infoH, 0, by + bh);
-    gr.addColorStop(0, "rgba(5, 6, 20, 0)"); gr.addColorStop(0.45, "rgba(5, 6, 20, .88)"); gr.addColorStop(1, "rgba(5, 6, 20, .88)");
+    gr.addColorStop(0, "rgba(8, 10, 22, 0)"); gr.addColorStop(0.42, "rgba(8, 10, 22, .9)"); gr.addColorStop(1, "rgba(8, 10, 22, .9)");
     ctx.fillStyle = gr; ctx.fillRect(bx, by + bh - infoH, bw, infoH);
-    ctx.fillStyle = pal.ink; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-    ctx.font = `700 12.5px ${pal.display}`;
-    ctx.fillText(fitText(ctx, item.name, bw - 12), bx + 7, by + bh - 8);
+    ctx.fillStyle = pal.ink; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+    ctx.font = `700 12px ${pal.display}`;
+    ctx.fillText(fitText(ctx, item.name, bw - 14), bx + bw / 2, by + bh - 9);
+    ctx.textAlign = "left";
+    // the thin inner line of the picture frame + corner ornaments (css .card__body::after, .card__orn)
+    ctx.globalAlpha = 0.55; ctx.strokeStyle = spec.line || pal.rift; ctx.lineWidth = 1;
+    ctx.strokeRect(bx + 3.5, by + 3.5, bw - 7, bh - 7);
+    ctx.globalAlpha = 0.95;
+    drawOrnaments(ctx, x + 3, y + 3, w - 6, h - 6, 18, spec.orn || pal.rift);
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
 
@@ -393,16 +441,23 @@
     bg.addColorStop(0, pal.void); bg.addColorStop(1, cssVar("--void-2"));
     ctx.fillStyle = bg; ctx.fillRect(0, 0, B.W, H);
     const glow = ctx.createRadialGradient(B.W * 0.2, 0, 0, B.W * 0.2, 0, B.W * 0.7);
-    glow.addColorStop(0, "rgba(111, 231, 255, .10)"); glow.addColorStop(1, "rgba(111, 231, 255, 0)");
+    glow.addColorStop(0, "rgba(255, 230, 180, .10)"); glow.addColorStop(1, "rgba(255, 230, 180, 0)");
     ctx.fillStyle = glow; ctx.fillRect(0, 0, B.W, H);
+    const haze = ctx.createRadialGradient(B.W / 2, H * 1.1, 0, B.W / 2, H * 1.1, Math.max(B.W, H) * 0.7);
+    haze.addColorStop(0, cssVar("--haze") || "#2a1528"); haze.addColorStop(1, "rgba(42, 21, 40, 0)");
+    ctx.fillStyle = haze; ctx.fillRect(0, 0, B.W, H);
     const rand = rng(C.hash(String(spec.id || spec.title || "x")));
-    const tints = ["255, 255, 255", "190, 230, 255", "215, 195, 255"];
+    const tints = ["255, 255, 255", "243, 230, 200", "255, 212, 138"];
     for (let i = 0, n = Math.round((B.W * H) / 9000); i < n; i++) {
       ctx.globalAlpha = 0.15 + rand() * 0.5;
       ctx.fillStyle = `rgb(${tints[(rand() * tints.length) | 0]})`;
       ctx.beginPath(); ctx.arc(rand() * B.W, rand() * H, 0.4 + rand() * 1.1, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
+    // gilded border around the whole picture: gold line + corner ornaments
+    ctx.strokeStyle = pal.line; ctx.lineWidth = 1;
+    ctx.strokeRect(10.5, 10.5, B.W - 21, H - 21);
+    ctx.globalAlpha = 0.6; drawOrnaments(ctx, 12, 12, B.W - 24, H - 24, 20, pal.rift); ctx.globalAlpha = 1;
 
     // header
     ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
@@ -420,10 +475,11 @@
       ctx.font = `700 15px ${pal.display}`; spacing(1.5);
       const tw = Math.min(pillW, ctx.measureText(label).width + 36);
       const px = B.W - B.PAD - tw, py = 32;
-      roundRect(ctx, px, py, tw, 34, 10);
+      ctx.beginPath();   // ribbon, like the rarity tag on a card
+      ctx.moveTo(px, py); ctx.lineTo(px + tw, py); ctx.lineTo(px + tw - 10, py + 17); ctx.lineTo(px + tw, py + 34); ctx.lineTo(px, py + 34); ctx.closePath();
       ctx.fillStyle = flatFill(ctx, px, py, tw, frame); ctx.fill();
-      ctx.fillStyle = pal.void; ctx.textAlign = "center";
-      ctx.fillText(label, px + tw / 2, py + 23);
+      ctx.fillStyle = "#1a1408"; ctx.textAlign = "center";
+      ctx.fillText(label, px + tw / 2 - 4, py + 23);
       ctx.textAlign = "left"; spacing(0);
     }
 
@@ -434,8 +490,13 @@
       const color = cssVar(r.color) || cssVar("--t-d");
       ctx.save();
       roundRect(ctx, x, y, w, r.h, B.R); ctx.clip();
+      ctx.fillStyle = "rgba(15, 20, 37, .93)"; ctx.fillRect(x, y, w, r.h);
       ctx.fillStyle = pal.glass; ctx.fillRect(x, y, w, r.h);
-      ctx.fillStyle = color; ctx.fillRect(x, y, B.LABEL, r.h);
+      const lg = ctx.createLinearGradient(0, y, 0, y + r.h);
+      lg.addColorStop(0, mix(color, "#10142a", 0.34)); lg.addColorStop(1, mix(color, "#0c1022", 0.12));
+      ctx.fillStyle = lg; ctx.fillRect(x, y, B.LABEL, r.h);
+      ctx.fillStyle = color; ctx.fillRect(x, y, 4, r.h);
+      ctx.fillStyle = pal.line; ctx.fillRect(x + B.LABEL - 1, y, 1, r.h);
       ctx.restore();
       roundRect(ctx, x + 0.5, y + 0.5, w - 1, r.h - 1, B.R);
       ctx.strokeStyle = pal.line; ctx.lineWidth = 1; ctx.stroke();
@@ -449,9 +510,11 @@
         lines = wrapText(ctx, text, maxW);
         if (lines.length * size * 1.12 <= maxH && lines.every((l) => ctx.measureText(l).width <= maxW)) break;
       }
-      ctx.fillStyle = pal.void; ctx.textAlign = "center";
+      ctx.fillStyle = mix(color, "#fff6e0", 0.55); ctx.textAlign = "center";
+      ctx.shadowColor = color; ctx.shadowBlur = 14;
       const lh = size * 1.12, top = y + r.h / 2 - (lines.length * lh) / 2;
       lines.forEach((l, i) => ctx.fillText(l, x + B.LABEL / 2, top + lh * (i + 0.8)));
+      ctx.shadowBlur = 0; ctx.shadowColor = "transparent";
       ctx.textAlign = "left";
 
       r.items.forEach((it, i) => {

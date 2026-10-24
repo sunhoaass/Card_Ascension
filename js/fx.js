@@ -9,7 +9,7 @@
      FX.fade(el, to)       – fade in (1) or out (0); still works when motion is reduced
      FX.toast(text, opts)  – short message at the bottom (opts: { action: { label, fn }, duration, bottom })
      FX.flash(el)          – short glow around el after it was saved / copied (image saved, link copied)
-     FX.starfield(el)      – slow parallax star background (drawn once, moved by CSS: no animation loop)
+     FX.backdrop(el)       – the night-city background (drawn once, moved by CSS: no animation loop, step 9.6b)
      FX.reduced            – true when the user asked for less motion
      FX.lite / FX.probe()  – automatic lite mode for low-end devices (html.lite, step 9.5)
    Performance rules (step 9.5): no requestAnimationFrame that runs forever · animate transform/opacity only ·
@@ -196,7 +196,7 @@
 
   /* ---------- Lite mode (step 9.5: automatic only, no button) ----------
      On for low-end devices: deviceMemory ≤ 4, hardwareConcurrency ≤ 4, or < 45 fps in the 2 s probe after boot.
-     Sets html.lite. It only halves the background stars and the Ascended floating particles:
+     Sets html.lite. It only thins the lamp motes of the backdrop and the Ascended floating particles (3 of 5):
      every press / drag / card-open / score animation stays exactly the same. */
   FX.lite = false;
   function setLite(on) {
@@ -225,83 +225,76 @@
     requestAnimationFrame(f);
   };
 
-  /* ---------- Starfield (3 parallax layers) ----------
-     Step 9.5: no canvas loop any more. Each layer's stars are drawn ONCE into an SVG, then the GPU does the rest
-     with CSS: drift = transform animation, twinkle = opacity animation (each layer on its own beat, a third of a
-     cycle apart, so the sky never dims as a whole), scroll parallax = transform of the layer.
-     Same star counts, sizes, colours, drift speeds and twinkle speed as the old canvas.
-     One GPU layer per depth on purpose: every extra star layer costs a whole screen of drawing per frame.
-     The SVG holds the stars 3 times (period T) so drift + parallax can wrap without a seam. */
-  FX.starfield = function (root) {
-    const layers = [
-      { n: 70, speed: 0.04, size: [0.4, 1.0], alpha: 0.5 },
-      { n: 40, speed: 0.09, size: [0.8, 1.5], alpha: 0.75 },
-      { n: 14, speed: 0.18, size: [1.2, 2.2], alpha: 1 },
-    ];
-    const tints = ["255,255,255", "190,230,255", "215,195,255"];
-    const TWINKLE = Math.round((Math.PI * 2) / 0.0015);   // ≈ 4189 ms, the old canvas twinkle speed
-    let w = 0, h = 0, T = 0, wraps = [];
-    const rnd = (a, b) => a + Math.random() * (b - a);
-
-    function build() {
-      w = root.clientWidth || innerWidth;
-      h = root.clientHeight || innerHeight;
-      // period T: at least the tallest the viewport gets (phone address bar hidden), so it never needs a rebuild on scroll
-      T = Math.ceil(Math.max(h, (window.screen && screen.height) || 0) + 8);
-      const area = Math.min(1.6, (w * h) / (390 * 844)) * (T / h) * (FX.lite ? 0.5 : 1);   // same density as before
-      const frag = document.createDocumentFragment();
-      wraps = layers.map((L, li) => {
-        const wrap = document.createElement("div");
-        wrap.className = "sf-layer";
-        const stars = [];
-        const n = Math.round(L.n * area);
-        for (let i = 0; i < n; i++) {
-          const x = rnd(0, w).toFixed(1), y = rnd(0, T), r = rnd(L.size[0], L.size[1]).toFixed(2);
-          const a = (L.alpha * rnd(0.5, 1)).toFixed(2), c = tints[(Math.random() * tints.length) | 0];
-          let dots = "";
-          for (let k = 0; k < 3; k++) dots += `<circle cx="${x}" cy="${(y + k * T).toFixed(1)}" r="${r}"/>`;
-          stars.push(`<g fill="rgb(${c})" fill-opacity="${a}">${dots}</g>`);
+  /* ---------- Backdrop: the night city (step 9.6b, replaces FX.starfield) ----------
+     Night sky + faint stars + moon + Victorian skyline (2 layers: palace dome, clock tower with a lit face,
+     lit windows) + lamp light on the street + fog + lamp motes rising. All drawn ONCE; the GPU does the rest:
+     · always moving = fog (bd-fog) + motes (bd-motes): CSS transform animations, 2 full-screen layers
+     · the skyline moves only while the page scrolls: a paused Web Animation whose currentTime follows
+       the scroll (Chrome's fast path, no re-layering per scroll step; never write style.transform on scroll)
+     · no requestAnimationFrame loop · lite mode = fewer motes (base.css) · reduced motion = still picture
+     The skyline is made up for this site (no game art). Seeded random, so it looks the same on every visit. */
+  FX.backdrop = function (root) {
+    if (!root) return;
+    const W = 1440, H = 420;
+    let seed = 7;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    function layer(minH, maxH, fill, windows, landmarks) {
+      let d = `M0 ${H}`, x = 0, win = "";
+      while (x < W) {
+        const lm = landmarks.find((l) => !l.done && x + 60 >= l.x);
+        if (lm) lm.done = true;
+        const w = lm ? (lm.type === "tower" ? 84 : 190) : 40 + rnd() * 70;
+        const h = minH + rnd() * (maxH - minH), top = H - h, kind = rnd();
+        d += ` L${x} ${top}`;
+        if (lm && lm.type === "tower") {                      // clock tower with a lit face
+          const cx = x + w / 2, tw = 34, th = lm.h;
+          d += ` L${cx - tw} ${top} L${cx - tw} ${H - th} L${cx - tw - 6} ${H - th} L${cx} ${H - th - 70} L${cx + tw + 6} ${H - th} L${cx + tw} ${H - th} L${cx + tw} ${top}`;
+          win += `<circle cx="${cx}" cy="${H - th + 34}" r="18" fill="#f4d79a" opacity=".85"/><circle cx="${cx}" cy="${H - th + 34}" r="18" fill="none" stroke="#3a2e1a" stroke-width="2"/>` +
+            `<path d="M${cx} ${H - th + 34}v-12M${cx} ${H - th + 34}l8 5" stroke="#3a2e1a" stroke-width="2" stroke-linecap="round"/>` +
+            `<path d="M${cx} ${H - th - 70}v-26" stroke="${fill}" stroke-width="3"/>`;
+        } else if (lm && lm.type === "dome") {                // palace dome
+          const cx = x + w / 2, r = 58, b = H - lm.h;
+          d += ` L${cx - 90} ${top} L${cx - 90} ${b} L${cx - r} ${b} A${r} ${r} 0 0 1 ${cx + r} ${b} L${cx + 90} ${b} L${cx + 90} ${top}`;
+          win += `<path d="M${cx} ${b - r}v-34" stroke="${fill}" stroke-width="4"/><circle cx="${cx}" cy="${b - r - 38}" r="5" fill="${fill}"/>`;
+        } else if (kind < 0.3) {                              // gable
+          d += ` L${x + w / 2} ${top - 26 - rnd() * 18} L${x + w} ${top}`;
+        } else if (kind < 0.45) {                             // spire
+          d += ` L${x + w * 0.4} ${top} L${x + w / 2} ${top - 60 - rnd() * 40} L${x + w * 0.6} ${top} L${x + w} ${top}`;
+        } else if (kind < 0.7) {                              // mansard roof with a chimney
+          const cx = x + w * 0.75;
+          d += ` L${x + 8} ${top - 14} L${cx - 6} ${top - 14} L${cx - 6} ${top - 34} L${cx + 6} ${top - 34} L${cx + 6} ${top - 14} L${x + w - 8} ${top - 14} L${x + w} ${top}`;
+        } else d += ` L${x + w} ${top}`;
+        if (windows) {
+          for (let wy = top + 14; wy < H - 20; wy += 22) for (let wx = x + 8; wx < x + w - 12; wx += 16) {
+            if (rnd() < 0.14) win += `<rect x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="6" height="10" rx="1" fill="#ffd48a" opacity="${(0.45 + rnd() * 0.5).toFixed(2)}"/>`;
+          }
         }
-        const driftMs = Math.round(T / (L.speed * 0.06));   // the old canvas moved speed × 0.06 px per ms
-        const el = document.createElement("div");
-        el.className = "sf-drift";
-        el.style.height = T * 3 + "px";
-        el.style.animationDuration = `${driftMs}ms, ${TWINKLE}ms`;
-        el.style.animationDelay = `${-Math.round(Math.random() * driftMs)}ms, ${-Math.round((li / layers.length) * TWINKLE)}ms`;
-        el.innerHTML = `<svg width="${w}" height="${T * 3}" viewBox="0 0 ${w} ${T * 3}" aria-hidden="true">${stars.join("")}</svg>`;
-        wrap.appendChild(el);
-        frag.appendChild(wrap);
-        // scroll parallax = a paused animation whose time is the offset in px (1 ms = 1 px). Setting currentTime
-        // takes Chrome's fast path (no re-layering of the page per scroll step, unlike writing style.transform)
-        const anim = wrap.animate ? wrap.animate([{ transform: "translate3d(0, 0, 0)" }, { transform: `translate3d(0, ${-T}px, 0)` }], { duration: T, fill: "both" }) : null;
-        if (anim) anim.pause();
-        return { wrap, anim, k: L.speed * 0.6 };
-      });
-      root.replaceChildren(frag);
-      parallax();
-    }
-    // stars move up a little slower than the page (deeper layers slower), wrapping every T px
-    function parallax() {
-      const y = window.scrollY;
-      for (const L of wraps) {
-        const o = (y * L.k) % T;
-        if (L.anim) L.anim.currentTime = o;
-        else L.wrap.style.transform = `translate3d(0, ${-o.toFixed(1)}px, 0)`;
+        d += ` L${x + w} ${H}`;
+        x += w;
       }
+      d += ` L${W} ${H} Z`;
+      return `<path d="${d}" fill="${fill}"/>${win}`;
     }
-
-    let lastW = 0;
-    window.addEventListener("resize", () => {
-      clearTimeout(build.t);
-      build.t = setTimeout(() => {
-        // phones resize the viewport when the address bar slides; only rebuild when the stars would no longer cover it
-        if (root.clientWidth !== lastW || root.clientHeight + 8 > T) { lastW = root.clientWidth; build(); }
-      }, 150);
-    });
-    window.addEventListener("scroll", parallax, { passive: true });
-    document.addEventListener("fx:lite", build);
-    lastW = root.clientWidth;
-    build();
+    const far = layer(120, 230, "#161c34", false, [{ x: 330, type: "dome", h: 210 }]);
+    const near = layer(60, 150, "#0a0e1c", true, [{ x: 1010, type: "tower", h: 280 }]);
+    root.innerHTML =
+      `<div class="bd-stars"></div><div class="bd-moon"></div>` +
+      `<div class="bd-city"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g opacity=".9">${far}</g>${near}</svg></div>` +
+      `<div class="bd-lamps"></div><div class="bd-fog"></div><div class="bd-motes"></div>`;
+    const city = root.querySelector(".bd-city");
+    // a paused Web Animation (not a paused CSS animation: Chrome only keeps the scroll-driven currentTime on the
+    // compositor fast path for script animations; a paused CSS one re-layerised and repainted the page every frame)
+    const anim = city.animate ? city.animate([{ transform: "translate3d(0, 0, 0)" }, { transform: "translate3d(0, 70px, 0)" }], { duration: 1000, fill: "both" }) : null;
+    if (!anim) return;
+    anim.pause();
+    let max = 1;
+    const measure = () => { max = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+    const sync = () => { if (!FX.reduced) anim.currentTime = Math.min(1, window.scrollY / max) * 1000; };
+    measure(); sync();
+    window.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", () => { measure(); sync(); });
+    // page height changes when tabs switch / lists grow: re-measure now and then (cheap, no loop)
+    if ("ResizeObserver" in window) new ResizeObserver(() => { measure(); sync(); }).observe(document.body);
   };
 
   window.FX = FX;
