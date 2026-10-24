@@ -1,7 +1,7 @@
 /* ==========================================================
    Card Battle Infinity — app core
    Router (5 tabs + card detail hash) · data loading · shared card renderer
-   The Cards page (search / filters / sort) and the card detail view live in js/cards.js
+   The Cards page (search / filters / sort) lives in js/cards.js · the card detail ("Black Sun" scene) in js/detail.js
    The Tier List page (Global cards / support + My Lists) lives in js/tier.js
    The Deck page (Meta Decks, later the deck builder) lives in js/deck.js
    The Support page (list + #support/<id> detail) lives in js/support.js
@@ -121,7 +121,22 @@
   const liveIO = "IntersectionObserver" in window
     ? new IntersectionObserver((list) => list.forEach((e) => e.target.classList.toggle("is-live", e.isIntersecting)), { rootMargin: "24px 0px" })
     : null;
-  function watchLive(el) { if (liveIO) liveIO.observe(el); else el.classList.add("is-live"); }
+  // every watched card, weakly held (a card the page dropped can still be garbage-collected)
+  const watched = new Set();
+  let livePaused = false;
+  function watchLive(el) {
+    if (!liveIO) { el.classList.add("is-live"); return; }
+    if (window.WeakRef) watched.add(new WeakRef(el));
+    liveIO.observe(el);
+  }
+  /* Step 12: while the card detail covers the whole screen, the page underneath is hidden — stop checking its cards
+     every frame (the detail's own cards made from now on are still watched). resume = watch them all again. */
+  function livePause(on) {
+    if (!liveIO || !window.WeakRef || on === livePaused) return;
+    livePaused = on;
+    if (on) { liveIO.disconnect(); return; }
+    for (const ref of watched) { const el = ref.deref(); if (el) liveIO.observe(el); else watched.delete(ref); }
+  }
 
   /* ---------- Lazy tabs (step 9.5) ----------
      lazy(page, fn): run fn the first time that tab is showing (right now if it already is).
@@ -139,7 +154,8 @@
   }
 
   /* ---------- Shared card renderer (used by every page) ---------- */
-  function renderCard(card, rarity, { mini = false } = {}) {
+  // tilt:false = no finger tilt (the detail scene turns its card by itself)
+  function renderCard(card, rarity, { mini = false, tilt = true } = {}) {
     const el = document.createElement("article");
     el.className = "card" + (mini ? " card--mini" : "");
     el.dataset.rarity = rarity;
@@ -174,7 +190,7 @@
       <span class="card__particles"><i></i><i></i><i></i><i></i><i></i></span>`;
     // missing thumbnail -> big image · missing image file -> the generated art instead of an empty card
     bindArt(el, card);
-    FX.tilt(el);
+    if (tilt) FX.tilt(el);
     watchLive(el);
     return el;
   }
@@ -255,10 +271,10 @@
     const m = location.hash.match(/^#\/?card\/([^/?#]+)/);
     if (m) {
       showPage(state.page || "cards");
-      if (state.loaded) CBI.cards.open(decodeURIComponent(m[1]));
+      if (state.loaded) CBI.detail.open(decodeURIComponent(m[1]));
       return;
     }
-    if (state.loaded) CBI.cards.close();
+    if (state.loaded) CBI.detail.close();
     showPage(pageFromHash() || (state.page === null ? store.get(STORE_KEY) || "tier" : "tier"));
     if (state.loaded) CBI.tier.show(tierViewFromHash());
     if (state.loaded) CBI.deck.show();   // #deck = My Decks · #deck/meta · #deck/my/<id> = the editor · #deck/s/<data> = a shared deck
@@ -277,12 +293,22 @@
     if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); CBI.deck.show(); }
   }
 
-  // Card detail: each open pushes a history entry so the phone's Back button closes it
-  function openCard(id, originEl) {
+  /* Card detail: each open pushes a history entry so the phone's Back button closes it.
+     The entry also keeps the list of cards it was opened from (cl), so swiping left / right in the detail walks
+     that list (Cards grid order, a tier row board, a Tier Maker list, a deck…). opts.list overrides it. */
+  function openCard(id, originEl, opts = {}) {
     state.origin = originEl || null;
+    const auto = CBI.detail.listFor ? CBI.detail.listFor(originEl, id) : null;   // also remembers where to fly back to
+    const list = opts.list || auto;
     const depth = ((history.state && history.state.depth) || 0) + 1;
-    history.pushState({ depth }, "", "#card/" + encodeURIComponent(id));
+    const st = { depth };
+    if (list && list.length > 1 && list.length <= 3000) st.cl = list;
+    history.pushState(st, "", "#card/" + encodeURIComponent(id));
     route();
+  }
+  // Swipe in the detail: same history entry, new card (Back still closes the detail in one step)
+  function swapCard(id) {
+    try { history.replaceState({ ...(history.state || {}) }, "", "#card/" + encodeURIComponent(id)); } catch {}
   }
   function closeCard() {
     const depth = (history.state && history.state.depth) || 0;
@@ -333,11 +359,13 @@
     CBI.tier.init();
     CBI.deck.init();
     CBI.cards.init();
+    CBI.detail.init();
     CBI.support.init();
     CBI.grade.init();
     route();   // opens a #card/<id>, #support/<id> or #grade/<id> deep link now that the data is here
     hideBoot();
     setTimeout(FX.probe, 800);   // lite mode check: 2 s of frames once the first page has settled (step 9.5)
+    setTimeout(() => CBI.detail.prewarm(), 3600);   // paint the detail scene while idle, after the probe (step 12)
   }
 
   /* Boot screen (crest + pocket watch, step 9.6b): fades out once the data is in and the fonts are ready
@@ -356,9 +384,10 @@
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
-    openCard, closeCard, route,
-    lazy, artImg, bindArt, watchLive,   // step 9.5
-    cards: { init() {}, open() {}, close() {} },   // replaced by js/cards.js
+    openCard, closeCard, swapCard, route,
+    lazy, artImg, bindArt, watchLive, livePause,   // step 9.5 · livePause step 12
+    cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js
+    detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
     deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
     support: { init() {}, show() {} },              // replaced by js/support.js

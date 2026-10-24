@@ -274,6 +274,9 @@
           <div class="gstats">${STATS.map(rowHTML).join("")}</div>
 
           <div class="gactions">
+            <button type="button" class="chip glass fx-press gactions__details" data-act="details">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Card details</button>
             <button type="button" class="chip glass fx-press" data-act="reset">Reset</button>
             <button type="button" class="chip glass fx-press gactions__share" data-act="share">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -412,6 +415,8 @@
       else if (a === "keep") { shared = false; save(cur, grades); paintShared(); paintOverall(); status("Saved to your grades"); }
       else if (a === "mine") { shared = false; setAll(get(cur) || ZERO()); }
       else if (a === "share") share();
+      // step 12: the card detail scene grows from the grader's card; swiping walks the picker's order, Back lands here unchanged
+      else if (a === "details" && hero) C.openCard(cur, hero, { list: items.map((c) => c.id) });
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && cur && state.page === "grade" && !document.documentElement.classList.contains("is-detail")) back();
