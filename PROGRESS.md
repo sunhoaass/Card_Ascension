@@ -1,55 +1,53 @@
 # Card Battle Infinity — PROGRESS
 
-> **สำหรับ Claude: อ่านไฟล์นี้ทั้งไฟล์ก่อนเริ่มงานทุกครั้ง**
-> 1. ทำเฉพาะขั้นที่เจ้าของสั่ง ถ้ามีไอเดียที่ดีกว่า ให้**ถามก่อน**ทำ
-> 2. เมื่อให้ prompt ต้องบอก**โมเดล + effort**ทุกครั้ง
-> 3. ทำเสร็จแล้วต้อง (ก) อัปเดตไฟล์นี้: ติ๊ก ✅, เขียนสิ่งที่เปลี่ยน, แก้ "▶️ ขั้นถัดไป" (ข) บอกว่า**ต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน**บน GitHub
-> 4. ทุกครั้งที่เพิ่มปุ่มหรือการกดแบบใหม่ ให้อ่านและทำตาม **§4 Motion Guide**
-> 5. เจ้าของใช้มือถือเป็นหลัก ต้องออกแบบแบบ mobile-first ทุกหน้า
-> 6. **ทุกหน้าต้องได้มาตรฐานเดียวกัน** ก่อนบอกว่าเสร็จ ต้องผ่าน **§4.1 Definition of Done** ทุกข้อ ถึงเจ้าของจะพิมพ์มาไม่ครบก็ต้องทำ (เช่น ต้องมีอนิเมชั่นทุกหน้า)
+## 📑 งานแต่ละแบบอ่านส่วนไหน (ไม่ต้องอ่านทั้งไฟล์)
+ทุกงานอ่าน **กฎทำงาน + ▶️ ขั้นถัดไป** ก่อน แล้วอ่านเฉพาะส่วนในตาราง
+| งาน | อ่าน |
+|---|---|
+| **เพิ่มการ์ด / support** (งาน A, C) | §5.1 · §5.2 · §5.4 · §7 A/C |
+| **วิเคราะห์ / จัดอันดับ** (งาน B) | §5 · §7 B · §8 · §10.5 (field ที่คะแนนทีมใช้) |
+| **แก้หน้าตา** (CSS, การ์ด, อนิเมชั่น) | §3 · §3.2 · §3.3 "ของกลางธีม" · §4 + §4.1 |
+| **แก้ระบบ / โค้ด** (route, Tier Maker, Deck, แชร์, เกรด) | §3.3 (เฉพาะไฟล์ที่เกี่ยว) · §3.4 · §4.1 · §11.3 ถ้าต้องวัดความเร็ว |
+| ปรับคะแนนทีม / น้ำหนักโหมด | §8 · §10.5 |
+| หน้ารายละเอียดการ์ด (Black Sun) | §3.3 `detail.js` · §4 · HISTORY §13.1 + §14 (layout, เกณฑ์ความเร็ว) |
 
----
+> **ประวัติอยู่ใน `HISTORY.md` อ่านเฉพาะเมื่อจำเป็น** (บันทึกการเปลี่ยนแปลง §9, ผลวัด/ผลทดสอบเก่า, รายละเอียดขั้นที่เสร็จแล้ว §6 §10–§14, ข้อความเดิมก่อนย่อ §0) · หาหัวข้อด้วย `grep -n "^## \|^### " HISTORY.md` แล้วอ่านแค่ช่วงนั้น
+
+## กฎทำงาน
+1. ทำเฉพาะขั้นที่เจ้าของสั่ง ถ้ามีไอเดียที่ดีกว่า ให้**ถามก่อน**ทำ
+2. เมื่อให้ prompt ต้องบอก**โมเดล + effort**ทุกครั้ง
+3. ทำเสร็จแล้ว: (ก) **PROGRESS.md** แก้ "▶️ ขั้นถัดไป" + สเปกที่เปลี่ยนจริง (เช่น ของกลางใหม่ใน §3.3) **เขียนสั้น ไม่ใส่ประวัติ/ผลทดสอบ/ผลวัด** (ข) **HISTORY.md** ต่อท้าย §9: สิ่งที่เปลี่ยน, ผลทดสอบ, ผลวัด, รายการไฟล์ (ค) บอกว่า**ต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน**บน GitHub
+4. ทุกครั้งที่เพิ่มปุ่มหรือการกดแบบใหม่ ให้อ่านและทำตาม **§4 Motion Guide**
+5. เจ้าของใช้มือถือเป็นหลัก ต้องออกแบบแบบ mobile-first ทุกหน้า
+6. **ทุกหน้าต้องได้มาตรฐานเดียวกัน** ก่อนบอกว่าเสร็จ ต้องผ่าน **§4.1 Definition of Done** ทุกข้อ ถึงเจ้าของจะพิมพ์มาไม่ครบก็ต้องทำ (เช่น ต้องมีอนิเมชั่นทุกหน้า)
+7. **1 งาน = 1 แชทใหม่** ใช้ prompt สั้นจาก ▶️ / §7 · เจ้าของต้องอัป `PROGRESS.md` (+ `HISTORY.md`) ขึ้น GitHub ทุกครั้งหลังจบงาน ไม่งั้นแชทถัดไปอ่านของเก่า · **อย่ารัน 2 แชทที่แก้ PROGRESS.md พร้อมกัน** (เคยทับกันมาแล้ว)
+8. ห้ามอ่านโค้ดทั้ง repo โดยไม่จำเป็น อ่านเฉพาะไฟล์ที่งานนั้นใช้
+9. **เลขเวอร์ชันท้ายไฟล์:** `index.html` โหลด CSS/JS แบบ `css/base.css?v=13` (กันมือถือใช้ไฟล์เก่าค้าง "Loading…") · แก้ CSS/JS ไฟล์ไหนก็ตาม → เปลี่ยน `?v=` **ทุกบรรทัด**เป็นเลขใหม่ (ตอนนี้ `13` · ครั้งถัดไป `14`) ไฟล์ใหม่ก็ใส่เลขด้วย แล้วบอกให้อัป `index.html` ด้วยทุกครั้ง · ไอคอนเว็บใช้เลขแยก (`?v=2`, §3)
+10. **ห้ามใช้ของจริงจากเกม** (รูป ไอคอน โลโก้ ฟอนต์เฉพาะของเกม ภาพหน้าจอ เพลงประกอบเกม) — ติดลิขสิทธิ์ · วาดเองด้วย SVG/CSS/canvas
+11. ระบบเดิมห้ามเปลี่ยนโดยไม่ถาม: route, localStorage keys (§3.4), ลิงก์แชร์, ไฟล์สำรอง, เกรด, Tier Maker · หน้าใหม่ใช้ของกลางธีมใน §3.3 ห้ามใช้สีฟ้า/ม่วงแบบธีมเก่า
 
 ## ▶️ ขั้นถัดไป (เจ้าของ copy ไปวางในแชทใหม่)
-**▶️ ล่าสุด (2026-10-24): เพิ่ม Tier GOD เหนือ SS** (เจ้าของสั่ง · GOD ≥ 95 · SS 90–94 · **GOD + SS = การ์ด Meta**) · อัปไฟล์ตาม **§9 (รายการ Tier GOD 2026-10-24)** · Tier ของการ์ด 4 ใบเหมือนเดิม (BE **S** 83.6 · DEM **A** 78.9 · MEG **B** 62.0 · ASL **C** 58.7) เพราะยังไม่มีใบไหนถึง 90 · ขั้นต่อไป = เพิ่มการ์ด/support (งาน A / C) แล้วทำงาน B ใหม่ (prompt เดิม · **Opus 5.5 / high**):
-```
-อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วทำ "งานประจำ B"
-ทำเสร็จให้อัปเดต PROGRESS.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
-```
-- ถ้าจะเพิ่มการ์ดอีกก่อน (ไม่เกิน ~10 ใบ/แชท) → **Sonnet 5.5 / medium** ใช้ prompt งาน A ด้านล่าง แล้วค่อยทำงาน B ทีเดียว
-- ✅ **เจ้าของตอบแล้ว (2026-10-24):** (1) การ์ด 4 ใบเป็นระดับ **Normal** ✓ (2)+(3) การ์ด 1 ใบมี**ความสามารถช่องเดียว** ทำงานเองตลอด (ไม่มี Skill/Ultimate แยก) → ใส่ใน `passive` และให้คะแนน Skill = Passive ถูกแล้ว (§7 B ข้อ 3) ไม่ต้องแก้
-- ⚠️ **รูปเล็กยังอยู่ผิดโฟลเดอร์:** ใน repo รูปเล็กอยู่ที่ `images/thumb/` แต่เว็บหาที่ `images/cards/thumb/` (หาไม่เจอจะใช้รูปใหญ่แทน เว็บไม่พังแต่ช้ากว่า) · zip รอบ Tier GOD มี `images/cards/thumb/` ให้แล้ว → อัปแล้ว**ลบโฟลเดอร์ `images/thumb/`** ทั้งโฟลเดอร์ และลบไฟล์ `s` ใน `images/cards/` (ไฟล์ว่างที่สร้างไว้ตอนทำโฟลเดอร์ ไม่ได้ใช้)
-**▶️ ล่าสุด (2026-10-24): ขั้น 12 เสร็จและอัปขึ้น GitHub แล้ว** (หน้ารายละเอียดการ์ด "Black Sun" · §14) · เจ้าของตอบ §14.5 ข้อ 1 = **(ก) ยอมรับความเร็วตามที่วัด ไม่ลดเอฟเฟกต์** · ข้อ 2 (intro เล่นทุกครั้งไหม, §14.4) ยังไม่ได้ตอบ = ใช้แบบปัจจุบัน
-- ถ้าภายหลังอยากแก้ข้อ §14.4 (เช่น ให้ผงเล่นทุกครั้งที่เปิดการ์ด) → แชทใหม่ **Opus 5.5 / high**:
-```
-อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension (§14) แล้วแก้หน้ารายละเอียดการ์ดตามนี้: <สิ่งที่อยากแก้>
-ต้องผ่าน §4.1 + วัดแบบ §11.3 ทำเสร็จให้อัปเดต PROGRESS.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
-```
-> หมายเหตุ: **อย่ารัน 2 แชทที่แก้ PROGRESS.md พร้อมกัน** (เคยทับกันมาแล้ว)
+**สถานะ (2026-10-24):** แผนขั้น 0–12 เสร็จครบ + เพิ่ม Tier GOD (`?v=13`) · `data/cards.json` = การ์ดจริง 4 ใบ จัดอันดับแล้ว (BE **S** 83.6 · DEM **A** 78.9 · MEG **B** 62.0 · ASL **C** 58.7 · ยังไม่มีใบไหนถึง 90 = ยังไม่มีการ์ด Meta) · `data/support.json` = `[]` (รองาน C) · `data/teams.json` = ทีมจริง 1 ทีม "Emperor Wall" (4 ใบ ช่อง 5 ว่าง) · `team.bestSupport` ทุกใบว่างจนกว่าจะมี support
 
-**ย้ายเว็บไป Cloudflare Pages แล้ว (2026-10-24)** → ลิงก์เว็บใหม่ https://card-battle-infinity.pages.dev/ (ดู §1) · เปลี่ยนลิงก์ใน `index.html` / `robots.txt` / `sitemap.xml` แล้ว + มีสคริปต์พาคนจาก github.io มาลิงก์ใหม่ + **ไอคอนเว็บใหม่** (การ์ด 2 ใบไขว้เป็น ∞ · `images/favicon*.png|svg`, `apple-touch-icon.png`, `icon-192/512.png`, `site.webmanifest`) · อัปไฟล์ตามรายการใน **§9 (รายการ 2026-10-24 ย้ายเว็บ)**
-**ขั้น 11 เสร็จแล้ว (คะแนนทีม)** → อัปไฟล์ตามรายการใน **§10.7** แล้วเปิดหน้า Deck บนมือถือ (ไม่ต้องล้างแคช ไฟล์มีเลข `?v=11`) · **แผนขั้น 0–11 ครบแล้ว**
-- (เดิม) `data/cards.json` ว่าง → **ตอนนี้มีการ์ดจริง 4 ใบแล้ว (Unranked)** · ถ้าจะเพิ่มการ์ดอีก (งานประจำ A) · **Sonnet 5.5 / medium**:
-```
-อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วทำ "งานประจำ A" กับรูปที่แนบ
-ทำเสร็จให้อัปเดต PROGRESS.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
-```
-- หลังเพิ่มการ์ดแต่ละรอบ → **งานประจำ B** (Opus 5.5 / high) ใส่ `tags`, `weakTo`, `modes`, `beats`, `team.bestWith/position/bestSupport` ด้วย คะแนนทีมถึงจะครบทุกส่วน (ส่วนที่ไม่มีข้อมูลจะขึ้น "Not enough data yet" และได้แค่ครึ่ง)
-- **ถ้าตอบคำถามโหมดใน §8 แล้ว** (โหมดต่างกันยังไง) → แชทใหม่ **Sonnet 5.5 / low** ปรับน้ำหนักแต่ละโหมดใน `data/meta.json` (แก้ไฟล์เดียว ไม่ต้องแก้โค้ด):
+**ค้าง (เจ้าของทำเอง):**
+- ⚠️ **รูปเล็กอยู่ผิดโฟลเดอร์ (เช็ก repo 2026-10-24 ยังผิด):** อยู่ที่ `images/thumb/` แต่เว็บหาที่ `images/cards/thumb/` (หาไม่เจอใช้รูปใหญ่แทน เว็บไม่พังแต่ช้ากว่า) → อัป 4 ไฟล์ไป `images/cards/thumb/` แล้ว**ลบโฟลเดอร์ `images/thumb/`** และไฟล์ว่าง `images/cards/s`
+- เพลง: อัป `audio/bgm.mp3` เอง (เพลงฟรีที่ไม่ต้องให้เครดิต เช่น Pixabay Music · ≤ ~3MB · ยังไม่มีไฟล์ = ปุ่มเพลงซ่อน · รายละเอียด HISTORY §12.5)
+- สีเกรดจริง: แคปรูปมา → แชทใหม่ **Sonnet 5.5 / low** แก้แค่ `--g-*` ใน `css/tokens.css`
+
+**งานต่อไป (prompt อยู่ใน §7 ทุกอัน ต่อท้าย "ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip"):**
+1. เพิ่มการ์ด (ไม่เกิน ~10 ใบ/แชท) → **งาน A** · **Sonnet 5.5 / medium**
+2. เพิ่ม support → **งาน C** · **Sonnet 5.5 / medium**
+3. หลังเพิ่มการ์ด/support แต่ละรอบ → **งาน B** · **Opus 5.5 / high** (ต้องใส่ `tags`, `weakTo`, `modes`, `beats`, `team.bestWith/position/bestSupport` คะแนนทีมถึงครบ · ส่วนที่ไม่มีข้อมูลขึ้น "Not enough data yet" และได้แค่ครึ่ง)
+4. ตอบคำถามโหมดใน §8 แล้ว → **Sonnet 5.5 / low** แก้แค่ `data/meta.json` (ไม่ต้องแก้โค้ด):
 ```
 อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วปรับน้ำหนักคะแนนทีมแต่ละโหมด (§10.5) ตามคำตอบนี้: <คำตอบ §8>
-ทำเสร็จให้อัปเดต PROGRESS.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
+ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
 ```
-- ถ้า**อยากแก้หน้าตา/สูตรคะแนนทีม** → แชทใหม่ **Sonnet 5.5 / medium** (แก้สูตร = **Opus 5.5 / high**) ใช้ prompt แบบเดียวกัน แล้วเขียนสิ่งที่อยากแก้ต่อท้าย
-> ลำดับ: 9.6a ✅ → 9.6b ✅ → 10 ✅ → 11 ✅
-> **กฎใหม่จากขั้น 9.6b (ทุกขั้นต่อไปต้องทำ):** (1) แก้ไฟล์ CSS/JS ไฟล์ไหนก็ตาม ให้เปลี่ยนเลข `?v=` ใน `index.html` **ทุกบรรทัด**เป็นเลขขั้นนั้น (เช่น `?v=10`) ไฟล์ใหม่ก็ใส่เลขด้วย (2) หน้าใหม่ใช้ของกลางธีมใหม่ใน §3.3 (กล่อง `.panel` / `.dpanel`, `.page__eyebrow` + `.page__rule`, ปุ่ม `.tm-btn`, ชิป, `.seg`) ห้ามใช้สีฟ้า/ม่วงแบบเดิม (3) กฎความเร็วขั้น 9.5 ยังใช้เหมือนเดิม (§4.1 ข้อสุดท้าย)
-> แผนขั้น 10–11 อยู่ใน **§10** (ขั้น 9 เสร็จแล้ว: `js/share.js` อยู่ใน §3.3 · หน้า Deck ต้อง**ใช้ของกลางนี้** ดู "หมายเหตุสำหรับขั้น 10" ท้าย §10.3: ลงทะเบียนสำรอง `decks`, ทำลิงก์ `#deck/s/<data>`, เพิ่มตัววาดรูป deck) · ทำทีละขั้นตามลำดับ ขั้นเหล่านี้ทดสอบด้วยการ์ดทดสอบได้ ไม่ต้องรอการ์ดจริง
-> งานประจำ A/B/C (§7 เพิ่มการ์ดจริง) จะทำสลับก่อนหรือหลังขั้น 7–11 ก็ได้ · ถ้าแคปรูปสีเกรดจริงมาแล้ว ให้เปิดแชทใหม่แก้สีตาม §6.1 (Sonnet 5.5 / low)
-> ขั้น 0 (เจ้าของทำเอง): ลบ `README.md`, `ikeep.txt` และไฟล์ `js/s` (ไฟล์ว่างที่หลงอยู่) ออกจาก repo · ยังไม่ได้ลบก็ทำขั้น 3 ต่อได้
-> `data/teams.json` = ทีมจริง 1 ทีม "Emperor Wall" (4 ใบ ช่อง 5 ว่าง · ทีม mock ลบแล้วในงาน B)
-> ตอนนี้ `data/cards.json` มีการ์ด **4 ใบ จัดอันดับแล้ว** (งาน B 2026-10-24) · `data/support.json` ยัง**ว่างเปล่า** จะเห็น support เมื่อทำงานประจำ C (§7) · `team.bestSupport` ของทุกใบยังว่างจนกว่าจะมี support
-
----
+5. แก้หน้าตา → **Sonnet 5.5 / medium** · แก้สูตรคะแนนทีม → **Opus 5.5 / high** · แก้หน้ารายละเอียดการ์ด (เช่น ให้ผง intro เล่นทุกครั้ง §8) → **Opus 5.5 / high**:
+```
+อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วแก้ <หน้า/ส่วน> ตามนี้: <สิ่งที่อยากแก้>
+ต้องผ่าน §4.1 (+ วัดแบบ §11.3 ถ้าแตะหน้ารายละเอียด) ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
+```
 
 ## 1. ภาพรวม
 - เว็บ Tier list + คลังการ์ดของเกม card battle บน Roblox ให้ความรู้สึกเหมือน "เข้าไปอยู่ในโลกเกมอีกใบ" กลุ่มเป้าหมายคือ Gen Y ถึง Gen Alpha
@@ -64,19 +62,12 @@
 - Tier list และ deck ที่ผู้ใช้จัดเอง **เก็บในเครื่องของผู้ใช้คนนั้น (localStorage)** คนอื่นจะไม่เห็น เว้นแต่ผู้ใช้กดแชร์ลิงก์ให้เอง
 - Stack: HTML / CSS / JS ล้วน (โฮสต์บน Cloudflare Pages ดึงจาก GitHub repo · เดิมอยู่บน GitHub Pages) · ฟอนต์ Google Fonts · ไอคอน SVG ฝังในโค้ด (เช่น Lucide) · ไม่ใช้ framework
 
-## 2. วิธีทำงานแบบประหยัด token
-- **1 ขั้น = 1 แชทใหม่** โดยวาง prompt สั้นๆ จาก "▶️ ขั้นถัดไป" รายละเอียดทั้งหมดอยู่ในไฟล์นี้ ไม่ต้อง copy ข้อความยาวๆ
-- เจ้าของต้องอัป PROGRESS.md ขึ้น GitHub ทุกครั้งหลังจบขั้น ไม่งั้นแชทถัดไปจะอ่านข้อมูลเก่า
-- งานประจำ (§7) ก็ใช้ prompt สั้นๆ แบบเดียวกัน
-- แชทใหม่ห้ามอ่านโค้ดทั้ง repo โดยไม่จำเป็น ให้อ่านเฉพาะไฟล์ที่ขั้นนั้นใช้
-- **เลขเวอร์ชันท้ายไฟล์ (ตั้งแต่ขั้น 9.6b):** `index.html` โหลด CSS/JS แบบ `css/base.css?v=9.6` เพื่อให้มือถือโหลดไฟล์ใหม่เสมอ (เคยค้าง "Loading…" เพราะใช้ไฟล์เก่าที่จำไว้) · **ขั้นไหนแก้ CSS/JS ให้เปลี่ยนเลขทุกบรรทัดเป็นเลขขั้นนั้น** แล้วบอกเจ้าของให้อัป `index.html` ด้วยทุกครั้ง
-
 ## 3. Design direction
-- ธีม (ตั้งแต่ขั้น 9.6b): **"Gilded Nocturne"** แนวเกม PC Silver Palace — เมืองวิกตอเรียนยามค่ำ แสงตะเกียงแก๊ส นักสืบ + เทพนิยาย หรูแต่อ่านง่าย (รายละเอียด §12.2) · ธีมเดิม "Infinity Rift" (อวกาศ, กระจกฟ้า-ม่วง) เลิกใช้แล้ว
+- ธีม (ตั้งแต่ขั้น 9.6b): **"Gilded Nocturne"** แนวเกม PC Silver Palace — เมืองวิกตอเรียนยามค่ำ แสงตะเกียงแก๊ส นักสืบ + เทพนิยาย หรูแต่อ่านง่าย (รายละเอียด HISTORY §12.2) · ธีมเดิม "Infinity Rift" (อวกาศ, กระจกฟ้า-ม่วง) เลิกใช้แล้ว
 - พื้นหลัง: ท้องฟ้ายามค่ำ + ดาวจาง + พระจันทร์ + เงาเมือง 2 ชั้น (โดมวัง, หอนาฬิกาหน้าปัดเรืองแสง, หน้าต่างไฟติด) + แสงตะเกียง + หมอกเลื่อน + ละอองไฟลอยขึ้น (`FX.backdrop`) · กล่องเป็นพื้นทึบ + เส้นทองบาง + มุมตัดเฉียง + ลายมุมวิกตอเรียน · blur เฉพาะหัวเว็บกับเมนู
 - ฟอนต์: หัวข้อ/ตัวเลข **Cinzel** (Google Fonts) · เนื้อหา **Inter**
 - เมนู: มือถือ/แท็บเล็ต (< 1100px) = **แถบล่าง 5 ปุ่มแผ่นทองเหลือง** · คอม (≥ 1100px) = **เมนูแนวตั้งด้านซ้าย** (ตรา + ชื่อเว็บด้านบน, ปุ่มเพลง + วันที่ด้านล่าง) · ไอคอนวาดเอง: Tier = มงกุฎ · Cards = พัดไพ่ · Support = ขวดยา · Deck = หนังสือ · Grade = แว่นขยาย
-- ไอคอนเว็บ (favicon / ไอคอนหน้าจอโฮม): การ์ด 2 ใบ ฟ้า (`--t-c`) + ม่วง (`--flux`) ไขว้กันเป็น ∞ สีทอง ขอบทอง · ไฟล์อยู่ใน `images/` + `site.webmanifest` ที่ root (รายละเอียดใน §9 รายการ 2026-10-24 ย้ายเว็บ)
+- ไอคอนเว็บ (favicon / ไอคอนหน้าจอโฮม): การ์ด 2 ใบ ฟ้า (`--t-c`) + ม่วง (`--flux`) ไขว้กันเป็น ∞ สีทอง ขอบทอง · ไฟล์อยู่ใน `images/` + `site.webmanifest` ที่ root (รายละเอียด HISTORY §9 รายการ 2026-10-24 ย้ายเว็บ) · ทุกลิงก์ไอคอนต่อท้าย `?v=2` · แก้ไอคอนอีก = เปลี่ยนเป็น `?v=3` ทุกลิงก์ไอคอนใน `index.html` และใน `site.webmanifest`
 - จำหน้าล่าสุดของผู้ใช้ไว้ใน localStorage · เข้าเว็บครั้งแรกให้เปิดหน้า Tier List
 - แสดงวันที่อัปเดตข้อมูลล่าสุดที่หัวเว็บ (คอม: ท้ายเมนูซ้าย)
 - หน้าโหลด: ตราวงกลม + นาฬิกาพกเข็มหมุน + "Loading…" (หายเมื่อข้อมูลมา, หายเองหลัง 8 วิเสมอ)
@@ -93,11 +84,6 @@
 | Cosmic | ม่วง-น้ำเงิน หมุนช้า มีดาวในกรอบ |
 | Ascended | prismatic หมุน + ละอองแสงลอย (**เฉพาะการ์ดใหญ่** · การ์ดเล็กไม่มีละออง) |
 
-### 3.1 สิ่งที่ Gen Y–Gen Alpha ชอบ (สรุปจากขั้น 1)
-- โทนมืดแบบเกม (ตอนนี้เป็นทองบนน้ำเงินหมึก), ความรู้สึก "สะสม/หายาก" ชัดเจนจากกรอบการ์ด (แบบ gacha / TCG)
-- ปุ่มใหญ่กดง่ายด้วยนิ้วโป้ง (≥ 40px), เมนูล่างแบบเกมมือถือ, ตอบสนองทันทีเมื่อกด
-- ข้อความสั้น อ่านเร็ว ตัวเลขเด่น · ตัวหนังสือหัวข้อแนวคลาสสิก (Cinzel) แต่เนื้อหาต้องอ่านง่าย (Inter)
-- เอฟเฟกต์เยอะได้เฉพาะสิ่งที่ "มีค่า" (การ์ดระดับสูง) ส่วนอื่นเงียบไว้ให้การ์ดเด่น
 
 ### 3.2 Design tokens (อยู่ใน `css/tokens.css` — ห้าม hard-code สีในไฟล์อื่น ให้ใช้ตัวแปร) · ชุด "Gilded Nocturne" ขั้น 9.6b
 ชื่อตัวแปรเดิมยังอยู่ครบ (หน้าเก่าไม่พัง) แต่ค่าเปลี่ยน: **`--rift` = ทองแล้ว** · `--flux` = ม่วงอเมทิสต์
@@ -110,7 +96,7 @@
 | แสง | `--rift` (= `--gold`) / `--flux` / `--lamp` / `--rift-glow` | ทอง / อเมทิสต์ `#9b86d6` / แสงตะเกียง `#ffd48a` / เงาเรืองทอง |
 | สีสัญญาณ | `--atk` `--hp` `--def` `--status` `--good` `--bad` | โทนอุ่นอ่อนลงให้เข้ากับทอง |
 | สีระดับการ์ด | `--r-normal(-2)` `--r-shiny(-2)` `--r-secret(-2)` `--r-divine(-2)` `--r-cosmic(-2)` + `--r-rainbow` `--r-ascended` (conic) | ตามตาราง §3 |
-| สี Tier (โทนอัญมณี) | `--t-ss` `--t-s` `--t-a` `--t-b` `--t-c` `--t-d` + `--t-x-*` 6 สี (Tier Maker) | ชมพูทับทิม / อำพัน / ทอง / หยก / ไพลิน / ดีบุก |
+| สี Tier (โทนอัญมณี) | `--t-god` `--t-ss` `--t-s` `--t-a` `--t-b` `--t-c` `--t-d` + `--t-x-*` 6 สี (Tier Maker) | แดงเปลวไฟ `#e2453c` / ชมพูทับทิม / อำพัน / ทอง / หยก / ไพลิน / ดีบุก |
 | เกรด | `--g-bronze(-2)` `--g-silver(-2)` `--g-gold(-2)` `--g-rainbow` `--g-rainbow-line` `--g-empty` | เหรียญตรา |
 | คะแนนทีม (ขั้น 11) | `--score-bad` `--score-mid` `--score-good` `--score-perfect` (= `--r-rainbow`) | แดง / เหลือง / เขียว / รุ้ง |
 | ฟอนต์ | `--font-display` = Cinzel 500–700 · `--font-body` = Inter 400–600 | |
@@ -121,145 +107,94 @@
 | Layout | `--nav-h` 70 · `--header-h` 58 · `--side-w` 252 (เมนูซ้ายบนคอม) · `--max-w` 1180 | |
 | Motion | `--ease` · `--t-fast` 150 · `--t-med` 250 · `--t-slow` 400ms | |
 
-### 3.3 โครงไฟล์และของกลางที่มีแล้ว
-- `index.html` — หน้าเดียว 5 section (`#page-tier`, `#page-cards`, `#page-support`, `#page-deck`, `#page-grade`) + หน้ารายละเอียดการ์ด `#detail` (วางทับทุกหน้า) · เปลี่ยนหน้าด้วย hash เช่น `#cards` · จำหน้าล่าสุดใน localStorage (`cbi:lastPage`) · ครั้งแรกเปิด Tier List
-- **Routing:** `#tier #cards #support #deck #grade` = แท็บ (ไม่เพิ่มประวัติ) · `#tier/my` = แท็บย่อย My Lists ของหน้า Tier List (`#tier` = Global) · `#tier/my/<list id>` = เปิด list นั้นใน Tier Maker (เปิดจากหน้ารวม = เพิ่มประวัติ 1 รายการ Back ของมือถือกลับหน้ารวม · id ที่ไม่มี = กลับหน้ารวม) · แตะแท็บ Tier List ที่เมนูล่างเสมอ = กลับ Global · `#card/<id>` = หน้ารายละเอียดการ์ด (ฉาก "Black Sun" ขั้น 12, §14) วางทับหน้าที่เปิดอยู่ (ไม่รู้ว่าเปิดจากไหน = ใช้ Cards) · เปิดรายละเอียดแต่ละครั้งเพิ่มประวัติ 1 รายการ `{depth, cl}` (`cl` = รายการ id การ์ดที่เปิดมาจาก ใช้ตอนปัดซ้ายขวา) ปุ่ม Back ของมือถือจึงปิดได้ · **ปัดไปใบอื่น = `replaceState` (`C.swapCard`) ไม่เพิ่มประวัติ** · ปุ่ม ‹ Back บนหน้าจอและ Esc ปิดทั้งหมดในครั้งเดียว · ลิงก์ตรง `#card/bald-cadet` ใช้ได้ · id ที่ไม่มีอยู่ = กลับหน้าเดิม
-- **Routing หน้า Deck (ขั้น 10):** `#deck` = My Decks (หน้ารวม) · `#deck/meta` = แท็บย่อย Meta Decks · `#deck/my/<id>` = editor ของ deck นั้น (เปิดจากหน้ารวม = เพิ่มประวัติ 1 รายการ `{dkl:1}` Back ของมือถือกลับหน้ารวม · id ที่ไม่มี = redirect ไป `#deck`) · `#deck/s/<data>` = deck ที่คนแชร์มา (ดูอย่างเดียว + ปุ่ม Save a copy) · แตะแท็บ Deck ที่เมนูล่าง = กลับ `#deck` · `app.js` เรียก `CBI.deck.show()` ทุกครั้งที่ `route()` · Back จาก `#card/<id>` หรือ `#support/<id>` กลับมาที่ deck เดิมในสภาพเดิม (คืนตำแหน่ง scroll ด้วย `history.state.tierY` เหมือน Tier List · `showPage` ถือว่าทั้ง tier และ deck ใช้ `tierY` ได้)
-- `css/tokens.css` (ตัวแปร · ขั้น 12 เพิ่มกลุ่ม `--bs-*` ของฉากรายละเอียด + `--t-spin` 900ms) · `css/base.css` (พื้นหลัง `#backdrop`, หน้าโหลด `#boot`, header, เมนู 5 ปุ่ม/เมนูซ้าย, ปุ่มเพลง `.music`, หน้า + หัวข้อ, แถวชิป, **`.seg` สวิตช์สลับ**, **กล่องทอง** `.panel` ฯลฯ, empty state) · `css/tier.css` (แถว tier + ไทล์ support) · `css/deck.css` (Meta Decks) · `css/fx.css` (อนิเมชั่นกลาง + การ์ด + aura 7 ระดับ) · `css/cards.css` (แถบเครื่องมือหน้า Cards + ชิ้นส่วนรายละเอียดที่ใช้ร่วมกัน `.detail__*` `.dstat` `.dpanel` `.score` ฯลฯ (หน้า Support, Grade และแผ่น Details ของฉากใช้) + `.badge`)
-- `js/fx.js` → `FX.press()`, `FX.tilt(card)`, `FX.countTo(el, n)`, `FX.stagger(list, gap, {cls, max, limit, cleanup})`, `FX.flip(el, rect, {reverse})` (shared element), `FX.fade(el, 1|0)`, `FX.toast(text, {action:{label, fn}, duration, bottom})` (ข้อความสั้นด้านล่าง + ปุ่ม เช่น Undo · สไตล์ `.fx-toast` ใน fx.css · ขั้น 9 ใช้ตัวนี้ได้เลย), `FX.flash(el)` (แสงแฟลชสั้นๆ รอบกรอบที่เพิ่งบันทึก/คัดลอก · ขั้น 9), `FX.backdrop(el)` (พื้นหลังเมือง ขั้น 9.6b แทน `FX.starfield`), `FX.reduced`
-- `js/app.js` (แกนกลาง: router, โหลดข้อมูล, การ์ด) → `window.CBI` มี `rarityChipsHTML()` (ปุ่มเลือกระดับ ใส่ใน `.rarity-picker` ได้เลย การคลิกจัดการโดย cards.js ทั้งเว็บ), `renderCard(card, rarity, {mini})`, `setCardRarity(el, card, rarity, {animate})`, `statAt / oddsAt / fmtOdds / fmtStat`, `isRanked(card)`, `esc()` (ใช้ escape ข้อความจากข้อมูลทุกครั้ง), `openCard(id, originEl)`, `closeCard()`, `state` (`meta`, `cards`, `support`, `teams`, `rarity`), `hash` (ขั้น 9 ส่งออกให้ share.js ใช้ ดู C.hash ใน share.js) · route `#tier/s/<data>` = ลิงก์ list ที่แชร์ (อยู่ในแท็บ My Lists โหมดดูอย่างเดียว)
-- `js/tier.js` (หน้า Tier List) · โหลดหลัง cards.js · `CBI.tier = { init, enter({restore}), show("global"|"my") }` · แท็บย่อย **Global | My Lists** (`#tier-tabs`, `.seg`) · Global มีสวิตช์ **Cards | Support** (`#tier-kind`, จำใน localStorage `cbi:tierKind`) แยกรายการกัน ไม่รวมกัน · Cards: แถว SS–D ตาม Overall + ปุ่มเลือกระดับ (ใช้ระดับเดียวกับทั้งเว็บ ผ่าน event `cbi:rarity`) · Support: แถว SS–D ตาม `scores.value` ใช้การ์ดจาก `CBI.support.card()` (ไทล์ `.stile` มีชื่อ + ค่า Value) · My Lists = `#tier-my` เป็นหน้าว่างรอขั้น 8 · **กดไทล์ support** เปิด `#support/<id>` โดย tier.js เก็บตำแหน่งเลื่อนไว้ใน `history.state.tierY` ของรายการประวัติเดิม · app.js `showPage` อ่านค่านี้ตอนกลับมา (Back) แล้วเลื่อนกลับตำแหน่งเดิมและไม่เล่นอนิเมชั่นเข้าซ้ำ (แท็บเมนูล่างล้างค่านี้ทิ้งเอง ไม่ค้าง)
-- `js/tiermaker.js` + `css/tiermaker.css` (**Tier Maker**, แท็บ My Lists · ขั้น 8) · โหลดหลังสุด (ต้องใช้ `C.support.card`) · `CBI.tm = { init, show(listId|null) }` · tier.js เรียก `init()` ตอน init และ `show()` ทุกครั้งที่แท็บ My Lists แสดง · กล่องทั้งหมดอยู่ใน `#tm` ที่มี `data-no-detail` (แตะการ์ด = เลือก ไม่เปิดรายละเอียด) · หน้ารวม `#tm-index` / ตัวแก้ `#tm-editor`
-  - **ข้อมูล:** `cbi:tierlists` (schema §10.2) บันทึกทุกครั้งที่แก้ · ข้อมูลเสียถูกซ่อมเอง (สี/ระดับที่ไม่รู้จัก → `--t-d` / Normal, uid ซ้ำ → สร้างใหม่) · ค่าตั้งของผู้ใช้ `cbi:tmPrefs` = `{ compare, poolOpen, hidePlaced }` · ถ้าเก็บข้อมูลไม่ได้ (โหมดไม่ระบุตัวตน) ขึ้นแถบเตือน `#tm-warn` แต่ใช้งานได้ปกติ
-  - **แก้ข้อมูลผ่าน `commit(fn)` เท่านั้น** (เก็บ undo + บันทึก + วาดใหม่แบบ FLIP) · `renderRows()` ใช้ node เดิมตาม uid ไม่สร้างการ์ดใหม่ · ประวัติ undo/redo 50 ครั้งต่อ list อยู่ในหน่วยความจำ (หายเมื่อรีโหลด) · กล่องแก้แถวเปลี่ยนชื่อ/สี/ลำดับสดๆ แต่นับเป็น undo 1 ครั้ง
-  - **ลาก:** Pointer Events เขียนเอง (ไม่ใช้ SortableJS) · เมาส์ขยับ > 6px = ยกการ์ด · นิ้วต้อง**กดค้าง 0.26 วิ** (ขยับเกิน 10px ก่อนนั้น = เลื่อนหน้าตามปกติ) · ยกแล้วกัน scroll ด้วย `touchmove` preventDefault · ใกล้ขอบบน/เหนือ pool หน้าเลื่อนเอง · การ์ดที่ถือคือสำเนาใน `.tm-layer` (fixed บน body) · ช่องที่จะวาง = `.tm-ph`
-  - **pool** = แถบเลื่อนข้างแบบ sticky ติดล่างจอ (`.tm-dock`) ทุกขนาดจอ · ล้อเมาส์เลื่อนแถบข้างได้ · แถบคำสั่ง `.tm-act` ลอยเหนือ pool
-  - **ระดับการ์ดของ list** ใช้ปุ่ม `data-tm-rarity` (**ห้ามใช้ `data-rarity`** เพราะ cards.js จะเปลี่ยนระดับทั้งเว็บ) · การ์ดใน tm ซ่อนป้ายระดับ และในแถวซ่อนป้าย tier Global (ดูได้ด้วย Compare)
-  - **Compare with Global:** แถวที่ชื่อตรงกับ tier (SS…D ไม่สนตัวพิมพ์) = tier นั้น · แถวชื่ออื่นนับตามลำดับ (แถว 1 = SS, แถว 2 = S … แถวที่ 6 ขึ้นไป = D) · ป้าย ↑n = ผู้ใช้วางสูงกว่า Global n ขั้น
-  - กล่องถาม/ตั้งค่าใช้ `<dialog class="tm-dlg">` (มี scrim ของตัวเอง เพราะ `::backdrop` อ่านตัวแปร CSS ไม่ได้ในเบราว์เซอร์เก่า) · ฟังก์ชัน `dialog({title, html, actions, onMount})` คืน Promise · ปุ่มกลาง `.tm-btn` / `--primary` / `--danger`
-  - Details ของ support: เก็บ `tierY` ใน history.state แบบเดียวกับไทล์ support ของ Global แล้วเปิด `#support/<id>` · Back กลับมาที่เดิม
-  - **ขั้น 9 เพิ่มใน tiermaker.js:** `C.tm = { init, show(listId|null, sharedData?), mode() }` (`mode()` = `"index"|"editor"|"shared"`) · `C.dialog` = กล่องถามกลาง (ใช้จาก share.js) · `boardSpec(l)` / `toPayload(l)` / `fromPayload(p)` (แปลง list ⇄ รูป/ลิงก์) · `listMenu()` มี **Save as image** และ **Share link** (ปิดใช้ + มีข้อความ ถ้า list ว่าง) · มุมมองแชร์ `#tm-shared` (ดูอย่างเดียว, ปุ่ม Save a copy / Save image, `shCopies` กันสำเนาซ้ำ) · `importLists(data, how)` ให้ระบบสำรองเรียก · ปุ่ม Backup บนหัวหน้ารวม + ปุ่ม "Restore from backup" ในหน้าว่าง · ค่า `LIST_MAX=200` list / `ITEM_MAX=600` การ์ดต่อ list ตอนรับข้อมูลจากภายนอก
-- `js/share.js` (**ของกลางขั้น 9: รูป / ลิงก์ / สำรอง** ใช้ซ้ำในหน้า Deck ขั้น 10) · โหลดหลัง app.js ก่อน tiermaker.js · `C.share = { imageDialog, previewDialog, tierImage, makeLink, readLink, linkDialog, backupDialog, provide, copyText, icons }`
-  - **รูป:** `tierImage(spec)` วาดด้วย Canvas 2D (ไม่แคป DOM) กว้างตรรกะ 1200px scale ≤ 2 (ลดเองถ้าเกิน 16M พิกเซล / 16000px) → `{blob, width, height, filename}` · `spec = { id, title, type:"card"|"support", rarity, rows:[{ label, color:"--t-ss", items:[id…] }] }` · กรอบการ์ดตามระดับสะท้อน `css/fx.css` (`frameSpec`) ถ้าแก้สีกรอบใน fx.css ต้องแก้ `frameSpec` ใน share.js ด้วย · การ์ดที่หาไม่เจอ = ช่องเส้นประ · รอฟอนต์ด้วย `document.fonts.load` · `previewDialog(spec, flashEl)` = กล่อง spinner → พรีวิว → ปุ่ม Save image (มือถือ `navigator.share` พร้อมไฟล์, คอม = ดาวน์โหลด `.png`)
-  - **ลิงก์:** `makeLink(route, obj)` → `location.origin + pathname + "#<route>/s/<data>"` · data = JSON → `CompressionStream("deflate-raw")` → base64url นำหน้า `z` (บีบ) หรือ `p` (ไม่บีบ ถ้าเบราว์เซอร์ไม่รองรับ) · `readLink(str)` เป็น async + กันไฟล์บวม (ลิงก์ ≤ 24000 ตัวอักษร, JSON ≤ 200000 ไบต์) · **สีในข้อมูลแชร์เก็บเป็นลำดับใน array `COLORS` ของ tiermaker.js → ห้ามสลับลำดับ/แทรกกลาง array นั้น (เพิ่มท้ายได้)**
-  - **สำรอง:** แต่ละส่วนลงทะเบียนด้วย `C.share.provide(id, { label, kind:"array"|"object", get, count, noun, apply(data, "merge"|"replace") → จำนวนที่เปลี่ยน })` · ตอนนี้มี `tierlists` (tiermaker.js) และ `grades` (grade.js `importGrades`) · ไฟล์ `{ app:"card-battle-infinity", type:"backup", version:1, exported, data:{ tierlists, grades } }` · Import: ตรวจไฟล์ (≤ 5MB, app/type/version) → กล่อง Merge / Replace → ทำ + toast Undo (เก็บ snapshot ย้อนกลับ) · Merge ไม่ทับของเดิม (เกรดที่มีอยู่แล้วคงไว้) · Replace ส่วนที่ไฟล์ไม่มีจะไม่ถูกแตะ
-  - ทุกกล่องใช้ `C.dialog` ไม่มี alert/confirm · ปุ่ม share/copy อยู่ในกล่องและกดครั้งใหม่หลังวาดเสร็จ (กฎ user-gesture ของ iOS) · toast/flash เล่นหลังกล่องปิด (ไม่งั้นถูกกล่องบัง)
-  - **ขั้น 10 เพิ่มใน share.js:** `deckImage(spec)` + `deckImageDialog(spec,{flashEl})` (spec = `{id,title,mode,rarity,cards:[5],support:[5]}` → รูป 1200px กว้าง การ์ด 5 ใบ ("SLOT n") + support 5 ใบอยู่คอลัมน์เดียวกัน + ป้ายระดับ + ลายน้ำ) · แยกส่วนที่ใช้ร่วมกับ `tierImage` ออกเป็น `paintBackdrop` / `paintRibbon` / `paintFooter` (ตรวจแล้ว: รูป tier list **เหมือนเดิมทุกพิกเซล** เทียบ SHA-256 ก่อน/หลังแก้) · `linkDialog({..., what:"deck"})` ใช้คำว่า deck แทน list · `slug(s, fallback)` · ข้อความกล่องสำรองพูดถึง decks
-- `js/deck.js` + `css/deck.css` (**หน้า Deck · ขั้น 7 + ขั้น 10**) · โหลดหลัง tier.js · `CBI.deck = { init, enter({restore}), show, paintScore }` · แท็บย่อย **My Decks | Meta Decks** (`#deck-tabs`, `.seg`) · สร้างทุกอย่างผ่าน `C.lazy("deck", build)`
-  - **Meta Decks:** จาก `teams.json` (เหมือนขั้น 7) + ปุ่ม **Copy to My Decks** ในทุกทีม → สร้าง deck ใหม่ในโหมด Tower ระดับ = ระดับที่เลือกอยู่ทั้งเว็บ · slot ของทีม = การ์ด 5 ใบ · support ของแต่ละ slot เข้าช่องเดียวกัน ส่วน support ของทั้งทีมที่เหลือเติมช่องว่างตามลำดับ · ชื่อซ้ำ = ต่อท้าย `(copy)`
-  - **ข้อมูล:** `cbi:decks` (schema §10.4) บันทึกทุกครั้งที่แก้ (ไม่มีปุ่ม Save) · ข้อมูลเสียถูกซ่อมเอง (`clean()`: โหมด/ระดับที่ไม่รู้จัก, การ์ดซ้ำใน deck เดียวกัน, ช่องเกิน 5, id ยาวเกิน) · สูงสุด 200 deck · ถ้าเขียน localStorage ไม่ได้ แสดงแถบเตือน `#dk-warn` ใช้งานต่อได้ในหน้านั้น
-  - **แก้ข้อมูลผ่าน `commit(fn, {animate, land})` เท่านั้น** (เก็บ undo 50 ขั้น/deck ใน memory + บันทึก + วาดใหม่แบบ FLIP) · `paintKind()` ใช้ node เดิมตาม id (การ์ดไม่ถูกสร้างใหม่ตอนย้าย) · undo/redo = `step(±1)` + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y
-  - **board:** `buildBoard()` ใช้ร่วมกันทั้ง editor (`#dk-board`) และหน้า shared (`#dk-sh-board`) · `.dk-row[data-kind="cards"|"support"]` แถวละ 5 `.dk-slot` · การ์ดในช่อง = `.dk-item` · ช่องว่างในหน้า editor = ปุ่ม `.dk-add` · ปุ่ม × = `.dk-x` (ใหญ่ 44px ที่แตะได้จริง)
-  - **ตัวเลือกการ์ด:** `openPicker(kind, i)` = `C.dialog` + ค้นหา + ชิป Tier/Role + เลือก Series + สร้างทีละ 40 ใบด้วย IntersectionObserver · การ์ดที่อยู่ใน deck แล้วจางและมีป้าย `Slot n` กดไม่ได้ (ห้ามซ้ำใน deck เดียว) · **support ใส่ซ้ำได้** (ดู §8 คำถามค้าง)
-  - **ลาก/แตะ:** Pointer Events เขียนเอง เหมือน Tier Maker (เมาส์ขยับ > 6px = ยก · นิ้วกดค้าง 0.26 วิ · ขยับเกิน 10px ก่อนนั้น = scroll) · ghost ใช้ animation ที่ pause (`ghostAxis`, `GHOST_R`) ไม่เขียน `style.transform` ทุกครั้งที่ขยับ · วางบนช่องชนิดเดียวกัน = ย้ายหรือสลับ · วางที่อื่น = การ์ดบินกลับ · แตะการ์ด = เลือก (แถบคำสั่ง `.tm-act` ใน `#dk-dock`: Details / Replace / Remove / Cancel) แล้วแตะช่องปลายทาง · แตะช่องว่างชนิดอื่นตอนเลือกอยู่ = ยกเลิกแล้วเปิดตัวเลือกการ์ดของช่องนั้น · แถบคำสั่งเว้นที่ใต้ board (`margin-top` ของ dock) เพื่อให้เลื่อนแถว support ขึ้นมาเหนือแถบได้
-  - **ระดับการ์ดต่อ deck:** ปุ่ม `data-dk-rarity` (**ห้ามใช้ `data-rarity`** เพราะ cards.js จะเปลี่ยนระดับทั้งเว็บ) · โหมดต่อ deck: ปุ่ม `data-dk-mode` ใน `#dk-mode` (Boss `enabled:false` กดไม่ได้ ขึ้นป้าย Soon) · ตั้ง `MODES` ค่าตั้งต้นใน deck.js และ override ชื่อ/enabled จาก `data/meta.json → modes` ได้
-  - **วงคะแนน (ขั้น 11):** `scoreHTML()` / `paintScore(el, {score, band, label}, {animate, note})` · `band` = `none|bad|mid|good|perfect` (สีใน deck.css `[data-band]` จาก token `--score-*`) · มี arc 2 วงสลับ fade (opacity) + `FX.countTo` · 100 = `.dk-score__halo` รุ้งหมุน (เฉพาะ `.is-live` → เรียก `C.watchLive`) + ประกาย `.dk-spark` 1 ครั้ง
-  - **คะแนนทีม (ขั้น 11):** `refresh()` ถูกเรียกท้าย `commit()` / `step()` / `setRarity()` / `openEditor()` / import → วาดวง + `paintAnalysis()` (กล่อง Score breakdown / Strengths & weaknesses / Fits modes ใน `#dk-analysis`) + `scheduleSuggest()` (Fill the gaps ทำหลังวาด 90ms ไม่ขวางการแตะ · tile ใช้ซ้ำตาม id ใน `sugCache`) · หน้าแชร์ใช้ `#dk-sh-score` + `#dk-sh-analysis` (ดูอย่างเดียว ไม่มี Fill the gaps) · แถวในหน้ารวมมีป้ายคะแนน `.dkl__score` · **Compare** = `compareDialog(id)` (`C.dialog` + `.dk-cmp`, ปุ่ม `#dk-compare` บนหน้ารวม, ปุ่มใต้ analysis, เมนู ⋯) · ชิปการ์ดใน Strong/Weak vs (`data-open-card` + `data-id`) เปิดรายละเอียดโดยใช้ชิปเป็นจุดเริ่ม/จุดกลับ (Back กลับที่เดิม scroll เดิม) · แตะโหมดใน Fits modes = เปลี่ยนโหมด (ผ่าน `setMode`)
-  - **แชร์/รูป/สำรอง (ใช้ของกลางขั้น 9):** เมนู ⋯ ของ deck → Save as image (`C.share.deckImageDialog`) · Share link (`C.share.makeLink("deck", payload)` payload = `{v:1,n,m,r,c:[5],s:[5]}` ตรวจและซ่อมใน `fromPayload()`) · Rename / Duplicate / Delete · สำรอง: `C.share.provide("decks", …)` ลงทะเบียนใน `init()` (merge = เพิ่ม deck ที่ไม่มี id นั้น, id เดียวกันเอาอันที่แก้ล่าสุด)
-  - **ลิงก์ที่ถูกแชร์:** `openShared(data)` อ่านด้วย `C.share.readLink` · ดูอย่างเดียว (แตะการ์ด = Details) · **Save a copy** สร้างสำเนา 1 ชุดต่อลิงก์ (`shCopies`) กดซ้ำ = เปิดสำเนาเดิม · การ์ดที่ไม่มีใน library แสดงช่องเส้นประ "Not in the library" (ไม่ถูกตัดทิ้ง)
-  - **หน้ารวม:** แถว `.dkl` (ใช้ `.tml` ของ Tier Maker) แสดงชื่อ · โหมด · ระดับ · จำนวนการ์ด + แถบการ์ด 5 ใบพร้อมจุด support ใต้การ์ด · ปุ่มทำสำเนา/ลบ (ลบมีกล่องยืนยัน)
-  - การ์ดที่ id หาไม่เจอใน library จะขึ้นช่องเส้นประ (ไม่ถูกข้าม) ทั้งใน editor, shared, หน้า Meta Decks ("Not added yet")
-- `js/teamscore.js` (**ขั้น 11 · สูตรคะแนนทีม ไม่มี DOM**) · โหลดหลัง app.js ก่อน deck.js · `CBI.teamScore = { score(deck, mode?), analyze(deck), suggest(deck, kind, n), band(score), modeConfig(id), modes(), PARTS, K }` · ค่าปรับสูตรทั้งหมดอยู่ใน object `K` ต้นไฟล์ · อ่านข้อมูลห้องสมุดครั้งเดียว (`lib()` สร้างใหม่เมื่อ array ข้อมูลเปลี่ยน) · สูตรเต็ม §10.5
-- `js/support.js` (หน้า Support) · โหลดหลัง tier.js · `CBI.support = { init, show }` · `css/support.css` · รายละเอียดอยู่**ในหน้า Support เอง** (hash `#support/<id>`) ไม่ใช่ overlay เพื่อให้กดการ์ดข้างในแล้วเปิดรายละเอียดการ์ดทับได้ และ Back กลับมาที่หน้านี้ · แตะแท็บ Support เสมอ = กลับรายการ · ปุ่ม Back/Esc/Back ของมือถือกลับรายการและจำตำแหน่งเลื่อนไว้ · ลิงก์ตรง `#support/heal-orb` ใช้ได้ id ที่ไม่มี = กลับรายการ · `CBI` เพิ่ม `route()` และ `placeholderArt()` ให้ใช้ร่วมกัน · `CBI.support` ส่งออก `card(s)` (วาดการ์ด support) และ `open(id, originEl)` (เปิด `#support/<id>`) ให้หน้าอื่นใช้
-- `js/cards.js` (หน้า Cards) · โหลดหลัง app.js · `CBI.cards = { init, setRarity(name), order() }` · **`setRarity` = ที่เดียวที่เปลี่ยนระดับทั้งเว็บ** (บันทึก `cbi:rarity`, ยิง event `cbi:rarity` ให้ทุกหน้า) · `order()` = id การ์ดตามลำดับที่หน้า Cards แสดงอยู่ (ใช้เป็นรายการปัดเมื่อเปิดจากลิงก์ตรง) · ขั้น 12 ย้ายหน้ารายละเอียดออกไป `js/detail.js` แล้ว
-- **`js/detail.js` + `css/detail.css` (ขั้น 12 · หน้ารายละเอียดการ์ด "Black Sun")** · โหลดหลัง cards.js · `CBI.detail = { init, open(id), close(), prewarm(), listFor(originEl, id) }` · markup อยู่ใน `#detail.bs` ของ index.html · รายละเอียดทั้งหมดใน §14
-  - **กดการ์ดที่ไหนก็เปิด:** ตัวดัก click/Enter ของ `.card[data-id]` ทั้งเว็บย้ายมาอยู่ใน detail.js แล้ว (กฎเดิม: `[data-no-detail]` = ไม่เปิด) · ปุ่ม/ชิปที่ไม่ใช่การ์ดใช้ `data-open-card="<id>"` + `C.openCard(id, el)` แบบเดิม
-  - **รายการที่ใช้ปัดซ้ายขวา** (`listFor`): หากล่องรอบการ์ดที่กดตาม `LIST_SCOPE` = `[data-card-list], #card-grid, #tier-list, #tm-rows, #tm-sh-rows, #tm-pool, .dk-row, .deck, .mini-row` (ไม่เจอ + เป็นชิป = กล่องแม่ของชิป) แล้วเก็บ id ตามลำดับบนจอ เฉพาะการ์ดที่แสดงอยู่ · **หน้าใหม่ที่มีรายการการ์ด ให้ใส่ `data-card-list` ที่กล่อง** · หรือส่งเองด้วย `C.openCard(id, el, { list: [ids] })` (หน้า Grade ใช้แบบนี้)
-  - **Back กลับที่เดิมสภาพเดิม:** หน้าข้างใต้ไม่ถูกแตะเลย (ไม่ render ใหม่ ไม่เลื่อน) · ปิดแล้วการ์ดบินกลับช่องของใบที่ดูอยู่ ถ้าช่องนั้นอยู่นอกจอ (เพราะปัดไปใบอื่น) การ์ดจางหายแทน **ไม่เลื่อนหน้า**
-  - **ความเร็ว:** ตอนฉากขึ้นเต็มจอแล้ว (`html.is-detail-settled`) `.main` ถูกซ่อน + อนิเมชั่นข้างใต้หยุด + พื้นหลังเมืองซ่อน (< 1100px) + `C.livePause(true)` หยุดเช็ก IntersectionObserver ของการ์ดข้างใต้ · ปิดแล้วคืนทั้งหมดก่อนการ์ดบินกลับ
-- `app.js` ขั้น 12: `renderCard(card, rarity, { mini, tilt })` (`tilt:false` = ไม่เอียงตามนิ้ว ใช้กับการ์ดในฉาก) · `C.openCard(id, originEl, { list })` · `C.swapCard(id)` · `C.livePause(on)` (เก็บการ์ดที่ watch ไว้แบบ WeakRef แล้ว observe ใหม่ตอน resume) · boot เรียก `CBI.detail.init()` และ `CBI.detail.prewarm()` 3.6 วิหลังโหลด (วาดฉากตอนเครื่องว่าง · lite mode ไม่วาดล่วงหน้า)
-- หน้า Grade (ขั้น 12): ปุ่ม **Card details** ในหน้าตั้งเกรด (`data-act="details"`) เปิดหน้ารายละเอียดของการ์ดนั้น รายการปัด = ลำดับในหน้าเลือกการ์ด
-- **ธีม Gilded Nocturne (ขั้น 9.6b) — ของกลางที่หน้าใหม่ต้องใช้:**
-  - **กล่องทอง (gilded panel):** ใส่คลาส `.panel` (หรือใช้ `.dpanel` ในหน้ารายละเอียด) = เส้นทอง 1px + มุมตัดเฉียง + ลายมุม 4 มุม · ทำใน base.css ด้วย selector รวม `.panel, .dpanel, .dstat, .deck, .tier-row, .goverall, .tm-dlg__sheet` (ตัวกล่องเป็นเส้นทอง, `::before` = พื้น, `::after` = ลายมุม) · **ห้ามใช้กับกล่องที่มีเงาด้านนอกหรือขยับ/ลาก** (clip-path ตัดเงาทิ้ง) → กล่องแบบนั้นใช้ `.glass` (พื้นทึบ + เส้นทอง) · ปรับมุม/ลายได้ด้วย `--cut` / `--orn-s` บนกล่อง
-  - **หัวข้อหน้า:** `<p class="page__eyebrow">The …</p>` + `<h1 class="page__title">` + `<div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>` + `.page__lead` · ชื่อหน้ามีเส้นทองกวาดผ่าน 1 ครั้งตอนเข้าหน้า (อัตโนมัติจาก `.page.fx-page-in`)
-  - **ปุ่ม:** `.tm-btn` (แผ่นทองเหลือง) / `--primary` (ทองขัด ตัวหนังสือเข้ม) / `--danger` (แดงไวน์) · `.iconbtn.glass` = ปุ่มไอคอนทองเหลือง · `.chip` กดเลือกแล้วเป็นแผ่นทอง · `.badge--tier` = สีตราครั่ง
-  - **ไอคอน/ตรา:** SVG sprite ต้น `<body>` ใน index.html (`#i-crown #i-fan #i-potion #i-book #i-lens #i-note #i-flourish #i-crest`) ใช้ `<svg><use href="#i-…"/></svg>`
-  - **การ์ด:** `renderCard` มีชั้นใหม่ `.card__orn` (ลายมุม) ต่อท้าย `.card__body` ใน `.card__frame` · support มี `.scard__orn` (เฉพาะใบใหญ่) · สีลายมุมตั้งด้วย `--orn` ตามระดับ (fx.css) · การ์ด mini **ไม่มีละอองลอย** (`.card--mini .card__particles { display:none }`) · `@keyframes fx-spin` มี `translate(-50%,-50%)` แล้ว (กรอบหมุนจริง) **ใช้กับชั้นที่จัดกลางด้วย left/top 50% เท่านั้น** ตัวหมุนอื่นต้องมี keyframe ของตัวเอง (เช่น `.fx-loader`)
-  - **เหรียญเกรด `.gorb`:** แผ่นโลหะ + วงจุดแบบเชือก · เกรด 10 = แผ่นรุ้งหมุน (`::before` จัดกลาง)
-  - **พื้นหลัง `FX.backdrop($("#backdrop"))`:** วาดครั้งเดียว · ชั้นที่ขยับตลอด = หมอก + ละอองไฟ (CSS transform) · เมืองขยับตอน scroll ด้วย **Web Animation ที่ pause แล้วตั้ง currentTime** (ห้ามใช้ CSS animation ที่ pause — ทดสอบแล้วไม่อยู่บน fast path) · `#backdrop` อยู่ z-index -1 → **`body` ต้องไม่มีสีพื้น** (สีอยู่ที่ `html`) · lite = ละอองน้อยลง · reduced motion = ภาพนิ่ง
-  - **หน้าโหลด `#boot`:** app.js `hideBoot()` ซ่อนเมื่อข้อมูลมา (หรือโหลดพัง) · CSS ซ่อนเองหลัง 8 วิ กันค้าง
-  - **วันที่อัปเดต:** ทุก element ที่มี `data-updated` (หัวเว็บ + ท้ายเมนูซ้าย) · `#updated` ยังอยู่
-  - **เพลง `js/music.js`:** ปุ่ม `.js-music` (หัวเว็บ + ท้ายเมนูซ้าย) ซ่อนอยู่จนกว่าจะเจอ `audio/bgm.mp3` (ส่ง HEAD 1 ครั้ง · ถ้าไม่มีไฟล์ console จะมี 404 ของไฟล์นี้ 1 บรรทัด ตั้งใจ) · รายละเอียด §12.5 · เก็บ `cbi:music` / `cbi:musicVol`
-  - **Breakpoint:** < 1100px = หัวเว็บ + เมนูล่าง (900–1099 ก็ยังเป็นเมนูล่าง) · ≥ 1100px = เมนูซ้าย กว้าง `--side-w`, ซ่อนหัวเว็บ, `.main` / `.detail` / toast เลื่อนไปขวา · ของที่ติดล่างจอ (เช่น pool ของ Tier Maker) ต้องอยู่เหนือเมนูล่างจนถึง 1099px
-  - **รูปที่บันทึก (share.js):** พื้นหลังกลางคืน + กรอบทอง + ลายมุม · การ์ดวาดกรอบรูปทอง + เส้นในกรอบ + ลายมุม (`drawOrnaments`) · ป้าย tier แบบอัญมณี · `drawPlaceholder` = รูปวาดแทนแบบเดียวกับ `C.placeholderArt` (ซุ้มประตูโค้ง) แก้อันหนึ่งต้องแก้อีกอัน
-- **กดการ์ดแล้วเปิดรายละเอียด** (ขั้น 12: โค้ดอยู่ใน `js/detail.js`) ทำงานกับทุก `.card[data-id]` ที่อยู่ใน `<main>` อัตโนมัติ (รวมการ์ดในแถว Tier) หน้าอื่นไม่ต้องเขียนเอง · การ์ดใบเดียวกันอยู่ได้หลายที่ในหน้า (แถว tier + หลาย deck) · ตอนปิดรายละเอียดการ์ดจะบินกลับไปที่ใบที่กดมา · การ์ดที่เรียกจาก `renderCard` มี `role="button"` และกด Enter/Space ได้แล้ว
-- **Unranked:** การ์ดที่ `scores.overall` เป็น 0 หรือ `tier` ว่าง = ยังไม่ได้วิเคราะห์ → เว็บแสดงป้าย Unranked ไม่มีป้าย tier ไม่ขึ้นในแถว Tier List และถูกเรียงไว้ท้ายสุดเมื่อเรียงตาม Overall
-- การ์ด: ถ้า `image` ว่างหรือโหลดรูปไม่ได้ จะวาดรูปแทน (SVG ไล่สี + ตัวย่อชื่อ) · การ์ดที่มี `"mock": true` จะมีป้าย mock (ตอนนี้ไม่มีการ์ด mock แล้ว)
-- aura: ใส่ `data-rarity="Shiny"` บน `.card` แล้ว CSS ทำที่เหลือเอง (Shiny = แสงวิ่ง, Rainbow/Cosmic/Ascended = กรอบหมุน, Secret = เรืองแดงเต้น, Divine = วงแสงรอบการ์ด, Cosmic = ดาวในกรอบ, Ascended = อนุภาคลอย)
-- บนจอ ≥ 1100px เมนูย้ายไปเป็นแถบแนวตั้งด้านซ้าย (ขั้น 9.6b · เดิมคือแถบกลางบนสุดที่ ≥ 900px)
-- **ของกลางด้านความเร็ว (ขั้น 9.5) — หน้าใหม่ทุกหน้าต้องใช้:**
-  - `C.lazy(page, fn)` (app.js) = เรียก `fn` ครั้งแรกที่แท็บนั้นแสดง (ถ้าแสดงอยู่แล้วเรียกทันที) · **สร้างการ์ดของหน้าใน fn นี้เสมอ** อย่าสร้างตอน `init()` · Cards / Grade / Support / Deck ใช้แล้ว (มีตัวแปร `built` กัน `apply()` ก่อนสร้าง) · Tier List ใช้ `buildGlobal()` ของตัวเอง (สร้างเมื่อแท็บ Global แสดงจริง ไม่สร้างตอนอยู่ My Lists)
-  - **aura เล่นเฉพาะการ์ดบนจอ:** `renderCard` เรียก `C.watchLive(el)` (IntersectionObserver, rootMargin 24px) → การ์ดบนจอได้คลาส `.is-live` · ใน fx.css อนิเมชั่นวนของ aura (และป้ายเกรด 10) เขียนเป็น `.card[data-rarity=…].is-live …` เท่านั้น · การ์ดนอกจอหยุดที่เฟรมแรกของอนิเมชั่น (ไม่กระตุกตอนเลื่อนเข้า) · **aura/เอฟเฟกต์วนแบบใหม่ต้องผูกกับ `.is-live` แบบเดียวกัน**
-  - **การ์ดตอนอยู่เฉยๆ ต้องเป็น transform 2D** (`.card` / `.scard` = `translateY(var(--lift))`) · 3D (`perspective rotateX rotateY`) ใส่เฉพาะ `.is-tilting` / `:hover` · ห้ามกลับไปใส่ 3D ตอนอยู่เฉยๆ (ทุกใบจะเป็น GPU layer) และห้ามใช้ `transform: none` (hit-test ช้า 5 เท่า ทำให้ลากใน Tier Maker หน่วง)
-  - **ห้ามเขียน `style.transform` ทุกครั้งที่ scroll / ขยับนิ้ว** (Chrome จะจัด layer ทั้งหน้าใหม่ทุกเฟรม) → ใช้ animation ที่ pause ไว้แล้วตั้ง `currentTime` = ตำแหน่ง (ดูตัวอย่าง parallax ใน `FX.starfield` และ `ghostAxis()` ของผีการ์ดตอนลากใน tiermaker.js)
-  - `FX.tilt`: นิ้วลากขึ้นลงเกิน 10px = ถือว่า scroll → ปล่อยการ์ด (เหมือนที่มือถือส่ง pointercancel)
-  - **พื้นหลัง:** (ขั้น 9.6b) `<div id="backdrop">` + `FX.backdrop(el)` แทนดาวเดิม (`#starfield` / `FX.starfield` ถูกลบแล้ว) · หลักการเดิม: วาดครั้งเดียว ขยับด้วย CSS, parallax = paused animation · ห้ามใส่สีพื้นแบบ `fixed` ที่ `body`
-  - **Lite mode:** `FX.lite` + `html.lite` เปิดเองเมื่อ `deviceMemory ≤ 4` หรือ `hardwareConcurrency ≤ 4` หรือ `FX.probe()` (app.js เรียก 0.8 วิหลังโหลด นับเฟรม 2 วิแล้วหยุด) ได้ < 45 fps · ลดแค่ละอองไฟของพื้นหลัง (ขั้น 9.6b) + อนุภาค Ascended เหลือ 3 จาก 5 · ไม่มีปุ่ม
-  - **Blur:** `backdrop-filter` เหลือแค่ `.topbar.glass` กับ `.nav.glass` · `.glass` อื่นใช้ `background-color: var(--glass-under)` (tokens.css) + `background-image: linear-gradient(var(--glass), var(--glass))` · ถ้าจะเปลี่ยนพื้นของกล่อง glass ให้ตั้ง `background-image` (ไม่ใช่ `background:` ทั้งก้อน ไม่งั้นพื้นทึบหาย ดาวจะทะลุ)
-  - **รูปการ์ด:** `C.artImg(src, small)` + `C.bindArt(root, item)` · การ์ด mini (แถว tier, pool, deck, ตัวเลือกเกรด) ขอ `images/cards/thumb/<id>.webp` (300×420) ก่อน ไม่มี → รูปใหญ่ → ไม่มี → รูปวาดแทน · มี `loading="lazy"` `decoding="async"` `width/height` ทุกรูป · support ใช้ `C.artImg` แบบรูปใหญ่
-- `js/grade.js` (หน้า Grade) · โหลดหลัง support.js · `css/grade.css` · `CBI.grade = { init, show, panelHTML, overall, band, get }` · รายการเลือกการ์ด (การ์ด mini, ค้นหา, ปุ่ม "My graded cards") + หน้าตั้งเกรด `#grade/<id>/<atk>-<def>-<status>-<hp>` อยู่**ในหน้า Grade เอง** (แบบเดียวกับ Support) · เกรดเก็บใน localStorage `cbi:grades` (`{ id: [4 ตัวเลข] }`) · ลิงก์ที่มีเกรดของคนอื่นจะขึ้นแถบ "Shared grades" (Keep these / Use my grades) ไม่ทับเกรดของเราจนกว่าจะกด Keep หรือแก้เกรด · ป้ายวงกลมเกรด `.gorb` (`data-band` none/bronze/silver/gold/rainbow) และ `.card__grade` บนการ์ด · ใส่ `data-no-detail` ที่กล่องไหนก็ได้ = การ์ดข้างในกดแล้ว**ไม่**เปิดรายละเอียดการ์ด (cards.js ข้ามให้)
-- หน้ารายละเอียดการ์ด (แผ่น **Details** ในฉาก ขั้น 12) มีกล่อง **Grade** (จาก `CBI.grade.panelHTML`) แสดงเกรดที่ตั้งไว้ + ปุ่มไปหน้า Grader · ช่อง DEF / Status DMG ขึ้นเฉพาะการ์ดที่มีค่า `base.def` / `base.status`
+### 3.3 โครงไฟล์และของกลางที่มีแล้ว (ฉบับเต็มก่อนย่อ: HISTORY §0.3)
+**หน้า + route**
+- `index.html` — หน้าเดียว 5 section (`#page-tier`, `#page-cards`, `#page-support`, `#page-deck`, `#page-grade`) + หน้ารายละเอียดการ์ด `#detail` (วางทับทุกหน้า) · เปลี่ยนหน้าด้วย hash · จำหน้าล่าสุด `cbi:lastPage` · ครั้งแรกเปิด Tier List · SVG sprite ไอคอนต้น `<body>` (`#i-crown #i-fan #i-potion #i-book #i-lens #i-note #i-flourish #i-crest`) ใช้ `<svg><use href="#i-…"/></svg>`
+- **Route:** `#tier #cards #support #deck #grade` = แท็บ (ไม่เพิ่มประวัติ · แตะแท็บที่เมนูล่าง = กลับหน้าหลักของแท็บ เช่น Tier → Global, Deck → `#deck`) · `#tier/my` = My Lists · `#tier/my/<list id>` = editor (เปิดจากหน้ารวม = เพิ่มประวัติ 1 รายการ · id ไม่มี = กลับหน้ารวม) · `#tier/s/<data>` = list ที่แชร์ (ดูอย่างเดียว ในแท็บ My Lists) · `#deck` = My Decks · `#deck/meta` · `#deck/my/<id>` = editor (เพิ่มประวัติ `{dkl:1}` · id ไม่มี = `#deck`) · `#deck/s/<data>` = deck ที่แชร์ (ดูอย่างเดียว + Save a copy) · `#support/<id>` · `#grade/<id>/<atk>-<def>-<status>-<hp>` · `#card/<id>` = รายละเอียดการ์ด · `app.js` เรียก `CBI.deck.show()` ทุก `route()`
+- **`#card/<id>`:** เปิดแต่ละครั้งเพิ่มประวัติ 1 รายการ `{depth, cl}` (`cl` = รายการ id ที่ใช้ปัดซ้ายขวา) · **ปัดไปใบอื่น = `replaceState` (`C.swapCard`) ไม่เพิ่มประวัติ** · ‹ Back บนจอ / Esc / Back ของมือถือ ปิดทั้งหมดในครั้งเดียว · ไม่รู้ว่าเปิดจากไหน (ลิงก์ตรง) = ใช้รายการหน้า Cards · id ไม่มี = กลับหน้าเดิม
+- **Back กลับที่เดิมสภาพเดิม:** ก่อนเปิด `#card/…` / `#support/…` เก็บตำแหน่งเลื่อนใน `history.state.tierY` → `showPage` เลื่อนกลับและไม่เล่นอนิเมชั่นเข้าซ้ำ (ใช้ได้ทั้ง tier และ deck · แท็บเมนูล่างล้างค่าเอง)
 
+**CSS:** `tokens.css` (ตัวแปร §3.2 + `--bs-*` ของฉากรายละเอียด + `--t-spin` 900ms) · `base.css` (`#backdrop`, `#boot`, header, เมนู, `.music`, หน้า + หัวข้อ, ชิป, `.seg`, กล่องทอง `.panel`, empty state) · `fx.css` (อนิเมชั่นกลาง + การ์ด + aura 7 ระดับ) · `cards.css` (แถบเครื่องมือ Cards + ชิ้นส่วนรายละเอียดที่ใช้ร่วม `.detail__*` `.dstat` `.dpanel` `.score` `.badge` — หน้า Support, Grade, แผ่น Details ใช้) · `tier.css` (แถว tier + ไทล์ support + `tier-row__name--long`) · `deck.css` · `support.css` · `grade.css` · `tiermaker.css` · `detail.css`
+
+**JS (แต่ละไฟล์บอกว่าโหลดหลังใคร)**
+- `js/fx.js` → `FX.press()`, `FX.tilt(card)` (นิ้วลากขึ้นลงเกิน 10px = scroll → ปล่อยการ์ด), `FX.countTo(el, n)`, `FX.stagger(list, gap, {cls, max, limit, cleanup})`, `FX.flip(el, rect, {reverse})` (shared element), `FX.fade(el, 1|0)`, `FX.toast(text, {action:{label, fn}, duration, bottom})` (`.fx-toast`), `FX.flash(el)`, `FX.backdrop(el)`, `FX.reduced`, `FX.lite`, `FX.probe()`
+- `js/app.js` (แกน: router, โหลดข้อมูล, การ์ด) → `window.CBI`: `rarityChipsHTML()` (ใส่ใน `.rarity-picker` ได้เลย การคลิกจัดการโดย cards.js), `renderCard(card, rarity, {mini, tilt})` (`tilt:false` = ไม่เอียงตามนิ้ว), `setCardRarity(el, card, rarity, {animate})`, `statAt / oddsAt / fmtOdds / fmtStat`, `isRanked(card)`, **`esc()`** (escape ข้อความจากข้อมูลทุกครั้ง), `openCard(id, originEl, {list})`, `closeCard()`, `swapCard(id)`, `state` (`meta`, `cards`, `support`, `teams`, `rarity`), `hash`, `route()`, `placeholderArt()`, `lazy()`, `watchLive()`, `livePause(on)` (เก็บการ์ดที่ watch แบบ WeakRef แล้ว observe ใหม่ตอน resume), `artImg()`, `bindArt()`, `hideBoot()`, `TIER_COLOR` · boot เรียก `CBI.detail.init()` และ `prewarm()` 3.6 วิหลังโหลด (lite ไม่วาดล่วงหน้า)
+- `js/cards.js` (หลัง app.js) `CBI.cards = { init, setRarity(name), order() }` · **`setRarity` = ที่เดียวที่เปลี่ยนระดับทั้งเว็บ** (บันทึก `cbi:rarity` + ยิง event `cbi:rarity`) · `order()` = id ตามลำดับที่หน้า Cards แสดงอยู่
+- `js/tier.js` (หลัง cards.js) `CBI.tier = { init, enter({restore}), show("global"|"my") }` · แท็บย่อย Global | My Lists (`#tier-tabs`, `.seg`) · Global มีสวิตช์ **Cards | Support** (`#tier-kind`, `cbi:tierKind`) แยกรายการ ไม่รวมกัน · Cards = แถว GOD–D ตาม Overall + ปุ่มระดับ (event `cbi:rarity`) · Support = แถวตาม `scores.value` ไทล์ `.stile` (`CBI.support.card()`) กดแล้วเปิด `#support/<id>` · สร้างใน `buildGlobal()` เมื่อแท็บ Global แสดงจริง · Global ดูอย่างเดียว (Claude แก้ผ่านงาน B)
+- `js/tiermaker.js` + `tiermaker.css` (My Lists · โหลดหลังสุด) `C.tm = { init, show(listId|null, sharedData?), mode() }` (`"index"|"editor"|"shared"`) · ทุกอย่างอยู่ใน `#tm` (`data-no-detail`: แตะการ์ด = เลือก) · `#tm-index` / `#tm-editor` / `#tm-shared`
+  - ข้อมูล `cbi:tierlists` (§3.4) บันทึกทุกครั้งที่แก้ (ไม่มีปุ่ม Save) · ข้อมูลเสียซ่อมเอง (สี/ระดับที่ไม่รู้จัก → `--t-d` / Normal, uid ซ้ำ → สร้างใหม่) · `cbi:tmPrefs` = `{ compare, poolOpen, hidePlaced }` · เก็บไม่ได้ = แถบ `#tm-warn` แต่ใช้งานได้
+  - **แก้ข้อมูลผ่าน `commit(fn)` เท่านั้น** (undo + บันทึก + วาดใหม่แบบ FLIP) · `renderRows()` ใช้ node เดิมตาม uid · undo/redo 50 ครั้ง/list ใน memory (Ctrl+Z / Ctrl+Shift+Z) · กล่องแก้แถวเปลี่ยนสดแต่นับ undo 1 ครั้ง · ลบแถว/ล้างแถว/เอาการ์ดออก ไม่ถาม แต่มี toast Undo · ลบ list ถามยืนยันเสมอ
+  - **ลาก:** Pointer Events เขียนเอง (ไม่ใช้ HTML5 drag) · เมาส์ขยับ > 6px = ยก · นิ้ว**กดค้าง 0.26 วิ** (ขยับเกิน 10px ก่อนนั้น = scroll) · ยกแล้วกัน scroll (`touchmove` preventDefault) · ใกล้ขอบ/เหนือ pool เลื่อนเอง · ตัวที่ถือ = สำเนาใน `.tm-layer` (fixed บน body) ขยับด้วย paused animation (`ghostAxis()`) · ช่องวาง `.tm-ph` · แตะวาง: แตะเลือก แล้วแตะแถว · คีย์บอร์ด: Enter/Space เลือก, Tab ไปป้ายแถวแล้ว Enter = วาง, Esc ยกเลิก, Delete เอาออก
+  - pool `.tm-dock` = แถบเลื่อนข้าง sticky ติดล่างจอ มีการ์ดทั้งคลังเสมอ (ลากออก = สร้างสำเนา จึงใส่ซ้ำได้) + ค้นหา + กรอง Tier (+ Unranked) / Role / Series + "Hide placed" · แถบคำสั่ง `.tm-act` (Details · Duplicate · Remove · Cancel) ลอยเหนือ pool
+  - list ใหม่: Blank หรือ Start from Global (7 แถว GOD–D) · ระดับเริ่ม = ระดับทั้งเว็บ · ระดับของ list ใช้ `data-tm-rarity` (**ห้ามใช้ `data-rarity`** เพราะ cards.js จะเปลี่ยนระดับทั้งเว็บ) · การ์ดใน tm ซ่อนป้ายระดับ, ในแถวซ่อนป้าย tier Global · สีแถว 12 สี (`--t-*` 6 + `--t-x-*` 6)
+  - **Compare with Global** (เฉพาะ list Card): แถวที่ชื่อตรง tier (GOD, SS…D ไม่สนตัวพิมพ์) = tier นั้น · ชื่ออื่นนับตามลำดับ (แถว 1 = GOD …) · ป้าย ↑n = วางสูงกว่า Global n ขั้น · Unranked ไม่มีป้าย
+  - `C.dialog({title, html, actions, onMount})` → Promise · `<dialog class="tm-dlg">` มี scrim ของตัวเอง (`::backdrop` อ่านตัวแปร CSS ไม่ได้ในเบราว์เซอร์เก่า) · ปุ่มกลาง `.tm-btn` / `--primary` / `--danger` · **ห้ามใช้ alert/confirm**
+  - `boardSpec(l)` / `toPayload(l)` / `fromPayload(p)` · เมนู ⋯ ของ list: Save as image / Share link (ปิดใช้ + บอกเหตุผลถ้า list ว่าง) · มุมมองแชร์ (Save a copy / Save image · `shCopies` กันสำเนาซ้ำ) · `importLists(data, how)` · ปุ่ม Backup บนหัวหน้ารวม + "Restore from backup" ในหน้าว่าง · `LIST_MAX=200` / `ITEM_MAX=600` ตอนรับข้อมูลภายนอก · Details ของ support เก็บ `tierY` แล้วเปิด `#support/<id>`
+- `js/share.js` (รูป / ลิงก์ / สำรอง · หลัง app.js ก่อน tiermaker.js) `C.share = { imageDialog, previewDialog, tierImage, deckImage, deckImageDialog, makeLink, readLink, linkDialog, backupDialog, provide, copyText, icons, slug }`
+  - **รูป:** Canvas 2D (ไม่แคป DOM) กว้างตรรกะ 1200px scale ≤ 2 (ลดเองถ้าเกิน 16M พิกเซล / 16000px) → `{blob, width, height, filename}` · `tierImage({ id, title, type:"card"|"support", rarity, rows:[{ label, color:"--t-ss", items:[id…] }] })` · `deckImage({id, title, mode, rarity, cards:[5], support:[5]})` · ส่วนร่วม `paintBackdrop` / `paintRibbon` / `paintFooter` / `drawOrnaments` · **ถ้าแก้สีกรอบใน fx.css ต้องแก้ `frameSpec` ด้วย** · `drawPlaceholder` ต้องตรงกับ `C.placeholderArt` · การ์ดหาไม่เจอ = ช่องเส้นประ · รอฟอนต์ `document.fonts.load` · ลายน้ำอ่านจาก canonical · มือถือ `navigator.share` พร้อมไฟล์ / คอม ดาวน์โหลด `.png` · ลิงก์ยาวเกิน 6000 ตัวอักษรมีคำเตือน
+  - **ลิงก์:** `makeLink(route, obj)` → `location.origin + pathname + "#<route>/s/<data>"` · JSON → `CompressionStream("deflate-raw")` → base64url นำหน้า `z` (หรือ `p` = ไม่บีบ) · `readLink` async + กันบวม (≤ 24000 ตัวอักษร, JSON ≤ 200000 ไบต์) · payload ต้อง `clean()` ก่อนใช้เสมอ · **สีเก็บเป็นลำดับใน array `COLORS` ของ tiermaker.js → ห้ามสลับ/แทรกกลาง (เพิ่มท้ายได้)**
+  - **สำรอง:** `C.share.provide(id, { label, kind:"array"|"object", get, count, noun, apply(data, "merge"|"replace") → จำนวนที่เปลี่ยน })` · มี `tierlists`, `grades`, `decks` · ไฟล์ `{ app:"card-battle-infinity", type:"backup", version:1, exported, data:{…} }` · Import ตรวจ (≤ 5MB, app/type/version) → Merge / Replace → toast Undo (snapshot) · Merge ไม่ทับของเดิม · Replace ไม่แตะส่วนที่ไฟล์ไม่มี
+  - ปุ่ม share/copy อยู่ในกล่องและกดใหม่หลังวาดเสร็จ (กฎ user-gesture ของ iOS) · toast/flash เล่นหลังกล่องปิด
+- `js/deck.js` + `deck.css` (หลัง tier.js) `CBI.deck = { init, enter({restore}), show, paintScore }` · สร้างใน `C.lazy("deck", build)` · แท็บย่อย My Decks | Meta Decks (`#deck-tabs`, `.seg`)
+  - **Meta Decks** จาก `teams.json` + ปุ่ม Copy to My Decks (โหมด Tower, ระดับ = ระดับทั้งเว็บ, support ของ slot เข้าช่องเดียวกัน ที่เหลือเติมช่องว่าง, ชื่อซ้ำต่อท้าย `(copy)`)
+  - ข้อมูล `cbi:decks` (§3.4) บันทึกทุกครั้งที่แก้ · `clean()` ซ่อมข้อมูลเสีย (โหมด/ระดับไม่รู้จัก, การ์ดซ้ำ, ช่องเกิน 5, id ยาวเกิน) · สูงสุด 200 deck · เขียนไม่ได้ = `#dk-warn`
+  - **แก้ผ่าน `commit(fn, {animate, land})` เท่านั้น** · undo 50/deck · `step(±1)` + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y · `paintKind()` ใช้ node เดิมตาม id
+  - board `buildBoard()` (editor `#dk-board` + shared `#dk-sh-board`) · `.dk-row[data-kind="cards"|"support"]` แถวละ 5 `.dk-slot` · การ์ด `.dk-item` · ช่องว่าง `.dk-add` · × `.dk-x` (44px)
+  - ตัวเลือก `openPicker(kind, i)` = `C.dialog` + ค้นหา + ชิป Tier/Role + Series + สร้างทีละ 40 ใบ (IntersectionObserver) · **การ์ดซ้ำใน deck ไม่ได้** (จาง + ป้าย `Slot n`) · **support ซ้ำได้** (§8)
+  - ลาก/แตะเหมือน Tier Maker (ghost = paused animation `ghostAxis`, `GHOST_R`) · วางช่องชนิดเดียวกัน = ย้าย/สลับ · วางที่อื่น = บินกลับ · แตะ = เลือก (แถบ `.tm-act` ใน `#dk-dock`: Details / Replace / Remove / Cancel) · แตะช่องว่างชนิดอื่นตอนเลือก = ยกเลิกแล้วเปิดตัวเลือกช่องนั้น · dock เว้นที่ใต้ board ให้เลื่อนแถว support ขึ้นเหนือแถบได้
+  - ระดับต่อ deck `data-dk-rarity` (**ห้าม `data-rarity`**) · โหมด `data-dk-mode` ใน `#dk-mode` · `MODES` ใน deck.js override ชื่อ/enabled จาก `data/meta.json → modes` (Boss `enabled:false` = ป้าย Soon)
+  - **คะแนน:** `scoreHTML()` / `paintScore(el, {score, band, label}, {animate, note})` (`band` = `none|bad|mid|good|perfect` · สี `[data-band]` จาก `--score-*`) · `refresh()` ท้าย `commit()` / `step()` / `setRarity()` / `openEditor()` / import → วง + `paintAnalysis()` (`#dk-analysis`: Score breakdown / Strengths & weaknesses / Fits modes) + `scheduleSuggest()` (Fill the gaps หลังวาด 90ms, `sugCache`) · หน้าแชร์ `#dk-sh-score` + `#dk-sh-analysis` (ไม่มี Fill the gaps) · หน้ารวม `.dkl__score` · `compareDialog(id)` (`#dk-compare`, ปุ่มใต้ analysis, เมนู ⋯) · ชิปการ์ด `data-open-card` + `data-id` · แตะโหมดใน Fits modes = `setMode` · 100 = `.dk-score__halo` (`.is-live`) + `.dk-spark`
+  - **แชร์:** เมนู ⋯ → Save as image (`deckImageDialog`) · Share link payload `{v:1,n,m,r,c:[5],s:[5]}` (`fromPayload()` ตรวจ) · Rename / Duplicate / Delete · `openShared(data)` · Save a copy 1 ชุด/ลิงก์ (`shCopies`) · สำรอง `provide("decks")` ใน `init()` (merge = เพิ่ม id ที่ไม่มี, id ซ้ำเอาอันที่แก้ล่าสุด)
+  - หน้ารวม `.dkl` (ใช้ `.tml`) · id หาไม่เจอ = ช่องเส้นประ ("Not in the library" / Meta Decks "Not added yet")
+- `js/teamscore.js` (ไม่มี DOM · หลัง app.js ก่อน deck.js) `CBI.teamScore = { score(deck, mode?), analyze(deck), suggest(deck, kind, n), band(score), modeConfig(id), modes(), PARTS, K }` · ค่าปรับทั้งหมดใน `K` ต้นไฟล์ (`K.threatTiers = ["GOD","SS"]`) · `lib()` สร้างใหม่เมื่อ array ข้อมูลเปลี่ยน · สูตร §10.5
+- `js/support.js` + `support.css` (หลัง tier.js) `CBI.support = { init, show, card(s), open(id, originEl) }` · รายละเอียดอยู่**ในหน้า Support เอง** (`#support/<id>`) ไม่ใช่ overlay · แตะแท็บ Support = กลับรายการ · Back/Esc กลับรายการ จำตำแหน่งเลื่อน · id ไม่มี = กลับรายการ
+- `js/grade.js` + `grade.css` (หลัง support.js) `CBI.grade = { init, show, panelHTML, overall, band, get }` · หน้าเลือกการ์ด (mini, ค้นหา, "My graded cards") + หน้าตั้งเกรดในหน้าเอง · `cbi:grades` = `{ id: [4 ตัวเลข] }` · ลิงก์ที่มีเกรดคนอื่น = แถบ "Shared grades" (Keep these / Use my grades) ไม่ทับจนกว่าจะกด · `.gorb` (`data-band` none/bronze/silver/gold/rainbow) + `.card__grade` · ปุ่ม **Card details** (`data-act="details"`) ปัดตามลำดับหน้าเลือก · **สูตร:** 4 ค่า (ATK, DEF, Status DMG, HP) เลือก 1–10 เอง (ไม่สุ่ม) · +2.5%/เกรด · เกรดรวม = เฉลี่ย 4 ค่าปัด .5 ขึ้น · **ไม่มีผลกับ Overall / Tier** · สีเกรดจริงยังรอ (HISTORY §6.1)
+- `js/detail.js` + `detail.css` (หน้ารายละเอียด "Black Sun" · หลัง cards.js) `CBI.detail = { init, open(id), close(), prewarm(), listFor(originEl, id) }` · markup `#detail.bs` · layout/ป้าย/ผลวัด: HISTORY §14
+  - **กดการ์ดที่ไหนก็เปิด:** ตัวดัก click/Enter ของ `.card[data-id]` ใน `<main>` ทั้งเว็บอยู่ที่นี่ (หน้าอื่นไม่ต้องเขียนเอง · `[data-no-detail]` = ไม่เปิด · ปุ่ม/ชิปที่ไม่ใช่การ์ดใช้ `data-open-card="<id>"` + `C.openCard(id, el)`) · การ์ดใบเดียวกันอยู่ได้หลายที่ ปิดแล้วบินกลับใบที่กดมา
+  - **รายการปัด** (`listFor`): หากล่องตาม `LIST_SCOPE` = `[data-card-list], #card-grid, #tier-list, #tm-rows, #tm-sh-rows, #tm-pool, .dk-row, .deck, .mini-row` (ไม่เจอ + เป็นชิป = กล่องแม่ของชิป) เก็บ id ตามลำดับบนจอ · **หน้าใหม่ที่มีรายการการ์ด ใส่ `data-card-list` ที่กล่อง** หรือส่ง `C.openCard(id, el, { list })` · ปัดวนจากใบสุดท้ายไปใบแรก · ใบก่อน/ถัดไปสร้างล่วงหน้า
+  - ปิด = การ์ดบินกลับช่อง (ช่องนอกจอ = จางหาย **ไม่เลื่อนหน้า**) · หน้าข้างใต้ไม่ถูก render ใหม่ · ตอนฉากเต็มจอ (`html.is-detail-settled`) ซ่อน `.main` + หยุดอนิเมชั่นข้างใต้ + ซ่อนพื้นหลัง (< 1100px) + `C.livePause(true)` · ปิดแล้วคืนก่อนการ์ดบินกลับ
+  - แผ่น Details มีกล่อง Grade (`CBI.grade.panelHTML`) · DEF / Status DMG ขึ้นเฉพาะการ์ดที่มี `base.def` / `base.status` · ข้อความแนะนำ 2 ครั้งแรก (`cbi:bsHint`) · ปุ่ม Tilt เฉพาะจอที่ต้องขออนุญาต (iPhone) · ปุ่ม Replay
+- `js/music.js`: ปุ่ม `.js-music` (หัวเว็บ + ท้ายเมนูซ้าย) ซ่อนจนเจอ `audio/bgm.mp3` (HEAD 1 ครั้ง · 404 1 บรรทัดใน console = ตั้งใจ) · เริ่มแบบปิด · เปิด/ปิด fade 0.6 วิ · `cbi:music` / `cbi:musicVol` (0.35) · `preload="none"` · หยุดเมื่อสลับแท็บ/ล็อกจอ · สเปกเต็ม HISTORY §12.5
+
+**ของกลางธีม Gilded Nocturne — หน้าใหม่ต้องใช้**
+- **กล่องทอง:** `.panel` (หรือ `.dpanel` ในหน้ารายละเอียด) = เส้นทอง 1px + มุมตัดเฉียง + ลายมุม 4 มุม · selector รวม `.panel, .dpanel, .dstat, .deck, .tier-row, .goverall, .tm-dlg__sheet` (ตัวกล่อง = เส้นทอง, `::before` = พื้น, `::after` = ลายมุม) · **ห้ามใช้กับกล่องที่มีเงาด้านนอกหรือขยับ/ลาก** (clip-path ตัดเงา) → ใช้ `.glass` · ปรับด้วย `--cut` / `--orn-s`
+- **หัวข้อหน้า:** `<p class="page__eyebrow">The …</p>` + `<h1 class="page__title">` + `<div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>` + `.page__lead` · เส้นทองกวาดอัตโนมัติจาก `.page.fx-page-in`
+- **ปุ่ม/ชิป:** `.tm-btn` / `--primary` / `--danger` · `.iconbtn.glass` · `.chip` (เลือกแล้วเป็นแผ่นทอง) · `.badge--tier` · สวิตช์ `.seg` (+ `.seg__ind`, `--i`)
+- **การ์ด:** ใส่ `data-rarity` บน `.card` แล้ว CSS ทำ aura เอง · `renderCard` มี `.card__orn` ต่อท้าย `.card__body` ใน `.card__frame` · support `.scard__orn` (เฉพาะใบใหญ่) · สีลายมุม `--orn` ตามระดับ · การ์ด mini ไม่มีละอองลอย · ป้าย 3 ตัวอักษร (GOD) ใช้ `card__tier--long` / `scard__tier--long` · `@keyframes fx-spin` มี `translate(-50%,-50%)` → **ใช้กับชั้นที่จัดกลางด้วย left/top 50% เท่านั้น** ตัวหมุนอื่น (เช่น `.fx-loader`) ใช้ keyframe ของตัวเอง · การ์ดมี `role="button"` กด Enter/Space ได้ · เหรียญเกรด 10 = แผ่นรุ้งหมุน (`::before` จัดกลาง)
+- **Unranked** = `scores.overall` 0 หรือ `tier` ว่าง → ป้าย Unranked ไม่มีป้าย tier ไม่ขึ้นแถว Tier List เรียงท้ายสุด · `image` ว่าง/โหลดไม่ได้ = รูปวาดแทน (ซุ้มประตูโค้ง `C.placeholderArt`) · `"mock": true` = ป้าย mock
+- **พื้นหลัง** `FX.backdrop($("#backdrop"))` วาดครั้งเดียว · ชั้นที่ขยับตลอด = หมอก + ละอองไฟ (CSS transform) · เมืองขยับตอน scroll ด้วย **Web Animation ที่ pause แล้วตั้ง currentTime** (CSS animation ที่ pause ไม่อยู่บน fast path) · `#backdrop` z-index -1 → **`body` ต้องไม่มีสีพื้น** (สีอยู่ที่ `html` · ห้ามสีพื้นแบบ `fixed` ที่ body) · lite = ละอองน้อยลง · reduced = ภาพนิ่ง
+- `#boot` ซ่อนด้วย `hideBoot()` (หรือ CSS หลัง 8 วิ) · วันที่อัปเดต = ทุก element ที่มี `data-updated` (+ `#updated`)
+- **Breakpoint:** < 1100px = หัวเว็บ + เมนูล่าง · ≥ 1100px = เมนูซ้ายกว้าง `--side-w` ซ่อนหัวเว็บ `.main` / `.detail` / toast เลื่อนขวา · ของที่ติดล่างจอต้องอยู่เหนือเมนูล่างจนถึง 1099px
+
+**ของกลางด้านความเร็ว — หน้าใหม่ต้องใช้**
+- `C.lazy(page, fn)` = เรียก `fn` ครั้งแรกที่แท็บแสดง · **สร้างการ์ดของหน้าใน fn นี้เสมอ** ไม่ใช่ตอน `init()` (Cards / Grade / Support / Deck ใช้แล้ว มีตัวแปร `built` · Tier ใช้ `buildGlobal()`)
+- **aura เล่นเฉพาะการ์ดบนจอ:** `renderCard` เรียก `C.watchLive(el)` (IntersectionObserver rootMargin 24px) → `.is-live` · อนิเมชั่นวนใน fx.css เขียนเป็น `.card[data-rarity=…].is-live …` · **เอฟเฟกต์วนแบบใหม่ต้องผูก `.is-live` แบบเดียวกัน**
+- **การ์ดพักเป็น transform 2D** (`.card` / `.scard` = `translateY(var(--lift))`) · 3D เฉพาะ `.is-tilting` / `:hover` · ห้าม 3D ตอนพัก และห้าม `transform: none` (hit-test ช้า 5 เท่า)
+- **ห้ามเขียน `style.transform` ทุกครั้งที่ scroll / ขยับนิ้ว** → ใช้ animation ที่ pause แล้วตั้ง `currentTime` (ตัวอย่าง `FX.backdrop`, `ghostAxis()`)
+- **Lite mode:** `FX.lite` + `html.lite` เปิดเองเมื่อ `deviceMemory ≤ 4` หรือ `hardwareConcurrency ≤ 4` หรือ `FX.probe()` (0.8 วิหลังโหลด นับเฟรม 2 วิ) < 45 fps · ลดแค่ละอองไฟพื้นหลัง + อนุภาค Ascended 3 จาก 5 · ไม่มีปุ่ม
+- **Blur:** `backdrop-filter` เฉพาะ `.topbar.glass` กับ `.nav.glass` · `.glass` อื่น = `background-color: var(--glass-under)` + `background-image: linear-gradient(var(--glass), var(--glass))` · เปลี่ยนพื้นให้ตั้ง `background-image` (ไม่ใช่ `background:` ทั้งก้อน)
+- **รูปการ์ด:** `C.artImg(src, small)` + `C.bindArt(root, item)` · การ์ด mini ขอ `images/cards/thumb/<id>.webp` (300×420) → รูปใหญ่ → รูปวาด · `loading="lazy"` `decoding="async"` `width/height` ทุกรูป · support ใช้รูปใหญ่
+
+### 3.4 ข้อมูลในเครื่องผู้ใช้ (localStorage · อ่าน/เขียนใน try/catch เสมอ)
+- `cbi:lastPage` · `cbi:rarity` · `cbi:tierKind` · `cbi:tmPrefs` · `cbi:grades` · `cbi:music` · `cbi:musicVol` · `cbi:bsHint` · `cbi:tierlists` · `cbi:decks`
+- `cbi:tierlists` = `[{ "id":"tl_x1", "name", "type":"card"|"support", "rarity", "rows":[{ "id":"r1", "label":"SS", "color":"--t-ss", "items":[{ "uid":"i1", "id":"bald-cadet" }] }], "created", "updated" }]` · ใช้ uid เพราะการ์ดใบเดียวกันอยู่ได้หลายช่อง · id ที่ไม่มีในคลัง = ช่องเส้นประ ไม่ลบเอง · จำกัด 20 แถว (เหลือ ≥ 1) · ชื่อแถว 24 · ชื่อ list 40 ตัวอักษร
+- `cbi:decks` = `[{ "id":"dk_x1", "name", "mode":"tower", "rarity", "cards":[id|null ×5], "support":[id|null ×5], "created", "updated" }]`
 ## 4. Motion Guide (อ่านทุกครั้งที่เพิ่มปุ่มหรือการกดแบบใหม่)
 หลักการ: มีอนิเมชั่นเพื่อให้รู้สึกเหมือนเกม แต่ต้องลื่นบนมือถือและไม่ทำให้ช้า
 - ใช้แค่ `transform` และ `opacity` · ความยาว 150–400ms · easing `cubic-bezier(.2,.8,.2,1)`
-  - **ข้อยกเว้น (เจ้าของอนุมัติ 2026-10-24, §13.1 ข้อ 4):** การ์ดในหน้ารายละเอียด **แตะ = หมุน 360° 1 รอบ ยาว 900ms** (`--t-spin`) · สะบัด = หมุนหลายรอบแล้วค่อยๆ ช้าลง (ยาวตามแรงสะบัด) · intro ผงรวมเป็นการ์ด ~2.6 วิ · ทั้ง 3 อย่างผู้ใช้กดอย่างอื่นต่อได้ระหว่างเล่น
-  - **ข้อยกเว้นเรื่องความเร็ว (เจ้าของอนุมัติ 2026-10-24, §13.1 ข้อ 1–2):** ตอนหมุน/สะบัดการ์ดและตอน intro ยอมให้ fps ต่ำกว่า 55 ได้ **ห้ามลดเอฟเฟกต์เหล่านี้** (แสงวิ่งบนเส้นพลังไม่หยุด, ผงใน intro เต็มจำนวน) · กรณีอื่นถ้าไม่ถึงเกณฑ์ต้องถามเจ้าของก่อนลดเอฟเฟกต์
+  - **ข้อยกเว้น (เจ้าของอนุมัติ 2026-10-24, HISTORY §13.1 ข้อ 4):** การ์ดในหน้ารายละเอียด **แตะ = หมุน 360° 1 รอบ ยาว 900ms** (`--t-spin`) · สะบัด = หมุนหลายรอบแล้วค่อยๆ ช้าลง (ยาวตามแรงสะบัด) · intro ผงรวมเป็นการ์ด ~2.6 วิ · ทั้ง 3 อย่างผู้ใช้กดอย่างอื่นต่อได้ระหว่างเล่น
+  - **ข้อยกเว้นเรื่องความเร็ว (เจ้าของอนุมัติ 2026-10-24, HISTORY §13.1 ข้อ 1–2 · หน้ารายละเอียดทั้งหน้า §14.5 = ยอมรับความเร็วตามที่วัด):** ตอนหมุน/สะบัดการ์ดและตอน intro ยอมให้ fps ต่ำกว่า 55 ได้ **ห้ามลดเอฟเฟกต์เหล่านี้** (แสงวิ่งบนเส้นพลังไม่หยุด, ผงใน intro เต็มจำนวน) · กรณีอื่นถ้าไม่ถึงเกณฑ์ต้องถามเจ้าของก่อนลดเอฟเฟกต์
 - รองรับ `prefers-reduced-motion` (ถ้าผู้ใช้ปิดอนิเมชั่นไว้ ให้เหลือแค่ fade)
 - อนิเมชั่นต้องไม่บังการกด ผู้ใช้กดต่อได้ทันที · เอฟเฟกต์หนักมีได้ไม่เกิน 1 อย่างต่อจอ
 - ทำเป็นคลาสหรือฟังก์ชันกลางใน `css/fx.css` / `js/fx.js` ปุ่มใหม่ให้เรียกใช้ของเดิม ไม่เขียนใหม่
 
-| การกระทำ | อนิเมชั่น |
-|---|---|
-| กดปุ่มทั่วไป | ย่อเหลือ 0.96 + วงแสงทองสั้นๆ |
-| เปลี่ยนเมนู | แผ่นทองของเมนูเลื่อนไปที่ปุ่มใหม่ (มือถือ = แนวนอน, คอม = แนวตั้ง) + หน้าใหม่ fade/slide เข้า + เส้นทองกวาดผ่านชื่อหน้า 1 ครั้ง |
-| แตะ/ชี้การ์ด | การ์ดยกขึ้น + เอียง 3D ตามนิ้ว + แสง holo วิ่งผ่าน |
-| เปิดรายละเอียดการ์ด (ขั้น 12) | ฉาก Black Sun fade เข้า 300ms + การ์ดบินจากช่องเดิมไปกลางฉาก (shared element, `FX.flip` 420ms) → วง Overall นับขึ้น + เส้นชี้ 4 ป้ายวิ่งออกทีละเส้น (จุด → เส้น scaleX → ป้าย fade) · ไม่มีช่องให้บินมา (ลิงก์ตรง) = intro ผงรวมเป็นการ์ด |
-| ปิดรายละเอียดการ์ด (ขั้น 12) | ฉาก fade ออก 250ms + การ์ดบินกลับช่องของใบที่ดูอยู่ · ช่องอยู่นอกจอ (ปัดไปใบอื่นมา) = การ์ดจางหาย **ไม่เลื่อนหน้า** (Back กลับที่เดิมสภาพเดิม) |
-| แตะ / ลาก / สะบัด / แตะ 2 ครั้ง การ์ดในฉาก | หมุน 360° 900ms · หมุนตามนิ้ว (เอียงขึ้นลง ±18°) แล้วสปริงกลับ · หมุนหลายรอบแล้วช้าลงจบด้านหน้า · ซูม (380ms) · มีความหนา 3D + แสง holo ตามมุม **เฉพาะตอนขยับ** ตอนพักเป็น 2D · ละอองรอบการ์ดหมุนวนตอนการ์ดหมุน · สั่นเบาๆ ตอนเด้งเข้าที่ · reduced motion = แฟลชแทนการหมุน |
-| ปัดซ้าย/ขวานอกการ์ด, ‹ ›, ปุ่มลูกศรคีย์บอร์ด | การ์ดเลื่อนออก 170ms (ไปทางที่ปัด, ย่อ .94 + จาง) → ใบถัดไปเลื่อนเข้า 260ms · ป้ายวิ่งออกใหม่ · Overall นับไปค่าใหม่ · reduced motion = fade |
-| จุดระดับ 7 จุด (แถบล่างของฉาก) | วงทองเลื่อนไปจุดใหม่ (transform) + ชื่อระดับ fade ขึ้น · กรอบ/aura การ์ดแฟลช + ตัวเลขนับ · วงแสงดวงอาทิตย์สลับ fade 500ms · ละออง/เส้นชี้เปลี่ยนสี |
-| แตะป้าย (มือถือ) | กล่องคำอธิบายเต็ม fade + เลื่อน 6px (200ms) · แตะที่อื่น = ปิด · จอ ≥ 768px แสดงข้อความเต็มในป้ายเลย ไม่ต้องแตะ |
-| ปุ่ม Details | แผ่นข้อมูลเลื่อนขึ้นจากล่าง 320ms + scrim fade · ตัวเลขนับขึ้น + แถบคะแนนยืด + กล่องไล่ขึ้นทีละกล่อง · ปัดหัวแผ่นลง = แผ่นตามนิ้ว (paused animation) ปล่อยแล้วปิด/เด้งกลับ |
-| ลากนิ้วบนพื้นหลัง / เอียงมือถือ | ฉาก 4 ชั้นขยับคนละระยะ (parallax, paused Web Animation, rAF หยุดเองเมื่อนิ่ง) |
-| กรอง/เรียงการ์ด | การ์ดเรียงใหม่แล้วไล่เข้าทีละใบ (เฉพาะ 16 ใบแรก เพื่อไม่ให้หน่วงเมื่อมีการ์ดเยอะ) |
-| เปลี่ยนระดับการ์ด | สี aura เปลี่ยนแบบค่อยๆ ไล่ + ตัวเลขนับไปค่าใหม่ (เฉพาะการ์ดที่เห็นบนจอ ใบอื่นเปลี่ยนเงียบๆ) |
-| โหลดหน้า Tier List | แถว tier ไล่เข้ามาทีละแถว (stagger) |
-| สลับสวิตช์ (Global ⇄ My Lists, Cards ⇄ Support) | ตัวชี้ `.seg__ind` เลื่อนไปปุ่มใหม่ (transform) + เนื้อหาใหม่ fade/slide เข้า (`fx-page-in`) หรือแถวไล่เข้า (stagger) · ใช้ `.seg` + `--i` ได้เลย ไม่ต้องเขียนใหม่ |
-| กดค้างการ์ด (นิ้ว, Tier Maker) | ย่อ 0.95 ระหว่างรอ 0.26 วิ → ยกขึ้นตามแถว "หยิบการ์ด" + สั่นสั้นๆ (ถ้ามือถือรองรับ) |
-| ลากการ์ดในแถวลง pool | pool กลายเป็นกรอบแดงเส้นประ "Drop here to remove" · ปล่อย = การ์ดย่อจางหาย + toast มีปุ่ม Undo |
-| ปล่อยการ์ดนอกแถว | การ์ดบินกลับที่เดิม (ไม่มีอะไรเปลี่ยน) |
-| สวิตช์เปิด/ปิด (Compare with Global) | จุดในสวิตช์เลื่อน (transform) + ป้าย ↑/↓/= fade เข้า |
-| เปิด/ปิดกล่องถาม (`.tm-dlg`) | scrim fade + กล่องเลื่อนขึ้นเล็กน้อยและ fade เข้า · ปิด = ย้อนทาง |
-| toast (`FX.toast`) | เลื่อนขึ้นจากด้านล่าง + fade · หายเองใน ~3 วิ |
-| แตะไทล์ support บนหน้า Tier List | รูปบินไปเป็นรูปใหญ่ในหน้ารายละเอียด Support (shared element แบบเดิม) · กลับมาที่ Tier List ตำแหน่งเลื่อนเดิม |
-| กำลังโหลด | การ์ดเปล่าสลับไปมา (skeleton) |
-| พื้นหลัง | หมอกเลื่อนช้า + ละอองไฟลอยขึ้น (CSS ล้วน) · เงาเมืองขยับตาม scroll แบบ parallax (paused Web Animation) · วาดครั้งเดียว (ขั้น 9.6b · ห้ามวาด canvas ทุกเฟรม) |
-| หน้าโหลด | ตรา + นาฬิกาพกเข็มหมุน → fade ออกเมื่อข้อมูลมา |
-| ปุ่มเพลง ♪ | กด = ย่อ 0.96 + วงแสง · เปิด = เสียงค่อยๆ ดังขึ้น 0.6 วิ + แท่งคลื่นเสียง 3 แท่งขยับ (transform, เฉพาะตอนเล่น) · ปิด = ค่อยๆ เบาลง |
-| หยิบการ์ด (ลาก) | การ์ดลอยขึ้น ขยาย 1.06 + เงาเข้ม · ช่องที่วางได้เรืองขอบ |
-| วางการ์ด | การ์ดลงช่องแล้วเด้งเบาๆ (≤ 250ms) · การ์ดข้างๆ เลื่อนหลบแบบนุ่ม (FLIP) |
-| เลือกการ์ด (แตะ) | ขอบเรืองสี `--rift` + แถบคำสั่งเลื่อนขึ้นจากด้านล่าง |
-| เพิ่ม/ลบแถว, เพิ่ม/ลบการ์ด | เพิ่ม = กางออก/เด้งเข้า · ลบ = ย่อและจางหาย แถวอื่นเลื่อนตามแบบนุ่ม |
-| ใส่การ์ดลงช่อง deck | การ์ดบินเข้าช่อง (`FX.flip`) · คะแนนทีมนับไปค่าใหม่ วงคะแนนเปลี่ยนสีแบบไล่ |
-| ใส่การ์ดจากตัวเลือก (ขั้น 10) | การ์ดเด้งเข้าช่อง (scale .6 → 1.05 → 1 ≤ 260ms) · reduced motion = fade |
-| ย้าย/สลับการ์ดใน deck (แตะหรือลาก) | การ์ดที่เปลี่ยนที่เลื่อนแบบ FLIP · ลาก = ปล่อยแล้วบินจากนิ้วเข้าช่องและเด้งเบาๆ · ช่องปลายทางเรืองขอบ `--rift` ระหว่างลาก |
-| กด × ลบการ์ดออกจากช่อง | สำเนาการ์ดย่อและจางหาย 220ms + toast Undo |
-| วงคะแนนทีม (ขั้น 11) | ตัวเลขนับไปค่าใหม่ (`FX.countTo`) · เส้นวงสลับ fade ไปความยาว/สีใหม่ (opacity, 320ms) · เปลี่ยนสีช่วง = วงเด้ง 1.08 ครั้งเดียว · ไม่มีการ์ด = "—" |
-| แถบคะแนนแต่ละส่วน (ขั้น 11) | ยืด/หดด้วย `scaleX` (transition 400ms) · reduced motion = เปลี่ยนทันที |
-| ข้อดี/ข้อเสีย/Fits modes เปลี่ยน (ขั้น 11) | เฉพาะกล่องที่เนื้อหาเปลี่ยน: จาง .25 → 1 (220ms) |
-| แตะการ์ดใน Fill the gaps (ขั้น 11) | ย่อ .96 + การ์ดเด้งเข้าช่องใน board (popIn เดิม) + toast Undo · tile ใหม่โผล่ scale .9 → 1 |
-| แตะโหมดใน Fits modes (ขั้น 11) | ตัวชี้ `.seg` ของโหมดเลื่อนไปที่ใหม่ + คะแนนนับไปค่าใหม่ |
-| แตะชิปการ์ดใน Strong/Weak vs (ขั้น 11) | การ์ดขยายจากชิป (shared element `FX.flip`) · ปิดแล้วบินกลับเข้าชิป |
-| เปิด Compare / เปลี่ยน deck ในกล่อง (ขั้น 11) | กล่องถามแบบเดิม · เปลี่ยน deck = คอลัมน์ `fx-page-in` + ตัวเลขนับ |
-| Copy to My Decks / Save a copy | แสงแฟลชบนกรอบ + toast พร้อมปุ่ม Open |
-| ทำสำเนา/ลบ deck ในหน้ารวม | แถวอื่นเลื่อนเติมแบบ FLIP · แถวใหม่เด้งเข้า · แถวที่ลบย่อหาย |
-| คะแนนทีม 100 | วงรุ้งหมุน (CSS, เฉพาะตอนอยู่บนจอ `.is-live`) + ประกาย 10 จุด 1 ครั้ง (transform/opacity, ลบตัวเองเมื่อจบ) · reduced motion = วงรุ้งนิ่ง ไม่มีประกาย (✅ ขั้น 11) |
-| บันทึกรูป / คัดลอกลิงก์ | แสงแฟลชสั้นๆ บนกรอบที่ถูกบันทึก + toast ยืนยันที่ด้านล่าง (`FX.flash`, ✅ ขั้น 9) |
-| กำลังสร้างรูป (กล่อง Save as image) | วงกลมหมุน `.fx-loader` → รูปพรีวิว fade เข้า · reduced motion = fade อย่างเดียว (✅ ขั้น 9) |
-| เปิดลิงก์ที่ถูกแชร์ (`#tier/s/…`) | skeleton → แถวไล่เข้ามาทีละแถว (stagger) แบบเดียวกับ Tier Maker (✅ ขั้น 9) |
-| Save a copy / Restore backup | ปุ่ม `fx-press` + toast พร้อม Undo (✅ ขั้น 9) |
-| Undo / Redo | การ์ดที่เปลี่ยนเลื่อนกลับตำแหน่งแบบ FLIP (ไม่กระโดด) |
+**การกระทำ → อนิเมชั่น** (ตารางเดิมแบบแถวละ 1 อย่าง: HISTORY §0.4 · การกดแบบใหม่ที่ไม่มีในนี้ ให้เพิ่มลงกลุ่มที่ตรง)
+- **ทั่วไป:** กดปุ่ม → ย่อเหลือ 0.96 + วงแสงทองสั้นๆ · เปลี่ยนเมนู → แผ่นทองของเมนูเลื่อนไปปุ่มใหม่ (มือถือ = แนวนอน, คอม = แนวตั้ง) + หน้าใหม่ fade/slide เข้า + เส้นทองกวาดผ่านชื่อหน้า 1 ครั้ง · สลับสวิตช์ (Global ⇄ My Lists, Cards ⇄ Support) → `.seg__ind` เลื่อนไปปุ่มใหม่ (transform) + เนื้อหาใหม่ `fx-page-in` หรือแถวไล่เข้า (stagger) · ใช้ `.seg` + `--i` ได้เลย · สวิตช์เปิด/ปิด (Compare with Global) → จุดในสวิตช์เลื่อน + ป้าย ↑/↓/= fade เข้า · กล่องถาม `.tm-dlg` → scrim fade + กล่องเลื่อนขึ้นเล็กน้อยและ fade เข้า (ปิด = ย้อนทาง) · toast `FX.toast` → เลื่อนขึ้นจากด้านล่าง + fade หายเองใน ~3 วิ · กำลังโหลด → การ์ดเปล่าสลับไปมา (skeleton) · หน้าโหลด → ตรา + นาฬิกาพกเข็มหมุน → fade ออกเมื่อข้อมูลมา · พื้นหลัง → หมอกเลื่อนช้า + ละอองไฟลอยขึ้น (CSS ล้วน) · เงาเมือง parallax ตาม scroll (paused Web Animation) · วาดครั้งเดียว ห้ามวาด canvas ทุกเฟรม · ปุ่มเพลง ♪ → กด = ย่อ 0.96 + วงแสง · เปิด = ค่อยๆ ดังขึ้น 0.6 วิ + แท่งคลื่นเสียง 3 แท่งขยับ (transform เฉพาะตอนเล่น) · ปิด = ค่อยๆ เบาลง
+- **การ์ด / รายการ:** แตะ/ชี้การ์ด → ยกขึ้น + เอียง 3D ตามนิ้ว + แสง holo วิ่งผ่าน · กรอง/เรียง → เรียงใหม่แล้วไล่เข้าทีละใบ (เฉพาะ 16 ใบแรก) · เปลี่ยนระดับการ์ด → สี aura ค่อยๆ ไล่ + ตัวเลขนับไปค่าใหม่ (เฉพาะการ์ดบนจอ ใบอื่นเปลี่ยนเงียบๆ) · โหลดหน้า Tier List → แถวไล่เข้าทีละแถว (stagger) · แตะไทล์ support บน Tier List → รูปบินไปเป็นรูปใหญ่ในหน้ารายละเอียด Support (shared element) · กลับมาตำแหน่งเลื่อนเดิม
+- **หน้ารายละเอียดการ์ด (Black Sun):** เปิด → ฉาก fade เข้า 300ms + การ์ดบินจากช่องเดิมไปกลางฉาก (`FX.flip` 420ms) → วง Overall นับขึ้น + เส้นชี้ 4 ป้ายวิ่งออกทีละเส้น (จุด → เส้น scaleX → ป้าย fade) · ไม่มีช่องให้บินมา (ลิงก์ตรง) = intro ผงรวมเป็นการ์ด · ปิด → ฉาก fade ออก 250ms + การ์ดบินกลับช่องของใบที่ดูอยู่ · ช่องอยู่นอกจอ = การ์ดจางหาย **ไม่เลื่อนหน้า** · แตะ / ลาก / สะบัด / แตะ 2 ครั้ง การ์ด → หมุน 360° 900ms · หมุนตามนิ้ว (เอียงขึ้นลง ±18°) แล้วสปริงกลับ · หมุนหลายรอบแล้วช้าลงจบด้านหน้า · ซูม (380ms) · ความหนา 3D + แสง holo ตามมุม **เฉพาะตอนขยับ** ตอนพักเป็น 2D · ละอองรอบการ์ดหมุนวนตอนการ์ดหมุน · สั่นเบาๆ ตอนเด้งเข้าที่ · reduced = แฟลชแทนการหมุน · ปัดซ้าย/ขวานอกการ์ด, ‹ ›, ลูกศรคีย์บอร์ด → การ์ดเลื่อนออก 170ms (ย่อ .94 + จาง) → ใบถัดไปเลื่อนเข้า 260ms · ป้ายวิ่งออกใหม่ · Overall นับไปค่าใหม่ · reduced = fade · จุดระดับ 7 จุด → วงทองเลื่อนไปจุดใหม่ + ชื่อระดับ fade ขึ้น · กรอบ/aura แฟลช + ตัวเลขนับ · วงแสงดวงอาทิตย์สลับ fade 500ms · ละออง/เส้นชี้เปลี่ยนสี · แตะป้าย (มือถือ) → กล่องคำอธิบายเต็ม fade + เลื่อน 6px (200ms) · แตะที่อื่น = ปิด · ≥ 768px แสดงเต็มในป้ายเลย · ปุ่ม Details → แผ่นเลื่อนขึ้นจากล่าง 320ms + scrim fade · ตัวเลขนับ + แถบคะแนนยืด + กล่องไล่ขึ้นทีละกล่อง · ปัดหัวแผ่นลง = แผ่นตามนิ้ว (paused animation) ปล่อยแล้วปิด/เด้งกลับ · ลากนิ้วบนพื้นหลัง / เอียงมือถือ → ฉาก 4 ชั้นขยับคนละระยะ (parallax, paused Web Animation, rAF หยุดเองเมื่อนิ่ง)
+- **Tier Maker:** กดค้างการ์ด (นิ้ว) → ย่อ 0.95 ระหว่างรอ 0.26 วิ → ยกขึ้น + สั่นสั้นๆ (ถ้ามือถือรองรับ) · หยิบการ์ด (ลาก) → ลอยขึ้น ขยาย 1.06 + เงาเข้ม · ช่องที่วางได้เรืองขอบ · วางการ์ด → ลงช่องแล้วเด้งเบาๆ (≤ 250ms) · การ์ดข้างๆ เลื่อนหลบแบบนุ่ม (FLIP) · เลือกการ์ด (แตะ) → ขอบเรือง `--rift` + แถบคำสั่งเลื่อนขึ้นจากด้านล่าง · ลากการ์ดในแถวลง pool → pool เป็นกรอบแดงเส้นประ "Drop here to remove" · ปล่อย = การ์ดย่อจางหาย + toast Undo · ปล่อยนอกแถว → บินกลับที่เดิม · เพิ่ม/ลบแถว, เพิ่ม/ลบการ์ด → เพิ่ม = กางออก/เด้งเข้า · ลบ = ย่อและจางหาย แถวอื่นเลื่อนตามแบบนุ่ม · Undo / Redo → การ์ดที่เปลี่ยนเลื่อนกลับแบบ FLIP (ไม่กระโดด)
+- **Deck + คะแนนทีม:** ใส่การ์ดลงช่อง → บินเข้าช่อง (`FX.flip`) · คะแนนนับไปค่าใหม่ วงเปลี่ยนสีแบบไล่ · ใส่จากตัวเลือก → เด้งเข้าช่อง (scale .6 → 1.05 → 1 ≤ 260ms · reduced = fade) · ย้าย/สลับ (แตะหรือลาก) → FLIP · ลาก = ปล่อยแล้วบินจากนิ้วเข้าช่องและเด้งเบาๆ · ช่องปลายทางเรืองขอบ `--rift` · กด × → สำเนาการ์ดย่อจางหาย 220ms + toast Undo · วงคะแนน → ตัวเลขนับ (`FX.countTo`) · เส้นวงสลับ fade ไปความยาว/สีใหม่ (opacity, 320ms) · เปลี่ยนช่วงสี = วงเด้ง 1.08 ครั้งเดียว · ไม่มีการ์ด = "—" · คะแนน 100 → วงรุ้งหมุน (CSS, `.is-live`) + ประกาย 10 จุด 1 ครั้ง (ลบตัวเองเมื่อจบ) · reduced = วงรุ้งนิ่ง ไม่มีประกาย · แถบคะแนนแต่ละส่วน → `scaleX` (400ms · reduced = ทันที) · ข้อดี/ข้อเสีย/Fits modes เปลี่ยน → เฉพาะกล่องที่เปลี่ยน จาง .25 → 1 (220ms) · แตะการ์ดใน Fill the gaps → ย่อ .96 + เด้งเข้าช่อง (popIn) + toast Undo · tile ใหม่ scale .9 → 1 · แตะโหมดใน Fits modes → ตัวชี้ `.seg` เลื่อน + คะแนนนับไปค่าใหม่ · แตะชิปการ์ดใน Strong/Weak vs → การ์ดขยายจากชิป (`FX.flip`) ปิดแล้วบินกลับ · Compare / เปลี่ยน deck ในกล่อง → กล่องถามแบบเดิม · คอลัมน์ `fx-page-in` + ตัวเลขนับ · Copy to My Decks / Save a copy → แสงแฟลชบนกรอบ + toast ปุ่ม Open · ทำสำเนา/ลบ deck ในหน้ารวม → แถวอื่นเลื่อนเติมแบบ FLIP · แถวใหม่เด้งเข้า · แถวที่ลบย่อหาย
+- **แชร์ / รูป / สำรอง:** บันทึกรูป / คัดลอกลิงก์ → `FX.flash` บนกรอบที่ถูกบันทึก + toast ยืนยัน · กำลังสร้างรูป → `.fx-loader` หมุน → พรีวิว fade เข้า (reduced = fade) · เปิดลิงก์แชร์ (`#tier/s/…`) → skeleton → แถวไล่เข้าทีละแถว (stagger) · Save a copy / Restore backup → `fx-press` + toast พร้อม Undo
 
 ### 4.1 Definition of Done (ทุกขั้นต้องผ่านทุกข้อก่อนบอกว่าเสร็จ)
 - [ ] ทุกปุ่มและทุกการกดใหม่มีอนิเมชั่นตาม §4 ใช้ของกลางใน `fx.js` / `fx.css` · การกดแบบใหม่ที่ไม่มีในตาราง ให้เพิ่มแถวลงตาราง §4 ด้วย
@@ -273,7 +208,7 @@
 - [ ] ข้อความจากข้อมูลผ่าน `CBI.esc()` ทุกครั้ง · ข้อความบนหน้าเว็บเป็นภาษาอังกฤษ
 - [ ] ข้อมูลในเครื่องอ่าน/เขียนผ่าน try/catch (โหมดไม่ระบุตัวตนต้องไม่พัง)
 - [ ] ทดสอบใน Chromium แล้วไม่มี error ใน console · อัปเดต §3.3 ถ้ามีของกลางใหม่
-- [ ] **ความเร็ว (หลังขั้น 9.5):** วัดแบบ §11.3 ที่ CPU ช้าลง 6 เท่า ต้องได้ ≥ 55 fps ตอนว่างและตอนมีการ์ดทดสอบ 60 ใบระดับ Normal · ระดับ Ascended ต้องไม่ต่ำกว่าตาราง §11.4 · ห้ามมี `requestAnimationFrame` วนตลอดเวลา · aura เล่นเฉพาะการ์ดบนจอ (`.is-live`) · สร้างการ์ดใน `C.lazy()` เท่านั้น · ห้ามเพิ่ม `backdrop-filter` นอกจากหัวเว็บกับเมนูล่าง · การ์ดตอนอยู่เฉยๆ ใช้ transform 2D · ห้ามเขียน `style.transform` ทุกเฟรมตอน scroll/ลาก (ใช้ paused animation) · ห้ามเพิ่มชั้นเต็มจอที่ขยับตลอด (แต่ละชั้นกินแรงวาดเท่า 1 จอต่อเฟรม)
+- [ ] **ความเร็ว (หลังขั้น 9.5):** วัดแบบ §11.3 ที่ CPU ช้าลง 6 เท่า ต้องได้ ≥ 55 fps ตอนว่างและตอนมีการ์ดทดสอบ 60 ใบระดับ Normal · ระดับ Ascended ต้องไม่ต่ำกว่าตาราง HISTORY §11.4 (ผลล่าสุดทั้งเว็บ = HISTORY §12.7 · หน้ารายละเอียดการ์ด = ไม่ช้ากว่า HISTORY §14.3 เมื่อวัดคู่ mockup บนเครื่องเดียวกัน) · ห้ามมี `requestAnimationFrame` วนตลอดเวลา · aura เล่นเฉพาะการ์ดบนจอ (`.is-live`) · สร้างการ์ดใน `C.lazy()` เท่านั้น · ห้ามเพิ่ม `backdrop-filter` นอกจากหัวเว็บกับเมนูล่าง · การ์ดตอนอยู่เฉยๆ ใช้ transform 2D · ห้ามเขียน `style.transform` ทุกเฟรมตอน scroll/ลาก (ใช้ paused animation) · ห้ามเพิ่มชั้นเต็มจอที่ขยับตลอด (แต่ละชั้นกินแรงวาดเท่า 1 จอต่อเฟรม)
 
 ## 5. ข้อมูลการ์ด
 
@@ -363,44 +298,12 @@ const RARITY_MULTIPLIERS = {
   - id ใน `bestWith` / `avoidWith` / `bestDeck` ที่หาไม่เจอถูกข้ามเงียบๆ · ช่องใน deck ที่ใส่ `"support": "<id>"` ตรงกับ support นี้ จะมีป้าย "+ This support" ในหน้ารายละเอียด
 - หน้า Support จัดอันดับตาม `value` และบอกว่าควรใส่กับการ์ดใบไหนหรือทีมไหนถึงคุ้มที่สุด
 
-## 6. แผนงาน (ทีละขั้น ถามเจ้าของก่อนเริ่มขั้นถัดไป)
-
-| ขั้น | งาน | โมเดล / effort | สถานะ |
-|---|---|---|---|
-| 0 | เคลียร์ repo (เจ้าของทำเอง): ลบ `README.md`, `ikeep.txt` และของเก่าที่เหลือ · **เก็บไว้:** `googleac6eef435a8d1c66.html`, `sitemap.xml`, `PROGRESS.md` · `index.html` จะถูกแทนในขั้น 1 | — | ⬜ |
-| 1 | **Design system + โครงเว็บ**: ศึกษาสไตล์เว็บ/เกมที่ Gen Y–Gen Alpha ชอบ, ทำธีมตาม §3, พื้นหลัง, เมนูล่าง 4 เมนู, ชุดอนิเมชั่นตาม §4, aura ทั้ง 7 ระดับ, หน้า Grade เป็น "Coming soon" ที่ดูสวย, ใส่การ์ดตัวอย่าง 3 ใบ (ทำเครื่องหมาย `mock` ไว้ จะลบในขั้น 2), สรุป design tokens ลง §3 | **Opus 5.5 / high** (เป็นฐานของทุกหน้า งานออกแบบต้องใช้ฝีมือ) | ✅ |
-| 2 | **หน้า Cards + รายละเอียดการ์ด**: ตารางการ์ด, ค้นหา, กรอง, เรียงตาม (Overall / ATK / HP / โอกาส), ปุ่มเลือกระดับ 7 ระดับ (ค่าและโอกาสเปลี่ยนตาม), หน้ารายละเอียดมีครบ: รูป, ATK, HP, Passive, Skill, ระดับ, โอกาส, Overall, คะแนนแต่ละส่วน, จุดเด่น, จุดอ่อน, ชนะ/แพ้ใคร, ตำแหน่งในทีม, การ์ดที่เข้ากัน, support ที่แนะนำ · **ลบการ์ด mock 3 ใบใน `data/cards.json`** (ตอนนี้มีแค่ตารางการ์ด + ปุ่มเลือกระดับแล้ว ใช้ `CBI.renderCard` ต่อได้เลย) · หน้ารายละเอียดใช้ shared element ตาม §4 | **Sonnet 5.5 / high** | ✅ |
-| 3 | **หน้า Tier List + Meta Decks**: แถว SS–D เรียงตาม Overall, เลือกระดับที่จะดูได้, ส่วน Meta Decks (ทีม 5 ใบ + ตำแหน่ง + support) จาก `teams.json` (ยังไม่มีไฟล์ ให้สร้างพร้อมข้อมูลตัวอย่างที่ติด `mock`) · **กดการ์ดแล้วเปิดรายละเอียดได้อยู่แล้ว (§3.3) ไม่ต้องทำใหม่** · การ์ด Unranked ไม่ขึ้นในแถว tier | **Sonnet 5.5 / medium** | ✅ |
-| 4 | **หน้า Support**: ตาราง, อันดับความคุ้ม, หน้ารายละเอียด (ควรใส่กับใบไหน, ทีมไหน, ห้ามใส่กับใบไหน) | **Sonnet 5.5 / medium** | ✅ |
-| 5 | เก็บงาน: SEO (title / meta / sitemap / รูปตอนแชร์ลิงก์), ทดสอบบนมือถือ, ความเร็วโหลด | **Sonnet 5.5 / low** | ✅ |
-| 6 | ระบบ Grade แบบ Card Grader ในเกม แต่เลือกเกรดเอง 1–10 (รายละเอียด §6.1) | **Opus 5.5 / medium** | ✅ |
-| 7 | **Global Tier List + เมนู 5 ปุ่ม** (รายละเอียด §10.1) | **Sonnet 5.5 / medium** | ✅ |
-| 8 | **Tier Maker: จัด tier list เอง** (§10.2) | **Opus 5.5 / high** (งานลาก/แตะบนมือถือ + undo + เก็บสถานะ ซับซ้อนที่สุด) | ✅ |
-| 9 | **บันทึกรูป + แชร์ลิงก์ + ไฟล์สำรอง** (§10.3) ทำเป็นของกลางให้หน้า Deck ใช้ต่อ | **Sonnet 5.5 / high** | ✅ |
-| 9.5 | **ทำให้ลื่นบนเครื่องสเปกต่ำ (RAM 4GB)** โดยภาพและอนิเมชั่นต้องเหมือนเดิม (§11) | **Opus 5.5 / high** (แก้ไฟล์กลางที่ทุกหน้าใช้) | ✅ (3 ข้อ §11.5 ปิดแล้วในขั้น 9.6b) |
-| 9.6a | **ตัวอย่างหน้าตาใหม่แนว Silver Palace** (mockup หน้าเดียว ให้เจ้าของเลือก) (§12) | **Opus 5.5 / high** (งานออกแบบ ต้องใช้ฝีมือ) | ✅ (เจ้าของตอบ §12.6 แล้ว) |
-| 9.6b | **เปลี่ยนหน้าตาทั้งเว็บ + เพลงพื้นหลัง** ตาม mockup ที่เจ้าของอนุมัติ (§12) | **Opus 5.5 / high** (แก้ไฟล์กลางทุกหน้า) | ✅ (§12.7) |
-| 10 | **หน้า Deck: จัดทีม** (§10.4) | **Sonnet 5.5 / high** | ✅ |
-| 11 | **คะแนนทีม + ข้อดีข้อเสีย + โหมด + แนะนำการ์ด + เทียบ 2 ทีม** (§10.5) | **Opus 5.5 / high** (ออกแบบสูตร ถ้าสูตรผิด คะแนนผิดทั้งระบบ) | ✅ |
-| 12 | **หน้ารายละเอียดการ์ด "Black Sun"** (Mockup v2 §13.1 → เว็บจริง + layout แท็บเล็ต/คอม) (§14) | **Opus 5.5 / high** | ✅ (เจ้าของยอมรับความเร็ว §14.5 = ก · อัปขึ้น GitHub แล้ว) |
-
-### 6.1 ระบบ Grade (ข้อมูลจากเจ้าของ 2026-10-23 · ✅ ทำแล้ว)
-อ้างอิงคลิป "Card Grader" ในเกมที่เจ้าของอัดมา (การ์ด Jajanken Kid ระดับ Shiny)
-- **ในเกม:** การ์ด 1 ใบมี 4 ค่าที่ให้เกรด: `Basic Attack`, `Defense`, `Status Damage`, `HP` · แต่ละค่าได้เกรดเป็นตัวเลข · มีแถบหลอดตามเกรด · กดล็อกค่าที่ชอบแล้วสุ่มใหม่ (Roll ใช้ Shards)
-- **โบนัสต่อเกรด = +2.5% ต่อ 1 เกรด** (1 = +2.5%, 4 = +10%, 7 = +17.5%, 10 = +25%) · ตรวจจากคลิปแล้ว: HP ฐาน 763,440 → เกรด 2 = 801,612, เกรด 7 = 897,042 · ATK ฐาน 114,516 → เกรด 1 = 117,379, เกรด 6 = 131,693
-- **เกรดรวมของการ์ด = ค่าเฉลี่ย 4 ค่า ปัดเศษ** (.5 ปัดขึ้น) เช่น 6/4/3/2 → 4 · 1/7/7/7 → 6 · แสดงเป็นป้ายวงกลมตัวเลขบนการ์ด + "Best grade"
-- **ของเว็บเรา (เจ้าของสั่ง):**
-  - **เลือกเกรดเองได้ ไม่สุ่ม** (ไม่มี Roll / Shards / ล็อก)
-  - เกรดมี **1–10** ทั้งเกรดแต่ละค่าและเกรดรวมบนการ์ด
-  - สีตามเกรด: **1–3 น้ำตาล** (แบบในคลิป) · **4–6 เงิน (silver)** · **7–9 ทอง** · **10 รุ้ง** (เคลื่อนไหวได้) · เจ้าของจะแคปรูปสีจริงมาให้ภายหลัง ระหว่างนี้ทำเป็นตัวแปรใน `tokens.css` (`--g-bronze` `--g-silver` `--g-gold` `--g-rainbow`) ให้เปลี่ยนสีทีหลังได้ง่าย
-- **คำตอบของเจ้าของ (2026-10-23):** (1) ให้เกรด**ครบ 4 ค่า**แบบในเกม → เพิ่ม `base.def` และ `base.status` ในข้อมูลการ์ด · การ์ดที่ยังไม่มีค่าจะแสดงแค่ % โบนัส (2) มี**ทั้งหน้า Grade แยก**และกล่อง Grade ในหน้ารายละเอียดการ์ด (3) **จำในเครื่อง + แชร์ลิงก์ได้** (4) เกรด**ไม่มีผล**กับ Overall / Tier
-- **ยังค้าง:** เจ้าของจะแคปรูปสีเกรดจริง → แก้แค่ตัวแปร `--g-*` ใน `css/tokens.css` (ไม่ต้องแก้ไฟล์อื่น)
-
 ## 7. งานประจำ (ทำหลังเว็บเสร็จ แต่ละงานเปิดแชทใหม่)
 
 **A. เพิ่ม/แก้การ์ด** · **Sonnet 5.5 / medium** · ส่งรูปได้ไม่เกิน ~10 ใบต่อแชท
 ```
 อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วทำ "งานประจำ A" กับรูปที่แนบ
+ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
 ```
 1. ตัดรูปด้วย Python: หาขอบการ์ด, ตัดพื้นหลังและหน้าจอเกมออก, ปรับให้เป็น 600×840 แล้วบันทึกเป็น `.webp` ชื่อตาม id ใน `images/cards/` · **และทำรูปเล็ก 300×420 `.webp` ชื่อเดียวกันใน `images/cards/thumb/` ทุกครั้ง** (ขั้น 9.5: การ์ดเล็กโหลดรูปนี้ ไม่มี = โหลดรูปใหญ่แทน ช้าและเปลือง RAM) · บอกเจ้าของให้อัปทั้ง 2 โฟลเดอร์
 2. อ่านทุกอย่างที่เห็นในรูป: ชื่อ, ATK, HP, Passive, Skill, ระดับ, โอกาส · ถ้ารูปเป็นระดับอื่นที่ไม่ใช่ Normal ให้หารด้วยตัวคูณเพื่อหาค่า Normal แล้วเก็บค่าจริงไว้ใน `exact`
@@ -410,6 +313,7 @@ const RARITY_MULTIPLIERS = {
 **B. วิเคราะห์และจัดอันดับใหม่ทั้งคลัง** · **Opus 5.5 / high** · ทำหลังเพิ่มการ์ดเสร็จแต่ละรอบ ไม่ต้องทำทุกใบ
 ```
 อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วทำ "งานประจำ B"
+ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
 ```
 คำนวณ `scores`, `tier`, จุดเด่น, จุดอ่อน, ชนะ/แพ้ใคร ตามกฎใน §5.3 ของ**ทุกใบ** · จัด `teams.json` ใหม่ (ทีม 5 ใบ, ตำแหน่ง, support ที่ดีที่สุด) · ให้คะแนน support ตาม §5.4 · **(ขั้น 11 ทำแล้ว → ต้องใส่ทุกครั้ง)** field สำหรับคะแนนทีม: การ์ด `tags`, `weakTo`, `modes{tower,pvp,story,boss}`, `beats`, `team.bestWith`, `team.bestSupport`, `team.position`, `role` (ค่าเดียว: `DPS` / `Tank` / `Support` / `Hybrid`) · support `bestWith`, `avoidWith`, `modes` (ไม่บังคับ) · ไม่มี field ไหน = ส่วนนั้นขึ้น "Not enough data yet" (ดู §10.5) · tag ใช้คำเดียวกันทั้งคลัง (ตัวพิมพ์เล็ก เช่น `burst`)
 
@@ -422,7 +326,11 @@ const RARITY_MULTIPLIERS = {
 5. **tag ที่ใช้แล้ว (ใช้คำเดิม):** `aoe` `debuff` `burn` `execute` `damage-reduction` `multi-hit` `block` `revive` `burst` `ignore-defense` `dodge` `shadow-garden` `undying` `cc-immune` `scaling` · `weakTo` ใช้คำจากรายการเดียวกัน
 6. ข้อความ `strengths` / `weaknesses` / `notes` / ทีม เป็นภาษาอังกฤษ (หน้าเว็บอังกฤษ)
 
-**C. เพิ่ม support** · **Sonnet 5.5 / medium** · ทำแบบงาน A แต่ลง `support.json` (คะแนนให้ทำในงาน B)
+**C. เพิ่ม support** · **Sonnet 5.5 / medium** · ทำแบบงาน A แต่ลง `support.json` + รูป `images/support/` (คะแนนให้ทำในงาน B)
+```
+อ่าน PROGRESS.md ใน github.com/sunhoaass/Card_Ascension แล้วทำ "งานประจำ C" กับรูปที่แนบ
+ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
+```
 
 **D. แก้เล็กน้อย** (พิมพ์ผิด, เปลี่ยนสี, ข้อความ) · **Haiku 5.5 / low** · ถ้าแก้เกิน 1–2 ไฟล์ให้ใช้ Sonnet 5.5 / low
 
@@ -436,79 +344,10 @@ const RARITY_MULTIPLIERS = {
 - [x] ชื่อ tier: **GOD / SS / S / A / B / C / D** (เจ้าของสั่ง 2026-10-24 · GOD + SS = Meta)
 - [x] การ์ดมีความสามารถกี่อัน: **ช่องเดียว** ทำงานเองตลอด (2026-10-24)
 - [ ] (สำหรับขั้น 11 · **ยังไม่ได้ตอบ → ตอนนี้ทุกโหมดใช้น้ำหนักเท่ากัน รอปรับ** ดู §10.5) แต่ละโหมดต่างกันอย่างไร: **Ascended Tower** (สู้ต่อเนื่องหลายชั้นไหม HP ฟื้นไหม) · **PvP** (สู้กับทีมผู้เล่น) · **Story** · **Boss** (ยังไม่เปิด แต่ทำระบบรอไว้) · ทีม 5 ใบ + support 5 ใบใช้ได้ทุกโหมดไหม
+- [ ] (ค้างจากขั้น 12 · HISTORY §14.4) intro ผงเล่นเฉพาะตอนเปิดจากลิงก์ตรงและกด Replay (กดการ์ดจากรายการ = การ์ดบินจากช่อง) · อยากให้เล่นทุกครั้งที่เปิดการ์ดไหม · ข้ออื่นที่ Claude ตัดสินเอง: ปิดแล้วช่องนอกจอ = จาง ไม่เลื่อนหน้า · ปัดวนใบสุดท้าย→แรก · มือถือป้าย 2 บรรทัดแตะดูเต็ม · ปุ่ม Card details ในหน้า Grade
+- [ ] ข้อสังเกตที่ยังไม่แก้ (ถามก่อนแก้): (1) วงแสงตอนกดขึ้นแม้นิ้วแค่เริ่มเลื่อนหน้าบนปุ่ม → แก้ `FX.press` ให้รอจนรู้ว่าเป็นการกด (2) `.dk-pick-sheet { max-width: 560px }` โดน `max-width: 420px` ของ `.tm-dlg__sheet` ทับ (บนคอมกล่องเลือกการ์ดแคบกว่าที่ตั้งใจ) → แก้ด้วย `.tm-dlg__sheet.dk-pick-sheet` (3) เสียงเอฟเฟกต์ตอนกดปุ่ม ยังไม่ทำ (4) ถ้าเพลงต้องให้เครดิต ยังไม่มีที่ใส่
 
-## 10. แผน Tier Maker + Deck (เจ้าของสั่ง 2026-10-23 · ฟีเจอร์เสริมทุกข้อในนี้เจ้าของเลือกแล้ว)
-แรงบันดาลใจคือ tiermaker.com แต่เว็บเราต้องเหนือกว่าด้วย: กดการ์ดดูรายละเอียดเต็มได้, aura ระดับการ์ด, เทียบกับ Global, แตะวางบนมือถือ, Undo/Redo, แชร์ลิงก์ได้โดยไม่ต้องมีบัญชี, รูปคมชัดพร้อมลายน้ำ และมี Deck ที่คิดคะแนนทีมให้
-
-**เมนูล่าง 5 ปุ่ม:** `Tier List · Cards · Support · Deck · Grade` (จอ ≥ 900px ใช้แถบบนเหมือนเดิม)
-
-### 10.1 ขั้น 7: Global Tier List
-- หน้า Tier List มีแท็บย่อย **Global | My Lists** (`#tier` = Global, `#tier/my` = My Lists ที่ขั้น 8 จะใส่ของจริง ตอนนี้ทำเป็นหน้าว่างไว้ก่อน)
-- Global มีตัวสลับ **Cards | Support** · **ไม่รวมการ์ดกับ support ในรายการเดียวกัน** · Support ใช้ `tier` / `scores.value` จาก `support.json`
-- Global เป็นแบบดูอย่างเดียว ผู้ใช้แก้ไม่ได้ (Claude แก้ผ่านงานประจำ B)
-- **ย้าย Meta Decks ออกจากหน้า Tier List** ไปไว้หน้า Deck ใหม่ (`#deck`) ขั้นนี้ทำแค่หน้า Deck ที่มีรายการ Meta Decks ก่อน ส่วนจัดทีมเองจะทำในขั้น 10
-- อัปเดตเมนูเป็น 5 ปุ่ม + ตัวชี้เลื่อน · ปรับ route / `cbi:lastPage` ให้รองรับหน้าใหม่
-
-### 10.2 ขั้น 8: Tier Maker (My Lists)
-- **หลาย list:** สร้าง / เปลี่ยนชื่อ / ทำสำเนา / ลบ (ถามยืนยันด้วยกล่องในหน้าเว็บ **ห้ามใช้ `alert`/`confirm`**) · แต่ละ list เลือกประเภท **Card** หรือ **Support** ตอนสร้าง (ไม่ผสมกัน)
-- **สร้างใหม่ได้ 2 แบบ:** Blank (แถว SS–D ว่าง) หรือ **Start from Global** (copy ตำแหน่งจาก Global มาให้แก้ต่อ)
-- **แถว:** เพิ่ม / ลบ / ย้ายลำดับ · พิมพ์ชื่อป้ายเองได้ (SS, S, "God tier"…) · เลือกสีป้ายจากชุดสี `--t-*` + สีเพิ่มเติม · ตั้งชื่อ list ได้
-- **กล่องการ์ดด้านล่าง (pool):** มีการ์ดทั้งคลังเสมอ · ลากออกไป = **สร้างสำเนา** (การ์ดใน pool ไม่หาย จึง**ใส่การ์ดซ้ำได้**) · มีค้นหา + กรอง (Series / Role / Tier) + สวิตช์ "Hide placed"
-- **ย้ายการ์ด 2 วิธี:** (1) **ลาก** ใช้ได้ทั้งนิ้วและเมาส์ (2) **แตะวาง** แตะการ์ด 1 ครั้งเพื่อเลือก แล้วแตะแถวที่จะวาง
-  - ต้องใช้ Pointer Events หรือ SortableJS 1.15.x (ฟรี, jsDelivr) **ห้ามใช้ HTML5 drag API อย่างเดียว** เพราะใช้บนมือถือไม่ได้ · ลากใกล้ขอบจอแล้วหน้าต้องเลื่อนตาม
-- **แตะการ์ด = เลือก** แล้วแถบคำสั่งด้านล่างเลื่อนขึ้นมา: `Details · Duplicate · Remove · Cancel` · กด Details เปิดหน้ารายละเอียดการ์ดเดิม แล้ว **Back กลับมาที่ list เดิมในสภาพเดิม** (ห้าม render editor ใหม่, ตำแหน่งเลื่อนเดิม) · ลากการ์ดกลับลง pool = ลบ
-- **Undo / Redo:** ปุ่มบนแถบเครื่องมือ + Ctrl+Z / Ctrl+Shift+Z · เก็บย้อนหลัง 50 ครั้ง
-- **Compare with Global** (เปิด/ปิดได้): ใช้เฉพาะ list ประเภท Card · การ์ดมีป้าย ↑2 / ↓1 / = เทียบกับ tier ใน Global · การ์ด Unranked ไม่มีป้าย
-- **ระดับการ์ด:** list แต่ละอันเลือกระดับ Normal…Ascended ของตัวเองได้ (aura เปลี่ยนตาม และติดไปในรูปที่บันทึก)
-- **บันทึกอัตโนมัติ**ลง localStorage `cbi:tierlists` ทุกครั้งที่แก้ (ไม่มีปุ่ม Save)
-```jsonc
-// cbi:tierlists
-[{ "id": "tl_x1", "name": "My PvP list", "type": "card",   // "card" | "support"
-   "rarity": "Divine",
-   "rows": [{ "id": "r1", "label": "SS", "color": "--t-ss", "items": [{ "uid": "i1", "id": "bald-cadet" }] }],
-   "created": "...", "updated": "..." }]
-// ใช้ uid เพราะการ์ดใบเดียวกันอยู่ได้หลายช่อง · id ที่ไม่มีในคลังแล้วให้แสดงเป็นช่องเส้นประ ไม่ลบทิ้งเอง
-```
-- **ที่ทำจริงในขั้น 8 (เพิ่มจากแผน):** จำกัด 20 แถว · ชื่อแถว 24 ตัวอักษร · ชื่อ list 40 ตัวอักษร · list ใหม่ใช้ระดับการ์ดที่เลือกอยู่ทั้งเว็บเป็นค่าเริ่ม · ต้องเหลืออย่างน้อย 1 แถว · ลบแถว/ล้างแถว/เอาการ์ดออก ไม่ถามยืนยัน แต่มี toast + Undo (ลบ list ถามยืนยันเสมอ) · กล่องแก้แถว: ชื่อ, สี 12 สี (`--t-*` 6 สี + `--t-x-red/lime/teal/blue/violet/white` ใน tokens.css), ย้ายขึ้น/ลง, ล้างการ์ด, ลบแถว · แตะการ์ดแล้วกด Details → Back: การ์ดยังถูกเลือกอยู่ (สภาพเดิม) · คีย์บอร์ด: Enter/Space เลือก, Tab ไปที่ป้ายแถวแล้ว Enter = วาง, Esc ยกเลิก, Delete เอาออก · pool เรียง Global (ทีมที่จัดอันดับแล้วก่อน) และมีกรอง Tier (+ Unranked) / Role / Series
-
-### 10.3 ขั้น 9: บันทึกรูป + แชร์ + สำรอง (ทำเป็นของกลาง `js/share.js` ให้ Deck ใช้ต่อ) · ✅ ทำแล้ว (หมายเหตุสำหรับ Deck ข้อ 1–4 ด้านล่าง ทำครบแล้วในขั้น 10)
-- **บันทึกรูป:** วาดใหม่ด้วย **Canvas API** (ไม่ใช่การแคปหน้าจอ DOM) จึงคมและเหมือนกันทุกเครื่อง · scale 2–3 เท่า · เห็นทุกแถวและทุกการ์ดในรูปเดียว (ยาวแค่ไหนก็ได้ จำกัดกว้างประมาณ 2400px) · มีกรอบสีตามระดับการ์ด · รอฟอนต์โหลดเสร็จก่อนวาด (`document.fonts.ready`)
-  - **ลายน้ำ:** ชื่อเว็บ + URL + ชื่อ list + วันที่ ที่ขอบล่างของรูป
-  - มือถือ: ใช้ `navigator.share` (ส่งไฟล์รูปไปเซฟลงอัลบั้ม/แชร์ต่อได้) ถ้าไม่รองรับให้ดาวน์โหลดเป็น `.png`
-- **แชร์ลิงก์:** แปลง list เป็นข้อความสั้นใน hash เช่น `#tier/s/<data>` (บีบด้วย `CompressionStream` ที่มีในเบราว์เซอร์ ไม่ต้องใช้ library) · คนเปิดลิงก์จะเห็นแบบดูอย่างเดียว + ปุ่ม "Save a copy" · ไม่ทับของที่ผู้ใช้มีอยู่
-- **ไฟล์สำรอง:** Export / Import เป็น `.json` (tier list ทั้งหมด + deck ทั้งหมด + เกรด) · Import แล้วถามว่าจะรวมหรือแทนที่ของเดิม
-- **ที่ทำจริงในขั้น 9 (เพิ่ม/ต่างจากแผน):** รูป = ความกว้าง 1200px × scale 2 (≈ 2400px) · แถวยาวขึ้นบรรทัดใหม่เอง (70 การ์ด = รูปสูง ~4200px / 7.9MB) · ป้ายแถวยาวถูกตัดไม่เกิน 4 บรรทัด · ชื่อ list ยาวถูกตัด · ลายน้ำ = ชื่อเว็บ + `sunhoaass.github.io/Card_Ascension` + ชื่อ list + วันที่ · ปุ่มอยู่ในเมนู ⋯ ของ list (**Save as image**, **Share link**) และในมุมมองแชร์ · ลิงก์ยาวเกิน 6000 ตัวอักษรมีข้อความเตือนว่าบางแอปอาจตัดลิงก์ · list ว่างกดแชร์/บันทึกรูปไม่ได้ (ปุ่มปิดใช้ + บอกเหตุผล) · มุมมองแชร์: ดูอย่างเดียว แตะการ์ดเปิดรายละเอียดได้ · "Save a copy" สร้าง list ใหม่ในเครื่อง ชื่อเดิม แล้วเปิด editor · กดซ้ำจากลิงก์เดิมไม่สร้างสำเนาซ้ำ (เปิดสำเนาเดิม) · ลิงก์เสีย/ถูกตัด/ไม่ใช่ของเว็บนี้ = หน้าแจ้งข้อผิดพลาด + ปุ่ม Back · ข้อความจากลิงก์ผ่าน `esc()` และ `clean()` เสมอ (ทดสอบ XSS แล้ว) · สำรอง: ปุ่ม Backup บนหัวหน้ารวม My Lists + "Restore from backup" ในหน้าว่าง · `grades` อยู่ในไฟล์สำรองด้วย · **`decks` ยังไม่มี รอขั้น 10**
-- **ทดสอบขั้น 9 (Chromium):** มือถือ 390px (touch) + คอม 1280px + reduced motion + localStorage ถูกบล็อก: รูปทุกระดับ (Shiny/Rainbow/Secret/Divine/Cosmic/Ascended) + list support + list กว้าง 70 การ์ด + การ์ดที่ไม่มีในคลัง · ลิงก์แชร์ → เปิด → Save a copy → ไม่ซ้ำ · ลิงก์เสีย 5 แบบ · XSS ในชื่อ/ป้ายแถว/id · Export → Import (Merge / Merge ซ้ำ = "Nothing new" / Replace / Undo) บนเครื่องเปล่า · ไฟล์เสีย 4 แบบ (ไม่ใช่ JSON, ไม่ใช่ของเว็บ, version ใหม่กว่า, data ผิดรูป) · เกรดที่ import ขึ้นป้ายบนหน้า Grade · ปุ่มทุกปุ่ม ≥ 40px · ไม่เลื่อนข้าง · ไม่มี error ใน console (ยกเว้น Google Fonts ที่ sandbox บล็อก) · ข้อมูลทดสอบไม่ได้อยู่ใน repo
-- **หมายเหตุสำหรับขั้น 10 (Deck ต้องทำตามนี้ ไม่ต้องเขียนระบบใหม่):**
-  1. สำรอง: `C.share.provide("decks", { label:"decks", kind:"array", get, count, noun:"deck", apply })` (key `cbi:decks`) → ไฟล์สำรองมี `data.decks` อัตโนมัติ (ดูตัวอย่างที่ `tierlists` ใน tiermaker.js `init()` และ `importLists`)
-  2. ลิงก์: `C.share.makeLink("deck", payload)` → `#deck/s/<data>` · เพิ่ม route ใน app.js (`tierViewFromHash` ทำไว้สำหรับ tier เป็นตัวอย่าง) · `readLink` ใช้ได้เลย · payload ต้องตรวจ/`clean()` ก่อนใช้เสมอ
-  3. รูป: ตอนนี้ `tierImage(spec)` วาดเฉพาะ tier list → เพิ่มตัววาด deck (`deckImage(spec)`: การ์ด 5 ใบ + support 5 ใบ + ชื่อ + โหมด) ใน share.js โดยใช้ `drawCard` / `frameSpec` / watermark เดิม แล้วเรียกผ่าน `previewDialog`
-  4. ใช้ `C.dialog`, `FX.flash`, `FX.toast` ที่มีอยู่ · ไม่ใช้ alert/confirm
-
-### 10.4 ขั้น 10: หน้า Deck · ✅ ทำแล้ว (2026-10-24 · ผลและวิธีทดสอบดูที่ §9 และ §3.3)
-- แท็บย่อย **My Decks | Meta Decks** · Meta Decks มีปุ่ม "Copy to My Decks"
-- 1 deck = **การ์ด 5 ช่อง (Slot 1–5) + support 5 ช่อง** · หลาย deck: สร้าง / เปลี่ยนชื่อ / ทำสำเนา / ลบ · เลือก**โหมด**ของ deck: `Ascended Tower · PvP · Story · Boss` (Boss เป็น "Coming soon" กดเลือกไม่ได้ แต่ระบบรองรับไว้แล้ว)
-- ใส่การ์ด: แตะช่อง → เปิดตัวเลือกการ์ด (ค้นหา/กรอง ใช้ของเดิมจาก pool ขั้น 8) · ลบ: ปุ่ม × บนช่อง · สลับช่อง: ลากหรือแตะวางเหมือนขั้น 8 · การ์ดซ้ำใน deck เดียวกันไม่ได้
-- กดการ์ดใน deck → Details → Back กลับมาที่ deck เดิมในสภาพเดิม
-- บันทึกอัตโนมัติ `cbi:decks` · แชร์ลิงก์ `#deck/s/<data>` + บันทึกรูป deck (ใช้ `share.js`)
-- ขั้นนี้ทำวงคะแนนให้แสดง "—" ไปก่อน ขั้น 11 จะใส่สูตร
-```jsonc
-// cbi:decks
-[{ "id": "dk_x1", "name": "Tower push", "mode": "tower", "rarity": "Cosmic",
-   "cards": ["bald-cadet", null, null, null, null], "support": ["heal-orb", null, null, null, null],
-   "created": "...", "updated": "..." }]
-```
-
-### 10.6 ไฟล์ที่ต้องอัปขึ้น GitHub (ขั้น 10)
-| ไฟล์ | โฟลเดอร์บน GitHub |
-|---|---|
-| `index.html`, `PROGRESS.md` | หน้าแรกของ repo (root) |
-| `deck.css` (แก้) · ไฟล์ CSS อื่นไม่ได้เปลี่ยนเนื้อหา แต่ใน `index.html` เลขเวอร์ชันเปลี่ยนเป็น `?v=10` ทุกบรรทัด | `css/` |
-| `deck.js` (เขียนใหม่), `app.js`, `share.js` | `js/` |
-- ไม่แตะ: `js/cards.js`, `js/tier.js`, `js/tiermaker.js`, `js/support.js`, `js/grade.js`, `js/fx.js`, `js/music.js`, `css/` ไฟล์อื่น, `data/`, `images/`, `mockup/`
-- ใน zip มีโครงโฟลเดอร์ตรงกับ repo อยู่แล้ว (แตก zip แล้วลากทับของเดิม)
-
-### 10.5 ขั้น 11: คะแนนทีม (สูตรในเบราว์เซอร์ ไม่ใช้ AI) · ✅ ทำแล้ว (2026-10-24)
+## 10.5 สูตรคะแนนทีม (ใช้อยู่ · `js/teamscore.js` · ผลทดสอบ/ผลวัด: HISTORY §10.5)
 - **โค้ด:** สูตรอยู่ใน `js/teamscore.js` (ไม่มี DOM, ค่าปรับอยู่ใน `K` ต้นไฟล์) · หน้าตาอยู่ใน `js/deck.js` + `css/deck.css` · น้ำหนัก/บทบาทของแต่ละโหมดอยู่ใน `data/meta.json → modes` (**แก้ที่ไฟล์นี้ได้เลย ไม่ต้องแก้โค้ด**)
 - **คะแนน 1–100 + สี** (token `--score-*`): 1–49 แดง "Needs work" · 50–79 เหลือง "Decent" · 80–99 เขียว "Strong" · **100 รุ้ง "Perfect"** = ได้เต็มทุกส่วนจริงเท่านั้น · นอกนั้น**ปัดลง**และสูงสุด 99 · deck ไม่มีการ์ดเลย = "—"
 
@@ -530,376 +369,11 @@ const RARITY_MULTIPLIERS = {
 - **ข้อดี/ข้อเสีย** (สร้างจากข้อมูล): **Strong vs** = tag ที่การ์ดในทีม ≥ 2 ใบชนะการ์ดที่มี tag นั้น (×จำนวนใบ) + การ์ดที่ ≥ 2 ใบชนะ (แตะเปิดรายละเอียด) + Meta Deck ที่ทีมชนะการ์ดในนั้น ≥ 2 ใบ · **Weak vs** = tag ที่ ≥ 3 ใบแพ้ทาง + การ์ด Meta (GOD/SS) ที่ไม่มีใครในทีมชนะ (แสดง 4 ใบ + "+N more") · **Fits modes** = คะแนนของ deck นี้ในทุกโหมดที่เปิด เรียงมากไปน้อย แตะ = เปลี่ยนโหมด
 - **Fill the gaps:** ลองการ์ดทุกใบที่ยังไม่อยู่ใน deck ในทุกช่องว่าง (เลือกช่องที่ได้คะแนนสูงสุด) แสดง 3 ใบที่เพิ่มคะแนนมากที่สุด + "+N" (เพิ่มไม่ถึง 1 = "+<1") · support ก็ทำแบบเดียวกัน (ใส่ซ้ำได้) · แตะ = ใส่ช่องนั้น + toast Undo · ไม่มีใบไหนเพิ่มคะแนน = บอกตรงๆ
 - **เทียบ 2 ทีม:** ปุ่ม Compare (หน้ารวม, ใต้ analysis, เมนู ⋯) → กล่องเลือก Deck A / Deck B → คะแนน + 5 ส่วน (▲ ▼ ส่วนที่นำ/ตาม) + Strong/Weak vs + Fits modes · มือถือเรียงบนล่าง · จอ ≥ 720px ซ้ายขวา · มีข้อความสรุปว่าใครนำกี่คะแนน
-- **ทดสอบ** (Chromium · การ์ดทดสอบ 26 ใบ + support 8 ใบที่มีครบทุก field ใหม่ · ข้อมูลทดสอบไม่ได้อยู่ใน repo): 51 รายการผ่านทั้งหมด — คะแนนบนวงตรงกับสูตร · 5 ส่วน · Fill the gaps 3+3 · แตะแล้วใส่ช่องถูก + คะแนนขึ้น + Undo กลับ · เปลี่ยนโหมดจาก Fits modes · × แล้วคะแนนลด · ระดับการ์ดไม่เปลี่ยนคะแนน · ชิปเปิดรายละเอียด → Back กลับที่เดิม scroll เดิม · 100 = วงรุ้งหมุน + ประกายแล้วหาย · คำเตือน unranked/ไม่มีในคลัง · Compare บนล่าง (390) / ซ้ายขวา (1280) + เปลี่ยน deck · หน้าแชร์มีคะแนน (ไม่มี Fill the gaps) · ไม่มี scroll แนวนอนที่ 320/390 · ปุ่มใน analysis ≥ 40px · reduced motion · localStorage ถูกบล็อก · คลังว่าง (ข้อมูลจริงตอนนี้) ไม่พัง + ป้าย Not enough data · XSS ในชื่อ deck · หน้าอื่นไม่มี error · ทุกไฟล์ `?v=11` · ทดสอบสูตรใน Node: deck สมบูรณ์ = 100, สลับช่อง 1-2 = 98, น้ำหนักเสียใน meta.json ไม่พัง
-- **ความเร็ว (§11.3 · CPU ×6, 390px DPR 2.75, นิ้วเลื่อน 3 วิ, มัธยฐาน 3 รอบ):** หน้า editor + analysis Normal **60.2 fps** · Ascended **60.3 fps** · แตะ Fill the gaps → commit + วาดคะแนนใหม่ ~43ms · คำนวณ Fill the gaps (26 การ์ด + 8 support) 16–38ms ทำหลังวาด ไม่ขวางการแตะ (คลัง 300 ใบประมาณ 10 เท่า ยังไม่ถึงครึ่งวินาทีบนเครื่องช้า 6 เท่า)
 
-### 10.7 ไฟล์ที่ต้องอัปขึ้น GitHub (ขั้น 11)
-| ไฟล์ | โฟลเดอร์บน GitHub |
-|---|---|
-| `index.html`, `PROGRESS.md` | หน้าแรกของ repo (root) |
-| `meta.json` (เพิ่ม `modes`) | `data/` |
-| `tokens.css`, `deck.css` | `css/` |
-| `deck.js`, **`teamscore.js` (ใหม่)** | `js/` |
-- ไฟล์ CSS/JS อื่นเนื้อหาไม่เปลี่ยน (แค่เลข `?v=11` ใน `index.html`) **ไม่ต้องอัป** · ไม่แตะ `data/cards.json`, `support.json`, `teams.json`, `images/`, `mockup/`
-- ใน zip มีโครงโฟลเดอร์ตรงกับ repo (แตก zip แล้วลากทับของเดิม)
-
-## 11. ขั้น 9.5: ทำให้ลื่นบนเครื่องสเปกต่ำ (เจ้าของสั่ง 2026-10-23)
-เป้าหมาย: มือถือ/คอมสเปกต่ำ (RAM 4GB) ต้องลื่น **โดยไม่ลดคุณภาพภาพและอนิเมชั่น** และระบบเดิมทุกอย่างต้องทำงานเหมือนเดิม
-
-### 11.1 ผลวัดก่อนแก้ (หลังขั้น 9, CPU ช้าลง 6 เท่า, จอ 390px DPR 2.75)
-| สถานการณ์ | fps | CPU หลัก |
-|---|---:|---|
-| หน้า My Lists (ยังไม่มีการ์ด) | 44–50 | ใช้เต็ม ~100% |
-| การ์ดทดสอบ 60 ใบ ระดับ Normal | 34 | ~100% |
-| การ์ดทดสอบ 60 ใบ ระดับ Ascended | **8–10** | ~100% |
-| ทดลองปิดพื้นหลังดาว (หน้าว่าง) | 60 | ~7% |
-
-**สาเหตุ:** (1) `FX.starfield` วาด canvas ใหม่ทั้งจอทุกเฟรมด้วย CPU (วาดดาวทีละดวง ~110 ดวง + สร้าง string สีทุกครั้ง) และวาดซ้ำทุกครั้งที่ scroll (2) การ์ดถูกสร้าง 3 ชุดแม้หน้านั้นไม่ได้เปิด (`#card-grid`, `#grade-grid`, pool ของ Tier Maker) การ์ด 60 ใบจึงเป็น 180 ใบ และมีอนิเมชั่นที่วนไม่หยุด 361 ตัว (aura หมุน, อนุภาค) (3) `.glass` ใช้ `backdrop-filter: blur` ~45 จุด อยู่บนพื้นหลังที่ขยับตลอด จึงต้องเบลอใหม่ทุกเฟรม
-
-### 11.2 สิ่งที่ต้องทำ
-1. **พื้นหลังดาว:** วาดดาวครั้งเดียวต่อชั้นลงภาพ/canvas ที่ทำไว้ก่อน (3 ชั้น) แล้วเลื่อนด้วย CSS `transform` (ให้ GPU ทำ ไม่ใช้ rAF วนตลอด) · parallax ตอน scroll ใช้ transform ของชั้น ไม่วาดใหม่ · กระพริบด้วย opacity ของกลุ่มดาว · หน้าตาต้องเหมือนเดิม (จำนวนดาว สี ความเร็ว)
-2. **การ์ดในหน้าที่ไม่ได้เปิด:** สร้างเมื่อเข้าหน้านั้นครั้งแรก (lazy) และหน้าที่ซ่อนต้องเป็น `display:none` (หรือ `content-visibility:hidden`) · pool ของ Tier Maker สร้างเมื่อเปิด list
-3. **aura เล่นเฉพาะการ์ดบนจอ:** ใช้ IntersectionObserver ใส่/ถอดคลาส เช่น `.is-live` · การ์ดนอกจอหยุดอนิเมชั่น (`animation-play-state: paused` หรือไม่มีคลาส) · การ์ดบนจอต้องสวยเท่าเดิมทุกระดับ · keyframes ใช้แค่ `transform`/`opacity` (ตรวจ `fx-spin`, `fx-float`, `fx-halo`, `fx-pulse`, `fx-sweep`, `fx-twinkle` ว่าไม่ได้แก้ box-shadow/background/top ทุกเฟรม ถ้าแก้ ให้เปลี่ยนเป็น transform/opacity ที่ได้ภาพเดิม)
-4. **Blur (เจ้าของเลือก):** เก็บ `backdrop-filter` ไว้**เฉพาะหัวเว็บ (`.topbar`) กับเมนูล่าง** · กล่องอื่นทั้งหมดใช้สีโปร่งแสงทึบขึ้นแทน (ให้หน้าตาใกล้เดิมที่สุด เทียบด้วยการแคปหน้าจอ)
-5. **รูปการ์ด:** `loading="lazy"` + `decoding="async"` · ใส่ `width`/`height` กันหน้ากระโดด · เตรียมรองรับรูปเล็ก `images/cards/thumb/<id>.webp` (300×420) สำหรับการ์ด mini / pool / deck ถ้าไม่มีไฟล์ให้ใช้รูปใหญ่แทน และ**แก้งานประจำ A (§7)** ให้สร้างรูปเล็กด้วยทุกครั้ง
-6. **Lite mode อัตโนมัติอย่างเดียว (เจ้าของเลือก ไม่มีปุ่ม):** เปิดเมื่อ `navigator.deviceMemory ≤ 4` หรือ `hardwareConcurrency ≤ 4` หรือวัด fps ช่วง 2 วินาทีแรกได้ < 45 · ใส่ `html.lite` แล้ว**ลดแค่** จำนวนดาว (ครึ่งหนึ่ง) และอนุภาคลอยของ Ascended (เหลือครึ่ง) · อนิเมชั่นตอนกด/ลาก/เปิดการ์ด/คะแนน **ต้องเหมือนเดิมทุกอย่าง**
-7. **ระหว่างลากการ์ด (Tier Maker):** ตรวจว่าตัวที่ลากใช้แค่ transform และไม่ทำให้คำนวณ layout ทั้งหน้าทุกครั้งที่ขยับนิ้ว
-8. ห้ามเปลี่ยนการทำงานของระบบเดิม (route, localStorage keys, share link, backup, grade) · ถ้าต้องแก้ของกลาง ให้อัปเดต §3.3
-
-### 11.3 วิธีวัด (ใช้ตรวจทั้งก่อนและหลังแก้ และใช้ใน §4.1 ต่อไป)
+## 11.3 วิธีวัดความเร็ว (ใช้ใน §4.1 · ผลวัดทุกรอบ: HISTORY §11 §12.7 §14.3)
 - Playwright + Chromium: viewport 390×844, `device_scale_factor` 2.75, `is_mobile`, CDP `Emulation.setCPUThrottlingRate` = 6
 - วัด 3 วินาที ระหว่างเลื่อนหน้าจอ: นับเฟรมด้วย rAF (fps + เฟรมที่ช้าที่สุด) และดู `TaskDuration` จาก `Performance.getMetrics`
 - กรณีทดสอบ: `#tier`, `#tier/my` (มี list), `#cards`, `#support`, `#grade`, หน้ารายละเอียดการ์ด · ข้อมูลว่าง และการ์ดทดสอบ 60 ใบ (ดักโหลด `data/cards.json`) ที่ระดับ Normal และ Ascended
-- **เกณฑ์ผ่าน:** ≥ 55 fps ทุกกรณี และเฟรมช้าสุด ≤ 50ms · แคปหน้าจอก่อน/หลังเทียบทุกหน้า หน้าตาต้องเหมือนเดิม · เขียนตารางผลหลังแก้ต่อจาก §11.1
+- **เกณฑ์ผ่าน:** ≥ 55 fps ทุกกรณี และเฟรมช้าสุด ≤ 50ms · แคปหน้าจอก่อน/หลังเทียบทุกหน้า หน้าตาต้องเหมือนเดิม · เขียนตารางผลลง HISTORY §9 (ไม่ใช่ที่นี่)
 - **วิธีวัดที่ใช้จริงในขั้น 9.5 (ใช้แบบนี้ต่อไป ตัวเลขจะเทียบกันได้):** เลื่อนหน้าด้วยนิ้วจำลอง CDP `Input.synthesizeScrollGesture` (`gestureSourceType: "touch"`, `yDistance` ±700, `speed` 900) วนลง-ขึ้นตลอด 3 วิ (เหมือนนิ้วจริง: compositor เลื่อน ไม่ใช่ `scrollTo` ทุกเฟรม) · โหลดหน้า รอ 3.6 วิ แล้วค่อยตั้ง CPU ×6 อีก 2.5 วิก่อนวัด · โหมดปกติ: บังคับ `navigator.hardwareConcurrency = 8`, `deviceMemory = 8` และปิด `FX.probe` (เครื่องทดสอบมี 2 core) · โหมด lite: `deviceMemory = 4` · วัด 3 รอบ ใช้ค่ามัธยฐาน (เครื่องทดสอบแกว่ง ±5 fps) · list ทดสอบใน `cbi:tierlists` มี 6 แถว 30 ใบ · เครื่องทดสอบ (คลาวด์) **ไม่มี GPU**: งานวาดภาพทั้งหมดของ compositor ไปตกที่ CPU ตัวเลขจึงโหดกว่ามือถือจริง
-
-### 11.4 ผลหลังแก้ (ขั้น 9.5 · 2026-10-24 · วิธีวัดเดียวกันทั้ง "ก่อน" และ "หลัง" · fps มัธยฐาน)
-| หน้า | ข้อมูล | ก่อน | หลัง (ปกติ) | หลัง (lite) |
-|---|---|---:|---:|---:|
-| Tier List | ว่าง / Normal / Ascended | 47 / 39 / **9** | 60 / 54 / **45** | — / 59 / **50** |
-| My Lists (เปิด list) | ว่าง / Normal / Ascended | 33 / 33 / **7** | 56 / 52 / **26** | — / 59 / **29** |
-| Cards | ว่าง / Normal / Ascended | 46 / 41 / **11** | 59 / 57 / **55** | — / 59 / **52** |
-| Support | ว่าง / Normal / Ascended | 46 / 41 / 45 | 60 / 59 / 58 | — / 59 / 59 |
-| Grade | ว่าง / Normal / Ascended | 48 / 27 / **7** | 59 / 56 / **40** | — / 56 / **44** |
-| รายละเอียดการ์ด | ว่าง / Normal / Ascended | 46 / 42 / **7** | 59 / 60 / **58** | — / 60 / **60** |
-| ลากการ์ดด้วยนิ้ว (Tier Maker) | Normal / Ascended | 17 / 5 | 28 / 13 | — |
-
-- CPU หลักตอนเลื่อน: ก่อน 74–98% → หลัง 27–41% (Normal) / 37–73% (Ascended) · การ์ดในหน้า: 186 ใบทุกหน้า → เฉพาะหน้าที่เปิด (56–90) · DOM 8,696 → 3,587 node · อนิเมชั่นที่วิ่งอยู่ (Ascended หน้า Cards): 360 → 30
-- `elementFromPoint` (ใช้ตอนลากใน Tier Maker): 0.15 → 0.07 ms
-- **ผ่าน 55 fps:** ทุกหน้าตอนว่าง · การ์ด Normal ทุกหน้าในโหมด lite และเกือบทุกหน้าในโหมดปกติ (Tier 54, My Lists 52 = ในช่วงแกว่งของเครื่อง บางรอบได้ 58) · Ascended หน้า Cards / Support / รายละเอียด
-- **ยังไม่ผ่าน:** Ascended ที่มีการ์ดเล็กเต็มจอ (Tier 45, Grade 40, My Lists 26) · สาเหตุ: การ์ด Ascended 1 ใบบนจอ = อนิเมชั่นวน 6 ตัว (กรอบ 1 + อนุภาค 5) ทุกเฟรมที่หน้าเว็บทำงาน (เช่นตอน scroll) Chrome ต้องอัปเดตทุกตัว · My Lists มีการ์ดบนจอ ~21 ใบ = 126 ตัว · ลดได้อีกก็ต่อเมื่อลดเอฟเฟกต์ ซึ่งผิดกฎ "ภาพเหมือนเดิม" จึงรอเจ้าของตัดสิน (§11.5 ข้อ 3)
-- **หน้าตา:** แคปทุกหน้า (Normal / Ascended) ก่อน-หลังเทียบกันแล้ว เหมือนเดิม ยกเว้นดาวกระพริบ (§11.5 ข้อ 1) · กล่อง glass ที่ไม่มี blur แล้วมองแทบไม่ออก
-- **ทดสอบระบบเดิม 34 รายการ ผ่านทั้งหมด:** แท็บ lazy, ลิงก์ตรง `#card/…` `#support/…` `#grade/…/1-2-3-4` `#deck` `#cards`, Back กลับที่เดิม, เปลี่ยนระดับข้ามหน้า, Tier Maker (ลากด้วยเมาส์ + กดค้างด้วยนิ้ว, undo, บันทึก `cbi:tierlists`), ลิงก์แชร์, lite mode, reduced motion, localStorage ถูกบล็อก, ไม่มีเลื่อนข้างที่ 320 / 390 / 1280px, รูป thumb → รูปใหญ่ → รูปวาด, ไม่มี rAF วนตอนว่าง, ไม่มี error ใน console
-
-### 11.5 เรื่องที่เจ้าของต้องตอบ (จากขั้น 9.5)
-1. **ดาวกระพริบ:** เดิมกระพริบทีละดวงสุ่ม ตอนนี้ **กระพริบทั้งชั้นพร้อมกัน** (3 ชั้น จังหวะห่างกัน 1/3 รอบ ภาพรวมไม่มืดลงพร้อมกัน) เพราะแยกกลุ่มดาวเพิ่ม 1 กลุ่ม = เพิ่มงานวาดเกือบเท่า 1 จอต่อเฟรม (ลองแบบ 3 กลุ่มต่อชั้นแล้ว ช้ากว่า ~2 เท่าในส่วนดาว) · ถ้าอยากได้แบบเดิมมากกว่า แก้ใน `FX.starfield` (js/fx.js) ให้แต่ละชั้นแยก 2–3 กลุ่ม
-2. **บั๊กเดิมที่เจอ (ยังไม่ได้แก้ เพราะกฎห้ามเปลี่ยนหน้าตา):** กรอบ "หมุน" ของ Rainbow / Cosmic / Ascended **ไม่ได้หมุนจริง** เพราะ `@keyframes fx-spin { to { transform: rotate(360deg) } }` เจอกับค่าเริ่ม `translate(-50%,-50%) rotate(0deg)` แล้ว Chrome ตีความเป็นเลื่อนเฉียงจากมุมเข้าหากลาง แล้วกระโดดกลับทุกรอบ · ถ้าจะให้หมุนจริง: เปลี่ยน keyframe เป็น `to { transform: translate(-50%, -50%) rotate(360deg) }` (`frameSpec` ใน share.js ไม่ต้องแก้ เพราะรูปที่บันทึกเป็นภาพนิ่ง) · ป้ายเกรด 10 (`.gorb`) ใช้ `fx-spin` เหมือนกัน ตรวจด้วย
-3. **Ascended เต็มจอยังไม่ถึง 55 fps** (§11.4): เลือก (ก) ยอมรับตามนี้ (มือถือจริงมี GPU น่าจะดีกว่าตัวเลขนี้ และเครื่อง RAM 4GB เปิด lite อยู่แล้ว) (ข) ใช้อนุภาค 3 จาก 5 ทุกเครื่อง (ค) ไม่แสดงอนุภาคบนการ์ดเล็ก (แถว tier, pool, ตัวเลือกเกรด) ที่อนุภาคลอยออกนอกการ์ดอยู่แล้ว · Claude แนะนำ (ค)
-
-**ปิดแล้วในขั้น 9.6b (2026-10-24):** ข้อ 1 ไม่มีดาวแบบเดิมแล้ว (พื้นหลังใหม่ใช้หลักเดียวกัน) · ข้อ 2 แก้แล้ว กรอบหมุนจริง (`fx-spin` มี translate) และเหรียญเกรด 10 ปรับให้ใช้ได้ · ข้อ 3 เจ้าของเลือก (ค) การ์ดเล็กไม่มีละอองลอย
-
-## 12. ขั้น 9.6: หน้าตาใหม่แนว "Silver Palace" + เพลง (เจ้าของสั่ง 2026-10-24)
-เจ้าของอยากได้ UI แนวเกม PC **Silver Palace** (RPG สืบสวนโลกเปิด เมืองยุควิกตอเรียน "Silvernia" บรรยากาศเทพนิยาย) เอนไปทาง Silver Palace มากกว่า Honkai: Star Rail · เจ้าของให้ Claude เลือกรายละเอียดเอง · ผังหน้าจอยืมความเรียบและใช้ง่ายแบบ Star Rail (บนคอมมีเมนูด้านข้าง)
-
-### 12.1 กฎ
-- **ห้ามใช้ของจริงจากเกม** (รูป ไอคอน โลโก้ ฟอนต์เฉพาะของเกม ภาพหน้าจอ เพลงประกอบเกม) — ติดลิขสิทธิ์ · วาดใหม่ทั้งหมดเป็น SVG/CSS ในสไตล์เดียวกัน · ชื่อเว็บยังเป็น Card Battle Infinity
-- ระบบเดิมห้ามเปลี่ยน: route, localStorage keys, ลิงก์แชร์, ไฟล์สำรอง, เกรด, Tier Maker · เปลี่ยนแค่หน้าตา (CSS, markup, ไอคอน, พื้นหลัง, กรอบการ์ด) + เพิ่มเพลง
-- ต้องผ่าน §4.1 ทุกข้อ รวม**กฎความเร็วจากขั้น 9.5** (ชั้นเต็มจอที่ขยับตลอดไม่เกิน 3, ไม่มี rAF วน, aura ผูก `.is-live`, การ์ดพักเป็น 2D, blur เฉพาะหัวเว็บ + เมนู) · วัดซ้ำแบบ §11.3 ต้องไม่ช้ากว่าตาราง §11.4
-- mobile-first เหมือนเดิม (เจ้าของใช้มือถือเป็นหลัก) แต่จอคอมต้องดูเป็น "เกม PC" จริงจัง
-
-### 12.2 ทิศทางออกแบบ (ธีมใหม่ชื่อ "Gilded Nocturne")
-| ส่วน | แบบใหม่ |
-|---|---|
-| อารมณ์ | เมืองวิกตอเรียนยามค่ำ แสงตะเกียงแก๊ส นักสืบ + เทพนิยาย · หรู แต่ยังอ่านง่าย |
-| สีพื้น | น้ำเงินหมึกเข้ม (ประมาณ `#0b1020` / `#131a2e`) ไล่สีม่วงไวน์จางๆ |
-| สีเส้น/เน้น | ทองเก่า (ประมาณ `#d8b46a`) เส้นบาง 1px · เงิน (`#c9cfdb`) · แดงไวน์ (`#8e2a3a`) สำหรับปุ่มอันตราย/จุดอ่อน |
-| ตัวหนังสือ | สีงาช้าง (`#efe6d2`) · รอง `#b3a88f` |
-| ฟอนต์ (Google Fonts ฟรี) | หัวข้อ/ตัวเลข: **Cinzel** (หรือ Cormorant SC) · เนื้อหา: **Inter** เหมือนเดิม (อ่านง่ายบนมือถือ) |
-| กล่อง/แผง | พื้นทึบเกือบเต็ม + เส้นทองบาง + **ลายมุมแบบวิกตอเรียน** (SVG เล็กที่มุม) · มุมตัดเฉียงเล็กน้อยด้วย `clip-path` กับกล่องที่ไม่ขยับ |
-| ปุ่ม | แผ่นทองเหลือง/ป้ายโลหะ ขอบทอง · กด = ย่อ 0.96 + แสงทองวงสั้น (ใช้ของกลางเดิม เปลี่ยนแค่สี) |
-| เมนู | มือถือ: แถบล่าง 5 ปุ่มแบบแผ่นทองเหลือง ไอคอนวาดใหม่ (Tier = มงกุฎ/ถ้วย · Cards = พัดไพ่ · Support = ขวดยา · Deck = กระเป๋า/หนังสือ · Grade = แว่นขยาย) · **คอม ≥ 1100px: เมนูแนวตั้งด้านซ้ายแบบเกม PC** มีชื่อเว็บ/ตราด้านบน ชี้แล้วมีแถบทองเลื่อนตาม |
-| พื้นหลัง | **แทนดาวอวกาศ** ด้วย ท้องฟ้ายามค่ำ + เงาตึกวิกตอเรียน (หอนาฬิกา หลังคาแหลม วาดเป็น SVG เอง) + หมอกเลื่อนช้า + ละอองแสงตะเกียงลอยขึ้นช้าๆ · ใช้เทคนิคเดียวกับ `FX.starfield` (วาดครั้งเดียว ขยับด้วย CSS, parallax ด้วย paused animation) · ไม่เกิน 3 ชั้นที่ขยับ |
-| กรอบการ์ด | **กรอบรูปทองประดับ** มีลายที่มุม · แต่ละระดับยังจำได้ทันที: Normal = เงินเรียบ · Shiny = ทอง + แสงวิ่ง · Rainbow = กรอบรุ้งหมุน · Secret = ดำ-แดงไวน์ เรืองแดง · Divine = ขาว-ทอง วงแสง · Cosmic = ม่วงน้ำเงิน ลายดาว · Ascended = เปลี่ยนสีได้ (prismatic) + ละอองแสง |
-| การเปลี่ยนหน้า | เลื่อน+จางเข้าแบบเดิม เพิ่มเส้นทองกวาดผ่านหัวข้อ 1 ครั้ง (transform/opacity) |
-| หน้าโหลด | ตราวงกลม + นาฬิกาพกหมุน + "Loading…" |
-| ป้ายเกรด | เหรียญตรา (bronze / silver / gold / rainbow เดิม) แต่ดีไซน์เป็นเหรียญวิกตอเรียน |
-
-### 12.3 ขั้น 9.6a: mockup (แชทแยก)
-1. ทำ**ไฟล์ HTML ไฟล์เดียว** (ไม่แตะเว็บจริง) ชื่อ `mockup/gilded-nocturne.html` ใช้การ์ดทดสอบในไฟล์ แสดง: หัวเว็บ + เมนู (มือถือและคอม), หน้า Tier List (แถว SS–D), การ์ด 7 ระดับเรียงกัน, หน้ารายละเอียดการ์ด 1 หน้า, ปุ่ม/ชิป/กล่องถาม 1 อัน, ปุ่มเพลง
-2. ใส่ token สีและฟอนต์ไว้ใน `:root` ของไฟล์ ให้ย้ายไป `css/tokens.css` ได้ตรงๆ ในขั้น 9.6b
-3. ส่งให้เจ้าของดูทั้งไฟล์และภาพหน้าจอ (มือถือ 390px + คอม 1440px) · ถามว่าชอบไหม แก้อะไร
-4. บันทึกสิ่งที่เจ้าของเลือก/สั่งแก้ลง §12.2 แล้วแก้ "▶️ ขั้นถัดไป" เป็น 9.6b · อัป `mockup/` ขึ้น GitHub ด้วยก็ได้ (ไม่กระทบเว็บจริง เปิดดูได้ที่ `.../Card_Ascension/mockup/gilded-nocturne.html`)
-
-### 12.4 ขั้น 9.6b: เปลี่ยนทั้งเว็บ (แชทแยก หลังเจ้าของอนุมัติ mockup)
-- แก้ไฟล์กลางก่อน: `css/tokens.css` (token ใหม่ทั้งหมด), `css/base.css`, `css/fx.css` (กรอบการ์ด/aura ใหม่), ไอคอน SVG ใน `index.html`, `js/fx.js` (พื้นหลังใหม่แทน `FX.starfield` — ชื่อใหม่ `FX.backdrop`) แล้วไล่แก้ CSS รายหน้า (cards, tier, deck, support, grade, tiermaker) + กล่องถาม + toast
-- `js/share.js` → `frameSpec` (สีกรอบในรูปที่บันทึก) ต้องตรงกับกรอบใหม่ · ลายน้ำ/สีรูปที่บันทึกปรับตามธีม
-- อัปเดต `images/og.png` (รูปตอนแชร์ลิงก์) และ `images/icon-192.png` ให้เข้าธีม (วาดใหม่ด้วย Python/SVG)
-- **ปิด 3 ข้อค้างจาก §11.5:** (1) ไม่มีดาวแล้ว → ละอองแสง/หมอกใช้หลักเดียวกัน (2) กรอบที่ "หมุน" ต้องหมุนจริง: keyframe ต้องมี `translate(-50%,-50%) rotate(360deg)` ให้ฟังก์ชันตรงกับค่าเริ่ม (3) อนุภาคลอยของ Ascended: แสดงเต็มบนการ์ดใหญ่ (หน้า Cards, รายละเอียด, Grader) · **การ์ดเล็ก (mini) ไม่มีอนุภาค** ใช้แค่กรอบเปลี่ยนสี (Claude แนะนำ — ถามเจ้าของยืนยันก่อนทำ)
-- ใส่**เลขเวอร์ชันท้ายไฟล์** CSS/JS ใน `index.html` (เช่น `js/app.js?v=9.6`) ถ้าเจ้าของตกลง (เคยเกิดปัญหามือถือใช้ `fx.js` เก่าคู่กับ `index.html` ใหม่ → ค้าง "Loading…" 2026-10-24) · ถ้าใส่ ต้องเพิ่มเลขทุกขั้นที่แก้ไฟล์นั้น
-- แคปหน้าจอทุกหน้า (มือถือ + คอม, Normal + Ascended) ส่งให้เจ้าของดู · วัดความเร็วแบบ §11.3 · ทดสอบระบบเดิมแบบ §11.4
-
-### 12.5 เพลงพื้นหลัง (ทำใน 9.6b)
-- **ไฟล์เพลง:** `audio/bgm.mp3` (สร้างโฟลเดอร์ `audio/`) · ห้ามใช้เพลงจากเกม Silver Palace หรือเกมอื่น · **เจ้าของเป็นคนหาและอัปเอง** (เครื่องของ Claude ดาวน์โหลดจากเว็บเพลงไม่ได้) จากเว็บเพลงฟรีที่ใช้ได้โดยไม่ต้องให้เครดิต เช่น **Pixabay Music** (pixabay.com/music) คำค้น: `victorian waltz`, `music box mystery`, `detective classical`, `fantasy harpsichord` · ขนาดไม่เกิน ~3MB (mp3 128kbps) เลือกเพลงที่วนกลับต้นได้เนียน · ถ้าเพลงต้องให้เครดิต ให้ใส่ชื่อเพลง/ผู้แต่งในส่วนท้ายเว็บ
-- **การทำงาน:** ปุ่มเพลง ♪ ที่หัวเว็บ (มือถือ) / เมนูซ้าย (คอม) · **เริ่มแบบปิด** (เบราว์เซอร์ห้ามเล่นเสียงเองก่อนผู้ใช้แตะ และคนเปิดในที่สาธารณะจะตกใจ) · กดเปิด = ค่อยๆ ดังขึ้น 0.6 วิ, กดปิด = ค่อยๆ เบาลง · จำค่าไว้ `cbi:music` (on/off) และ `cbi:musicVol` (ค่าเริ่ม 0.35) · ถ้าครั้งก่อนเปิดไว้ ให้เริ่มเล่นหลังการแตะครั้งแรกของหน้า (กฎเบราว์เซอร์) · หยุดเมื่อสลับแท็บ/ล็อกจอ แล้วเล่นต่อเมื่อกลับมา · `preload="none"` (ไม่โหลดเพลงจนกว่าจะกดเปิด ประหยัดเน็ตและ RAM) · ถ้าไม่มีไฟล์เพลง ซ่อนปุ่ม · ปุ่มมีอนิเมชั่นคลื่นเสียงเล็กๆ ตอนเล่น (transform เท่านั้น, ผูกกับตอนเล่นเท่านั้น)
-- เสียงเอฟเฟกต์ตอนกดปุ่ม: **ยังไม่ทำ** (ถามเจ้าของก่อนถ้าอยากได้)
-- **ทำแล้วในขั้น 9.6b** (`js/music.js`) ครบทุกข้อด้านบน · เว็บเช็กไฟล์ด้วยการส่ง HEAD ไปที่ `audio/bgm.mp3` 1 ครั้งตอนเปิดเว็บ (ไม่ดาวน์โหลดเพลง) ถ้าไม่เจอ ปุ่มซ่อน และ console มี 404 ของไฟล์นี้ 1 บรรทัด (ตั้งใจ หายเองเมื่ออัปเพลง) · ถ้าเพลงต้องให้เครดิต ยังไม่มีที่ใส่ บอก Claude ในแชทถัดไป
-
-### 12.6 ผลขั้น 9.6a (2026-10-24) · ไฟล์ `mockup/gilded-nocturne.html` (ไฟล์เดียว ~100KB ไม่แตะเว็บจริง)
-**มีอะไรในไฟล์:** หน้าโหลด (ตรา + นาฬิกาพกเข็มหมุน) · หัวเว็บมือถือ (ตรา, ชื่อ, วันที่, ปุ่มเพลง ♪) · เมนูล่าง 5 ปุ่มแบบแผ่นทองเหลือง (ไอคอนวาดใหม่: มงกุฎ / พัดไพ่ / ขวดยา / หนังสือ / แว่นขยาย) · **คอม ≥ 1100px = เมนูแนวตั้งซ้าย** (ตราใหญ่ + ชื่อ, แถบทองเลื่อนตาม, ปุ่ม Music + วันที่ด้านล่าง) · ครบ 5 แท็บ: Tier List (แถว SS–D + สวิตช์ + ปุ่มระดับ 7 ระดับที่เปลี่ยนกรอบได้จริง), Cards (การ์ดใบเดียวกันครบ 7 ระดับ + Style kit: ปุ่ม 4 แบบ, สวิตช์, toggle, ตรา tier, เหรียญเกรด, ปุ่มดูหน้าโหลดซ้ำ), Support (4 แถว), Deck (Meta deck 5 ช่อง + ป้าย Slot), Grade (หลอดเกรด 4 แถว + เหรียญ 1–10) · หน้ารายละเอียดการ์ด (การ์ดบินจากที่กด, ตัวเลขนับ, วง Overall, แถบคะแนน 6 ส่วน, Passive/Skill, จุดเด่น/จุดอ่อน, ชนะ/แพ้, กล่อง Grade) · กล่องถาม Delete + toast Undo · การ์ดทดสอบ 14 ใบ (ชื่อแต่งขึ้นเอง) อยู่ในไฟล์
-**สิ่งที่ Claude เลือกเอง (ตาม §12.2):** ตัว tier บนการ์ด = **ตราครั่ง (wax seal)** กลมสีตาม tier · ป้ายระดับ = ริบบิ้นมุมซ้ายบน · ชื่อการ์ด = ป้ายชื่อตรงกลางมีเส้นทองใต้ชื่อ · หัวข้อแต่ละหน้ามีคำเล็กด้านบน (The Gallery / The Archive / The Apothecary / The Casebook / The Appraiser) + เส้นลายกลาง · สี tier เปลี่ยนเป็นโทนอัญมณี (SS ชมพูทับทิม, S อำพัน, A ทอง, B หยก, C ไพลิน, D ดีบุก) · พื้นหลัง = ท้องฟ้า + ดาวจางๆ + พระจันทร์ + เมือง 2 ชั้น (โดมวัง, หอนาฬิกาหน้าปัดเรืองแสง, หน้าต่างไฟติด) + แสงตะเกียงที่พื้น + หมอก + ละอองไฟลอยขึ้น
-**สำหรับขั้น 9.6b (ย้ายของจาก mockup):**
-- `:root` ในไฟล์ = token ใหม่ทั้งชุด **ใช้แทน `css/tokens.css` ได้เลย** (ชื่อตัวแปรเดิมยังอยู่ครบ เช่น `--void --ink --rift --glass-under` · `--rift` = ทองแล้ว) · token ใหม่: `--gold --gold-hi --gold-lo --silver --wine --wine-hi --brass --brass-gold --brass-wine --lamp --haze --panel-fill --cut --chamfer --orn-tl/tr/bl/br --orn-s --side-w`
-- ลายมุมวิกตอเรียน = SVG ใน `mask` (สีมาจาก `background`) ใช้ที่ `.panel::after` และ `.card__orn` (ชั้นใหม่ 1 ชั้นใน `.card__frame` หลัง `.card__body` → **ต้องเพิ่มใน `renderCard` ของ app.js**) · กล่องนิ่ง `.panel` = เส้นทอง 1px + มุมตัดเฉียง (`clip-path: var(--chamfer)`) ห้ามใช้กับกล่องที่ขยับ/มีเงาสำคัญ
-- markup การ์ดอื่นๆ เหมือน `renderCard` เดิม · กรอบระดับใหม่ทั้งหมดอยู่ใน "9. Game card" ของ mockup → ย้ายไป `css/fx.css` · `frameSpec` ใน share.js ต้องแก้สีตาม
-- **แก้บั๊ก §11.5 ข้อ 2 แล้วใน mockup:** `@keyframes fx-spin { from { transform: translate(-50%,-50%) rotate(0) } to { transform: translate(-50%,-50%) rotate(360deg) } }` (กรอบรุ้ง/Cosmic/Ascended หมุนจริง) · ⚠️ ตัวหมุนอื่นที่ไม่ได้อยู่กลาง (`.fx-loader`) ใช้ keyframe ของตัวเอง ไม่ใช้ `fx-spin`
-- การ์ด mini ไม่มีอนุภาค (`.card--mini .card__particles { display:none }`) — ตามข้อเสนอ §11.5 ข้อ 3 (ค) รอเจ้าของยืนยันข้อ 1 ด้านล่าง
-- พื้นหลัง (`FX.backdrop` ใหม่): JS วาดเมือง SVG ครั้งเดียว (`skyline()`) · ชั้นที่ขยับตลอด = หมอก (`bd-fog`) + ละอองไฟ (`bd-motes`) = 2 ชั้น · เมืองขยับเฉพาะตอน scroll ด้วย paused animation · **`body` ต้องไม่มีสีพื้น** (ใช้ที่ `html`) ไม่งั้นพื้นหลัง z-index -1 ถูกบัง
-- เมนูคอมเป็นแถบซ้ายที่ ≥ 1100px (ไม่ใช่ 900px แบบเดิม) · 900–1099px ใช้เมนูล่าง · `main` และ `.detail` เลื่อนขวา `--side-w` (252px) · toast บนคอมอยู่กลางพื้นที่เนื้อหา
-- ปุ่มเพลงใน mockup ทำครบตาม §12.5 ยกเว้นไม่เก็บค่าในเครื่อง (ไม่แตะ `cbi:*` ของเว็บจริง) · ไม่มีไฟล์เพลง = ขึ้น toast (9.6b ให้ซ่อนปุ่มแทน ตาม §12.5)
-**ผลทดสอบ (Chromium):** จอ 390px + 1440px ทุกแท็บไม่มีเลื่อนข้าง · ไม่มี error ใน console (นอกจากฟอนต์ Google และ `audio/bgm.mp3` ที่ยังไม่มี ซึ่งเครื่องทดสอบโหลดไม่ได้อยู่แล้ว) · เปิด/ปิดรายละเอียดด้วยปุ่ม Back, Back ของเบราว์เซอร์, Esc · reduced motion · ความเร็วแบบ §11.3 (CPU ×6, 390px DPR 2.75, นิ้วเลื่อน, มัธยฐาน 3 รอบ): Tier Normal **58** fps · Tier Ascended **52** (เว็บจริง §11.4 = 45 แต่ mockup มีการ์ดแค่ 13 ใบ เทียบตรงๆ ไม่ได้ ต้องวัดซ้ำใน 9.6b) · Cards **58** · อนิเมชั่นที่วิ่งในหน้า Tier ระดับ Ascended = 14 ตัว
-**คำถามให้เจ้าของตอบก่อนทำ 9.6b:**
-1. การ์ดเล็ก (แถว tier, pool, deck, ตัวเลือกเกรด) **ไม่มีละอองลอย** ใช้แค่กรอบหมุน — โอเคไหม (Claude แนะนำ: โอเค) · คำตอบ: **โอเค**
-2. ชอบตัว tier บนการ์ดแบบ **ตราครั่งกลม** ไหม หรืออยากได้แบบป้ายสี่เหลี่ยมเดิม · คำตอบ: **ใช้ตราครั่งกลม**
-3. สี tier ใหม่โทนอัญมณี (เข้มขึ้นกว่าเดิม) โอเคไหม · คำตอบ: **ใช้สีโทนอัญมณี**
-4. พื้นหลัง: พระจันทร์ / เมือง / หมอก / ละอองไฟ — อยากเพิ่มหรือลดอะไร (เช่น ให้เมืองชัดขึ้น) · คำตอบ: **ใช้ตาม mockup**
-5. ใส่**เลขเวอร์ชันท้ายไฟล์** CSS/JS (`?v=9.6`) กันมือถือใช้ไฟล์เก่าค้าง "Loading…" (§12.4) ไหม (Claude แนะนำ: ใส่) · คำตอบ: **ใส่**
-
-### 12.7 ผลขั้น 9.6b (2026-10-24) · เปลี่ยนหน้าตาทั้งเว็บเป็น "Gilded Nocturne" + เพลง
-**คำตอบเจ้าของ §12.6:** 1 การ์ดเล็กไม่มีละอองลอย โอเค · 2 ตราครั่งกลม · 3 สี tier โทนอัญมณี · 4 พื้นหลังตาม mockup · 5 ใส่เลขเวอร์ชันท้ายไฟล์
-
-**ที่ทำ:**
-- **token ใหม่ทั้งชุด** ใน `css/tokens.css` (ย้ายจาก mockup + เก็บ token เดิมที่หน้าอื่นใช้: `--t-x-*`, `--g-rainbow-line`, `--def`, `--status` ปรับสีให้เข้าธีม + เพิ่ม `--on-gold`) · รายละเอียด §3.2
-- **โครงเว็บ** (`index.html`, `css/base.css`): SVG sprite ไอคอนวาดเอง 8 ตัว · พื้นหลังเมืองยามค่ำ `#backdrop` · หน้าโหลดตรา + นาฬิกาพก `#boot` · หัวเว็บใหม่ (ตรา, ชื่อ, วันที่, ปุ่มเพลง) · เมนูล่างแผ่นทองเหลือง / **เมนูซ้ายที่ ≥ 1100px** (900–1099px ยังเป็นเมนูล่าง) · หัวข้อหน้าแบบใหม่ (คำเล็ก + ชื่อทอง + เส้นลาย + เส้นทองกวาดผ่าน) · กล่องทอง (มุมตัด + ลายมุม) · ชิป/สวิตช์/ปุ่มเป็นแผ่นทองเหลือง · favicon ใหม่ · ฟอนต์ Cinzel แทน Chakra Petch
-- **การ์ด** (`css/fx.css`, `js/app.js`): กรอบรูปทอง 7 ระดับตาม mockup, ลายมุม `.card__orn`, ริบบิ้นระดับ, ตราครั่ง tier, ป้ายชื่อตรงกลาง · **กรอบรุ้ง/Cosmic/Ascended หมุนจริงแล้ว** (§11.5 ข้อ 2) · การ์ดเล็กไม่มีละอองลอย (§11.5 ข้อ 3) · รูปวาดแทน (ไม่มีรูปการ์ด) เป็นซุ้มประตูโค้ง
-- **รายหน้า:** Tier List (แถวเป็นกล่องทอง + ป้ายอัญมณี), Cards + รายละเอียด (กล่องทอง, ช่องค่า, แถบคะแนนทอง, จุดเด่น ✦ / จุดอ่อน ✕, ป้าย support ทองเหลือง), Support (การ์ด support กรอบทองเหลือง + ลายมุม `.scard__orn`, แถวรายการ), Deck (ป้าย Slot ทองเหลือง), Grade (**เหรียญเกรดแบบเหรียญวิกตอเรียน**, กล่องเกรดรวมเส้นสีตามเกรด), Tier Maker (ปุ่ม, แถว, pool, แถบคำสั่ง, กล่องถาม, สวิตช์, สีแถวเป็นตราครั่ง), toast, กล่องถาม
-- **รูปที่บันทึก** (`js/share.js`): `frameSpec` ตรงกับกรอบใหม่ · พื้นหลังกลางคืน + กรอบทอง + ลายมุม · การ์ดมีเส้นในกรอบ + ลายมุม · ป้ายแถวแบบอัญมณี · ป้ายระดับเป็นริบบิ้น · ฟอนต์ Cinzel
-- **`images/og.png` + `images/icon-192.png`** วาดใหม่ (ตรา + เมือง + ตราครั่ง SS–D)
-- **เพลง** `js/music.js` ตาม §12.5 (ไฟล์เพลงเจ้าของต้องอัปเอง)
-- **เลขเวอร์ชัน** `?v=9.6` ท้ายไฟล์ CSS/JS ทุกไฟล์ใน `index.html` (กฎใหม่ §2)
-- ไม่เปลี่ยน: route, localStorage keys เดิม (เพิ่มแค่ `cbi:music`, `cbi:musicVol`), ลิงก์แชร์, ไฟล์สำรอง, เกรด, Tier Maker, ข้อมูล `data/`
-
-**เจอระหว่างทำ (แก้แล้ว):** ทำเงาเมืองขยับด้วย CSS animation ที่ pause ตามแบบ mockup ไม่ได้อยู่บน fast path → เปลี่ยนเป็น Web Animation ที่ pause แบบเดียวกับดาวเดิม · `.gorb` เกรด 10 ใช้ `fx-spin` แบบไม่จัดกลาง → จัดกลางใหม่ · เมนูตอนเปิดรายละเอียด (คอม) ใช้ opacity ทั้งก้อนทำให้เมืองทะลุ → จางเฉพาะเนื้อหา
-
-**ความเร็ว (§11.3 · CPU ×6, 390px DPR 2.75, นิ้วเลื่อน 3 วิ, มัธยฐาน 3 รอบ · fps "ก่อน" = เว็บขั้น 9.5 วัดใหม่รอบเดียวกันบนเครื่องเดียวกัน):**
-| หน้า | Normal ก่อน → หลัง | Ascended ก่อน → หลัง | lite: Normal / Ascended หลัง |
-|---|---:|---:|---:|
-| Tier List | 55.5 → **58.4** | 51.9 → **56.6** | 58.3 / 57.9 |
-| My Lists (เปิด list) | 59.6 → **59.6** | 30.6 → **57.8** | 59.6 / 57.2 |
-| Cards | 59.3 → **58.7** | 57.6 → **57.0** | 58.6 / 57.8 |
-| Support | 59.9 → **59.6** | 59.6 → **59.9** | 59.6 / 59.6 |
-| Grade | 57.9 → **59.2** | 47.9 → **58.2** | 59.0 / 58.1 |
-| รายละเอียดการ์ด | 57.9 → **56.6** | 57.7 → **56.6** | 57.6 / 56.6 |
-| ลากการ์ดด้วยนิ้ว (Tier Maker) | 23.0 → 23.6 | 12.5 → **18.8** | — |
-- หน้าว่างทุกหน้า 59.6 fps · **ผ่าน 55 fps ทุกหน้าทั้ง Normal และ Ascended** (ยกเว้นการลาก ซึ่งเท่าเดิม/ดีขึ้น) · อนิเมชั่นที่วิ่งอยู่: Ascended หน้า Tier 60 → 11, My Lists 126 → 18 · CPU หลักตอนเลื่อน (ms ใน 3 วิ) ลดลงหรือเท่าเดิมทุกหน้า · ชั้นที่ขยับตลอด = หมอก + ละอองไฟ (2 ชั้น) · ไม่มี rAF วนตอนว่าง
 - **วิธีวัดเพิ่ม (ใช้ต่อไป):** ซ่อน `.fx-ring` ระหว่างวัด เพราะนิ้วจำลองเริ่มที่จุดเดิมกลางจอ ถ้าจุดนั้นตกบนปุ่ม (เช่นแถวชิป) วงแสงตอนกดจะทำให้ Chrome วาดใหม่ทุกเฟรมและตัวเลขต่ำผิดจริง (หน้าใหม่หัวข้อสูงขึ้น จุดนั้นเลยตกบนชิป) · วัดก่อน/หลังด้วยวิธีเดียวกันแล้ว
-- **ข้อสังเกต (ยังไม่แก้ รอเจ้าของ):** วงแสงตอนกดขึ้นแม้นิ้วแค่เริ่มเลื่อนหน้าบนปุ่ม (เป็นแบบนี้มาตั้งแต่ขั้น 1) · ถ้าอยากให้ลื่นขึ้นอีกนิด แก้ `FX.press` ให้รอจนรู้ว่าเป็นการกด (ไม่ใช่เลื่อน) ค่อยแสดงวง
-
-**ทดสอบระบบเดิม (Chromium · การ์ดทดสอบ 60 ใบ + support 8 ใบ + list 6 แถว 30 ใบ) 40 รายการ ผ่านทั้งหมด:** หน้าโหลดหาย / หายเมื่อโหลดข้อมูลพัง · พื้นหลังวาดแล้ว · ทุกไฟล์มี `?v=9.6` · วันที่ขึ้นทั้ง 2 ที่ · ปุ่มเพลงซ่อนเมื่อไม่มีไฟล์ / ขึ้นเมื่อมีไฟล์ (ทดสอบด้วยไฟล์เสียงทดลองที่ไม่ได้อยู่ใน repo) · กดเปิด/ปิด + บันทึก `cbi:music` · กรอบรุ้งหมุนจริงและอยู่กลาง · เปลี่ยนระดับ + บันทึก · ไม่มี rAF วนตอนว่าง · เปิดรายละเอียด + Back กลับที่เดิม · ลิงก์ตรง `#card/…` `#support/…` `#grade/…/1-2-3-4` `#deck` `#cards` · Tier Maker ลากด้วยเมาส์ + บันทึก + Undo · Save as image · Share link + เปิดลิงก์แชร์ (ดูอย่างเดียว 30 ใบ) · localStorage ถูกบล็อก · reduced motion · lite mode · ไม่มีเลื่อนข้างที่ 320 / 390 / 1000 / 1280px ทุกแท็บ · 1000px = เมนูล่าง · 1280px = เมนูซ้าย + รายละเอียดอยู่ข้างเมนู · ไม่มี error ใน console (นอกจากฟอนต์ Google ที่เครื่องทดสอบโหลดไม่ได้ และ 404 ของ `audio/bgm.mp3`)
-- แคปหน้าจอทุกหน้า (มือถือ 390 + คอม 1440, Normal + Ascended) ส่งให้เจ้าของในแชทแล้ว · เครื่องทดสอบไม่มีฟอนต์ Cinzel (โหลด Google Fonts ไม่ได้) ภาพจึงเป็นฟอนต์ serif แทน บนเว็บจริงจะเป็น Cinzel
-
-**ไฟล์ที่ต้องอัปขึ้น GitHub (ขั้น 9.6b):**
-| ไฟล์ | โฟลเดอร์บน GitHub |
-|---|---|
-| `index.html`, `PROGRESS.md` | หน้าแรกของ repo (root) |
-| `tokens.css`, `base.css`, `fx.css`, `cards.css`, `tier.css`, `deck.css`, `support.css`, `grade.css`, `tiermaker.css` | `css/` |
-| `fx.js`, `app.js`, `share.js`, `support.js`, **`music.js` (ใหม่)** | `js/` |
-| `og.png`, `icon-192.png` | `images/` |
-| `bgm.mp3` (เจ้าของหาเอง ตาม §12.5) | `audio/` (โฟลเดอร์ใหม่) |
-- ไม่แตะ: `js/cards.js`, `js/tier.js`, `js/deck.js`, `js/grade.js`, `js/tiermaker.js`, `data/`, `mockup/`, `robots.txt`, `sitemap.xml` · `mockup/` เก็บไว้ดูเทียบได้ หรือลบก็ได้ (เว็บไม่ได้ใช้)
-
-## 13. Mockup "Black Sun Intro" (เจ้าของสั่ง 2026-10-24 · ไฟล์ `mockup/black-sun-intro.html` · ไม่แตะเว็บจริง)
-แรงบันดาลใจจากคลิปหน้าเข้าเกม Silver Palace ที่เจ้าของอัด (วิ 0–7 = พื้นหลัง, วิ 8–14 = ผงขาวกวาดแล้วรวมเป็นรูป) · **ไม่ใช้ภาพจากเกม** วาดด้วยโค้ดทั้งหมด (canvas + SVG + CSS)
-- **พื้นหลัง:** น้ำเงินเข้มแบบภาพวาด (รอยพู่กัน) · ดวงอาทิตย์ดำ + วงแสงตามระดับ · ปีกขนนกสีเงินจากดวงอาทิตย์ + สายน้ำตกลงด้านล่าง + รากแตกแขนง · ประกายทอง · ช่องสี่เหลี่ยม/ก้นหอยจาง · หมอก · **แสงวิ่ง** = วงแหวนขยายออก (transform) ที่ใช้รูปเส้นพลังเป็น mask · ขยับตามนิ้ว/เอียงมือถือ (paused Web Animation 7 ตัว, rAF หยุดเองเมื่อนิ่ง · iPhone ต้องกดปุ่ม Tilt เพื่อขออนุญาต)
-- **Intro:** ผงขาว 900+240 จุด (lite 520+140) กวาดจากซ้ายล่างขึ้นขวา → รวมเป็นการ์ด → แฟลชขาว → เส้นชี้ Skill / Passive / Strongest / Weakness วิ่งออก (scaleX) · rAF ทำงานแค่ ~2.65 วิ แล้วหยุดและคืนหน่วยความจำ · ปุ่ม Replay
-- **การ์ด:** แตะ = พลิก 180° 3D (400ms, 3D เฉพาะตอนพลิก ตอนพักไม่มี 3D) · ด้านหลัง = stat · ปุ่ม 7 ระดับเปลี่ยนสีวงแสงดวงอาทิตย์ + กรอบการ์ด (กรอบเหมือน `css/fx.css`)
-- **บทเรียนความเร็ว (ใช้ตอนย้ายเข้าเว็บจริง):** (1) **ภาพนิ่งขนาดใหญ่ห้ามค้างเป็น `<canvas>`** — วาดครั้งเดียวแล้ว `toBlob` → `<img>` · ลากนิ้ว (parallax) จาก 32 → 60 fps (2) ห้ามตั้ง CSS variable สีที่ `<html>` ตอนเปลี่ยนระดับ (ทั้งหน้าวาดใหม่) ให้ตั้งเฉพาะกล่องที่ใช้ · 41 → 51 fps (3) วงแสงดวงอาทิตย์ 7 สีวาดล่วงหน้าตอนเครื่องว่างหลัง intro (4) ผงวาดเป็นชุด 12 fill/เฟรม ที่ความละเอียด 1× (5) ตัด `mix-blend-mode` ออกจากแฟลชการ์ด
-- **ผลวัดแบบ §11.3** (CPU ×6, 390×844 DPR 2.75, มัธยฐาน 3 รอบ, ปกติ / lite): ว่าง 60 / 60 · ลากนิ้ว 60 / 60 · พลิกการ์ด 57 / 58 · **intro 48 / 57** (เฟรมช้าสุด 50 / 67ms) · **กดเปลี่ยนระดับรัว 6 ครั้งใน 3 วิ 53 / 53** (สะดุด 1 เฟรม ~83ms ตอนกด = วาดกรอบการ์ดใหม่ แบบเดียวกับเว็บจริง) · อนิเมชั่นวนตอนว่าง 20 / 12 ตัว
-- **ยังไม่ทำ / รอเจ้าของ:** จะเอาเข้าเว็บจริงไหม และใช้ตรงไหน (หน้าโหลด? หน้าแรก? พื้นหลังทั้งเว็บแทน `FX.backdrop`?) · ถ้าใช้เป็นพื้นหลังทั้งเว็บ ต้องวัดรวมกับการ์ด 60 ใบอีกครั้ง
-
-### 13.1 Mockup v2 (2026-10-24 · ไฟล์เดิม `mockup/black-sun-intro.html` ~113KB · ยังไม่แตะเว็บจริง)
-เจ้าของสั่ง 17 ข้อ (การ์ด / บรรยากาศ / หน้าจอสะอาด / ส่วนที่ขาด) — ทำครบทุกข้อ:
-- **การ์ด 3D:** แตะ = หมุน 360° 1 รอบ (900ms) จบด้านหน้า · ลากนิ้ว = หมุนตามนิ้ว (แกนตั้ง + เอียงขึ้นลง ±18°) · ปล่อย = สปริงกลับเอง · สะบัดแรง = หมุนหลายรอบแล้วช้าลงจนหยุดด้านหน้า · ด้านหน้า = ด้านหลัง (รูปเดียวกัน ไม่กลับซ้ายขวา) · มีความหนา (ขอบ 4 ด้าน สีตามระดับ) · แสง holo เลื่อนตามมุม · แตะสองครั้ง = ซูม/กลับ · สั่นเบาๆ (`navigator.vibrate`) ตอนเด้งเข้าที่ · **ตอนพักเป็น 2D** (3D เฉพาะตอนขยับ) · ทุกเฟรมใช้ paused Web Animation (currentTime) ไม่เขียน `style.transform`
-- **บรรยากาศ:** ละอองแสง 14 จุด (lite 7) ลอยรอบการ์ด สีตามระดับ · ตอนการ์ดหมุน ละอองกระจายออก + หมุนวน (CSS บน GPU) · ปีกสีเงินหนาขึ้น (เส้นขน 560 เส้น + ก้อนขาวใหญ่ข้างดวงอาทิตย์ + มัดขน)
-- **หน้าจอสะอาด:** เส้นชี้เริ่มที่ขอบการ์ด จบที่ขอบป้ายตัวเอง · ปุ่มระดับ = จุดสี 7 จุดแถวเดียว + ชื่อเฉพาะที่เลือก (วงทองเลื่อนตาม) · ข้อความแนะนำขึ้นครั้งแรกแล้วจางเองใน ~5 วิ (หรือเมื่อแตะการ์ด) · ระหว่างหมุน เส้นชี้/ป้ายจางเหลือ 14%
-- **ที่เพิ่ม:** วง Overall ใต้การ์ด (ตัวเลขนับ + วงจาง) · ปุ่ม Details → แผ่นข้อมูลเลื่อนขึ้น (stat 6 ช่อง, Skill, Passive, Strongest, Weakness) ปัดหัวแผ่นลง/แตะพื้นหลัง/Esc = ปิด · แตะป้าย = กางคำอธิบายเต็ม · ปัดซ้าย/ขวานอกการ์ด = การ์ดตัวอย่างใบถัดไป (3 ใบ: Nocturne Arbiter SS 92, Lantern Warden S 84, Vesper Fox A 77 — แต่งเอง) · ปัดบนการ์ด = หมุน (ไม่ชนกัน) · ปุ่มลูกศรซ้าย/ขวาบนคีย์บอร์ดก็เปลี่ยนการ์ดได้
-- **บทเรียนความเร็ว (เพิ่มจาก §13):** (6) อนิเมชั่นที่จบแล้วให้ `commitStyles()` + `cancel()` ไม่งั้นแต่ละชิ้นยังเป็น layer แยกทุกเฟรม (7) **แสงวิ่งบนเส้นพลัง (วงแหวน + mask) แพงมากตอนที่หน้าเว็บมีงานทุกเฟรม** — ตอนนิ่ง 60 fps แต่ตอนหมุนการ์ดเหลือ ~47 · ถ้าซ่อน = 56–58 (วัดแล้ว) (8) แผ่น Details วาดเตรียมไว้ใต้จอ (`inert` ตอนปิด) → เปิดไม่สะดุด
-- **ผลวัด §11.3** (มัธยฐาน 3 รอบ · ปกติ / lite / ปกติแบบซ่อนแสงวิ่ง): ว่าง 59 / 60 / 60 · หมุน (ลาก) 47 / 48 / **56** · สะบัด 48 / 49 / **58** · แตะหมุน 51 / 53 / **56** · Details 52 / 56 / **58** · ปัดเปลี่ยนการ์ด 46 / 48 / 51 · ซูม 52 / 50 / **55** · เปลี่ยนระดับรัว 45 / 47 / 48 · intro 41 / 50 / 41
-- **คำตอบเจ้าของ (2026-10-24 · ตัดสินแล้ว):**
-  1. **ไม่หยุดแสงวิ่ง**ตอนการ์ดขยับ
-  2. **intro ไม่ลดผง** → (1)(2) เจ้าของ**ยอมรับ fps ต่ำกว่า 55** ในกรณีหมุนการ์ด / สะบัด / intro · **ห้ามลดเอฟเฟกต์เหล่านี้**
-  3. **วาดการ์ดใบถัดไปเตรียมไว้ = ทำ** (ทำแล้วในขั้น 12: ใบก่อน/ใบถัดไปสร้างตอนเครื่องว่าง + โหลดรูปไว้ก่อน)
-  4. **หมุน 360° ยาว 900ms = ยกเว้นจากกฎ 400ms ได้** (เขียนข้อยกเว้นไว้ใน §4 แล้ว)
-  - กรณีอื่นนอกจาก (1)(2) ถ้าไม่ถึงเกณฑ์ ต้อง**ถามเจ้าของก่อน**ลดเอฟเฟกต์
-
-## 14. ขั้น 12: หน้ารายละเอียดการ์ด "Black Sun" ในเว็บจริง (2026-10-24 · ✅ ทำแล้ว)
-เจ้าของสั่ง: เอา Mockup v2 (§13.1) เข้าเว็บจริงเป็นหน้ารายละเอียดการ์ดที่เปิดจากทุกหน้า · Back กลับที่เดิมสภาพเดิม · ใช้ข้อมูลจริงจาก `data/cards.json` (การ์ดไม่มี skill/passive/คะแนน หรือ Unranked ต้องไม่พัง) · ปัดซ้ายขวา = ใบถัดไปในรายการที่เปิดมา · ออกแบบแท็บเล็ต/คอม (≥ 768 / ≥ 1200) · ทดสอบ 390 / 768 / 1280 / 1920 ทั้งแนวตั้งแนวนอน · คำตอบ §13.1 อยู่ใน §13.1
-
-### 14.1 ที่ทำ
-- **ไฟล์ใหม่ `js/detail.js` + `css/detail.css`** (ฉากทั้งหมดจาก mockup: ภาพวาดดวงอาทิตย์ดำ + ปีก + ราก วาดครั้งเดียวแล้วเป็น `<img>`, วงแสงตามระดับ (วาดล่วงหน้าทั้ง 7 สีตอนเครื่องว่าง), แสงวิ่งบนเส้นพลัง, ประกาย, หมอก, ละอองรอบการ์ด, parallax ตามนิ้ว/เอียงมือถือ, intro ผง, การ์ด 3D หมุน/ลาก/สะบัด/ซูม, เส้นชี้ 4 ป้าย, วง Overall, แผ่น Details) · markup ใหม่แทน `#detail` เดิมใน `index.html`
-- **การ์ดในฉาก = การ์ดจริงของเว็บ** (`renderCard` แบบไม่เอียงตามนิ้ว) ทั้ง 2 ด้าน: รูปจริง → ไม่มีรูป = รูปวาดแทน · ป้ายระดับ, ตราครั่ง tier, ATK/HP/โอกาส, aura 7 ระดับ · ขนาดตัวหนังสือบนการ์ดโตตามขนาดการ์ด
-- **ป้าย 4 ป้ายจากข้อมูลจริง:** Skill / Passive = `skill` / `passive` (ไม่มี = "No skill" / "No passive") · **Strongest** = `strengths` + `beats` (ชื่อการ์ด) + โหมดที่ดีที่สุดจาก `modes` · **Weakness** = `weaknesses` + `losesTo` + `weakTo` + โหมดที่แย่ที่สุด · ไม่มีข้อมูล = "Not analyzed yet" · Unranked = วงขึ้น "—" + "UNRANKED"
-- **แผ่น Details** = ทุกกล่องของหน้ารายละเอียดเดิม (ปุ่มเลือกระดับ, ATK/HP/DEF/Status/โอกาส, Overall + คะแนน 6 ส่วน, Grade, Abilities, จุดเด่น/จุดอ่อน, Matchups (การ์ด mini กดเปิดได้), Team, หมายเหตุ) · วาดเตรียมไว้ตอนเครื่องว่าง · แตะการ์ดในแผ่น = เปิดใบนั้น (เพิ่มประวัติ 1 รายการ, Back ของมือถือกลับใบก่อน)
-- **เปิดจากทุกหน้า + ปัดตามรายการที่เปิดมา:** Cards (ลำดับที่กรอง/เรียงอยู่) · Tier List Global (แถว SS→D) · Tier Maker (การ์ดใน list, ปุ่ม Details) · Deck (5 ใบใน deck, ปุ่ม Details + ชิปใน Strong/Weak vs) · Meta Decks · Support (แถวการ์ดในหน้ารายละเอียด support) · **Grade (ปุ่มใหม่ "Card details" ในหน้าตั้งเกรด · ปัด = ลำดับหน้าเลือกการ์ด)** · ลิงก์ตรง = ลำดับหน้า Cards · ปัดวนจากใบสุดท้ายไปใบแรกได้ · ใบก่อน/ใบถัดไปสร้างไว้ล่วงหน้า + โหลดรูปไว้ (คำตอบ §13.1 ข้อ 3)
-- **Back กลับที่เดิมสภาพเดิม:** หน้าข้างใต้ไม่ถูก render ใหม่ ไม่เลื่อน · ปิด = การ์ดบินกลับช่อง (ช่องอยู่นอกจอ = จาง ไม่เลื่อนหน้า) · ปุ่ม ‹ Back / Esc ปิดทั้งหมด · Back ของมือถือ: ปัดไปกี่ใบก็ปิดได้ในครั้งเดียว (ปัดไม่เพิ่มประวัติ)
-- **layout 3 แบบ** (`layout()` ใน detail.js):
-  | จอ | การ์ด (กว้าง) | ป้าย | วง Overall + Details |
-  |---|---|---|---|
-  | มือถือแนวตั้ง < 768 | 130–260px (390px = 226) | บน 2 / ล่าง 2 · ข้อความ 2 บรรทัด แตะ = กล่องข้อความเต็ม | ใต้การ์ด |
-  | ≥ 768 (หรือมือถือแนวนอน ≥ 600) | ใหญ่ตามจอ สูงสุด 440px (768×1024 = 316 · 1280×800 = 393 · 1920×1080 = 440) | **ซ้าย 2 / ขวา 2 · ข้อความเต็มทุกบรรทัด** (Strongest/Weakness แสดงทุกข้อ + Beats/Loses to) · ยาวเกินครึ่งจอ = เลื่อนในป้ายได้ + ขอบล่างจาง | ใต้การ์ดถ้าที่พอ · จอเตี้ย (แนวนอน) ย้ายไปแถบล่าง ซ้าย = วง, ขวา = ปุ่ม |
-  - ≥ 768 มีปุ่ม ‹ › ข้างจุดระดับ (สำหรับเมาส์) · ≥ 1100 ฉากอยู่ขวาของเมนูซ้าย (เมนูยังเห็น) · แผ่น Details กว้าง 640px (≥ 1200 = 760px)
-- **ความเร็ว (ไม่ลดเอฟเฟกต์):** ภาพวาดแบ่งวาดเป็นชิ้นเล็กตอนเครื่องว่าง (เดิม 1 ชิ้น 1.5 วิบนเครื่องช้า 6 เท่า → ไม่มีชิ้นเกิน 0.25 วิ) · วาดล่วงหน้า 3.6 วิหลังเปิดเว็บ (lite mode ไม่วาดล่วงหน้า วาดตอนเปิดครั้งแรก ระหว่างนั้นเห็นท้องฟ้าสีพื้น) · ตอนฉากขึ้นเต็มจอ: ซ่อน/หยุดหน้าข้างใต้ + หยุดเช็กการ์ดข้างใต้ (`C.livePause`) → idle (Ascended 60 ใบข้างใต้) **26.5 → 49.4 fps**
-- ข้อความแนะนำ (Tap spin · Drag turn …) ขึ้น 2 ครั้งแรกต่อเครื่อง (`cbi:bsHint`) · ปุ่ม Tilt ขึ้นเฉพาะจอสัมผัสที่ต้องขออนุญาต (iPhone) · ปุ่ม Replay = เล่น intro ใหม่
-
-### 14.2 ทดสอบ (Chromium · การ์ดทดสอบ 60 ใบ: ครบ field / Unranked / ไม่มี skill / ไม่มี passive / ข้อความยาวมาก / ชื่อยาว / รูปหาย · ข้อมูลทดสอบไม่ได้อยู่ใน repo)
-- **ฟังก์ชัน 37/37 ผ่าน:** เปิดจาก Cards / Tier List / Tier Maker / Deck / Support / Grade + รายการปัดถูกทุกหน้า · ปุ่มลูกศร, ปัดนิ้วซ้าย/ขวา, ‹ › · ปัดไม่เพิ่มประวัติ · Back ปุ่ม / Back มือถือ / Esc กลับที่เดิม (hash เดิม, scroll เดิม, ไม่มีการ์ดค้างซ่อน, Tier Maker ยังเปิด list เดิม, Deck/Support/Grader ยังอยู่หน้าเดิม) · แตะ = หมุนแล้วกลับเป็น 2D · Details ครบทุกกล่อง · แตะการ์ดในแผ่น → ใบใหม่ → Back มือถือกลับใบเดิม · Unranked / ไม่มี skill / ไม่มี passive / รูปหาย ไม่พัง · จุดระดับ + ชิปในแผ่นเปลี่ยนระดับทั้งเว็บ · id ไม่มีอยู่ = กลับหน้าเดิม · `data/cards.json` ว่าง (ข้อมูลจริงตอนนี้) ไม่มี error · localStorage ถูกบล็อก + reduced motion ใช้งานได้ · ไม่มี error ใน console
-- **8 ขนาดจอ** (390×844, 844×390, 768×1024, 1024×768, 1280×800, 800×1280, 1920×1080, 1080×1920 · การ์ดข้อความยาวมาก): ป้ายไม่ทับกัน ไม่ทับการ์ด ไม่ล้นจอ · ไม่มีเลื่อนข้าง · แท็บอื่นทุกแท็บที่ 320 / 390 / 1280 ไม่มีเลื่อนข้าง ไม่มี error
-- ทุกไฟล์ CSS/JS ใน `index.html` เป็น `?v=12`
-
-### 14.3 ความเร็ว §11.3 (CPU ×6, 390×844 DPR 2.75, 3 วิ, มัธยฐาน 3 รอบ · การ์ดทดสอบ 60 ใบอยู่หน้า Cards ข้างใต้)
-**สำคัญ: เครื่องทดสอบวันนี้ช้ากว่าตอนวัด mockup** (คลาวด์ 2 core ไม่มี GPU) — mockup v2 ตัวเดิมที่รายงานไว้ 59–60 fps ตอนว่าง วันนี้วัดได้ 40 · หน้าธรรมดา (Cards) ยังได้ 57–58 · จึงวัด **mockup คู่กันด้วยวิธีเดียวกันบนเครื่องเดียวกัน** เพื่อเทียบ
-| การกระทำ | เว็บจริง Normal | เว็บจริง Ascended | เว็บจริง Ascended (lite) | mockup Normal | mockup Ascended |
-|---|---:|---:|---:|---:|---:|
-| ว่าง | **47.1** | **47.7** | 42.1 | 40.1 | 37.8 |
-| ลากหมุน ¹ | 44.1 | 45.2 | 44.1 | 44.1 | 32.5 |
-| สะบัด ¹ | 45.4 | 40.8 | 43.3 | 41.1 | 29.8 |
-| แตะหมุน 360° ¹ | 46.4 | 35.0 | 35.0 | 39.7 | 29.3 |
-| เปิด/ปิด Details | 42.8 | 34.5 | 38.8 | 41.8 | 32.5 |
-| ปัดเปลี่ยนการ์ด | 40.2 | 36.8 | 46.2 | 35.5 | 33.1 |
-| ซูม (แตะ 2 ครั้ง) | 37.3 | 41.4 | 34.3 | 36.5 | 34.6 |
-| เปลี่ยนระดับรัว | 46.7 | 39.8 | 39.2 | 37.3 | 32.0 |
-| intro ¹ | 21.8 | 19.6 | 20.4 | 21.2 | 19.0 |
-¹ = กรณีที่เจ้าของยอมรับ fps ต่ำกว่า 55 แล้ว (§13.1 ข้อ 1–2) ห้ามลดเอฟเฟกต์
-- **เว็บจริงเท่ากับหรือเร็วกว่า mockup ทุกกรณี** (แม้มีการ์ด 60 ใบข้างใต้) · ไม่มี rAF วนตอนว่าง (rAF ทำงานเฉพาะตอน intro / การ์ดขยับ / parallax แล้วหยุดเอง) · เฟรมช้าสุด 50–100ms (intro 150–167ms เท่า mockup)
-- **หน้าเดิมไม่ช้าลง:** เลื่อนหน้า Cards / Tier List การ์ด Normal 60 ใบ = 57.0 / 58.0 fps · Ascended 32.5 / 42.1 เทียบเว็บขั้น 11 (ก่อนแก้) วัดวันนี้ 38.1 / 36.6 = อยู่ในช่วงแกว่งของเครื่อง (±5) ไม่ได้ช้าลง
-- **ไม่ถึง 55 (กรณีที่ไม่ได้รับยกเว้น):** ว่าง, Details, ปัดเปลี่ยนการ์ด, ซูม, เปลี่ยนระดับ → **เจ้าของยอมรับแล้ว (§14.5 ข้อ 1 = ก)** ไม่ลดเอฟเฟกต์
-
-### 14.4 สิ่งที่ Claude ตัดสินใจเอง (ค้านได้ · แก้ง่าย)
-1. **intro ผงเล่นเฉพาะตอนเปิดจากลิงก์ตรง และตอนกด Replay** · กดการ์ดจากรายการ = การ์ดบินจากช่องเข้ากลางฉาก (§4 เดิม "การ์ดขยายจากตำแหน่งเดิม") เพราะ intro ยาว ~2.6 วิ ถ้าเล่นทุกครั้งจะเปิดดูการ์ดหลายใบช้า
-2. ปิดหลังปัดไปใบอื่นที่ช่องอยู่นอกจอ = การ์ดจางหาย **ไม่เลื่อนหน้าไปหา** (ให้ "กลับที่เดิมสภาพเดิม" ตามที่สั่ง · §4 เดิมเลื่อนไปหา)
-3. ปัดถึงใบสุดท้ายแล้ววนกลับใบแรก
-4. มือถือ: ป้ายแสดง 2 บรรทัด แตะเพื่อดูเต็ม (ที่เต็มจอ) · ≥ 768 แสดงเต็ม
-5. หน้า Grade เพิ่มปุ่ม **Card details** (หน้านี้เดิมไม่มีทางเปิดรายละเอียด)
-
-### 14.5 คำถามสำหรับเจ้าของ
-> **คำตอบเจ้าของ (2026-10-24): ข้อ 1 = (ก) ยอมรับตามนี้** → ไม่ลดเอฟเฟกต์ใดๆ ในหน้ารายละเอียดการ์ด · ตัวเลข §14.3 คือเกณฑ์ใหม่ของหน้านี้ (ขั้นต่อไปที่แตะหน้านี้ต้องไม่ช้ากว่าตาราง §14.3 เมื่อวัดคู่กับ mockup บนเครื่องเดียวกัน) · ข้อ 2 ยังไม่ได้ตอบ = ใช้ตาม §14.4 ไปก่อน
-1. **5 กรณีที่ไม่ถึง 55 fps บนเครื่องทดสอบ** (ว่าง 47, Details 35–43, ปัดเปลี่ยนการ์ด 37–46, ซูม 34–41, เปลี่ยนระดับ 39–47) เลือก:
-   - (ก) **ยอมรับตามนี้** — Claude แนะนำ: เว็บจริงเร็วกว่าหรือเท่า mockup ที่อนุมัติแล้วทุกกรณี, เครื่องทดสอบไม่มี GPU (มือถือจริงมี GPU วาดฉากเร็วกว่ามาก) และ mockup เดียวกันเคยได้ 59–60 ตอนเครื่องทดสอบว่างกว่านี้
-   - (ข) ลดเอฟเฟกต์บางอย่าง เช่น หยุดแสงวิ่ง/ประกาย**เฉพาะตอนแผ่น Details เปิด** (ฉากถูกบังด้วยแผ่นมืดอยู่แล้ว) · ละอองรอบการ์ด 14 → 10
-   - (ค) ลองเปิดเว็บบนมือถือของเจ้าของก่อน ถ้ารู้สึกกระตุกตรงไหนค่อยบอก
-2. ข้อ 1–5 ใน §14.4 โอเคไหม (โดยเฉพาะข้อ 1: อยากให้ผงเล่นทุกครั้งที่เปิดการ์ดไหม)
-
-### 14.6 ไฟล์ที่ต้องอัปขึ้น GitHub (ขั้น 12)
-| ไฟล์ | โฟลเดอร์บน GitHub |
-|---|---|
-| `index.html`, `PROGRESS.md` | หน้าแรกของ repo (root) |
-| `tokens.css`, `cards.css`, `grade.css`, **`detail.css` (ใหม่)** | `css/` |
-| `app.js`, `cards.js`, `grade.js`, **`detail.js` (ใหม่)** | `js/` |
-- ไฟล์ CSS/JS อื่นเนื้อหาไม่เปลี่ยน (แค่เลข `?v=12` ใน `index.html`) **ไม่ต้องอัป** · ไม่แตะ `data/`, `images/`, `mockup/` (mockup เก็บไว้ดูเทียบได้ เว็บไม่ได้ใช้)
-- ใน zip มีโครงโฟลเดอร์ตรงกับ repo (แตก zip แล้วลากทับของเดิม)
-
-## 9. บันทึกการเปลี่ยนแปลง
-- 2026-10-23: เริ่มแผนใหม่ทั้งหมด ยกเลิกหน้าแอดมิน, Mutation และ Rarity แบบพิมพ์เอง เปลี่ยนเป็นระดับการ์ด 7 ระดับใช้ตัวคูณคงที่ · Claude เป็นคนเพิ่มการ์ดและวิเคราะห์ผ่านแชท
-- 2026-10-23: **ขั้นที่ 1 เสร็จ** — สร้าง `index.html`, `css/tokens.css`, `css/base.css`, `css/fx.css`, `js/fx.js`, `js/app.js`, `data/meta.json`, `data/cards.json` (mock 3 ใบ: Bald Cadet, Ember Ronin, Tidecaller) · พื้นหลังดาว 3 ชั้น, เมนูล่าง 4 เมนู + ตัวชี้เลื่อน, aura 7 ระดับ, เอียงการ์ดตามนิ้ว, ตัวเลขนับ, Tier List ตัวอย่าง (แถวไล่เข้า), Support = หน้าว่าง, Grade = Coming soon · สรุป design tokens ใน §3.1–3.3 · ยังไม่มีโฟลเดอร์ `images/` (สร้างตอนมีรูปจริง)
-- 2026-10-23: **ขั้นที่ 2 เสร็จ** — หน้า Cards: ค้นหา (ชื่อ/ซีรีส์/ชื่อและคำอธิบาย Passive-Skill) · กรอง Tier / Role / Series (กดซ้ำเพื่อล้าง) · เรียงตาม Overall / ATK / HP / Pull odds + สลับทิศ · ปุ่มเลือก 7 ระดับ · สถานะว่าง 2 แบบ (ยังไม่มีการ์ด / ไม่เจอที่ค้นหา) · หน้ารายละเอียด `#card/<id>`: รูป, ATK, HP, โอกาส (บอกค่า Normal และตัวคูณ), Overall + คะแนน 6 ส่วนพร้อมน้ำหนัก, Passive, Skill, จุดเด่น/จุดอ่อน, ชนะ/แพ้ใคร, ตำแหน่งในทีม, การ์ดที่เข้ากัน, support ที่แนะนำ (กดการ์ดในรายการเพื่อข้ามไปดูใบนั้นได้) · shared element ตาม §4 · **ลบการ์ด mock 3 ใบแล้ว** (`data/cards.json` = `[]`) และเอาป้าย "Preview with 3 sample cards" ออกจากหน้า Tier · ไฟล์ใหม่ `css/cards.css`, `js/cards.js` · เพิ่ม `FX.flip`, `FX.fade`, ตัวเลือกใหม่ของ `FX.stagger` · เพิ่มสีสัญญาณใน tokens · แก้ `renderCard` ให้ escape ข้อความ, ใส่ `role="button"`, ใช้รูปสำรองเมื่อไฟล์รูปหาย · แฟลชตอนเปลี่ยนระดับเปลี่ยนเป็น Web Animations (เปลี่ยนระดับกับการ์ด 300 ใบเหลือ ~30ms) · ทดสอบใน Chromium (จอมือถือ 390px + จอคอม + reduced motion) ด้วยการ์ดทดสอบ 24 ใบและ 300 ใบ รวม 91 รายการ ผ่านทั้งหมด (การ์ดทดสอบไม่ได้อยู่ใน repo)
-- 2026-10-23: **ขั้นที่ 3 เสร็จ** — หน้า Tier List: แถว SS–D เรียงตาม Overall (เท่ากันเรียงชื่อ) แสดงจำนวนการ์ดใต้ตัวอักษร tier · ปุ่มเลือก 7 ระดับ (ใช้ระดับเดียวกับหน้า Cards และหน้ารายละเอียด เปลี่ยนที่ไหนก็ตามกันหมด) · การ์ด Unranked ไม่ขึ้นในแถว มีข้อความบอกจำนวนที่ยังไม่ได้จัดอันดับ · ถ้ายังไม่มีการ์ด/ยังไม่มีการ์ดที่ให้คะแนน จะขึ้นกล่องว่างแทนแถว · Meta Decks: การ์ด 5 ใบ + ป้าย Slot 1–5 + support แนะนำของทีม (และของรายใบถ้ามี) + หมายเหตุ · ปุ่ม "Jump to Meta Decks ↓" · **ไฟล์ใหม่:** `js/tier.js`, `css/tier.css`, `data/teams.json` (ทีมตัวอย่าง 2 ทีม ติด `mock`) · **ไฟล์ที่แก้:** `index.html` (หน้า Tier ใหม่ + โหลด tier.css/tier.js), `js/app.js` (ย้าย renderTier ไป tier.js, โหลด teams.json), `js/cards.js` (ส่ง event `cbi:rarity`, การ์ดบินกลับไปที่ใบที่กดเมื่อมีใบซ้ำในหน้า), `css/base.css` (ย้ายสไตล์ tier ไป tier.css) · ทดสอบใน Chromium (จอมือถือ 390px + คอม 1280px + reduced motion) ด้วยการ์ดทดสอบ 19 ใบ (3 ใบ Unranked) 64 รายการ ผ่านทั้งหมด (ข้อยกเว้นเดียวคือ 404 ของ `data/support.json` ที่ยังไม่มีไฟล์ ซึ่งเว็บรับมือได้ตามที่ออกแบบ) · การ์ดทดสอบไม่ได้อยู่ใน repo
-- 2026-10-23: **ขั้นที่ 4 เสร็จ** — หน้า Support: รายการจัดอันดับตาม Value (แถวละ 1 ใบ: อันดับ, รูป, ชื่อ, เอฟเฟกต์ 2 บรรทัด, Pull odds, แถบคะแนน, tier + Value) · ค้นหา (ชื่อ/เอฟเฟกต์) · กรอง tier (กดซ้ำเพื่อล้าง) · เรียง Value / Pull odds + สลับทิศ · ยังไม่ให้คะแนน = ท้ายรายการ ป้าย Unranked + ข้อความบอกจำนวน · สถานะว่าง 2 แบบ · จอคอมแสดง 2 คอลัมน์ · หน้ารายละเอียด `#support/<id>`: รูปใหญ่ (เอียงตามนิ้ว), Value / อันดับ / Pull odds, Effect, คะแนน 4 ส่วนพร้อมน้ำหนัก, "Where to run it" = ควรใส่กับการ์ดใบไหน (Best on these cards) · Best decks (ทีมจาก `bestDeck` ทั้ง 5 ช่อง ช่องที่ใช้ support นี้มีป้าย) · ห้ามใส่กับใบไหน (Don't pair with) · กดการ์ดข้างในเปิดรายละเอียดการ์ดทับ แล้ว Back กลับมาที่หน้านี้ · การ์ดข้างในเปลี่ยนระดับตามเมื่อเปลี่ยนระดับที่อื่น · shared element (รูปบินจากแถวไปเป็นรูปใหญ่) ตาม §4 · **ไฟล์ใหม่:** `js/support.js`, `css/support.css`, `data/support.json` (`[]`) · **ไฟล์ที่แก้:** `index.html` (หน้า Support ใหม่ + โหลด support.css/support.js), `js/app.js` (route `#support/<id>`, แตะแท็บ = กลับรายการ, export `route` และ `placeholderArt`) · ทดสอบใน Chromium (มือถือ 390px + คอม 1280px + reduced motion + ลิงก์ตรง + ข้อมูลว่าง/ไม่มีไฟล์) ด้วย support 7 ใบ (มี unranked, ค่าเท่ากัน, effect แบบ object, mock, ชื่อยาว) รวม 89 รายการ ผ่านทั้งหมด · เจอและแก้บั๊กระหว่างทดสอบ: ทีม 5 ช่องทำให้หน้ารายละเอียดกว้างเกินจอมือถือ · การ์ดทดสอบไม่ได้อยู่ใน repo
-- 2026-10-23: **ขั้นที่ 5 เสร็จ** — **SEO:** `index.html` เพิ่ม meta description ใหม่, canonical, Open Graph + Twitter card (รูปแชร์ `images/og.png` 1200×630), JSON-LD (WebSite), `color-scheme`, `<noscript>` · ไอคอน PNG `images/icon-192.png` (ใช้เป็น favicon สำหรับ Google และ apple-touch-icon) · `robots.txt` ใหม่ (ชี้ไป sitemap) · `sitemap.xml` อัปเดต lastmod · `js/app.js` เปลี่ยน `document.title` ตามแท็บ (Cards — …, Support — …, Grade (coming soon) — …) · **ความเร็ว:** โหลด Google Fonts แบบไม่บล็อกการแสดงผลครั้งแรก (`media="print"` + onload, มี noscript สำรอง) · โหลดรวม ~139KB (เฉพาะไฟล์ของเว็บ ไม่รวมฟอนต์) · มือถือช้า (CPU ช้าลง 4 เท่า, เน็ต 1.6Mbps) FCP/LCP ≈ 0.7s · ดาวหยุดวิ่งเมื่อสลับแท็บอยู่แล้ว (ไม่ต้องแก้) · **ทดสอบ Chromium** จอ 320 / 360 / 390 / 820 / 1280px ด้วยการ์ดทดสอบ 20 ใบ + support 7 ใบ: ไม่มีหน้าไหนเลื่อนข้าง, ปุ่มกดทุกปุ่ม ≥ 36px, Back ปิดรายละเอียดได้, ไม่มี error ใน console รวม 80 รายการ ผ่านทั้งหมด (ข้อมูลทดสอบไม่ได้อยู่ใน repo) · **หมายเหตุ SEO:** เว็บเป็นหน้าเดียวใช้ `#hash` Google จึงนับเป็น 1 URL (ตั้งใจ) และเนื้อหาการ์ดโหลดด้วย JS · หลังอัปขึ้น GitHub ให้ส่ง sitemap ใน Google Search Console (ยืนยันเว็บไว้แล้วด้วยไฟล์ `googleac6eef435a8d1c66.html`) และลองวางลิงก์ในแชท LINE/Discord เพื่อเช็กรูปแชร์
-- 2026-10-23: **ขั้นที่ 6 เสร็จ (ระบบ Grade)** — หน้า Grade (แทน Coming soon): เลือกการ์ด (การ์ด mini 3 คอลัมน์บนมือถือ, ค้นหา, ปุ่ม "My graded cards", ป้ายเกรดบนการ์ดที่ตั้งแล้ว) → หน้าตั้งเกรด: การ์ดใหญ่ (ATK/HP บนการ์ดเป็นค่าหลังบวกเกรด + ป้ายเกรด), ป้ายเกรดรวมใหญ่ (ค่าเฉลี่ย ปัด .5 ขึ้น), ปุ่มเลือกระดับ 7 ระดับ, 4 แถว Basic Attack / Defense / Status Damage / HP แต่ละแถวมีหลอด 10 ช่องกดเลือกเกรด (กดช่องเดิมซ้ำ = ล้าง), % โบนัส, ค่าหลังบวก + ค่าฐาน, ปุ่ม Reset / Share link (มือถือเปิดเมนูแชร์ ไม่มีก็คัดลอกลิงก์) · สีเกรดเป็นตัวแปร `--g-bronze` `--g-silver` `--g-gold` `--g-rainbow` (+ `-2`, `--g-rainbow-line`, `--g-empty`) ใน tokens.css · เกรด 10 ป้ายรุ้งหมุน · อนิเมชั่น: ช่องหลอดเด้งขึ้นทีละช่อง, ป้ายเกรดเด้งเมื่อเปลี่ยน, ตัวเลขนับ, การ์ดบินจากรายการไปหน้าตั้งเกรด (shared element) · หน้ารายละเอียดการ์ด: เพิ่มกล่อง Grade + ปุ่ม "Grade this card" / "Open in Card Grader" และช่อง DEF / Status DMG (เฉพาะการ์ดที่มีค่า) · เพิ่มสี `--def` `--status` · **ไฟล์ใหม่:** `js/grade.js`, `css/grade.css` · **ไฟล์ที่แก้:** `index.html` (หน้า Grade ใหม่, โหลด grade.css/grade.js, meta description), `js/app.js` (route `#grade/<id>/<grades>`, ชื่อแท็บ "Card Grader"), `js/cards.js` (กล่อง Grade, ช่อง DEF/Status, `data-no-detail`), `css/tokens.css`, `css/base.css` (ลบสไตล์ Coming soon) · ตรวจสูตรกับคลิปแล้วตรง: HP 763,440 → เกรด 2 = 801,612, เกรด 7 = 897,042 · ATK 114,516 → เกรด 1 = 117,379, เกรด 6 = 131,693 · ทดสอบ Chromium (มือถือ 390px + คอม 1280px) ด้วยการ์ดทดสอบ 6 ใบ 38 รายการ ผ่านทั้งหมด (ลิงก์แชร์, ลิงก์เสีย, Back ของมือถือ, เปลี่ยนแท็บ, ไม่มีเลื่อนข้าง) · ข้อมูลทดสอบไม่ได้อยู่ใน repo
-- 2026-10-23: **วางแผนขั้น 7–11** (Tier Maker + Deck) ลง §10 · เจ้าของเลือกฟีเจอร์เสริมครบทุกข้อ (แตะวาง, เทียบ Global, เริ่มจาก Global, Undo/Redo, แชร์ลิงก์, ไฟล์สำรอง, ลายน้ำ, เปลี่ยนระดับการ์ด, ย้าย Meta Decks ไปหน้า Deck, แนะนำการ์ด, เทียบ 2 ทีม, แชร์/เซฟรูป deck) · เมนูเป็น 5 ปุ่ม · เพิ่มกฎข้อ 6 + §4.1 Definition of Done ให้ทุกหน้าได้มาตรฐานเดียวกัน · เพิ่มแถวอนิเมชั่นใหม่ใน §4 · คะแนนทีมคิดด้วยสูตรในเบราว์เซอร์ (ไม่ใช้ AI)
-- 2026-10-23: **ขั้นที่ 7 เสร็จ** — **หน้า Tier List:** แท็บย่อย **Global | My Lists** (`#tier` / `#tier/my`) · Global มีสวิตช์ **Cards | Support** (แยกรายการ ไม่รวมกัน) · Support มีแถว SS–D ตาม `scores.value` (ไทล์แสดงชื่อ + Value, กดแล้วเปิดรายละเอียด Support และกด Back กลับมาที่ตำแหน่งเลื่อนเดิม) · Global ดูอย่างเดียว · My Lists เป็นหน้าว่าง (ข้อความ "No lists yet … coming soon") รอขั้น 8 · ปุ่ม "Jump to Meta Decks" ถูกเอาออก · **หน้า Deck ใหม่ (`#deck`):** Meta Decks ย้ายมาจากหน้า Tier List ครบ (การ์ด 5 ช่อง + Slot + support + หมายเหตุ) มีปุ่มเลือกระดับ ใช้ระดับเดียวกับทั้งเว็บ · **เมนู 5 ปุ่ม:** `Tier List · Cards · Support · Deck · Grade` + ตัวชี้เลื่อน (บนจอ ≥ 900px เป็นแถบกลางบนสุดกว้าง 540px) · `cbi:lastPage` รับ `deck` ได้ · **ของกลางใหม่:** `.seg` (สวิตช์สลับ) ใน base.css, `CBI.rarityChipsHTML()`, `CBI.support.card/open` · **ไฟล์ใหม่:** `js/deck.js`, `css/deck.css` · **ไฟล์ที่แก้:** `index.html`, `js/app.js` (PAGES + route `#tier/my` + กู้ตำแหน่งเลื่อน + `rarityChipsHTML`), `js/tier.js` (เขียนใหม่), `js/support.js` (ส่งออก 2 ฟังก์ชัน), `css/base.css` (เมนู 5 ปุ่ม + `.seg`), `css/tier.css` (เอากฎ Meta Decks ออก เพิ่มไทล์ support) · ทดสอบ Chromium (จอ 390 / 320 / 1280px + reduced motion + localStorage ถูกบล็อก + ข้อมูลว่าง/ยังไม่ให้คะแนน/ไม่มี support/ไม่มี deck + ลิงก์ตรง `#tier/my` `#deck` `#support/<id>` `#card/<id>` `#grade/...`) รวม 105 รายการ ผ่านทั้งหมด (ข้อมูลทดสอบไม่ได้อยู่ใน repo) · **พบ (ไม่ได้แก้ เป็นมาตั้งแต่ขั้น 1 รอเจ้าของสั่ง):** เปิดเว็บแบบไม่มี `#` ต่อท้าย จะเข้า Tier List เสมอ แม้เคยเปิดหน้าอื่นไว้ (ค่า `cbi:lastPage` ถูกเก็บแล้ว แต่ถูกทับตอนโหลดข้อมูลเสร็จ) · ตอนนี้ `data/support.json` ยังว่าง แท็บ Support บนหน้า Tier จะขึ้น "No support cards yet" จนกว่าจะทำงานประจำ C + B
-- 2026-10-23: **ขั้นที่ 8 เสร็จ (Tier Maker)** — แท็บ **My Lists** ใช้ได้จริง: **หน้ารวม** (`#tier/my`) แสดง list ทั้งหมด (ชื่อ, ประเภท, ระดับ, จำนวนแถว/การ์ด, วันที่แก้, แถบสีแถว) + ปุ่ม New list / ทำสำเนา / ลบ (ถามยืนยันด้วยกล่องในหน้า) · สถานะว่าง + skeleton ตอนโหลด · **สร้างใหม่:** ตั้งชื่อ, เลือก Cards หรือ Support, เริ่มจาก Blank rows หรือ Global ranking · **ตัวแก้** (`#tier/my/<id>`): เปลี่ยนชื่อ (แตะชื่อ), Undo/Redo (ปุ่ม + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y, 50 ครั้ง), เมนู ⋯ (Rename / Duplicate / Delete), สวิตช์ Compare with Global (ป้าย ↑n ↓n =), ระดับการ์ดของ list เอง 7 ระดับ, เพิ่มแถว, แตะป้ายแถว = กล่องแก้แถว · **pool** ติดล่างจอ: การ์ดทั้งคลังเสมอ ลากออก = สำเนา (ใส่ซ้ำได้), ค้นหา, กรอง Tier/Role/Series, Hide placed, ย่อ/ขยาย · **ย้ายการ์ด:** ลาก (นิ้ว = กดค้าง, เมาส์ = ลากเลย, หน้าเลื่อนตามเมื่อใกล้ขอบ, การ์ดข้างๆ หลบแบบ FLIP, ลงช่องแล้วเด้ง) หรือแตะการ์ดแล้วแตะแถว · แตะการ์ด → แถบคำสั่ง Details · Duplicate · Remove · Cancel · ลากกลับลง pool = เอาออก · Details เปิดรายละเอียดการ์ด/support แล้ว Back กลับมาที่เดิม สภาพเดิม · บันทึกอัตโนมัติ `cbi:tierlists` · **ของกลางใหม่:** `FX.toast()` + `.fx-toast`, สีแถวเพิ่ม 6 สีใน tokens.css · **ไฟล์ใหม่:** `js/tiermaker.js`, `css/tiermaker.css` · **ไฟล์ที่แก้:** `index.html` (markup My Lists + โหลด tiermaker.css/js), `js/tier.js` (เรียก `C.tm`, ข้อความ lead), `js/fx.js` (`FX.toast`), `css/fx.css` (toast), `css/tokens.css` (สีแถว) · ทดสอบ Chromium ด้วยการ์ดทดสอบ 24 ใบ (3 ใบ Unranked) + support 6 ใบ: มือถือ 390px ด้วย touch จริง (กดค้างลาก), 320px, คอม 1280px ด้วยเมาส์ + คีย์บอร์ด, reduced motion, localStorage ถูกบล็อก, ข้อมูลเก่า/เสียใน storage, id ที่ไม่มีในคลัง, ลิงก์ list ที่ไม่มี, คลังว่าง, ทุกหน้าอื่นไม่มี error, Undo ครบ 50 ครั้งพอดี รวม 73 รายการ ผ่านทั้งหมด (ข้อมูลทดสอบไม่ได้อยู่ใน repo) · **หมายเหตุ:** ประวัติ Undo ไม่ข้ามการรีโหลดหน้า (ตั้งใจ ตาม §10.2 ที่ไม่ได้กำหนด) · บั๊กเดิม "เปิดเว็บไม่มี # แล้วเข้า Tier List เสมอ" ยังไม่ได้แก้ (รอเจ้าของสั่ง)
-- 2026-10-23: **ขั้นที่ 9 เสร็จ (บันทึกรูป + แชร์ลิงก์ + ไฟล์สำรอง)** — **บันทึกรูป:** เมนู ⋯ ของ list → Save as image: วาดใหม่ด้วย Canvas (ไม่แคป DOM) 2400px กรอบการ์ดตามระดับ + ลายน้ำ + วันที่ · มีพรีวิวก่อนบันทึก · มือถือใช้เมนูแชร์ไฟล์ ไม่รองรับ = ดาวน์โหลด `.png` · **แชร์ลิงก์:** Share link → ลิงก์ `#tier/s/<data>` (บีบด้วย CompressionStream, มีสำรองแบบไม่บีบ) · คนเปิดลิงก์เห็นมุมมองดูอย่างเดียว (ป้าย "Shared list · view only") + Save a copy + Save image · ไม่ทับของเดิม · ลิงก์เสียขึ้นหน้าแจ้ง · **ไฟล์สำรอง:** ปุ่ม Backup (หัวหน้ารวม My Lists) → Export `.json` (tier lists + เกรด) / Import แล้วเลือก Merge หรือ Replace + Undo · ปุ่ม Restore from backup ในหน้าว่าง · **ของกลางใหม่:** `js/share.js` (รายละเอียด §3.3), `FX.flash`, `.fx-loader`, `C.dialog`, `C.share.provide`, `C.tm.mode()`, `importGrades` ใน grade.js · **ไฟล์ใหม่:** `js/share.js` · **ไฟล์ที่แก้:** `index.html`, `js/app.js` (route `#tier/s/…`, ส่งออก `hash`), `js/fx.js`, `js/grade.js`, `js/tier.js`, `js/tiermaker.js`, `css/fx.css`, `css/tiermaker.css`, `PROGRESS.md` (ไม่มีการเปลี่ยน data/ รูป) · ผลทดสอบ + หมายเหตุให้ขั้น 10 อยู่ท้าย §10.3 · บั๊กเดิม "เปิดเว็บไม่มี # แล้วเข้า Tier List เสมอ" ยังไม่ได้แก้ (รอเจ้าของสั่ง) · **ข้อจำกัดที่รู้:** ป้ายแถวยาวมากในรูปถูกตัดท้าย (ไม่มี …) ; ลิงก์ของ list ใหญ่มากยาวหลายพันตัวอักษร (บางแอปแชทอาจตัด — มีข้อความเตือนในกล่อง)
-- 2026-10-24: **ขั้นที่ 9.5 เสร็จ (ลื่นบนเครื่องสเปกต่ำ)** — **พื้นหลังดาว:** เลิกวาด canvas ทุกเฟรม → SVG 3 ชั้นวาดครั้งเดียว เลื่อน/กระพริบด้วย CSS, parallax ด้วย paused animation (ไม่มี rAF วน) · สีพื้นไล่เฉดย้ายจาก `body` (แบบ fixed) ไปที่ `#starfield` · **แท็บ lazy:** การ์ดของ Cards / Grade / Support / Deck / Global สร้างตอนเปิดแท็บครั้งแรก (`C.lazy`) · **aura เล่นเฉพาะบนจอ** (`.is-live` + IntersectionObserver) · **blur** เหลือแค่หัวเว็บกับเมนูล่าง กล่องอื่นใช้ `--glass-under` · **การ์ดตอนอยู่เฉยๆ เป็น 2D** (3D เฉพาะตอนเอียง) · `FX.tilt` ปล่อยการ์ดเมื่อนิ้วลากขึ้นลง · **Lite mode อัตโนมัติ** (`html.lite`, `FX.lite`, `FX.probe`) · **รูป:** thumb 300×420 สำหรับการ์ดเล็ก + lazy/async/width/height (`C.artImg`, `C.bindArt`) · งานประจำ A ต้องทำ thumb ด้วย · **Tier Maker:** ผีการ์ดตอนลากใช้ paused animation (`ghostAxis`) แทนการเขียน style ทุกครั้งที่ขยับนิ้ว · ผลวัดอยู่ใน §11.4 (ตัวอย่าง: Ascended หน้า Cards 11 → 55 fps, Tier 9 → 45 fps) · **ไฟล์ที่แก้:** `index.html` (`#starfield` เป็น div), `css/base.css`, `css/tokens.css`, `css/fx.css`, `css/cards.css`, `css/grade.css`, `css/support.css`, `css/tiermaker.css`, `js/fx.js`, `js/app.js`, `js/cards.js`, `js/tier.js`, `js/deck.js`, `js/support.js`, `js/grade.js`, `js/tiermaker.js`, `PROGRESS.md` (ไม่มีไฟล์ใหม่ ไม่แตะ data/ และ images/) · ไม่เปลี่ยน route, localStorage keys, ลิงก์แชร์, ไฟล์สำรอง · **รอเจ้าของตอบ 3 ข้อใน §11.5** (ดาวกระพริบทีละชั้น, กรอบที่ไม่ได้หมุนจริง, Ascended เต็มจอ)
-- 2026-10-24: **วางแผนขั้น 9.6 (หน้าตาใหม่แนว Silver Palace + เพลง)** ลง §12 · เจ้าของเลือกเปลี่ยน UI ก่อนทำขั้น 10–11 · ทำเป็น 2 แชท: 9.6a mockup → 9.6b ทั้งเว็บ · เพลง: เจ้าของหาไฟล์ฟรีมาอัปที่ `audio/bgm.mp3` · หมายเหตุ: หลังอัปขั้น 9.5 มือถือเจ้าของค้าง "Loading…" เพราะเบราว์เซอร์ใช้ `js/fx.js` ตัวเก่าที่จำไว้ คู่กับ `index.html` ใหม่ (ไฟล์บน GitHub ถูกต้องครบ) → ล้างแคชแล้วหาย · เสนอใส่เลขเวอร์ชันท้ายไฟล์ใน 9.6b (§12.4)
-- 2026-10-24: **ขั้นที่ 9.6a เสร็จ (mockup "Gilded Nocturne")** — ไฟล์ใหม่ `mockup/gilded-nocturne.html` (HTML ไฟล์เดียว ไม่แตะเว็บจริง, วาดเองทั้งหมดไม่ใช้ของจากเกม) แสดงครบ: หน้าโหลด, หัวเว็บ + เมนูล่าง (มือถือ) / เมนูซ้าย (คอม), 5 แท็บ, การ์ด 7 ระดับกรอบรูปทอง, หน้ารายละเอียด, กล่องถาม, toast, ปุ่มเพลง · token ใหม่อยู่ใน `:root` ของไฟล์ ย้ายไป `css/tokens.css` ได้ตรงๆ · แก้บั๊กกรอบไม่หมุนจริงใน mockup แล้ว · ผล + วิธีย้ายไปเว็บจริง + **5 คำถามให้เจ้าของตอบ** อยู่ใน §12.6 · **ไฟล์ที่แก้:** `PROGRESS.md` · ไม่แตะไฟล์อื่นของเว็บ · หมายเหตุ: PROGRESS.md บน GitHub เคยถูกอัปเป็น zip (`PROGRESS_step9.6-plan.zip`) เจ้าของแตกไฟล์และลบ zip แล้ว
-- 2026-10-24: **ขั้นที่ 9.6b เสร็จ (หน้าตา "Gilded Nocturne" ทั้งเว็บ + เพลง)** — เจ้าของตอบ §12.6 ครบ (ไม่มีละอองบนการ์ดเล็ก, ตราครั่งกลม, สีอัญมณี, พื้นหลังตาม mockup, ใส่เลขเวอร์ชัน) · token ใหม่ทั้งชุด, พื้นหลังเมือง `FX.backdrop` (แทน `FX.starfield`), หน้าโหลดนาฬิกาพก, หัวเว็บ + เมนูล่างทองเหลือง / เมนูซ้ายบนคอม ≥ 1100px, ไอคอนวาดใหม่, กล่องทองมุมตัด + ลายมุม, กรอบการ์ดทอง 7 ระดับ (หมุนจริงแล้ว), ตราครั่ง tier, เหรียญเกรด, Tier Maker / กล่องถาม / toast ธีมใหม่, รูปที่บันทึก + og.png + icon ใหม่, ปุ่มเพลง (`js/music.js`), `?v=9.6` · ปิด 3 ข้อของ §11.5 · ความเร็วไม่ช้ากว่าเดิม และ Ascended ดีขึ้นมาก (My Lists 31 → 58 fps) · ผลทั้งหมด + รายการไฟล์ใน §12.7 · **ไฟล์ที่แก้:** `index.html`, `css/` 9 ไฟล์, `js/fx.js`, `js/app.js`, `js/share.js`, `js/support.js`, `images/og.png`, `images/icon-192.png`, `PROGRESS.md` · **ไฟล์ใหม่:** `js/music.js`
-- 2026-10-24: **ขั้นที่ 10 เสร็จ (หน้า Deck: จัดทีมเอง)** — หน้า Deck มีแท็บย่อย **My Decks | Meta Decks** · **My Decks:** หน้ารวม (`#deck`) แสดง deck ทั้งหมดพร้อมแถบการ์ด 5 ใบ + จุด support · New deck (ตั้งชื่อ + เลือกโหมด) / Rename / Duplicate / Delete (มีกล่องยืนยัน) / Backup · **editor** (`#deck/my/<id>`): การ์ด 5 ช่อง (Slot 1–5) + support 5 ช่อง · โหมด Tower · PvP · Story · Boss (Boss ขึ้น Soon กดไม่ได้ แต่ข้อมูลรองรับแล้ว) · ระดับการ์ดต่อ deck · วงคะแนนแสดง "—" · แตะช่องว่าง = ตัวเลือกการ์ด (ค้นหา, กรอง Tier/Role/Series, การ์ดซ้ำใน deck กดไม่ได้) · ลากหรือแตะการ์ดแล้วแตะช่องปลายทาง = ย้าย/สลับ · × ลบ + Undo · Undo/Redo 50 ขั้น · Details → Back กลับมาที่ deck เดิมสภาพเดิมและ scroll เดิม (ทั้งการ์ดและ support) · บันทึกอัตโนมัติ `cbi:decks` · **แชร์:** Save as image (รูป deck 1200px), Share link `#deck/s/<data>` (เปิดดูอย่างเดียว + Save a copy ได้ชุดเดียวต่อลิงก์), ไฟล์สำรองมี `decks` (merge/replace/Undo) · **Meta Decks:** ปุ่ม Copy to My Decks ทุกทีม
-  - **ไฟล์ที่เปลี่ยน:** `js/deck.js` (เขียนใหม่ ~1500 บรรทัดรวมคอมเมนต์), `js/share.js` (+`deckImage`/`deckImageDialog`, แยก `paintBackdrop`/`paintRibbon`/`paintFooter`, `linkDialog` รับ `what`, ข้อความสำรอง), `js/app.js` (เรียก `CBI.deck.show()` ใน `route()`/`go()`, `tierY` ใช้กับหน้า Deck, `deck.enter({restore})`), `css/deck.css` (+สไตล์ `.dk-*`), `index.html` (markup หน้า Deck ใหม่ + `?v=10` ทุกบรรทัด), `PROGRESS.md`
-  - **ทดสอบ (Chromium, การ์ดทดสอบ 26 ใบ + support 8 ใบ, ข้อมูลทดสอบไม่ได้อยู่ใน repo):** มือถือ 390px (touch) · 320px ไม่มี scroll แนวนอน · คอม 1280px · reduced motion · localStorage ถูกบล็อก · สร้าง/เปลี่ยนชื่อ/ทำสำเนา/ลบ · ตัวเลือกการ์ด + กรอง + ห้ามซ้ำ · แตะย้าย/สลับ · ลากด้วยเมาส์ + ลากด้วยนิ้ว (กดค้าง) + ขยับเลื่อนก่อนกดค้างไม่ยกการ์ด · × + Undo · Undo/Redo (ปุ่ม + คีย์ลัด) · โหมด/ระดับต่อ deck (ไม่เปลี่ยนระดับของทั้งเว็บ) · Details → Back (การ์ดและ support, scroll คืนที่เดิม) · แชร์ลิงก์ → เปิดในเครื่องใหม่ → Save a copy (ไม่ซ้ำ) · ลิงก์เสีย/ตัดสั้น/ข้อมูลไม่ถูกต้อง · XSS ในชื่อ deck และใน payload (ไม่ทำงาน) · ลิงก์ตรง `#deck`, `#deck/meta`, `#deck/my/<id>`, ไม่มี id → `#deck` · Copy to My Decks (แมปการ์ด/support ถูก, ชื่อซ้ำได้ `(copy)`) · สำรอง Export → ล้าง → Import (merge) → Undo · รูป deck + **รูป Tier List เหมือนเดิมทุกพิกเซล (SHA-256 ตรงเดิม)** · ไม่มี error ใน console · **ความเร็ว (§11.3 · CPU ×6, 390px, scroll 3 วิ, มัธยฐาน 3 รอบ):** หน้า editor Normal **60.3 fps** · Ascended **60.3 fps**
-  - **เจอระหว่างทำ (แก้แล้ว):** แถบคำสั่งตอนเลือกการ์ดบังแถว support ทำให้แตะช่องปลายทางไม่ได้ → เว้นที่ใต้ board ให้เลื่อนขึ้นมาเหนือแถบได้ + เลื่อนหน้าให้การ์ดที่เลือกอยู่เหนือแถบ · ป้าย tier มุมการ์ดถูกปุ่ม × ทับ → ซ่อนป้าย tier ในช่อง deck (เหมือนแถวใน Tier Maker)
-  - **ยังไม่ทำ (ตามแผน → ขั้น 11):** สูตรคะแนนทีม, ข้อดีข้อเสีย, แนะนำการ์ด, เทียบ 2 ทีม · คำถามค้าง: support ซ้ำใน deck เดียวได้ไหม (§8)
-- 2026-10-24: **ขั้นที่ 11 เสร็จ (คะแนนทีม)** — หน้า editor ของ Deck มี**วงคะแนน 1–100** (แดง/เหลือง/เขียว/รุ้ง 100 Perfect, ปัดลง) อัปเดตทันทีทุกครั้งที่เปลี่ยนการ์ด/support/โหมด/Undo · กล่อง **Score breakdown** (5 ส่วน + แถบ + สิ่งที่นับ + ป้าย Not enough data yet + คำเตือน unranked/ไม่มีในคลัง) · **Strengths & weaknesses** (Strong vs / Weak vs / Fits modes แตะเปลี่ยนโหมดได้) · **Fill the gaps** (3 การ์ด + 3 support ที่เพิ่มคะแนนมากสุด แตะใส่ได้เลย) · **Compare** 2 deck · ป้ายคะแนนในหน้ารวม · หน้าลิงก์แชร์มีคะแนนด้วย · สูตรสุดท้าย + สิ่งที่ปรับจากแผน + ผลทดสอบ + ความเร็วใน §10.5 · `data/meta.json` มี `modes` (น้ำหนักเท่ากันทุกโหมด รอคำตอบ §8)
-  - **ไฟล์ใหม่:** `js/teamscore.js` · **ไฟล์ที่แก้:** `js/deck.js`, `css/deck.css`, `css/tokens.css` (`--score-*`), `index.html` (markup คะแนน + โหลด teamscore.js + `?v=11` ทุกบรรทัด), `data/meta.json`, `PROGRESS.md`
-  - **เจอระหว่างทำ (แก้แล้ว):** กล่อง Compare ถูก `max-width: 420px` ของ `.tm-dlg__sheet` ทับ (tiermaker.css โหลดทีหลัง) → ใช้ selector `.tm-dlg__sheet.dk-cmp-sheet` · เปิดรายละเอียดจากชิปแล้วปิดกลับ หน้าเลื่อนไปหาการ์ดใบอื่น → ใช้ชิปเป็นจุดเริ่ม/จุดกลับ
-  - **ข้อสังเกต (ยังไม่แก้ นอกขอบเขต):** `.dk-pick-sheet { max-width: 560px }` ของตัวเลือกการ์ดขั้น 10 น่าจะโดน 420px ทับแบบเดียวกัน (บนคอมกล่องเลือกการ์ดแคบกว่าที่ตั้งใจ) แก้ได้ด้วย `.tm-dlg__sheet.dk-pick-sheet`
-- 2026-10-24: **Mockup "Black Sun Intro"** — ไฟล์ใหม่ `mockup/black-sun-intro.html` (ไม่แตะเว็บจริง) · รายละเอียด + ผลวัด §13
-- 2026-10-24: **Mockup "Black Sun Intro" v2** — การ์ด 3D หมุน/สะบัด/สปริง/ซูม, ละอองแสง, ปีกหนาขึ้น, เส้นชี้ไม่ทับข้อความ, จุดเลือกระดับ, Overall + แผ่น Details, การ์ดตัวอย่าง 3 ใบ · รายละเอียด + ผลวัด §13.1
-- 2026-10-24: **ย้ายเว็บไป Cloudflare Pages** (ลิงก์ใหม่ https://card-battle-infinity.pages.dev/ · Cloudflare ดึงไฟล์จาก repo เดิมอัตโนมัติ) — **เปลี่ยนลิงก์:** `index.html` (`canonical`, `og:url`, `og:image`, `twitter:image`, JSON-LD `url`), `robots.txt` (บรรทัด Sitemap), `sitemap.xml` (`<loc>` + `lastmod` เป็น 2026-10-24) · **สคริปต์ redirect** ใน `<head>` ของ `index.html` (อยู่ก่อน `<title>`): ถ้า hostname เป็น `github.io` (`/(^|\.)github\.io$/`) → `location.replace("https://card-battle-infinity.pages.dev/" + search + hash)` รักษา `#hash` (เช่น `#card/...`, `#tier/s/...`) · บน `pages.dev`, `localhost`, ลิงก์ preview ไม่ทำอะไร จึงไม่วน · `googleac6eef435a8d1c66.html` ไม่ได้แตะ · `js/share.js` ไม่ต้องแก้ (ลายน้ำอ่านจาก canonical อัตโนมัติ ส่วนลิงก์แชร์ใช้ `location.origin` จึงเป็นลิงก์ใหม่เอง)
-  - **ทดสอบ:** จำลองสคริปต์กับ hostname 8 แบบ (github.io พร้อม/ไม่มี hash/query, pages.dev, preview subdomain, localhost, `github.io.evil.com`) → redirect เฉพาะ `sunhoaass.github.io` และรักษา hash · ค้น `github.io` / `Card_Ascension` ใน `index.html`, `robots.txt`, `sitemap.xml` ไม่เหลือลิงก์เก่า
-  - **ไอคอนเว็บใหม่ (เจ้าของดูภาพตัวอย่างแล้วอนุมัติ):** การ์ด 2 ใบ (ฟ้า + ม่วง) ไขว้กันเป็น ∞ สีทอง มีขอบทองและลายข้าวหลามตัดในแต่ละการ์ด วาดเองด้วย SVG (ไม่ใช้ของจากเกม) · สีมาจาก `css/tokens.css`: ฟ้า `--t-c` `#62a5d8`, ม่วง `--flux` `#9b86d6`, ทอง `--gold` `#d8b46a` / `--gold-hi` / `--gold-lo`, พื้น `--void` `#0b1020` / `--nebula` `#1a2238` · **หมายเหตุ:** `--rift` ตอนนี้เป็นสีทอง (ธีม Gilded Nocturne) ไม่ใช่สีฟ้าแล้ว จึงใช้ `--t-c` เป็นสีฟ้าของการ์ด
-    - ไฟล์: `images/favicon.svg` (เวอร์ชันเรียบ ไม่มีกรอบ/แสงฟุ้ง), `images/favicon-48.png`, `images/apple-touch-icon.png` (180px พื้นทึบเต็มช่อง ไม่โปร่งใส เพราะ iOS ตัดมุมเอง), `images/icon-192.png` (**ทับของเดิม**), `images/icon-512.png`, `site.webmanifest` (root: ชื่อ, `start_url` `./`, `display: standalone`, สีพื้น/ธีม `#0b1020`, ไอคอน 192 + 512)
-    - `index.html`: แทนที่ลิงก์ไอคอนเดิม 3 บรรทัด (รวม favicon แบบ data URI เดิม) ด้วย `favicon.svg`, `favicon-48.png`, `icon-192.png`, `apple-touch-icon.png` (180) และ `<link rel="manifest">` · ทุกลิงก์ต่อท้าย `?v=2` เพื่อให้เบราว์เซอร์ทิ้งไอคอนเก่าที่จำไว้ · `images/og.png` (รูปตอนแชร์ลิงก์) **ไม่ได้เปลี่ยน**
-    - ถ้าจะแก้ไอคอนอีก: เปลี่ยนเลข `?v=2` เป็น `?v=3` ทุกลิงก์ไอคอนใน `index.html` และใน `site.webmanifest`
-  - **ไฟล์ที่ต้องอัปขึ้น GitHub:**
-
-    | ไฟล์ | โฟลเดอร์บน GitHub |
-    |---|---|
-    | `index.html`, `robots.txt`, `sitemap.xml`, `site.webmanifest` **(ใหม่)**, `PROGRESS.md` | หน้าแรกของ repo (root) |
-    | `favicon.svg` **(ใหม่)**, `favicon-48.png` **(ใหม่)**, `apple-touch-icon.png` **(ใหม่)**, `icon-512.png` **(ใหม่)**, `icon-192.png` (**ทับของเดิม**) | `images/` |
-  - ไม่ต้องใส่เลข `?v=` ใหม่ของ CSS/JS (ไม่ได้แก้ CSS/JS) · ไม่แตะ `googleac6eef435a8d1c66.html`, `images/og.png`, `css/`, `js/`, `data/`, `mockup/` · ใน zip มีโครงโฟลเดอร์ตรงกับ repo (แตก zip แล้วลากทับของเดิม)
-- 2026-10-24: **ขั้น 12 เสร็จ (หน้ารายละเอียดการ์ด "Black Sun")** — เอา Mockup v2 เข้าเว็บจริง (`js/detail.js` + `css/detail.css` ใหม่) ใช้ข้อมูลจริง เปิดได้จากทุกหน้า (Grade เพิ่มปุ่ม Card details) · ปัดซ้ายขวาตามรายการที่เปิดมา (เก็บใน `history.state.cl`) · Back กลับที่เดิมสภาพเดิม · layout แท็บเล็ต/คอม (ป้ายซ้ายขวาข้อความเต็ม การ์ดใหญ่ตามจอ) · คำตอบ §13.1 + ข้อยกเว้น 900ms ใน §4 · ความเร็วเทียบ mockup บนเครื่องเดียวกัน (เท่าหรือเร็วกว่าทุกกรณี) · รอคำตอบ §14.5 · รายละเอียด §14 · ไฟล์ §14.6
-- 2026-10-24: เจ้าของอัปไฟล์ขั้น 12 ขึ้น GitHub แล้ว (Claude เช็คแล้ว 10 ไฟล์ตรงกันทุกตัวอักษร) · ตอบ §14.5 ข้อ 1 = (ก) ยอมรับความเร็ว ไม่ลดเอฟเฟกต์
-- 2026-10-24: **งานประจำ A เสร็จ (การ์ดจริง 4 ใบ)** — ตัดรูปจากแคป Index ในเกม (จอ 2400×1080) ตัดตามขอบในของกรอบเงิน (x 614–1048, y 313–917) → `images/cards/<id>.webp` 600×840 + `images/cards/thumb/<id>.webp` 300×420 · เพิ่มลง `data/cards.json` (ยังไม่ให้คะแนน: `scores` เป็น 0 ทั้งหมด, `tier` = "", `role` = "", `exact` = {}, `def`/`status` = 0 → เว็บแสดง Unranked)
-  - ข้อมูลที่อ่านจากรูป (ค่าระดับ **Normal**, `odds` = เลขเต็มจากช่อง "1 in …" ในหน้ารายละเอียดของเกม):
-
-    | id | ชื่อ | ซีรีส์ | ATK | HP | odds (1 in) | ชื่อความสามารถ |
-    |---|---|---|---:|---:|---:|---|
-    | `dragon-emperor-monarch` | Dragon Emperor Monarch | Solo Leveling | 763,942 | 5,092,944 | 5,523,945,238 | Monarch of Destruction |
-    | `moon-eye-ghost` | Moon Eye Ghost | Naruto | 438,047 | 2,920,312 | 3,679,415,015 | Infinite Tsukuyomi |
-    | `atomic-shadow-lord` | Atomic Shadow Lord | The Eminence in Shadow | 484,946 | 3,232,976 | 9,496,060,703 | I AM ATOMIC |
-    | `beast-emperor` | Beast Emperor | One Piece | 862,040 | 5,746,932 | 2,806,284,629 | Strongest Creature |
-
-  - **สิ่งที่ตั้งสมมติฐานไว้ (รอเจ้าของยืนยัน):** (1) รูปทั้ง 4 ใบเป็นระดับ **Normal** — ดูจากกรอบสีเงินไม่มีแสงตรงกับตาราง §3 และหน้า Index ของเกมแสดงโอกาสเดียวต่อการ์ด (ไม่มีชื่อระดับในรูป) · ถ้าจริงๆ เป็นระดับอื่น ต้องหารตัวคูณ §5.1 แล้วเก็บค่าในรูปไว้ใน `exact` (2) ความสามารถที่เห็นมี **ช่องเดียว** ไม่บอกว่า Passive หรือ Skill → ใส่ใน `passive` ส่วน `skill` เว้นว่าง (เหมือนตัวอย่าง Bald Cadet)
-  - ตรวจแล้ว: HP ÷ ATK ของทั้ง 4 ใบ = 6.667 เท่ากัน (เหมือน Bald Cadet) · เลข odds ย่อบนการ์ด (5.5B / 3.7B / 9.5B / 2.8B) ตรงกับเลขเต็ม · ข้อความความสามารถอ่านจากการ์ดและหน้ารายละเอียดเทียบกันแล้วตรง
-  - **ข้อจำกัดของรูป:** รูปตัดจากแคปเกม จึงมีตัวหนังสือของเกม (ชื่อ, HP, ATK, ป้าย 1 IN …B) ติดมาในรูป · ชื่อการ์ดตัวอักษรแรกๆ ถูกตัดเล็กน้อยเพราะเกมวางชื่อทับขอบกรอบ · Moon Eye Ghost มีป้าย ×3 (จำนวนที่เจ้าของมี) ติดมุมขวาล่าง · ถ้าอยากได้รูปสะอาดกว่านี้ ให้แคปจากหน้าอื่นของเกมหรือส่งรูปใหม่
-  - **ไฟล์ที่เปลี่ยน:** `data/cards.json` (แทนที่ `[]`), `images/cards/` ใหม่ 4 ไฟล์, `images/cards/thumb/` ใหม่ 4 ไฟล์, `PROGRESS.md` · **ไม่แตะ** CSS/JS/`index.html` (จึงไม่ต้องเปลี่ยนเลข `?v=`) · เว็บโหลด `data/*.json` แบบ `no-cache` จึงไม่ต้องล้างแคช
-  - **ไฟล์ที่ต้องอัปขึ้น GitHub:**
-
-    | ไฟล์ | โฟลเดอร์บน GitHub |
-    |---|---|
-    | `PROGRESS.md` | หน้าแรกของ repo (root) |
-    | `cards.json` (**ทับของเดิม**) | `data/` |
-    | `dragon-emperor-monarch.webp`, `moon-eye-ghost.webp`, `atomic-shadow-lord.webp`, `beast-emperor.webp` (**ใหม่**) | `images/cards/` (ต้องสร้างโฟลเดอร์ `cards` ใน `images/` ก่อน) |
-    | `dragon-emperor-monarch.webp`, `moon-eye-ghost.webp`, `atomic-shadow-lord.webp`, `beast-emperor.webp` (**ใหม่ รูปเล็ก 300×420**) | `images/cards/thumb/` |
-  - ใน zip มีโครงโฟลเดอร์ตรงกับ repo (แตก zip แล้วลากทับของเดิม) · ชื่อไฟล์รูปใน `cards/` และ `thumb/` ซ้ำกัน ระวังอย่าวางผิดโฟลเดอร์
-- 2026-10-24: **งานประจำ B เสร็จ (การ์ด 4 ใบ)** — วิธีคิดทั้งหมดอยู่ใน §7 B "วิธีที่ใช้ในงาน B" · ข้อมูลยังเป็นสมมติฐานที่รอเจ้าของยืนยัน (ดู "▶️ ขั้นถัดไป")
-
-    | การ์ด | ATK | HP | Passive | Skill | Matchup | Team | **Overall** | Tier | Role | ตำแหน่ง |
-    |---|---:|---:|---:|---:|---:|---:|---:|---|---|---|
-    | Beast Emperor | 100 | 100 | 86 | 86 | 68.8 | 78 | **83.6** | **S** | Tank | 4–5 |
-    | Dragon Emperor Monarch | 75 | 75 | 93 | 93 | 55.4 | 92 | **78.9** | **A** | Hybrid | 1 |
-    | Moon Eye Ghost | 25 | 25 | 88 | 88 | 47.0 | 88 | **62.0** | **B** | DPS | 2 |
-    | Atomic Shadow Lord | 50 | 50 | 82 | 82 | 28.8 | 72 | **58.7** | **C** | DPS | 3 |
-
-  - ผลจำลอง 1-1 (เฉลี่ย 2 แบบตีก่อน · % HP ที่ผู้ชนะเหลือ): BE ชนะ DEM (40%) · BE ชนะ MEG (20%) · BE ชนะ ASL (54%) · DEM ชนะ MEG (24%) · DEM ชนะ ASL (49%) · MEG ชนะ ASL (26%) · ทุกคู่ชนะ ≥ 99% ของรอบสุ่ม ผลจึงนิ่ง
-  - ใส่ครบทุก field ของ §7 B: `scores`, `tier`, `role`, `tags`, `weakTo`, `modes{tower,pvp,story,boss}`, `strengths`, `weaknesses`, `beats`, `losesTo`, `team.position`, `team.bestWith`, `notes` · `team.bestSupport` = `[]` (ยังไม่มี support) · ไม่มี tag ไหนที่ ≥ 3 ใบแพ้ทางซ้ำ
-  - `data/teams.json`: ลบทีม mock 2 ทีม → ทีมจริง **Emperor Wall** (DEM → MEG → ASL → BE · ช่อง 5 ว่าง · ยังไม่มี support) · คะแนนทีมโหมด Tower = **68** (Power 0.86 · Synergy 0.80 · Coverage 0 เพราะไม่มีใครชนะ BE ซึ่งเป็นการ์ด S ใบเดียว · Roles 0.96 · Position 0.80)
-  - `data/meta.json`: แก้แค่ `updated` เป็น 2026-10-24 (หน้าเว็บแสดงวันอัปเดต)
-  - **แก้รูปอัปผิดโฟลเดอร์:** ใน repo รูป 4 ใบอยู่ที่ `images/` แต่ `cards.json` ชี้ไป `images/cards/` → ใส่รูปเดิมใน `images/cards/` + ทำรูปเล็ก 300×420 ใน `images/cards/thumb/` ใหม่จากรูปเดิม
-  - ทดสอบ (Chromium 390px): Tier List ขึ้น S/A/B/C ถูกแถว · หน้ารายละเอียดมีรูป, Strongest/Weakness, Overall 84 · Deck → Meta Decks แสดง Emperor Wall ช่อง 1–4 · ไม่มี JS error (404 เดียวคือ `audio/bgm.mp3` ซึ่งไม่มีใน repo ตั้งแต่ก่อนงานนี้) · ไม่แตะ CSS/JS/`index.html` จึงไม่ต้องเปลี่ยน `?v=`
-  - **ไฟล์ที่ต้องอัปขึ้น GitHub:**
-
-    | ไฟล์ | โฟลเดอร์บน GitHub |
-    |---|---|
-    | `PROGRESS.md` | หน้าแรกของ repo (root) |
-    | `cards.json`, `teams.json`, `meta.json` (**ทับของเดิม**) | `data/` |
-    | `dragon-emperor-monarch.webp`, `moon-eye-ghost.webp`, `atomic-shadow-lord.webp`, `beast-emperor.webp` | `images/cards/` (โฟลเดอร์ใหม่) |
-    | 4 ไฟล์ชื่อเดียวกัน (รูปเล็ก 300×420) | `images/cards/thumb/` (โฟลเดอร์ใหม่) |
-  - หลังอัป: ลบ 4 ไฟล์ `.webp` การ์ดที่อยู่ตรง `images/` ได้ (ไม่ได้ใช้แล้ว) · ใน zip มีโครงโฟลเดอร์ตรงกับ repo (แตก zip แล้วลากทับของเดิม)
-- 2026-10-24: **เพิ่ม Tier GOD (เจ้าของสั่ง)** — Tier ตอนนี้ = **GOD ≥ 95 · SS 90–94** · S / A / B / C / D เหมือนเดิม · **GOD + SS = การ์ด Meta** · เจ้าของตอบคำถามงาน B แล้ว: การ์ดเป็น Normal และมีความสามารถช่องเดียว → ข้อมูลการ์ดถูกแล้ว ไม่ต้องแก้ `cards.json` (ยังไม่มีใบไหนถึง 90 จึงยังไม่มีการ์ด GOD/SS)
-  - `data/meta.json`: เพิ่ม `{ "name": "GOD", "min": 95 }` บนสุด · ทุกหน้าที่สร้างแถว/ชิปจาก `meta.tiers` (Tier List, Cards, Support, Tier Maker, Deck) ได้ GOD อัตโนมัติ
-  - `css/tokens.css`: `--t-god: #e2453c` (แดงเปลวไฟ แยกจาก SS ที่เป็นชมพูทับทิม) · `js/app.js`: `TIER_COLOR.GOD`
-  - ป้าย 3 ตัวอักษรไม่ล้น: ตราวงกลมบนการ์ด/support ใส่ class `card__tier--long` / `scard__tier--long` (ตัวหนังสือเล็กลงในวงเดิม · `css/fx.css`) · ช่องชื่อแถวใน Tier List ใส่ `tier-row__name--long` (`css/tier.css`)
-  - คะแนนทีม (`js/teamscore.js`): `K.threatTiers` = `["GOD", "SS"]` (เดิม SS/S) · ข้อความ "Beats N of M Meta cards" · ถ้ามีข้อมูล beats แต่ยังไม่มีการ์ด Meta ในคลัง ขึ้นว่า "no Meta (GOD/SS) cards in the library yet" (ได้ครึ่งเหมือนเดิม) · `js/deck.js` ข้อความ "N Meta cards have no answer" · `js/tier.js` คำอธิบายหน้า "from GOD at the top … GOD and SS are the Meta cards" · `js/tiermaker.js` ข้อความ "Rows GOD to D"
-  - Tier Maker: list เดิมที่ผู้ใช้เก็บไว้ไม่เสีย (แถวชื่อ SS…D ยังจับคู่ตามชื่อ) · list ใหม่แบบ blank / copy Global ได้ 7 แถว GOD–D · แถวที่ตั้งชื่อเองจะเทียบตามลำดับ (แถว 1 = GOD)
-  - ทดสอบ (Chromium · ข้อมูลทดสอบแยกไม่อยู่ใน repo: BE = GOD 96, DEM = SS 91, support ทดสอบ GOD 96): แถว GOD/SS บนสุด, ป้าย GOD ไม่ล้นที่ 320 / 390 / 1280px, ไม่มี scroll แนวนอน, ชิปกรอง GOD ในหน้า Cards/Support, หน้ารายละเอียดตรา GOD, คะแนนทีม "Beats 1 of 2 Meta cards" · ไม่มี JS error · ทุกไฟล์ `?v=13`
-  - **ไฟล์ที่ต้องอัปขึ้น GitHub:**
-
-    | ไฟล์ | โฟลเดอร์บน GitHub |
-    |---|---|
-    | `index.html`, `PROGRESS.md` | หน้าแรกของ repo (root) |
-    | `meta.json` | `data/` |
-    | `tokens.css`, `fx.css`, `tier.css` | `css/` |
-    | `app.js`, `support.js`, `teamscore.js`, `deck.js`, `tier.js`, `tiermaker.js` | `js/` |
-    | รูปเล็ก 4 ไฟล์ `.webp` (300×420) | `images/cards/thumb/` (สร้างโฟลเดอร์ `thumb` ใน `images/cards/`) |
-  - หลังอัป: ลบโฟลเดอร์ `images/thumb/` (อยู่ผิดที่) และไฟล์ `images/cards/s` · ไฟล์ CSS/JS อื่นเนื้อหาไม่เปลี่ยน ไม่ต้องอัป · ใน zip มีโครงโฟลเดอร์ตรงกับ repo (แตก zip แล้วลากทับของเดิม)
