@@ -86,6 +86,12 @@
   --g-rainbow-line: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0);   /* grade-10 bar, spread across the 10 segments */
   --g-empty: rgba(216, 180, 106, 0.14);   /* unfilled bar segment / no grade yet */
 
+  /* ---- Team score bands (step 11 · Deck page) · 1–49 red · 50–79 yellow · 80–99 green · 100 rainbow ---- */
+  --score-bad: #e0687a;
+  --score-mid: #e8c35a;
+  --score-good: #84d295;
+  --score-perfect: var(--r-rainbow);
+
   /* ---- Type ---- */
   --font-display: "Cinzel", "Cormorant SC", Georgia, serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;

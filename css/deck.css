@@ -1,10 +1,11 @@
 /* ==========================================================
-   Deck page · step 7: Meta Decks · step 10: the deck builder (.dk-*)
+   Deck page · step 7: Meta Decks · step 10: the deck builder (.dk-*) · step 11: team score + analysis
    Colors, spacing, type and motion all come from tokens.css. Buttons, dialogs, list rows, the command bar and the dragged
    ghost are shared with the Tier Maker (css/tiermaker.css: .tm-btn .tm-bar .tm-title .tml .tm-act .tm-ghost .tm-layer .tm-dlg).
    ========================================================== */
 [hidden].deck-list, [hidden].rarity-picker, #deck-my[hidden], #deck-meta[hidden], #dk-index[hidden], .dk-editor[hidden],
-[hidden].dk-x, [hidden].dk-pick__filters, [hidden].dk-pick__empty { display: none; }
+[hidden].dk-x, [hidden].dk-pick__filters, [hidden].dk-pick__empty,
+[hidden].dk-analysis, [hidden].dk-notes, [hidden].dk-part__flag, [hidden].dk-sug, [hidden].dk-sw__note { display: none; }
 
 /* ---------- Meta decks ---------- */
 .decks { margin-top: var(--s-2); }
@@ -83,24 +84,67 @@
 .dk-seg { margin-bottom: 0; }
 .dk-rarity { margin-bottom: var(--s-2); }
 
-/* team score: a ring with the number inside. Step 10 shows "—"; step 11 fills it (CBI.deck.paintScore) */
+/* team score (step 11): a ring with the number inside · bands from tokens.css (--score-*) · CBI.deck.paintScore */
 .dk-scorebox { min-width: 0; }
+.dk-scorebox--shared { max-width: 440px; margin-bottom: var(--s-2); }
 .dk-score {
   display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) var(--s-3);
   border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: var(--panel-fill);
-  --ring: var(--gold);
+  --band: var(--gold);
 }
-.dk-score[data-band="none"] { --ring: var(--ink-faint); }
+.dk-score[data-band="bad"] { --band: var(--score-bad); }
+.dk-score[data-band="mid"] { --band: var(--score-mid); }
+.dk-score[data-band="good"] { --band: var(--score-good); }
+.dk-score[data-band="none"] { --band: var(--ink-faint); }
 .dk-score__ring { position: relative; flex: none; width: 56px; height: 56px; display: grid; place-items: center; }
 .dk-score__ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
 .dk-score__track, .dk-score__val { fill: none; stroke-width: 6; }
 .dk-score__track { stroke: var(--glass-line); }
-.dk-score__val { stroke: var(--ring); stroke-linecap: round; }
-.dk-score__num { position: relative; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); color: var(--ink); }
+.dk-score__val { stroke: var(--ink-faint); stroke-linecap: round; }
+.dk-score__val[data-band="bad"] { stroke: var(--score-bad); }
+.dk-score__val[data-band="mid"] { stroke: var(--score-mid); }
+.dk-score__val[data-band="good"] { stroke: var(--score-good); }
+/* 100: the arcs give way to a rainbow ring that turns while on screen (.is-live, step 9.5 rule) */
+.dk-score__halo {
+  position: absolute; inset: 0; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: var(--score-perfect);
+  -webkit-mask: radial-gradient(closest-side, transparent 76%, #000 77.5%, #000 91.5%, transparent 93%);
+          mask: radial-gradient(closest-side, transparent 76%, #000 77.5%, #000 91.5%, transparent 93%);
+}
+.dk-score[data-band="perfect"] .dk-score__halo { opacity: 1; }
+.dk-score[data-band="perfect"] .dk-score__val { visibility: hidden; }
+.dk-score.is-live[data-band="perfect"] .dk-score__halo { animation: dk-turn 6s linear infinite; }
+@keyframes dk-turn { to { transform: rotate(360deg); } }
+.dk-spark {
+  position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: var(--lamp); box-shadow: 0 0 8px var(--lamp);
+}
+.dk-score__num { position: relative; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); color: var(--ink); font-variant-numeric: tabular-nums; }
 .dk-score[data-band="none"] .dk-score__num { color: var(--ink-faint); }
-.dk-score__text { display: grid; gap: 2px; min-width: 0; }
+.dk-score__text { display: grid; gap: 1px; min-width: 0; }
 .dk-score__text b { font-family: var(--font-display); font-size: var(--fs-sm); letter-spacing: .06em; color: var(--gold-hi); }
+.dk-score__label { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); letter-spacing: .04em; color: var(--band); }
+.dk-score__label:empty { display: none; }
+.dk-score[data-band="perfect"] .dk-score__label { background: var(--g-rainbow-line); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .dk-score__text small { font-size: var(--fs-xs); color: var(--ink-dim); line-height: 1.35; }
+.dk-score__text small:empty { display: none; }
+
+/* a small score badge (Fits modes, compare) and the one on each row of My Decks */
+.dk-pill, .dkl__score { --band: var(--ink-faint); color: var(--band); border: 1px solid color-mix(in srgb, var(--band) 55%, transparent); background: color-mix(in srgb, var(--band) 12%, transparent); }
+:is(.dk-pill, .dkl__score)[data-band="bad"] { --band: var(--score-bad); }
+:is(.dk-pill, .dkl__score)[data-band="mid"] { --band: var(--score-mid); }
+:is(.dk-pill, .dkl__score)[data-band="good"] { --band: var(--score-good); }
+:is(.dk-pill, .dkl__score)[data-band="perfect"] { color: var(--on-gold); border-color: transparent; background: var(--score-perfect); }
+.dk-pill {
+  flex: none; min-width: 38px; padding: 2px 8px; border-radius: var(--r-pill); text-align: center;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xs); font-variant-numeric: tabular-nums;
+}
+.dkl__score {
+  flex: none; margin-left: auto; min-width: 50px; padding: 4px 6px; border-radius: var(--r-chip);
+  display: grid; justify-items: center; line-height: 1.1;
+}
+.dkl__score b { font-family: var(--font-display); font-size: var(--fs-lg); font-variant-numeric: tabular-nums; }
+.dkl__score small { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
 
 /* ---------- The board: 5 card slots over 5 support slots ---------- */
 .dk-board { display: grid; gap: var(--s-3); }
@@ -212,6 +256,123 @@
 }
 .dk-tile__tag--here { color: var(--on-gold); background: var(--brass-gold); border-color: #f6e2aa; }
 
+/* ==========================================================
+   Team analysis (step 11): Score breakdown · Strengths & weaknesses · Fits modes · Fill the gaps · Compare
+   ========================================================== */
+.dk-analysis { margin-top: var(--s-5); min-width: 0; }
+.dk-ana { display: grid; gap: var(--s-3); min-width: 0; }
+.dk-box { padding: var(--s-6) var(--s-5) var(--s-5); min-width: 0; }   /* gilded panel (base.css); padding clears the corner ornaments */
+.dk-box__head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--s-1) var(--s-3); margin-bottom: var(--s-3); }
+.dk-box__title { font-size: var(--fs-sm); letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.dk-box__sub { font-size: var(--fs-xs); color: var(--ink-faint); }
+.dk-box__lead { margin: calc(var(--s-1) * -1) 0 var(--s-3); font-size: var(--fs-sm); color: var(--ink-dim); }
+
+/* the 5 parts: name, points, a bar (transform only), what counted */
+.dk-parts { display: grid; gap: var(--s-3); margin: 0; padding: 0; list-style: none; }
+.dk-part { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; column-gap: var(--s-2); row-gap: 5px; }
+.dk-part__name { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: var(--fs-sm); font-weight: 500; }
+.dk-part__flag {
+  padding: 0 6px; border-radius: var(--r-pill); border: 1px dashed var(--glass-line);
+  font-size: 10px; font-weight: 500; line-height: 16px; color: var(--ink-faint);
+}
+.dk-part__pts { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dk-part__pts small { font-weight: 400; color: var(--ink-faint); }
+.dk-part__track { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: rgba(216, 180, 106, .12); overflow: hidden; }
+.dk-part__track i {
+  display: block; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
+  transform: scaleX(var(--v, 0)); transform-origin: left;
+  transition: transform var(--t-slow) var(--ease);
+}
+.dk-part.is-full .dk-part__track i { background: linear-gradient(90deg, var(--gold), var(--lamp)); }
+.dk-part__note { grid-column: 1 / -1; font-size: var(--fs-xs); color: var(--ink-dim); line-height: 1.4; }
+.dk-part.is-ahead .dk-part__pts::after { content: " ▲"; color: var(--good); font-size: 10px; }
+.dk-part.is-behind .dk-part__pts::after { content: " ▼"; color: var(--bad); font-size: 10px; }
+.dk-notes {
+  display: grid; gap: 4px; margin-top: var(--s-3); padding-top: var(--s-3);
+  border-top: 1px solid rgba(216, 180, 106, .18);
+  list-style: none; padding-left: 0; font-size: var(--fs-xs); color: var(--ink-dim); line-height: 1.4;
+}
+.dk-notes li { padding-left: 14px; position: relative; }
+.dk-notes li::before { content: "✦"; position: absolute; left: 0; color: var(--gold-lo); font-size: 9px; top: 2px; }
+
+/* Strong vs / Weak vs / Fits modes */
+.dk-sw + .dk-sw { margin-top: var(--s-4); }
+.dk-sw__h { display: flex; align-items: center; gap: 6px; margin-bottom: var(--s-2); font-size: var(--fs-xs); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+.dk-sw__h--good::before, .dk-sw__h--bad::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--good); }
+.dk-sw__h--bad::before { background: var(--bad); }
+.dk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dk-chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 10px; max-width: 100%;
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: rgba(216, 180, 106, .06);
+  font-size: var(--fs-xs); color: var(--ink); overflow-wrap: anywhere; text-align: left;
+}
+button.dk-chip { min-height: 40px; cursor: pointer; transition: border-color var(--t-med) var(--ease); }
+button.dk-chip:hover, button.dk-chip:focus-visible { border-color: var(--gold); }
+.dk-chip small { color: var(--ink-faint); }
+.dk-chip__tier { flex: none; padding: 0 5px; border-radius: 3px; background: var(--tc, var(--t-d)); color: var(--on-gold); font-family: var(--font-display); font-size: 10px; line-height: 16px; }
+.dk-chip--more, .dk-chip--team { color: var(--ink-dim); }
+.dk-sw__none { font-size: var(--fs-sm); color: var(--ink-faint); }
+.dk-sw__note { margin-top: 6px; font-size: var(--fs-xs); color: var(--ink-dim); }
+.dk-fits { list-style: none; display: grid; gap: 6px; margin: 0; padding: 0; }
+.dk-fit__btn {
+  width: 100%; min-height: 44px; display: flex; align-items: center; gap: var(--s-2); padding: 0 var(--s-3);
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: transparent; color: var(--ink); text-align: left;
+}
+button.dk-fit__btn { cursor: pointer; transition: border-color var(--t-med) var(--ease); }
+button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(--gold); }
+.dk-fit.is-on .dk-fit__btn { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 9%, transparent); }
+.dk-fit__rank { flex: none; width: 1.2em; font-family: var(--font-display); font-weight: 700; color: var(--gold); }
+.dk-fit__name { flex: 1; min-width: 0; font-size: var(--fs-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dk-fit__now { flex: none; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-hi); }
+
+/* Fill the gaps: 3 picks per kind, each a mini card with "+N" */
+.dk-sug + .dk-sug { margin-top: var(--s-3); }
+.dk-sug__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 400px; }
+.dk-sug__item {
+  position: relative; display: flex; flex-direction: column; gap: 4px; padding: 0; border: 0; background: none;
+  color: var(--ink); text-align: center; border-radius: var(--r-card); cursor: pointer;
+  transition: scale var(--t-fast) var(--ease);
+}
+.dk-sug__item:active { scale: .96; }
+.dk-sug__item:focus-visible { outline-offset: 3px; }
+.dk-sug__item .card, .dk-sug__item .scard { width: 100%; pointer-events: none; }
+.dk-sug__item .card__tag, .dk-sug__item .scard__tag { display: none; }
+.dk-sug__item .scard { --orn-s: 14px; }
+.dk-sug__item .scard__name { font-size: 9.5px; letter-spacing: 0; }
+.dk-sug__item .scard__info { padding: 20px 5px 6px; }
+.dk-sug__gain {
+  position: absolute; z-index: 4; top: -6px; left: -4px; padding: 1px 7px;   /* top-left: the tier seal sits top-right */ border-radius: var(--r-pill);
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xs);
+  color: var(--on-gold); background: var(--score-good); box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+}
+.dk-sug__slot { font-size: 11px; color: var(--ink-dim); }
+.dk-ana__foot { display: flex; justify-content: center; }
+.dk-ana__foot .tm-btn { min-height: 44px; }
+.dk-ana__foot svg { width: 16px; height: 16px; }
+
+/* Compare (dialog) */
+.tm-dlg__sheet.dk-cmp-sheet { max-width: 880px; }   /* beats .tm-dlg__sheet (tiermaker.css loads later) */
+.dk-cmp { display: grid; gap: var(--s-3); min-width: 0; }
+.dk-cmp__pick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
+.dk-cmp__pick .tm-field__label { display: block; margin-bottom: 4px; }
+.dk-cmp__pick .field select { min-height: 44px; font-size: var(--fs-sm); }
+.dk-cmp__verdict { text-align: center; font-family: var(--font-display); font-size: var(--fs-sm); color: var(--gold-hi); }
+.dk-cmp__cols { display: grid; gap: var(--s-3); min-width: 0; }
+.dk-cmp__deck { display: grid; gap: var(--s-3); align-content: start; min-width: 0; padding: var(--s-3); border-radius: var(--r-panel); border: 1px solid var(--glass-line); background: rgba(216, 180, 106, .03); }
+.dk-cmp__deck .dk-sw + .dk-sw { margin-top: 0; }
+.dk-cmp__head { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s-2); align-items: center; }
+.dk-cmp__tag { grid-row: span 2; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--brass-gold); color: var(--on-gold); font-family: var(--font-display); font-weight: 700; }
+.dk-cmp__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); overflow-wrap: anywhere; }
+.dk-cmp__meta { font-size: var(--fs-xs); color: var(--ink-dim); }
+@media (min-width: 720px) { .dk-cmp__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+@media (min-width: 900px) {
+  .dk-ana { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; max-width: 980px; }
+  .dk-box--wide { grid-column: 1 / -1; }
+  .dk-box { padding: var(--s-6); }
+}
+
 /* ---------- Bigger screens ---------- */
 @media (min-width: 600px) {
   .deck__copy { margin-left: auto; }
@@ -228,5 +389,7 @@
 /* ---------- Reduced motion: fades only ---------- */
 @media (prefers-reduced-motion: reduce) {
   .dk-item.is-selected, .dk-item.is-pressing { translate: none; scale: none; }
-  .dk-tile:active:not(.is-used) { scale: none; }
+  .dk-tile:active:not(.is-used), .dk-sug__item:active { scale: none; }
+  .dk-part__track i { transition: none; }
+  .dk-score.is-live[data-band="perfect"] .dk-score__halo { animation: none; }
 }
