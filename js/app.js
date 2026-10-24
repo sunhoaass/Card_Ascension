@@ -211,14 +211,14 @@
   }
 
   /* ---------- Router ----------
-     #tier #cards #support #grade  -> tabs
+     #tier #cards #support #deck #grade  -> tabs
      #card/<id>                    -> card detail, laid over whichever tab is underneath
      #support/<id> · #grade/<id>/<grades> -> detail views inside their own tab */
   function showPage(page, { scroll = false } = {}) {
     if (!PAGES.includes(page)) page = "tier";
     const changed = state.page !== page;
-    // Back from a support detail opened on the Tier List: put the Tier List back where it was (js/tier.js saved the position)
-    const keep = !scroll && page === "tier" && !!(history.state && typeof history.state.tierY === "number");
+    // Back from a support detail opened on the Tier List or a deck: put that page back where it was (js/tier.js, js/deck.js saved the position)
+    const keep = !scroll && (page === "tier" || page === "deck") && !!(history.state && typeof history.state.tierY === "number");
     state.page = page;
     document.querySelectorAll(".page").forEach((p) => {
       const on = p.id === "page-" + page;
@@ -237,7 +237,7 @@
     runLazy(page);   // first visit to this tab: build its cards now (step 9.5)
     if (changed && state.loaded) {
       if (page === "tier") CBI.tier.enter({ restore: keep });
-      else if (page === "deck") CBI.deck.enter();
+      else if (page === "deck") CBI.deck.enter({ restore: keep });
     }
     if ((changed || scroll) && !keep) window.scrollTo({ top: 0 });
   }
@@ -247,6 +247,7 @@
     return PAGES.includes(seg) ? seg : null;
   };
 
+  // #deck = My Decks (list) · #deck/meta = Meta Decks · #deck/my/<id> = one deck's editor · #deck/s/<data> = a shared deck (view only)
   // #tier = Global · #tier/my = My Lists · #tier/s/<data> = a shared list (shown inside My Lists, view only)
   const tierViewFromHash = () => (/^#\/?tier\/(?:my|s)(?:[/?#]|$)/.test(location.hash) ? "my" : "global");
 
@@ -260,6 +261,7 @@
     if (state.loaded) CBI.cards.close();
     showPage(pageFromHash() || (state.page === null ? store.get(STORE_KEY) || "tier" : "tier"));
     if (state.loaded) CBI.tier.show(tierViewFromHash());
+    if (state.loaded) CBI.deck.show();   // #deck = My Decks · #deck/meta · #deck/my/<id> = the editor · #deck/s/<data> = a shared deck
     // #support/<id> = support detail inside the Support tab · any other hash = back to the support list
     const sm = location.hash.match(/^#\/?support\/([^/?#]+)/);
     if (state.loaded) CBI.support.show(sm ? decodeURIComponent(sm[1]) : null);
@@ -272,7 +274,7 @@
   function go(page) {
     showPage(page, { scroll: true });
     if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
-    if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); }
+    if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); CBI.deck.show(); }
   }
 
   // Card detail: each open pushes a history entry so the phone's Back button closes it
@@ -358,7 +360,7 @@
     lazy, artImg, bindArt, watchLive,   // step 9.5
     cards: { init() {}, open() {}, close() {} },   // replaced by js/cards.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
-    deck: { init() {}, enter() {} },                 // replaced by js/deck.js
+    deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
     support: { init() {}, show() {} },              // replaced by js/support.js
     grade: { init() {}, show() {}, panelHTML() { return ""; } },   // replaced by js/grade.js
   };

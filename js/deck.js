@@ -1,33 +1,1156 @@
 /* ==========================================================
-   Card Battle Infinity — Deck page (step 7)
-   · Meta Decks: 5-card teams from data/teams.json with slot numbers and recommended support
-     (moved here from the Tier List page; the deck builder with My Decks arrives in step 10)
-   · Cards show at the shared rarity (same 7 levels as the Cards page, see js/cards.js)
-   Needs js/fx.js, js/app.js and js/cards.js loaded first.
+   Card Battle Infinity — Deck page
+   · Step 7:  Meta Decks (data/teams.json), moved here from the Tier List
+   · Step 10: the deck builder. Tabs  My Decks | Meta Decks
+       #deck              = My Decks (all of the user's decks)
+       #deck/meta         = Meta Decks (each has "Copy to My Decks")
+       #deck/my/<id>      = the editor for one deck (each open adds a history entry, so phone Back returns to the list)
+       #deck/s/<data>     = a deck someone shared (packed in the link by js/share.js), view only, with "Save a copy"
+   · 1 deck = 5 card slots (Slot 1–5) + 5 support slots (the support under a card sits in the same column).
+     A card can't be in the same deck twice. Mode: Ascended Tower · PvP · Story · Boss (Boss is "Soon": can't be picked yet,
+     but the data already supports it).
+   · Decks live in localStorage "cbi:decks" (PROGRESS.md §10.4) and save on every change. No Save button.
+   · Putting cards in: tap an empty slot -> picker (search + filters). Moving: drag (mouse moves right away, touch = hold
+     ~0.26s) or tap a card, then tap the slot it should go to (swaps when that slot has a card). × clears a slot.
+   · Undo / Redo: 50 steps per deck (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
+   · Step 9 tools (js/share.js) are reused: Save as image (C.share.deckImageDialog), Share link (#deck/s/<data>),
+     backup file (registers "decks"). Dialogs are the Tier Maker's C.dialog. Step 11 fills the team score ring (paintScore).
+   Needs js/fx.js, js/app.js, js/share.js, js/cards.js loaded first (C.dialog / C.support.card are made by later scripts and
+   only used when something is tapped).
    ========================================================== */
 (function () {
   const C = window.CBI;
   const { state, $, esc } = C;
 
-  const ui = {};
-  const tiles = new Map();      // card id -> card elements on this page
-  let cardById = new Map();
+  const KEY = "cbi:decks";
+  const SLOTS = 5, NAME_MAX = 40, DECK_MAX = 200, HISTORY_MAX = 50, CHUNK = 40;
+  const HOLD_MS = 260;                             // touch: hold this long before a card lifts
+  const SLOP = 10;                                 // touch: moving further than this before the lift = scrolling
+  const EASE = "cubic-bezier(.2,.8,.2,1)";
+  const KINDS = ["cards", "support"];
+  // Modes. data/meta.json may later carry { modes: [{ id, name, enabled }] } (step 11); these are the fallback
+  const MODES = [
+    { id: "tower", name: "Ascended Tower", short: "Tower", enabled: true },
+    { id: "pvp", name: "PvP", short: "PvP", enabled: true },
+    { id: "story", name: "Story", short: "Story", enabled: true },
+    { id: "boss", name: "Boss", short: "Boss", enabled: false },
+  ];
+  const LEADS = {
+    my: "Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. Decks are saved on this device.",
+    meta: "Meta decks: five-card teams that work well together, with the slot each card plays in and the support to run. Pick a rarity to see the stats. Tap a card for the full breakdown, or copy a deck to My Decks to make it yours.",
+    shared: "A deck someone shared with you. It's view only: tap Save a copy to keep your own.",
+  };
 
+  const svg = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+  const ICON = {
+    plus: svg('<path d="M5 12h14"/><path d="M12 5v14"/>'),
+    copy: svg('<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>'),
+    trash: svg('<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>'),
+    pencil: svg('<path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/>'),
+    x: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
+    info: svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'),
+    swap: svg('<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>'),
+    search: svg('<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>'),
+    filter: svg('<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>'),
+    ...((C.share && C.share.icons) || {}),         // image, link, download, upload, archive, check
+  };
+
+  const ui = {};
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  let cardById = new Map(), supById = new Map();
+  let libs = { cards: [], support: [] };      // the whole library per kind, best first (picker order)
+  let decks = [];                              // every saved deck, in the order shown
+  let canSave = true;
+  let built = false, metaBuilt = false;
+  let view = null;                             // "my" | "meta" (null until the first show)
+  let mode = null;                             // inside My Decks: "index" | "editor" | "shared"
+  let cur = null;                              // the deck open in the editor
+  let shared = null, shData = null, shToken = 0;   // a deck from a #deck/s/<data> link: { data, deck, copyId }
+  const shCopies = new Map();                  // link data -> id of the copy saved from it (Save a copy never makes a second one)
+  let sel = null;                              // { kind, i }: the card picked up by a tap
+  let indexY = 0;
+  let metaTeams = [];
+  const hist = new Map();                      // deck id -> { undo: [], redo: [] } (JSON snapshots of cards / support / mode)
+  const metaTiles = new Map();                 // card id -> elements in the Meta Decks list (rarity changes)
+  const ed = { root: null, slots: { cards: [], support: [] }, shown: { cards: [], support: [] } };   // editor board
+  const sh = { root: null, slots: { cards: [], support: [] }, shown: { cards: [], support: [] } };   // shared board
+
+  /* ---------- Small helpers ---------- */
+  const now = () => new Date().toISOString();
+  let seq = 0;
+  const newId = (p) => p + Date.now().toString(36) + (seq++).toString(36) + Math.random().toString(36).slice(2, 6);
+  const str = (v) => (typeof v === "string" ? v : "");
   const list = (a) => (Array.isArray(a) ? a.filter(Boolean) : []);
   const pretty = (id) => String(id).replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
+  const isRankedSup = (s) => !!(s && s.scores && s.scores.value > 0 && s.tier);
+  const isRankedOf = (kind, x) => !!x && (kind === "cards" ? C.isRanked(x) : isRankedSup(x));
+  const lookup = (kind, id) => (kind === "cards" ? cardById : supById).get(id);
+  const countOf = (arr) => arr.filter(Boolean).length;
+  const fmtDate = (iso) => {
+    const d = new Date(iso);
+    if (isNaN(d)) return "";
+    const same = d.getFullYear() === new Date().getFullYear();
+    return d.toLocaleDateString("en-US", same ? { month: "short", day: "numeric" } : { month: "short", day: "numeric", year: "numeric" });
+  };
+  const modes = () => MODES.map((d) => {
+    const m = state.meta && Array.isArray(state.meta.modes) ? state.meta.modes.find((x) => x && x.id === d.id) : null;
+    return m ? { ...d, name: str(m.name) || d.name, enabled: typeof m.enabled === "boolean" ? m.enabled : d.enabled } : d;
+  });
+  const modeOf = (id) => modes().find((m) => m.id === id) || modes()[0];
+  const deckSpec = (d) => ({ id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice() });
+  const anyCards = (d) => countOf(d.cards) + countOf(d.support) > 0;
 
-  function track(card, el) {
-    if (!tiles.has(card.id)) tiles.set(card.id, []);
-    tiles.get(card.id).push(el);
+  /* ==========================================================
+     Saving (localStorage, never crashes when blocked)
+     ========================================================== */
+  function slotsOf(arr, unique) {
+    const out = [], seen = new Set();
+    for (let i = 0; i < SLOTS; i++) {
+      let id = Array.isArray(arr) ? arr[i] : null;
+      id = typeof id === "string" && id && id.length <= 80 ? id : null;
+      if (id && unique && seen.has(id)) id = null;            // a card can't be in the same deck twice
+      if (id) seen.add(id);
+      out.push(id);
+    }
+    return out;
+  }
+  // Anything odd in storage (old format, hand edits, a backup or a link made by someone else) is repaired, not thrown away
+  function clean(d) {
+    if (!d || typeof d !== "object") return null;
+    return {
+      id: str(d.id).slice(0, 60) || newId("dk_"),
+      name: str(d.name).trim().slice(0, NAME_MAX) || "Untitled deck",
+      mode: MODES.some((m) => m.id === d.mode) ? d.mode : "tower",
+      rarity: state.meta.rarities.some((r) => r.name === d.rarity) ? d.rarity : "Normal",
+      cards: slotsOf(d.cards, true), support: slotsOf(d.support, false),
+      created: str(d.created) || now(), updated: str(d.updated) || now(),
+    };
+  }
+  function load() {
+    let raw = [];
+    try { raw = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { raw = []; }
+    const seen = new Set();
+    decks = (Array.isArray(raw) ? raw : []).slice(0, DECK_MAX).map(clean).filter((d) => d && !seen.has(d.id) && seen.add(d.id));
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(decks)); canSave = true; } catch { canSave = false; }
+    if (ui.warn) ui.warn.hidden = canSave;
+  }
+  function touch() { if (cur) cur.updated = now(); save(); }
+  const histOf = (id) => { if (!hist.has(id)) hist.set(id, { undo: [], redo: [] }); return hist.get(id); };
+  const snap = () => JSON.stringify({ c: cur.cards, s: cur.support, m: cur.mode });
+
+  /* ==========================================================
+     Motion helpers (transform / opacity only, §4)
+     ========================================================== */
+  function anim(el, frames, opts) {
+    if (!el.animate) return null;
+    if (el._dkAnim) el._dkAnim.cancel();
+    const a = el.animate(frames, { easing: EASE, ...opts });
+    el._dkAnim = a;
+    a.onfinish = () => { if (el._dkAnim === a) el._dkAnim = null; };
+    return a;
+  }
+  const stop = (el) => { if (el._dkAnim) { el._dkAnim.cancel(); el._dkAnim = null; } };
+  const slide = (el, dx, dy, duration = 260) => (FX.reduced ? null : anim(el, [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], { duration }));
+  function popIn(el) {
+    if (FX.reduced) return anim(el, [{ opacity: 0 }, { opacity: 1 }], { duration: 150 });
+    return anim(el, [{ transform: "scale(.6)", opacity: 0 }, { transform: "scale(1.05)", opacity: 1, offset: 0.7 }, { transform: "none", opacity: 1 }], { duration: 260 });
+  }
+  // a copy of a removed element shrinks and fades where it was (the real one is already gone)
+  function ghostOut(el, r) {
+    const g = el.cloneNode(true);
+    g.classList.add("tm-fx");
+    g.removeAttribute("id");
+    Object.assign(g.style, { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px" });
+    ui.layer.appendChild(g);
+    const a = g.animate(
+      FX.reduced ? [{ opacity: 1 }, { opacity: 0 }] : [{ transform: "none", opacity: 1 }, { transform: "scale(.6)", opacity: 0 }],
+      { duration: FX.reduced ? 150 : 220, easing: EASE, fill: "forwards" }
+    );
+    a.onfinish = a.oncancel = () => g.remove();
+  }
+  // a dropped card flies from where the finger let go into its slot, then settles with a small bounce
+  function landAt(el, from) {
+    if (!from) { popIn(el); return; }
+    if (FX.reduced) return;
+    const to = el.getBoundingClientRect();
+    if (!to.width) return;
+    const dx = from.left + from.width / 2 - (to.left + to.width / 2);
+    const dy = from.top + from.height / 2 - (to.top + to.height / 2);
+    anim(el, [
+      { transform: `translate(${dx}px, ${dy}px) scale(${from.width / to.width})` },
+      { transform: "scale(.95)", offset: 0.72 },
+      { transform: "none" },
+    ], { duration: 280 });
+  }
+  const animateIn = (el) => { el.classList.remove("fx-page-in"); void el.offsetWidth; el.classList.add("fx-page-in"); };
+
+  /* ==========================================================
+     Dialogs: the Tier Maker's in-page dialogs (C.dialog), never alert / confirm
+     ========================================================== */
+  const dialog = (o) => (C.dialog ? C.dialog(o) : Promise.resolve(null));
+  function bindPick(root, onChange) {
+    root.querySelectorAll("[data-pick]").forEach((seg) => {
+      seg.addEventListener("click", (e) => {
+        const b = e.target.closest(".seg__btn");
+        if (!b || b.disabled) return;
+        const btns = [...seg.querySelectorAll(".seg__btn")];
+        btns.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+        seg.style.setProperty("--i", btns.indexOf(b));
+        if (onChange) onChange(seg.dataset.pick, b.dataset.v);
+      });
+    });
+  }
+  const pickOf = (root, name) => { const b = root.querySelector(`[data-pick="${name}"] .seg__btn[aria-pressed="true"]`); return b ? b.dataset.v : null; };
+  const nameInput = (value) => `<label class="tm-field"><span class="tm-field__label">Name</span><input class="tm-input" name="name" maxlength="${NAME_MAX}" value="${esc(value)}" autocomplete="off" enterkeyhint="done" spellcheck="false"></label>`;
+  const dialogOpen = () => !!document.querySelector("dialog.tm-dlg[open]");
+
+  function suggestName() {
+    const names = new Set(decks.map((d) => d.name));
+    if (!names.has("My deck")) return "My deck";
+    let i = 2;
+    while (names.has(`My deck ${i}`)) i++;
+    return `My deck ${i}`;
+  }
+  function copyName(name) {
+    const names = new Set(decks.map((d) => d.name));
+    const base = name.replace(/ \(copy(?: \d+)?\)$/, "");
+    let n = `${base} (copy)`, i = 2;
+    while (names.has(n)) n = `${base} (copy ${i++})`;
+    return n.slice(0, NAME_MAX);
   }
 
+  /* ==========================================================
+     The board: 5 card slots over 5 support slots (used by the editor and the shared view)
+     ========================================================== */
+  function buildBoard(b, root, editable) {
+    b.root = root;
+    b.editable = editable;
+    root.innerHTML = KINDS.map((kind) => `
+      <section class="dk-group" aria-label="${kind === "cards" ? "Cards" : "Support cards"}">
+        <div class="dk-group__head"><h3 class="dk-group__title">${kind === "cards" ? "Cards" : "Support"}</h3><span class="dk-group__count" data-count="${kind}"></span></div>
+        <div class="dk-row" data-kind="${kind}"></div>
+      </section>`).join("");
+    KINDS.forEach((kind) => {
+      const row = $(`.dk-row[data-kind="${kind}"]`, root);
+      b.slots[kind] = [];
+      b.shown[kind] = new Array(SLOTS).fill(null);
+      for (let i = 0; i < SLOTS; i++) {
+        const slot = document.createElement("div");
+        slot.className = "dk-slot is-empty";
+        slot.dataset.kind = kind;
+        slot.dataset.i = i;
+        slot.innerHTML = `${kind === "cards" ? `<span class="deck__pos">Slot ${i + 1}</span>` : ""}<div class="dk-slot__box"></div>`;
+        const box = $(".dk-slot__box", slot);
+        if (editable) {
+          const add = document.createElement("button");
+          add.type = "button";
+          add.className = "dk-add fx-press";
+          add.setAttribute("aria-label", `Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}`);
+          add.innerHTML = `${ICON.plus}<span>Add</span>`;
+          slot._empty = add;
+          const x = document.createElement("button");
+          x.type = "button";
+          x.className = "dk-x fx-press";
+          x.dataset.act = "clear";
+          x.hidden = true;
+          x.innerHTML = `<span class="dk-x__dot">${ICON.x}</span>`;
+          slot._x = x;
+          slot.appendChild(x);
+          box.appendChild(add);
+        } else {
+          const e = document.createElement("div");
+          e.className = "dk-none";
+          e.textContent = "Empty";
+          slot._empty = e;
+          box.appendChild(e);
+        }
+        row.appendChild(slot);
+        b.slots[kind].push(slot);
+      }
+    });
+  }
+
+  // one card (or support card) in a slot. Same look as the Tier Maker's pool items.
+  function makeItem(kind, id, rarity) {
+    const el = document.createElement("div");
+    el.className = "dk-item";
+    el.tabIndex = 0;
+    el.setAttribute("role", "button");
+    el.dataset.id = id;
+    const x = lookup(kind, id);
+    if (!x) {                                           // not in the library (yet): keep it, show a dashed slot
+      el.classList.add("dk-item--missing");
+      el.dataset.name = pretty(id);
+      el.innerHTML = `<span class="tm-missing"><span>${esc(pretty(id))}</span><small>Not in the library</small></span>`;
+      return el;
+    }
+    el.dataset.name = x.name;
+    let art;
+    if (kind === "cards") {
+      art = C.renderCard(x, rarity, { mini: true });
+      art.tabIndex = -1;
+      art.removeAttribute("role");
+    } else {
+      art = C.support.card(x);
+      FX.tilt(art);
+    }
+    art.setAttribute("aria-hidden", "true");
+    el.appendChild(art);
+    return el;
+  }
+
+  // Put the deck on a board. Elements are reused when the same card is still on the board (so cards keep their aura and
+  // focus) and FLIP-animated when they moved; new ones pop in; removed ones shrink away.
+  function paintKind(b, kind, d, { animate = false, land = null } = {}) {
+    const old = b.shown[kind];
+    const rects = animate ? old.map((o) => (o && o.el.isConnected ? o.el.getBoundingClientRect() : null)) : [];
+    const used = new Set();
+    const next = d[kind].map((id, i) => {
+      if (!id) return null;
+      let j = old[i] && old[i].id === id && !used.has(i) ? i : old.findIndex((o, k) => o && o.id === id && !used.has(k));
+      if (j >= 0) { used.add(j); return { ...old[j], from: j }; }
+      return { id, el: makeItem(kind, id, d.rarity), from: -1 };
+    });
+    const gone = old.map((o, k) => (o && !used.has(k) ? [o, k] : null)).filter(Boolean);
+    if (animate) old.forEach((o) => { if (o) stop(o.el); });
+    next.forEach((n, i) => {
+      const slot = b.slots[kind][i];
+      const box = $(".dk-slot__box", slot);
+      const want = n ? n.el : slot._empty;
+      if (box.firstElementChild !== want || box.childElementCount !== 1) box.replaceChildren(want);
+      slot.classList.toggle("is-empty", !n);
+      if (n) {
+        n.el.dataset.i = i;
+        n.el.classList.remove("is-pressing", "is-source", "is-selected");
+        n.el.setAttribute("aria-label", `${n.el.dataset.name}, ${kind === "cards" ? "slot" : "support"} ${i + 1}`);
+      }
+      if (slot._x) {
+        slot._x.hidden = !n;
+        if (n) slot._x.setAttribute("aria-label", `Remove ${n.el.dataset.name} from ${kind === "cards" ? "slot" : "support slot"} ${i + 1}`);
+      }
+      if (slot._empty && b.editable) slot._empty.setAttribute("aria-label", `Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}`);
+    });
+    b.shown[kind] = next.map((n) => (n ? { id: n.id, el: n.el } : null));
+    if (animate) {
+      gone.forEach(([o, k]) => { const r = rects[k]; if (r && rectVisible(r)) ghostOut(o.el, r); });
+      next.forEach((n, i) => {
+        if (!n) return;
+        if (land && land.kind === kind && land.i === i && land.id === n.id) { landAt(n.el, land.rect); return; }
+        if (n.from < 0) { popIn(n.el); return; }
+        const a = rects[n.from], r = n.el.getBoundingClientRect();
+        if (a && (Math.abs(a.left - r.left) > 0.5 || Math.abs(a.top - r.top) > 0.5) && (rectVisible(a) || rectVisible(r))) slide(n.el, a.left - r.left, a.top - r.top);
+      });
+    }
+    const cnt = $(`[data-count="${kind}"]`, b.root);
+    if (cnt) cnt.textContent = `${countOf(d[kind])} / ${SLOTS}`;
+  }
+  const paintBoard = (b, d, opts) => KINDS.forEach((k) => paintKind(b, k, d, opts));
+
+  /* ==========================================================
+     Team score ring. Step 10 shows "—"; step 11 calls paintScore(el, { score, band, label }) with the real number.
+     ========================================================== */
+  function scoreHTML() {
+    return `<div class="dk-score" data-band="none">
+      <span class="dk-score__ring"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="dk-score__track" cx="40" cy="40" r="34"/><circle class="dk-score__val" cx="40" cy="40" r="34" pathLength="100" stroke-dasharray="0 100"/></svg><span class="dk-score__num" data-score-num>—</span></span>
+      <span class="dk-score__text"><b>Team score</b><small data-score-note>Coming soon. Your cards, support and mode will be scored here.</small></span>
+    </div>`;
+  }
+  function paintScore(el, s) {
+    if (!el) return;
+    const has = s && Number.isFinite(s.score);
+    el.dataset.band = has ? s.band || "none" : "none";
+    $("[data-score-num]", el).textContent = has ? String(s.score) : "—";
+    $(".dk-score__val", el).setAttribute("stroke-dasharray", has ? `${Math.max(0, Math.min(100, s.score))} 100` : "0 100");
+    $("[data-score-note]", el).textContent = has ? s.label || "" : "Coming soon. Your cards, support and mode will be scored here.";
+    el.setAttribute("aria-label", has ? `Team score ${s.score}${s.label ? ", " + s.label : ""}` : "Team score: not available yet");
+  }
+
+  /* ==========================================================
+     Editor header, counts, mode, rarity
+     ========================================================== */
+  function chrome() {
+    if (!cur) return;
+    const m = modeOf(cur.mode);
+    const h = histOf(cur.id);
+    ui.undo.disabled = !h.undo.length;
+    ui.redo.disabled = !h.redo.length;
+    ui.nameText.textContent = cur.name;
+    ui.name.setAttribute("aria-label", `Deck name: ${cur.name}. Tap to rename.`);
+    ui.metaLine.textContent = `${m.name} · ${cur.rarity} · ${countOf(cur.cards)}/${SLOTS} cards · ${countOf(cur.support)}/${SLOTS} support`;
+    const all = modes();
+    ui.modeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkMode === cur.mode)));
+    ui.mode.style.setProperty("--i", Math.max(0, all.findIndex((x) => x.id === cur.mode)));
+    ui.rarity.querySelectorAll("[data-dk-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkRarity === cur.rarity)));
+    ui.hint.textContent = fine.matches
+      ? "Click an empty slot to add a card. Drag a card to another slot, or click it and then click where it should go."
+      : "Tap an empty slot to add a card. Hold a card to drag it, or tap it and then tap where it should go.";
+  }
+  function setMode(id) {
+    if (!cur || mode !== "editor" || cur.mode === id || !modes().some((m) => m.id === id && m.enabled)) return;
+    commit((d) => { d.mode = id; }, { animate: false });
+  }
+  function setRarity(name) {
+    if (!cur || cur.rarity === name || !state.meta.rarities.some((r) => r.name === name)) return;
+    cur.rarity = name;
+    touch();
+    chrome();
+    const els = ed.shown.cards.filter(Boolean).map((o) => o.el);
+    const seen = els.map((el) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
+    els.forEach((el, i) => { const c = cardById.get(el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
+  }
+
+  /* ==========================================================
+     Edits: every change goes through commit() so it can be undone and is saved straight away
+     ========================================================== */
+  function commit(fn, { animate = true, land = null } = {}) {
+    clearSel();
+    const before = snap();
+    fn(cur);
+    cur.cards = slotsOf(cur.cards, true);
+    cur.support = slotsOf(cur.support, false);
+    const changed = snap() !== before;
+    if (changed) {
+      const h = histOf(cur.id);
+      h.undo.push(before);
+      if (h.undo.length > HISTORY_MAX) h.undo.shift();
+      h.redo.length = 0;
+      touch();
+    }
+    paintBoard(ed, cur, { animate, land });
+    chrome();
+    return changed;
+  }
+  function step(dir) {
+    if (!cur || mode !== "editor") return;
+    const h = histOf(cur.id);
+    const from = dir < 0 ? h.undo : h.redo, to = dir < 0 ? h.redo : h.undo;
+    if (!from.length) return;
+    to.push(snap());
+    const s = JSON.parse(from.pop());
+    cur.cards = slotsOf(s.c, true); cur.support = slotsOf(s.s, false);
+    if (MODES.some((m) => m.id === s.m)) cur.mode = s.m;
+    clearSel();
+    touch();
+    paintBoard(ed, cur, { animate: true });
+    chrome();
+  }
+  // toast with Undo that only undoes this exact change (not something done after it)
+  function undoToast(text) {
+    const id = cur.id, n = histOf(id).undo.length;
+    FX.toast(text, { action: { label: "Undo", fn: () => { if (cur && cur.id === id && mode === "editor" && histOf(id).undo.length === n) step(-1); } }, duration: 4500 });
+  }
+
+  /* ==========================================================
+     Selecting (tap) and placing (tap another slot)
+     ========================================================== */
+  function select(kind, i) {
+    const o = ed.shown[kind][i];
+    if (!o) return;
+    if (sel && sel.kind === kind && sel.i === i) { clearSel(); return; }
+    clearSel();
+    sel = { kind, i };
+    o.el.classList.add("is-selected");
+    o.el.setAttribute("aria-pressed", "true");
+    ui.editor.classList.add("is-targeting");
+    ui.editor.dataset.target = kind;
+    ui.actName.textContent = o.el.dataset.name;
+    ui.actHint.textContent = `Tap another ${kind === "cards" ? "card" : "support"} slot to move it there`;
+    ui.actDetails.disabled = o.el.classList.contains("dk-item--missing");
+    ui.act.classList.add("is-on");
+    // keep the picked card above the command bar (the dock's margin has just made room to scroll)
+    const r = o.el.getBoundingClientRect(), limit = innerHeight - 70 - 168;
+    if (r.bottom > limit) window.scrollBy({ top: r.bottom - limit + 12, behavior: FX.reduced ? "auto" : "smooth" });
+  }
+  function clearSel() {
+    if (!sel) return;
+    const o = ed.shown[sel.kind][sel.i];
+    if (o) { o.el.classList.remove("is-selected"); o.el.removeAttribute("aria-pressed"); }
+    sel = null;
+    ui.editor.classList.remove("is-targeting");
+    delete ui.editor.dataset.target;
+    ui.act.classList.remove("is-on");
+  }
+  function slotTap(kind, i) {
+    const here = ed.shown[kind][i];
+    if (sel) {
+      if (sel.kind === kind) {
+        if (sel.i === i) { clearSel(); return; }
+        const from = sel.i;
+        commit((d) => { const a = d[kind]; [a[from], a[i]] = [a[i], a[from]]; });    // empty target = move, a card there = swap
+        return;
+      }
+      if (here) { select(kind, i); return; }                // another kind: just pick that one up instead
+      clearSel();
+    }
+    if (here) select(kind, i);
+    else openPicker(kind, i);
+  }
+  function clearSlot(kind, i) {
+    const o = ed.shown[kind][i];
+    if (!o) return;
+    const name = o.el.dataset.name;
+    if (commit((d) => { d[kind][i] = null; })) undoToast(`Removed ${name}`);
+  }
+  function details(el, kind) {
+    const id = el.dataset.id;
+    if (!lookup(kind, id)) return;
+    if (kind === "cards") { C.openCard(id, $(".card", el)); return; }
+    // support detail lives in the Support tab; keep our scroll position so Back lands exactly here (app.js reads tierY)
+    try { history.replaceState({ ...(history.state || {}), tierY: window.scrollY }, ""); } catch {}
+    C.support.open(id, $(".scard", el));
+  }
+
+  /* ==========================================================
+     Card picker (a dialog: search + filters + the whole library, made in chunks as you scroll)
+     ========================================================== */
+  function chipHTML(key, value, label, style = "") {
+    return `<button type="button" class="chip glass fx-press" data-pk="${key}" data-v="${esc(value)}" aria-pressed="false"${style ? ` style="${style}"` : ""}>${style ? '<span class="chip__swatch"></span>' : ""}${esc(label)}</button>`;
+  }
+  async function openPicker(kind, i) {
+    if (!cur || mode !== "editor") return;
+    const isCard = kind === "cards";
+    const all = libs[kind];
+    const here = cur[kind][i];
+    const usedAt = new Map();
+    if (isCard) cur.cards.forEach((id, k) => { if (id) usedAt.set(id, k); });
+    const f = { q: "", tier: "", role: "", series: "" };
+    const text = new Map(all.map((x) => [x.id, [x.name, x.series, x.role].filter(Boolean).join(" ").toLowerCase()]));
+    const rarity = cur.rarity;
+    const noun = isCard ? "cards" : "support cards";
+    const tierNames = state.meta.tiers.map((t) => t.name);
+    let filters = `<div class="tm-chips" role="group" aria-label="Filter by tier">${tierNames.map((t) => chipHTML("tier", t, t, `--sw:var(${C.TIER_COLOR[t] || "--t-d"});--sw-line:var(${C.TIER_COLOR[t] || "--t-d"})`)).join("")}${chipHTML("tier", "-", "Unranked")}</div>`;
+    if (isCard) {
+      const roles = [...new Set(state.cards.map((c) => c.role).filter(Boolean))].sort();
+      if (roles.length) filters += `<div class="tm-chips" role="group" aria-label="Filter by role">${roles.map((r) => chipHTML("role", r, r)).join("")}</div>`;
+      const series = [...new Set(state.cards.map((c) => c.series).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      if (series.length > 1) filters += `<label class="field"><span class="sr-only">Series</span><select data-pk-select="series"><option value="">All series</option>${series.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("")}</select></label>`;
+    }
+    const res = await dialog({
+      title: `${isCard ? "Choose a card" : "Choose a support card"} · ${isCard ? "Slot" : "Support"} ${i + 1}`,
+      html: `<div class="dk-pick">
+          <div class="dk-pick__head">
+            <label class="field field--search"><span class="sr-only">Search ${noun}</span>${ICON.search.replace("<svg ", '<svg class="field__icon" ')}<input type="search" data-q autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Search ${noun}"></label>
+            <button type="button" class="iconbtn glass fx-press dk-pick__filter" data-pick-filter aria-expanded="false" aria-label="Filters" title="Filters">${ICON.filter}<span class="tm-dot" data-dot hidden></span></button>
+          </div>
+          <div class="dk-pick__filters" data-filters hidden>${filters}</div>
+          <div class="dk-pick__scroll" data-scroll>
+            <div class="dk-pick__grid" data-grid role="list"></div>
+            <div data-more class="dk-pick__more" aria-hidden="true"></div>
+            <p class="dk-pick__empty" data-empty hidden></p>
+          </div>
+          <p class="tm-field__note" data-count></p>
+        </div>`,
+      actions: [{ label: "Close", value: "cancel" }],
+      onMount(d, finish) {
+        $(".tm-dlg__sheet", d).classList.add("dk-pick-sheet");
+        const q = $("[data-q]", d), grid = $("[data-grid]", d), more = $("[data-more]", d), scroller = $("[data-scroll]", d);
+        const empty = $("[data-empty]", d), count = $("[data-count]", d), fbox = $("[data-filters]", d), fbtn = $("[data-pick-filter]", d), dot = $("[data-dot]", d);
+        let rows = [], n = 0, io = null;
+        const tile = (x) => {
+          const el = document.createElement("div");
+          el.className = "dk-tile";
+          el.tabIndex = 0;
+          el.setAttribute("role", "listitem");
+          el.dataset.id = x.id;
+          const art = isCard ? C.renderCard(x, rarity, { mini: true }) : C.support.card(x);
+          if (isCard) { art.tabIndex = -1; art.removeAttribute("role"); } else FX.tilt(art);
+          art.setAttribute("aria-hidden", "true");
+          el.appendChild(art);
+          const at = usedAt.get(x.id);
+          let label = x.name;
+          if (isCard && at != null && x.id !== here) {
+            el.classList.add("is-used");
+            el.setAttribute("aria-disabled", "true");
+            el.insertAdjacentHTML("beforeend", `<span class="dk-tile__tag">Slot ${at + 1}</span>`);
+            label += `, already in slot ${at + 1}`;
+          } else if (x.id === here) {
+            el.classList.add("is-here");
+            el.insertAdjacentHTML("beforeend", `<span class="dk-tile__tag dk-tile__tag--here">Here</span>`);
+            label += ", in this slot now";
+          }
+          el.setAttribute("aria-label", label);
+          return el;
+        };
+        const chunk = () => {
+          if (n >= rows.length) return;
+          const frag = document.createDocumentFragment();
+          rows.slice(n, n + CHUNK).forEach((x) => frag.appendChild(tile(x)));
+          n = Math.min(rows.length, n + CHUNK);
+          grid.appendChild(frag);
+        };
+        const apply = () => {
+          const words = f.q.toLowerCase().split(/\s+/).filter(Boolean);
+          rows = all.filter((x) => {
+            const rk = isRankedOf(kind, x);
+            if (f.tier && !(f.tier === "-" ? !rk : rk && x.tier === f.tier)) return false;
+            if (f.role && x.role !== f.role) return false;
+            if (f.series && x.series !== f.series) return false;
+            return !words.length || words.every((w) => text.get(x.id).includes(w));
+          });
+          grid.replaceChildren();
+          n = 0;
+          scroller.scrollTop = 0;
+          chunk();
+          empty.hidden = rows.length > 0;
+          if (!rows.length) empty.textContent = !all.length ? `No ${noun} in the library yet.` : "Nothing matches. Try another search or filter.";
+          count.textContent = all.length ? `${plural(rows.length, isCard ? "card" : "support card", noun)}${rows.length < all.length ? ` of ${all.length}` : ""}` : "";
+          const any = !!(f.tier || f.role || f.series);
+          dot.hidden = !any;
+          fbox.querySelectorAll(".chip[data-pk]").forEach((b) => b.setAttribute("aria-pressed", String(f[b.dataset.pk] === b.dataset.v)));
+        };
+        if ("IntersectionObserver" in window) {
+          io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) chunk(); }, { root: scroller, rootMargin: "240px 0px" });
+          io.observe(more);
+        } else {
+          scroller.addEventListener("scroll", () => { if (scroller.scrollTop + scroller.clientHeight > scroller.scrollHeight - 300) chunk(); }, { passive: true });
+        }
+        q.addEventListener("input", () => { f.q = q.value; apply(); });
+        q.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); q.blur(); } });
+        fbtn.addEventListener("click", () => {
+          const open = fbox.hidden;
+          fbox.hidden = !open;
+          fbtn.setAttribute("aria-expanded", String(open));
+          if (open) animateIn(fbox);
+        });
+        fbox.addEventListener("click", (e) => {
+          const b = e.target.closest(".chip[data-pk]");
+          if (!b) return;
+          f[b.dataset.pk] = f[b.dataset.pk] === b.dataset.v ? "" : b.dataset.v;
+          apply();
+        });
+        fbox.addEventListener("change", (e) => { const s = e.target.closest("select[data-pk-select]"); if (s) { f[s.dataset.pkSelect] = s.value; apply(); } });
+        const choose = (el) => {
+          if (!el || el.classList.contains("is-used")) return;
+          finish({ action: "pick", id: el.dataset.id });
+        };
+        grid.addEventListener("click", (e) => choose(e.target.closest(".dk-tile")));
+        grid.addEventListener("keydown", (e) => {
+          const el = e.target.closest(".dk-tile");
+          if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); choose(el); }
+        });
+        d.addEventListener("close", () => { if (io) io.disconnect(); }, { once: true });
+        apply();
+        if (!fine.matches && document.activeElement && document.activeElement.blur) document.activeElement.blur();   // no keyboard popping up on a phone
+      },
+    });
+    if (!res || res.action !== "pick" || !cur || mode !== "editor") return;
+    if (res.id === here) return;
+    if (isCard && cur.cards.includes(res.id)) return;      // can't be in the same deck twice
+    commit((d) => { d[kind][i] = res.id; });
+  }
+
+  /* ==========================================================
+     Drag (Pointer Events, works with fingers and the mouse; no HTML5 drag API)
+     ========================================================== */
+  const drag = { p: null, on: false };
+  let lastX = 0, lastY = 0, blockClick = false;
+  const GHOST_R = 20000;   // px range of the ghost's position animations (−R … +R)
+
+  function onDown(e) {
+    if (drag.on || drag.p || !e.isPrimary || (e.pointerType === "mouse" && e.button !== 0) || mode !== "editor") return;
+    const el = e.target.closest(".dk-item");
+    if (!el || !ed.root.contains(el) || el.classList.contains("dk-item--missing") && false) return;
+    const slot = el.closest(".dk-slot");
+    if (!slot) return;
+    lastX = e.clientX; lastY = e.clientY;
+    const p = drag.p = { el, kind: slot.dataset.kind, i: Number(slot.dataset.i), pid: e.pointerId, touch: e.pointerType !== "mouse", x0: e.clientX, y0: e.clientY, timer: 0 };
+    if (p.touch) {
+      el.classList.add("is-pressing");
+      p.timer = setTimeout(() => { if (drag.p === p) start(); }, HOLD_MS);
+    }
+  }
+  function onMove(e) {
+    if (drag.on) {
+      if (e.pointerId !== drag.pid) return;
+      lastX = e.clientX; lastY = e.clientY;
+      moveGhost(); queue();
+      return;
+    }
+    const p = drag.p;
+    if (!p || e.pointerId !== p.pid) return;
+    lastX = e.clientX; lastY = e.clientY;
+    const d = Math.hypot(e.clientX - p.x0, e.clientY - p.y0);
+    if (!p.touch) { if (d > 6) start(); }
+    else if (d > SLOP) cancelPress();                      // the finger is scrolling, not picking up
+  }
+  function onUp(e) {
+    if (drag.on) { if (e.pointerId === drag.pid) finishDrag(true); return; }
+    if (drag.p && e.pointerId === drag.p.pid) cancelPress();  // a short tap: the click handler selects
+  }
+  function onCancel(e) {
+    if (drag.on) { if (e.pointerId === drag.pid) finishDrag(false); }
+    else if (drag.p && e.pointerId === drag.p.pid) cancelPress();
+  }
+  function cancelPress() {
+    const p = drag.p;
+    if (!p) return;
+    clearTimeout(p.timer);
+    p.el.classList.remove("is-pressing");
+    drag.p = null;
+  }
+  // FX.tilt never sees the pointerup once the root has the pointer, so put the card flat again by hand
+  function untilt(el) {
+    el.querySelectorAll(".is-tilting").forEach((c) => {
+      c.classList.remove("is-tilting");
+      ["--rx", "--ry", "--gx", "--gy"].forEach((p) => c.style.removeProperty(p));
+    });
+  }
+  // step 9.5 rule: the ghost follows the finger with two paused animations whose currentTime is the position in px
+  function ghostAxis(el, axis) {
+    if (!el.animate) return null;
+    const a = el.animate([{ transform: `translate${axis}(${-GHOST_R}px)` }, { transform: `translate${axis}(${GHOST_R}px)` }], { duration: 2 * GHOST_R, fill: "both" });
+    a.pause();
+    return a;
+  }
+  function moveGhost() {
+    if (!drag.ghost) return;
+    drag.gx = lastX - drag.offX; drag.gy = lastY - drag.offY;
+    if (drag.ax && drag.ay) { drag.ax.currentTime = drag.gx + GHOST_R; drag.ay.currentTime = drag.gy + GHOST_R; }
+    else drag.ghost.style.transform = `translate(${drag.gx}px, ${drag.gy}px)`;
+  }
+  function settleGhost(g) {
+    if (drag.ax) { drag.ax.cancel(); drag.ax = null; }
+    if (drag.ay) { drag.ay.cancel(); drag.ay = null; }
+    g.style.transform = `translate(${drag.gx}px, ${drag.gy}px)`;
+  }
+  function queue() { if (drag.on && !drag.raf) drag.raf = requestAnimationFrame(track); }
+
+  function start() {
+    const p = drag.p;
+    drag.p = null;
+    clearTimeout(p.timer);
+    const el = p.el;
+    el.classList.remove("is-pressing");
+    if (!el.isConnected || mode !== "editor") return;
+    clearSel();
+    const r = el.getBoundingClientRect();
+    Object.assign(drag, { on: true, el, pid: p.pid, touch: p.touch, kind: p.kind, i: p.i, id: el.dataset.id, offX: lastX - r.left, offY: lastY - r.top, over: null, overEl: null, raf: 0 });
+    // the card you hold: a floating copy that follows the finger
+    const g = document.createElement("div");
+    g.className = "tm-ghost";
+    g.style.width = r.width + "px";
+    g.style.height = r.height + "px";
+    const inner = el.cloneNode(true);
+    untilt(inner);
+    untilt(el);
+    inner.classList.remove("is-selected", "is-pressing");
+    inner.classList.add("tm-ghost__in");
+    inner.removeAttribute("tabindex");
+    inner.removeAttribute("role");
+    inner.setAttribute("aria-hidden", "true");
+    const gy = document.createElement("div");
+    gy.className = "tm-ghost__y";
+    gy.appendChild(inner);
+    g.appendChild(gy);
+    ui.layer.appendChild(g);
+    drag.ghost = g;
+    drag.ax = ghostAxis(g, "X");
+    drag.ay = ghostAxis(gy, "Y");
+    moveGhost();
+    el.classList.add("is-source");
+    ui.editor.classList.add("is-dragging");
+    ui.editor.dataset.target = drag.kind;
+    document.documentElement.classList.add("tm-grabbing");
+    try { ui.root.setPointerCapture(drag.pid); } catch {}
+    if (p.touch && navigator.vibrate) { try { navigator.vibrate(8); } catch {} }
+    blockClick = true;
+    track();
+  }
+  // the slot (same kind) under the finger
+  function slotAt(x, y) {
+    const under = document.elementFromPoint(x, y);
+    const slot = under && under.closest(`.dk-slot[data-kind="${drag.kind}"]`);
+    return slot && ed.root.contains(slot) ? slot : null;
+  }
+  function track() {
+    drag.raf = 0;
+    if (!drag.on) return;
+    setOver(slotAt(lastX, lastY));
+  }
+  function setOver(slot) {
+    if (drag.overEl === slot) return;
+    if (drag.overEl) drag.overEl.classList.remove("is-over");
+    if (slot && Number(slot.dataset.i) !== drag.i) slot.classList.add("is-over");
+    drag.overEl = slot;
+  }
+  function ghostAway(g) {
+    const a = g.animate(FX.reduced ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, transform: g.style.transform }, { opacity: 0, transform: g.style.transform + " scale(.5)" }], { duration: FX.reduced ? 120 : 200, easing: EASE, fill: "forwards" });
+    a.onfinish = a.oncancel = () => g.remove();
+  }
+  function finishDrag(ok) {
+    if (!drag.on) return;
+    cancelAnimationFrame(drag.raf);
+    drag.raf = 0;
+    const target = ok ? slotAt(lastX, lastY) : null;
+    const g = drag.ghost, gr = g.firstElementChild.getBoundingClientRect();
+    settleGhost(g);
+    const { kind, i, el, id } = drag;
+    drag.on = false;
+    drag.ghost = null;
+    try { ui.root.releasePointerCapture(drag.pid); } catch {}
+    ui.editor.classList.remove("is-dragging");
+    if (!sel) delete ui.editor.dataset.target;
+    document.documentElement.classList.remove("tm-grabbing");
+    setOver(null);
+    el.classList.remove("is-source");
+    untilt(el);
+    setTimeout(() => { blockClick = false; }, 0);
+    const j = target ? Number(target.dataset.i) : -1;
+    if (target && j !== i) {                                // dropped on another slot: it moves there (or swaps with the card there)
+      g.remove();
+      commit((d) => { const a = d[kind]; [a[i], a[j]] = [a[j], a[i]]; }, { animate: true, land: { kind, i: j, id, rect: gr } });
+      return;
+    }
+    const to = el.getBoundingClientRect();                  // anywhere else: it goes back where it came from
+    if (FX.reduced || !rectVisible(to)) ghostAway(g);
+    else {
+      const a = g.animate([{ transform: g.style.transform }, { transform: `translate(${to.left}px, ${to.top}px)` }], { duration: 220, easing: EASE, fill: "forwards" });
+      a.onfinish = a.oncancel = () => g.remove();
+    }
+  }
+
+  /* ==========================================================
+     Decks: create / open / rename / duplicate / delete
+     ========================================================== */
+  async function newDeck() {
+    const auto = suggestName();
+    const all = modes();
+    const res = await dialog({
+      title: "New deck",
+      html: `${nameInput(auto)}
+        <div class="tm-field"><span class="tm-field__label" id="dk-l-mode">Mode</span>
+          <div class="seg glass tm-pick dk-seg" data-pick="mode" role="group" aria-labelledby="dk-l-mode" style="--n:${all.length};--i:0"><span class="seg__ind" aria-hidden="true"></span>
+            ${all.map((m, k) => `<button type="button" class="seg__btn fx-press" data-v="${esc(m.id)}" aria-pressed="${k === 0}"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`).join("")}</div>
+          <p class="tm-field__note">You can change the mode later.</p></div>`,
+      actions: [{ label: "Cancel", value: "cancel" }, { label: "Create", value: "ok", submit: true, cls: "tm-btn--primary" }],
+      onMount(d) {
+        bindPick(d);
+        if (fine.matches) { const i = $("input[name=name]", d); i.focus(); i.select(); }
+      },
+    });
+    if (!res || res.action !== "ok") return;
+    const name = res.form.elements.name.value.trim().slice(0, NAME_MAX) || suggestName();
+    const t = now();
+    const d = clean({ id: newId("dk_"), name, mode: pickOf(res.form, "mode") || "tower", rarity: state.rarity, cards: [], support: [], created: t, updated: t });
+    decks.unshift(d);
+    save();
+    openDeck(d.id);
+  }
+
+  function openDeck(id) {
+    const url = "#deck/my/" + encodeURIComponent(id);
+    if (mode === "editor") history.replaceState({ dkl: 1 }, "", url);   // switching decks from a toast: Back still goes to the list
+    else history.pushState({ dkl: 1 }, "", url);
+    C.route();
+  }
+  function back() {
+    if (history.state && history.state.dkl) history.back();
+    else { history.replaceState(null, "", "#deck"); C.route(); }          // opened from a direct link
+  }
+
+  async function renameDeck() {
+    const res = await dialog({
+      title: "Rename deck",
+      html: nameInput(cur.name),
+      actions: [{ label: "Cancel", value: "cancel" }, { label: "Save", value: "ok", submit: true, cls: "tm-btn--primary" }],
+      onMount(d) { const i = $("input", d); i.focus(); i.select(); },
+    });
+    if (!res || res.action !== "ok" || !cur) return;
+    const v = res.form.elements.name.value.trim().slice(0, NAME_MAX);
+    if (!v || v === cur.name) return;
+    cur.name = v;
+    touch();
+    chrome();
+    setTitle();
+    FX.fade(ui.nameText, 1, { duration: 250 });
+  }
+
+  function addCopy(src, name, t = now()) {
+    const copy = clean({ ...JSON.parse(JSON.stringify(src)), id: newId("dk_"), name, created: t, updated: t });
+    return copy;
+  }
+  function duplicateDeck(id) {
+    const d = decks.find((x) => x.id === id);
+    if (!d) return;
+    const copy = addCopy(d, copyName(d.name));
+    decks.splice(decks.indexOf(d) + 1, 0, copy);
+    save();
+    if (mode === "index") flipIndex(() => renderIndex(false));
+    FX.toast(`Made a copy: “${copy.name}”`, { action: { label: "Open", fn: () => openDeck(copy.id) } });
+  }
+
+  async function deleteDeck(id) {
+    const d = decks.find((x) => x.id === id);
+    if (!d) return;
+    const res = await dialog({
+      title: "Delete this deck?",
+      html: `<p class="tm-dlg__text">“${esc(d.name)}” will be removed from this device. This can’t be undone.</p>`,
+      actions: [{ label: "Cancel", value: "cancel" }, { label: "Delete deck", value: "ok", submit: true, cls: "tm-btn--danger" }],
+    });
+    if (!res || res.action !== "ok") return;
+    const i = decks.indexOf(d);
+    if (i < 0) return;
+    decks.splice(i, 1);
+    hist.delete(id);
+    save();
+    if (mode === "editor" && cur && cur.id === id) back();
+    else flipIndex(() => renderIndex(false));
+    FX.toast(`Deleted “${d.name}”`);
+  }
+
+  async function deckMenu() {
+    const empty = !anyCards(cur);
+    const res = await dialog({
+      title: cur.name,
+      html: `<div class="tm-menu">
+          <button type="button" class="tm-btn fx-press" data-dlg="image"${empty ? " disabled" : ""}>${ICON.image || ""}Save as image</button>
+          <button type="button" class="tm-btn fx-press" data-dlg="link"${empty ? " disabled" : ""}>${ICON.link || ""}Share link</button>
+          ${empty ? `<p class="tm-field__note">Add a card to share this deck.</p>` : ""}
+          <button type="button" class="tm-btn fx-press" data-dlg="rename">${ICON.pencil}Rename</button>
+          <button type="button" class="tm-btn fx-press" data-dlg="dup">${ICON.copy}Duplicate</button>
+          <button type="button" class="tm-btn tm-btn--danger fx-press" data-dlg="del">${ICON.trash}Delete deck</button>
+        </div>`,
+      actions: [{ label: "Close", value: "cancel" }],
+    });
+    if (!res || !cur) return;
+    if (res.action === "image") saveImage(cur, ed.root);
+    else if (res.action === "link") shareLink(cur, ed.root);
+    else if (res.action === "rename") renameDeck();
+    else if (res.action === "dup") duplicateDeck(cur.id);
+    else if (res.action === "del") deleteDeck(cur.id);
+  }
+
+  /* ==========================================================
+     Share (step 9 tools): save as image · share link · open a shared deck · backup
+     ========================================================== */
+  // a deck packed for a link: ids by slot ("" = empty) · mode and rarity by name
+  function toPayload(d) {
+    return { v: 1, n: d.name, m: d.mode, r: d.rarity, c: d.cards.map((x) => x || ""), s: d.support.map((x) => x || "") };
+  }
+  // ...and back, checking everything (a link is typed by strangers). Returns a clean deck or null.
+  function fromPayload(p) {
+    if (!p || p.v !== 1 || typeof p.n !== "string" || !Array.isArray(p.c) || !Array.isArray(p.s) || p.c.length > SLOTS || p.s.length > SLOTS) return null;
+    const ids = (a) => a.map((x) => (typeof x === "string" && x && x.length <= 80 ? x : null));
+    return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s), created: now(), updated: now() });
+  }
+
+  async function saveImage(d, flashEl) {
+    if (!C.share || !C.share.deckImageDialog) return;
+    await C.share.deckImageDialog(deckSpec(d), { flashEl });
+  }
+  async function shareLink(d, flashEl) {
+    if (!C.share) return;
+    let url;
+    try { url = await C.share.makeLink("deck", toPayload(d)); } catch { FX.toast("Couldn’t make the link"); return; }
+    await C.share.linkDialog({ url, title: d.name, flashEl, what: "deck" });
+  }
+
+  function showBad(browser) {
+    ui.shBadTitle.textContent = browser ? "Your browser can’t open this link" : "This link can’t be opened";
+    ui.shBadText.textContent = browser
+      ? "It uses a feature your browser doesn’t have yet. Update the browser, or try another one."
+      : "The link may be cut off or mistyped. Ask for it again, and make sure you copy all of it.";
+    ui.shBad.hidden = false;
+    FX.fade(ui.shBad, 1, { duration: 300 });
+  }
+  function paintSharedMeta() {
+    const d = shared.deck, m = modeOf(d.mode);
+    ui.shName.textContent = d.name;
+    ui.shMeta.textContent = `${m.name} · ${d.rarity} · ${countOf(d.cards)}/${SLOTS} cards · ${countOf(d.support)}/${SLOTS} support`;
+    const mine = shared.copyId && decks.some((x) => x.id === shared.copyId);
+    ui.shCopyText.textContent = mine ? "Open my copy" : "Save a copy";
+    let missing = 0;
+    KINDS.forEach((k) => d[k].forEach((id) => { if (id && !lookup(k, id)) missing++; }));
+    ui.shNote.hidden = !missing;
+    ui.shNote.textContent = missing ? `${plural(missing, "card here isn’t", "cards here aren’t")} in the library yet, so ${missing === 1 ? "it shows" : "they show"} as a dashed slot.` : "";
+  }
+
+  async function openShared(data) {
+    if (mode === "shared" && shData === data) return;       // same link again (Back from a card's details): leave it exactly as it is
+    const token = ++shToken;
+    clearSel();
+    if (drag.on) finishDrag(false);
+    mode = "shared"; shData = data; cur = null; shared = null;
+    ui.index.hidden = true; ui.editor.hidden = true; ui.shared.hidden = true; ui.shBad.hidden = true; ui.shLoad.hidden = false;
+    window.scrollTo({ top: 0 });
+    setTitle(); setLead();
+    const res = C.share ? await C.share.readLink(data) : null;
+    if (token !== shToken || mode !== "shared") return;      // the person already went somewhere else
+    ui.shLoad.hidden = true;
+    const deck = res && res.payload ? fromPayload(res.payload) : null;
+    if (!deck) { showBad(!!(res && res.error === "browser")); setTitle(); return; }
+    shared = { data, deck, copyId: shCopies.get(data) || null };
+    paintSharedMeta();
+    paintBoard(sh, deck, { animate: false });
+    sh.root.querySelectorAll(".dk-item").forEach((it) => it.setAttribute("aria-label", `${it.dataset.name}, ${it.closest(".dk-slot").dataset.kind === "cards" ? "slot" : "support"} ${Number(it.closest(".dk-slot").dataset.i) + 1}`));
+    ui.shared.hidden = false;
+    animateIn(ui.shared);
+    FX.stagger($(".dk-row", sh.root), 45, { cls: "fx-up", max: 8, cleanup: true });
+    setTitle();
+  }
+  function saveCopy() {
+    if (mode !== "shared" || !shared) return;
+    const had = shared.copyId && decks.find((x) => x.id === shared.copyId);
+    if (had) { openDeck(had.id); return; }                  // already saved once: open that copy, never a second one
+    const src = shared.deck;
+    const taken = new Set(decks.map((x) => x.name));
+    const d = addCopy(src, taken.has(src.name) ? copyName(src.name) : src.name);
+    decks.unshift(d);
+    save();
+    shared.copyId = d.id;
+    shCopies.set(shared.data, d.id);
+    paintSharedMeta();
+    FX.flash(sh.root);
+    FX.toast(canSave ? `Saved “${d.name}” to My Decks` : `Copied “${d.name}” for this visit only`, { action: { label: "Open", fn: () => openDeck(d.id) } });
+  }
+
+  /* ---------- Backup file: the decks, in and out (js/share.js asks for these) ---------- */
+  // merge: add decks you don't have; the same deck in both keeps the one edited last · replace: the backup is all there is
+  function importDecks(data, how) {
+    const incoming = (Array.isArray(data) ? data : []).slice(0, DECK_MAX).map(clean).filter(Boolean);
+    let changed = 0;
+    if (how === "replace") {
+      const seen = new Set();
+      decks = incoming.filter((d) => !seen.has(d.id) && seen.add(d.id));
+      changed = decks.length;
+      hist.clear();
+    } else {
+      const added = [];
+      incoming.forEach((n) => {
+        const i = decks.findIndex((d) => d.id === n.id);
+        if (i < 0) { if (!added.some((a) => a.id === n.id)) { added.push(n); changed++; } }
+        else if (String(n.updated) > String(decks[i].updated)) { decks[i] = n; hist.delete(n.id); changed++; }
+      });
+      decks = [...added, ...decks].slice(0, DECK_MAX);
+    }
+    save();
+    if (built) {
+      if (mode === "editor" && cur) {
+        const again = decks.find((d) => d.id === cur.id);
+        if (!again) back();
+        else if (again !== cur) { cur = again; clearSel(); paintBoard(ed, cur, { animate: false }); chrome(); }
+      } else if (mode === "index") flipIndex(() => renderIndex(false));
+    }
+    return changed;
+  }
+
+  /* ==========================================================
+     Views: all decks (index) / one deck (editor)
+     ========================================================== */
+  function stripCol(id, sup) {
+    const col = document.createElement("span");
+    col.className = "dkl__col";
+    const cell = document.createElement("span");
+    cell.className = "dkl__c";
+    const x = id && cardById.get(id);
+    if (x) {
+      cell.innerHTML = x.image ? C.artImg(x.image, true) : C.placeholderArt(x);
+      C.bindArt(cell, x);
+    } else cell.classList.add(id ? "is-missing" : "is-empty");
+    col.appendChild(cell);
+    const pip = document.createElement("i");
+    pip.className = "dkl__pip" + (sup ? " is-on" : "");
+    col.appendChild(pip);
+    return col;
+  }
+  function deckRow(d) {
+    const li = document.createElement("li");
+    li.className = "tml dkl glass";
+    li.dataset.deck = d.id;
+    const nc = countOf(d.cards), ns = countOf(d.support), m = modeOf(d.mode);
+    li.innerHTML = `
+      <button type="button" class="tml__open dkl__open fx-press" data-act="open" aria-label="Open ${esc(d.name)}, ${esc(m.name)}, ${nc} of ${SLOTS} cards, ${ns} of ${SLOTS} support">
+        <span class="tml__text">
+          <span class="tml__name">${esc(d.name)}</span>
+          <span class="tml__meta"><b>${esc(m.name)}</b> · ${esc(d.rarity)} · ${nc}/${SLOTS} cards · ${ns}/${SLOTS} support</span>
+          <span class="dkl__strip" aria-hidden="true"></span>
+          <span class="tml__date">Edited ${esc(fmtDate(d.updated))}</span>
+        </span>
+      </button>
+      <button type="button" class="iconbtn fx-press" data-act="dup" aria-label="Duplicate ${esc(d.name)}">${ICON.copy}</button>
+      <button type="button" class="iconbtn fx-press" data-act="del" aria-label="Delete ${esc(d.name)}">${ICON.trash}</button>`;
+    const strip = $(".dkl__strip", li);
+    d.cards.forEach((id, i) => strip.appendChild(stripCol(id, d.support[i])));
+    return li;
+  }
+  function renderIndex(animate) {
+    ui.count.textContent = plural(decks.length, "deck", "decks");
+    ui.indexHead.hidden = !decks.length;
+    ui.empty.hidden = !!decks.length;
+    ui.lists.replaceChildren(...decks.map(deckRow));
+    if (!animate) return;
+    if (decks.length) FX.stagger(ui.lists, 50, { cls: "fx-up", max: 8, cleanup: true });
+    else FX.fade(ui.empty, 1, { duration: 300 });
+  }
+  function flipIndex(mutate) {
+    const before = new Map([...ui.lists.children].map((li) => [li.dataset.deck, { el: li, r: li.getBoundingClientRect() }]));
+    const wasEmpty = !decks.length;
+    mutate();
+    const live = new Set();
+    [...ui.lists.children].forEach((li) => {
+      live.add(li.dataset.deck);
+      const b = before.get(li.dataset.deck);
+      if (!b) { popIn(li); return; }
+      const r = li.getBoundingClientRect();
+      slide(li, b.r.left - r.left, b.r.top - r.top);
+    });
+    before.forEach((b, id) => { if (!live.has(id) && rectVisible(b.r)) ghostOut(b.el, b.r); });
+    if (!decks.length && !wasEmpty) FX.fade(ui.empty, 1, { duration: 300 });
+  }
+
+  function openEditor(id) {
+    const d = decks.find((x) => x.id === id);
+    if (!d) return;
+    if (mode === "index") indexY = window.scrollY;
+    clearSel();
+    if (drag.on) finishDrag(false);
+    cur = d;
+    mode = "editor";
+    shToken++; shData = null; shared = null;
+    ui.index.hidden = true;
+    ui.shared.hidden = ui.shBad.hidden = ui.shLoad.hidden = true;
+    ui.editor.hidden = false;
+    KINDS.forEach((k) => { ed.shown[k].forEach((o) => o && o.el.remove()); ed.shown[k] = new Array(SLOTS).fill(null); });
+    paintBoard(ed, cur, { animate: false });
+    paintScore(ui.score, null);
+    chrome();
+    animateIn(ui.editor);
+    FX.stagger($(".dk-row", ed.root), 45, { cls: "fx-up", max: 8, cleanup: true });
+    window.scrollTo({ top: 0 });
+  }
+  function showIndex() {
+    const fromEditor = mode === "editor";
+    const fromShared = mode === "shared";
+    clearSel();
+    if (drag.on) finishDrag(false);
+    shToken++; shData = null; shared = null;
+    mode = "index";
+    cur = null;
+    ui.editor.hidden = true;
+    ui.shared.hidden = ui.shBad.hidden = ui.shLoad.hidden = true;
+    ui.index.hidden = false;
+    renderIndex(true);
+    if (fromEditor || fromShared) {
+      animateIn(ui.index);
+      window.scrollTo({ top: indexY });
+    }
+  }
+
+  /* ==========================================================
+     Meta Decks (from teams.json) + Copy to My Decks
+     ========================================================== */
+  function track2(card, el) {
+    if (!metaTiles.has(card.id)) metaTiles.set(card.id, []);
+    metaTiles.get(card.id).push(el);
+  }
   function supportName(id) {
-    const s = Array.isArray(state.support) ? state.support.find((x) => x && x.id === id) : null;
+    const s = supById.get(id);
     return (s && s.name) || pretty(id);
   }
-
-  /* ---------- Meta decks ---------- */
   function slotEl(slot, n) {
     const id = typeof slot === "string" ? slot : slot && slot.card;
     const card = id ? cardById.get(id) : null;
@@ -36,7 +1159,7 @@
     wrap.innerHTML = `<span class="deck__pos">Slot ${n}</span>`;
     if (card) {
       const el = C.renderCard(card, state.rarity, { mini: true });
-      track(card, el);
+      track2(card, el);
       wrap.appendChild(el);
     } else {
       // card id not in cards.json (yet): keep the slot so the deck still reads as 5 cards
@@ -50,57 +1173,324 @@
     if (slot && slot.support) wrap.insertAdjacentHTML("beforeend", `<span class="deck__sup">+ ${esc(supportName(slot.support))}</span>`);
     return wrap;
   }
-
-  function deckEl(team) {
+  function metaEl(team, index) {
     const el = document.createElement("article");
     el.className = "deck glass";
     const name = team.name || pretty(team.id || "Deck");
     el.setAttribute("aria-label", `Deck: ${name}`);
+    el.dataset.ti = index;
     const sup = Array.isArray(team.support) ? team.support : team.support ? [team.support] : [];
     el.innerHTML = `
       <div class="deck__head">
         <h3 class="deck__name">${esc(name)}</h3>
         ${team.mock ? `<span class="badge badge--muted" title="Example data, not a real recommendation">Sample</span>` : ""}
+        <button type="button" class="tm-btn fx-press deck__copy" data-copy aria-label="Copy ${esc(name)} to My Decks">${ICON.copy}Copy to My Decks</button>
       </div>
       <div class="deck__slots"></div>
       ${list(sup).length ? `<div class="deck__support"><span class="deck__label">Support</span>${list(sup).map((id) => `<span class="supchip">${esc(supportName(id))}</span>`).join("")}</div>` : ""}
       ${team.notes ? `<p class="deck__notes">${esc(team.notes)}</p>` : ""}`;
     const row = $(".deck__slots", el);
-    list(team.slots).slice(0, 5).forEach((s, i) => row.appendChild(slotEl(s, i + 1)));
+    list(team.slots).slice(0, SLOTS).forEach((s, i) => row.appendChild(slotEl(s, i + 1)));
     return el;
   }
-
-  function renderDecks() {
-    const teams = (Array.isArray(state.teams) ? state.teams : []).filter((t) => t && list(t.slots).length);
-    ui.list.hidden = !teams.length;
-    ui.none.hidden = teams.length > 0;
-    ui.rarity.hidden = !teams.length;       // nothing to restyle when there are no decks
+  function renderMeta() {
+    metaTeams = (Array.isArray(state.teams) ? state.teams : []).filter((t) => t && list(t.slots).length);
+    ui.metaList.hidden = !metaTeams.length;
+    ui.metaNone.hidden = metaTeams.length > 0;
+    ui.metaRarity.hidden = !metaTeams.length;       // nothing to restyle when there are no decks
+    metaTiles.clear();
     const frag = document.createDocumentFragment();
-    teams.forEach((t) => frag.appendChild(deckEl(t)));
-    ui.list.replaceChildren(frag);
+    metaTeams.forEach((t, i) => frag.appendChild(metaEl(t, i)));
+    ui.metaList.replaceChildren(frag);
   }
-
-  /* ---------- Rarity change (from the chips here or anywhere else) ---------- */
+  // a meta deck as a deck of your own: the card in each slot, with that slot's support first, then the team's other support
+  function teamToDeck(team) {
+    const slots = list(team.slots).slice(0, SLOTS);
+    const cards = slots.map((s) => (typeof s === "string" ? s : s && s.card) || null);
+    const support = slots.map((s) => (s && typeof s === "object" && s.support) || null);
+    const spare = list(Array.isArray(team.support) ? team.support : team.support ? [team.support] : []).filter((id) => !support.includes(id));
+    for (let i = 0; i < SLOTS && spare.length; i++) if (!support[i]) support[i] = spare.shift();
+    const taken = new Set(decks.map((x) => x.name));
+    const base = (team.name || pretty(team.id || "Deck")).slice(0, NAME_MAX);
+    const t = now();
+    return clean({ id: newId("dk_"), name: taken.has(base) ? copyName(base) : base, mode: "tower", rarity: state.rarity, cards, support, created: t, updated: t });
+  }
+  function copyMeta(btn) {
+    const art = btn.closest(".deck");
+    const team = art && metaTeams[Number(art.dataset.ti)];
+    if (!team) return;
+    const d = teamToDeck(team);
+    decks.unshift(d);
+    save();
+    FX.flash(art);
+    FX.toast(canSave ? `Copied “${d.name}” to My Decks` : `Copied “${d.name}” for this visit only`, { action: { label: "Open", fn: () => openDeck(d.id) } });
+  }
   function recolor(name) {
     const all = [];
-    tiles.forEach((els, id) => els.forEach((el) => all.push([el, cardById.get(id)])));
+    metaTiles.forEach((els, id) => els.forEach((el) => all.push([el, cardById.get(id)])));
     // read every position first, then write: mixing them forces a re-layout per card
     const seen = all.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));
     all.forEach(([el, card], i) => card && C.setCardRarity(el, card, name, { animate: seen[i] }));
   }
 
-  function enter() {
-    FX.stagger(ui.list, 70);
+  /* ==========================================================
+     Routing: My Decks | Meta Decks, and which deck
+     ========================================================== */
+  const isDeckHash = () => /^#\/?deck(?:[/?#]|$)/.test(location.hash);
+  function parse() {
+    const h = location.hash;
+    if (/^#\/?deck\/meta(?:[/?#]|$)/.test(h)) return { view: "meta" };
+    let m = h.match(/^#\/?deck\/my\/([^/?#]+)/);
+    if (m) { try { return { view: "my", id: decodeURIComponent(m[1]) }; } catch { return { view: "my", id: "" }; } }
+    m = h.match(/^#\/?deck\/s\/([^/?#]+)/);
+    if (m) return { view: "my", data: m[1] };
+    return { view: "my" };
+  }
+  function setTitle() {
+    if (state.page !== "deck" || !view) return;
+    document.title = view === "meta" ? "Meta Decks — Card Battle Infinity"
+      : mode === "editor" && cur ? `${cur.name} — My Decks — Card Battle Infinity`
+      : mode === "shared" ? `${shared ? shared.deck.name + " — " : ""}Shared Deck — Card Battle Infinity`
+      : "My Decks — Card Battle Infinity";
+  }
+  function setLead() {
+    ui.lead.textContent = view === "meta" ? LEADS.meta : mode === "shared" ? LEADS.shared : LEADS.my;
+  }
+  function apply(t) {
+    const next = t.view === "meta" ? "meta" : "my";
+    const first = view === null;
+    const changed = next !== view;
+    if (changed && view === "my") { clearSel(); if (drag.on) finishDrag(false); }
+    view = next;
+    if (next === "meta" && !metaBuilt) { metaBuilt = true; renderMeta(); }
+    if (next === "my") {
+      if (t.data) openShared(t.data);                         // #deck/s/<data> (openShared sets the title itself)
+      else if (t.id && decks.some((d) => d.id === t.id)) { if (mode !== "editor" || !cur || cur.id !== t.id) openEditor(t.id); }
+      else {
+        if (t.id !== undefined) { try { history.replaceState(null, "", "#deck"); } catch {} }   // unknown or deleted deck in the link -> all decks
+        if (mode !== "index") showIndex();
+      }
+    }
+    setTitle();
+    setLead();
+    if (!changed) return;
+    ui.tabs.style.setProperty("--i", next === "meta" ? 1 : 0);
+    ui.tabBtns.forEach((b) => {
+      const on = b.dataset.tab === next;
+      b.setAttribute("aria-selected", String(on));
+      b.tabIndex = on ? 0 : -1;
+    });
+    ui.my.hidden = next !== "my";
+    ui.meta.hidden = next !== "meta";
+    if (!first) {
+      animateIn(next === "meta" ? ui.meta : ui.my);
+      if (next === "meta") FX.stagger(ui.metaList, 70);
+    }
+  }
+  // called by the router on every hash change and tab tap
+  function show() {
+    if (!built || !isDeckHash()) return;
+    apply(parse());
+  }
+  /* The Deck tab became the current page. restore: coming Back from a support detail, so keep the old scroll position. */
+  function enter({ restore = false } = {}) {
+    if (restore) {
+      const y = history.state.tierY;
+      try {
+        const { tierY, ...rest } = history.state;
+        history.replaceState(Object.keys(rest).length ? rest : null, "");
+      } catch {}
+      window.scrollTo(0, y);
+      return;
+    }
+    if (!built) return;
+    if (view === "meta") FX.stagger(ui.metaList, 70);
+    else if (mode === "index") FX.stagger(ui.lists, 50, { cls: "fx-up", max: 8, cleanup: true });
+  }
+
+  /* ==========================================================
+     Events
+     ========================================================== */
+  function act(name, btn) {
+    const li = btn.closest(".dkl");
+    switch (name) {
+      case "new": newDeck(); break;
+      case "open": if (li) openDeck(li.dataset.deck); break;
+      case "dup": if (li) duplicateDeck(li.dataset.deck); break;
+      case "del": if (li) deleteDeck(li.dataset.deck); break;
+      case "back": back(); break;
+      case "rename": if (cur) renameDeck(); break;
+      case "menu": if (cur) deckMenu(); break;
+      case "backup": if (C.share) C.share.backupDialog(); break;
+      case "sh-copy": saveCopy(); break;
+      case "sh-image": if (shared) saveImage(shared.deck, sh.root); break;
+      case "undo": step(-1); break;
+      case "redo": step(1); break;
+      case "clear": { const slot = btn.closest(".dk-slot"); if (slot && mode === "editor") clearSlot(slot.dataset.kind, Number(slot.dataset.i)); break; }
+      case "sel-details": if (sel) { const o = ed.shown[sel.kind][sel.i]; if (o) details(o.el, sel.kind); } break;
+      case "sel-replace": if (sel) { const { kind, i } = sel; clearSel(); openPicker(kind, i); } break;
+      case "sel-remove": if (sel) { const { kind, i } = sel; clearSlot(kind, i); } break;
+      case "sel-cancel": clearSel(); break;
+    }
+  }
+
+  function onClick(e) {
+    if (blockClick) { e.preventDefault(); e.stopPropagation(); return; }
+    const rb = e.target.closest("[data-dk-rarity]");
+    if (rb && ui.root.contains(rb)) { setRarity(rb.dataset.dkRarity); return; }
+    const mb = e.target.closest("[data-dk-mode]");
+    if (mb && ui.root.contains(mb)) { if (!mb.disabled) setMode(mb.dataset.dkMode); return; }
+    const b = e.target.closest("[data-act]");
+    if (b && ui.root.contains(b)) { act(b.dataset.act, b); return; }
+    if (mode === "shared") {                                    // view only: a tap on a card = its details
+      const it = e.target.closest(".dk-item");
+      if (it && shared && sh.root.contains(it)) details(it, it.closest(".dk-slot").dataset.kind);
+      return;
+    }
+    if (mode !== "editor") return;
+    const slot = e.target.closest(".dk-slot");
+    if (slot && ed.root.contains(slot)) { slotTap(slot.dataset.kind, Number(slot.dataset.i)); return; }
+    if (sel && !e.target.closest(".dk-dock")) clearSel();       // tap on empty space = cancel
+  }
+  function onKey(e) {
+    const t = e.target;
+    const inField = t.matches && t.matches("input, textarea, select");
+    const item = t.closest && t.closest(".dk-item");
+    if (item && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      const slot = item.closest(".dk-slot");
+      if (!slot) return;
+      if (mode === "shared") { if (shared && sh.root.contains(item)) details(item, slot.dataset.kind); }
+      else if (mode === "editor") slotTap(slot.dataset.kind, Number(slot.dataset.i));
+      return;
+    }
+    if (e.key === "Escape" && sel) { e.preventDefault(); clearSel(); return; }
+    if ((e.key === "Delete" || e.key === "Backspace") && sel && !inField) {
+      e.preventDefault();
+      const s = sel, f = ed.shown[s.kind][s.i];
+      clearSlot(s.kind, s.i);
+      const slot = ed.slots[s.kind][s.i];
+      if (slot && f) { const nx = slot._empty; if (nx && nx.isConnected) nx.focus(); }
+    }
+  }
+  // Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y while the editor is on screen
+  function onGlobalKey(e) {
+    if (!(e.ctrlKey || e.metaKey) || e.altKey || mode !== "editor" || view !== "my") return;
+    if (state.page !== "deck" || ui.editor.hidden || dialogOpen() || drag.on) return;
+    if (document.documentElement.classList.contains("is-detail")) return;
+    if (e.target.matches && e.target.matches("input, textarea, select, [contenteditable]")) return;
+    const k = e.key.toLowerCase();
+    if (k === "z") { e.preventDefault(); step(e.shiftKey ? 1 : -1); }
+    else if (k === "y") { e.preventDefault(); step(1); }
+  }
+
+  function rarityChips() {
+    return state.meta.rarities.map((r) =>
+      `<button type="button" class="chip glass fx-press" data-dk-rarity="${esc(r.name)}" aria-pressed="false" style="--sw:${C.RARITY_SWATCH[r.name] || "var(--r-normal)"}"><span class="chip__swatch"></span>${esc(r.name)}</button>`
+    ).join("");   // data-dk-rarity, not data-rarity: these must not change the site-wide rarity (cards.js listens to data-rarity)
+  }
+  function modeButtons() {
+    return modes().map((m) =>
+      `<button type="button" class="seg__btn fx-press" data-dk-mode="${esc(m.id)}" aria-pressed="false"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`
+    ).join("");
+  }
+
+  function bind() {
+    ui.root.addEventListener("click", onClick);
+    ui.root.addEventListener("keydown", onKey);
+    ui.root.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onCancel);
+    // once a card is lifted, the finger must drag it instead of scrolling the page
+    document.addEventListener("touchmove", (e) => { if (drag.on && e.cancelable) e.preventDefault(); }, { passive: false });
+    ui.root.addEventListener("contextmenu", (e) => { if (drag.on || drag.p || e.target.closest(".dk-item")) e.preventDefault(); });
+    ui.root.addEventListener("dragstart", (e) => { if (e.target.closest && e.target.closest(".dk-item")) e.preventDefault(); });   // images: no native drag
+    document.addEventListener("keydown", onGlobalKey);
+    window.addEventListener("blur", () => { if (drag.on) finishDrag(false); else cancelPress(); });
+    // My Decks | Meta Decks: tab-like, so no history entries (same as the bottom tabs)
+    ui.tabs.addEventListener("click", (e) => {
+      const b = e.target.closest(".seg__btn[data-tab]");
+      if (!b || b.dataset.tab === view) return;
+      history.replaceState(null, "", b.dataset.tab === "meta" ? "#deck/meta" : "#deck");
+      C.route();
+    });
+    ui.tabs.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      const to = $(`.seg__btn[data-tab="${view === "meta" ? "my" : "meta"}"]`, ui.tabs);
+      if (to) { to.focus(); to.click(); }
+    });
+    ui.metaList.addEventListener("click", (e) => { const b = e.target.closest("[data-copy]"); if (b) copyMeta(b); });
+    document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
+  }
+
+  /* The first time the Deck tab shows (step 9.5: nothing is built for a tab nobody opens) */
+  function build() {
+    if (built) return;
+    built = true;
+    buildBoard(ed, $("#dk-board"), true);
+    buildBoard(sh, $("#dk-sh-board"), false);
+    ui.rarity.innerHTML = rarityChips();
+    ui.mode.insertAdjacentHTML("beforeend", modeButtons());
+    ui.modeBtns = [...ui.mode.querySelectorAll("[data-dk-mode]")];
+    ui.mode.style.setProperty("--n", modes().length);
+    ui.score.innerHTML = scoreHTML();
+    ui.score = $(".dk-score", ui.score);
+    ui.loading.remove();
+    ui.warn.hidden = canSave;
+    apply(parse());
   }
 
   function init() {
-    Object.assign(ui, { rarity: $("#deck-rarity"), list: $("#deck-list"), none: $("#decks-none") });
+    Object.assign(ui, {
+      root: $("#dk"), lead: $("#deck-lead"), tabs: $("#deck-tabs"), tabBtns: [...document.querySelectorAll("#deck-tabs .seg__btn")],
+      my: $("#deck-my"), meta: $("#deck-meta"),
+      warn: $("#dk-warn"), loading: $("#dk-loading"),
+      index: $("#dk-index"), indexHead: $("#dk-index-head"), count: $("#dk-count"), lists: $("#dk-lists"), empty: $("#dk-empty"),
+      editor: $("#dk-editor"), name: $("#dk-name"), nameText: $("#dk-name-text"), undo: $("#dk-undo"), redo: $("#dk-redo"),
+      metaLine: $("#dk-meta"), score: $("#dk-score"), mode: $("#dk-mode"), rarity: $("#dk-rarity"), hint: $("#dk-hint"),
+      act: $("#dk-act"), actName: $("#dk-act-name"), actHint: $("#dk-act-hint"), actDetails: $("#dk-act-details"),
+      shLoad: $("#dk-sh-load"), shBad: $("#dk-sh-bad"), shBadTitle: $("#dk-sh-bad-title"), shBadText: $("#dk-sh-bad-text"),
+      shared: $("#dk-shared"), shName: $("#dk-sh-name"), shMeta: $("#dk-sh-meta"), shCopyText: $("#dk-sh-copy-text"), shNote: $("#dk-sh-note"),
+      metaList: $("#deck-list"), metaNone: $("#decks-none"), metaRarity: $("#deck-rarity"),
+    });
+    if (!ui.root) return;
     cardById = new Map(state.cards.map((c) => [c.id, c]));
-    ui.rarity.innerHTML = C.rarityChipsHTML();
-    document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
-    // step 9.5: the decks' cards are made the first time the Deck tab shows
-    C.lazy("deck", () => { renderDecks(); enter(); });
+    const sup = (Array.isArray(state.support) ? state.support : []).filter((s) => s && s.id).map((s) => ({ ...s, name: s.name || pretty(s.id) }));
+    supById = new Map(sup.map((s) => [s.id, s]));
+    const order = (kind) => {
+      const all = kind === "cards" ? state.cards.slice() : [...supById.values()];
+      const score = (x) => (kind === "cards" ? x.scores.overall : x.scores.value);
+      return all.sort((a, b) => {
+        const ra = isRankedOf(kind, a), rb = isRankedOf(kind, b);
+        if (ra !== rb) return ra ? -1 : 1;
+        if (ra && score(a) !== score(b)) return score(b) - score(a);
+        return a.name.localeCompare(b.name);
+      });
+    };
+    libs = { cards: order("cards"), support: order("support") };
+
+    // layer for the dragged card and fading copies (outside the page so nothing clips it)
+    ui.layer = document.createElement("div");
+    ui.layer.className = "tm-layer";
+    ui.layer.setAttribute("aria-hidden", "true");
+    document.body.appendChild(ui.layer);
+
+    // storage test: private browsing / blocked storage still works, it just can't keep anything
+    try { localStorage.setItem("cbi:test", "1"); localStorage.removeItem("cbi:test"); } catch { canSave = false; }
+    load();
+    if (C.share) C.share.provide("decks", {
+      label: "Decks", kind: "array",
+      get: () => JSON.parse(JSON.stringify(decks)),
+      count: (v) => v.length,
+      noun: (n) => plural(n, "deck", "decks"),
+      apply: importDecks,
+    });
+    ui.metaRarity.innerHTML = C.rarityChipsHTML();
+    bind();
+    C.lazy("deck", build);
   }
 
-  C.deck = { init, enter };
+  C.deck = { init, enter, show, paintScore };
 })();

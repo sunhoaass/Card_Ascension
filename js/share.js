@@ -4,15 +4,16 @@
                       looks the same on every device · rarity frames, watermark, wide lists wrap to several lines
    · Share link     — the list is packed into the URL hash (deflate-raw through CompressionStream, then base64url).
                       Nothing is uploaded. #tier/s/<data> opens a view-only copy with a "Save a copy" button
-   · Backup         — Export / Import everything as one .json file (tier lists, grades, later decks)
+   · Backup         — Export / Import everything as one .json file (tier lists, grades, decks)
    Loaded after app.js and before the page scripts. The dialogs use C.dialog (made in js/tiermaker.js).
 
    API (window.CBI.share)
      imageDialog(spec, { flashEl })     preview + save a tier list board as PNG     (spec: see tierImage)
+     deckImageDialog(spec, { flashEl }) same for a deck (step 10)                   (spec: see deckImage)
      previewDialog({ title, render, flashEl })   same dialog for any renderer returning { blob, width, height, filename }
      makeLink(route, payload)           -> Promise<url>        route = "tier" | "deck"  (url hash: #<route>/s/<data>)
      readLink(data)                     -> Promise<{ payload } | { error: "browser" } | null>
-     linkDialog({ url, title, flashEl })
+     linkDialog({ url, title, flashEl, what })   what = "list" (default) | "deck"
      backupDialog()                     Export / Import dialog
      provide(id, provider)              a page registers what goes into the backup file:
                                         { label, kind: "array"|"object", get(), count(data), noun(n), apply(data, "merge"|"replace") -> changed }
@@ -32,7 +33,7 @@
 
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const pretty = (id) => String(id).replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "tier-list";
+  const slug = (s, fallback = "tier-list") => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || fallback;
   const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
   const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const today = () => new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -396,6 +397,62 @@
     return map;
   }
 
+  /* Parts shared by the tier list image and the deck image (kept as they were, so tier images come out identical) */
+  const setSpacing = (ctx, px) => { if ("letterSpacing" in ctx) ctx.letterSpacing = px + "px"; };
+  function paintBackdrop(ctx, W, H, pal, seedKey) {
+    // background: void gradient + a few stars (same picture for the same list)
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, pal.void); bg.addColorStop(1, cssVar("--void-2"));
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    const glow = ctx.createRadialGradient(W * 0.2, 0, 0, W * 0.2, 0, W * 0.7);
+    glow.addColorStop(0, "rgba(255, 230, 180, .10)"); glow.addColorStop(1, "rgba(255, 230, 180, 0)");
+    ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+    const haze = ctx.createRadialGradient(W / 2, H * 1.1, 0, W / 2, H * 1.1, Math.max(W, H) * 0.7);
+    haze.addColorStop(0, cssVar("--haze") || "#2a1528"); haze.addColorStop(1, "rgba(42, 21, 40, 0)");
+    ctx.fillStyle = haze; ctx.fillRect(0, 0, W, H);
+    const rand = rng(C.hash(seedKey));
+    const tints = ["255, 255, 255", "243, 230, 200", "255, 212, 138"];
+    for (let i = 0, n = Math.round((W * H) / 9000); i < n; i++) {
+      ctx.globalAlpha = 0.15 + rand() * 0.5;
+      ctx.fillStyle = `rgb(${tints[(rand() * tints.length) | 0]})`;
+      ctx.beginPath(); ctx.arc(rand() * W, rand() * H, 0.4 + rand() * 1.1, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    // gilded border around the whole picture: gold line + corner ornaments
+    ctx.strokeStyle = pal.line; ctx.lineWidth = 1;
+    ctx.strokeRect(10.5, 10.5, W - 21, H - 21);
+    ctx.globalAlpha = 0.6; drawOrnaments(ctx, 12, 12, W - 24, H - 24, 20, pal.rift); ctx.globalAlpha = 1;
+  }
+  // rarity tag, top right (like the tag on a card)
+  function paintRibbon(ctx, text, pillW, W, PAD, frame, pal) {
+      const label = text;
+      ctx.font = `700 15px ${pal.display}`; setSpacing(ctx, 1.5);
+      const tw = Math.min(pillW, ctx.measureText(label).width + 36);
+      const px = W - PAD - tw, py = 32;
+      ctx.beginPath();   // ribbon, like the rarity tag on a card
+      ctx.moveTo(px, py); ctx.lineTo(px + tw, py); ctx.lineTo(px + tw - 10, py + 17); ctx.lineTo(px + tw, py + 34); ctx.lineTo(px, py + 34); ctx.closePath();
+      ctx.fillStyle = flatFill(ctx, px, py, tw, frame); ctx.fill();
+      ctx.fillStyle = "#1a1408"; ctx.textAlign = "center";
+      ctx.fillText(label, px + tw / 2 - 4, py + 23);
+      ctx.textAlign = "left"; setSpacing(ctx, 0);
+  }
+  function paintFooter(ctx, W, H, FOOT, PAD, pal, title) {
+    // footer / watermark: site, link, list name, date
+    const fy = H - FOOT + 14;
+    ctx.fillStyle = pal.line; ctx.fillRect(PAD, fy, W - PAD * 2, 1);
+    ctx.fillStyle = pal.rift; ctx.font = `700 18px ${pal.display}`; setSpacing(ctx, 2);
+    ctx.fillText("CARD BATTLE INFINITY", PAD, fy + 38);
+    setSpacing(ctx, 0);
+    ctx.fillStyle = pal.dim; ctx.font = `500 15px ${pal.body}`;
+    ctx.fillText(siteLabel(), PAD, fy + 62);
+    ctx.textAlign = "right";
+    ctx.font = `600 16px ${pal.display}`; ctx.fillStyle = pal.ink;
+    ctx.fillText(fitText(ctx, title, 560), W - PAD, fy + 38);
+    ctx.font = `500 15px ${pal.body}`; ctx.fillStyle = pal.dim;
+    ctx.fillText(today(), W - PAD, fy + 62);
+    ctx.textAlign = "left";
+  }
+
   async function tierImage(spec, { scale: want = 2 } = {}) {
     const B = BOARD;
     await fontsReady();
@@ -436,28 +493,7 @@
     };
     const spacing = (px) => { if ("letterSpacing" in ctx) ctx.letterSpacing = px + "px"; };
 
-    // background: void gradient + a few stars (same picture for the same list)
-    const bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, pal.void); bg.addColorStop(1, cssVar("--void-2"));
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, B.W, H);
-    const glow = ctx.createRadialGradient(B.W * 0.2, 0, 0, B.W * 0.2, 0, B.W * 0.7);
-    glow.addColorStop(0, "rgba(255, 230, 180, .10)"); glow.addColorStop(1, "rgba(255, 230, 180, 0)");
-    ctx.fillStyle = glow; ctx.fillRect(0, 0, B.W, H);
-    const haze = ctx.createRadialGradient(B.W / 2, H * 1.1, 0, B.W / 2, H * 1.1, Math.max(B.W, H) * 0.7);
-    haze.addColorStop(0, cssVar("--haze") || "#2a1528"); haze.addColorStop(1, "rgba(42, 21, 40, 0)");
-    ctx.fillStyle = haze; ctx.fillRect(0, 0, B.W, H);
-    const rand = rng(C.hash(String(spec.id || spec.title || "x")));
-    const tints = ["255, 255, 255", "243, 230, 200", "255, 212, 138"];
-    for (let i = 0, n = Math.round((B.W * H) / 9000); i < n; i++) {
-      ctx.globalAlpha = 0.15 + rand() * 0.5;
-      ctx.fillStyle = `rgb(${tints[(rand() * tints.length) | 0]})`;
-      ctx.beginPath(); ctx.arc(rand() * B.W, rand() * H, 0.4 + rand() * 1.1, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    // gilded border around the whole picture: gold line + corner ornaments
-    ctx.strokeStyle = pal.line; ctx.lineWidth = 1;
-    ctx.strokeRect(10.5, 10.5, B.W - 21, H - 21);
-    ctx.globalAlpha = 0.6; drawOrnaments(ctx, 12, 12, B.W - 24, H - 24, 20, pal.rift); ctx.globalAlpha = 1;
+    paintBackdrop(ctx, B.W, H, pal, String(spec.id || spec.title || "x"));
 
     // header
     ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
@@ -471,16 +507,7 @@
     const sub = [kind === "card" ? "Cards" : "Support", kind === "card" ? spec.rarity || "Normal" : null, plural(rows.length, "row", "rows"), plural(total, kind === "card" ? "card" : "support card", kind === "card" ? "cards" : "support cards")].filter(Boolean).join("  ·  ");
     ctx.fillText(fitText(ctx, sub, B.W - B.PAD * 2), B.PAD, 128);
     if (kind === "card") {                                // rarity tag, top right (like the tag on a card)
-      const label = String(spec.rarity || "Normal").toUpperCase();
-      ctx.font = `700 15px ${pal.display}`; spacing(1.5);
-      const tw = Math.min(pillW, ctx.measureText(label).width + 36);
-      const px = B.W - B.PAD - tw, py = 32;
-      ctx.beginPath();   // ribbon, like the rarity tag on a card
-      ctx.moveTo(px, py); ctx.lineTo(px + tw, py); ctx.lineTo(px + tw - 10, py + 17); ctx.lineTo(px + tw, py + 34); ctx.lineTo(px, py + 34); ctx.closePath();
-      ctx.fillStyle = flatFill(ctx, px, py, tw, frame); ctx.fill();
-      ctx.fillStyle = "#1a1408"; ctx.textAlign = "center";
-      ctx.fillText(label, px + tw / 2 - 4, py + 23);
-      ctx.textAlign = "left"; spacing(0);
+      paintRibbon(ctx, String(spec.rarity || "Normal").toUpperCase(), pillW, B.W, B.PAD, frame, pal);
     }
 
     // rows
@@ -526,23 +553,116 @@
       y += r.h + B.ROW_GAP;
     });
 
-    // footer / watermark: site, link, list name, date
-    const fy = H - B.FOOT + 14;
-    ctx.fillStyle = pal.line; ctx.fillRect(B.PAD, fy, B.W - B.PAD * 2, 1);
-    ctx.fillStyle = pal.rift; ctx.font = `700 18px ${pal.display}`; spacing(2);
-    ctx.fillText("CARD BATTLE INFINITY", B.PAD, fy + 38);
-    spacing(0);
-    ctx.fillStyle = pal.dim; ctx.font = `500 15px ${pal.body}`;
-    ctx.fillText(siteLabel(), B.PAD, fy + 62);
-    ctx.textAlign = "right";
-    ctx.font = `600 16px ${pal.display}`; ctx.fillStyle = pal.ink;
-    ctx.fillText(fitText(ctx, spec.title || "Tier list", 560), B.W - B.PAD, fy + 38);
-    ctx.font = `500 15px ${pal.body}`; ctx.fillStyle = pal.dim;
-    ctx.fillText(today(), B.W - B.PAD, fy + 62);
-    ctx.textAlign = "left";
+    paintFooter(ctx, B.W, H, B.FOOT, B.PAD, pal, spec.title || "Tier list");
 
     const blob = await new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Couldn't encode the image"))), "image/png"));
     return { blob, width: canvas.width, height: canvas.height, filename: `${slug(spec.title)}.png` };
+  }
+
+  /* ==========================================================
+     Image: a deck (step 10). Five card slots over five support slots, drawn with the same card / frame / backdrop code.
+     spec = { id, title, mode: "Ascended Tower", rarity: name, cards: [id|null x5], support: [id|null x5] }
+     ========================================================== */
+  const DECKIMG = { W: 1200, PAD: 28, HEAD: 150, FOOT: 96, GAP: 24, CW: 190, CH: 266, SW: 150, SH: 210, PANEL_GAP: 14, R: 16 };
+
+  function drawEmptySlot(ctx, x, y, w, h, pal) {
+    roundRect(ctx, x + 1, y + 1, w - 2, h - 2, 8);
+    ctx.fillStyle = "rgba(255, 255, 255, .02)"; ctx.fill();
+    ctx.setLineDash([5, 4]); ctx.lineWidth = 1.5; ctx.strokeStyle = pal.faint; ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = pal.faint; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+    ctx.font = `600 13px ${pal.body}`;
+    ctx.fillText("Empty", x + w / 2, y + h / 2 + 4);
+    ctx.textAlign = "left";
+  }
+
+  async function deckImage(spec, { scale: want = 2 } = {}) {
+    const B = DECKIMG;
+    await fontsReady();
+    const cardLib = libFor("card"), supLib = libFor("support");
+    const cards = (spec.cards || []).slice(0, 5).map((id) => (id ? cardLib.get(id) || { missing: true, id } : null));
+    const sups = (spec.support || []).slice(0, 5).map((id) => (id ? supLib.get(id) || { missing: true, id } : null));
+    while (cards.length < 5) cards.push(null);
+    while (sups.length < 5) sups.push(null);
+    const nC = cards.filter(Boolean).length, nS = sups.filter(Boolean).length;
+    const rarity = spec.rarity || "Normal";
+    const frame = frameSpec(rarity, "card"), sframe = frameSpec(null, "support");
+
+    const P1 = 14 + 22 + 24 + B.CH + 18, P2 = 14 + 22 + B.SH + 18;
+    const H = B.HEAD + P1 + B.PANEL_GAP + P2 + 20 + B.FOOT;
+    let k = Math.min(want, Math.sqrt(MAX_PIXELS / (B.W * H)), MAX_SIDE / H, MAX_SIDE / B.W);
+    k = Math.floor(k * 100) / 100;
+    if (k < 0.5) throw new Error("This deck is too big for one image");
+
+    const arts = new Map();
+    const srcs = new Set();
+    [...cards, ...sups].forEach((it) => { if (it && !it.missing && it.image) srcs.add(it.image); });
+    await Promise.all([...srcs].map(async (s) => arts.set(s, await loadImg(s))));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(B.W * k); canvas.height = Math.round(H * k);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("No canvas");
+    ctx.scale(k, k);
+    const pal = {
+      display: cssVar("--font-display"), body: cssVar("--font-body"),
+      ink: cssVar("--ink"), dim: cssVar("--ink-dim"), faint: cssVar("--ink-faint"), void: cssVar("--void"),
+      rift: cssVar("--rift"), glass: cssVar("--glass"), line: cssVar("--glass-line"),
+    };
+    paintBackdrop(ctx, B.W, H, pal, "deck:" + String(spec.id || spec.title || "x"));
+
+    // header
+    ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+    ctx.fillStyle = pal.rift; ctx.font = `600 14px ${pal.display}`; setSpacing(ctx, 3);
+    ctx.fillText("CARD BATTLE INFINITY", B.PAD, 46);
+    setSpacing(ctx, 0);
+    const pillW = 150;
+    ctx.fillStyle = pal.ink; ctx.font = `700 46px ${pal.display}`;
+    ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2 - pillW - 20), B.PAD, 98);
+    ctx.fillStyle = pal.dim; ctx.font = `500 18px ${pal.body}`;
+    const sub = ["Deck", spec.mode || null, rarity, `${nC}/5 cards`, `${nS}/5 support`].filter(Boolean).join("  ·  ");
+    ctx.fillText(fitText(ctx, sub, B.W - B.PAD * 2), B.PAD, 128);
+    paintRibbon(ctx, String(rarity).toUpperCase(), pillW, B.W, B.PAD, frame, pal);
+
+    // one panel per kind. Columns line up, so the support under a card sits in the same column.
+    const pw = B.W - B.PAD * 2;
+    const colW = (pw - 2 * 24) / 5;
+    const colX = (i) => B.PAD + 24 + i * colW + colW / 2;
+    const panel = (y, h, label, count) => {
+      ctx.save();
+      roundRect(ctx, B.PAD, y, pw, h, B.R); ctx.clip();
+      ctx.fillStyle = "rgba(15, 20, 37, .93)"; ctx.fillRect(B.PAD, y, pw, h);
+      ctx.fillStyle = pal.glass; ctx.fillRect(B.PAD, y, pw, h);
+      ctx.restore();
+      roundRect(ctx, B.PAD + 0.5, y + 0.5, pw - 1, h - 1, B.R);
+      ctx.strokeStyle = pal.line; ctx.lineWidth = 1; ctx.stroke();
+      ctx.fillStyle = pal.rift; ctx.font = `700 13px ${pal.display}`; setSpacing(ctx, 2.5);
+      ctx.fillText(label.toUpperCase(), B.PAD + 22, y + 14 + 14);
+      setSpacing(ctx, 0);
+      ctx.fillStyle = pal.dim; ctx.font = `600 13px ${pal.body}`; ctx.textAlign = "right";
+      ctx.fillText(count, B.PAD + pw - 22, y + 14 + 14);
+      ctx.textAlign = "left";
+    };
+    let y = B.HEAD;
+    panel(y, P1, "Cards", `${nC} / 5`);
+    cards.forEach((it, i) => {
+      const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + 24;
+      ctx.fillStyle = pal.dim; ctx.font = `700 12px ${pal.display}`; ctx.textAlign = "center"; setSpacing(ctx, 1.5);
+      ctx.fillText(`SLOT ${i + 1}`, colX(i), cy - 9);
+      setSpacing(ctx, 0); ctx.textAlign = "left";
+      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal);
+      else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
+    });
+    y += P1 + B.PANEL_GAP;
+    panel(y, P2, "Support", `${nS} / 5`);
+    sups.forEach((it, i) => {
+      const x = colX(i) - B.SW / 2, cy = y + 14 + 22;
+      if (it) drawCard(ctx, x, cy, B.SW, B.SH, it, sframe, it.image ? arts.get(it.image) : null, k, pal);
+      else drawEmptySlot(ctx, x, cy, B.SW, B.SH, pal);
+    });
+    paintFooter(ctx, B.W, H, B.FOOT, B.PAD, pal, spec.title || "Deck");
+
+    const blob = await new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Couldn't encode the image"))), "image/png"));
+    return { blob, width: canvas.width, height: canvas.height, filename: `${slug(spec.title, "deck")}.png` };
   }
 
   /* ==========================================================
@@ -593,13 +713,15 @@
     }
   }
   const imageDialog = (spec, { flashEl } = {}) => previewDialog({ title: "Save as image", render: () => tierImage(spec), flashEl });
+  const deckImageDialog = (spec, { flashEl } = {}) => previewDialog({ title: "Save as image", render: () => deckImage(spec), flashEl });
 
-  async function linkDialog({ url, title, flashEl }) {
+  async function linkDialog({ url, title, flashEl, what = "list" }) {
+    const deck = what === "deck";
     const canShare = !!navigator.share;
     const long = url.length > 6000;
     const res = await C.dialog({
       title: "Share link",
-      html: `<p class="tm-dlg__text">Anyone with this link opens a view-only copy of “${esc(title)}” and can save it to their own lists. Nothing is uploaded: the list is inside the link. Yours isn’t changed.</p>
+      html: `<p class="tm-dlg__text">Anyone with this link opens a view-only copy of “${esc(title)}” and can save it to their own ${deck ? "decks" : "lists"}. Nothing is uploaded: the ${deck ? "deck" : "list"} is inside the link. Yours isn’t changed.</p>
         <label class="tm-field"><span class="tm-field__label">Link</span>
           <input class="tm-input" data-url readonly value="${esc(url)}" spellcheck="false" autocomplete="off" aria-label="Share link"></label>
         <p class="tm-field__note" data-note>${long ? "This is a long link and some chat apps may cut it off. For big lists, saving an image is safer." : ""}</p>
@@ -617,7 +739,7 @@
         });
         const sh = $("[data-share]", d);
         if (sh) sh.addEventListener("click", async () => {
-          try { await navigator.share({ title, text: `${title} — a tier list on Card Battle Infinity`, url }); finish({ action: "shared" }); }
+          try { await navigator.share({ title, text: `${title} — ${deck ? "a deck" : "a tier list"} on Card Battle Infinity`, url }); finish({ action: "shared" }); }
           catch (e) { if (!e || e.name !== "AbortError") { note.textContent = "Couldn’t open the share sheet. Use Copy link instead."; } }
         });
       },
@@ -672,7 +794,7 @@
     const res = await C.dialog({
       title: "Restore from backup",
       html: `<p class="tm-dlg__text">This backup has ${esc(lines)}${when ? ` (saved ${esc(when)})` : ""}.</p>
-        <p class="tm-dlg__text"><b>Merge</b> keeps what you have and adds the rest. If the same tier list is in both, the one edited last wins. <b>Replace</b> swaps what’s on this device for the backup.</p>`,
+        <p class="tm-dlg__text"><b>Merge</b> keeps what you have and adds the rest. If the same tier list or deck is in both, the one edited last wins. <b>Replace</b> swaps what’s on this device for the backup.</p>`,
       actions: [
         { label: "Cancel", value: "cancel" },
         { label: "Replace", value: "replace", cls: "tm-btn--danger" },
@@ -697,7 +819,7 @@
     const have = snap.filter((s) => s.n > 0);
     const res = await C.dialog({
       title: "Backup & restore",
-      html: `<p class="tm-dlg__text">Save your tier lists and grades to a file you keep, or restore them from one. Nothing is uploaded; it all stays on your device.</p>
+      html: `<p class="tm-dlg__text">Save your tier lists, grades and decks to a file you keep, or restore them from one. Nothing is uploaded; it all stays on your device.</p>
         <p class="tm-dlg__sum">${have.length ? "On this device: " + esc(have.map((s) => s.p.noun(s.n)).join(" · ")) : "Nothing saved on this device yet."}</p>
         <div class="tm-dlg__pair">
           <button type="button" class="tm-btn tm-btn--primary fx-press" data-dlg="export"${have.length ? "" : " disabled"}>${ICON.download}Export</button>
@@ -720,5 +842,5 @@
     }
   }
 
-  C.share = { imageDialog, previewDialog, tierImage, makeLink, readLink, linkDialog, backupDialog, provide, copyText, icons: ICON };
+  C.share = { imageDialog, deckImageDialog, previewDialog, tierImage, deckImage, makeLink, readLink, linkDialog, backupDialog, provide, copyText, icons: ICON };
 })();
