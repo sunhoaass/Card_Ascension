@@ -1,8 +1,10 @@
 /* ==========================================================
-   Deck page (step 7): Meta Decks, moved here from the Tier List
-   Colors, spacing, type and motion all come from tokens.css.
+   Deck page · step 7: Meta Decks · step 10: the deck builder (.dk-*)
+   Colors, spacing, type and motion all come from tokens.css. Buttons, dialogs, list rows, the command bar and the dragged
+   ghost are shared with the Tier Maker (css/tiermaker.css: .tm-btn .tm-bar .tm-title .tml .tm-act .tm-ghost .tm-layer .tm-dlg).
    ========================================================== */
-[hidden].deck-list, [hidden].rarity-picker { display: none; }
+[hidden].deck-list, [hidden].rarity-picker, #deck-my[hidden], #deck-meta[hidden], #dk-index[hidden], .dk-editor[hidden],
+[hidden].dk-x, [hidden].dk-pick__filters, [hidden].dk-pick__empty { display: none; }
 
 /* ---------- Meta decks ---------- */
 .decks { margin-top: var(--s-2); }
@@ -10,6 +12,8 @@
 .deck-list { display: flex; flex-direction: column; gap: var(--s-4); }
 .deck { padding: var(--s-4); overflow: hidden; }   /* gilded panel (base.css) */
 .deck__head { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3); }
+.deck__copy { min-height: 40px; padding: 0 14px; font-size: var(--fs-xs); }
+.deck__copy svg { width: 16px; height: 16px; }
 .deck__name { font-size: var(--fs-lg); letter-spacing: .04em; color: var(--ink); }
 .deck__slots {
   display: flex; gap: var(--s-3);
@@ -42,4 +46,187 @@
   .deck { padding: var(--s-5); }
   .deck__slots { margin-inline: calc(var(--s-5) * -1); padding-inline: var(--s-5); }
   .deck__slot { width: 120px; }
+}
+
+
+/* ==========================================================
+   My Decks (step 10)
+   ========================================================== */
+.dk { min-width: 0; }
+
+/* ---------- All decks: rows are the Tier Maker's .tml; this adds the five-card strip ---------- */
+.dkl__open { align-items: stretch; }
+.dkl .tml__text { width: 100%; gap: 3px; }
+.dkl .tml__meta { white-space: normal; }
+.dkl__strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 260px; margin: 3px 0 2px; }
+.dkl__col { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
+.dkl__c {
+  position: relative; width: 100%; aspect-ratio: var(--card-ratio); overflow: hidden;
+  border-radius: 3px; border: 1px solid var(--gold-lo); background: #0d1020;
+}
+.dkl__c img, .dkl__c svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+.dkl__c.is-empty { border: 1px dashed var(--glass-line); background: transparent; }
+.dkl__c.is-missing { border: 1px dashed var(--ink-faint); background: transparent; }
+.dkl__pip { width: 55%; max-width: 22px; height: 3px; border-radius: 2px; background: var(--glass-line); }
+.dkl__pip.is-on { background: var(--gold); box-shadow: 0 0 6px color-mix(in srgb, var(--gold) 55%, transparent); }
+
+/* ---------- One deck: top block (score ring, mode, rarity) ---------- */
+.dk-top { display: grid; gap: var(--s-2); margin-bottom: var(--s-2); }
+.dk-top__main { display: grid; gap: var(--s-2); min-width: 0; }
+.dk-mode.seg { max-width: none; margin: 0; }
+.dk-mode .seg__btn, .dk-seg .seg__btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  min-width: 0; padding: 0 4px; line-height: 1.1;
+}
+.dk-mode .seg__btn small, .dk-seg .seg__btn small { font-size: 9px; font-weight: 600; letter-spacing: .04em; color: var(--ink-faint); }
+.dk-mode .seg__btn:disabled, .dk-seg .seg__btn:disabled { cursor: not-allowed; opacity: .6; }
+.dk-seg { margin-bottom: 0; }
+.dk-rarity { margin-bottom: var(--s-2); }
+
+/* team score: a ring with the number inside. Step 10 shows "—"; step 11 fills it (CBI.deck.paintScore) */
+.dk-scorebox { min-width: 0; }
+.dk-score {
+  display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: var(--panel-fill);
+  --ring: var(--gold);
+}
+.dk-score[data-band="none"] { --ring: var(--ink-faint); }
+.dk-score__ring { position: relative; flex: none; width: 56px; height: 56px; display: grid; place-items: center; }
+.dk-score__ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.dk-score__track, .dk-score__val { fill: none; stroke-width: 6; }
+.dk-score__track { stroke: var(--glass-line); }
+.dk-score__val { stroke: var(--ring); stroke-linecap: round; }
+.dk-score__num { position: relative; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); color: var(--ink); }
+.dk-score[data-band="none"] .dk-score__num { color: var(--ink-faint); }
+.dk-score__text { display: grid; gap: 2px; min-width: 0; }
+.dk-score__text b { font-family: var(--font-display); font-size: var(--fs-sm); letter-spacing: .06em; color: var(--gold-hi); }
+.dk-score__text small { font-size: var(--fs-xs); color: var(--ink-dim); line-height: 1.35; }
+
+/* ---------- The board: 5 card slots over 5 support slots ---------- */
+.dk-board { display: grid; gap: var(--s-3); }
+.dk-group__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-2); }
+.dk-group__title { font-size: var(--fs-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.dk-group__count { font-size: var(--fs-xs); color: var(--ink-dim); }
+.dk-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.dk-slot { position: relative; min-width: 0; display: flex; flex-direction: column; align-items: stretch; --plate-h: 0px; }
+.dk-slot[data-kind="cards"] { --plate-h: 22px; }
+.dk-slot .deck__pos { height: 16px; line-height: 16px; padding: 0 6px; margin-bottom: 6px; font-size: 9px; white-space: nowrap; }
+.dk-slot__box { position: relative; aspect-ratio: var(--card-ratio); border-radius: var(--r-card); }
+
+.dk-add, .dk-none {
+  position: absolute; inset: 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  border-radius: var(--r-card); border: 1.5px dashed var(--glass-line); background: rgba(255, 255, 255, .02);
+  color: var(--ink-faint); font-size: var(--fs-xs); font-weight: 600;
+  transition: border-color var(--t-med) var(--ease), color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
+}
+.dk-add svg { width: 22px; height: 22px; color: var(--gold); }
+.dk-add:hover, .dk-add:focus-visible { border-color: var(--gold); color: var(--ink); background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.dk-none { font-weight: 400; }
+
+/* × on a filled slot: small to look at, 44px to tap */
+.dk-x {
+  position: absolute; z-index: 4; right: -6px; top: calc(var(--plate-h) - 8px);
+  width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%;
+}
+.dk-x::after { content: ""; position: absolute; inset: -8px; }
+.dk-x__dot {
+  width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%;
+  background: var(--void-2); border: 1px solid var(--gold-lo); color: var(--ink);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .55);
+}
+.dk-x__dot svg { width: 12px; height: 12px; }
+.dk-x:hover .dk-x__dot, .dk-x:focus-visible .dk-x__dot { border-color: var(--bad); color: var(--bad); }
+
+/* a card in a slot (same look as the Tier Maker's items) */
+.dk-item {
+  position: absolute; inset: 0; border-radius: var(--r-card);
+  touch-action: manipulation; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; cursor: pointer;
+  transition: scale var(--t-fast) var(--ease), translate var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
+}
+.dk-item .card, .dk-item .scard { width: 100%; touch-action: manipulation; }   /* .card is pan-y: a drag must not scroll */
+.dk-item .card__tag, .dk-item .scard__tag, .dk-tile .card__tag, .dk-tile .scard__tag { display: none; }   /* too small to read here */
+.dk-item .card__tier, .dk-item .scard__tier { display: none; }   /* the × sits on that corner */
+.dk-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
+.dk-item.is-pressing { scale: 0.95; }
+.dk-item.is-source { opacity: 0.35; }
+.dk-item.is-selected { z-index: 2; translate: 0 -4px; }
+.dk-item.is-selected::after {
+  content: ""; position: absolute; inset: -4px; z-index: 3; pointer-events: none;
+  border-radius: calc(var(--r-card) + 4px);
+  box-shadow: 0 0 0 2px var(--rift), 0 0 18px color-mix(in srgb, var(--rift) 60%, transparent);
+  animation: fx-fade var(--t-med) var(--ease);
+}
+.dk-item--missing { display: block; }
+.dk-item--missing .tm-missing { height: 100%; aspect-ratio: auto; }
+.dk-shared .dk-item { cursor: pointer; }
+.dk-item .scard { --orn-s: 14px; }
+.dk-item .scard__name, .dk-tile .scard__name { font-size: 9.5px; letter-spacing: 0; }
+.dk-item .scard__info, .dk-tile .scard__info { padding: 20px 5px 6px; }
+
+/* while something is lifted / selected: slots of that kind show where it can go */
+.dk-editor[data-target="cards"] .dk-row[data-kind="cards"] .dk-slot__box,
+.dk-editor[data-target="support"] .dk-row[data-kind="support"] .dk-slot__box {
+  outline: 2px dashed color-mix(in srgb, var(--rift) 45%, transparent); outline-offset: 3px;
+}
+.dk-slot.is-over .dk-slot__box { outline: 2px solid var(--rift); outline-offset: 3px; box-shadow: var(--rift-glow); }
+
+/* the command bar for a tapped card floats above the bottom menu. While a card is picked up the page gets room under the
+   board (margin on the dock), so the last row can always be scrolled above the bar. */
+.dk-dock { position: sticky; z-index: 15; height: 0; bottom: calc(var(--nav-h) + var(--safe-b) + 8px); margin-top: var(--s-4); }
+.dk-editor.is-targeting .dk-dock { margin-top: 124px; }
+@media (min-width: 900px) { .dk-dock .tm-act { max-width: 560px; margin: 0 auto; } }
+@media (min-width: 1100px) { .dk-dock { bottom: var(--s-4); } }
+
+/* ---------- Card picker (a dialog) ---------- */
+.dk-pick-sheet { max-width: 560px; }
+.dk-pick { display: grid; gap: var(--s-2); min-width: 0; }
+.dk-pick__head { display: flex; align-items: center; gap: 6px; }
+.dk-pick__head .field { flex: 1; min-width: 0; }
+.dk-pick__head .field input { min-height: 44px; }
+.dk-pick__filter { position: relative; flex: none; width: 44px; min-height: 44px; }
+.dk-pick__filter svg { width: 18px; height: 18px; }
+.dk-pick__filter[aria-expanded="true"] { color: var(--rift); }
+.dk-pick__filters { display: grid; gap: var(--s-2); }
+.dk-pick__filters .field select { min-height: 40px; font-size: var(--fs-sm); }
+.dk-pick__scroll { max-height: min(56vh, 520px); overflow-y: auto; overscroll-behavior: contain; margin: 0 calc(var(--s-1) * -1); padding: var(--s-1); scrollbar-width: thin; }
+.dk-pick__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 359px) { .dk-pick__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 520px) { .dk-pick__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.dk-pick__more { height: 1px; }
+.dk-pick__empty { padding: var(--s-4) 0; text-align: center; color: var(--ink-dim); font-size: var(--fs-sm); }
+.dk-tile {
+  position: relative; border-radius: var(--r-card); cursor: pointer;
+  touch-action: manipulation; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none;
+  transition: scale var(--t-fast) var(--ease), opacity var(--t-med) var(--ease);
+}
+.dk-tile .card, .dk-tile .scard { width: 100%; }
+.dk-tile:active:not(.is-used) { scale: 0.96; }
+.dk-tile:focus-visible { outline-offset: 3px; }
+.dk-tile.is-used { opacity: 0.38; cursor: not-allowed; }
+.dk-tile.is-here { box-shadow: 0 0 0 2px var(--rift); }
+.dk-tile__tag {
+  position: absolute; left: 50%; bottom: 6px; z-index: 2; transform: translateX(-50%);
+  padding: 1px 7px; border-radius: var(--r-pill); white-space: nowrap;
+  font-family: var(--font-display); font-weight: 700; font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink); background: var(--void-2); border: 1px solid var(--glass-line);
+}
+.dk-tile__tag--here { color: var(--on-gold); background: var(--brass-gold); border-color: #f6e2aa; }
+
+/* ---------- Bigger screens ---------- */
+@media (min-width: 600px) {
+  .deck__copy { margin-left: auto; }
+  .dk-row { gap: 10px; }
+  .dk-slot .deck__pos { font-size: 10px; }
+}
+@media (min-width: 900px) {
+  .dk-top { grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); align-items: stretch; }
+  .dk-top__main { align-content: center; }
+  .dk-board { max-width: 760px; }
+  .dk-row { gap: 14px; }
+}
+
+/* ---------- Reduced motion: fades only ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .dk-item.is-selected, .dk-item.is-pressing { translate: none; scale: none; }
+  .dk-tile:active:not(.is-used) { scale: none; }
 }
