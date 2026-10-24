@@ -19,7 +19,7 @@
   };
   const STORE_KEY = "cbi:lastPage";
   const RARITY_KEY = "cbi:rarity";
-  const TIER_COLOR = { SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d" };
+  const TIER_COLOR = { GOD: "--t-god", SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d" };
   const RARITY_SWATCH = {
     Normal: "var(--r-normal)", Shiny: "var(--r-shiny)",
     Rainbow: "linear-gradient(135deg,#e8607a,#e9a75a,#7fd39a,#69b9e0,#8a7be0)",
@@ -173,7 +173,7 @@
         <span class="card__stars"></span>
         <span class="card__sweep"></span>
         <span class="card__tag">${esc(rarity)}</span>
-        ${ranked ? `<span class="card__tier">${esc(card.tier)}</span>` : ""}
+        ${ranked ? (String(card.tier).length > 2 ? `<span class="card__tier card__tier--long"><span>${esc(card.tier)}</span></span>` : `<span class="card__tier">${esc(card.tier)}</span>`) : ""}
         <div class="card__info">
           <div class="card__name">${esc(card.name)}</div>
           <div class="card__series">${esc(card.series)}</div>

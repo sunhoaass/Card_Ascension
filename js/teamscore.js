@@ -14,7 +14,7 @@
    The 5 parts (weights per mode from data/meta.json -> modes[].weights; default 30 / 25 / 20 / 15 / 10):
      power     card Overall (unranked = 50) vs the best 5 cards in the library · support Value vs the best support
      synergy   cards with a partner from team.bestWith · support that fits the card above it · minus avoidWith clashes
-     coverage  share of SS/S cards the team beats (beats) · minus every weakTo tag shared by 3+ cards
+     coverage  share of Meta cards (GOD/SS) the team beats (beats) · minus every weakTo tag shared by 3+ cards
      roles     the roles the mode asks for (modes[].roles, default Tank 1 · DPS 2; Hybrid fills any one)
      position  each card in the slot from its team.position
    An empty slot gives 0. A part with no data in the whole library yet scores half of what is filled
@@ -51,7 +51,7 @@
     strongMin: 2,                         // "Strong vs": beaten by 2+ cards
     rolesNeed: 0.8, rolesAny: 0.2,        // roles: the mode's needs / every card has a role
     posNear: 0.5,                         // position: one slot away from its best slot
-    threatTiers: ["SS", "S"],
+    threatTiers: ["GOD", "SS"],          // Meta cards (owner 2026-10-24: GOD + SS)
   };
   const BANDS = [
     { min: 100, band: "perfect", label: "Perfect" },
@@ -245,7 +245,7 @@
       let v = canCover ? covered / l.threats.length : 0.5 * fill;
       const weak = weakTags(members);
       v = clamp01(v - K.weakHit * weak.length);
-      const bits = [canCover ? `Beats ${covered} of ${l.threats.length} SS/S cards` : "who beats whom: not enough data"];
+      const bits = [canCover ? `Beats ${covered} of ${l.threats.length} Meta cards` : l.has.beats ? "no Meta (GOD/SS) cards in the library yet" : "who beats whom: not enough data"];
       if (weak.length) bits.push(`${weak[0].count} cards weak to ${weak[0].name}${weak.length > 1 ? ` (+${weak.length - 1} more)` : ""}`);
       parts.coverage = { v, noData: !canCover, note: bits.join(" · "), covered, weak };
     }
@@ -350,7 +350,7 @@
       return { id: t.id || "", name: t.name || pretty(t.id || "Deck"), count: hit, mock: !!t.mock };
     }).filter((t) => t.count >= K.strongMin).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
-    // Weak vs: tags 3+ of our cards are weak to · SS/S cards nobody in the team beats
+    // Weak vs: tags 3+ of our cards are weak to · Meta (GOD/SS) cards nobody in the team beats
     const weak = weakTags(members);
     const beaten = new Set(beatCount.keys());
     const weakCards = l.has.beats && members.length

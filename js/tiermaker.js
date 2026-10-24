@@ -316,7 +316,7 @@
     const cmp = prefs.compare && cur.type === "card";
     const names = tierNames();
     cur.rows.forEach((r, ri) => {
-      // a row labelled like a Global tier is that tier; any other label counts by its position (row 1 = SS, row 2 = S, ...)
+      // a row labelled like a Global tier is that tier; any other label counts by its position (row 1 = GOD, row 2 = SS, ...)
       const t = r.label.trim().toUpperCase();
       let level = names.findIndex((n) => n.toUpperCase() === t);
       if (level < 0) level = Math.min(ri, names.length - 1);
@@ -1010,7 +1010,7 @@
           const type = pickOf(d, "type"), start = pickOf(d, "start");
           const n = (type === "card" ? rankedCards : rankedSup).length;
           note.textContent = start === "blank"
-            ? "Rows SS to D, all empty. Fill them from the pool."
+            ? "Rows GOD to D, all empty. Fill them from the pool."
             : n ? `Copies the Global ${type === "card" ? "card" : "support"} ranking (${nounOf(type, n)}) so you can move things around.`
               : `Global has no ranked ${type === "card" ? "cards" : "support cards"} yet, so the rows will start empty.`;
         };

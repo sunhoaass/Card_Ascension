@@ -5,8 +5,8 @@
    · My Lists (the Tier Maker, step 8) lives in js/tiermaker.js: this file calls C.tm.init() once and
      C.tm.show(listId|null, sharedData|null) every time My Lists is showing
    · Global is view-only and has a Cards | Support switch (they never share a list)
-     - Cards: rows SS–D by Overall, rarity picker shared with the Cards page
-     - Support: rows SS–D by Value (data/support.json), no rarity
+     - Cards: rows GOD–D by Overall, rarity picker shared with the Cards page
+     - Support: rows GOD–D by Value (data/support.json), no rarity
    Meta Decks moved to the Deck page (js/deck.js).
    Needs js/fx.js, js/app.js, js/cards.js loaded first (support.js is only needed when a support tile is tapped).
    The rarity chips here are handled by js/cards.js (one shared rarity for the whole site);
@@ -19,8 +19,8 @@
   const KIND_KEY = "cbi:tierKind";      // "cards" | "support" (last Global view)
   const TITLES = { global: null, my: "My Tier Lists — Card Battle Infinity" };   // null = the page's normal title
   const LEADS = {
-    cards: "Every ranked card by Overall score, from SS at the top to D at the bottom. Pick a rarity to see its stats. Tap a card for the full breakdown.",
-    support: "Every ranked support card by Value, from SS at the top to D at the bottom. Tap one for the full breakdown.",
+    cards: "Every ranked card by Overall score, from GOD at the top to D at the bottom. GOD and SS are the Meta cards. Pick a rarity to see its stats. Tap a card for the full breakdown.",
+    support: "Every ranked support card by Value, from GOD at the top to D at the bottom. Tap one for the full breakdown.",
     my: "Your own tier lists, saved on this device.",
     shared: "A tier list someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
@@ -56,7 +56,7 @@
       row.className = "tier-row glass";
       row.style.setProperty("--tc", tierVar(t.name));
       row.setAttribute("aria-label", `Tier ${t.name}, ${plural(group.length, noun[0], noun[1])}`);
-      row.innerHTML = `<div class="tier-row__label"><span>${esc(t.name)}</span><small class="tier-row__count">${group.length}</small></div><div class="tier-row__cards"></div>`;
+      row.innerHTML = `<div class="tier-row__label"><span${t.name.length > 2 ? ' class="tier-row__name--long"' : ""}>${esc(t.name)}</span><small class="tier-row__count">${group.length}</small></div><div class="tier-row__cards"></div>`;
       const wrap = $(".tier-row__cards", row);
       if (group.length) group.forEach((x) => wrap.appendChild(makeTile(x)));
       else wrap.innerHTML = `<p class="tier-row__empty">No ${esc(noun[1])} in this tier yet</p>`;

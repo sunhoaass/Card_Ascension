@@ -475,7 +475,7 @@
     else if (!wt.length && !wc.length) weak = none("No clear weakness found.");
     else weak = wt.map((t) => chip(t.name, { count: t.count })).join("")
       + wc.slice(0, LIMIT).map((c) => chip(c.name, { id: c.id, tier: c.tier, interactive })).join("") + more(wc.length - LIMIT);
-    return { strong, weak, note: wc.length ? `${wc.length} SS/S ${wc.length === 1 ? "card has" : "cards have"} no answer in this team.` : "" };
+    return { strong, weak, note: wc.length ? `${wc.length} Meta ${wc.length === 1 ? "card has" : "cards have"} no answer in this team.` : "" };
   }
   function fitsHTML(a, deck, editable) {
     if (!a.modes.length) return "";

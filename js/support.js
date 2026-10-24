@@ -61,7 +61,7 @@
     el.innerHTML = `
       <span class="scard__frame"><span class="scard__body">
         <span class="scard__art">${s.image ? C.artImg(s.image) : C.placeholderArt(s)}</span>
-        ${thumb ? "" : `<span class="scard__tag">Support</span>${isRanked(s) ? `<span class="scard__tier">${esc(s.tier)}</span>` : ""}
+        ${thumb ? "" : `<span class="scard__tag">Support</span>${isRanked(s) ? (String(s.tier).length > 2 ? `<span class="scard__tier scard__tier--long"><span>${esc(s.tier)}</span></span>` : `<span class="scard__tier">${esc(s.tier)}</span>`) : ""}
         <span class="scard__info"><span class="scard__name">${esc(s.name)}</span></span>
         <span class="scard__glare"></span>`}
       </span>${thumb ? "" : `<span class="scard__orn"></span>`}</span>`;
