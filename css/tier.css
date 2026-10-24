@@ -6,37 +6,50 @@
 
 /* ---------- Tier rows ---------- */
 .tier-list { display: flex; flex-direction: column; gap: var(--s-3); }
+/* a tier row is a gilded panel (base.css): gold line, cut corners, corner ornaments */
 .tier-row {
-  display: grid; grid-template-columns: 56px 1fr; align-items: stretch;
-  border-radius: 18px; overflow: hidden;
+  --cut: 8px;
+  display: grid; grid-template-columns: 62px 1fr; align-items: stretch;
+  overflow: hidden;
 }
+/* tier plate: jewel-tinted, a lit edge on the left, the letter glows in its own colour */
 .tier-row__label {
+  position: relative;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xl); line-height: 1;
-  color: var(--void);
-  background: var(--tc);
-  box-shadow: 0 0 24px color-mix(in srgb, var(--tc) 45%, transparent);
+  margin: 1px 0 1px 1px;
+  font-family: var(--font-display); font-weight: 700; font-size: 28px; line-height: 1;
+  color: color-mix(in srgb, var(--tc) 55%, #fff6e0);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--tc) 60%, transparent);
+  border-right: 1px solid rgba(216, 180, 106, .35);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 34%, #10142a), color-mix(in srgb, var(--tc) 12%, #0c1022));
 }
-.tier-row__count { font-size: var(--fs-xs); font-weight: 600; opacity: 0.7; }
+.tier-row__label::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--tc); box-shadow: 0 0 12px var(--tc); }
+.tier-row__count { font-family: var(--font-body); font-size: 10.5px; font-weight: 500; letter-spacing: .06em; color: var(--ink-dim); text-shadow: none; }
 .tier-row__cards {
   display: flex; gap: var(--s-3); padding: var(--s-3);
-  overflow-x: auto; scrollbar-width: thin;
-  min-height: 112px;
+  overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--gold-lo) transparent;
+  min-height: 118px;
 }
-.tier-row__cards .card { width: 92px; flex: none; }
+.tier-row__cards .card { width: 88px; flex: none; }
 .tier-row__cards:has(.tier-row__empty) { min-height: 64px; }   /* empty tiers stay compact */
-.tier-row__empty { align-self: center; color: var(--ink-faint); font-size: var(--fs-sm); }
+.tier-row__empty { align-self: center; color: var(--ink-faint); font-size: var(--fs-sm); font-style: italic; }
 .tier-note { margin-top: var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
 
 /* ---------- Support tiles (Global > Support rows) ---------- */
-.stile { flex: none; display: block; width: 92px; padding: 0; border-radius: var(--r-card); text-align: left; }
+.stile { flex: none; display: block; width: 88px; padding: 0; border-radius: var(--r-card); text-align: left; }
 .stile .scard { width: 100%; }
 .stile .scard__tag { display: none; }               /* the page already says "Support"; keeps the 92px tile uncluttered */
+.stile .scard { --orn-s: 14px; }
+.stile .scard__tier { width: 22px; height: 22px; font-size: 9.5px; right: 5px; top: 5px; }
+.stile .scard__name { font-size: 9.5px; letter-spacing: 0; }
+.stile .scard__info { padding: 20px 5px 6px; }
 .stile__val { display: block; margin-top: 1px; font-size: 11px; font-weight: 600; color: var(--ink-dim); font-variant-numeric: tabular-nums; }
 
 /* ---------- Desktop ---------- */
 @media (min-width: 900px) {
-  .tier-row { grid-template-columns: 80px 1fr; }
+  .tier-row { grid-template-columns: 92px 1fr; }
+  .tier-row__label { font-size: 40px; }
+  .tier-row__cards { gap: 14px; padding: 14px; }
   .tier-row__cards .card { width: 120px; }
   .tier-row__cards { min-height: 196px; }
   .stile { width: 120px; }

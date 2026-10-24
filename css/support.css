@@ -4,10 +4,10 @@
    cards.css / tier.css. Colors, spacing, type and motion come from tokens.css.
    ========================================================== */
 
-/* ---------- Support card art (no rarity: one fixed rift/flux frame) ---------- */
+/* ---------- Support card art (no rarity: one fixed brass frame with corner ornaments) ---------- */
 .scard {
-  --sc: var(--rift);
-  --sc2: var(--flux);
+  --sc: var(--gold);
+  --sc2: var(--gold-lo);
   position: relative; display: block;
   aspect-ratio: var(--card-ratio);
   border-radius: var(--r-card);
@@ -26,49 +26,63 @@
 .scard__frame {
   position: absolute; inset: 0; display: block;
   border-radius: var(--r-card); overflow: hidden;
-  background: linear-gradient(135deg, var(--sc), var(--sc2) 50%, var(--sc));
-  box-shadow: 0 0 18px color-mix(in srgb, var(--sc2) 32%, transparent), 0 10px 28px rgba(0, 0, 0, .45);
+  background: linear-gradient(135deg, var(--gold-hi), var(--sc2) 30%, var(--sc) 50%, var(--sc2) 70%, var(--gold-hi));
+  box-shadow: 0 1px 0 rgba(255, 240, 200, .25) inset, 0 0 16px rgba(216, 180, 106, .22), 0 12px 28px rgba(0, 0, 0, .55);
 }
 .scard__body {
-  position: absolute; inset: 3px; display: block;
-  border-radius: calc(var(--r-card) - 3px); overflow: hidden;
+  position: absolute; inset: 4px; display: block;
+  border-radius: 4px; overflow: hidden;
   background: var(--void);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .7);
+}
+.scard__orn {
+  position: absolute; inset: 3px; z-index: 2; display: block; pointer-events: none;
+  background: var(--gold-hi); opacity: .9;
+  -webkit-mask: var(--orn-tl) top left / var(--orn-s) no-repeat, var(--orn-tr) top right / var(--orn-s) no-repeat,
+                var(--orn-bl) bottom left / var(--orn-s) no-repeat, var(--orn-br) bottom right / var(--orn-s) no-repeat;
+          mask: var(--orn-tl) top left / var(--orn-s) no-repeat, var(--orn-tr) top right / var(--orn-s) no-repeat,
+                var(--orn-bl) bottom left / var(--orn-s) no-repeat, var(--orn-br) bottom right / var(--orn-s) no-repeat;
 }
 .scard--thumb .scard__frame { box-shadow: 0 4px 12px rgba(0, 0, 0, .4); }
-.scard--thumb .scard__body { inset: 2px; border-radius: calc(var(--r-card) - 2px); }
+.scard--thumb .scard__body { inset: 2px; border-radius: 3px; }
 .scard__art { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .scard__art img { width: 100%; height: 100%; object-fit: cover; }
 .scard__art svg { width: 100%; height: 100%; }
 
+/* ribbon + wax seal, same as game cards (fx.css) */
 .scard__tag {
-  position: absolute; left: 6px; top: 6px;
-  padding: 2px 7px; border-radius: 6px;
-  font-family: var(--font-display); font-size: 10px; font-weight: 700;
-  color: var(--void); background: var(--sc);
+  position: absolute; z-index: 3; left: 9px; top: 9px;
+  padding: 1px 8px 1px 7px;
+  font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: .08em;
+  color: var(--on-gold); background: var(--brass-gold);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 5px) 50%, 100% 100%, 0 100%);
 }
 .scard__tier {
-  position: absolute; right: 6px; top: 6px;
-  min-width: 26px; height: 26px; padding: 0 4px;
-  display: grid; place-items: center; border-radius: 8px;
-  font-family: var(--font-display); font-size: var(--fs-sm); font-weight: 700;
-  color: var(--void); background: var(--tc, var(--t-d));
+  position: absolute; z-index: 3; right: 7px; top: 7px;
+  width: 30px; height: 30px;
+  display: grid; place-items: center; border-radius: 50%;
+  font-family: var(--font-display); font-size: 12px; font-weight: 700;
+  color: #fff6e6; text-shadow: 0 1px 0 rgba(0, 0, 0, .45);
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tc, var(--t-d)) 70%, #fff), var(--tc, var(--t-d)) 45%, color-mix(in srgb, var(--tc, var(--t-d)) 55%, #000));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tc, var(--t-d)) 60%, #000), 0 2px 6px rgba(0, 0, 0, .6);
 }
+.scard__tier::before { content: ""; position: absolute; inset: 3px; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, .35); }
 .scard__info {
-  position: absolute; left: 0; right: 0; bottom: 0; display: block;
-  padding: 28px 8px 8px;
-  background: linear-gradient(180deg, transparent, rgba(5, 6, 20, .88) 45%);
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: block;
+  padding: 30px 10px 10px; text-align: center;
+  background: linear-gradient(180deg, transparent, rgba(8, 10, 22, .9) 42%);
 }
 .scard__name {
   display: block;
-  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm);
-  line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .04em;
+  line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 /* holo glare follows the finger, same as game cards */
 .scard__glare {
   position: absolute; left: 50%; top: 50%; display: block;
   width: 160%; aspect-ratio: 1;
   margin: -80% 0 0 -80%;
-  background: radial-gradient(circle, rgba(255, 255, 255, .28), rgba(160, 220, 255, .08) 30%, transparent 55%);
+  background: radial-gradient(circle, rgba(255, 245, 220, .26), rgba(255, 220, 160, .08) 30%, transparent 55%);
   opacity: 0; mix-blend-mode: screen; pointer-events: none;
   transform: translate(var(--gx, 0), var(--gy, 0));
   transition: opacity var(--t-med) var(--ease);
@@ -82,33 +96,34 @@
   width: 100%; min-height: 96px;
   display: grid; grid-template-columns: 28px 52px minmax(0, 1fr) auto; align-items: center; gap: var(--s-3);
   padding: var(--s-3);
-  border-radius: var(--r-panel);
-  background: var(--glass); border: 1px solid var(--glass-line);
+  border-radius: var(--r-chip);
+  background: var(--panel-fill); border: 1px solid var(--glass-line);
+  box-shadow: inset 0 1px 0 rgba(255, 232, 180, .06);
   text-align: left; color: var(--ink);
   transition: transform var(--t-fast) var(--ease), border-color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
 }
-.srow:hover { border-color: color-mix(in srgb, var(--rift) 45%, var(--glass-line)); background: var(--glass-strong); }
-.srow__rank { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.srow:hover { border-color: var(--gold); }
+.srow__rank { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); color: var(--gold); font-variant-numeric: tabular-nums; }
 .srow__thumb { display: block; }
 .srow__main { display: grid; gap: 2px; min-width: 0; }
 .srow__nameline { display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
-.srow__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srow__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); letter-spacing: .03em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .srow__sample { flex: none; min-height: 20px; padding: 0 6px; font-size: 11px; }
 .srow__effect {
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
   color: var(--ink-dim); font-size: var(--fs-sm); line-height: 1.35; overflow-wrap: anywhere;
 }
 .srow__odds { color: var(--ink-faint); font-size: var(--fs-xs); }
-.srow__bar { display: block; height: 6px; margin-top: 6px; border-radius: var(--r-pill); background: var(--glass-strong); overflow: hidden; }
+.srow__bar { display: block; height: 5px; margin-top: 6px; border-radius: 3px; background: rgba(216, 180, 106, .12); overflow: hidden; }
 .srow__bar i {
   display: block; height: 100%; border-radius: inherit;
-  background: linear-gradient(90deg, var(--rift), var(--flux));
+  background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
   transform: scaleX(var(--v, 0)); transform-origin: left;
 }
 .srow__score { display: grid; justify-items: center; gap: 2px; min-width: 56px; }
-.srow__score .badge--tier { min-height: 32px; min-width: 40px; justify-content: center; font-size: var(--fs-md); }
+.srow__score .badge--tier { min-height: 32px; min-width: 32px; padding: 0 6px; justify-content: center; font-size: var(--fs-sm); }
 .srow__score .badge--muted { font-size: var(--fs-xs); }
-.srow__value { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); line-height: 1; font-variant-numeric: tabular-nums; }
+.srow__value { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); line-height: 1; color: var(--gold-hi); font-variant-numeric: tabular-nums; }
 .srow__score small { color: var(--ink-faint); font-size: 11px; }
 
 .support-note { margin-top: var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
@@ -118,11 +133,11 @@
 .sdetail .detail__content { padding-top: var(--s-3); }
 /* fixed-width column: without it the 5-slot deck rows widen the grid past the phone screen */
 .sdetail .detail__main { grid-template-columns: minmax(0, 1fr); }
-.sdetail .detail__hero .scard { width: min(64vw, 270px); }
+.sdetail .detail__hero .scard { width: min(64vw, 270px); --orn-s: 30px; }
 .sdetail .deck-list { margin-top: var(--s-2); }
 .sdetail .group > .muted, .sdetail .group > div > .muted { margin-top: var(--s-2); }
 .sdetail .deck__name { font-size: var(--fs-md); }
-.deck__sup--here { color: var(--rift); font-weight: 600; }
+.deck__sup--here { color: var(--gold-hi); font-weight: 600; }
 .sdetail h2:focus { outline: none; }
 
 @media (min-width: 900px) {

@@ -2,31 +2,35 @@
    FX — shared motion + card/aura styles (§4 Motion Guide)
    Rules: animate transform/opacity only · 150–400ms · var(--ease)
    New buttons: add class "fx-press". Don't write new press effects.
+   Theme "Gilded Nocturne" (step 9.6b): gilded picture-frame cards, wax-seal tiers, rarity ribbons.
    ========================================================== */
 
 /* ---------- Keyframes ---------- */
-@keyframes fx-spin { to { transform: rotate(360deg); } }
-@keyframes fx-ring { from { opacity: .55; transform: scale(.6); } to { opacity: 0; transform: scale(1.35); } }
+/* step 9.6b: the keyframe keeps translate(-50%, -50%) of the start value, so frames that "turn" really turn
+   (before, Chrome slid them in from the corner and jumped back every loop, §11.5 item 2).
+   Only for layers centred with left/top 50% + translate(-50%,-50%). Other spinners use their own keyframe. */
+@keyframes fx-spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes fx-ring { from { opacity: .6; transform: scale(.6); } to { opacity: 0; transform: scale(1.4); } }
 @keyframes fx-page-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes fx-rise { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
 @keyframes fx-sweep { 0%, 55% { transform: translateX(-130%) skewX(-18deg); } 100% { transform: translateX(230%) skewX(-18deg); } }
 @keyframes fx-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
-@keyframes fx-halo { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
-@keyframes fx-twinkle { 0%, 100% { opacity: .25; } 50% { opacity: .9; } }
+@keyframes fx-halo { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.045); } }
+@keyframes fx-twinkle { 0%, 100% { opacity: .3; } 50% { opacity: .95; } }
 @keyframes fx-float { from { opacity: 0; transform: translateY(0) scale(.6); } 20% { opacity: 1; } to { opacity: 0; transform: translateY(-140px) scale(1); } }
 @keyframes fx-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fx-skel { 0%, 100% { opacity: .45; } 50% { opacity: .9; } }
 @keyframes fx-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @keyframes fx-bar { from { transform: scaleX(0); } }
 
-/* ---------- Press: scale .96 + short glow ring ---------- */
+/* ---------- Press: scale .96 + short gold ring ---------- */
 .fx-press { position: relative; transition: transform var(--t-fast) var(--ease); }
 .fx-press:active { transform: scale(.96); }
 .fx-ring {
   position: absolute; left: 50%; top: 50%;
   width: 64px; height: 64px; margin: -32px 0 0 -32px;
   border-radius: 50%; pointer-events: none;
-  box-shadow: 0 0 0 2px var(--rift), 0 0 18px var(--rift);
+  box-shadow: 0 0 0 2px var(--gold), 0 0 18px var(--gold);
   animation: fx-ring var(--t-slow) var(--ease) forwards;
 }
 
@@ -50,18 +54,19 @@
 }
 
 /* ==========================================================
-   Game card
+   Game card — gilded picture frame
+   Markup: CBI.renderCard (js/app.js). .card__orn = the four corner ornaments (on top of the body).
    ========================================================== */
 .card {
   --rc: var(--r-normal);       /* rarity color */
   --rc2: var(--r-normal-2);    /* rarity dark partner */
+  --orn: var(--rc);            /* corner ornament colour */
   position: relative;
   aspect-ratio: var(--card-ratio);
   border-radius: var(--r-card);
   /* step 9.5: flat (2D) at rest and 3D only while a finger / the mouse is on it. A 3D transform at rest made
-     every card its own GPU layer. The rest value is the first function of the tilt list, so the tilt and the
-     settle-back still animate function by function (same look as before). Keep a 2D transform here, not "none":
-     it keeps the card's stacking context (halo z-index -1) and keeps hit-testing fast (Tier Maker drag). */
+     every card its own GPU layer. Keep a 2D transform here, not "none": it keeps the card's stacking context
+     (halo z-index -1) and keeps hit-testing fast (Tier Maker drag). */
   transform: translateY(var(--lift, 0px));
   transition: transform var(--t-med) var(--ease);
   cursor: pointer;
@@ -71,71 +76,96 @@
 .card.is-tilting { transition: transform 60ms linear; }
 .card:focus-visible { outline-offset: 4px; border-radius: var(--r-card); }
 
-/* frame = rotating/solid ring behind the body */
+/* frame = turning / solid metal behind the body */
 .card__frame {
   position: absolute; inset: 0;
   border-radius: var(--r-card);
   overflow: hidden;
   background: var(--rc2);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
+  box-shadow: 0 1px 0 rgba(255, 240, 200, .25) inset, 0 12px 28px rgba(0, 0, 0, .55);
 }
 .card__frame::before {
   content: ""; position: absolute; left: 50%; top: 50%;
   width: 220%; aspect-ratio: 1;
   transform: translate(-50%, -50%) rotate(0deg);
-  background: linear-gradient(135deg, var(--rc), var(--rc2) 50%, var(--rc));
+  background: linear-gradient(135deg, var(--rc), var(--rc2) 30%, var(--rc) 50%, var(--rc2) 70%, var(--rc));
 }
 .card__body {
-  position: absolute; inset: 3px;
-  border-radius: calc(var(--r-card) - 3px);
+  position: absolute; inset: 4px;
+  border-radius: 4px;
   overflow: hidden;
-  background: #0b0d22;
+  background: #0d1020;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .7);
+}
+/* thin inner line, like the slip of a picture frame */
+.card__body::after {
+  content: ""; position: absolute; inset: 3px; z-index: 2; pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--rc) 55%, transparent); border-radius: 2px;
 }
 .card__art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .card__art svg, .card__art img { width: 100%; height: 100%; }
 .card__art img { object-fit: cover; }   /* the <img> carries width/height attributes (no layout jump); CSS sets the real size */
+.card__orn {
+  position: absolute; inset: 3px; z-index: 2; pointer-events: none;
+  background: var(--orn); opacity: .95;
+  -webkit-mask: var(--orn-tl) top left / var(--orn-s) no-repeat, var(--orn-tr) top right / var(--orn-s) no-repeat,
+                var(--orn-bl) bottom left / var(--orn-s) no-repeat, var(--orn-br) bottom right / var(--orn-s) no-repeat;
+          mask: var(--orn-tl) top left / var(--orn-s) no-repeat, var(--orn-tr) top right / var(--orn-s) no-repeat,
+                var(--orn-bl) bottom left / var(--orn-s) no-repeat, var(--orn-br) bottom right / var(--orn-s) no-repeat;
+}
 
+/* name plate */
 .card__info {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  padding: 28px 8px 8px;
-  background: linear-gradient(180deg, transparent, rgba(5, 6, 20, .88) 45%);
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  padding: 30px 10px 10px; text-align: center;
+  background: linear-gradient(180deg, transparent, rgba(8, 10, 22, .9) 42%);
 }
 .card__name {
-  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm);
-  line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .04em;
+  line-height: 1.2; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.card__series { font-size: 11px; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card__stats { display: flex; gap: 8px; margin-top: 6px; font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 600; }
-.card__stats b { color: var(--ink-dim); font-weight: 500; margin-right: 3px; }
+.card__name::after {
+  content: ""; display: block; height: 1px; margin: 4px auto 0; width: 70%;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--rc) 80%, transparent), transparent);
+}
+.card__series { margin-top: 3px; font-size: 10.5px; color: var(--ink-dim); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card__stats { display: flex; justify-content: center; gap: 10px; margin-top: 5px; font-family: var(--font-display); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.card__stats b { color: var(--ink-faint); font-weight: 600; margin-right: 3px; font-size: 10px; }
 .card__stat--atk { color: var(--atk); }
 .card__stat--hp { color: var(--hp); }
-.card__odds { margin-top: 2px; font-size: 11px; color: var(--ink-dim); }
+.card__odds { margin-top: 2px; font-size: 10.5px; color: var(--ink-faint); }
 
+/* rarity ribbon (top left) */
 .card__tag {
-  position: absolute; left: 6px; top: 6px;
-  padding: 2px 7px; border-radius: 6px;
-  font-family: var(--font-display); font-size: 10px; font-weight: 700;
-  color: var(--void); background: var(--rc);
+  position: absolute; z-index: 3; left: 9px; top: 9px;
+  padding: 1px 8px 1px 7px;
+  font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: .08em;
+  color: #1a1408; background: var(--rc);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 5px) 50%, 100% 100%, 0 100%);
 }
+/* tier = round wax seal (top right), colour from --tc */
 .card__tier {
-  position: absolute; right: 6px; top: 6px;
-  min-width: 26px; height: 26px; padding: 0 4px;
-  display: grid; place-items: center; border-radius: 8px;
-  font-family: var(--font-display); font-size: var(--fs-sm); font-weight: 700;
-  color: var(--void); background: var(--tc, var(--t-d));
+  position: absolute; z-index: 3; right: 7px; top: 7px;
+  width: 30px; height: 30px;
+  display: grid; place-items: center; border-radius: 50%;
+  font-family: var(--font-display); font-size: 12px; font-weight: 700;
+  color: #fff6e6; text-shadow: 0 1px 0 rgba(0, 0, 0, .45);
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tc, var(--t-d)) 70%, #fff), var(--tc, var(--t-d)) 45%, color-mix(in srgb, var(--tc, var(--t-d)) 55%, #000));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tc, var(--t-d)) 60%, #000), 0 2px 6px rgba(0, 0, 0, .6);
 }
+.card__tier::before { content: ""; position: absolute; inset: 3px; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, .35); }
 .card__mock {
-  position: absolute; right: 6px; bottom: 6px;
-  font-size: 9px; padding: 1px 5px; border-radius: 4px;
-  color: #ffd9a0; border: 1px dashed rgba(255, 184, 77, .6);
+  position: absolute; z-index: 3; right: 8px; bottom: 8px;
+  font-size: 9px; padding: 1px 5px; border-radius: 3px;
+  color: var(--gold-hi); border: 1px dashed var(--gold-lo);
 }
 
-/* holo glare follows the finger (moved with transform) */
+/* glare follows the finger (moved with transform) */
 .card__glare {
-  position: absolute; left: 50%; top: 50%;
+  position: absolute; left: 50%; top: 50%; z-index: 2;
   width: 160%; aspect-ratio: 1;
   margin: -80% 0 0 -80%;
-  background: radial-gradient(circle, rgba(255, 255, 255, .28), rgba(160, 220, 255, .08) 30%, transparent 55%);
+  background: radial-gradient(circle, rgba(255, 245, 220, .26), rgba(255, 220, 160, .08) 30%, transparent 55%);
   opacity: 0; mix-blend-mode: screen; pointer-events: none;
   transform: translate(var(--gx, 0), var(--gy, 0));
   transition: opacity var(--t-med) var(--ease);
@@ -147,144 +177,155 @@
 }
 
 /* rarity-change flash: played by CBI.setCardRarity (Web Animations) */
-.card__flash { position: absolute; inset: 0; background: var(--rc); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
+.card__flash { position: absolute; inset: 0; z-index: 2; background: var(--rc); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
 
 /* extra layers, off by default */
 .card__halo, .card__sweep, .card__stars, .card__particles { position: absolute; pointer-events: none; opacity: 0; }
-.card__halo { inset: -7px; border-radius: calc(var(--r-card) + 7px); z-index: -1; }
+.card__halo { inset: -7px; border-radius: calc(var(--r-card) + 6px); z-index: -1; }
 .card__sweep {
-  top: -10%; bottom: -10%; left: 0; width: 38%;
-  background: linear-gradient(90deg, transparent, rgba(255, 245, 200, .55), transparent);
+  z-index: 2; top: -10%; bottom: -10%; left: 0; width: 38%;
+  background: linear-gradient(90deg, transparent, rgba(255, 238, 190, .5), transparent);
 }
 .card__stars {
-  inset: 0;
+  inset: 0; z-index: 1;
   background-image:
     radial-gradient(1.2px 1.2px at 12% 18%, #fff, transparent),
-    radial-gradient(1px 1px at 78% 12%, #cfe0ff, transparent),
+    radial-gradient(1px 1px at 78% 12%, #dcd4ff, transparent),
     radial-gradient(1.4px 1.4px at 64% 40%, #fff, transparent),
-    radial-gradient(1px 1px at 24% 58%, #d8c8ff, transparent),
-    radial-gradient(1.2px 1.2px at 88% 66%, #fff, transparent),
+    radial-gradient(1px 1px at 24% 58%, #cfc4ff, transparent),
+    radial-gradient(1.2px 1.2px at 88% 30%, #fff, transparent),
     radial-gradient(1px 1px at 40% 28%, #fff, transparent);
 }
-.card__particles { inset: 0; overflow: visible; }
+.card__particles { inset: 0; overflow: visible; z-index: 3; }
 .card__particles i {
-  position: absolute; bottom: 8%;
+  position: absolute; bottom: 10%;
   width: 4px; height: 4px; border-radius: 50%;
-  background: #fff; box-shadow: 0 0 6px #b9f6ff;
+  background: #fffaf0; box-shadow: 0 0 6px #ffe6b0;
   opacity: 0;
 }
 .card__particles i:nth-child(1) { left: 12%; animation-delay: 0s; }
-.card__particles i:nth-child(2) { left: 30%; animation-delay: .9s; background: #ffd6f3; }
+.card__particles i:nth-child(2) { left: 30%; animation-delay: .9s; background: #f5c9e4; }
 .card__particles i:nth-child(3) { left: 50%; animation-delay: 1.8s; }
-.card__particles i:nth-child(4) { left: 68%; animation-delay: .4s; background: #fff2a8; }
-.card__particles i:nth-child(5) { left: 86%; animation-delay: 1.3s; background: #c9b2ff; }
+.card__particles i:nth-child(4) { left: 68%; animation-delay: .4s; background: #fff0b0; }
+.card__particles i:nth-child(5) { left: 86%; animation-delay: 1.3s; background: #cdb8f5; }
 
 /* ==========================================================
-   Rarity auras (data-rarity on .card)
-   Step 9.5: the looping aura animations only run on cards that are on screen. js/app.js watches every card
-   with an IntersectionObserver and gives on-screen ones the class .is-live (off-screen = no animation at all,
-   so no GPU layer and no work). Off-screen cards rest on the FIRST frame of their animation, so when one
-   scrolls in and starts moving there is no jump. Keyframes animate transform / opacity only.
+   Rarity frames (data-rarity on .card)
+   Step 9.5: the looping animations only run on cards that are on screen. js/app.js watches every card
+   with an IntersectionObserver and gives on-screen ones the class .is-live. Off-screen cards rest on the
+   FIRST frame of their animation, so there is no jump when one scrolls in. Keyframes animate transform / opacity only.
+   If a frame colour changes here, change frameSpec() in js/share.js too (saved images).
    ========================================================== */
-/* Normal — silver, no glow */
+/* Normal — plain silver */
 .card[data-rarity="Normal"] { --rc: var(--r-normal); --rc2: var(--r-normal-2); }
 
 /* Shiny — gold + a light sweep */
 .card[data-rarity="Shiny"] { --rc: var(--r-shiny); --rc2: var(--r-shiny-2); }
-.card[data-rarity="Shiny"] .card__frame { box-shadow: 0 0 18px rgba(255, 210, 90, .35), 0 10px 28px rgba(0, 0, 0, .45); }
+.card[data-rarity="Shiny"] .card__frame { box-shadow: 0 0 18px rgba(236, 199, 104, .35), 0 12px 28px rgba(0, 0, 0, .55); }
 .card[data-rarity="Shiny"] .card__sweep { opacity: 1; }
 .card[data-rarity="Shiny"].is-live .card__sweep { animation: fx-sweep 3.2s var(--ease) infinite; }
 
-/* Rainbow — rotating rainbow ring */
-.card[data-rarity="Rainbow"] { --rc: #ff7ad9; --rc2: #2a1748; }
+/* Rainbow — turning rainbow frame */
+.card[data-rarity="Rainbow"] { --rc: #f0b6d0; --rc2: #2a1840; --orn: #fff1e0; }
 .card[data-rarity="Rainbow"] .card__frame::before { background: var(--r-rainbow); }
-.card[data-rarity="Rainbow"].is-live .card__frame::before { animation: fx-spin 4s linear infinite; }
-.card[data-rarity="Rainbow"] .card__frame { box-shadow: 0 0 20px rgba(160, 120, 255, .4), 0 10px 28px rgba(0, 0, 0, .45); }
-.card[data-rarity="Rainbow"] .card__tag { background: linear-gradient(90deg, #ff4d6d, #ffb84d, #5dff9b, #4dd8ff, #b06bff); }
+.card[data-rarity="Rainbow"].is-live .card__frame::before { animation: fx-spin 5s linear infinite; }
+.card[data-rarity="Rainbow"] .card__frame { box-shadow: 0 0 20px rgba(200, 140, 220, .35), 0 12px 28px rgba(0, 0, 0, .55); }
+.card[data-rarity="Rainbow"] .card__tag { background: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0); }
 
-/* Secret — black-red, red glow pulse */
-.card[data-rarity="Secret"] { --rc: var(--r-secret); --rc2: var(--r-secret-2); }
-.card[data-rarity="Secret"] .card__frame::before { background: linear-gradient(135deg, #ff3b4e, #120102 45%, #120102 55%, #ff3b4e); }
-.card[data-rarity="Secret"] .card__halo { box-shadow: 0 0 26px 6px rgba(255, 40, 60, .55); }
+/* Secret — wine-black, red glow pulse */
+.card[data-rarity="Secret"] { --rc: var(--r-secret); --rc2: var(--r-secret-2); --orn: #e0485e; }
+.card[data-rarity="Secret"] .card__frame::before { background: linear-gradient(135deg, #e0485e, #120206 35%, #4a0c17 50%, #120206 65%, #e0485e); }
+.card[data-rarity="Secret"] .card__halo { box-shadow: 0 0 26px 6px rgba(201, 52, 75, .55); }
 .card[data-rarity="Secret"].is-live .card__halo { animation: fx-pulse 2.4s ease-in-out infinite; }
-.card[data-rarity="Secret"] .card__body { background: #150206; }
+.card[data-rarity="Secret"] .card__body { background: #14040a; }
+.card[data-rarity="Secret"] .card__tag { color: #ffe9ec; background: #7b1424; }
 
 /* Divine — white-gold with a halo ring */
-.card[data-rarity="Divine"] { --rc: var(--r-divine); --rc2: var(--r-divine-2); }
-.card[data-rarity="Divine"] .card__frame::before { background: linear-gradient(135deg, #fffdf2, #f5c66b 50%, #fffdf2); }
+.card[data-rarity="Divine"] { --rc: var(--r-divine); --rc2: var(--r-divine-2); --orn: #f2d488; }
+.card[data-rarity="Divine"] .card__frame::before { background: linear-gradient(135deg, #fffdf4, #e2bd6c 50%, #fffdf4); }
 .card[data-rarity="Divine"] .card__halo {
-  border: 2px solid rgba(255, 240, 200, .8);
-  box-shadow: 0 0 22px rgba(255, 228, 160, .7), inset 0 0 14px rgba(255, 228, 160, .45);
+  border: 2px solid rgba(255, 240, 205, .8);
+  box-shadow: 0 0 22px rgba(255, 226, 160, .65), inset 0 0 14px rgba(255, 226, 160, .45);
 }
 .card[data-rarity="Divine"].is-live .card__halo { animation: fx-halo 3s ease-in-out infinite; }
 
-/* Cosmic — violet-blue, stars inside the frame */
-.card[data-rarity="Cosmic"] { --rc: #a48bff; --rc2: #12164a; }
-.card[data-rarity="Cosmic"] .card__frame::before { background: conic-gradient(from 0deg, var(--r-cosmic), var(--r-cosmic-2), #12164a, var(--r-cosmic)); }
+/* Cosmic — violet-blue frame, stars inside */
+.card[data-rarity="Cosmic"] { --rc: #a796ff; --rc2: #14184a; --orn: #c9c0ff; }
+.card[data-rarity="Cosmic"] .card__frame::before { background: conic-gradient(from 0deg, var(--r-cosmic), var(--r-cosmic-2), #14184a, var(--r-cosmic)); }
 .card[data-rarity="Cosmic"].is-live .card__frame::before { animation: fx-spin 9s linear infinite; }
-.card[data-rarity="Cosmic"] .card__frame { box-shadow: 0 0 22px rgba(110, 90, 255, .45), 0 10px 28px rgba(0, 0, 0, .45); }
+.card[data-rarity="Cosmic"] .card__frame { box-shadow: 0 0 22px rgba(120, 100, 255, .4), 0 12px 28px rgba(0, 0, 0, .55); }
 .card[data-rarity="Cosmic"] .card__stars { opacity: 1; }
 .card[data-rarity="Cosmic"].is-live .card__stars { animation: fx-twinkle 2.6s ease-in-out infinite; }
 
-/* Ascended — prismatic, moving, with floating particles */
-.card[data-rarity="Ascended"] { --rc: #e9f9ff; --rc2: #2b2050; }
+/* Ascended — prismatic, turning, with rising light motes */
+.card[data-rarity="Ascended"] { --rc: #f4ecff; --rc2: #2b2050; --orn: #fffaf0; }
 .card[data-rarity="Ascended"] .card__frame::before { background: var(--r-ascended); }
-.card[data-rarity="Ascended"].is-live .card__frame::before { animation: fx-spin 3s linear infinite; }
-.card[data-rarity="Ascended"] .card__frame { box-shadow: 0 0 26px rgba(190, 230, 255, .55), 0 10px 28px rgba(0, 0, 0, .45); }
-.card[data-rarity="Ascended"] .card__tag { background: linear-gradient(90deg, #8ff7ff, #b98cff, #ff9de2, #fff2a8); }
+.card[data-rarity="Ascended"].is-live .card__frame::before { animation: fx-spin 3.5s linear infinite; }
+.card[data-rarity="Ascended"] .card__frame { box-shadow: 0 0 26px rgba(220, 210, 255, .5), 0 12px 28px rgba(0, 0, 0, .55); }
+.card[data-rarity="Ascended"] .card__tag { background: linear-gradient(90deg, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8); }
 .card[data-rarity="Ascended"] .card__particles { opacity: 1; }
 .card[data-rarity="Ascended"].is-live .card__particles i { animation: fx-float 2.8s ease-out infinite; }
-/* lite mode (html.lite, low-end devices): half the floating particles (3 of 5) — nothing else changes */
+/* lite mode (html.lite, low-end devices): 3 of the 5 motes — nothing else changes */
 html.lite .card__particles i:nth-child(2n) { display: none; }
 
-/* Off-screen cards rest on the first frame of each loop (see above). Motion-reduced users keep the old still look. */
+/* Off-screen cards rest on the first frame of each loop (see above). Motion-reduced users keep the still look. */
 @media (prefers-reduced-motion: no-preference) {
   .card[data-rarity="Shiny"]:not(.is-live) .card__sweep { transform: translateX(-130%) skewX(-18deg); }
   .card[data-rarity="Secret"]:not(.is-live) .card__halo { opacity: .45; }
   .card[data-rarity="Divine"]:not(.is-live) .card__halo { opacity: .55; }
-  .card[data-rarity="Cosmic"]:not(.is-live) .card__stars { opacity: .25; }
+  .card[data-rarity="Cosmic"]:not(.is-live) .card__stars { opacity: .3; }
 }
 
-/* Mini cards (tier rows): hide detail, keep aura */
+/* ---------- Mini cards (tier rows, Tier Maker, decks, Grade picker, matchup rows) ----------
+   Owner's choice (§12.6 item 1): no floating motes on small cards, the turning frame stays.
+   Big cards (Cards page, card detail, Grader) keep all 5 motes. */
+.card--mini { --orn-s: 14px; }
 .card--mini .card__series, .card--mini .card__stats, .card--mini .card__odds, .card--mini .card__mock { display: none; }
-.card--mini .card__info { padding: 18px 6px 6px; }
-.card--mini .card__name { font-size: 11px; }
-.card--mini .card__tag { font-size: 8px; padding: 1px 5px; }
+.card--mini .card__info { padding: 20px 5px 6px; }
+.card--mini .card__name { font-size: 9.5px; letter-spacing: 0; }
+.card--mini .card__name::after { margin-top: 2px; }
+.card--mini .card__tag { left: 6px; top: 6px; font-size: 7.5px; padding: 0 6px 0 5px; }
+.card--mini .card__tier { width: 22px; height: 22px; font-size: 9.5px; right: 5px; top: 5px; }
+.card--mini .card__particles { display: none; }
+.card--mini .card__body { inset: 3px; }
+@media (min-width: 900px) {
+  .card--mini { --orn-s: 18px; }
+  .card--mini .card__name { font-size: 11px; }
+}
 
 /* ---------- Toast (FX.toast) ---------- */
 .fx-toast {
   position: fixed; z-index: 45; left: 50%;
-  bottom: var(--toast-b, calc(var(--nav-h) + 24px + var(--safe-b)));
+  bottom: var(--toast-b, calc(var(--nav-h) + var(--safe-b) + 18px));
   display: flex; align-items: center; gap: var(--s-3);
-  max-width: calc(100vw - 2 * var(--gutter)); min-height: 48px; padding: 6px 6px 6px var(--s-4);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--nebula) 92%, transparent);
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--void) 80%, transparent);
+  max-width: calc(100vw - 2 * var(--gutter)); min-height: 46px; padding: 6px 6px 6px var(--s-4);
+  border-radius: var(--r-chip);
   font-size: var(--fs-sm); color: var(--ink);
   opacity: 0; transform: translate(-50%, 16px); pointer-events: none;
   transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
 }
+.fx-toast.glass { background-color: rgba(20, 25, 44, .97); border-color: var(--gold-lo); box-shadow: 0 12px 30px rgba(0, 0, 0, .55); }
 .fx-toast.is-on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .fx-toast__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 0; }
 .fx-toast:not(:has(.fx-toast__btn)) { padding-right: var(--s-4); }
 .fx-toast__btn {
-  flex: none; min-height: 36px; padding: 0 14px; border-radius: var(--r-pill);
-  font-family: var(--font-display); font-weight: 700; color: var(--rift);
-  background: var(--glass-strong);
+  flex: none; min-height: 36px; padding: 0 14px; border-radius: 4px;
+  font-family: var(--font-display); font-weight: 700; letter-spacing: .06em; color: var(--on-gold);
+  background: var(--brass-gold);
 }
-@media (min-width: 900px) { .fx-toast { bottom: var(--toast-b, 24px); } }
+@media (min-width: 1100px) { .fx-toast { bottom: var(--toast-b, 28px); left: calc(50% + var(--side-w) / 2); max-width: calc(100vw - var(--side-w) - 2 * var(--gutter)); } }
 
 /* ---------- Flash (FX.flash) and small loader ---------- */
 .fx-flash {
   position: absolute; inset: -6px; z-index: 3; pointer-events: none; opacity: 0;
   border-radius: var(--r-panel);
-  border: 2px solid var(--rift);
-  background: color-mix(in srgb, var(--rift) 8%, transparent);
-  box-shadow: var(--rift-glow), inset 0 0 40px color-mix(in srgb, var(--rift) 22%, transparent);
+  border: 2px solid var(--gold);
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  box-shadow: var(--rift-glow), inset 0 0 40px color-mix(in srgb, var(--gold) 22%, transparent);
 }
 .fx-loader {
   flex: none; width: 24px; height: 24px; border-radius: 50%;
-  border: 2.5px solid var(--glass-line); border-top-color: var(--rift);
+  border: 2.5px solid var(--glass-line); border-top-color: var(--gold);
   animation: fx-loader-spin .8s linear infinite;
 }
 @keyframes fx-loader-spin { to { transform: rotate(360deg); } }
@@ -298,5 +339,4 @@ html.lite .card__particles i:nth-child(2n) { display: none; }
   .fx-grid-in > *, .fx-up > * { animation: fx-fade 200ms linear backwards !important; animation-delay: 0ms !important; }
   .card { transform: none !important; }
   .card__sweep, .card__particles, .fx-ring { display: none; }
-  .nav__indicator { transition: opacity var(--t-fast) linear !important; }
 }

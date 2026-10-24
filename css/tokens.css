@@ -1,81 +1,93 @@
 /* ==========================================================
-   Card Battle Infinity — Design tokens ("Infinity Rift")
+   Card Battle Infinity — Design tokens ("Gilded Nocturne", step 9.6b)
+   A Victorian city at night: ink-blue sky, old gold lines, ivory text.
    Every page reads colors, type, spacing and motion from here.
+   The old token names are kept (--void, --ink, --rift, --glass-under …) so every page keeps working:
+   --rift is now old gold, --flux is amethyst.
    ========================================================== */
 :root {
-  /* ---- Space (backgrounds) ---- */
-  --void: #070818;          /* page background, deep indigo-black */
-  --void-2: #0d1030;        /* gradient partner for the void */
-  --nebula: #161a3d;        /* solid raised surface (fallback for glass) */
+  /* ---- Night city (backgrounds) ---- */
+  --void: #0b1020;          /* page background: deep ink blue */
+  --void-2: #131a2e;        /* gradient partner */
+  --nebula: #1a2238;        /* solid raised surface */
+  --haze: #2a1528;          /* faint wine haze near the horizon */
 
-  /* ---- Glass ---- */
-  --glass: rgba(140, 155, 255, 0.07);
-  --glass-strong: rgba(140, 155, 255, 0.12);
-  --glass-line: rgba(175, 188, 255, 0.16);
-  --glass-blur: 16px;       /* only .topbar and .nav still blur (step 9.5) */
-  --glass-under: rgba(10, 12, 38, 0.86);   /* underlay of every other .glass box: stands in for the blur, hides the stars */
+  /* ---- Panels (old "glass" names kept) ---- */
+  --glass: rgba(216, 180, 106, 0.05);
+  --glass-strong: rgba(216, 180, 106, 0.11);
+  --glass-line: rgba(216, 180, 106, 0.30);
+  --glass-blur: 14px;                       /* only the top bar and the menu blur (step 9.5) */
+  --glass-under: rgba(15, 20, 37, 0.93);    /* solid fill of every other panel (stands in for the blur) */
+  --panel-fill: linear-gradient(180deg, rgba(25, 31, 52, 0.96), rgba(14, 18, 34, 0.96));
+
+  /* ---- Metals ---- */
+  --gold: #d8b46a;          /* old gold: lines, active states */
+  --gold-hi: #f3dca0;
+  --gold-lo: #8a6a32;
+  --silver: #c9cfdb;
+  --wine: #8e2a3a;          /* danger buttons, weaknesses */
+  --wine-hi: #c24a5e;
+  --brass: linear-gradient(180deg, #2e2617, #1c170e);
+  --brass-gold: linear-gradient(180deg, #f6e2aa, #d8b46a 48%, #a07a2e);
+  --brass-wine: linear-gradient(180deg, #a53a4b, #6e1d2a);
+  --on-gold: #23190a;       /* text on a gold plate */
 
   /* ---- Ink (text) ---- */
-  --ink: #eceeff;
-  --ink-dim: #9aa1c7;
-  --ink-faint: #5e658c;
+  --ink: #efe6d2;           /* ivory */
+  --ink-dim: #b3a88f;
+  --ink-faint: #7d7563;
 
-  /* ---- Rift glow (brand accents) ---- */
-  --rift: #6fe7ff;          /* cyan — primary glow, active states */
-  --flux: #a879ff;          /* violet — secondary glow */
-  --rift-glow: 0 0 0 1px rgba(111, 231, 255, 0.35), 0 0 18px rgba(111, 231, 255, 0.35);
+  /* ---- Accents (old names kept so other CSS files still work) ---- */
+  --rift: var(--gold);
+  --flux: #9b86d6;          /* amethyst, secondary */
+  --rift-glow: 0 0 0 1px rgba(216, 180, 106, .45), 0 0 18px rgba(216, 180, 106, .30);
+  --lamp: #ffd48a;          /* gas-lamp light */
 
   /* ---- Rarity palette (frame, tag, glow) ---- */
-  --r-normal: #b9c0cf;
-  --r-normal-2: #6d7486;
-  --r-shiny: #ffd25a;
-  --r-shiny-2: #b8860b;
-  --r-secret: #ff3b4e;
-  --r-secret-2: #1a0306;
-  --r-divine: #fff6da;
-  --r-divine-2: #f5c66b;
-  --r-cosmic: #7b5cff;
-  --r-cosmic-2: #2f6bff;
-  --r-rainbow: conic-gradient(from 0deg, #ff4d6d, #ffb84d, #f9f871, #5dff9b, #4dd8ff, #7b6bff, #ff4dd8, #ff4d6d);
-  --r-ascended: conic-gradient(from 0deg, #ffffff, #8ff7ff, #b98cff, #ff9de2, #fff2a8, #9dffcf, #ffffff);
+  --r-normal: #c9cfdb;   --r-normal-2: #575e6e;
+  --r-shiny: #ecc768;    --r-shiny-2: #8f6519;
+  --r-secret: #c9344b;   --r-secret-2: #16040a;
+  --r-divine: #fff4d8;   --r-divine-2: #d6ad5c;
+  --r-cosmic: #8f7dff;   --r-cosmic-2: #3150c4;
+  --r-rainbow: conic-gradient(from 0deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0, #e8607a);
+  --r-ascended: conic-gradient(from 0deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2, #fffaf0);
 
   /* ---- Signal colors (stats, strengths / weaknesses) ---- */
-  --atk: #ff9a8a;
-  --hp: #8affc1;
-  --def: #8fb8ff;           /* Defense (grade step) */
-  --status: #e3a2ff;        /* Status Damage (grade step) */
-  --good: #5dffa0;
-  --bad: #ff6b7d;
+  --atk: #e99a7f;
+  --hp: #94d4a9;
+  --def: #93b4e2;           /* Defense (grade step) */
+  --status: #cba0e0;        /* Status Damage (grade step) */
+  --good: #94d49c;
+  --bad: #e57a87;
 
-  /* ---- Tier palette ---- */
-  --t-ss: #ff5d8f;
-  --t-s: #ffb84d;
-  --t-a: #f9e66b;
-  --t-b: #5dffa0;
-  --t-c: #5ec8ff;
-  --t-d: #8e8fb5;
+  /* ---- Tier palette (jewel tones: ruby, amber, gold, jade, sapphire, pewter) ---- */
+  --t-ss: #d75d80;
+  --t-s: #e09c4c;
+  --t-a: #d9c262;
+  --t-b: #6fc08f;
+  --t-c: #62a5d8;
+  --t-d: #8c8fa5;
   /* extra row colours for the Tier Maker (step 8) — a row stores the variable name, e.g. "--t-x-teal" */
-  --t-x-red: #ff6b6b;
-  --t-x-lime: #c6ff5d;
-  --t-x-teal: #4dffd8;
-  --t-x-blue: #7c95ff;
-  --t-x-violet: #c08bff;
-  --t-x-white: #e9ecff;
+  --t-x-red: #d8584f;
+  --t-x-lime: #b5cf6a;
+  --t-x-teal: #5cc4b0;
+  --t-x-blue: #7d8fe0;
+  --t-x-violet: #b08ad8;
+  --t-x-white: #e9e2d0;
 
-  /* ---- Grade palette (step 6) · 1–3 bronze · 4–6 silver · 7–9 gold · 10 rainbow
-         Swap these when the owner sends screenshots of the in-game colours. ---- */
+  /* ---- Grade palette (step 6) · 1–3 bronze · 4–6 silver · 7–9 gold · 10 rainbow ---- */
   --g-bronze: #c98a52;
   --g-bronze-2: #6e3f1c;
-  --g-silver: #e6ebf5;
-  --g-silver-2: #8a93a8;
-  --g-gold: #ffd864;
-  --g-gold-2: #c08a12;
-  --g-rainbow: conic-gradient(from 0deg, #ff4d6d, #ffb84d, #f9f871, #5dff9b, #4dd8ff, #7b6bff, #ff4dd8, #ff4d6d);
-  --g-rainbow-line: linear-gradient(90deg, #ff4d6d, #ffb84d, #f9f871, #5dff9b, #4dd8ff, #7b6bff, #ff4dd8);   /* grade-10 bar, spread across the 10 segments */
-  --g-empty: rgba(175, 188, 255, 0.14);   /* unfilled bar segment / no grade yet */
+  --g-silver: #e5e9f1;
+  --g-silver-2: #848da2;
+  --g-gold: #f0cf6e;
+  --g-gold-2: #a8791a;
+  --g-rainbow: var(--r-rainbow);
+  --g-rainbow-line: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0);   /* grade-10 bar, spread across the 10 segments */
+  --g-empty: rgba(216, 180, 106, 0.14);   /* unfilled bar segment / no grade yet */
 
   /* ---- Type ---- */
-  --font-display: "Chakra Petch", "Rajdhani", system-ui, sans-serif;
+  --font-display: "Cinzel", "Cormorant SC", Georgia, serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   /* 1.25 scale */
   --fs-xs: 0.75rem;   /* 12 */
@@ -93,15 +105,25 @@
   --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
   --gutter: 16px;
 
-  /* ---- Radius (by hierarchy, not one size for everything) ---- */
-  --r-chip: 10px;     /* chips, small buttons */
-  --r-card: 14px;     /* game cards */
-  --r-panel: 22px;    /* glass panels, nav */
+  /* ---- Shape: small radii (picture frames, brass plates) + cut corners on still panels ---- */
+  --r-chip: 6px;      /* chips, small buttons */
+  --r-card: 8px;      /* game cards */
+  --r-panel: 12px;    /* panels, dialogs */
   --r-pill: 999px;
+  --cut: 10px;
+  --chamfer: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+
+  /* ---- Victorian corner ornament (mask image; its colour comes from the element's background) ---- */
+  --orn-tl: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'><path d='M2 31V13Q2 2 13 2H31'/><path d='M7 31V17Q7 7 17 7H31' stroke-width='.9'/><path d='M12.5 12.5c3.6-2.4 7.4.2 6 3.6-1.1 2.7-5.3 2.2-4.6-.9'/></g><circle cx='4.6' cy='4.6' r='2.5' fill='%23000'/></svg>");
+  --orn-tr: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g transform='translate(32 0) scale(-1 1)'><g fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'><path d='M2 31V13Q2 2 13 2H31'/><path d='M7 31V17Q7 7 17 7H31' stroke-width='.9'/><path d='M12.5 12.5c3.6-2.4 7.4.2 6 3.6-1.1 2.7-5.3 2.2-4.6-.9'/></g><circle cx='4.6' cy='4.6' r='2.5' fill='%23000'/></g></svg>");
+  --orn-bl: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g transform='translate(0 32) scale(1 -1)'><g fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'><path d='M2 31V13Q2 2 13 2H31'/><path d='M7 31V17Q7 7 17 7H31' stroke-width='.9'/><path d='M12.5 12.5c3.6-2.4 7.4.2 6 3.6-1.1 2.7-5.3 2.2-4.6-.9'/></g><circle cx='4.6' cy='4.6' r='2.5' fill='%23000'/></g></svg>");
+  --orn-br: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g transform='rotate(180 16 16)'><g fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'><path d='M2 31V13Q2 2 13 2H31'/><path d='M7 31V17Q7 7 17 7H31' stroke-width='.9'/><path d='M12.5 12.5c3.6-2.4 7.4.2 6 3.6-1.1 2.7-5.3 2.2-4.6-.9'/></g><circle cx='4.6' cy='4.6' r='2.5' fill='%23000'/></g></svg>");
+  --orn-s: 22px;
 
   /* ---- Layout ---- */
-  --nav-h: 68px;
-  --header-h: 56px;
+  --nav-h: 70px;
+  --header-h: 58px;
+  --side-w: 252px;    /* left menu rail on screens ≥ 1100px */
   --max-w: 1180px;
   --card-ratio: 5 / 7;
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -112,3 +134,4 @@
   --t-med: 250ms;
   --t-slow: 400ms;
 }
+@media (min-width: 1100px) { :root { --gutter: 32px; --orn-s: 24px; } }
