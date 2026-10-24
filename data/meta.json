@@ -10,6 +10,7 @@
     { "name": "Ascended",  "stat": 93,  "odds": 50000 }
   ],
   "tiers": [
+    { "name": "GOD", "min": 95 },
     { "name": "SS", "min": 90 },
     { "name": "S", "min": 80 },
     { "name": "A", "min": 70 },
