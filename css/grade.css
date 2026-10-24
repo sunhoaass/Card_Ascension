@@ -146,7 +146,7 @@
 /* actions */
 .gactions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
 .gactions .chip { color: var(--ink); }
-.gactions__share svg { width: 16px; height: 16px; color: var(--gold); }
+.gactions__share svg, .gactions__details svg { width: 16px; height: 16px; color: var(--gold); }
 .gactions__status { font-size: var(--fs-xs); color: var(--good); overflow-wrap: anywhere; min-width: 0; }
 .gnote { font-size: var(--fs-xs); color: var(--ink-faint); max-width: 60ch; }
 

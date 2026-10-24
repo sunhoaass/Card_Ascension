@@ -139,5 +139,24 @@
   --t-fast: 150ms;
   --t-med: 250ms;
   --t-slow: 400ms;
+  --t-spin: 900ms;    /* card detail: one full 360° turn (owner's exception to the 400 ms rule, §4) */
+
+  /* ---- Card detail "Black Sun" scene (step 12, css/detail.css · the painting itself is drawn in js/detail.js) ---- */
+  --bs-night: #050a26;                       /* behind the painting while it is being drawn */
+  --bs-sky: radial-gradient(120% 90% at 50% 34%, #1533a8, #0b1f78 55%, #060f45);   /* stand-in until the painting is ready */
+  --bs-top-fade: linear-gradient(180deg, rgba(5, 9, 34, .82), rgba(5, 9, 34, 0));
+  --bs-dock-fade: linear-gradient(0deg, rgba(5, 8, 30, .9) 38%, rgba(5, 8, 30, 0));
+  --bs-chip: rgba(20, 22, 40, .55);           /* small buttons on the painting */
+  --bs-shade: rgba(0, 0, 30, .92);            /* text shadow that keeps labels readable on the painting */
+  --bs-text: #dcd8ea;                         /* label / sheet body text */
+  --bs-bad-hi: #ff9aa8;                       /* "Weakness" heading */
+  --bs-scrim: rgba(2, 4, 18, .62);
+  --bs-spark: #fff3c4;
+  --bs-spark-glow: 0 0 6px 2px rgba(255, 206, 110, .75), 0 0 16px 4px rgba(255, 190, 80, .25);
+  --bs-pulse: radial-gradient(circle, transparent 38%, rgba(235, 240, 255, 0) 41%, rgba(240, 244, 255, .95) 46%, rgba(255, 246, 222, .9) 48.5%, rgba(220, 230, 255, 0) 52%);
+  --bs-holo: linear-gradient(105deg, transparent 32%, rgba(160, 225, 255, .28) 42%, rgba(255, 244, 205, .5) 49%, rgba(255, 175, 228, .3) 56%, rgba(190, 170, 255, .2) 61%, transparent 70%);
+  --bs-mat: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(225, 230, 255, .55) 55%, transparent);
+  --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
+  --bs-ascended-lvl: #e6dcff;
 }
 @media (min-width: 1100px) { :root { --gutter: 32px; --orn-s: 24px; } }

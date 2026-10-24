@@ -77,24 +77,9 @@
 /* ==========================================================
    Card detail
    ========================================================== */
-html.is-detail { overflow: hidden; }
-.detail {
-  position: fixed; inset: 0; z-index: 40;
-  overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
-}
-.detail[hidden] { display: none; }
-.detail__scrim { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(9, 12, 25, .98), rgba(14, 18, 34, .99)), var(--void); }
-.detail__sheet {
-  position: relative; max-width: var(--max-w); margin: 0 auto;
-  padding: 0 var(--gutter) calc(var(--s-12) + var(--safe-b));
-}
-.detail__bar {
-  position: sticky; top: 0; z-index: 5;
-  display: flex; align-items: center; height: var(--header-h);
-  margin: 0 calc(var(--gutter) * -1); padding: 0 calc(var(--gutter) - 8px);
-  background: rgba(11, 16, 32, .93);   /* no blur since step 9.5: more solid instead */
-  border-bottom: 1px solid var(--glass-line);
-}
+/* The card detail itself is the "Black Sun" scene (css/detail.css, step 12).
+   The pieces below are shared: the support detail page (js/support.js), the grader (js/grade.js)
+   and the Details sheet of the scene all use them. */
 .detail__back {
   display: inline-flex; align-items: center; gap: 2px;
   min-height: 44px; padding: 0 14px 0 8px; border-radius: var(--r-chip);
@@ -113,11 +98,7 @@ html.is-detail { overflow: hidden; }
 .detail__series { color: var(--ink-dim); font-size: var(--fs-sm); font-style: italic; }
 .detail__name { margin-top: 2px; font-size: var(--fs-2xl); font-weight: 700; letter-spacing: .04em; color: var(--gold-hi); overflow-wrap: anywhere; }
 .detail__badges { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
-.detail .rarity-picker { margin-bottom: 0; }
 
-@media (min-width: 1100px) {
-  .detail, .detail__scrim { left: var(--side-w); }
-}
 @media (min-width: 900px) {
   .detail__content { grid-template-columns: 320px minmax(0, 1fr); gap: var(--s-8); padding-top: var(--s-8); }
   .detail__hero { align-self: start; position: sticky; top: calc(var(--header-h) + var(--s-6)); padding-top: 0; }
