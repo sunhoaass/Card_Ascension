@@ -154,6 +154,8 @@
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--tc, var(--t-d)) 60%, #000), 0 2px 6px rgba(0, 0, 0, .6);
 }
 .card__tier::before { content: ""; position: absolute; inset: 3px; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, .35); }
+/* 3-letter tiers (GOD) shrink inside the same seal, whatever size the seal is */
+.card__tier--long > span, .scard__tier--long > span { font-size: .74em; letter-spacing: -.02em; }
 .card__mock {
   position: absolute; z-index: 3; right: 8px; bottom: 8px;
   font-size: 9px; padding: 1px 5px; border-radius: 3px;

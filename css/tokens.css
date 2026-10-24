@@ -60,7 +60,8 @@
   --good: #94d49c;
   --bad: #e57a87;
 
-  /* ---- Tier palette (jewel tones: ruby, amber, gold, jade, sapphire, pewter) ---- */
+  /* ---- Tier palette (jewel tones: flame, ruby, amber, gold, jade, sapphire, pewter) ---- */
+  --t-god: #e2453c;         /* GOD (above SS) · GOD + SS = Meta cards */
   --t-ss: #d75d80;
   --t-s: #e09c4c;
   --t-a: #d9c262;
