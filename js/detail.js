@@ -4,14 +4,17 @@
    · Opens over any page (#card/<id>), Back = the same page in the same state (nothing underneath changes)
    · Painting: drawn ONCE per screen width (canvas → <img>), level ring drawn once per level, moved only by
      paused Web Animations (finger / phone tilt). The sun's running light, sparks and fog are CSS (GPU).
-   · Card: tap = one 360° turn (900 ms, owner's exception to the 400 ms rule) · drag = turn · flick = spins and
-     slows down · double tap = zoom. Flat 2D at rest, real 3D (thickness, two faces) only while it moves.
-   · Labels: Skill / Passive / Strongest / Weakness · phone = above / below the card, tap = full text ·
+   · Card: tap = one 360° turn (900 ms, owner's exception to the 400 ms rule) · drag = turn (angle limited, never
+     edge-on) · flick = spins and slows down · double tap = zoom · leans with the phone's tilt (works together with
+     the finger · iPhone asks on the first tap of the card) / with the mouse on a PC. Flat 2D when it is straight,
+     real 3D (thickness, two faces) only while it moves or leans. The holo sheen always shows (static at rest).
+   · Labels: Tier (+ tierNote) / Passive / Skill / Strongest / Weakness · always visible, the dot on the card follows
+     the card as it turns (paused Web Animations) · phone = above / below the card, tap = full text ·
      ≥ 768px = left / right of the card with the full text
    · Swipe left / right (outside the card), ‹ › or the arrow keys = the next card of the list it was opened from
      (that list rides in history.state.cl, see CBI.openCard). The next and previous cards are built ahead.
    · Details = a sheet with every panel the old detail page had (stats, Overall, Grade, abilities, matchups, team)
-   · Intro (dust gathering into the card) plays when there is no card to grow from (direct link) and on Replay.
+   · Intro (dust gathering into the card) plays every time a card opens · a little faster when swiping to the next.
    Rules (PROGRESS §4.1, §11): rAF only while something moves (intro ~2.6 s, card physics, parallax) ·
    per-frame changes = paused Web Animations, never style.transform · auras only on screen (.is-live).
    ========================================================== */
@@ -425,16 +428,17 @@
     const ang = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
     if (ang === 90) { gx = e.beta; by = -e.gamma; } else if (ang === -90 || ang === 270) { gx = -e.beta; by = e.gamma; }
     if (g0 === null) { g0 = gx; b0 = by; }
-    g0 += (gx - g0) * 0.004; b0 += (by - b0) * 0.004;
+    g0 += (gx - g0) * 0.004; b0 += (by - b0) * 0.004;   // the baseline follows slowly: holding still = back to straight
     const nx = clamp((gx - g0) / 18, -1, 1), ny = clamp((by - b0) / 18, -1, 1);
-    if (Math.abs(nx - tiltX) < 0.012 && Math.abs(ny - tiltY) < 0.012) return;
+    if (Math.abs(nx - tiltX) < 0.02 && Math.abs(ny - tiltY) < 0.02) return;
     tiltX = nx; tiltY = ny;
     if (!touching) setTarget(nx, ny);
+    setLean(-nx * LEAN.y, -ny * LEAN.x);                 // the card leans with the phone (together with the finger)
   }
-  // the Tilt button only makes sense on a phone / tablet (desktop Chrome also exposes requestPermission)
+  // only a phone / tablet tilts (desktop Chrome also exposes requestPermission)
   const touchScreen = matchMedia("(pointer: coarse)").matches;
   const needsTiltPermission = touchScreen && typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function";
-  let tiltGranted = false;
+  let tiltGranted = false, tiltAsked = false;
   function tiltListen(on) {
     if (on === tiltOn) return;
     if (on && needsTiltPermission && !tiltGranted) return;
@@ -442,27 +446,35 @@
     tiltOn = on; g0 = b0 = null;
     if (on) addEventListener("deviceorientation", onTilt); else removeEventListener("deviceorientation", onTilt);
   }
+  // iPhone: the motion permission can only be asked inside a tap → asked once, on the first tap of the card
+  function askTilt() {
+    if (!needsTiltPermission || tiltAsked || tiltGranted || rm()) return;
+    tiltAsked = true;
+    let p;
+    try { p = DeviceOrientationEvent.requestPermission(); } catch (e) { tiltAsked = false; return; }
+    Promise.resolve(p).then((s) => { if (s === "granted") { tiltGranted = true; if (isOpen) tiltListen(true); } }).catch(() => { tiltAsked = false; });
+  }
   function setupParallax() {
     addPar(el.skyX, "x", 16); addPar(el.skyY, "y", 12);
     addPar(el.sparkX, "x", 26); addPar(el.sparkY, "y", 18);
     addPar(el.fogX, "x", 36);
     addPar(el.foreX, "x", -9); addPar(el.foreY, "y", -7);
     const fromPoint = (e) => { const r = el.root.getBoundingClientRect(); setTarget(((e.clientX - r.left) / r.width - 0.5) * 2, ((e.clientY - r.top) / r.height - 0.5) * 2); };
-    el.root.addEventListener("pointermove", (e) => { if ((e.pointerType === "mouse" && !P) || touching) fromPoint(e); }, { passive: true });
+    // PC: the card faces the mouse (lean), the scene follows it (parallax)
+    const mouseLean = (e) => {
+      const r = el.fore.getBoundingClientRect();
+      const mx = clamp((e.clientX - (r.left + LY.L + LY.cw / 2)) / Math.max(200, r.width / 2), -1, 1);
+      const my = clamp((e.clientY - (r.top + LY.T + LY.ch / 2)) / Math.max(200, r.height / 2), -1, 1);
+      setLean(mx * LEAN.y, -my * LEAN.x);
+    };
+    el.root.addEventListener("pointermove", (e) => {
+      if (e.pointerType === "mouse" && !P) { fromPoint(e); mouseLean(e); }
+      else if (touching) fromPoint(e);
+    }, { passive: true });
     el.root.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse" && !e.target.closest(INTERACTIVE)) { touching = true; fromPoint(e); } }, { passive: true });
     const up = () => { if (touching) { touching = false; setTarget(tiltX, tiltY); } };
     el.root.addEventListener("pointerup", up); el.root.addEventListener("pointercancel", up);
-    el.root.addEventListener("mouseleave", () => setTarget(tiltX, tiltY));
-    if (needsTiltPermission) {
-      el.tiltBtn.hidden = false;
-      el.tiltBtn.addEventListener("click", () => {
-        DeviceOrientationEvent.requestPermission().then((s) => {
-          if (s !== "granted") return;
-          tiltGranted = true; tiltListen(true);
-          el.tiltBtn.classList.add("is-on"); el.tiltBtn.setAttribute("aria-pressed", "true");
-        }).catch(() => {});
-      });
-    }
+    el.root.addEventListener("mouseleave", () => { setTarget(tiltX, tiltY); if (!P) setLean(0, 0); });
   }
 
   /* ==========================================================
@@ -472,7 +484,7 @@
   function makeFace(card) {
     const c = C.renderCard(card, state.rarity, { tilt: false });
     c.removeAttribute("role"); c.tabIndex = -1; c.setAttribute("aria-hidden", "true");
-    const h = document.createElement("span"); h.className = "bs-holo"; h.innerHTML = "<i></i>";
+    const h = document.createElement("span"); h.className = "bs-holo"; h.innerHTML = "<b><i></i></b>";   // the clip box never moves (it used to slide off the card)
     c.appendChild(h);
     return c;
   }
@@ -509,11 +521,11 @@
   }
 
   /* ==========================================================
-     4. Labels (Skill / Passive / Strongest / Weakness) from the real data
+     4. Labels (Tier / Passive / Skill / Strongest / Weakness) from the real data
      ========================================================== */
   const CO_DEF = [
-    { key: "skill", k: "Skill", pos: "tl" },
-    { key: "passive", k: "Passive", pos: "tr" },
+    { key: "tier", k: "Tier", pos: "tl", cls: "bs-co--tier" },
+    { key: "ability", k: "Passive / Skill", pos: "tr" },
     { key: "strong", k: "Strongest", pos: "bl", cls: "bs-co--good" },
     { key: "weak", k: "Weakness", pos: "br", cls: "bs-co--bad" },
   ];
@@ -527,14 +539,38 @@
     ent.sort((a, b) => (top ? b[1] - a[1] : a[1] - b[1]));
     return ent.length > 1 ? [modeName(ent[0][0])] : [];
   }
+  // a card has ONE ability slot in the game (PROGRESS §7 B.3): passive and skill are shown together as "Passive / Skill"
+  function abilities(card) {
+    return [["Passive", card.passive], ["Skill", card.skill]].map(([kind, a]) => {
+      a = a || {};
+      const n = String(a.name || "").trim(), d = String(a.desc || "").trim();
+      return n || d ? { kind, n, d } : null;
+    }).filter(Boolean);
+  }
+  const abilityScore = (s) => {
+    // = the two 15 % rows as one 30 % row (Overall is unchanged) · a missing number = use the other one
+    const v = [s && s.passive, s && s.skill].filter((x) => x !== "" && x != null).map(Number).filter(Number.isFinite);
+    return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0;
+  };
   // returns { empty, n, d (short, HTML), full (HTML), pop (HTML) }
   function coData(card, key) {
-    if (key === "skill" || key === "passive") {
-      const a = card[key] || {}, kind = key === "skill" ? "skill" : "passive";
-      const n = String(a.name || "").trim(), d = String(a.desc || "").trim();
-      if (!n && !d) return { empty: true, n: `No ${kind}`, d: "", full: "", pop: `<h4>No ${kind}</h4><p>This card has no ${kind}${C.isRanked(card) ? "" : " listed yet"}.</p>` };
-      const title = n || (key === "skill" ? "Skill" : "Passive");
-      return { n: title, d: esc(d), full: d ? `<p>${esc(d)}</p>` : "", pop: `<h4>${esc(title)}</h4>${d ? `<p>${esc(d)}</p>` : ""}` };
+    if (key === "tier") {
+      const ranked = C.isRanked(card), note = String(card.tierNote || "").trim();
+      const ov = ranked ? `Overall ${f1(pct(card.scores.overall))} / 100` : "";
+      if (!ranked) return { n: "Unranked", d: esc(note || "Not scored yet"), full: `<p>${esc(note || "This card hasn't been scored yet.")}</p>`, pop: `<h4>Unranked</h4><p>${esc(note || "This card hasn't been scored yet.")}</p>` };
+      const n = `Tier ${card.tier}`;
+      return { n, d: esc(note || ov), full: (note ? `<p>${esc(note)}</p>` : "") + `<p class="meta">${esc(ov)}</p>`, pop: `<h4>${esc(n)}</h4>${note ? `<p>${esc(note)}</p>` : ""}<p class="meta">${esc(ov)}</p>` };
+    }
+    if (key === "ability") {
+      const ab = abilities(card);
+      if (!ab.length) return { empty: true, n: "No passive / skill", d: "", full: "", pop: `<h4>Passive / Skill</h4><p>This card has no passive or skill${C.isRanked(card) ? "" : " listed yet"}.</p>` };
+      const first = ab[0], n = first.n || first.kind, many = ab.length > 1;
+      const block = (a, h) => `${many ? `<p class="meta">${a.kind}</p>` : ""}${a.n ? `<${h}>${esc(a.n)}</${h}>` : ""}${a.d ? `<p>${esc(a.d)}</p>` : ""}`;
+      return {
+        n, d: esc(first.d || (ab[1] ? ab[1].n || ab[1].d : "")),
+        full: (first.d ? `<p>${esc(first.d)}</p>` : "") + ab.slice(1).map((a) => block(a, "b")).join(""),
+        pop: many ? ab.map((a) => block(a, "h4")).join("") : `<h4>${esc(n)}</h4>${first.d ? `<p>${esc(first.d)}</p>` : ""}`,
+      };
     }
     const good = key === "strong";
     const pts = arr(good ? card.strengths : card.weaknesses).map(String);
@@ -564,11 +600,11 @@
       b.className = "bs-co " + (d.cls || "") + (d.pos[1] === "r" ? " is-r is-right" : " is-left");
       b.setAttribute("aria-expanded", "false"); b.setAttribute("aria-controls", "bs-pop");
       b.innerHTML = `<span class="bs-co__k">${d.k}</span><span class="bs-co__n"></span><span class="bs-co__d"></span><span class="bs-co__full"></span>`;
-      const line = document.createElement("div"); line.className = "bs-line"; line.innerHTML = "<i></i>";
-      const dot = document.createElement("div"); dot.className = "bs-dot";
-      const end = document.createElement("div"); end.className = "bs-dot bs-dot--end";
+      // each part = outer (follows the card's pitch) > b (follows its turn) > i (what you see, grows in on show)
+      const mk = (cls) => { const n = document.createElement("div"); n.className = cls; n.innerHTML = "<b><i></i></b>"; return n; };
+      const line = mk("bs-line"), dot = mk("bs-dot"), end = mk("bs-dot bs-dot--end");
       el.callouts.append(line, dot, end, b);
-      const o = { d, el: b, line, dot, end, data: null, y: 0, x: 0, w: 0, lh: 0 };
+      const o = { d, el: b, line, dot, end, lineV: line.querySelector("i"), dotV: dot.querySelector("i"), endV: end.querySelector("i"), poses: null, data: null, y: 0, x: 0, w: 0, lh: 0 };
       b.addEventListener("click", () => { if (!side) togglePop(o); });
       coEls.push(o);
     });
@@ -585,12 +621,50 @@
       o.el.querySelector(".bs-co__d").innerHTML = x.d;      // escaped above (esc) + our own <b>
       o.el.querySelector(".bs-co__full").innerHTML = x.full;
       o.el.setAttribute("aria-label", `${o.d.k}: ${x.n}${side ? "" : ". Show full text"}`);
+      if (o.d.key === "tier") { if (C.isRanked(card)) o.el.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`); else o.el.style.removeProperty("--tc"); }
     }
   }
-  function placeLine(seg, x1, y1, x2, y2) {
-    const len = Math.hypot(x2 - x1, y2 - y1), ang = Math.atan2(y2 - y1, x2 - x1);
-    seg.style.left = x1 + "px"; seg.style.top = (y1 - 0.75) + "px"; seg.style.width = len + "px";
-    seg.style.transform = `rotate(${ang}rad)`;
+  /* A label's line runs from its own label (fixed) to a dot ON the card. The dot follows the card as it turns / leans:
+     the card's 3D pose is projected ahead (once per layout) into paused Web Animations — yaw 0–360° (37 steps, same
+     timing as the card's rotor) and pitch −30…30° (13 steps, same as its tilt) — and apply3D() only sets currentTime.
+     No style writes per frame (§4.1). Yaw and pitch are combined additively (close enough at the limited lean angles). */
+  const PERSP = 1100;   // = .bs-wrap.is-3d .bs-zoom perspective in detail.css
+  let poseYT = 0, posePT = 500;
+  function placeCo(o, ax, ay, ex, ey) {
+    o.dot.style.left = ax + "px"; o.dot.style.top = ay + "px";
+    o.end.style.left = ex + "px"; o.end.style.top = ey + "px";
+    o.line.style.left = ex + "px"; o.line.style.top = ey + "px";
+    if (o.poses) o.poses.forEach((a) => a.cancel());
+    const cx = LY.L + LY.cw / 2, cy = LY.T + LY.ch / 2, px = ax - cx, py = ay - cy;
+    const yDot = [], yLine = [], pDot = [], pLine = [];
+    let prev = null;
+    for (let k = 0; k <= 36; k++) {
+      const th = k * Math.PI / 18, sc = PERSP / (PERSP + px * Math.sin(th));
+      const x = px * Math.cos(th) * sc, y = py * sc;
+      yDot.push({ transform: `translate(${f2(x - px)}px,${f2(y - py)}px)` });
+      const vx = cx + x - ex, vy = cy + y - ey;
+      let ang = Math.atan2(vy, vx) * 180 / Math.PI;
+      if (prev !== null) { while (ang - prev > 180) ang -= 360; while (ang - prev < -180) ang += 360; }
+      prev = ang;
+      yLine.push({ transform: `rotate(${f2(ang)}deg) scaleX(${(Math.hypot(vx, vy) / 100).toFixed(4)})` });
+    }
+    const v0x = ax - ex, v0y = ay - ey, v2 = Math.max(1, v0x * v0x + v0y * v0y);
+    for (let k = 0; k <= 12; k++) {
+      const ph = (k * 5 - 30) * Math.PI / 180, sc = PERSP / (PERSP - py * Math.sin(ph));
+      const dy = py * Math.cos(ph) * sc - py;
+      pDot.push({ transform: `translate(0px,${f2(dy)}px)` });
+      // shear that moves only the line's far end (on the card) by dy, the label end stays put
+      pLine.push({ transform: `matrix(1,${(dy * v0x / v2).toFixed(5)},0,${(1 + dy * v0y / v2).toFixed(5)},0,0)` });
+    }
+    const mk = (n, kf, d) => { const a = n.animate(kf, { duration: d, fill: "both", easing: "linear" }); a.pause(); return a; };
+    o.poses = [mk(o.dot.firstChild, yDot, 3600), mk(o.dot, pDot, 1000), mk(o.line.firstChild, yLine, 3600), mk(o.line, pLine, 1000)];
+    o.poses[0].currentTime = o.poses[2].currentTime = poseYT;
+    o.poses[1].currentTime = o.poses[3].currentTime = posePT;
+  }
+  function poseCallouts(yt, pt) {
+    if (yt === poseYT && pt === posePT) return;
+    poseYT = yt; posePT = pt;
+    for (const o of coEls) if (o.poses) { o.poses[0].currentTime = o.poses[2].currentTime = yt; o.poses[1].currentTime = o.poses[3].currentTime = pt; }
   }
 
   /* ==========================================================
@@ -625,7 +699,7 @@
     const ch = Math.round(cw * 1.4);
     el.root.style.setProperty("--cw", cw + "px");
     moveHud(side && useHud);
-    const below = hud ? 0 : 12 + 60 + 8 + 40;
+    const below = hud ? 0 : 18 + 60 + 8 + 40;   // a clear gap between the card and the Overall ring
     const L = Math.round((fw - cw) / 2);
     let T;
     if (!side) T = 76 + Math.max(0, (fh - 76 - below - ch) * 0.5);
@@ -635,8 +709,8 @@
     LY = { L, T, cw, ch, fw, fh, B };
     el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
     if (!hud) {
-      el.ovr.style.left = (fw / 2 - 30) + "px"; el.ovr.style.top = (B + 12) + "px";
-      el.dbtn.style.left = Math.round(fw / 2 - el.dbtn.offsetWidth / 2) + "px"; el.dbtn.style.top = (B + 80) + "px";
+      el.ovr.style.left = (fw / 2 - 30) + "px"; el.ovr.style.top = (B + 18) + "px";
+      el.dbtn.style.left = Math.round(fw / 2 - el.dbtn.offsetWidth / 2) + "px"; el.dbtn.style.top = (B + 86) + "px";
     }
     const zs = Math.min(1.7, (fh - 16) / ch, (fw - 24) / cw);
     el.zoom.style.setProperty("--zs", zs.toFixed(3)); el.zoom.style.setProperty("--zy", Math.round(fh / 2 - (T + ch / 2)) + "px");
@@ -668,9 +742,7 @@
           const ey = y + Math.min(h / 2, 24), ex = right ? x - 3 : x + w + 3;
           const ax = right ? L + cw : L, ay = clamp(ey, T + 14, B - 14);
           Object.assign(o, { x, y, w, lh: h, bottom: o.d.pos[0] === "b", right });
-          placeLine(o.line, ax, ay, ex, ey);
-          o.dot.style.left = ax + "px"; o.dot.style.top = ay + "px";
-          o.end.style.left = ex + "px"; o.end.style.top = ey + "px";
+          placeCo(o, ax, ay, ex, ey);
         });
       }
       closePop(true);
@@ -690,9 +762,7 @@
         else { y = Math.min(B + 22, fh - lh - 2); ex = right ? x + 18 : x + w - 18; ey = y - 3; ax = right ? L + cw * 0.78 : L + cw * 0.22; ay = B; }
         o.el.style.top = y + "px";
         Object.assign(o, { x, y, w, lh, bottom, right });
-        placeLine(o.line, ax, ay, ex, ey);
-        o.dot.style.left = ax + "px"; o.dot.style.top = ay + "px";
-        o.end.style.left = ex + "px"; o.end.style.top = ey + "px";
+        placeCo(o, ax, ay, ex, ey);
       }
       if (openCo) placePop(openCo);
     }
@@ -703,7 +773,7 @@
   let coAnims = [];
   function hideCallouts() {
     coAnims.forEach((a) => a.cancel()); coAnims = [];
-    for (const o of coEls) for (const x of [o.el, o.line.firstChild, o.dot, o.end]) { x.style.opacity = ""; x.style.transform = ""; }
+    for (const o of coEls) for (const x of [o.el, o.lineV, o.dotV, o.endV]) { x.style.opacity = ""; x.style.transform = ""; }
     closePop(true);
   }
   // a finished animation still keeps its element as its own layer; commit the end state as plain styles instead (§13.1 lesson 6)
@@ -716,15 +786,15 @@
       const d = i * 140;
       if (rm()) {
         push(o.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: d, ...on }),
-          o.line.firstChild.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(1)" }], { duration: 1, ...on }),
-          o.dot.animate([{ transform: "scale(1)" }, { transform: "scale(1)" }], { duration: 1, ...on }),
-          o.end.animate([{ transform: "scale(1)" }, { transform: "scale(1)" }], { duration: 1, ...on }));
+          o.lineV.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(1)" }], { duration: 1, ...on }),
+          o.dotV.animate([{ transform: "scale(1)" }, { transform: "scale(1)" }], { duration: 1, ...on }),
+          o.endV.animate([{ transform: "scale(1)" }, { transform: "scale(1)" }], { duration: 1, ...on }));
         return;
       }
       push(
-        o.dot.animate([{ transform: "scale(0)" }, { transform: "scale(1.5)", offset: 0.6 }, { transform: "scale(1)" }], { duration: 260, delay: d, easing: E, ...on }),
-        o.line.firstChild.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 260, delay: d + 120, easing: E, ...on }),
-        o.end.animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 160, delay: d + 360, easing: E, ...on }),
+        o.dotV.animate([{ transform: "scale(0)" }, { transform: "scale(1.5)", offset: 0.6 }, { transform: "scale(1)" }], { duration: 260, delay: d, easing: E, ...on }),
+        o.lineV.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 260, delay: d + 120, easing: E, ...on }),
+        o.endV.animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 160, delay: d + 360, easing: E, ...on }),
         o.el.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300, delay: d + 380, easing: E, ...on }),
       );
     });
@@ -817,34 +887,62 @@
   /* ==========================================================
      6. 3D card: tap = one 360° turn · drag = turn · flick = spins · release = spring back
      ========================================================== */
-  const R3 = { ang: 0, vel: 0, tx: 0, vtx: 0, mode: "rest", target: 0, raf: 0, last: 0, release: false, tw: null };
+  /* R3.ang / R3.tx = the turn (yaw) and up-down tilt (pitch) from the finger · ly / lx = the lean from the phone's tilt
+     or the mouse (eased toward tly / tlx). Shown: yaw = ang + ly, pitch = tx + lx. Outside a spin (tap 360° / flick)
+     both are soft-limited so the card never turns edge-on (owner, 2026-10-25). */
+  const R3 = { ang: 0, vel: 0, tx: 0, vtx: 0, mode: "rest", target: 0, raf: 0, last: 0, release: false, tw: null, spin: false, base: 0, ly: 0, lx: 0, tly: 0, tlx: 0 };
   const SK = 90, SC = 2 * Math.sqrt(SK) * 0.62, KX = 140, CX = 2 * Math.sqrt(KX) * 0.75;
+  const MAX_YAW = 42, MAX_PITCH = 24, DRAG_YAW = 36, DRAG_PITCH = 18;
+  const LEAN = { y: 16, x: 12 };   // degrees at full phone tilt / mouse at the edge
+  const soft = (v, m) => m * Math.tanh(v / m);   // rubber-band limit: grows slower and slower toward ±m
   const HOLO_KF = Array.from({ length: 9 }, (_, k) => ({ transform: `translateX(${f2(Math.sin(k * Math.PI / 4) * 34)}%)` }));
   let A3 = null;
   const mod360 = (a) => ((a % 360) + 360) % 360;
+  const leaning = () => Math.abs(R3.tly) > 0.01 || Math.abs(R3.tlx) > 0.01 || Math.abs(R3.ly) > 0.05 || Math.abs(R3.lx) > 0.05;
   function enter3D() {
     if (A3) return;
-    el.wrap.classList.add("is-3d"); el.fore.classList.add("is-busy"); closePop(); hideHint();
+    el.wrap.classList.add("is-3d");
     const lin = { duration: 3600, fill: "both", easing: "linear" };
     const y = el.rotor.animate([{ transform: "rotateY(0deg)" }, { transform: "rotateY(360deg)" }], lin);
     const x = el.tiltEl.animate([{ transform: "rotateX(-30deg)" }, { transform: "rotateX(30deg)" }], { duration: 1000, fill: "both" });
     const holos = [...el.rotor.querySelectorAll(".bs-holo i")].map((h) => h.animate(HOLO_KF, lin));
-    const holoY = [...el.rotor.querySelectorAll(".bs-holo")].map((h) => h.animate([{ transform: "translateY(22%)" }, { transform: "translateY(-22%)" }], { duration: 1000, fill: "both" }));
+    const holoY = [...el.rotor.querySelectorAll(".bs-holo b")].map((h) => h.animate([{ transform: "translateY(22%)" }, { transform: "translateY(-22%)" }], { duration: 1000, fill: "both" }));
     A3 = { y, x, holos, holoY, all: [y, x, ...holos, ...holoY] };
     A3.all.forEach((a) => a.pause());
     apply3D();
   }
+  // back to flat 2D (card straight): the holo keeps its last place (#7: a still sheen, no looping animation)
   function exit3D() {
     if (!A3) return;
+    for (const a of A3.holos.concat(A3.holoY)) { try { a.commitStyles(); } catch (e) {} }
     A3.all.forEach((a) => a.cancel()); A3 = null;
-    el.wrap.classList.remove("is-3d"); el.fore.classList.remove("is-busy");
+    el.wrap.classList.remove("is-3d"); busy(false);
+    poseCallouts(0, 500);
+  }
+  function busy(on) { el.fore.classList.toggle("is-busy", on); }   // motes swirl: only while it really turns, not for a lean
+  function shown() {
+    let yaw = R3.ang + R3.ly, pitch = R3.tx + R3.lx;
+    if (!R3.spin) yaw = R3.base + soft(yaw - R3.base, MAX_YAW);
+    return [yaw, soft(pitch, MAX_PITCH)];
   }
   function apply3D() {
     if (!A3) return;
-    const t = mod360(R3.ang) * 10;
+    const [yaw, pitch] = shown();
+    const t = mod360(yaw) * 10;
     A3.y.currentTime = t; for (const a of A3.holos) a.currentTime = t;
-    const xt = (clamp(R3.tx, -30, 30) + 30) / 60 * 1000;
+    const xt = (clamp(pitch, -30, 30) + 30) / 60 * 1000;
     A3.x.currentTime = xt; for (const a of A3.holoY) a.currentTime = xt;
+    poseCallouts(t, xt);
+  }
+  // the phone's tilt / the mouse sets where the card leans to (eased in tick)
+  function setLean(y, x) {
+    if (!isOpen || rm() || el.root.hidden) return;
+    const ny = Math.abs(y) < 0.6 ? 0 : y, nx = Math.abs(x) < 0.6 ? 0 : x;   // tiny = straight (flat 2D again)
+    if (Math.abs(ny - R3.tly) < 0.15 && Math.abs(nx - R3.tlx) < 0.15 && (ny || nx || !A3)) return;
+    R3.tly = ny; R3.tlx = nx;
+    if (!ready) return;          // during the intro the card isn't there yet; it picks the lean up on reveal
+    if (leaning()) enter3D();
+    kick();
   }
   function kick() { if (!R3.raf) { R3.last = performance.now(); R3.raf = requestAnimationFrame(tick); } }
   function tick(now) {
@@ -862,28 +960,39 @@
       if (k >= 1) { R3.mode = "spring"; R3.target = R3.tw.a1; R3.vel = 0; }
     }
     if (m !== "drag") { R3.vtx += (-KX * R3.tx - CX * R3.vtx) * dt; R3.tx += R3.vtx * dt; }
-    apply3D();
+    const kl = 1 - Math.exp(-dt / 0.12);
+    R3.ly += (R3.tly - R3.ly) * kl; R3.lx += (R3.tlx - R3.lx) * kl;
+    const leanDone = Math.abs(R3.tly - R3.ly) < 0.05 && Math.abs(R3.tlx - R3.lx) < 0.05;
+    if (leanDone) { R3.ly = R3.tly; R3.lx = R3.tlx; }
     if (R3.mode === "spring" && Math.abs(R3.ang - R3.target) < 0.25 && Math.abs(R3.vel) < 6 && Math.abs(R3.tx) < 0.3 && Math.abs(R3.vtx) < 6) {
-      R3.ang = R3.target; apply3D();
-      R3.ang = 0; R3.tx = 0; R3.vel = 0; R3.vtx = 0; R3.mode = "rest"; R3.raf = 0;
-      exit3D();                                  // back to a flat 2D card at rest
+      R3.ang = 0; R3.tx = 0; R3.vel = 0; R3.vtx = 0; R3.mode = "rest"; R3.spin = false; R3.base = 0; busy(false);
       if (R3.release) { R3.release = false; buzz(); }
+    }
+    apply3D();
+    if (R3.mode === "rest" && leanDone) {
+      R3.raf = 0;
+      if (!leaning()) exit3D();    // straight again → back to a flat 2D card · still leaning → stays 3D, no rAF
       return;
     }
     R3.raf = requestAnimationFrame(tick);
   }
   function buzz() { try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {} }
+  // stop the finger / spin part; the lean (phone tilt / mouse) carries on
   function stopCard() {
-    cancelAnimationFrame(R3.raf); R3.raf = 0; R3.mode = "rest"; R3.ang = R3.tx = R3.vel = R3.vtx = 0; apply3D(); exit3D();
+    cancelAnimationFrame(R3.raf); R3.raf = 0;
+    Object.assign(R3, { mode: "rest", ang: 0, tx: 0, vel: 0, vtx: 0, spin: false, base: 0 });
+    busy(false); apply3D();
+    if (leaning() && ready) kick(); else { R3.ly = R3.lx = 0; exit3D(); }
     clearTimeout(tapTimer); tapTimer = 0; P = null; el.wrap.classList.remove("is-grab");
   }
+  function resetLean() { R3.tly = R3.tlx = R3.ly = R3.lx = 0; }
   function spinOnce() {
     if (R3.mode === "drag" || !el.wrap.classList.contains("is-in")) return;
     if (rm()) { el.faceF.querySelectorAll(".card__flash").forEach((f) => f.animate([{ opacity: 0.4 }, { opacity: 0 }], { duration: 300 })); return; }
     if (R3.mode === "rest") R3.ang = 0;
-    enter3D();
+    closePop(); hideHint(); enter3D(); busy(true);
     const a0 = R3.ang, a1 = (Math.round(a0 / 360) + 1) * 360;   // one more full turn, always ends on the front
-    R3.mode = "tween"; R3.tw = { a0, a1, t0: performance.now(), dur: 900 }; R3.release = false;
+    R3.mode = "tween"; R3.spin = true; R3.tw = { a0, a1, t0: performance.now(), dur: 900 }; R3.release = false;
     kick();
   }
   function toggleZoom(force) {
@@ -903,14 +1012,16 @@
       if (!P || e.pointerId !== P.id || rm()) return;
       const dx = e.clientX - P.x0, dy = e.clientY - P.y0, now = performance.now();
       if (!P.drag && Math.hypot(dx, dy) > 7) {
-        P.drag = true; clearTimeout(tapTimer); tapTimer = 0;
+        P.drag = true; clearTimeout(tapTimer); tapTimer = 0; closePop(); hideHint();
         if (R3.mode === "rest") R3.ang = 0;
+        R3.base = Math.round(R3.ang / 360) * 360;          // the front it springs back to (a grab mid-spin stays a spin)
         P.a0 = R3.ang - dx * dpp(); R3.mode = "drag"; R3.vel = 0; R3.vtx = 0;
-        enter3D(); kick(); w.classList.add("is-grab");
+        enter3D(); busy(true); kick(); w.classList.add("is-grab");
       }
       if (P.drag) {
-        R3.ang = P.a0 + dx * dpp();
-        R3.tx = clamp(-dy * 0.16, -18, 18);
+        const a = P.a0 + dx * dpp();
+        R3.ang = R3.spin ? a : R3.base + soft(a - R3.base, DRAG_YAW);   // limited: never edge-on (only a flick spins)
+        R3.tx = soft(-dy * 0.16, DRAG_PITCH);
         P.s.push([e.clientX, now]); while (P.s.length > 2 && now - P.s[0][1] > 90) P.s.shift();
       }
     });
@@ -922,8 +1033,8 @@
         if (p.s.length > 1) { const a = p.s[0], b = p.s[p.s.length - 1]; v = (b[0] - a[0]) / Math.max(1, b[1] - a[1]) * 1000 * dpp(); }
         if (performance.now() - (p.s.length ? p.s[p.s.length - 1][1] : 0) > 80) v = 0;   // finger stopped before lifting
         R3.vel = clamp(v, -3400, 3400); R3.release = true;
-        if (Math.abs(R3.vel) > 650 && e.type !== "pointercancel") R3.mode = "free";      // flick → several turns, ends on the front
-        else { R3.mode = "spring"; R3.target = Math.round(R3.ang / 360) * 360; }          // gentle release → springs back
+        if (Math.abs(R3.vel) > 650 && e.type !== "pointercancel") { R3.mode = "free"; R3.spin = true; }   // flick → several turns, ends on the front
+        else { R3.mode = "spring"; R3.target = R3.spin ? Math.round(R3.ang / 360) * 360 : R3.base; }      // gentle release → springs back
         kick();
       } else if (e.type === "pointerup" && performance.now() - p.t0 < 380) {
         const now = performance.now();
@@ -938,6 +1049,8 @@
       else if (e.key === "z" || e.key === "Z") toggleZoom();
     });
     w.addEventListener("contextmenu", (e) => e.preventDefault());
+    // iPhone: ask for the motion permission on the first tap of the card (touchend / click both count as the tap)
+    w.addEventListener("touchend", askTilt, { passive: true }); w.addEventListener("click", askTilt);
   }
 
   /* ==========================================================
@@ -960,33 +1073,35 @@
     el.next.addEventListener("click", () => step(1));
   }
   function step(dir) {
-    if (list.length < 2 || switching || R3.mode !== "rest" || el.fore.classList.contains("is-zoom") || !ready || sheetOpen) return;
+    // during the intro (introRaf) the next swipe is allowed too: §4, the user can go on while it plays
+    if (list.length < 2 || switching || R3.mode !== "rest" || el.fore.classList.contains("is-zoom") || !(ready || introRaf) || sheetOpen) return;
     const id = list[(idx + dir + list.length) % list.length];
     if (!byId.has(id)) return;
     C.swapCard(id);                // same history entry (Back still closes the detail in one step)
     switchTo(id, dir);
   }
+  // swipe → the card slides out (170 ms), then the intro plays for the next card, a little faster (owner, 2026-10-25)
   function switchTo(id, dir) {
     const card = byId.get(id);
     if (!card) return;
     const i = list.indexOf(id);
     if (i >= 0) idx = i;
-    switching = true; closePop(true); hideHint(); stopCard(); toggleZoom(false);
-    const out = el.wrap.animate(rm() ? [{ opacity: 1 }, { opacity: 0 }] : [{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 48}px) scale(.94)`, opacity: 0 }],
-      { duration: 170, easing: "ease-in", fill: "forwards" });
+    const visible = el.wrap.classList.contains("is-in");
+    switching = true; stopIntro(); closePop(true); hideHint(); stopCard(); toggleZoom(false);
+    introTimers.forEach(clearTimeout); introTimers = [];
     hideCallouts();
     const mine = token;
-    out.onfinish = () => {
+    const next = () => {
       if (mine !== token) return;
+      el.wrap.getAnimations().forEach((a) => a.cancel());
       show(card);
-      out.cancel();
-      const inn = el.wrap.animate(rm() ? [{ opacity: 0 }, { opacity: 1 }] : [{ transform: `translateX(${dir * 48}px) scale(.94)`, opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: E });
-      inn.onfinish = () => { switching = false; };
-      inn.oncancel = () => { switching = false; };
-      setOverall(card, true);
-      showCallouts();
-      afterShow();
+      switching = false;
+      runIntro(true);
     };
+    if (!visible) { next(); return; }
+    const out = el.wrap.animate(rm() ? [{ opacity: 1 }, { opacity: 0 }] : [{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 48}px) scale(.94)`, opacity: 0 }],
+      { duration: 170, easing: "ease-in", fill: "forwards" });
+    out.onfinish = next;
     out.oncancel = () => { switching = false; };
   }
   // put a card in the scene (faces, texts, layout) without any animation
@@ -1006,7 +1121,9 @@
   /* ==========================================================
      8. Details sheet: every panel of the old detail page
      ========================================================== */
-  const SCORE_ROWS = [["atk", "ATK", 12.5], ["hp", "HP", 12.5], ["passive", "Passive", 15], ["skill", "Skill", 15], ["matchup", "Matchup", 25], ["team", "Team", 20]];
+  // Passive + Skill (15 % + 15 %) = one "Passive / Skill" row of 30 % (the card has one ability slot) · Overall unchanged
+  const SCORE_ROWS = [["atk", "ATK", 12.5], ["hp", "HP", 12.5], ["ability", "Passive / Skill", 30], ["matchup", "Matchup", 25], ["team", "Team", 20]];
+  const scoreOf = (s, k) => (k === "ability" ? abilityScore(s) : pct(s[k]));
   const EXTRA_STATS = [["def", "DEF"], ["status", "Status DMG"]];
   const hasBase = (card, k) => !!(card.base && Number(card.base[k]) > 0);
   const fmtSlot = (p) => {
@@ -1025,7 +1142,9 @@
     const ranked = C.isRanked(card);
     const s = card.scores || {}, team = card.team || {};
     const strengths = arr(card.strengths), weaknesses = arr(card.weaknesses);
-    const asText = (a) => (a && (a.name || a.desc)) ? `${a.name ? `<b class="ability__name">${esc(a.name)}</b>` : ""}${a.desc ? `<p class="ability__desc">${esc(a.desc)}</p>` : ""}` : `<p class="muted">None</p>`;
+    const ab = abilities(card);
+    const abHTML = ab.length ? ab.map((a) => `${ab.length > 1 ? `<span class="ability__kind">${a.kind}</span>` : ""}${a.n ? `<b class="ability__name">${esc(a.n)}</b>` : ""}${a.d ? `<p class="ability__desc">${esc(a.d)}</p>` : ""}`).join("") : `<p class="muted">None</p>`;
+    const note = String(card.tierNote || "").trim();
     const bullets = (a, cls) => a.length ? `<ul class="pc pc--${cls}">${a.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : `<p class="muted">Not analyzed yet</p>`;
     const supports = arr(team.bestSupport).map((id) => { const f = state.support.find((x) => x.id === id); return f && f.name ? f.name : pretty(id); });
     const slot = fmtSlot(team.position);
@@ -1038,7 +1157,7 @@
         <div class="overall__tier"><span class="badge badge--tier">${esc(card.tier)}</span><small>Tier</small></div>
       </div>
       <div class="scores">${SCORE_ROWS.map(([k, label, w], i) => `
-        <div class="score" style="--v:${pct(s[k]) / 100};--d:${150 + i * 60}ms">
+        <div class="score" style="--v:${pct(scoreOf(s, k)) / 100};--d:${150 + i * 60}ms">
           <span class="score__name">${label}</span><span class="score__weight">${w}%</span>
           <span class="score__num" data-d="s-${k}" data-value="0">0</span>
           <span class="score__track"><i></i></span>
@@ -1058,14 +1177,14 @@
         </div>
         <section class="dpanel" aria-labelledby="d-t-overall">
           <h3 class="dpanel__title" id="d-t-overall">Overall score</h3>
-          ${ranked ? `<p class="dpanel__sub">Weighted sum of six scores, each out of 100.</p>` : ""}
+          ${ranked ? `<p class="dpanel__sub">Weighted sum of five scores, each out of 100.</p>` : ""}
+          ${note ? `<p class="dpanel__note">${esc(note)}</p>` : ""}
           ${overall}
         </section>
         ${C.grade.panelHTML(card)}
         <section class="dpanel" aria-labelledby="d-t-abilities">
-          <h3 class="dpanel__title" id="d-t-abilities">Abilities</h3>
-          <div class="ability"><span class="ability__kind">Passive</span>${asText(card.passive)}</div>
-          <div class="ability"><span class="ability__kind">Skill</span>${asText(card.skill)}</div>
+          <h3 class="dpanel__title" id="d-t-abilities">Passive / Skill</h3>
+          <div class="ability">${abHTML}</div>
         </section>
         <section class="dpanel" aria-labelledby="d-t-pc">
           <h3 class="dpanel__title" id="d-t-pc">Strengths &amp; weaknesses</h3>
@@ -1106,7 +1225,7 @@
     if (!C.isRanked(card)) return;
     const s = card.scores, fmt = (n) => String(Math.round(n));
     setNum(q("overall"), pct(s.overall), fmt, anim);
-    SCORE_ROWS.forEach(([k]) => setNum(q("s-" + k), pct(s[k]), fmt, anim));
+    SCORE_ROWS.forEach(([k]) => setNum(q("s-" + k), scoreOf(s, k), fmt, anim));
   }
   function sheetSub(card) {
     return `${C.isRanked(card) ? `Tier ${card.tier}` : "Unranked"} · ${state.rarity}${card.series ? " · " + card.series : ""}`;
@@ -1297,12 +1416,14 @@
   }
   function reveal() {
     el.wrap.classList.add("is-in"); el.fore.classList.add("is-ready"); motesPlay(true); ready = true;
+    if (leaning()) { enter3D(); kick(); }   // the phone was already tilted / the mouse off-centre
     setOverall(cur, true);
     introTimers.push(setTimeout(() => { showCallouts(); introTimers.push(setTimeout(showHint, 1100)); }, 380));
     afterShow();
     setTimeout(prebakeCoronas, 3400);
   }
-  function runIntro() {
+  // every open plays it (owner, 2026-10-25) · fast = swiping to the next card: the same intro at 0.75× the time
+  function runIntro(fast) {
     stopIntro(); stopCard(); toggleZoom(false); closeSheet(0, true); hideCallouts();
     el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in"); motesPlay(false); ready = false;
     if (rm()) { reveal(); return; }
@@ -1314,14 +1435,14 @@
     const key = cur.id + cw + "x" + ch + "x" + nT;
     if (!targetCache || targetCache.key !== key) targetCache = { key, pts: sampleTargets(cur, cw, ch, nT) };
     const targets = targetCache.pts;
-    const r = rng((Math.random() * 1e9) | 0);
+    const r = rng((Math.random() * 1e9) | 0), SP = fast ? 0.75 : 1;
     const COLS = ["#ffffff", "#e9e6ff", "#c9c6f2", "#b7c3ff"];
     const buckets = COLS.map(() => []);
     const mk = (tx0, ty0, stray) => {
       const sx = -W * 0.35 + r() * W * 0.45, sy = H * (0.86 + r() * 0.3);
       const nxp = stray ? 0.5 : (tx0 - L) / cw, nyp = stray ? 0.5 : (ty0 - T) / ch;
-      const delay = (nxp * 0.55 + (1 - nyp) * 0.45) * 820 + r() * 260 + (stray ? r() * 500 : 0);
-      const dur = 950 + r() * 520;
+      const delay = ((nxp * 0.55 + (1 - nyp) * 0.45) * 820 + r() * 260 + (stray ? r() * 500 : 0)) * SP;
+      const dur = (950 + r() * 520) * SP;
       const mx = lerp(sx, tx0, 0.55) + W * (0.1 + r() * 0.35), my = lerp(sy, ty0, 0.5) + (r() - 0.3) * H * 0.18;
       return { sx, sy, mx, my, tx: tx0, ty: ty0, delay, dur, stray, size: 1.3 + r() * (stray ? 1.4 : 1.9), ph: r() * 6.28 };
     };
@@ -1357,13 +1478,13 @@
           ctx.fill();
         }
       }
-      if (!shown && t > 1950) {
+      if (!shown && t > 1950 * SP) {
         shown = true;
         el.mat.animate([{ opacity: 0, transform: "scale(.92)" }, { opacity: 0.9, offset: 0.25 }, { opacity: 0, transform: "scale(1.08)" }], { duration: 560, easing: "ease-out" });
         el.dust.classList.add("is-out");
         reveal();
       }
-      if (t < 2650) introRaf = requestAnimationFrame(frame);
+      if (t < 2650 * SP) introRaf = requestAnimationFrame(frame);
       else { introRaf = 0; ctx.clearRect(0, 0, W, H); el.dust.hidden = true; el.dust.width = el.dust.height = 1; }
     };
     introRaf = requestAnimationFrame(frame);
@@ -1434,8 +1555,6 @@
     originEl = state.origin && state.origin.isConnected ? state.origin : null; state.origin = null;
     list = listFromHistory(id); idx = Math.max(0, list.indexOf(id));
     el.root.classList.toggle("is-single", list.length < 2);
-    const from = originEl || returnTarget(id);
-    const fromRect = from ? from.getBoundingClientRect() : null;
     prevFocus = document.activeElement;
 
     el.root.hidden = false;
@@ -1447,21 +1566,15 @@
     show(card);
     idx = Math.max(0, list.indexOf(id));
     layout();
+    resetLean();
     if (!rm()) tiltListen(true);
     el.close.focus({ preventScroll: true });
 
-    if (from) { from.style.visibility = "hidden"; hiddenEl = from; }
-    const fly = fromRect && rectVisible(fromRect) && !rm();
+    // every open = the scene fades in and the dust gathers into the card (owner, 2026-10-25 · was: fly from the tile)
+    // wait for the painting at most 1.2 s (a lite phone paints on its first open; the stand-in sky shows meanwhile)
     fades = chrome().map((n) => FX.fade(n, 1, { duration: 300 }));
-    if (fly) {
-      el.wrap.style.transition = "none"; el.wrap.classList.add("is-in"); void el.wrap.offsetWidth; el.wrap.style.transition = "";
-      const flight = FX.flip(el.wrap, fromRect, { duration: 420 });
-      introTimers.push(setTimeout(() => { if (mine === token) reveal(); }, flight ? 380 : 0));
-      if (from) setTimeout(() => { if (mine === token && hiddenEl === from) { from.style.visibility = ""; hiddenEl = null; } }, 460);
-    } else {
-      if (from) { from.style.visibility = ""; hiddenEl = null; }
-      (sceneP || Promise.resolve()).then(() => { if (mine === token) runIntro(); });
-    }
+    hideCallouts(); el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in");
+    Promise.race([sceneP || Promise.resolve(), new Promise((r) => setTimeout(r, 1200))]).then(() => { if (mine === token && isOpen) runIntro(); });
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => { if (mine === token && isOpen) settled(true); }, 520);
   }
@@ -1481,14 +1594,14 @@
     settled(false);
     stopIntro(); stopCard(); closeSheet(0, true); closePop(true); toggleZoom(false); hideHint();
     el.fore.classList.remove("is-ready");
-    cancelAnimationFrame(ovrRaf); resetParallax(); tiltListen(false);
+    cancelAnimationFrame(ovrRaf); resetParallax(); tiltListen(false); resetLean();
     coAnims.forEach((a) => a.cancel()); coAnims = [];
     const target = id ? returnTarget(id) : null;
     let toRect = null;
     if (target) { const r = target.getBoundingClientRect(); if (rectVisible(r)) toRect = r; }   // off screen: no scrolling, the page stays exactly as it was
     fades.forEach((a) => a.cancel());
     fades = chrome().map((n) => FX.fade(n, 0, { duration: 250 }));
-    const flight = toRect ? FX.flip(el.wrap, toRect, { reverse: true, duration: 320 }) : null;
+    const flight = toRect && el.wrap.classList.contains("is-in") ? FX.flip(el.wrap, toRect, { reverse: true, duration: 320 }) : null;
     if (target && flight) { target.style.visibility = "hidden"; hiddenEl = target; }
     const runs = fades.concat(flight || FX.fade(el.wrap, 0, { duration: 200 }));
     Promise.all(runs.map(settle)).then(() => { if (mine === token) finish(target); });
@@ -1525,7 +1638,7 @@
     Object.assign(el, {
       root: g("detail"), stage: g("bs-stage"), sky: g("bs-sky"), bg: g("bs-bg"), pulse: g("bs-pulse"), sparks: g("bs-sparks"), fog: g("bs-fog"), dust: g("bs-dust"),
       skyX: g("bs-skyX"), skyY: g("bs-skyY"), sparkX: g("bs-sparkX"), sparkY: g("bs-sparkY"), fogX: g("bs-fogX"), foreX: g("bs-foreX"), foreY: g("bs-foreY"),
-      top: $("#detail .bs-top"), close: g("detail-close"), name: g("bs-name"), pager: g("bs-pager"), tiltBtn: g("bs-tilt"), replay: g("bs-replay"),
+      top: $("#detail .bs-top"), close: g("detail-close"), name: g("bs-name"), pager: g("bs-pager"),
       fore: g("bs-fore"), callouts: g("bs-callouts"), wrap: g("bs-wrap"), zoom: g("bs-zoom"), swirl: g("bs-swirl"), mat: g("bs-mat"),
       tiltEl: g("bs-tiltEl"), rotor: g("bs-rotor"), faceF: g("bs-faceF"), faceB: g("bs-faceB"),
       ovr: g("bs-ovr"), ovrArc: g("bs-ovrArc"), ovrNum: g("bs-ovrNum"), ovrLbl: g("bs-ovrLbl"), dbtn: g("bs-details"),
@@ -1548,7 +1661,6 @@
       }
     });
     el.close.addEventListener("click", () => C.closeCard());
-    el.replay.addEventListener("click", () => { if (cur) runIntro(); });
     document.addEventListener("cbi:rarity", onRarity);
     if (!state.cards.length) return;
 
@@ -1570,3 +1682,4 @@
 
   C.detail = { init, open, close, prewarm, listFor };
 })();
+
