@@ -5,8 +5,8 @@
     "series": "Solo Leveling",
     "image": "images/cards/dragon-emperor-monarch.webp",
     "base": {
-      "atk": 763942,
-      "hp": 5092944,
+      "atk": 1333153,
+      "hp": 8887688,
       "def": 0,
       "status": 0,
       "odds": 5523945238
@@ -14,7 +14,7 @@
     "exact": {},
     "passive": {
       "name": "Monarch of Destruction",
-      "desc": "Antares' dragon fear: every enemy card starts with -25% damage, his breath burns the whole enemy deck (burning for 3 turns) and hits the whole bench for 45%, he takes 30% less damage and finishes enemies under 20% HP (not bosses)."
+      "desc": "Antares' dragon fear. Every enemy card starts with 6.4% less damage. Every hit sets the whole enemy deck on fire for 2 turns. Every hit also hits the whole enemy bench for 20%. Instantly kills enemies under 5% HP (not bosses)."
     },
     "skill": {
       "name": "",
@@ -78,7 +78,8 @@
       "bestSupport": []
     },
     "notes": "Best opener: its fear, burn and bench hit weaken every enemy card before the rest of the team fights.",
-    "updated": "2026-10-24"
+    "updated": "2026-10-25",
+    "obtain": "Rolls anywhere"
   },
   {
     "id": "moon-eye-ghost",
@@ -86,8 +87,8 @@
     "series": "Naruto",
     "image": "images/cards/moon-eye-ghost.webp",
     "base": {
-      "atk": 438047,
-      "hp": 2920312,
+      "atk": 1079693,
+      "hp": 7197952,
       "def": 0,
       "status": 0,
       "odds": 3679415015
@@ -95,7 +96,7 @@
     "exact": {},
     "passive": {
       "name": "Infinite Tsukuyomi",
-      "desc": "Madara casts the Infinite Tsukuyomi on the whole enemy deck when the fight starts (every enemy card -20% damage), Limbo clones hit 2x, his Perfect Susanoo hits the whole bench for 40% and blocks 3 hits, and he revives once with 50% HP."
+      "desc": "Madara: Every enemy card starts with 5.5% less damage. Every 2nd attack also hits the card behind for 35%. Blocks the first 3 hits completely. Comes back once with 14% HP."
     },
     "skill": {
       "name": "",
@@ -159,7 +160,8 @@
       "bestSupport": []
     },
     "notes": "Stack its -20% with Dragon Emperor Monarch's -25%: enemies then deal only 60% damage.",
-    "updated": "2026-10-24"
+    "updated": "2026-10-25",
+    "obtain": "Rolls anywhere"
   },
   {
     "id": "atomic-shadow-lord",
@@ -167,8 +169,8 @@
     "series": "The Eminence in Shadow",
     "image": "images/cards/atomic-shadow-lord.webp",
     "base": {
-      "atk": 484946,
-      "hp": 3232976,
+      "atk": 969893,
+      "hp": 6465954,
       "def": 0,
       "status": 0,
       "odds": 9496060703
@@ -176,7 +178,7 @@
     "exact": {},
     "passive": {
       "name": "I AM ATOMIC",
-      "desc": "Cid Kagenou, the Eminence in Shadow: his first hit on every new enemy does 3x and blows through the whole enemy bench for 40%, ignores every defense, he dodges 30%, and the whole Shadow Garden gets +25% damage and HP."
+      "desc": "Cid Kagenou, the Eminence in Shadow. Its first hit on each new enemy does 2.3x damage. Its first attack also hits the whole enemy bench for 26%. Ignores shields, dodges and barriers. 20% chance to dodge each hit. Shadow Garden cards in your deck get +16% damage and HP."
     },
     "skill": {
       "name": "",
@@ -240,7 +242,8 @@
       "bestSupport": []
     },
     "notes": "Cleaner: put it after the openers so its 3x hits finish cards that are already burned and splashed. Rank goes up if Shadow Garden cards are added.",
-    "updated": "2026-10-24"
+    "updated": "2026-10-25",
+    "obtain": "Rolls anywhere"
   },
   {
     "id": "beast-emperor",
@@ -248,8 +251,8 @@
     "series": "One Piece",
     "image": "images/cards/beast-emperor.webp",
     "base": {
-      "atk": 862040,
-      "hp": 5746932,
+      "atk": 937943,
+      "hp": 6252952,
       "def": 0,
       "status": 0,
       "odds": 2806284629
@@ -257,7 +260,7 @@
     "exact": {},
     "passive": {
       "name": "Strongest Creature",
-      "desc": "Kaido can't die: he survives the first killing blow at 1 HP, takes 30% less damage, can't be stunned or frozen, and his Thunder Bagua does 2.5x every 3rd attack. He gets stronger every time he is hit (+6% damage per hit)."
+      "desc": "Kaido can't die. Survives its first killing blow with 1 HP. Takes 30% less damage. Can't be stunned, frozen or paralyzed. Every 3rd attack does 2.5x damage."
     },
     "skill": {
       "name": "",
@@ -320,6 +323,7 @@
       "bestSupport": []
     },
     "notes": "Wins every 1-on-1 among the current cards. Best as the anchor at the back: it cannot die the first time and keeps getting stronger.",
-    "updated": "2026-10-24"
+    "updated": "2026-10-25",
+    "obtain": "Rolls anywhere"
   }
 ]
