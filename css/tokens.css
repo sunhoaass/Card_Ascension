@@ -52,6 +52,56 @@
   --r-rainbow: conic-gradient(from 0deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0, #e8607a);
   --r-ascended: conic-gradient(from 0deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2, #fffaf0);
 
+  /* ---- Game card (step 13, §3.5): the in-game look drawn over the cleaned picture (css/fx.css .gc, js/share.js gcSpec) ----
+     Rarity frames above Normal are guesses until there are in-game pictures (owner's answer §3.5.4 item 2). */
+  --gc-font-num: "Oswald", "TeX Gyre Heros Cn", "Arial Narrow", "Roboto Condensed", sans-serif;   /* HP / ATK */
+  --gc-font-pop: "Bangers", "TeX Gyre Heros Cn", "Arial Narrow", sans-serif;                      /* 1 IN X / rarity pills */
+  --gc-corner: 3.7% / 2.64%;    /* the game's 22px corner on a 600×840 card (on the card itself) */
+  --gc-radius: 3.7cqw;          /* the same corner for parts inside the card (cqw only works inside .gc) */
+  --gc-hp: #52b257;             /* sampled from the game picture */
+  --gc-hp-line: #000a03;
+  --gc-atk: #ec453b;
+  --gc-atk-line: #2a0101;
+  --gc-num-shade: rgba(0, 0, 0, .5);
+  --gc-pill: #fff;
+  --gc-pill-ink: #111;
+  --gc-pill-line: #2a2a2e;
+  --gc-pill-inner: #c9c9cf;
+  --gc-under: #0d0a14;          /* behind the picture while it loads */
+  --gc-edge: rgba(0, 0, 0, .55);
+  --gc-flash: #fff;
+  --gc-normal-line: rgba(255, 255, 255, .14);
+  --gc-shadow: 0 10px 26px rgba(0, 0, 0, .5);
+  --gc-shadow-mini: 0 4px 10px rgba(0, 0, 0, .45);
+  --gc-ring-shiny: linear-gradient(135deg, #fff3c4, #ecc768 30%, #8f6519 55%, #f6dc8c 75%, #a7781e);
+  --gc-ring-secret: linear-gradient(135deg, #ff6b80, #120206 30%, #4a0c17 50%, #120206 70%, #ff6b80);
+  --gc-ring-divine: linear-gradient(135deg, #fffdf4, #e2bd6c 45%, #fffdf4 60%, #d6ad5c);
+  --gc-ring-cosmic: conic-gradient(from 0deg, #8f7dff, #3150c4, #14184a, #c06cff, #8f7dff);
+  --gc-ring-cosmic-stars: radial-gradient(circle, #fff 0 .5px, transparent 1px);
+  --gc-rar-shiny: linear-gradient(180deg, #ffe58e, #e6b23e);        --gc-rar-shiny-line: #6d4a0c;
+  --gc-rar-rainbow: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0);   --gc-rar-rainbow-line: #2a1840;
+  --gc-rar-secret: linear-gradient(180deg, #2a060d, #0c0205);       --gc-rar-secret-line: #000;   --gc-rar-secret-ink: #ff5d73;
+  --gc-rar-divine: linear-gradient(180deg, #ffffff, #f3dfaa);       --gc-rar-divine-line: #9a7330;
+  --gc-rar-cosmic: linear-gradient(180deg, #5a4be0, #1d1f6e);       --gc-rar-cosmic-line: #0b0c2e;
+  --gc-rar-ascended: linear-gradient(90deg, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8);   --gc-rar-ascended-line: #3a2a63;
+  --gc-glow-shiny: rgba(236, 199, 104, .45);
+  --gc-glow-rainbow: rgba(200, 140, 220, .45);
+  --gc-glow-secret: rgba(201, 52, 75, .6);
+  --gc-glow-divine: rgba(255, 232, 170, .55);
+  --gc-glow-cosmic: rgba(120, 100, 255, .55);
+  --gc-glow-ascended: rgba(220, 210, 255, .6);
+
+  /* ---- Graded case (.slab, step 13 · card detail sheet + Grade page, css/grade.css) ---- */
+  --slab-plastic: linear-gradient(155deg, rgba(255, 255, 255, .26), rgba(255, 255, 255, .07) 32%, rgba(255, 255, 255, .03) 60%, rgba(255, 255, 255, .14));
+  --slab-edge: rgba(255, 255, 255, .5);
+  --slab-label: linear-gradient(180deg, #fbf8f0, #efe8d7);   /* ivory paper */
+  --slab-ink: #1c1914;
+  --slab-ink-2: #3b352a;
+  --slab-ink-3: #6a5a3a;
+  --slab-atk: #b5291f;
+  --slab-hp: #2e7d33;
+  --slab-g10: linear-gradient(90deg, #d83a5a, #e08a2a, #b8a020, #3aa060, #2f86c0, #6a52d0, #c040a0);   /* grade 10 number */
+
   /* ---- Signal colors (stats, strengths / weaknesses) ---- */
   --atk: #e99a7f;
   --hp: #94d4a9;

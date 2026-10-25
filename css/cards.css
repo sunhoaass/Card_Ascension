@@ -65,7 +65,7 @@
   font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); letter-spacing: .04em;
   color: var(--ink); background: var(--glass-strong); border: 1px solid var(--glass-line);
 }
-/* tier badge = wax seal colour (same recipe as .card__tier) */
+/* tier badge = wax seal colour (cards themselves have no tier seal since step 13) */
 .badge--tier {
   position: relative; color: #fff6e6; text-shadow: 0 1px 0 rgba(0, 0, 0, .45); border-color: transparent; border-radius: var(--r-pill);
   background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tc) 70%, #fff), var(--tc) 45%, color-mix(in srgb, var(--tc) 55%, #000));
@@ -89,11 +89,7 @@
 
 .detail__content { display: grid; gap: var(--s-5); padding-top: var(--s-5); }
 .detail__hero { display: grid; place-items: center; padding-top: var(--s-2); }
-.detail__hero .card { width: min(64vw, 270px); --orn-s: 30px; }
-.detail__hero .card__name { font-size: 17px; }
-.detail__hero .card__tag { font-size: 11px; left: 12px; top: 12px; }
-.detail__hero .card__tier { width: 40px; height: 40px; font-size: 16px; }
-.detail__hero .card__stats { font-size: 14px; }
+.detail__hero .card { width: min(64vw, 270px); }
 .detail__main { display: grid; gap: var(--s-4); min-width: 0; align-content: start; }
 .detail__series { color: var(--ink-dim); font-size: var(--fs-sm); font-style: italic; }
 .detail__name { margin-top: 2px; font-size: var(--fs-2xl); font-weight: 700; letter-spacing: .04em; color: var(--gold-hi); overflow-wrap: anywhere; }

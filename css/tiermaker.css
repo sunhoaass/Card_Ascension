@@ -161,8 +161,8 @@
 }
 .tm-item[hidden], .tm-item.tm-src { display: none; }
 .tm-item .card, .tm-item .scard { width: 100%; touch-action: manipulation; }   /* .card is pan-y: let the pool scroll sideways */
-.tm-item .card__tag, .tm-item .scard__tag { display: none; }                    /* the list's rarity is in the chips above; too small to read here */
-.tm-rows .tm-item .card__tier, .tm-rows .tm-item .scard__tier { display: none; } /* in your rows, Global tier shows only with Compare on */
+.tm-item .gc__rar, .tm-item .scard__tag { display: none; }                       /* the list's rarity is in the chips above; too small to read here */
+.tm-rows .tm-item .scard__tier { display: none; }                                  /* in your rows, Global tier shows only with Compare on */
 .tm-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
 .tm-item.is-pressing { scale: 0.95; }
 .tm-item.is-source { opacity: 0.35; }
@@ -384,7 +384,7 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
   .tm-pool .tm-item { width: 80px; }
 }
 @media (min-width: 1100px) { .tm-dock { bottom: var(--s-4); } }   /* the menu is a rail on the left from here */
-/* support cards in a list are small: smaller ornaments, seal and name (same as mini game cards) */
+/* support cards in a list are small: smaller ornaments, seal and name */
 .tm-item .scard { --orn-s: 14px; }
 .tm-item .scard__name { font-size: 9.5px; letter-spacing: 0; }
 .tm-item .scard__info { padding: 20px 5px 6px; }

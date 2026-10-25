@@ -129,31 +129,19 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-wrap[data-lvl="Ascended"] { --edge: linear-gradient(180deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2); }
 .bs-mat { position: absolute; inset: -14px; border-radius: 16px; pointer-events: none; opacity: 0; background: var(--bs-mat); }
 
-/* the site's card (CBI.renderCard) scaled to the scene: sizes follow --cw */
+/* the site's game card (CBI.renderCard) scaled to the scene: everything inside it is in cqw, so it follows --cw */
 .bs-face .card {
   position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto;
   cursor: inherit; touch-action: none; transition: none;
   transform: translateY(0);              /* 2D at rest (not "none", see fx.css) · the site's hover lift/tilt is off here */
-  --orn-s: max(22px, calc(var(--cw) * .11));
+  --gc-shadow: 0 14px 34px rgba(0, 0, 0, .6);
 }
 .bs-face .card:hover, .bs-face .card.is-tilting { --lift: 0px; transform: translateY(0); }
 .bs-face .card__glare { display: none; }
-.bs-face .card__body { inset: max(4px, calc(var(--cw) * .02)); }
-.bs-face .card__info { padding: calc(var(--cw) * .15) 10px calc(var(--cw) * .05); }
-.bs-face .card__name { font-size: max(13px, calc(var(--cw) * .066)); }
-.bs-face .card__series { font-size: max(10.5px, calc(var(--cw) * .046)); }
-.bs-face .card__stats { font-size: max(12px, calc(var(--cw) * .054)); gap: calc(var(--cw) * .05); }
-.bs-face .card__stats b { font-size: max(10px, calc(var(--cw) * .042)); }
-.bs-face .card__odds { font-size: max(10.5px, calc(var(--cw) * .044)); }
-.bs-face .card__tag { left: 5%; top: 3.6%; font-size: max(9.5px, calc(var(--cw) * .042)); }
-.bs-face .card__tier { width: max(30px, calc(var(--cw) * .15)); height: max(30px, calc(var(--cw) * .15)); font-size: max(12px, calc(var(--cw) * .06)); right: 3.5%; top: 2.6%; }
-/* no screen-blend on the scene card (it cost a frame per level change in the mockup) */
-.bs-face .card__flash { mix-blend-mode: normal; background: radial-gradient(circle at 50% 40%, #fff, var(--rc) 70%); }
-.bs-face .card__frame { box-shadow: 0 1px 0 rgba(255, 240, 200, .25) inset, 0 14px 34px rgba(0, 0, 0, .6); }
 
 /* holo sheen: always on · its place follows the card's angle (paused Web Animations on b / i) and stays put at rest
    (no looping animation) · .bs-holo itself never moves: it is the clip box (it used to slide off the card when tilted) */
-.bs-holo { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: var(--r-card); overflow: hidden; }
+.bs-holo { position: absolute; inset: 0; z-index: 6; pointer-events: none; border-radius: var(--gc-corner); overflow: hidden; }
 .bs-holo b { position: absolute; inset: 0; }
 .bs-holo i { position: absolute; top: -25%; bottom: -25%; left: -60%; width: 220%; background: var(--bs-holo); }
 

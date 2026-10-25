@@ -188,8 +188,8 @@
   transition: scale var(--t-fast) var(--ease), translate var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
 }
 .dk-item .card, .dk-item .scard { width: 100%; touch-action: manipulation; }   /* .card is pan-y: a drag must not scroll */
-.dk-item .card__tag, .dk-item .scard__tag, .dk-tile .card__tag, .dk-tile .scard__tag { display: none; }   /* too small to read here */
-.dk-item .card__tier, .dk-item .scard__tier { display: none; }   /* the × sits on that corner */
+.dk-item .gc__rar, .dk-item .scard__tag, .dk-tile .gc__rar, .dk-tile .scard__tag { display: none; }   /* too small to read here (the deck's rarity is in its chips) */
+.dk-item .scard__tier { display: none; }   /* the × sits on that corner */
 .dk-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
 .dk-item.is-pressing { scale: 0.95; }
 .dk-item.is-source { opacity: 0.35; }
@@ -337,7 +337,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-sug__item:active { scale: .96; }
 .dk-sug__item:focus-visible { outline-offset: 3px; }
 .dk-sug__item .card, .dk-sug__item .scard { width: 100%; pointer-events: none; }
-.dk-sug__item .card__tag, .dk-sug__item .scard__tag { display: none; }
+.dk-sug__item .gc__rar, .dk-sug__item .scard__tag { display: none; }
 .dk-sug__item .scard { --orn-s: 14px; }
 .dk-sug__item .scard__name { font-size: 9.5px; letter-spacing: 0; }
 .dk-sug__item .scard__info { padding: 20px 5px 6px; }

@@ -6,6 +6,7 @@
        #grade/<card id>/<atk>-<def>-<status>-<hp>   e.g. #grade/bald-cadet/6-4-3-2
    · Grades never change Overall scores or the Tier List
    · Card detail gets a "Grade" panel (panelHTML) with a button that opens the grader
+   · Step 13 (§3.5.2): the grader's card and the detail panel show the card in a graded case (.slab, css/grade.css)
    Needs js/fx.js, js/app.js and js/cards.js loaded first.
    ========================================================== */
 (function () {
@@ -30,7 +31,7 @@
   let built = false;                      // picker cards exist (made on the first visit to the Grade tab, step 9.5)
   let saved = {};                         // id -> [atk, def, status, hp]
   let items = [];                         // cards in picker order
-  let cur = null, grades = ZERO(), shared = false, hero = null;
+  let cur = null, grades = ZERO(), shared = false, hero = null, heroSlab = null;
   let listScroll = 0, lastId = null, pendingOrigin = null;
   const filter = { q: "", graded: false };
 
@@ -127,11 +128,76 @@
       wrap.innerHTML = orbHTML(g);
       b = wrap.firstElementChild;
       b.classList.add("card__grade");
-      $(".card__body", el).appendChild(b);
+      el.appendChild(b);
       return;
     }
     setOrb(b, g, opts);
   }
+  /* ==========================================================
+     Graded case (.slab, step 13 · §3.5.2): a clear plastic case drawn in CSS, a paper label on top
+     (series, name, rarity, tier, odds · grade word + card grade · graded ATK / HP · the 4 grades · barcode + cert no.)
+     ========================================================== */
+  const WORD = ["Ungraded", "Fair", "Good", "Very good", "Very good+", "Excellent", "Excellent+", "Near mint", "Near mint+", "Mint", "Gem mint"];
+  // cert no. made from the card id (always the same for a card)
+  const certOf = (id) => String(C.hash(String(id)) % 1e8).padStart(8, "0");
+  function labelHTML(card, r, a) {
+    const g = overall(a), cert = certOf(card.id), sub = (n) => n || "–";
+    return `<div class="lab__l">
+        <span class="lab__brand">CBI GRADED${card.series ? " · " + esc(card.series) : ""}</span>
+        <span class="lab__name">${esc(card.name)}</span>
+        <span class="lab__line"><b>${esc(r)}</b> · ${C.isRanked(card) ? "Tier " + esc(card.tier) : "Unranked"}</span>
+        <span class="lab__line">${esc(C.fmtOdds(C.oddsAt(card, r)))}</span>
+      </div>
+      <div class="lab__r"><span class="lab__word">${WORD[g]}</span><span class="lab__grade">${g || "–"}</span></div>
+      <div class="lab__row lab__row--stats"><span class="lab__stats"><span class="a">ATK ${C.fmtStat(graded(card, "atk", r, a[0]))}</span> · <span class="h">HP ${C.fmtStat(graded(card, "hp", r, a[3]))}</span></span></div>
+      <div class="lab__row"><span class="lab__subs">ATK ${sub(a[0])} · DEF ${sub(a[1])} · STS ${sub(a[2])} · HP ${sub(a[3])}</span><span class="lab__code" aria-hidden="true"></span><span class="lab__cert">${cert.slice(0, 4)} ${cert.slice(4)}</span></div>`;
+  }
+  // the glare runs once across the plastic the first time a case scrolls into view
+  const sheenIO = "IntersectionObserver" in window
+    ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-shown"); sheenIO.unobserve(e.target); } }), { threshold: 0.4 })
+    : null;
+  function sheen(s) {
+    if (FX.reduced) return;
+    s.classList.remove("is-shown"); void s.offsetWidth; s.classList.add("is-shown");
+  }
+  // make a case: the card inside shows the graded ATK / HP · still: the card is a picture only (no tap, no tilt)
+  function makeSlab(card, r, a, { still = false } = {}) {
+    const s = document.createElement("div");
+    s.className = "slab";
+    s.innerHTML = `<div class="slab__label"></div><div class="slab__well"></div><span class="slab__ridges" aria-hidden="true"></span><span class="slab__glare" aria-hidden="true"></span>`;
+    const c = C.renderCard(card, r, { tilt: false });
+    c.removeAttribute("role"); c.removeAttribute("tabindex");
+    c.setAttribute("aria-hidden", "true");                           // the label says it all
+    if (still) c.classList.remove("card");
+    $(".slab__well", s).appendChild(c);
+    paintSlab(s, card, r, a, { animate: false });
+    if (sheenIO) sheenIO.observe(s); else s.classList.add("is-shown");
+    return s;
+  }
+  function paintSlab(s, card, r, a, { animate = true, pop = false } = {}) {
+    const g = overall(a), num = () => $(".lab__grade", s);
+    const before = num() && num().textContent;
+    s.dataset.band = band(g);
+    s.setAttribute("aria-label", `${card.name} in a graded case, ${g ? "grade " + g + " " + WORD[g] : "not graded"}, ${r}`);
+    $(".slab__label", s).innerHTML = labelHTML(card, r, a);
+    const c = $(".gc", s);
+    C.setCardNums(c, { atk: graded(card, "atk", r, a[0]), hp: graded(card, "hp", r, a[3]) }, { animate: animate && c.classList.contains("is-live") });
+    if (pop && !FX.reduced && before !== num().textContent) num().classList.add("is-pop");
+  }
+
+  // Details sheet of the card detail (js/detail.js puts panelHTML in, then calls this): fill the case placeholders
+  const sheetSlabs = new Set();
+  function mountSlabs(root) {
+    sheetSlabs.forEach((x) => { if (!x.s.isConnected) sheetSlabs.delete(x); });
+    root.querySelectorAll("[data-slab]").forEach((box) => {
+      const card = byId.get(box.dataset.slab), a = card && get(card.id);
+      if (!card || !a) return;
+      const s = makeSlab(card, state.rarity, a, { still: true });
+      box.replaceChildren(s);
+      sheetSlabs.add({ s, card });
+    });
+  }
+
   const gradeUrl = (id, a) => "#grade/" + encodeURIComponent(id) + (any(a) ? "/" + fmtG(a) : "");
 
   /* ==========================================================
@@ -141,6 +207,7 @@
     const a = get(card.id);
     const o = overall(a);
     const body = a ? `
+      <div class="gsum__slab" data-slab="${esc(card.id)}"></div>
       <div class="gsum">
         <div class="gsum__overall">${orbHTML(o, { size: "lg", label: `Card grade ${o}` })}<small>Card grade</small></div>
         <ul class="gsum__list">${STATS.map((s, i) => `
@@ -328,20 +395,16 @@
       const sum = grades.reduce((a, n) => a + n, 0);
       sub.textContent = `Average ${Number((sum / 4).toFixed(2))} of ${grades.join(" · ")}`;
     }
-    if (hero) cardBadge(hero, o, { pop });
     const tile = tiles.get(cur);
     if (tile) cardBadge(tile, any(saved[cur]) ? overall(saved[cur]) : 0);
   }
 
-  // hero card shows the graded ATK / HP (other cards on the site stay ungraded)
-  function paintHero({ animate = true } = {}) {
-    if (!hero) return;
-    const card = byId.get(cur), r = state.rarity;
-    [["atk", 0], ["hp", 3]].forEach(([k, i]) => {
-      const el = $(`[data-k="${k}"]`, hero);
-      const v = graded(card, k, r, grades[i]);
-      if (animate) FX.countTo(el, v, { format: C.fmtStat }); else { el.dataset.value = v; el.textContent = C.fmtStat(v); }
-    });
+  // the grader's card sits in a graded case and shows the graded ATK / HP (other cards on the site stay ungraded)
+  // pop = the big grade number pops · sheen = the glare runs across the case once
+  function paintHero({ animate = true, pop = false, glare = false } = {}) {
+    if (!heroSlab) return;
+    paintSlab(heroSlab, byId.get(cur), state.rarity, grades, { animate, pop });
+    if (glare) sheen(heroSlab);
   }
 
   function paintShared() {
@@ -362,7 +425,7 @@
     save(cur, grades);
     paintRow(i, { pop: true, from: Math.min(from, g) });
     paintOverall({ pop: true });
-    paintHero();
+    paintHero({ pop: true, glare: true });
     paintShared();
     syncHash();
     status("");
@@ -372,7 +435,7 @@
     grades = a.slice();
     STATS.forEach((_, i) => paintRow(i, { pop, from: 0 }));
     paintOverall({ pop });
-    paintHero();
+    paintHero({ pop, glare: pop });
     paintShared();
     syncHash();
   }
@@ -430,15 +493,24 @@
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
   }
 
+  // keep the graded numbers on screen while the rarity swaps underneath, then count to the new ones
+  function swapRarity(c, card, name) {
+    const keep = ["atk", "hp"].map((k) => { const n = $(`[data-k="${k}"]`, c); return [n.dataset.value, n.textContent]; });
+    C.setCardRarity(c, card, name, { animate: false });
+    ["atk", "hp"].forEach((k, j) => { const n = $(`[data-k="${k}"]`, c); n.dataset.value = keep[j][0]; n.textContent = keep[j][1]; });
+    if (c.classList.contains("is-live")) C.flashCard(c);
+  }
   function recolor(name) {
     tiles.forEach((el, id) => C.setCardRarity(el, byId.get(id), name, { animate: false }));
+    sheetSlabs.forEach((x) => {
+      if (!x.s.isConnected) { sheetSlabs.delete(x); return; }
+      swapRarity($(".gc", x.s), x.card, name);
+      paintSlab(x.s, x.card, name, get(x.card.id) || ZERO());
+      if (x.s.getBoundingClientRect().height) sheen(x.s);
+    });
     if (!cur || !hero) return;
-    // keep the graded numbers on screen while the rarity swaps underneath, then count to the new ones
-    const keep = ["atk", "hp"].map((k) => $(`[data-k="${k}"]`, hero).dataset.value);
-    C.setCardRarity(hero, byId.get(cur), name, { animate: false });
-    ["atk", "hp"].forEach((k, j) => { $(`[data-k="${k}"]`, hero).dataset.value = keep[j]; });
-    if (!FX.reduced) $(".card__flash", hero).animate([{ opacity: 0 }, { opacity: 0.55, offset: 0.35 }, { opacity: 0 }], { duration: 400, easing: "cubic-bezier(.2,.8,.2,1)" });
-    paintHero();
+    swapRarity(hero, byId.get(cur), name);
+    paintHero({ glare: true });
     STATS.forEach((_, i) => paintRow(i));
   }
 
@@ -460,9 +532,9 @@
 
     ui.detail.innerHTML = detailHTML(card);
     ui.rows = $$(".gstat", ui.detail);
-    hero = C.renderCard(card, state.rarity);
-    hero.removeAttribute("role"); hero.removeAttribute("tabindex");   // the grader hero isn't a link
-    $("#gd-hero", ui.detail).appendChild(hero);
+    heroSlab = makeSlab(card, state.rarity, grades);   // step 13: the grader's card in a graded case
+    hero = $(".card", heroSlab);                          // not a link here (makeSlab took role / tabindex off)
+    $("#gd-hero", ui.detail).appendChild(heroSlab);
     rarityChips($("#gd-rarity", ui.detail));
 
     ui.listView.hidden = true;
@@ -476,14 +548,14 @@
     paintShared();
     syncHash();
 
-    const flight = fromRect && rectVisible(fromRect) ? FX.flip(hero, fromRect) : null;
-    if (!flight) FX.fade(hero, 1, { duration: 300 });
+    const flight = fromRect && rectVisible(fromRect) ? FX.flip(heroSlab, fromRect) : null;
+    if (!flight) FX.fade(heroSlab, 1, { duration: 300 });
     FX.stagger($("#gd-main", ui.detail), 60, { cls: "fx-up", max: 8, cleanup: true });
     $(".gdetail__back", ui.detail).focus({ preventScroll: true });
   }
 
   function closeDetail(restore) {
-    cur = null; hero = null; shared = false;
+    cur = null; hero = null; heroSlab = null; shared = false;
     ui.detail.hidden = true;
     ui.detail.innerHTML = "";
     ui.listView.hidden = false;
@@ -554,5 +626,5 @@
     });
   }
 
-  C.grade = { init, show, panelHTML, overall, band, get };
+  C.grade = { init, show, panelHTML, mountSlabs, overall, band, get };
 })();

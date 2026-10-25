@@ -54,12 +54,12 @@
     return Math.round(card.base[key] * rarityOf(rarity).stat);
   }
   function oddsAt(card, rarity) { return card.base.odds * rarityOf(rarity).odds; }
+  /* Game style (owner's answer §3.5.4 item 3, step 13): one decimal + K M B T Qa Qi · 100 and up = whole number
+     (1 in 59 · 1 in 29.5K · 1 in 9.5B · 1 in 140T) */
+  const SHORT = [[1e18, "Qi"], [1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]];
   function shortNum(n) {
-    const fmt = (v, s) => Number(v.toFixed(2)) + s;
-    if (n >= 1e9) return fmt(n / 1e9, "B");
-    if (n >= 1e6) return fmt(n / 1e6, "M");
-    if (n >= 1e3) return fmt(n / 1e3, "K");
-    return String(n);
+    for (const [v, s] of SHORT) if (n >= v) { const x = n / v; return (x >= 100 ? Math.round(x) : Number(x.toFixed(1))) + s; }
+    return String(Math.round(n));
   }
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
@@ -111,6 +111,8 @@
     img.addEventListener("error", function onError() {
       if (img.dataset.full) { const full = img.dataset.full; delete img.dataset.full; img.src = full; return; }   // no thumbnail -> big image
       img.removeEventListener("error", onError);
+      const gc = img.closest(".gc");
+      if (gc) gc.classList.add("gc--noart");                                                                       // game card: draw the name (it was in the picture)
       img.parentElement.innerHTML = placeholderArt(item);                                                         // no image -> generated art
     });
   }
@@ -153,41 +155,70 @@
     q.forEach((fn) => fn());
   }
 
-  /* ---------- Shared card renderer (used by every page) ---------- */
-  // tilt:false = no finger tilt (the detail scene turns its card by itself)
+  /* ---------- Game card numbers fit their spot (step 13, §3.5.1) ----------
+     A long number shrinks until it fits. Widths are measured on a canvas (no page layout needed, so a card can be
+     fitted before it is on the page) and font sizes are in cqw, so the fit holds at every card size.
+     [font size cqw, room cqw, font] · room = the box width (pills: max width minus padding). */
+  const FIT = { hp: [12.4, 43.2, "num"], atk: [14.2, 57.5, "num"], odds: [5.8, 36.8, "pop"], rar: [4.9, 36.8, "pop"] };
+  const fitCache = new Map();
+  let fitCtx = null, fitFonts = null;
+  function textW(kind, text) {                     // width of the text at font-size 1 (em)
+    const key = kind + "|" + text;
+    let w = fitCache.get(key);
+    if (w !== undefined) return w;
+    if (!fitCtx) { const cv = document.createElement("canvas"); fitCtx = cv.getContext && cv.getContext("2d"); }
+    if (!fitCtx) return 0;
+    if (!fitFonts) { const cs = getComputedStyle(document.documentElement); fitFonts = { num: cs.getPropertyValue("--gc-font-num").trim() || "sans-serif", pop: cs.getPropertyValue("--gc-font-pop").trim() || "sans-serif" }; }
+    if (kind === "num") { fitCtx.font = `700 100px ${fitFonts.num}`; w = fitCtx.measureText(text).width / 100 - 0.01 * text.length; }
+    else { const t = text.toUpperCase(); fitCtx.font = `italic 400 100px ${fitFonts.pop}`; w = fitCtx.measureText(t).width / 100 + 0.02 * t.length; }
+    if (fitCache.size > 4000) fitCache.clear();
+    fitCache.set(key, w);
+    return w;
+  }
+  // sample = the text to make room for (while a number counts, the longer of the old and the new value)
+  function fitNum(span, key, sample) {
+    if (!span) return;
+    const [base, room, kind] = FIT[key];
+    const need = textW(kind, sample || span.textContent) * base;
+    const size = need > room ? Math.floor(base * room / need * 0.97 * 100) / 100 : 0;
+    span.style.fontSize = size ? size + "cqw" : "";
+  }
+  function fitCard(el, samples = {}) {
+    ["hp", "atk", "odds", "rar"].forEach((k) => fitNum($(`[data-k="${k}"]`, el), k, samples[k]));
+  }
+  // the web fonts (Oswald, Bangers) arrive after the first cards: measure again with the real ones
+  function refitAll() {
+    fitCache.clear();
+    for (const ref of watched) { const el = ref.deref(); if (el) fitCard(el); }
+  }
+  if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", refitAll);
+
+  /* ---------- Shared card renderer (used by every page) ----------
+     The game's own card (§3.5): cleaned picture + HP / 1 IN X / rarity / ATK drawn on top.
+     .card = tap / tilt / keyboard · .gc = the look (see css/fx.css). tilt:false = no finger tilt (the detail scene turns its card by itself) */
   function renderCard(card, rarity, { mini = false, tilt = true } = {}) {
     const el = document.createElement("article");
-    el.className = "card" + (mini ? " card--mini" : "");
+    el.className = "card gc" + (mini ? " card--mini gc--mini" : "") + (card.image ? "" : " gc--noart");
     el.dataset.rarity = rarity;
     el.dataset.id = card.id;
     el.tabIndex = 0;
     el.setAttribute("role", "button");
     el.setAttribute("aria-label", cardLabel(card, rarity));
-    const ranked = isRanked(card);
-    if (ranked) el.style.setProperty("--tc", `var(${TIER_COLOR[card.tier] || "--t-d"})`);
     const atk = statAt(card, "atk", rarity), hp = statAt(card, "hp", rarity);
     el.innerHTML = `
-      <span class="card__halo"></span>
-      <div class="card__frame"><div class="card__body">
-        <div class="card__art">${card.image ? artImg(card.image, mini) : placeholderArt(card)}</div>
-        <span class="card__stars"></span>
-        <span class="card__sweep"></span>
-        <span class="card__tag">${esc(rarity)}</span>
-        ${ranked ? (String(card.tier).length > 2 ? `<span class="card__tier card__tier--long"><span>${esc(card.tier)}</span></span>` : `<span class="card__tier">${esc(card.tier)}</span>`) : ""}
-        <div class="card__info">
-          <div class="card__name">${esc(card.name)}</div>
-          <div class="card__series">${esc(card.series)}</div>
-          <div class="card__stats">
-            <span class="card__stat--atk"><b>ATK</b><span data-k="atk" data-value="${atk}">${fmtStat(atk)}</span></span>
-            <span class="card__stat--hp"><b>HP</b><span data-k="hp" data-value="${hp}">${fmtStat(hp)}</span></span>
-          </div>
-          <div class="card__odds" data-k="odds">${fmtOdds(oddsAt(card, rarity))}</div>
-        </div>
-        ${card.mock ? `<span class="card__mock">mock</span>` : ""}
-        <span class="card__glare"></span>
-        <span class="card__flash"></span>
-      </div><span class="card__orn"></span></div>
-      <span class="card__particles"><i></i><i></i><i></i><i></i><i></i></span>`;
+      <span class="gc__glow"></span>
+      <div class="gc__art">${card.image ? artImg(card.image, mini) : placeholderArt(card)}</div>
+      <span class="gc__name">${esc(card.name)}</span>
+      <span class="gc__ring"><i></i></span>
+      <span class="gc__sweep"></span>
+      <span class="gc__hp"><span class="gc__num" data-k="hp" data-value="${hp}">${fmtStat(hp)}</span></span>
+      <span class="gc__odds"><span class="gc__pop" data-k="odds">${fmtOdds(oddsAt(card, rarity))}</span></span>
+      <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
+      <span class="gc__atk"><span class="gc__num" data-k="atk" data-value="${atk}">${fmtStat(atk)}</span></span>
+      ${card.mock ? `<span class="gc__mock">mock</span>` : ""}
+      <span class="gc__sheen"><span class="card__glare"></span></span>
+      <span class="gc__flash"></span>`;
+    fitCard(el);
     // missing thumbnail -> big image · missing image file -> the generated art instead of an empty card
     bindArt(el, card);
     if (tilt) FX.tilt(el);
@@ -195,24 +226,35 @@
     return el;
   }
 
+  /* ATK / HP shown on a card (the Grade page shows graded values) · animate = count to them (650 ms, §3.5.1) */
+  function setCardNums(el, { atk, hp }, { animate = true } = {}) {
+    const atkEl = $('[data-k="atk"]', el), hpEl = $('[data-k="hp"]', el);
+    const longer = (span, v) => { const a = fmtStat(v), b = span.textContent; return a.length >= b.length ? a : b; };
+    clearTimeout(el._fitT);
+    if (animate && !FX.reduced) {
+      fitNum(hpEl, "hp", longer(hpEl, hp)); fitNum(atkEl, "atk", longer(atkEl, atk));   // counting never spills out
+      FX.countTo(atkEl, atk, { format: fmtStat, duration: 650 });
+      FX.countTo(hpEl, hp, { format: fmtStat, duration: 650 });
+      el._fitT = setTimeout(() => { fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); }, 700);
+    } else {
+      atkEl.dataset.value = atk; atkEl.textContent = fmtStat(atk);
+      hpEl.dataset.value = hp; hpEl.textContent = fmtStat(hp);
+      fitNum(hpEl, "hp"); fitNum(atkEl, "atk");
+    }
+  }
+  const flashCard = (el) => { const f = $(".gc__flash", el); if (f && !FX.reduced) f.animate([{ opacity: 0 }, { opacity: 0.5, offset: 0.35 }, { opacity: 0 }], { duration: 400, easing: "cubic-bezier(.2,.8,.2,1)" }); };
+
   /* Change rarity on an existing card: flash + count numbers to new values.
      animate:false (cards off-screen or not in the page) just swaps the values. */
   function setCardRarity(el, card, rarity, { animate = true } = {}) {
     if (el.dataset.rarity === rarity) return;
     el.dataset.rarity = rarity;
     el.setAttribute("aria-label", cardLabel(card, rarity));
-    $(".card__tag", el).textContent = rarity;
-    const atkEl = $('[data-k="atk"]', el), hpEl = $('[data-k="hp"]', el);
-    const atk = statAt(card, "atk", rarity), hp = statAt(card, "hp", rarity);
-    if (animate) {
-      if (!FX.reduced) $(".card__flash", el).animate([{ opacity: 0 }, { opacity: 0.55, offset: 0.35 }, { opacity: 0 }], { duration: 400, easing: "cubic-bezier(.2,.8,.2,1)" });
-      FX.countTo(atkEl, atk, { format: fmtStat });
-      FX.countTo(hpEl, hp, { format: fmtStat });
-    } else {
-      atkEl.dataset.value = atk; atkEl.textContent = fmtStat(atk);
-      hpEl.dataset.value = hp; hpEl.textContent = fmtStat(hp);
-    }
-    $('[data-k="odds"]', el).textContent = fmtOdds(oddsAt(card, rarity));
+    const odds = $('[data-k="odds"]', el), rar = $('[data-k="rar"]', el);
+    odds.textContent = fmtOdds(oddsAt(card, rarity)); fitNum(odds, "odds");
+    rar.textContent = rarity; fitNum(rar, "rar");
+    if (animate) flashCard(el);
+    setCardNums(el, { atk: statAt(card, "atk", rarity), hp: statAt(card, "hp", rarity) }, { animate });
   }
 
   /* Rarity chip buttons (the click is handled once for the whole site in js/cards.js) */
@@ -383,7 +425,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause,   // step 9.5 · livePause step 12
     cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js
@@ -391,7 +433,7 @@
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
     deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
     support: { init() {}, show() {} },              // replaced by js/support.js
-    grade: { init() {}, show() {}, panelHTML() { return ""; } },   // replaced by js/grade.js
+    grade: { init() {}, show() {}, panelHTML() { return ""; }, mountSlabs() {} },   // replaced by js/grade.js
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

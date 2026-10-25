@@ -49,11 +49,8 @@
 .gorb.is-pop { animation: g-orb 360ms var(--ease); }
 @keyframes g-orb { 0% { transform: scale(.7); } 60% { transform: scale(1.14); } 100% { transform: scale(1); } }
 
-/* grade badge on a card (picker tiles + grader hero) · under the tier badge, or in its place */
-.card__grade { position: absolute; right: 6px; top: 38px; z-index: 3; --gs: 28px; }
-.card:not(:has(.card__tier)) .card__grade { top: 6px; }
-.card--mini .card__grade { --gs: 22px; top: 34px; }
-.card--mini:not(:has(.card__tier)) .card__grade { top: 6px; }
+/* grade badge on a picker card: left side, under the card name that is in the picture (cqw = % of the card width) */
+.card__grade { position: absolute; left: 2.4cqw; top: 15cqw; z-index: 5; --gs: max(20px, 17cqw); }
 
 /* ---------- Picker ---------- */
 .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
@@ -71,7 +68,8 @@
 .gdetail__bar { margin: calc(var(--s-2) * -1) 0 var(--s-2) -8px; }
 .gdetail__grid { display: grid; gap: var(--s-5); padding-top: var(--s-3); }
 .gdetail__hero { display: grid; place-items: center; }
-.gdetail__hero .card { width: min(52vw, 230px); cursor: default; --orn-s: 26px; }
+.gdetail__hero .slab { width: min(72vw, 280px); }
+.gdetail__hero .card { cursor: default; }
 .gdetail__main { display: grid; gap: var(--s-4); min-width: 0; align-content: start; }
 .gdetail .rarity-picker { margin-bottom: 0; }
 .gdetail h1:focus { outline: none; }
@@ -153,7 +151,8 @@
 @media (min-width: 900px) {
   .gdetail__grid { grid-template-columns: 300px minmax(0, 1fr); gap: var(--s-8); padding-top: var(--s-6); }
   .gdetail__hero { align-self: start; position: sticky; top: calc(var(--header-h) + var(--s-6)); }
-  .gdetail__hero .card { width: 280px; }
+  .gdetail__hero .slab { width: 300px; }
+  .gdetail .rarity-picker { margin-inline: 0; padding-inline: 0; }   /* don't bleed over the case in the left column */
   .gstats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -174,6 +173,85 @@
   .dstats--more .dstat--odds { grid-column: 1 / -1; }
 }
 
+/* ==========================================================
+   Graded case (.slab, step 13 · §3.5.2) — drawn here after the look of a real grading case (no logo, no brand)
+   Only on the Grade page (around the grader's card) and in the card detail's Details sheet (Grade panel).
+   Markup: CBI.grade.slab() (js/grade.js). data-band = the card grade's colour: none · bronze · silver · gold · rainbow
+   ========================================================== */
+.slab {
+  --band: var(--gold-lo); --band-2: var(--glass-line);
+  position: relative; width: 100%; max-width: 340px; padding: 2.6% 4.2% 5%;
+  border-radius: 14px; isolation: isolate;
+  background: var(--slab-plastic);
+  border: 1px solid var(--slab-edge);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .7), inset 0 0 0 5px rgba(255, 255, 255, .06), inset 0 -2px 6px rgba(0, 0, 0, .25),
+    0 22px 44px rgba(0, 0, 0, .55), 0 2px 0 rgba(0, 0, 0, .3);
+}
+.slab[data-band="bronze"] { --band: var(--g-bronze); --band-2: var(--g-bronze-2); }
+.slab[data-band="silver"] { --band: var(--g-silver); --band-2: var(--g-silver-2); }
+.slab[data-band="gold"]   { --band: var(--g-gold);   --band-2: var(--g-gold-2); }
+
+/* the paper label at the top */
+.slab__label {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: stretch;
+  padding: 8px 10px 8px 11px; border-radius: 6px;
+  background: var(--slab-label); color: var(--slab-ink);
+  box-shadow: 0 0 0 2px var(--band-2), 0 0 0 3.5px var(--band), 0 1px 3px rgba(0, 0, 0, .4);
+  font-family: var(--font-body);
+}
+.slab[data-band="rainbow"] .slab__label { box-shadow: 0 0 0 2px var(--gc-rar-rainbow-line), 0 1px 3px rgba(0, 0, 0, .4); }
+.slab[data-band="rainbow"] .slab__label::before { content: ""; position: absolute; inset: -3.5px; border-radius: 8px; z-index: -1; background: var(--g-rainbow); }
+.lab__l { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.lab__brand { font: 700 8.5px/1.25 var(--font-body); letter-spacing: .08em; color: var(--slab-ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lab__name { font: 700 15px/1.1 var(--gc-font-num); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lab__line { font: 500 10.5px/1.3 var(--font-body); color: var(--slab-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lab__line b { font-weight: 700; color: var(--slab-ink); }
+.lab__r { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.lab__word { font: 700 9.5px/1.2 var(--font-body); text-transform: uppercase; letter-spacing: .04em; color: var(--slab-ink-2); white-space: nowrap; }
+.lab__grade { display: inline-block; margin-top: 2px; font: 700 40px/0.95 var(--gc-font-num); color: var(--slab-ink); font-variant-numeric: tabular-nums; }
+.slab[data-band="rainbow"] .lab__grade { background: var(--slab-g10); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lab__grade.is-pop { animation: g-orb 360ms var(--ease); }
+.lab__row { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 8px; min-width: 0; }
+.lab__row--stats { border-top: 1px solid rgba(60, 50, 30, .25); padding-top: 4px; margin-top: 1px; }
+.lab__stats { font: 700 12px/1.2 var(--gc-font-num); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lab__stats .a { color: var(--slab-atk); }
+.lab__stats .h { color: var(--slab-hp); }
+.lab__subs { font: 600 9px/1.2 var(--font-body); color: var(--slab-ink-2); white-space: nowrap; }
+.lab__cert { font: 500 9px/1 var(--font-body); color: var(--slab-ink-3); letter-spacing: .06em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lab__code {
+  height: 12px; flex: 1; max-width: 96px; min-width: 24px; opacity: .85;
+  background: repeating-linear-gradient(90deg, var(--slab-ink) 0 1px, transparent 1px 3px, var(--slab-ink) 3px 5px, transparent 5px 6px, var(--slab-ink) 6px 7px, transparent 7px 10px);
+}
+
+/* the well that holds the card */
+.slab__well {
+  position: relative; margin-top: 4.5%; padding: 3.2%;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .28), rgba(0, 0, 0, .14));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35), inset 0 3px 10px rgba(0, 0, 0, .45), 0 1px 0 rgba(255, 255, 255, .25);
+}
+.slab__well .gc { width: 100%; --gc-shadow: 0 3px 8px rgba(0, 0, 0, .5); }
+.slab__well .card, .slab__well .card:hover { --lift: 0px; transform: translateY(0); }   /* the card sits still in its case (2D, not "none") */
+/* one glare across the plastic: when the case scrolls into view and when the grade / rarity changes */
+.slab__glare { position: absolute; inset: 0; z-index: 3; border-radius: inherit; overflow: hidden; pointer-events: none; }
+.slab__glare::before {
+  content: ""; position: absolute; top: -20%; bottom: -20%; left: 0; width: 28%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .16) 45%, rgba(255, 255, 255, .05) 55%, transparent);
+  transform: translateX(170%) skewX(-20deg);
+}
+.slab.is-shown .slab__glare::before { animation: slab-sheen 1.1s var(--ease) both; }
+@keyframes slab-sheen { from { transform: translateX(-160%) skewX(-20deg); } to { transform: translateX(170%) skewX(-20deg); } }
+.slab__ridges {   /* grip lines on the bottom edge, like the real cases */
+  position: absolute; left: 22%; right: 22%; bottom: 1.6%; height: 2.2%;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .28) 0 1px, transparent 1px 5px);
+  border-radius: 2px; opacity: .7;
+}
+/* in the Details sheet: the case sits in the Grade panel above the grade list */
+.gsum__slab { display: grid; justify-items: center; margin-bottom: var(--s-4); }
+.gsum__slab .slab { width: min(100%, 280px); }
+
 @media (prefers-reduced-motion: reduce) {
   .gorb[data-band="rainbow"]::before { animation: none; }
+  .slab.is-shown .slab__glare::before, .lab__grade.is-pop { animation: none; }
 }
