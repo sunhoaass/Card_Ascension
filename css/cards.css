@@ -58,14 +58,6 @@
   .tools__row { flex: 1; }
 }
 
-/* ---------- Grid cards far off screen sleep (W4) ----------
-   .is-far (js/app.js farOff: more than one screen away): the browser skips style, layout and paint inside it, so
-   scrolling 300 cards costs about the same as 4. The card keeps its exact size (aspect-ratio).
-   "auto", not "hidden": after a jump (scrollbar, back to the tab) the browser draws a far card that lands on screen
-   before the frame is shown, instead of an empty card until js/app.js wakes it a frame or two later.
-   Cards on screen never have it (it also clips the rarity glow and costs compositing with many on screen). */
-#card-grid > .card.is-far { content-visibility: auto; }
-
 /* ---------- Small shared bits ---------- */
 .badge {
   display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px;

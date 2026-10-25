@@ -821,6 +821,7 @@
         const el = makeItem(x.id, type, cur.rarity);
         el.setAttribute("aria-label", `${x.name}, in the pool`);
         el._q = [x.name, x.series, x.role].filter(Boolean).join(" ").toLowerCase();
+        if (type === "card") C.farOff($(".card", el), { box: true });   // W4: far cards sleep (the pool holds the whole library)
         poolEls.set(x.id, el);
         frag.appendChild(el);
       });
@@ -866,9 +867,11 @@
     const s = ui.filters.querySelector("select[data-pf-select]");
     if (s) s.value = pf.series;
     if (sel && sel.pool && sel.el.hidden) clearSel();
+    C.wakeNear(ui.pool);   // W4: filtering moved sleeping cards into view
   }
   function setPoolUI() {
     ui.dock.classList.toggle("is-closed", !prefs.poolOpen);
+    if (prefs.poolOpen) C.wakeNear(ui.pool);
     ui.fold.setAttribute("aria-expanded", String(prefs.poolOpen));
     ui.fold.setAttribute("aria-label", prefs.poolOpen ? "Hide the card pool" : "Show the card pool");
     ui.hide.setAttribute("aria-pressed", String(prefs.hidePlaced));

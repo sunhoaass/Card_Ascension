@@ -266,6 +266,7 @@
     const frag = document.createDocumentFragment();
     out.forEach((c) => frag.appendChild(tiles.get(c.id)));
     ui.grid.replaceChildren(frag);
+    C.wakeNear(ui.grid);
     if (animate) FX.stagger(ui.grid, 24, { cls: "fx-grid-in", max: 12, limit: 18, cleanup: true });
 
     const n = Object.keys(saved).filter((id) => byId.has(id)).length;
@@ -630,6 +631,7 @@
     C.lazy("grade", () => {
       items.forEach((c) => {
         const el = C.renderCard(c, state.rarity, { mini: true });
+        C.farOff(el);   // W4: far cards sleep
         el.setAttribute("aria-label", `Grade ${c.name}`);
         if (saved[c.id]) cardBadge(el, overall(saved[c.id]));
         tiles.set(c.id, el);

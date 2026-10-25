@@ -142,9 +142,7 @@
       ids.forEach((id) => frag.appendChild(cardEls.get(id)));
       ui.grid.replaceChildren(frag);
       shown = ids;
-      // W4: cards that slept elsewhere in the list may now be at the top: wake more than a screen's worth right away
-      // (48 > what fits on any screen, 10 per row at 3440px), the rest settle on the next frame
-      ids.slice(0, 48).forEach((id) => C.nearNow(cardEls.get(id)));
+      C.wakeNear(ui.grid);   // W4: cards that slept elsewhere in the list may now be on screen
       if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
     }
 

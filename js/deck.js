@@ -914,7 +914,7 @@
           el.setAttribute("role", "listitem");
           el.dataset.id = x.id;
           const art = isCard ? C.renderCard(x, rarity, { mini: true }) : C.support.card(x);
-          if (isCard) { art.tabIndex = -1; art.removeAttribute("role"); } else FX.tilt(art);
+          if (isCard) { art.tabIndex = -1; art.removeAttribute("role"); C.farOff(art, { box: true }); } else FX.tilt(art);   // W4: far cards sleep
           art.setAttribute("aria-hidden", "true");
           el.appendChild(art);
           const at = usedAt.get(x.id);
@@ -938,6 +938,7 @@
           rows.slice(n, n + CHUNK).forEach((x) => frag.appendChild(tile(x)));
           n = Math.min(rows.length, n + CHUNK);
           grid.appendChild(frag);
+          C.wakeNear(grid);
         };
         const apply = () => {
           const words = f.q.toLowerCase().split(/\s+/).filter(Boolean);
