@@ -1,7 +1,7 @@
 /* ==========================================================
    Card detail — "Black Sun" scene (step 12, from mockup/black-sun-intro.html v2)
    Markup: #detail in index.html · behaviour: js/detail.js
-   · REST = flat 2D card · 3D (thickness, both faces) only while it moves
+   · REST = flat 2D card · 3D (thickness, both faces) only while it moves or leans (phone tilt / mouse)
    · every per-frame change is a paused Web Animation (currentTime), never style.transform
    · layouts: phone (< 768px): labels above / below the card
               side  (≥ 768px, or a landscape phone): labels left / right with the full text,
@@ -17,11 +17,13 @@
   position: fixed; inset: 0; z-index: 40;
   overflow: hidden; background: var(--bs-night); color: var(--ink);
   overscroll-behavior: none; -webkit-tap-highlight-color: transparent;
+  touch-action: none;   /* no pan / pinch anywhere in the scene (a pan on a label used to scroll the page under it on phones:
+                           the browser bar collapsed, the scene resized and the card moved down) · scrollers below allow pan-y */
 }
 .bs[hidden] { display: none; }
 .bs.is-side { --bs-dock-h: 64px; }
 @media (min-width: 1100px) { .bs { left: var(--side-w); } }
-html.is-detail { overflow: hidden; }
+html.is-detail, html.is-detail body { overflow: hidden; overscroll-behavior: none; }
 /* while the scene is fully up, nothing underneath needs drawing (it is fully covered) */
 html.is-detail-settled .main { visibility: hidden; }
 html.is-detail-settled .main *, html.is-detail-settled .main *::before, html.is-detail-settled .main *::after,
@@ -93,10 +95,8 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 }
 .bs-ibtn svg { width: 18px; height: 18px; flex: none; }
 .bs-ibtn[hidden] { display: none; }
-.bs-ibtn.is-on { color: var(--on-gold); background: var(--brass-gold); }
 .bs-ibtn:disabled { opacity: .35; cursor: default; }
 .bs-ibtn:active:not(:disabled) { transform: scale(.96); }
-@media (max-width: 380px) { .bs-ibtn__txt { display: none; } }
 
 /* ---------------- Foreground: card, labels, ring ---------------- */
 .bs-fore { position: absolute; left: 0; right: 0; top: var(--bs-top-h); bottom: calc(var(--bs-dock-h) + var(--safe-b)); z-index: 2; pointer-events: none; }
@@ -151,9 +151,10 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-face .card__flash { mix-blend-mode: normal; background: radial-gradient(circle at 50% 40%, #fff, var(--rc) 70%); }
 .bs-face .card__frame { box-shadow: 0 1px 0 rgba(255, 240, 200, .25) inset, 0 14px 34px rgba(0, 0, 0, .6); }
 
-/* holo sheen: its position follows the rotation angle (paused Web Animation) — only while it turns */
-.bs-holo { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; transition: opacity var(--t-med) var(--ease); border-radius: var(--r-card); overflow: hidden; }
-.bs-wrap.is-3d .bs-holo { opacity: 1; }
+/* holo sheen: always on · its place follows the card's angle (paused Web Animations on b / i) and stays put at rest
+   (no looping animation) · .bs-holo itself never moves: it is the clip box (it used to slide off the card when tilted) */
+.bs-holo { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: var(--r-card); overflow: hidden; }
+.bs-holo b { position: absolute; inset: 0; }
 .bs-holo i { position: absolute; top: -25%; bottom: -25%; left: -60%; width: 220%; background: var(--bs-holo); }
 
 /* light motes around the card (colour = level) */
@@ -168,18 +169,21 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 
 /* ---------------- Labels + lines (a line ends at the edge of its own label) ---------------- */
 .bs-callouts { position: absolute; inset: 0; pointer-events: none; transition: opacity var(--t-med) var(--ease); }
-.bs-fore.is-busy .bs-callouts { opacity: .14; }
 .bs-fore.is-zoom .bs-callouts, .bs-fore:not(.is-ready) .bs-callouts { opacity: 0; }
 .bs-fore.is-zoom .bs-callouts *, .bs-fore:not(.is-ready) .bs-callouts * { pointer-events: none !important; }
 .bs-fore.is-zoom .bs-pop { display: none; }
-.bs-line { position: absolute; height: 1.5px; transform-origin: 0 50%; }
-.bs-line i { position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0); border-radius: 2px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--lvl) 85%, #fff), rgba(235, 240, 255, .9));
+/* line / dot = outer (card pitch) > b (card turn) > i (what you see) · the outer two only move by paused Web Animations
+   (js placeCo / poseCallouts) · the line starts at its label (fixed) and ends on the card (moves with the card) */
+.bs-line, .bs-dot { position: absolute; width: 0; height: 0; transform-origin: 0 0; }
+.bs-line > b { position: absolute; left: 0; top: -.75px; width: 100px; height: 1.5px; transform-origin: 0 50%; }
+.bs-line i { position: absolute; inset: 0; transform-origin: 100% 50%; transform: scaleX(0); border-radius: 2px;
+  background: linear-gradient(270deg, color-mix(in srgb, var(--lvl) 85%, #fff), rgba(235, 240, 255, .9));
   box-shadow: 0 0 6px color-mix(in srgb, var(--lvl) 70%, transparent); }
-.bs-dot { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%;
+.bs-dot > b { position: absolute; left: 0; top: 0; }
+.bs-dot i { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%;
   background: radial-gradient(circle, #fff 0 28%, color-mix(in srgb, var(--lvl) 90%, #fff) 32% 48%, transparent 52%);
   box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--lvl) 80%, transparent), 0 0 10px color-mix(in srgb, var(--lvl) 80%, transparent); transform: scale(0); }
-.bs-dot--end { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; background: color-mix(in srgb, var(--lvl) 80%, #fff); box-shadow: 0 0 6px var(--lvl); }
+.bs-dot--end i { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; background: color-mix(in srgb, var(--lvl) 80%, #fff); box-shadow: 0 0 6px var(--lvl); }
 .bs-co { position: absolute; display: block; min-height: 44px; padding: 4px 6px; border-radius: 6px; text-align: left; pointer-events: auto; opacity: 0; transform: translateY(6px); transition: background-color var(--t-fast) var(--ease); }
 .bs-co > span { display: block; }
 .bs-co:active { background: rgba(255, 255, 255, .06); }
@@ -193,6 +197,7 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-co__d { margin-top: 2px; font-size: 11.5px; line-height: 1.35; color: var(--bs-text); text-shadow: 0 1px 6px var(--bs-shade), 0 0 2px var(--bs-shade);
   display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
 .bs-co__full { display: none !important; }
+.bs-co--tier .bs-co__n { color: color-mix(in srgb, var(--tc, var(--ink)) 70%, var(--ink)); }
 .bs-co.is-empty .bs-co__n { color: var(--ink-faint); font-family: var(--font-body); font-weight: 500; font-size: 12.5px; }
 .bs-co--good .bs-co__d b { color: var(--good); font-weight: 600; }
 .bs-co--bad .bs-co__k { color: var(--bs-bad-hi); }
@@ -201,7 +206,7 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-co.is-r .bs-co__k { justify-content: flex-end; }
 
 /* side layout: full text, nothing to expand, text leans toward the card */
-.bs.is-side .bs-co { cursor: default; max-height: var(--co-max, none); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scrollbar-width: thin; }
+.bs.is-side .bs-co { cursor: default; max-height: var(--co-max, none); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scrollbar-width: thin; }   /* pan-y: scrolls inside itself (overrides .bs none) */
 .bs.is-side .bs-co:active { background: none; }
 .bs.is-side .bs-co__k::after { content: none; }
 .bs.is-side .bs-co__d { display: none !important; }
@@ -236,6 +241,9 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-pop li::before { content: "✓"; color: var(--good); font-weight: 700; }
 .bs-pop.is-bad li::before { content: "✕"; color: var(--bad); }
 .bs-pop .meta { font-size: 11.5px; color: var(--ink-dim); }
+.bs-pop .meta + h4 { margin-top: 0; }
+.bs-pop p + .meta { margin-top: 10px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--gold) 18%, transparent); }
+.bs-co__full b { display: block; margin-top: 4px; color: var(--ink); font-family: var(--font-display); }
 
 /* ---------------- Overall ring + Details button ---------------- */
 .bs-ovr, .bs-dbtn { position: absolute; left: 0; top: 0; pointer-events: auto; opacity: 0; transition: opacity var(--t-slow) var(--ease); }
@@ -306,6 +314,8 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-sheet__x { flex: none; width: 40px; height: 40px; border-radius: var(--r-chip); display: grid; place-items: center; color: var(--gold-hi); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent); position: relative; }
 .bs-sheet__body { flex: 1; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: 14px 16px calc(18px + var(--safe-b)); display: grid; grid-auto-rows: max-content; gap: var(--s-4); align-content: start; }   /* max-content: a scrolling chip row must not shrink to 0 */
 .bs-sheet__body .rarity-picker { margin-bottom: 0; }
+.bs-sheet__body .ability__desc + .ability__kind, .bs-sheet__body .ability__name + .ability__kind { margin-top: var(--s-3); }
+.dpanel__note { margin: 0 0 var(--s-3); font-size: var(--fs-sm); color: var(--bs-text); line-height: 1.5; }
 .bs-sheet__body.is-replay .score__track i { animation: fx-bar var(--t-slow) var(--ease) both; animation-delay: var(--d, 0ms); }
 
 /* ---------------- Reduced motion: still picture, fades only ---------------- */
@@ -314,3 +324,4 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
   .bs-sparks i { opacity: .7; transform: none; }
   .bs-zoom, .bs-lv__ind, .bs-motes { transition: none; }
 }
+
