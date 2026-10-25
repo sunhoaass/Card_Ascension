@@ -215,11 +215,15 @@
   --bs-scrim: rgba(2, 4, 18, .62);
   --bs-spark: #fff3c4;
   --bs-spark-glow: 0 0 6px 2px rgba(255, 206, 110, .75), 0 0 16px 4px rgba(255, 190, 80, .25);
-  --bs-pulse: radial-gradient(circle, transparent 38%, rgba(235, 240, 255, 0) 41%, rgba(240, 244, 255, .95) 46%, rgba(255, 246, 222, .9) 48.5%, rgba(220, 230, 255, 0) 52%);
-  --bs-holo: linear-gradient(105deg, transparent 32%, rgba(160, 225, 255, .28) 42%, rgba(255, 244, 205, .5) 49%, rgba(255, 175, 228, .3) 56%, rgba(190, 170, 255, .2) 61%, transparent 70%);
   --bs-mat: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(225, 230, 255, .55) 55%, transparent);
   --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
   --bs-ascended-lvl: #e6dcff;
+  /* W6: label boxes, lines, buttons and the Details head on the scene */
+  --bs-glass: rgba(8, 11, 30, .74);                 /* dark glass (no blur: §4.1) */
+  --bs-glass-line: color-mix(in srgb, var(--gold) 55%, transparent);
+  --bs-line: color-mix(in srgb, var(--gold-hi) 85%, transparent);   /* thin gold elbow lines */
+  --bs-line-glow: 0 0 5px color-mix(in srgb, var(--gold) 45%, transparent);
+  --bs-sheet-head: linear-gradient(180deg, rgba(18, 22, 44, .98), rgba(14, 17, 36, .98));
 }
 @media (min-width: 1100px) {
   :root {
