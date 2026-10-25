@@ -30,6 +30,7 @@
       "overall": 78.9
     },
     "tier": "A",
+    "tierNote": "Weakens, burns and hits the whole enemy deck: the best team card. Mid stats and a loss to Beast Emperor keep it at A.",
     "role": "Hybrid",
     "tags": [
       "aoe",
@@ -108,6 +109,7 @@
       "overall": 62.0
     },
     "tier": "B",
+    "tierNote": "A deck-wide -20% debuff, 2x clone hits and a revive help any team, but the lowest ATK and HP lose too many 1-on-1s.",
     "role": "DPS",
     "tags": [
       "aoe",
@@ -186,6 +188,7 @@
       "overall": 58.7
     },
     "tier": "C",
+    "tierNote": "A 3x opening hit and Shadow Garden buffs, but below-average stats and the worst matchups in the library drag it to C.",
     "role": "DPS",
     "tags": [
       "burst",
@@ -264,6 +267,7 @@
       "overall": 83.6
     },
     "tier": "S",
+    "tierNote": "Top ATK and HP plus a passive that can't die win the most 1-on-1s. Only average team value keeps it below SS.",
     "role": "Tank",
     "tags": [
       "damage-reduction",
@@ -311,3 +315,4 @@
     "updated": "2026-10-24"
   }
 ]
+
