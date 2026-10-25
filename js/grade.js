@@ -157,7 +157,7 @@
   // the card's trait (js/traits.js, the user's pick) on the label · no trait = no line
   function traitLine(card) {
     const t = C.traits && C.traits.byId ? C.traits.byId(C.traits.of(card.id)) : null;
-    return t ? `<span class="lab__line lab__trait" style="${C.traits.colorStyle(t)}"><svg class="tr-gem" aria-hidden="true"><use href="#i-gem"/></svg><b>${esc(t.name)}</b></span>` : "";
+    return t ? `<span class="lab__line lab__trait" style="${C.traits.colorStyle(t)}">${C.traits.iconHTML(t)}<b>${esc(t.name)}</b></span>` : "";
   }
   // the glare runs once across the plastic the first time a case scrolls into view
   const sheenIO = "IntersectionObserver" in window
