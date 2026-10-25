@@ -164,13 +164,17 @@
     CARD_W: 114, CARD_H: 160, HEAD: 150, FOOT: 96, MIN_ROW: 100,
   };
 
-  // Rarity frames. Keep in step with the gilded frames in css/fx.css (frame gradient, ornament colour, glow).
-  // Tokens are read from tokens.css. orn = colour of the corner ornaments (.card__orn), line = the thin inner line.
+  // Rarity colours for the parts around the cards (rarity ribbon of the image) and the support frame (gilded, css/support.css).
+  // Game cards themselves are drawn by drawGameCard() from gcSpec() (step 13). Tokens are read from tokens.css.
+  const stopsOf = (token) => cssVar(token).match(/#[0-9a-f]{3,8}/gi) || [];
   function frameSpec(rarity, kind) {
     const t = cssVar;
-    const stopsOf = (token) => cssVar(token).match(/#[0-9a-f]{3,8}/gi) || [];
-    const metal = (a, b) => [[0, a], [0.3, b], [0.5, a], [0.7, b], [1, a]];   // linear-gradient(135deg, rc, rc2 30%, rc 50%, rc2 70%, rc)
     if (kind === "support") return { stops: [[0, t("--gold-hi")], [0.3, t("--gold-lo")], [0.5, t("--gold")], [0.7, t("--gold-lo")], [1, t("--gold-hi")]], glow: "rgba(216, 180, 106, .28)", body: t("--void"), orn: t("--gold-hi"), line: t("--gold") };
+    return { ...rarityFrame(rarity), kind: "card", rarity: rarity || "Normal" };
+  }
+  function rarityFrame(rarity) {
+    const t = cssVar;
+    const metal = (a, b) => [[0, a], [0.3, b], [0.5, a], [0.7, b], [1, a]];   // linear-gradient(135deg, a, b 30%, a 50%, b 70%, a)
     switch (rarity) {
       case "Shiny": return { stops: metal(t("--r-shiny"), t("--r-shiny-2")), glow: "rgba(236, 199, 104, .38)", orn: t("--r-shiny"), line: t("--r-shiny") };
       case "Rainbow": return { conic: stopsOf("--r-rainbow"), glow: "rgba(200, 140, 220, .4)", orn: "#fff1e0", line: "#f0b6d0" };
@@ -272,7 +276,7 @@
     try {
       await Promise.race([Promise.all([
         document.fonts.load('700 20px "Cinzel"'), document.fonts.load('600 14px "Cinzel"'),
-        document.fonts.load('500 14px Inter'), document.fonts.ready,
+        document.fonts.load('500 14px Inter'), document.fonts.load('700 20px "Oswald"'), document.fonts.load('20px "Bangers"'), document.fonts.ready,
       ]), wait]);
     } catch {}
   }
@@ -334,9 +338,121 @@
     ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
   }
 
-  /* One mini card: rarity frame (3px) + art + name. item = card / support object, or { missing: true, id } */
+  /* ==========================================================
+     Game card (step 13, §3.5): same look as .gc in css/fx.css. The picture fills the card; HP, the 1 IN X pill,
+     the rarity pill and ATK are drawn on top at the game's spots (u = 1% of the card width, like cqw).
+     Colours come from the --gc-* tokens. If a frame changes in css/fx.css, change gcSpec() too.
+     ========================================================== */
+  // "linear-gradient(135deg, #a, #b 30%, #c)" -> [[0, "#a"], [0.3, "#b"], [1, "#c"]] (stops without a % are spread evenly)
+  function gradStops(str) {
+    const m = [...String(str).matchAll(/(#[0-9a-f]{3,8})(?:\s+([\d.]+)%)?/gi)].map((x) => [x[2] != null ? Number(x[2]) / 100 : null, x[1]]);
+    if (!m.length) return [[0, "#888"], [1, "#888"]];
+    if (m[0][0] == null) m[0][0] = 0;
+    if (m[m.length - 1][0] == null) m[m.length - 1][0] = 1;
+    for (let i = 1; i < m.length - 1; i++) if (m[i][0] == null) {
+      let j = i; while (m[j][0] == null) j++;
+      const a = m[i - 1][0], b = m[j][0];
+      for (let q = i; q < j; q++) m[q][0] = a + (b - a) * (q - i + 1) / (j - i + 1);
+    }
+    return m;
+  }
+  function gcSpec(rarity) {
+    const r = String(rarity || "Normal").toLowerCase(), g = (n) => cssVar(n);
+    const S = {
+      shiny: { ring: 2.2, fill: "--gc-ring-shiny" }, rainbow: { ring: 2.4, conic: "--r-rainbow" }, secret: { ring: 2.4, fill: "--gc-ring-secret", ink: "--gc-rar-secret-ink" },
+      divine: { ring: 2.4, fill: "--gc-ring-divine" }, cosmic: { ring: 2.4, conic: "--gc-ring-cosmic" }, ascended: { ring: 2.6, conic: "--r-ascended" },
+    }[r];
+    if (!S) return { normal: true };
+    return { ...S, glow: g("--gc-glow-" + r), pill: g("--gc-rar-" + r), line: g("--gc-rar-" + r + "-line") || "#111", ink: S.ink ? g(S.ink) : "#fff" };
+  }
+  // a number / pill text shrunk to fit its room (same rule as fitNum in js/app.js)
+  function fitFont(ctx, text, size, room, font) {
+    ctx.font = `${font.replace("{s}", size)}`;
+    const wv = ctx.measureText(text).width;
+    if (wv > room) { size = size * room / wv * 0.97; ctx.font = `${font.replace("{s}", size)}`; }
+    return size;
+  }
+  function drawGameCard(ctx, x, y, w, h, item, rarity, art, k, pal) {
+    const u = w / 100, R = 3.7 * u, sp = gcSpec(rarity);
+    const num = cssVar("--gc-font-num"), pop = cssVar("--gc-font-pop");
+    // shadow (+ the rarity glow)
+    ctx.save();
+    roundRect(ctx, x, y, w, h, R);
+    ctx.shadowColor = sp.glow || "rgba(0, 0, 0, .5)"; ctx.shadowBlur = (sp.glow ? 16 : 10) * k; ctx.shadowOffsetY = sp.glow ? 0 : 5 * k;
+    ctx.fillStyle = cssVar("--gc-under") || "#0d0a14"; ctx.fill();
+    ctx.restore();
+    // picture (or the generated art + the name, which is normally in the picture)
+    ctx.save();
+    roundRect(ctx, x, y, w, h, R); ctx.clip();
+    if (art) drawCoverImage(ctx, art, x - w * 0.006, y - h * 0.006, w * 1.012, h * 1.012);
+    else {
+      drawPlaceholder(ctx, x, y, w, h, item, pal);
+      ctx.font = `italic 400 ${6.4 * u}px ${pop}`; ctx.textBaseline = "top"; ctx.textAlign = "center"; ctx.lineJoin = "round";
+      const nm = fitText(ctx, String(item.name || "").toUpperCase(), 90 * u);
+      ctx.lineWidth = 0.9 * u; ctx.strokeStyle = cssVar("--gc-pill-line"); ctx.strokeText(nm, x + w / 2, y + 108.4 * u);
+      ctx.fillStyle = "#fff"; ctx.fillText(nm, x + w / 2, y + 108.4 * u); ctx.textAlign = "left";
+    }
+    // frame ring over the picture's edge (a stroke on the clipped edge: the inner half shows)
+    if (!sp.normal) {
+      const t = sp.ring * u;
+      if (sp.conic && ctx.createConicGradient) {
+        const cg = ctx.createConicGradient(-Math.PI / 2, x + w / 2, y + h / 2);
+        evenStops(stopsOf(sp.conic)).forEach(([o, c]) => cg.addColorStop(o, c));
+        ctx.strokeStyle = cg;
+      } else ctx.strokeStyle = lin135(ctx, x, y, w, h, sp.conic ? evenStops(stopsOf(sp.conic)) : gradStops(cssVar(sp.fill)));
+      ctx.lineWidth = t * 2; roundRect(ctx, x, y, w, h, R); ctx.stroke();
+      ctx.strokeStyle = "rgba(0, 0, 0, .6)"; ctx.lineWidth = 0.4 * u; roundRect(ctx, x + t, y + t, w - 2 * t, h - 2 * t, Math.max(0, R - t)); ctx.stroke();
+    }
+    ctx.strokeStyle = sp.normal ? "rgba(255, 255, 255, .14)" : "rgba(0, 0, 0, .55)"; ctx.lineWidth = sp.normal ? 1 : 0.7 * u;
+    roundRect(ctx, x, y, w, h, R); ctx.stroke();
+    ctx.restore();
+
+    if (item.missing || !item.base) return;
+    const r = rarity || "Normal";
+    const atk = C.fmtStat(C.statAt(item, "atk", r)), hp = C.fmtStat(C.statAt(item, "hp", r));
+    ctx.save();
+    ctx.lineJoin = "round"; ctx.textBaseline = "middle";
+    const numText = (text, cx, cy, align, size, room, fill, line, sw, drop, dropColor) => {
+      const s = fitFont(ctx, text, size * u, room * u, `700 {s}px ${num}`);
+      ctx.textAlign = align;
+      ctx.lineWidth = sw * u; ctx.strokeStyle = dropColor; ctx.fillStyle = dropColor;
+      ctx.strokeText(text, cx, cy + drop * u); ctx.fillText(text, cx, cy + drop * u);
+      ctx.strokeStyle = line; ctx.strokeText(text, cx, cy);
+      ctx.fillStyle = fill; ctx.fillText(text, cx, cy);
+      return s;
+    };
+    // HP: right-aligned, left of the heart · ATK: centred between the swords
+    numText(hp, x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2, cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
+    numText(atk, x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5, cssVar("--gc-atk"), cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
+    // pills (right edge 1.2u in from the card's right side)
+    const pill = (text, top, hgt, size, min, bg, line, ink, inner) => {
+      const fs = fitFont(ctx, text, size * u, 36.8 * u, `italic 400 {s}px ${pop}`);
+      const pw = Math.min(42 * u, Math.max(min * u, ctx.measureText(text).width + 5.2 * u));
+      const px = x + w - 1.2 * u - pw, py = y + top * u;
+      roundRect(ctx, px, py, pw, hgt * u, hgt * u / 2);
+      ctx.fillStyle = bg; ctx.fill();
+      ctx.lineWidth = 1.1 * u; ctx.strokeStyle = line; ctx.stroke();
+      if (inner) { roundRect(ctx, px + 0.55 * u, py + 0.55 * u, pw - 1.1 * u, hgt * u - 1.1 * u, (hgt * u - 1.1 * u) / 2); ctx.lineWidth = 0.55 * u; ctx.strokeStyle = inner; ctx.stroke(); }
+      ctx.textAlign = "center";
+      if (!inner) { ctx.lineWidth = 0.7 * u; ctx.strokeStyle = line; ctx.strokeText(text, px + pw / 2, py + hgt * u / 2 + 0.2 * u); }
+      ctx.fillStyle = ink; ctx.fillText(text, px + pw / 2, py + hgt * u / 2 + 0.2 * u);
+      return fs;
+    };
+    pill(C.fmtOdds(C.oddsAt(item, r)).toUpperCase(), 19.1, 9, 5.8, 23, cssVar("--gc-pill"), cssVar("--gc-pill-line"), cssVar("--gc-pill-ink"), cssVar("--gc-pill-inner"));
+    if (!sp.normal) {
+      const st = gradStops(sp.pill), across = /90deg/.test(sp.pill);
+      const top = y + 30.4 * u, gr = across ? ctx.createLinearGradient(x + 58 * u, 0, x + 99 * u, 0) : ctx.createLinearGradient(0, top, 0, top + 7 * u);
+      st.forEach(([o, c]) => gr.addColorStop(o, c));
+      pill(r.toUpperCase(), 30.4, 7, 4.9, 17, gr, sp.line, sp.ink, null);
+    }
+    ctx.restore();
+  }
+
+  /* One mini card. Game cards: drawGameCard() · support: gilded frame (3px) + art + name.
+     item = card / support object, or { missing: true, id } */
   function drawCard(ctx, x, y, w, h, item, spec, art, k, pal) {
     const R = 8, inset = 4;
+    if (spec.kind === "card" && !item.missing) { drawGameCard(ctx, x, y, w, h, item, spec.rarity, art, k, pal); return; }
     if (item.missing) {                                  // not in the library any more: a dashed slot, like in the editor
       roundRect(ctx, x + 1, y + 1, w - 2, h - 2, R);
       ctx.fillStyle = pal.glass; ctx.fill();

@@ -20,42 +20,34 @@
 4. ทุกครั้งที่เพิ่มปุ่มหรือการกดแบบใหม่ ให้อ่านและทำตาม **§4 Motion Guide**
 5. เจ้าของใช้มือถือเป็นหลัก ต้องออกแบบแบบ mobile-first ทุกหน้า
 6. **ทุกหน้าต้องได้มาตรฐานเดียวกัน** ก่อนบอกว่าเสร็จ ต้องผ่าน **§4.1 Definition of Done** ทุกข้อ ถึงเจ้าของจะพิมพ์มาไม่ครบก็ต้องทำ (เช่น ต้องมีอนิเมชั่นทุกหน้า)
-7. **1 งาน = 1 แชทใหม่** ใช้ prompt สั้นจาก ▶️ / §7 · **แนบ `PROGRESS.md` ไปในแชทเสมอ (หรืออัปเดตใน Project knowledge) · ห้ามให้ Claude อ่านไฟล์จากลิงก์ GitHub** (ได้ฉบับเก่าค้างแคช · เช็ค 2026-10-25 ได้ฉบับขั้น 2) · ไฟล์โค้ดที่ต้องใช้ให้ Claude บอกรายชื่อแล้วเจ้าของแนบให้ · เจ้าของต้องอัป `PROGRESS.md` (+ `HISTORY.md`) ขึ้น GitHub ทุกครั้งหลังจบงาน ไม่งั้นแชทถัดไปอ่านของเก่า · **อย่ารัน 2 แชทที่แก้ PROGRESS.md พร้อมกัน** (เคยทับกันมาแล้ว)
+7. **1 งาน = 1 แชทใหม่** ใช้ prompt สั้นจาก ▶️ / §7 · (ใช้ **Claude Code** = Claude อ่านไฟล์จาก repo เอง + commit/เปิด pull request ให้ ข้อที่เหลือของกฎนี้ใช้กับแชท claude.ai) · **แนบ `PROGRESS.md` ไปในแชทเสมอ (หรืออัปเดตใน Project knowledge) · ห้ามให้ Claude อ่านไฟล์จากลิงก์ GitHub** (ได้ฉบับเก่าค้างแคช · เช็ค 2026-10-25 ได้ฉบับขั้น 2) · ไฟล์โค้ดที่ต้องใช้ให้ Claude บอกรายชื่อแล้วเจ้าของแนบให้ · เจ้าของต้องอัป `PROGRESS.md` (+ `HISTORY.md`) ขึ้น GitHub ทุกครั้งหลังจบงาน ไม่งั้นแชทถัดไปอ่านของเก่า · **อย่ารัน 2 แชทที่แก้ PROGRESS.md พร้อมกัน** (เคยทับกันมาแล้ว)
 8. ห้ามอ่านโค้ดทั้ง repo โดยไม่จำเป็น อ่านเฉพาะไฟล์ที่งานนั้นใช้
-9. **เลขเวอร์ชันท้ายไฟล์:** `index.html` โหลด CSS/JS แบบ `css/base.css?v=13` (กันมือถือใช้ไฟล์เก่าค้าง "Loading…") · แก้ CSS/JS ไฟล์ไหนก็ตาม → เปลี่ยน `?v=` **ทุกบรรทัด**เป็นเลขใหม่ (ตอนนี้ `14` · ครั้งถัดไป `15`) ไฟล์ใหม่ก็ใส่เลขด้วย แล้วบอกให้อัป `index.html` ด้วยทุกครั้ง · ไอคอนเว็บใช้เลขแยก (`?v=2`, §3)
+9. **เลขเวอร์ชันท้ายไฟล์:** `index.html` โหลด CSS/JS แบบ `css/base.css?v=13` (กันมือถือใช้ไฟล์เก่าค้าง "Loading…") · แก้ CSS/JS ไฟล์ไหนก็ตาม → เปลี่ยน `?v=` **ทุกบรรทัด**เป็นเลขใหม่ (ตอนนี้ `15` · ครั้งถัดไป `16`) ไฟล์ใหม่ก็ใส่เลขด้วย แล้วบอกให้อัป `index.html` ด้วยทุกครั้ง · ไอคอนเว็บใช้เลขแยก (`?v=2`, §3)
 10. **ห้ามก๊อปไฟล์จากเกม** (ไฟล์ฟอนต์, ไฟล์ UI/กรอบ/ป้าย, ไอคอน, โลโก้, เพลงประกอบ) — ติดลิขสิทธิ์ · กรอบ/ป้าย/ตัวเลขของการ์ดแบบในเกม **วาดเองด้วย CSS** (SVG/canvas ได้) ให้หน้าตาใกล้เคียงเกม + ใช้ **Google Font ที่คล้าย** (ตัวเลข Oswald · ป้าย Bangers) · รูปการ์ดใช้รูปที่ลบตัวเลขแล้ว (§3.5) · ภาพหน้าจอเกมใช้ดูอ้างอิงได้ แต่ไม่ใส่ในเว็บ
 11. ระบบเดิมห้ามเปลี่ยนโดยไม่ถาม: route, localStorage keys (§3.4), ลิงก์แชร์, ไฟล์สำรอง, เกรด, Tier Maker · หน้าใหม่ใช้ของกลางธีมใน §3.3 ห้ามใช้สีฟ้า/ม่วงแบบธีมเก่า
 
 ## ▶️ ขั้นถัดไป (เจ้าของ copy ไปวางในแชทใหม่)
-**สถานะ (2026-10-25):** แผนขั้น 0–12 เสร็จครบ + เพิ่ม Tier GOD + ปรับหน้ารายละเอียดการ์ดรอบ 2 (`?v=14` · HISTORY §9 2026-10-25) · `data/cards.json` = การ์ดจริง 4 ใบ จัดอันดับแล้ว (BE **S** 83.6 · DEM **A** 78.9 · MEG **B** 62.0 · ASL **C** 58.7 · ยังไม่มีใบไหนถึง 90 = ยังไม่มีการ์ด Meta) · `data/support.json` = `[]` (รองาน C) · `data/teams.json` = ทีมจริง 1 ทีม "Emperor Wall" (4 ใบ ช่อง 5 ว่าง) · `team.bestSupport` ทุกใบว่างจนกว่าจะมี support
+**สถานะ (2026-10-25):** แผนขั้น 0–12 เสร็จครบ + Tier GOD + หน้ารายละเอียดรอบ 2 + **ขั้น 13 การ์ดแบบในเกม + เคสเกรดทั้งเว็บ** (`?v=15` · §3.5 · HISTORY §9 2026-10-25) · `data/cards.json` = การ์ดจริง 4 ใบ จัดอันดับแล้ว (BE **S** 83.6 · DEM **A** 78.9 · MEG **B** 62.0 · ASL **C** 58.7 · ยังไม่มีใบไหนถึง 90 = ยังไม่มีการ์ด Meta) · `data/support.json` = `[]` (รองาน C) · `data/teams.json` = ทีมจริง 1 ทีม "Emperor Wall" (4 ใบ ช่อง 5 ว่าง) · `team.bestSupport` ทุกใบว่างจนกว่าจะมี support
 
-**รออนุมัติ (2026-10-25): mockup การ์ดแบบในเกม + เคสเกรด** (`mockup/game-card.html` อยู่ใน main แล้ว) → เปิดดูแล้วตอบ **§3.5.4** · อนุมัติแล้ว → Claude Code **Opus 5.5 / high**:
-```
-repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + §3.5) แล้วย้ายการ์ดแบบในเกม + เคสเกรดจาก mockup/game-card.html ไปทั้งเว็บ ตาม §3.5.3
-คำตอบ §3.5.4: 1) <ลบ ×3/★ ไหม> 2) <ใช้แบบเดา / แนบแคปในเกม> 3) <ใช้รูปแบบโอกาสแบบเกมไหม> 4) <ตัดตราครั่ง tier ได้ไหม>
-ต้องผ่าน §4.1 + วัดแบบ §11.3 · เปลี่ยน ?v= เป็น 15 ทุกบรรทัด · อัปเดต PROGRESS.md + HISTORY.md §9 · commit แล้วเปิด pull request
-```
+**รอเจ้าของ (ขั้น 13):** เปิดเว็บทดลองของ pull request ดูการ์ดใหม่ทุกหน้า (Cards, Tier List, My Lists, Deck, Grade + เคสเกรด, หน้ารายละเอียด + แผ่น Details) → โอเค = merge · ไม่โอเค = บอกจุดที่ต้องแก้ในแชทเดิม
 
 **ค้าง (เจ้าของทำเอง):**
-- 📱 **ลองหน้ารายละเอียดการ์ดบน iPhone** (งาน 2026-10-25): ลากบนป้าย/แถบล่างแรงๆ การ์ดต้องไม่เลื่อนลง (บั๊กนี้ Chromium จำลองไม่ขึ้น) · ยังเป็น = แชทใหม่ Opus 5.5 / high + คลิป/บอกว่าลากตรงไหน
-- ⚠️ **รูปเล็กอยู่ผิดโฟลเดอร์ (เช็ก repo 2026-10-24 ยังผิด · ทำแล้วให้ลบบรรทัดนี้):** อยู่ที่ `images/thumb/` แต่เว็บหาที่ `images/cards/thumb/` (หาไม่เจอใช้รูปใหญ่แทน เว็บไม่พังแต่ช้ากว่า) → อัป 4 ไฟล์ไป `images/cards/thumb/` แล้ว**ลบโฟลเดอร์ `images/thumb/`** และไฟล์ว่าง `images/cards/s`
+- 📱 **ลองหน้ารายละเอียดการ์ดบน iPhone** (งาน 2026-10-25): ลากบนป้าย/แถบล่างแรงๆ การ์ดต้องไม่เลื่อนลง (บั๊กนี้ Chromium จำลองไม่ขึ้น) · ยังเป็น = Claude Code **Opus 5.5 / high** + คลิป/บอกว่าลากตรงไหน
+- 🎴 **แคปกรอบการ์ดในเกม 6 ระดับ** (Shiny…Ascended ระดับละ 1 รูป) เมื่อได้มา → Claude Code **Sonnet 5.5 / medium** แก้กรอบ/ป้ายระดับ (`--gc-*` ใน `css/tokens.css` + `.gc[data-rarity]` ใน `css/fx.css` + `gcSpec()` ใน `js/share.js`) ตอนนี้ใช้แบบเดา
 - เพลง: อัป `audio/bgm.mp3` เอง (เพลงฟรีที่ไม่ต้องให้เครดิต เช่น Pixabay Music · ≤ ~3MB · ยังไม่มีไฟล์ = ปุ่มเพลงซ่อน · รายละเอียด HISTORY §12.5)
-- สีเกรดจริง: แคปรูปมา → แชทใหม่ **Sonnet 5.5 / low** แก้แค่ `--g-*` ใน `css/tokens.css`
+- สีเกรดจริง: แคปรูปมา → Claude Code **Sonnet 5.5 / low** แก้แค่ `--g-*` ใน `css/tokens.css`
 
-**งานต่อไป (prompt อยู่ใน §7 ทุกอัน ต่อท้าย "ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip"):**
-1. เพิ่มการ์ด (ไม่เกิน ~10 ใบ/แชท) → **งาน A** · **Sonnet 5.5 / medium**
-2. เพิ่ม support → **งาน C** · **Sonnet 5.5 / medium**
-3. หลังเพิ่มการ์ด/support แต่ละรอบ → **งาน B** · **Opus 5.5 / high** (ต้องใส่ `tags`, `weakTo`, `modes`, `beats`, `team.bestWith/position/bestSupport` คะแนนทีมถึงครบ · ส่วนที่ไม่มีข้อมูลขึ้น "Not enough data yet" และได้แค่ครึ่ง · **+ `tierNote` ทุกใบ**)
-4. ตอบคำถามโหมดใน §8 แล้ว → **Sonnet 5.5 / low** แก้แค่ `data/meta.json` (ไม่ต้องแก้โค้ด):
+**งานต่อไป (ใช้ Claude Code: Claude อ่านไฟล์ใน repo เอง ไม่ต้องแนบ · ไม่ต้องทำ zip · Claude commit แล้วเปิด pull request ให้ เจ้าของดูเว็บทดลองแล้ว merge เอง)** · ทุก prompt ต่อท้ายด้วย:
 ```
-ใช้ PROGRESS.md ที่แนบ (ห้ามอ่านจากลิงก์ GitHub: ได้ไฟล์เก่าค้างแคช) แล้วปรับน้ำหนักคะแนนทีมแต่ละโหมด (§10.5) ตามคำตอบนี้: <คำตอบ §8>
-ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
+อัปเดต PROGRESS.md (▶️ + สเปกที่เปลี่ยน) + HISTORY.md §9 · commit แล้วเปิด pull request
 ```
-5. แก้หน้าตา → **Sonnet 5.5 / medium** · แก้สูตรคะแนนทีม → **Opus 5.5 / high** · แก้หน้ารายละเอียดการ์ด → **Opus 5.5 / high**:
-```
-ใช้ PROGRESS.md ที่แนบ (ห้ามอ่านจากลิงก์ GitHub: ได้ไฟล์เก่าค้างแคช) แล้วแก้ <หน้า/ส่วน> ตามนี้: <สิ่งที่อยากแก้>
-ต้องผ่าน §4.1 (+ วัดแบบ §11.3 ถ้าแตะหน้ารายละเอียด) ทำเสร็จให้อัปเดต PROGRESS.md และ HISTORY.md และบอกว่าต้องอัปไฟล์ไหนไปโฟลเดอร์ไหน ทำเป็นไฟล์ zip
-```
+1. เพิ่มการ์ด (ไม่เกิน ~10 ใบ/ครั้ง · แนบรูปในแชท) → **Sonnet 5.5 / medium**: `repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + §3.5.1 + §5 + §7 A) แล้วทำงานประจำ A กับรูปที่แนบ`
+2. เพิ่ม support → **Sonnet 5.5 / medium**: `repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + §5.4 + §7 C) แล้วทำงานประจำ C กับรูปที่แนบ`
+3. หลังเพิ่มการ์ด/support แต่ละรอบ → **Opus 5.5 / high**: `repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + §5 + §7 B + §8 + §10.5) แล้วทำงานประจำ B` (ต้องใส่ `tags`, `weakTo`, `modes`, `beats`, `team.bestWith/position/bestSupport` คะแนนทีมถึงครบ · ส่วนที่ไม่มีข้อมูลขึ้น "Not enough data yet" และได้แค่ครึ่ง · **+ `tierNote` ทุกใบ**)
+4. ตอบคำถามโหมดใน §8 แล้ว → **Sonnet 5.5 / low** แก้แค่ `data/meta.json` (ไม่ต้องแก้โค้ด): `repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + §8 + §10.5) แล้วปรับน้ำหนักคะแนนทีมแต่ละโหมดตามคำตอบนี้: <คำตอบ §8>`
+5. แก้หน้าตา → **Sonnet 5.5 / medium** · แก้สูตรคะแนนทีม / หน้ารายละเอียดการ์ด → **Opus 5.5 / high**: `repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + ส่วนตามตาราง 📑) แล้วแก้ <หน้า/ส่วน> ตามนี้: <สิ่งที่อยากแก้> · ต้องผ่าน §4.1 (+ วัดแบบ §11.3 ถ้าแตะการ์ดหรือหน้ารายละเอียด) · เปลี่ยน ?v= ทุกบรรทัด`
+
+> prompt ใน §7 ยังเป็นแบบแชท claude.ai (แนบไฟล์ + zip) ใช้ได้ถ้าไม่ได้ใช้ Claude Code
 
 ## 1. ภาพรวม
 - เว็บ Tier list + คลังการ์ดของเกม card battle บน Roblox ให้ความรู้สึกเหมือน "เข้าไปอยู่ในโลกเกมอีกใบ" กลุ่มเป้าหมายคือ Gen Y ถึง Gen Alpha
@@ -80,18 +72,17 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 - แสดงวันที่อัปเดตข้อมูลล่าสุดที่หัวเว็บ (คอม: ท้ายเมนูซ้าย)
 - หน้าโหลด: ตราวงกลม + นาฬิกาพกเข็มหมุน + "Loading…" (หายเมื่อข้อมูลมา, หายเองหลัง 8 วิเสมอ)
 - หัวข้อแต่ละหน้า: คำเล็กด้านบน (The Gallery / The Archive / The Apothecary / The Casebook / The Appraiser) + ชื่อหน้าตัวทองไล่เฉด + เส้นลายกลาง
-- **กรอบการ์ด = กรอบรูปทองประดับ** มีลายที่ 4 มุม · ป้ายระดับ = ริบบิ้นมุมซ้ายบน · tier = **ตราครั่งกลม** มุมขวาบน · ชื่อการ์ดอยู่กลางมีเส้นใต้:
+- **การ์ด = การ์ดแบบในเกม** (ขั้น 13 · §3.5): รูปที่ลบตัวเลขแล้ว + เว็บวาด HP / ป้าย 1 IN X / ป้ายระดับ / ATK ทับ · กรอบระดับ = วงแหวนทับขอบรูป · ไม่มีตราครั่ง tier บนการ์ด (tier อยู่ที่แถว Tier List, หน้ารายละเอียด, เคสเกรด) · support ยังใช้กรอบรูปทองประดับ + ตราครั่ง:
 
-| ระดับ | สี / เอฟเฟกต์ |
+| ระดับ | กรอบ / เอฟเฟกต์ (6 ระดับบน = เดา รอแคปในเกม) |
 |---|---|
-| Normal | เงินเรียบ ไม่มีแสง |
-| Shiny | ทอง + แสงวิ่งผ่าน |
-| Rainbow | กรอบรุ้งหมุน (หมุนจริงแล้ว) |
-| Secret | ดำ-แดงไวน์ เรืองแดงเต้น |
-| Divine | ขาว-ทอง มีวงแสงรอบการ์ด |
-| Cosmic | ม่วง-น้ำเงิน หมุนช้า มีดาวในกรอบ |
-| Ascended | prismatic หมุน + ละอองแสงลอย (**เฉพาะการ์ดใหญ่** · การ์ดเล็กไม่มีละออง) |
-
+| Normal | ไม่มีกรอบ ไม่มีป้ายระดับ (เหมือนในเกม) |
+| Shiny | ทอง + แสงวิ่ง |
+| Rainbow | รุ้งหมุน |
+| Secret | ดำ-แดง เรืองแดงเต้น |
+| Divine | ขาว-ทอง เรืองนุ่ม |
+| Cosmic | ม่วง-น้ำเงินหมุนช้า + จุดดาว |
+| Ascended | prismatic หมุน + แสงวิ่ง |
 
 ### 3.2 Design tokens (อยู่ใน `css/tokens.css` — ห้าม hard-code สีในไฟล์อื่น ให้ใช้ตัวแปร) · ชุด "Gilded Nocturne" ขั้น 9.6b
 ชื่อตัวแปรเดิมยังอยู่ครบ (หน้าเก่าไม่พัง) แต่ค่าเปลี่ยน: **`--rift` = ทองแล้ว** · `--flux` = ม่วงอเมทิสต์
@@ -107,7 +98,9 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 | สี Tier (โทนอัญมณี) | `--t-god` `--t-ss` `--t-s` `--t-a` `--t-b` `--t-c` `--t-d` + `--t-x-*` 6 สี (Tier Maker) | แดงเปลวไฟ `#e2453c` / ชมพูทับทิม / อำพัน / ทอง / หยก / ไพลิน / ดีบุก |
 | เกรด | `--g-bronze(-2)` `--g-silver(-2)` `--g-gold(-2)` `--g-rainbow` `--g-rainbow-line` `--g-empty` | เหรียญตรา |
 | คะแนนทีม (ขั้น 11) | `--score-bad` `--score-mid` `--score-good` `--score-perfect` (= `--r-rainbow`) | แดง / เหลือง / เขียว / รุ้ง |
-| ฟอนต์ | `--font-display` = Cinzel 500–700 · `--font-body` = Inter 400–600 | |
+| ฟอนต์ | `--font-display` = Cinzel 500–700 · `--font-body` = Inter 400–600 · `--gc-font-num` = Oswald 700 (เลข HP/ATK) · `--gc-font-pop` = Bangers (ป้ายบนการ์ด) | |
+| การ์ดแบบในเกม (ขั้น 13) | `--gc-*`: ฟอนต์, `--gc-corner` (บนตัวการ์ด) / `--gc-radius` (ข้างในการ์ด, cqw), สี HP/ATK, ป้าย 1 IN X, `--gc-ring-*` กรอบ, `--gc-rar-*(-line)` ป้ายระดับ, `--gc-glow-*`, เงา | ตามภาพเกม / เดา |
+| เคสเกรด (ขั้น 13) | `--slab-*` (พลาสติก, ขอบ, กระดาษป้าย, สีตัวหนังสือ, ATK/HP, เลขเกรด 10) | |
 | ขนาดตัวอักษร | `--fs-xs`…`--fs-3xl` (สเกล 1.25: 12 / 14 / 16 / 20 / 25 / 31 / 39px) | |
 | ระยะ | `--s-1`…`--s-12` (ตาราง 4px) · `--gutter` 16px / 32px (≥ 1100px) | |
 | รูปทรง | `--r-chip` 6 · `--r-card` 8 · `--r-panel` 12 · `--r-pill` · `--cut` 10px + `--chamfer` (มุมตัดเฉียง) | มุมเล็กแบบกรอบรูป/แผ่นโลหะ |
@@ -126,7 +119,7 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 
 **JS (แต่ละไฟล์บอกว่าโหลดหลังใคร)**
 - `js/fx.js` → `FX.press()`, `FX.tilt(card)` (นิ้วลากขึ้นลงเกิน 10px = scroll → ปล่อยการ์ด), `FX.countTo(el, n)`, `FX.stagger(list, gap, {cls, max, limit, cleanup})`, `FX.flip(el, rect, {reverse})` (shared element), `FX.fade(el, 1|0)`, `FX.toast(text, {action:{label, fn}, duration, bottom})` (`.fx-toast`), `FX.flash(el)`, `FX.backdrop(el)`, `FX.reduced`, `FX.lite`, `FX.probe()`
-- `js/app.js` (แกน: router, โหลดข้อมูล, การ์ด) → `window.CBI`: `rarityChipsHTML()` (ใส่ใน `.rarity-picker` ได้เลย การคลิกจัดการโดย cards.js), `renderCard(card, rarity, {mini, tilt})` (`tilt:false` = ไม่เอียงตามนิ้ว), `setCardRarity(el, card, rarity, {animate})`, `statAt / oddsAt / fmtOdds / fmtStat`, `isRanked(card)`, **`esc()`** (escape ข้อความจากข้อมูลทุกครั้ง), `openCard(id, originEl, {list})`, `closeCard()`, `swapCard(id)`, `state` (`meta`, `cards`, `support`, `teams`, `rarity`), `hash`, `route()`, `placeholderArt()`, `lazy()`, `watchLive()`, `livePause(on)` (เก็บการ์ดที่ watch แบบ WeakRef แล้ว observe ใหม่ตอน resume), `artImg()`, `bindArt()`, `hideBoot()`, `TIER_COLOR` · boot เรียก `CBI.detail.init()` และ `prewarm()` 3.6 วิหลังโหลด (lite ไม่วาดล่วงหน้า)
+- `js/app.js` (แกน: router, โหลดข้อมูล, การ์ด) → `window.CBI`: `rarityChipsHTML()` (ใส่ใน `.rarity-picker` ได้เลย การคลิกจัดการโดย cards.js), `renderCard(card, rarity, {mini, tilt})` (การ์ดแบบในเกม `.card.gc` §3.5 · `tilt:false` = ไม่เอียงตามนิ้ว), `setCardRarity(el, card, rarity, {animate})`, `setCardNums(el, {atk, hp}, {animate})` (เลขที่โชว์ เช่นเลขหลังบวกเกรด · นับ 650ms), `flashCard(el)`, `fitCard(el)` (ย่อเลขให้พอดีช่อง · วัดด้วย canvas ไม่ต้อง layout · วัดใหม่เองเมื่อฟอนต์มา `document.fonts` loadingdone), `statAt / oddsAt / fmtOdds / fmtStat`, `isRanked(card)`, **`esc()`** (escape ข้อความจากข้อมูลทุกครั้ง), `openCard(id, originEl, {list})`, `closeCard()`, `swapCard(id)`, `state` (`meta`, `cards`, `support`, `teams`, `rarity`), `hash`, `route()`, `placeholderArt()`, `lazy()`, `watchLive()`, `livePause(on)` (เก็บการ์ดที่ watch แบบ WeakRef แล้ว observe ใหม่ตอน resume), `artImg()`, `bindArt()`, `hideBoot()`, `TIER_COLOR` · boot เรียก `CBI.detail.init()` และ `prewarm()` 3.6 วิหลังโหลด (lite ไม่วาดล่วงหน้า)
 - `js/cards.js` (หลัง app.js) `CBI.cards = { init, setRarity(name), order() }` · **`setRarity` = ที่เดียวที่เปลี่ยนระดับทั้งเว็บ** (บันทึก `cbi:rarity` + ยิง event `cbi:rarity`) · `order()` = id ตามลำดับที่หน้า Cards แสดงอยู่
 - `js/tier.js` (หลัง cards.js) `CBI.tier = { init, enter({restore}), show("global"|"my") }` · แท็บย่อย Global | My Lists (`#tier-tabs`, `.seg`) · Global มีสวิตช์ **Cards | Support** (`#tier-kind`, `cbi:tierKind`) แยกรายการ ไม่รวมกัน · Cards = แถว GOD–D ตาม Overall + ปุ่มระดับ (event `cbi:rarity`) · Support = แถวตาม `scores.value` ไทล์ `.stile` (`CBI.support.card()`) กดแล้วเปิด `#support/<id>` · สร้างใน `buildGlobal()` เมื่อแท็บ Global แสดงจริง · Global ดูอย่างเดียว (Claude แก้ผ่านงาน B)
 - `js/tiermaker.js` + `tiermaker.css` (My Lists · โหลดหลังสุด) `C.tm = { init, show(listId|null, sharedData?), mode() }` (`"index"|"editor"|"shared"`) · ทุกอย่างอยู่ใน `#tm` (`data-no-detail`: แตะการ์ด = เลือก) · `#tm-index` / `#tm-editor` / `#tm-shared`
@@ -139,7 +132,7 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
   - `C.dialog({title, html, actions, onMount})` → Promise · `<dialog class="tm-dlg">` มี scrim ของตัวเอง (`::backdrop` อ่านตัวแปร CSS ไม่ได้ในเบราว์เซอร์เก่า) · ปุ่มกลาง `.tm-btn` / `--primary` / `--danger` · **ห้ามใช้ alert/confirm**
   - `boardSpec(l)` / `toPayload(l)` / `fromPayload(p)` · เมนู ⋯ ของ list: Save as image / Share link (ปิดใช้ + บอกเหตุผลถ้า list ว่าง) · มุมมองแชร์ (Save a copy / Save image · `shCopies` กันสำเนาซ้ำ) · `importLists(data, how)` · ปุ่ม Backup บนหัวหน้ารวม + "Restore from backup" ในหน้าว่าง · `LIST_MAX=200` / `ITEM_MAX=600` ตอนรับข้อมูลภายนอก · Details ของ support เก็บ `tierY` แล้วเปิด `#support/<id>`
 - `js/share.js` (รูป / ลิงก์ / สำรอง · หลัง app.js ก่อน tiermaker.js) `C.share = { imageDialog, previewDialog, tierImage, deckImage, deckImageDialog, makeLink, readLink, linkDialog, backupDialog, provide, copyText, icons, slug }`
-  - **รูป:** Canvas 2D (ไม่แคป DOM) กว้างตรรกะ 1200px scale ≤ 2 (ลดเองถ้าเกิน 16M พิกเซล / 16000px) → `{blob, width, height, filename}` · `tierImage({ id, title, type:"card"|"support", rarity, rows:[{ label, color:"--t-ss", items:[id…] }] })` · `deckImage({id, title, mode, rarity, cards:[5], support:[5]})` · ส่วนร่วม `paintBackdrop` / `paintRibbon` / `paintFooter` / `drawOrnaments` · **ถ้าแก้สีกรอบใน fx.css ต้องแก้ `frameSpec` ด้วย** · `drawPlaceholder` ต้องตรงกับ `C.placeholderArt` · การ์ดหาไม่เจอ = ช่องเส้นประ · รอฟอนต์ `document.fonts.load` · ลายน้ำอ่านจาก canonical · มือถือ `navigator.share` พร้อมไฟล์ / คอม ดาวน์โหลด `.png` · ลิงก์ยาวเกิน 6000 ตัวอักษรมีคำเตือน
+  - **รูป:** Canvas 2D (ไม่แคป DOM) กว้างตรรกะ 1200px scale ≤ 2 (ลดเองถ้าเกิน 16M พิกเซล / 16000px) → `{blob, width, height, filename}` · `tierImage({ id, title, type:"card"|"support", rarity, rows:[{ label, color:"--t-ss", items:[id…] }] })` · `deckImage({id, title, mode, rarity, cards:[5], support:[5]})` · ส่วนร่วม `paintBackdrop` / `paintRibbon` / `paintFooter` / `drawOrnaments` · การ์ด = `drawGameCard()` (รูป + วงแหวนกรอบ + HP / 1 IN X / ป้ายระดับ / ATK อ่านสีจาก `--gc-*`) · **ถ้าแก้กรอบการ์ดใน fx.css ต้องแก้ `gcSpec()` ด้วย** · `frameSpec()` เหลือใช้กับริบบิ้นระดับของรูป + กรอบ support · `drawPlaceholder` ต้องตรงกับ `C.placeholderArt` · การ์ดหาไม่เจอ = ช่องเส้นประ · รอฟอนต์ `document.fonts.load` · ลายน้ำอ่านจาก canonical · มือถือ `navigator.share` พร้อมไฟล์ / คอม ดาวน์โหลด `.png` · ลิงก์ยาวเกิน 6000 ตัวอักษรมีคำเตือน
   - **ลิงก์:** `makeLink(route, obj)` → `location.origin + pathname + "#<route>/s/<data>"` · JSON → `CompressionStream("deflate-raw")` → base64url นำหน้า `z` (หรือ `p` = ไม่บีบ) · `readLink` async + กันบวม (≤ 24000 ตัวอักษร, JSON ≤ 200000 ไบต์) · payload ต้อง `clean()` ก่อนใช้เสมอ · **สีเก็บเป็นลำดับใน array `COLORS` ของ tiermaker.js → ห้ามสลับ/แทรกกลาง (เพิ่มท้ายได้)**
   - **สำรอง:** `C.share.provide(id, { label, kind:"array"|"object", get, count, noun, apply(data, "merge"|"replace") → จำนวนที่เปลี่ยน })` · มี `tierlists`, `grades`, `decks` · ไฟล์ `{ app:"card-battle-infinity", type:"backup", version:1, exported, data:{…} }` · Import ตรวจ (≤ 5MB, app/type/version) → Merge / Replace → toast Undo (snapshot) · Merge ไม่ทับของเดิม · Replace ไม่แตะส่วนที่ไฟล์ไม่มี
   - ปุ่ม share/copy อยู่ในกล่องและกดใหม่หลังวาดเสร็จ (กฎ user-gesture ของ iOS) · toast/flash เล่นหลังกล่องปิด
@@ -156,7 +149,7 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
   - หน้ารวม `.dkl` (ใช้ `.tml`) · id หาไม่เจอ = ช่องเส้นประ ("Not in the library" / Meta Decks "Not added yet")
 - `js/teamscore.js` (ไม่มี DOM · หลัง app.js ก่อน deck.js) `CBI.teamScore = { score(deck, mode?), analyze(deck), suggest(deck, kind, n), band(score), modeConfig(id), modes(), PARTS, K }` · ค่าปรับทั้งหมดใน `K` ต้นไฟล์ (`K.threatTiers = ["GOD","SS"]`) · `lib()` สร้างใหม่เมื่อ array ข้อมูลเปลี่ยน · สูตร §10.5
 - `js/support.js` + `support.css` (หลัง tier.js) `CBI.support = { init, show, card(s), open(id, originEl) }` · รายละเอียดอยู่**ในหน้า Support เอง** (`#support/<id>`) ไม่ใช่ overlay · แตะแท็บ Support = กลับรายการ · Back/Esc กลับรายการ จำตำแหน่งเลื่อน · id ไม่มี = กลับรายการ
-- `js/grade.js` + `grade.css` (หลัง support.js) `CBI.grade = { init, show, panelHTML, overall, band, get }` · หน้าเลือกการ์ด (mini, ค้นหา, "My graded cards") + หน้าตั้งเกรดในหน้าเอง · `cbi:grades` = `{ id: [4 ตัวเลข] }` · ลิงก์ที่มีเกรดคนอื่น = แถบ "Shared grades" (Keep these / Use my grades) ไม่ทับจนกว่าจะกด · `.gorb` (`data-band` none/bronze/silver/gold/rainbow) + `.card__grade` · ปุ่ม **Card details** (`data-act="details"`) ปัดตามลำดับหน้าเลือก · **สูตร:** 4 ค่า (ATK, DEF, Status DMG, HP) เลือก 1–10 เอง (ไม่สุ่ม) · +2.5%/เกรด · เกรดรวม = เฉลี่ย 4 ค่าปัด .5 ขึ้น · **ไม่มีผลกับ Overall / Tier** · สีเกรดจริงยังรอ (HISTORY §6.1)
+- `js/grade.js` + `grade.css` (หลัง support.js) `CBI.grade = { init, show, panelHTML, mountSlabs, overall, band, get }` · หน้าเลือกการ์ด (mini, ค้นหา, "My graded cards") + หน้าตั้งเกรดในหน้าเอง · `cbi:grades` = `{ id: [4 ตัวเลข] }` · ลิงก์ที่มีเกรดคนอื่น = แถบ "Shared grades" (Keep these / Use my grades) ไม่ทับจนกว่าจะกด · `.gorb` (`data-band` none/bronze/silver/gold/rainbow) + `.card__grade` (มุมซ้ายใต้ชื่อการ์ดในหน้าเลือก) · **เคสเกรด `.slab`** (§3.5.2) ครอบการ์ดในหน้าตั้งเกรด (`makeSlab` / `paintSlab`) + กล่อง Grade ในแผ่น Details (`panelHTML` ใส่ `[data-slab]` → detail.js เรียก `mountSlabs(root)` · เฉพาะการ์ดที่มีเกรด · การ์ดในเคสแผ่น Details ไม่มีคลาส `.card` = แตะไม่ได้) · เปลี่ยนระดับ = เคสอัปเดต + แสงสะท้อน · ปุ่ม **Card details** (`data-act="details"`) ปัดตามลำดับหน้าเลือก · **สูตร:** 4 ค่า (ATK, DEF, Status DMG, HP) เลือก 1–10 เอง (ไม่สุ่ม) · +2.5%/เกรด · เกรดรวม = เฉลี่ย 4 ค่าปัด .5 ขึ้น · **ไม่มีผลกับ Overall / Tier** · สีเกรดจริงยังรอ (HISTORY §6.1)
 - `js/detail.js` + `detail.css` (หน้ารายละเอียด "Black Sun" · หลัง cards.js) `CBI.detail = { init, open(id), close(), prewarm(), listFor(originEl, id) }` · markup `#detail.bs` · layout/ป้าย/ผลวัด: HISTORY §14
   - **กดการ์ดที่ไหนก็เปิด:** ตัวดัก click/Enter ของ `.card[data-id]` ใน `<main>` ทั้งเว็บอยู่ที่นี่ (หน้าอื่นไม่ต้องเขียนเอง · `[data-no-detail]` = ไม่เปิด · ปุ่ม/ชิปที่ไม่ใช่การ์ดใช้ `data-open-card="<id>"` + `C.openCard(id, el)`) · การ์ดใบเดียวกันอยู่ได้หลายที่ ปิดแล้วบินกลับใบที่กดมา
   - **รายการปัด** (`listFor`): หากล่องตาม `LIST_SCOPE` = `[data-card-list], #card-grid, #tier-list, #tm-rows, #tm-sh-rows, #tm-pool, .dk-row, .deck, .mini-row` (ไม่เจอ + เป็นชิป = กล่องแม่ของชิป) เก็บ id ตามลำดับบนจอ · **หน้าใหม่ที่มีรายการการ์ด ใส่ `data-card-list` ที่กล่อง** หรือส่ง `C.openCard(id, el, { list })` · ปัดวนจากใบสุดท้ายไปใบแรก · ใบก่อน/ถัดไปสร้างล่วงหน้า
@@ -174,7 +167,7 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 - **กล่องทอง:** `.panel` (หรือ `.dpanel` ในหน้ารายละเอียด) = เส้นทอง 1px + มุมตัดเฉียง + ลายมุม 4 มุม · selector รวม `.panel, .dpanel, .dstat, .deck, .tier-row, .goverall, .tm-dlg__sheet` (ตัวกล่อง = เส้นทอง, `::before` = พื้น, `::after` = ลายมุม) · **ห้ามใช้กับกล่องที่มีเงาด้านนอกหรือขยับ/ลาก** (clip-path ตัดเงา) → ใช้ `.glass` · ปรับด้วย `--cut` / `--orn-s`
 - **หัวข้อหน้า:** `<p class="page__eyebrow">The …</p>` + `<h1 class="page__title">` + `<div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>` + `.page__lead` · เส้นทองกวาดอัตโนมัติจาก `.page.fx-page-in`
 - **ปุ่ม/ชิป:** `.tm-btn` / `--primary` / `--danger` · `.iconbtn.glass` · `.chip` (เลือกแล้วเป็นแผ่นทอง) · `.badge--tier` · สวิตช์ `.seg` (+ `.seg__ind`, `--i`)
-- **การ์ด:** ใส่ `data-rarity` บน `.card` แล้ว CSS ทำ aura เอง · `renderCard` มี `.card__orn` ต่อท้าย `.card__body` ใน `.card__frame` · support `.scard__orn` (เฉพาะใบใหญ่) · สีลายมุม `--orn` ตามระดับ · การ์ด mini ไม่มีละอองลอย · ป้าย 3 ตัวอักษร (GOD) ใช้ `card__tier--long` / `scard__tier--long` · `@keyframes fx-spin` มี `translate(-50%,-50%)` → **ใช้กับชั้นที่จัดกลางด้วย left/top 50% เท่านั้น** ตัวหมุนอื่น (เช่น `.fx-loader`) ใช้ keyframe ของตัวเอง · การ์ดมี `role="button"` กด Enter/Space ได้ · เหรียญเกรด 10 = แผ่นรุ้งหมุน (`::before` จัดกลาง)
+- **การ์ด (ขั้น 13):** `.card` = การกด/เอียง/คีย์บอร์ด · `.gc` = หน้าตาแบบในเกม (`container-type: inline-size` · ข้างในใช้หน่วย `cqw` ห้ามใช้ cqw กับตัว `.gc` เอง) · ชิ้นส่วน `.gc__art` `.gc__name` (โชว์เฉพาะ `.gc--noart` = ไม่มีรูป) `.gc__ring` `.gc__sweep` `.gc__hp` `.gc__odds` `.gc__rar` `.gc__atk` (ตัวเลข `[data-k]`) `.gc__mock` `.gc__sheen` (`.card__glare`) `.gc__flash` · ใส่ `data-rarity` บน `.gc` แล้ว CSS ทำกรอบเอง · mini `.gc--mini` ไม่มีแสงวิ่ง กรอบไม่หมุน · Tier Maker / Deck ซ่อนป้ายระดับ `.gc__rar` (ระดับอยู่ที่ชิป) · support `.scard` ยังเป็นกรอบทอง + `.scard__orn` + ตราครั่ง (`scard__tier--long` สำหรับ GOD) · `@keyframes fx-spin` มี `translate(-50%,-50%)` → **ใช้กับชั้นที่จัดกลางด้วย left/top 50% เท่านั้น** ตัวหมุนอื่น (เช่น `.fx-loader`) ใช้ keyframe ของตัวเอง · การ์ดมี `role="button"` กด Enter/Space ได้ · เหรียญเกรด 10 = แผ่นรุ้งหมุน (`::before` จัดกลาง)
 - **Unranked** = `scores.overall` 0 หรือ `tier` ว่าง → ป้าย Unranked ไม่มีป้าย tier ไม่ขึ้นแถว Tier List เรียงท้ายสุด · `image` ว่าง/โหลดไม่ได้ = รูปวาดแทน (ซุ้มประตูโค้ง `C.placeholderArt`) · `"mock": true` = ป้าย mock
 - **พื้นหลัง** `FX.backdrop($("#backdrop"))` วาดครั้งเดียว · ชั้นที่ขยับตลอด = หมอก + ละอองไฟ (CSS transform) · เมืองขยับตอน scroll ด้วย **Web Animation ที่ pause แล้วตั้ง currentTime** (CSS animation ที่ pause ไม่อยู่บน fast path) · `#backdrop` z-index -1 → **`body` ต้องไม่มีสีพื้น** (สีอยู่ที่ `html` · ห้ามสีพื้นแบบ `fixed` ที่ body) · lite = ละอองน้อยลง · reduced = ภาพนิ่ง
 - `#boot` ซ่อนด้วย `hideBoot()` (หรือ CSS หลัง 8 วิ) · วันที่อัปเดต = ทุก element ที่มี `data-updated` (+ `#updated`)
@@ -185,7 +178,7 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 - **aura เล่นเฉพาะการ์ดบนจอ:** `renderCard` เรียก `C.watchLive(el)` (IntersectionObserver rootMargin 24px) → `.is-live` · อนิเมชั่นวนใน fx.css เขียนเป็น `.card[data-rarity=…].is-live …` · **เอฟเฟกต์วนแบบใหม่ต้องผูก `.is-live` แบบเดียวกัน**
 - **การ์ดพักเป็น transform 2D** (`.card` / `.scard` = `translateY(var(--lift))`) · 3D เฉพาะ `.is-tilting` / `:hover` · ห้าม 3D ตอนพัก และห้าม `transform: none` (hit-test ช้า 5 เท่า)
 - **ห้ามเขียน `style.transform` ทุกครั้งที่ scroll / ขยับนิ้ว** → ใช้ animation ที่ pause แล้วตั้ง `currentTime` (ตัวอย่าง `FX.backdrop`, `ghostAxis()`)
-- **Lite mode:** `FX.lite` + `html.lite` เปิดเองเมื่อ `deviceMemory ≤ 4` หรือ `hardwareConcurrency ≤ 4` หรือ `FX.probe()` (0.8 วิหลังโหลด นับเฟรม 2 วิ) < 45 fps · ลดแค่ละอองไฟพื้นหลัง + อนุภาค Ascended 3 จาก 5 · ไม่มีปุ่ม
+- **Lite mode:** `FX.lite` + `html.lite` เปิดเองเมื่อ `deviceMemory ≤ 4` หรือ `hardwareConcurrency ≤ 4` หรือ `FX.probe()` (0.8 วิหลังโหลด นับเฟรม 2 วิ) < 45 fps · ลดแค่ละอองไฟพื้นหลัง (ละออง Ascended บนการ์ดเอาออกแล้วในขั้น 13) · ไม่มีปุ่ม
 - **Blur:** `backdrop-filter` เฉพาะ `.topbar.glass` กับ `.nav.glass` · `.glass` อื่น = `background-color: var(--glass-under)` + `background-image: linear-gradient(var(--glass), var(--glass))` · เปลี่ยนพื้นให้ตั้ง `background-image` (ไม่ใช่ `background:` ทั้งก้อน)
 - **รูปการ์ด:** `C.artImg(src, small)` + `C.bindArt(root, item)` · การ์ด mini ขอ `images/cards/thumb/<id>.webp` (300×420) → รูปใหญ่ → รูปวาด · `loading="lazy"` `decoding="async"` `width/height` ทุกรูป · support ใช้รูปใหญ่
 
@@ -194,9 +187,9 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 - `cbi:tierlists` = `[{ "id":"tl_x1", "name", "type":"card"|"support", "rarity", "rows":[{ "id":"r1", "label":"SS", "color":"--t-ss", "items":[{ "uid":"i1", "id":"bald-cadet" }] }], "created", "updated" }]` · ใช้ uid เพราะการ์ดใบเดียวกันอยู่ได้หลายช่อง · id ที่ไม่มีในคลัง = ช่องเส้นประ ไม่ลบเอง · จำกัด 20 แถว (เหลือ ≥ 1) · ชื่อแถว 24 · ชื่อ list 40 ตัวอักษร
 - `cbi:decks` = `[{ "id":"dk_x1", "name", "mode":"tower", "rarity", "cards":[id|null ×5], "support":[id|null ×5], "created", "updated" }]`
 
-### 3.5 การ์ดแบบในเกม + เคสเกรด (mockup `mockup/game-card.html` · รออนุมัติ · ยังไม่อยู่ในเว็บจริง)
+### 3.5 การ์ดแบบในเกม + เคสเกรด (ขั้น 13 · อยู่ในเว็บแล้ว `?v=15` · ต้นแบบ `mockup/game-card.html`)
 **3.5.1 การ์ด (ใช้ทุกหน้า แทนกรอบรูปทอง §3)**
-- รูป = รูปที่ลบ HP / ป้าย 1 IN X / ATK แล้ว (เก็บชื่อ, ความสามารถ, หัวใจ, ดาบ) · ไฟล์ใน `mockup/clean-art/` (600×840) + `thumb/` (300×420) · ตอนย้ายเข้าเว็บให้ทับ `images/cards/` และ `images/cards/thumb/` · **งาน A ต่อไปต้องลบตัวเลขด้วย** (OpenCV `cv2.xphoto.inpaint` FSR_FAST · mask = สีเขียว HP / แดง ATK ขยาย 7px + รูปทรงป้ายโอกาส · สคริปต์ใน HISTORY §9 2026-10-25)
+- รูป = รูปที่ลบ HP / ป้าย 1 IN X / ATK แล้ว (เก็บชื่อ, ความสามารถ, หัวใจ, ดาบ) · ใช้ใน `images/cards/` (600×840) + `images/cards/thumb/` (300×420) แล้ว · **ลบ `×N` (จำนวนที่มี) และ `★` ออกด้วย** (เจ้าของตอบ §3.5.4 ข้อ 1) · **งาน A ต่อไปต้องลบตัวเลข + ×N + ★ ด้วย** (OpenCV `cv2.xphoto.inpaint` FSR_FAST จาก `pip install opencv-contrib-python-headless` · mask = สีเขียว HP / แดง ATK ขยาย 7px + รูปทรงป้ายโอกาส · ×N / ★ = พิกเซลสว่างในกล่องเล็กมุมขวาล่าง ขยาย 5px · วิธีใน HISTORY §9 2026-10-25 ทั้ง 2 รายการ)
 - เว็บวาดทับตำแหน่งเดิม (หน่วย `cqw` = 1% ของความกว้างการ์ด ใช้ได้ทุกขนาด) · `.gc` มี `container-type: inline-size` · มุมการ์ด `3.7% / 2.64%` (ห้ามใช้ cqw กับตัว `.gc` เอง)
 
 | ส่วน | ตำแหน่ง (cqw) | หน้าตา |
@@ -207,23 +200,19 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 | ATK | left 21.5 · width 57.5 · top 122.6 · สูง 15.6 · กลาง | Oswald 700 14.2cqw · `#ec453b` ขอบแดงเข้ม |
 
 - เลขยาวย่อเอง: วัดความกว้างแล้วลด font-size ให้พอดีช่อง (วัดด้วยเลขที่ยาวกว่าระหว่างเลขเก่า/ใหม่ ตอนนับจะไม่ล้น) · เปลี่ยนระดับ = flash + นับเลข 650ms (reduced motion = เปลี่ยนทันที)
-- โอกาสแบบเกม: ทศนิยม 1 ตำแหน่ง + K / M / B / T / Qa (เช่น `1 IN 9.5B`, `1 IN 140T`)
-- กรอบ = วงแหวนทับขอบรูป (รูปไม่หด ตัวเลขอยู่ที่เดิมทุกระดับ) · Shiny ทอง + แสงวิ่ง · Rainbow รุ้งหมุน · Secret ดำแดงเรืองเต้น · Divine ขาวทองเรือง · Cosmic ม่วงน้ำเงินหมุน + จุดดาว · Ascended prismatic หมุน + แสงวิ่ง · **6 ระดับนี้ = เดา** รอรูปในเกม
+- โอกาสแบบเกม **ใช้ทั้งเว็บ** (เจ้าของตอบข้อ 3 · `shortNum` ใน app.js): ทศนิยม 1 ตำแหน่ง + K / M / B / T / Qa / Qi · 100 ขึ้นไปไม่มีทศนิยม (เช่น `1 in 59`, `1 in 9.5B`, `1 in 140T` · บนการ์ดเป็นตัวพิมพ์ใหญ่)
+- กรอบ = วงแหวนทับขอบรูป (รูปไม่หด ตัวเลขอยู่ที่เดิมทุกระดับ) · Shiny ทอง + แสงวิ่ง · Rainbow รุ้งหมุน · Secret ดำแดงเรืองเต้น · Divine ขาวทองเรือง · Cosmic ม่วงน้ำเงินหมุน + จุดดาว · Ascended prismatic หมุน + แสงวิ่ง · **6 ระดับนี้ = เดา** (เจ้าของตอบข้อ 2: ใช้แบบเดาไปก่อน ได้แคปในเกมแล้วค่อยแก้)
 - mini (`.gc--mini`, 76px): ไม่มีแสงวิ่ง กรอบไม่หมุน ไม่มีเรืองเต้น · อนิเมชั่นเฉพาะการ์ดบนจอ (`.is-live`)
-- เอาออกจากการ์ด: ริบบิ้นระดับ, ชื่อ/ซีรีส์, แถบ ATK/HP ล่าง, ตราครั่ง tier, ลายมุม, ละออง
+- เอาออกจากการ์ด: ริบบิ้นระดับ, ชื่อ/ซีรีส์ (ชื่ออยู่ในรูป · ไม่มีรูป = วาดชื่อเหนือแถว ATK), แถบ ATK/HP ล่าง, ตราครั่ง tier (เจ้าของตอบข้อ 4), ลายมุม, ละออง
 
-**3.5.2 เคสเกรด `.slab` (เฉพาะหน้ารายละเอียดการ์ด + หน้า Grade)**
+**3.5.2 เคสเกรด `.slab` (หน้า Grade: ครอบการ์ดที่ตั้งเกรด · หน้ารายละเอียด: กล่อง Grade ในแผ่น Details เฉพาะการ์ดที่มีเกรด)**
 - เคสพลาสติกใสวาดเอง (ไม่มีโลโก้/ชื่อ PSA) · ป้ายหัวเคสกระดาษงาช้าง ขอบสีตามเกรด (1–3 `--g-bronze` · 4–6 `--g-silver` · 7–9 `--g-gold` · 10 รุ้ง) · การ์ด `.gc` อยู่ในช่องเว้า · ร่องกันลื่นล่าง · แสงสะท้อนวิ่ง 1 ครั้งเมื่อเลื่อนมาเห็น / เมื่อเปลี่ยนค่า
-- ป้ายหัวเคส: `CBI GRADED · ซีรีส์` · ชื่อ · ระดับ · Tier · โอกาส | คำเกรด + เลขเกรดรวมใหญ่ (ค่าเฉลี่ย 4 ค่า ปัด .5 ขึ้น §6.1) · แถว ATK / HP หลังบวกเกรด (+2.5%/เกรด) · แถวเกรดย่อย ATK · DEF · STS · HP + บาร์โค้ด + เลข cert (สร้างจาก id)
-- คำเกรด: 1 Fair · 2 Good · 3 Very good · 4 Very good+ · 5 Excellent · 6 Excellent+ · 7 Near mint · 8 Near mint+ · 9 Mint · 10 Gem mint
+- ป้ายหัวเคส: `CBI GRADED · ซีรีส์` · ชื่อ · ระดับ · Tier (หรือ Unranked) · โอกาส | คำเกรด + เลขเกรดรวมใหญ่ (ค่าเฉลี่ย 4 ค่า ปัด .5 ขึ้น §6.1) · แถว ATK / HP หลังบวกเกรด (+2.5%/เกรด) · แถวเกรดย่อย ATK · DEF · STS · HP + บาร์โค้ด + เลข cert (สร้างจาก id)
+- ยังไม่มีเกรด (หน้า Grade) = ขอบทองเข้ม คำ `Ungraded` เลข `–` · คำเกรด: 1 Fair · 2 Good · 3 Very good · 4 Very good+ · 5 Excellent · 6 Excellent+ · 7 Near mint · 8 Near mint+ · 9 Mint · 10 Gem mint
 
-**3.5.3 ตอนย้ายเข้าเว็บ (แชทถัดไป) ต้องแก้:** `CBI.renderCard` + `setCardRarity` (`js/app.js`), สไตล์ระดับใน `css/fx.css` + `css/cards.css`, `frameSpec()` ใน `js/share.js` (รูปที่บันทึก), การ์ดหน้า Grade + หน้ารายละเอียด (`js/grade.js`, `js/detail.js`), โหลด Oswald + Bangers ใน `index.html`, token `--gc-*` ลง `css/tokens.css`, ตาราง §3 เรื่องกรอบ, รูปใน `images/cards/` · ทุกไฟล์ `?v=15`
+**3.5.3 ไฟล์ที่เกี่ยว:** `js/app.js` (renderCard / setCardRarity / setCardNums / fitCard / shortNum), `css/fx.css` (`.gc` ทุกระดับ), `css/tokens.css` (`--gc-*`, `--slab-*`), `js/grade.js` + `css/grade.css` (เคส), `js/detail.js` (การ์ดในฉาก + `mountSlabs`), `js/share.js` (`drawGameCard` / `gcSpec`), `index.html` (Oswald + Bangers)
 
-**3.5.4 คำถามรอเจ้าของตอบ**
-1. ลบ `×3` (Moon Eye Ghost) และ `★` (Dragon Emperor Monarch, Atomic Shadow Lord) ออกจากรูปด้วยไหม
-2. กรอบ/ป้าย 6 ระดับ: ส่งแคปในเกมมาได้ไหม (ระดับละ 1 รูปพอ) หรือใช้แบบเดาไปก่อน
-3. รูปแบบโอกาสแบบเกม (ทศนิยม 1 ตำแหน่ง + T/Qa) ใช้ทั้งเว็บไหม (เว็บเดิมใช้ 2 ตำแหน่ง และไม่มี T)
-4. ตราครั่ง tier หายจากการ์ด: tier ยังเห็นในแถว Tier List, หน้ารายละเอียด และป้ายเคส · โอเคไหม
+**3.5.4 คำตอบเจ้าของ (2026-10-25):** 1) ลบ ×3 / ★ ออกจากรูป ✅ 2) ใช้แบบเดาไปก่อน ได้แคปในเกมแล้วค่อยแก้ ✅ 3) รูปแบบโอกาสแบบเกมทั้งเว็บ ✅ 4) ตัดตราครั่ง tier ออกจากการ์ดได้ ✅
 ## 4. Motion Guide (อ่านทุกครั้งที่เพิ่มปุ่มหรือการกดแบบใหม่)
 หลักการ: มีอนิเมชั่นเพื่อให้รู้สึกเหมือนเกม แต่ต้องลื่นบนมือถือและไม่ทำให้ช้า
 - ใช้แค่ `transform` และ `opacity` · ความยาว 150–400ms · easing `cubic-bezier(.2,.8,.2,1)`
@@ -235,7 +224,7 @@ repo Card_Ascension: อ่าน PROGRESS.md (กฎทำงาน + ▶️ + 
 
 **การกระทำ → อนิเมชั่น** (ตารางเดิมแบบแถวละ 1 อย่าง: HISTORY §0.4 · การกดแบบใหม่ที่ไม่มีในนี้ ให้เพิ่มลงกลุ่มที่ตรง)
 - **ทั่วไป:** กดปุ่ม → ย่อเหลือ 0.96 + วงแสงทองสั้นๆ · เปลี่ยนเมนู → แผ่นทองของเมนูเลื่อนไปปุ่มใหม่ (มือถือ = แนวนอน, คอม = แนวตั้ง) + หน้าใหม่ fade/slide เข้า + เส้นทองกวาดผ่านชื่อหน้า 1 ครั้ง · สลับสวิตช์ (Global ⇄ My Lists, Cards ⇄ Support) → `.seg__ind` เลื่อนไปปุ่มใหม่ (transform) + เนื้อหาใหม่ `fx-page-in` หรือแถวไล่เข้า (stagger) · ใช้ `.seg` + `--i` ได้เลย · สวิตช์เปิด/ปิด (Compare with Global) → จุดในสวิตช์เลื่อน + ป้าย ↑/↓/= fade เข้า · กล่องถาม `.tm-dlg` → scrim fade + กล่องเลื่อนขึ้นเล็กน้อยและ fade เข้า (ปิด = ย้อนทาง) · toast `FX.toast` → เลื่อนขึ้นจากด้านล่าง + fade หายเองใน ~3 วิ · กำลังโหลด → การ์ดเปล่าสลับไปมา (skeleton) · หน้าโหลด → ตรา + นาฬิกาพกเข็มหมุน → fade ออกเมื่อข้อมูลมา · พื้นหลัง → หมอกเลื่อนช้า + ละอองไฟลอยขึ้น (CSS ล้วน) · เงาเมือง parallax ตาม scroll (paused Web Animation) · วาดครั้งเดียว ห้ามวาด canvas ทุกเฟรม · ปุ่มเพลง ♪ → กด = ย่อ 0.96 + วงแสง · เปิด = ค่อยๆ ดังขึ้น 0.6 วิ + แท่งคลื่นเสียง 3 แท่งขยับ (transform เฉพาะตอนเล่น) · ปิด = ค่อยๆ เบาลง
-- **การ์ด / รายการ:** แตะ/ชี้การ์ด → ยกขึ้น + เอียง 3D ตามนิ้ว + แสง holo วิ่งผ่าน · กรอง/เรียง → เรียงใหม่แล้วไล่เข้าทีละใบ (เฉพาะ 16 ใบแรก) · เปลี่ยนระดับการ์ด → สี aura ค่อยๆ ไล่ + ตัวเลขนับไปค่าใหม่ (เฉพาะการ์ดบนจอ ใบอื่นเปลี่ยนเงียบๆ) · โหลดหน้า Tier List → แถวไล่เข้าทีละแถว (stagger) · แตะไทล์ support บน Tier List → รูปบินไปเป็นรูปใหญ่ในหน้ารายละเอียด Support (shared element) · กลับมาตำแหน่งเลื่อนเดิม
+- **การ์ด / รายการ:** แตะ/ชี้การ์ด → ยกขึ้น + เอียง 3D ตามนิ้ว + แสง holo วิ่งผ่าน · กรอง/เรียง → เรียงใหม่แล้วไล่เข้าทีละใบ (เฉพาะ 16 ใบแรก) · เปลี่ยนระดับการ์ด → แฟลชขาวบนการ์ด + ตัวเลขนับไปค่าใหม่ 650ms (ย่อให้พอดีช่องระหว่างนับ · เฉพาะการ์ดบนจอ ใบอื่นเปลี่ยนเงียบๆ · reduced = เปลี่ยนทันที) · เคสเกรด → แสงสะท้อนวิ่งผ่านพลาสติก 1 ครั้งเมื่อเลื่อนมาเห็น / เมื่อเปลี่ยนเกรดหรือระดับ + เลขเกรดใหญ่เด้ง (reduced = ไม่มี) · แตะเกรดในหน้า Grade → การ์ดในเคสนับ ATK/HP ไปค่าใหม่ · โหลดหน้า Tier List → แถวไล่เข้าทีละแถว (stagger) · แตะไทล์ support บน Tier List → รูปบินไปเป็นรูปใหญ่ในหน้ารายละเอียด Support (shared element) · กลับมาตำแหน่งเลื่อนเดิม
 - **หน้ารายละเอียดการ์ด (Black Sun):** เปิด → ฉาก fade เข้า 300ms + ผงรวมเป็นการ์ด ~2.6 วิ → วง Overall นับขึ้น + เส้นชี้ 4 ป้ายวิ่งออกทีละเส้น (จุด → เส้น scaleX → ป้าย fade) · **ทุกครั้ง** = intro ผงรวมเป็นการ์ด (ไม่บินจากช่องแล้ว · 2026-10-25) · ปิด → ฉาก fade ออก 250ms + การ์ดบินกลับช่องของใบที่ดูอยู่ · ช่องอยู่นอกจอ = การ์ดจางหาย **ไม่เลื่อนหน้า** · แตะ / ลาก / สะบัด / แตะ 2 ครั้ง การ์ด → หมุน 360° 900ms · หมุนตามนิ้ว (จำกัดมุม ไม่ตะแคงเป็นเส้น) แล้วสปริงกลับ · หมุนหลายรอบแล้วช้าลงจบด้านหน้า · ซูม (380ms) · ความหนา 3D ตอนขยับ/เอียง ตอนตรงเป็น 2D · แสง holo **แสดงตลอด** (นิ่ง = ค้างตามมุมล่าสุด) · **ขยับเมาส์ (คอม) → การ์ดหันตาม (ease ~120ms)** · เอียงมือถือ = ไม่ขยับอะไร · ป้าย 4 ป้ายไม่จาง จุดปลายเส้นบนการ์ดเคลื่อนตามการ์ด · ละอองรอบการ์ดหมุนวนตอนการ์ดหมุน · สั่นเบาๆ ตอนเด้งเข้าที่ · reduced = แฟลชแทนการหมุน · ปัดซ้าย/ขวานอกการ์ด, ‹ ›, ลูกศรคีย์บอร์ด → การ์ดเลื่อนออก 170ms (ย่อ .94 + จาง) → intro ผงของใบถัดไป (เร็วขึ้น ×0.75 ~2 วิ) · ป้ายวิ่งออกใหม่ · Overall นับไปค่าใหม่ · reduced = fade · จุดระดับ 7 จุด → วงทองเลื่อนไปจุดใหม่ + ชื่อระดับ fade ขึ้น · กรอบ/aura แฟลช + ตัวเลขนับ · วงแสงดวงอาทิตย์สลับ fade 500ms · ละออง/เส้นชี้เปลี่ยนสี · แตะป้าย (มือถือ) → กล่องคำอธิบายเต็ม fade + เลื่อน 6px (200ms) · แตะที่อื่น = ปิด · ≥ 768px แสดงเต็มในป้ายเลย · ปุ่ม Details → แผ่นเลื่อนขึ้นจากล่าง 320ms + scrim fade · ตัวเลขนับ + แถบคะแนนยืด + กล่องไล่ขึ้นทีละกล่อง · ปัดหัวแผ่นลง = แผ่นตามนิ้ว (paused animation) ปล่อยแล้วปิด/เด้งกลับ · ลากนิ้วบนพื้นหลัง / ขยับเมาส์ → ฉาก 4 ชั้นขยับคนละระยะ (parallax, paused Web Animation, rAF หยุดเองเมื่อนิ่ง)
 - **Tier Maker:** กดค้างการ์ด (นิ้ว) → ย่อ 0.95 ระหว่างรอ 0.26 วิ → ยกขึ้น + สั่นสั้นๆ (ถ้ามือถือรองรับ) · หยิบการ์ด (ลาก) → ลอยขึ้น ขยาย 1.06 + เงาเข้ม · ช่องที่วางได้เรืองขอบ · วางการ์ด → ลงช่องแล้วเด้งเบาๆ (≤ 250ms) · การ์ดข้างๆ เลื่อนหลบแบบนุ่ม (FLIP) · เลือกการ์ด (แตะ) → ขอบเรือง `--rift` + แถบคำสั่งเลื่อนขึ้นจากด้านล่าง · ลากการ์ดในแถวลง pool → pool เป็นกรอบแดงเส้นประ "Drop here to remove" · ปล่อย = การ์ดย่อจางหาย + toast Undo · ปล่อยนอกแถว → บินกลับที่เดิม · เพิ่ม/ลบแถว, เพิ่ม/ลบการ์ด → เพิ่ม = กางออก/เด้งเข้า · ลบ = ย่อและจางหาย แถวอื่นเลื่อนตามแบบนุ่ม · Undo / Redo → การ์ดที่เปลี่ยนเลื่อนกลับแบบ FLIP (ไม่กระโดด)
 - **Deck + คะแนนทีม:** ใส่การ์ดลงช่อง → บินเข้าช่อง (`FX.flip`) · คะแนนนับไปค่าใหม่ วงเปลี่ยนสีแบบไล่ · ใส่จากตัวเลือก → เด้งเข้าช่อง (scale .6 → 1.05 → 1 ≤ 260ms · reduced = fade) · ย้าย/สลับ (แตะหรือลาก) → FLIP · ลาก = ปล่อยแล้วบินจากนิ้วเข้าช่องและเด้งเบาๆ · ช่องปลายทางเรืองขอบ `--rift` · กด × → สำเนาการ์ดย่อจางหาย 220ms + toast Undo · วงคะแนน → ตัวเลขนับ (`FX.countTo`) · เส้นวงสลับ fade ไปความยาว/สีใหม่ (opacity, 320ms) · เปลี่ยนช่วงสี = วงเด้ง 1.08 ครั้งเดียว · ไม่มีการ์ด = "—" · คะแนน 100 → วงรุ้งหมุน (CSS, `.is-live`) + ประกาย 10 จุด 1 ครั้ง (ลบตัวเองเมื่อจบ) · reduced = วงรุ้งนิ่ง ไม่มีประกาย · แถบคะแนนแต่ละส่วน → `scaleX` (400ms · reduced = ทันที) · ข้อดี/ข้อเสีย/Fits modes เปลี่ยน → เฉพาะกล่องที่เปลี่ยน จาง .25 → 1 (220ms) · แตะการ์ดใน Fill the gaps → ย่อ .96 + เด้งเข้าช่อง (popIn) + toast Undo · tile ใหม่ scale .9 → 1 · แตะโหมดใน Fits modes → ตัวชี้ `.seg` เลื่อน + คะแนนนับไปค่าใหม่ · แตะชิปการ์ดใน Strong/Weak vs → การ์ดขยายจากชิป (`FX.flip`) ปิดแล้วบินกลับ · Compare / เปลี่ยน deck ในกล่อง → กล่องถามแบบเดิม · คอลัมน์ `fx-page-in` + ตัวเลขนับ · Copy to My Decks / Save a copy → แสงแฟลชบนกรอบ + toast ปุ่ม Open · ทำสำเนา/ลบ deck ในหน้ารวม → แถวอื่นเลื่อนเติมแบบ FLIP · แถวใหม่เด้งเข้า · แถวที่ลบย่อหาย
@@ -272,7 +261,7 @@ const RARITY_MULTIPLIERS = {
 // Stat ระดับ X = Stat Normal × stat · โอกาสระดับ X = โอกาส Normal × odds
 ```
 - เกมปัดเศษ ทำให้บางค่าคลาดเคลื่อน 1–2 หน่วย ถ้ามีค่าจริงจากรูป ให้ใส่ใน `exact` แล้วเว็บจะใช้ค่านั้นแทนค่าที่คำนวณ
-- แสดงโอกาสแบบย่อ เช่น `1 in 59`, `1 in 29.5K`, `1 in 2.95M`
+- แสดงโอกาสแบบย่อแบบเกม (ขั้น 13) เช่น `1 in 59`, `1 in 29.5K`, `1 in 9.5B`, `1 in 140T`
 - ทุกการ์ดใช้ตัวคูณเดียวกัน อันดับ ATK/HP จึงเหมือนกันทุกระดับ เวลาจัดอันดับให้เทียบที่ระดับเดียวกันเสมอ
 
 ### 5.2 โครงไฟล์ข้อมูล

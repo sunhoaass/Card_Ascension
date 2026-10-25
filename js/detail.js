@@ -956,7 +956,7 @@
   function resetLean() { R3.tly = R3.tlx = R3.ly = R3.lx = 0; }
   function spinOnce() {
     if (R3.mode === "drag" || !el.wrap.classList.contains("is-in")) return;
-    if (rm()) { el.faceF.querySelectorAll(".card__flash").forEach((f) => f.animate([{ opacity: 0.4 }, { opacity: 0 }], { duration: 300 })); return; }
+    if (rm()) { el.faceF.querySelectorAll(".gc__flash").forEach((f) => f.animate([{ opacity: 0.4 }, { opacity: 0 }], { duration: 300 })); return; }
     if (R3.mode === "rest") R3.ang = 0;
     closePop(); hideHint(); enter3D(); busy(true);
     const a0 = R3.ang, a1 = (Math.round(a0 / 360) + 1) * 360;   // one more full turn, always ends on the front
@@ -1209,6 +1209,7 @@
     if (card.image) C.bindArt(el.shThumb, card);
     el.sheetBody.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`);   // tier badge colour
     el.sheetBody.innerHTML = sheetHTML(card);
+    C.grade.mountSlabs(el.sheetBody);   // step 13: the graded case in the Grade panel (only when this card has grades)
     [["#d-beats", card.beats], ["#d-loses", card.losesTo], ["#d-with", card.team && card.team.bestWith]].forEach(([sel, ids]) => {
       const rowEl = $(sel, el.sheetBody);
       if (!rowEl) return;
@@ -1351,18 +1352,18 @@
     ctx.save(); ctx.scale(cw / 200 / s, ch / 280 / s);
     ctx.strokeStyle = "#fff"; ctx.fillStyle = "#fff";
     ctx.lineWidth = 9; ctx.strokeRect(4.5, 4.5, 191, 271);
-    ctx.globalAlpha = 0.55; ctx.fillRect(10, 222, 180, 46);         // name plate
+    ctx.globalAlpha = 0.55; ctx.fillRect(10, 236, 180, 32);         // ATK row
     ctx.globalAlpha = 0.22; ctx.fillRect(10, 10, 180, 212);
     if (!card.image) { ctx.globalAlpha = 0.9; ctx.scale(2, 2); ctx.fill(new Path2D("M28 104V52a22 22 0 0 1 44 0v52z")); ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(50, 56, 30, 0, Math.PI * 2); ctx.stroke(); }
     ctx.restore();
     const base = ctx.getImageData(0, 0, w, h).data;
     // the real picture: brighter pixels get more dust (same-origin image, so the canvas stays readable)
     let lum = null;
-    const img = el.faceF.querySelector(".card__art img");
+    const img = el.faceF.querySelector(".gc__art img");
     if (card.image && img && img.complete && img.naturalWidth) {
       try {
         const t = document.createElement("canvas"); t.width = w; t.height = h;
-        const tc = t.getContext("2d"); tc.drawImage(img, w * 0.05, h * 0.035, w * 0.9, h * 0.93);
+        const tc = t.getContext("2d"); tc.drawImage(img, 0, 0, w, h);   // the game card's picture fills the whole card
         lum = tc.getImageData(0, 0, w, h).data;
       } catch (e) { lum = null; }
     }

@@ -743,3 +743,38 @@
   - **ทดสอบ (Chromium 320 / 390 / 1440px):** การ์ด 4 ใบ × Ascended/Normal/Cosmic ตรวจทั้งระหว่างนับและหลังนับ ตัวเลข/ป้ายไม่ล้นช่องเลย · สีเคสตามเกรดถูก (2 bronze · 5 silver · 10 rainbow) · ปุ่มรูปเดิมทำงาน · reduced motion เปลี่ยนเลขทันที · ไม่มีเลื่อนข้าง · ไม่มี error (นอกจาก Google Fonts ที่เครื่องทดสอบโหลดไม่ได้) · **แคปใช้ฟอนต์แทน (TeX Gyre Heros Cn)** บนเว็บจริงจะเป็น Oswald + Bangers ซึ่งใกล้เกมกว่า · ยังไม่วัดความเร็ว §11.3 (ทำตอนย้ายเข้าเว็บ)
   - แก้ PROGRESS: กฎข้อ 10 (วาดเองด้วย CSS + Google Font ที่คล้าย, ห้ามก๊อปไฟล์ฟอนต์/UI) · ▶️ · §3.5 ใหม่
   - **ไฟล์:** `mockup/game-card.html` (ใหม่), `mockup/clean-art/*.webp` + `mockup/clean-art/thumb/*.webp` (ใหม่ 8 ไฟล์ · เข้า main แล้วใน PR #1), `PROGRESS.md`, `HISTORY.md`
+- 2026-10-25: **ขั้น 13 · การ์ดแบบในเกม + เคสเกรดทั้งเว็บ · `?v=15`** (ย้ายจาก `mockup/game-card.html` ตาม PROGRESS §3.5 · ทำใน Claude Code แล้วเปิด pull request) — คำตอบเจ้าของ §3.5.4: 1) ลบ ×3 / ★ 2) กรอบ 6 ระดับใช้แบบเดาไปก่อน 3) รูปแบบโอกาสแบบเกมทั้งเว็บ 4) ตัดตราครั่ง tier ออกจากการ์ด
+  - **รูป:** `images/cards/*.webp` + `thumb/` = รูปที่ลบตัวเลขแล้ว (จาก `mockup/clean-art/`) + ลบ `×3` (MEG) และ `★` (DEM, ASL) เพิ่ม: mask = พิกเซลที่ช่องสีสว่างสุด > 70–80 ในกล่องเล็ก (MEG x 538–594 y 764–816 · DEM x 526–570 y 700–744 · ASL x 522–572 y 700–750) ขยาย 5px → `cv2.xphoto.inpaint` FSR_FAST (`pip install opencv-contrib-python-headless`) · พื้นหลังมืดทั้ง 3 จุด เนียน · BE ใช้รูปจาก mockup ตรงๆ · webp q86 / thumb 300×420 q82 · ลบไฟล์ว่าง `images/cards/thumb/s` (โฟลเดอร์ `images/thumb/` ไม่มีแล้ว)
+  - **การ์ด (`js/app.js` `renderCard`):** `.card.gc` = รูปเต็มใบ + `.gc__hp` / `.gc__odds` / `.gc__rar` / `.gc__atk` วาดทับตำแหน่งเกม (cqw) + วงแหวนกรอบ `.gc__ring` + `.gc__glow` / `.gc__sweep` / `.gc__flash` · ไม่มีรูป = รูปวาดเดิม + ชื่อ (Bangers) เหนือแถว ATK (`.gc--noart` · ตั้งเองตอนรูปโหลดไม่ได้ใน `bindArt`) · `mock` = ป้ายมุมซ้ายล่าง (ซ่อนใน mini)
+  - **ย่อเลขให้พอดีช่อง (`fitNum` / `fitCard`):** วัดความกว้างด้วย canvas `measureText` (ไม่ต้อง layout จึงทำได้ตั้งแต่ตอนสร้างการ์ด) แล้วตั้ง font-size เป็น cqw · ระหว่างนับเลขใช้เลขที่ยาวกว่า (เก่า/ใหม่) · ฟอนต์เว็บมาทีหลัง → `document.fonts` `loadingdone` วัดใหม่ทุกใบ · `setCardNums()` นับ 650ms (`FX.countTo` `duration`) · `flashCard()`
+  - **โอกาส:** `shortNum` แบบเกม ทศนิยม 1 ตำแหน่ง + K/M/B/T/Qa/Qi (≥ 100 ไม่มีทศนิยม) ใช้ทุกที่ที่เรียก `fmtOdds` (การ์ด, Details, Support, เคส)
+  - **CSS:** `css/fx.css` ส่วนการ์ดเขียนใหม่ทั้งหมด (`.card` = พฤติกรรมเดิม: ยก/เอียง/glare/โฟกัส · `.gc` = หน้าตา · 7 ระดับ · mini ไม่มีแสงวิ่ง/ไม่หมุน · ลบกรอบรูปทอง, ริบบิ้น, ตราครั่ง, ลายมุม, ดาว, ละออง Ascended) · `css/tokens.css` `--gc-*` + `--slab-*` · `index.html` โหลด Oswald 700 + Bangers · `css/detail.css` การ์ดในฉากใช้ cqw ตาม `--cw` เอง (ลบ override ขนาดเดิม) · holo มุมตาม `--gc-corner` · `css/deck.css` / `css/tiermaker.css` ซ่อน `.gc__rar` แทนริบบิ้นเดิม · `css/cards.css` ลบ override การ์ดเดิม · `css/grade.css` เหรียญเกรดบนการ์ดย้ายไปมุมซ้ายใต้ชื่อ + `.slab`
+  - **เคสเกรด (`js/grade.js`):** `makeSlab` / `paintSlab` / `labelHTML` · หน้าตั้งเกรด: การ์ดอยู่ในเคส (มือถือ min(72vw, 280px) · คอม 300px) · แตะเกรด = เลข ATK/HP บนการ์ดนับไปค่าใหม่ + ป้ายอัปเดต + เลขเกรดใหญ่เด้ง + แสงสะท้อน · เปลี่ยนระดับ = แฟลช + นับ + แสงสะท้อน · ยังไม่มีเกรด = `Ungraded` / `–` · แผ่น Details: กล่อง Grade มีเคส (เฉพาะการ์ดที่มีเกรด · `mountSlabs` เรียกจาก detail.js · การ์ดในเคสไม่มีคลาส `.card` จึงแตะไม่เปิดซ้ำ) · เลข cert = `C.hash(id)` 8 หลัก · แก้ชิประดับในหน้าตั้งเกรดบนคอมที่ล้นเข้าคอลัมน์เคส (`margin-inline: 0` ≥ 900px)
+  - **รูปที่บันทึก (`js/share.js`):** `drawGameCard()` + `gcSpec()` วาดการ์ดแบบเดียวกับเว็บ (รูป, วงแหวนกรอบ, HP/ATK ขอบ+เงา, ป้าย 1 IN X, ป้ายระดับ, ชื่อเมื่อไม่มีรูป) อ่านสีจาก `--gc-*` · `gradStops()` แปลง linear-gradient ใน token · `fontsReady` รอ Oswald + Bangers ด้วย · support ยังวาดกรอบทองเดิม
+  - **หน้ารายละเอียด (`js/detail.js`):** `.gc__flash` แทน `.card__flash` · intro ผงอ่านรูปจาก `.gc__art img` เต็มใบ · เรียก `C.grade.mountSlabs`
+  - **ทดสอบ (Chromium · 390×844 มือถือ + 1280×800 · ข้อมูลจริง 4 ใบ + การ์ดทดสอบไม่มีรูป + `mock` ชื่อยาว · ข้อมูลทดสอบไม่อยู่ใน repo):** Cards / Tier List / My Lists editor / Deck editor / Grade (หน้าเลือก + ตั้งเกรด 9 และ 10 รุ้ง) / หน้ารายละเอียด (Shiny, Rainbow, ไม่มีรูป) / แผ่น Details + เคส + เปลี่ยนระดับในแผ่น · เปลี่ยนระดับแล้วตรวจกลางการนับ: เลข/ป้ายไม่ล้นช่องเลย (0 จุด) · รูปบันทึก Tier + Deck (Ascended / Normal / ไม่มีรูป / การ์ดหาไม่เจอ) · Back กลับหน้าเดิม · reduced motion ทำงาน · ไม่มี scroll แนวนอน · ไม่มี error ใน console (นอกจาก 404 `audio/bgm.mp3` ที่ตั้งใจ) · ฟอนต์ Oswald + Bangers โหลดจริง
+  - **ผลวัด §11.3** (CPU ×6, 390×844 DPR 2.75, นิ้วจำลองเลื่อน 3 วิ, มัธยฐาน 3 รอบ, เดิม v14 กับใหม่ v15 วัดสลับบนเครื่องเดียวกัน · หน้ารายละเอียด = นิ่ง 3 วิ ทับหน้า Cards · เครื่องวันนี้เร็วกว่าวันวัด §14.3 ตัวเลขจึงสูงทั้งคู่):
+
+    | ข้อมูล | หน้า | เดิม fps / เฟรมช้าสุด | ใหม่ fps / เฟรมช้าสุด | TaskDuration |
+    |---|---|---:|---:|---:|
+    | ข้อมูลจริง 4 ใบ | #tier | 60.0 / 17ms | 60.0 / 17ms | 0.67 → 0.69s |
+    | ข้อมูลจริง 4 ใบ | #tier/my | 60.0 / 17ms | 60.0 / 17ms | 0.74 → 0.79s |
+    | ข้อมูลจริง 4 ใบ | #cards | 60.0 / 17ms | 60.0 / 17ms | 0.66 → 0.64s |
+    | ข้อมูลจริง 4 ใบ | #support | 60.0 / 17ms | 59.7 / 33ms | 0.65 → 0.66s |
+    | ข้อมูลจริง 4 ใบ | #grade | 59.7 / 33ms | 59.2 / 33ms | 0.86 → 0.89s |
+    | ข้อมูลจริง 4 ใบ | รายละเอียด (นิ่ง) | 59.3 / 50ms | 59.3 / 33ms | 1.08 → 1.04s |
+    | 60 Normal | #tier | 59.5 / 33ms | 59.2 / 33ms | 0.90 → 0.91s |
+    | 60 Normal | #tier/my | 57.9 / 50ms | 58.2 / 50ms | 1.47 → 1.52s |
+    | 60 Normal | #cards | 59.2 / 33ms | 59.5 / 33ms | 1.17 → 1.15s |
+    | 60 Normal | #support | 60.0 / 17ms | 60.0 / 17ms | 0.62 → 0.64s |
+    | 60 Normal | #grade | 57.7 / 67ms | 57.9 / 50ms | 1.18 → 1.18s |
+    | 60 Normal | รายละเอียด (นิ่ง) | 59.7 / 33ms | 59.7 / 33ms | 1.25 → 1.19s |
+    | 60 Ascended | #tier | 60.0 / 17ms | 60.0 / 17ms | 1.22 → 1.24s |
+    | 60 Ascended | #tier/my | 58.7 / 33ms | 56.9 / 50ms | 2.05 → 2.17s |
+    | 60 Ascended | #cards | 59.2 / 33ms | 59.2 / 33ms | 1.69 → 1.52s |
+    | 60 Ascended | #support | 60.0 / 17ms | 60.0 / 17ms | 0.61 → 0.65s |
+    | 60 Ascended | #grade | 57.9 / 50ms | 59.0 / 50ms | 1.54 → 1.60s |
+    | 60 Ascended | รายละเอียด (นิ่ง) | 59.3 / 33ms | 59.7 / 33ms | 1.34 → 1.46s |
+
+    - ผ่านเกณฑ์ ≥ 55 fps ทุกกรณี · เฟรมช้าสุดของใหม่ ≤ 50ms ทุกกรณี (เดิมมี 67ms 1 กรณี) · ใหม่อยู่ในช่วงแกว่งของเดิมทุกกรณี = ไม่ช้าลง · ไม่มี rAF วน (นับเลขเฉพาะตอนเปลี่ยนระดับ) · อนิเมชั่นกรอบผูก `.is-live` เหมือนเดิม
+  - **ไฟล์:** `index.html`, `css/tokens.css`, `css/fx.css`, `css/cards.css`, `css/detail.css`, `css/deck.css`, `css/tiermaker.css`, `css/grade.css`, `js/app.js`, `js/grade.js`, `js/detail.js`, `js/share.js`, `images/cards/*.webp` (4) + `images/cards/thumb/*.webp` (4), ลบ `images/cards/thumb/s`, `PROGRESS.md` (กฎข้อ 7/9, ▶️ + "งานต่อไป" แบบ Claude Code ไม่มี zip, §3 ตารางการ์ด, §3.2, §3.3, §3.5, §4, §5.1), `HISTORY.md` · ไม่ต้องอัปเอง: merge pull request แล้ว Cloudflare Pages ดึงไปเอง
