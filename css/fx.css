@@ -214,6 +214,14 @@
 @keyframes gc-sweep { 0% { transform: translateX(-140%) skewX(-18deg); } 60%, 100% { transform: translateX(420%) skewX(-18deg); } }
 @keyframes gc-pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
 
+/* ---------- Cards far off screen sleep (W4) ----------
+   .is-far (js/app.js farOff: more than one screen away · Cards grid, Grade picker, Tier Maker pool, Deck picker): the
+   browser skips style, layout and paint inside it, so scrolling 300 cards costs about the same as 4. The card keeps
+   its exact size (aspect-ratio). "auto", not "hidden": after a jump (scrollbar, back to the tab) the browser draws a
+   far card that lands on screen itself, instead of an empty card until js/app.js wakes it a frame or two later.
+   Cards on screen never have it (it also clips the rarity glow and costs compositing with many on screen). */
+.card.is-far { content-visibility: auto; }
+
 /* ---------- Mini cards (tier rows, Tier Maker, decks, Grade picker, matchup rows) ----------
    Same card: no light sweep, the frame does not turn, no glow pulse (§3.5.1). */
 .gc--mini { --gc-shadow: var(--gc-shadow-mini); }

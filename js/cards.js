@@ -52,7 +52,7 @@
     bindTools();
     // step 9.5: the grid's cards are made the first time the Cards tab shows (not while you're on another tab)
     C.lazy("cards", () => {
-      state.cards.forEach((c) => cardEls.set(c.id, C.renderCard(c, state.rarity)));
+      state.cards.forEach((c) => { const el = C.renderCard(c, state.rarity); C.farOff(el); cardEls.set(c.id, el); });   // W4: far cards sleep
       built = true;
       apply({ animate: true });
     });
@@ -142,6 +142,7 @@
       ids.forEach((id) => frag.appendChild(cardEls.get(id)));
       ui.grid.replaceChildren(frag);
       shown = ids;
+      C.wakeNear(ui.grid);   // W4: cards that slept elsewhere in the list may now be on screen
       if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
     }
 

@@ -133,13 +133,52 @@
     if (window.WeakRef) watched.add(new WeakRef(el));
     liveIO.observe(el);
   }
+
+  /* ---------- Cards far off screen sleep (W4) ----------
+     farOff(card, { box }): more than one screen away = .is-far → content-visibility: auto (css/fx.css): no style,
+     layout or paint for what's inside, and not watched for .is-live (300 watched cards made every scroll frame slow).
+     box: the list scrolls inside its own box (Tier Maker pool, Deck picker) → that observer also keeps a one-box margin
+     in there (scrollMargin). Not used for page lists: in Chrome it widens the page margin too.
+     Cards on or near the screen have no containment at all, so they look and cost exactly as before.
+     A card with no box (hidden tab, filtered out) keeps its state until it has one again. A new card starts asleep.
+     wakeNear(root): after a list is filled or reordered, wake its cards within a screen right away (they would
+     otherwise be empty for one frame). One read pass, then the writes. */
+  const farSeen = (list) => list.forEach((e) => { if (e.isIntersecting || e.boundingClientRect.height) setFar(e.target, !e.isIntersecting); });
+  const farIO = liveIO && new IntersectionObserver(farSeen, { rootMargin: "100% 0px" });
+  const farBoxIO = liveIO && new IntersectionObserver(farSeen, { rootMargin: "100% 0px", scrollMargin: "100%" });
+  function setFar(el, far) {
+    if (!!el._far === far) return;
+    el._far = far;
+    el.classList.toggle("is-far", far);
+    if (far) { liveIO.unobserve(el); el.classList.remove("is-live"); }
+    else if (!livePaused) liveIO.observe(el);
+  }
+  function farOff(el, { box = false } = {}) {
+    if (!farIO) return;
+    el._farIO = box ? farBoxIO : farIO;
+    setFar(el, true);   // starts asleep: a new list lays out only what wakeNear() wakes, the observer settles the rest
+    el._farIO.observe(el);
+  }
+  function wakeNear(root) {
+    if (!farIO) return;
+    const h = innerHeight, w = innerWidth;
+    [...root.querySelectorAll(".is-far")]
+      .filter((el) => { const r = el.getBoundingClientRect(); return r.height && r.bottom > -h && r.top < 2 * h && r.right > -w && r.left < 2 * w; })
+      .forEach((el) => { setFar(el, false); el._farIO.unobserve(el); el._farIO.observe(el); });   // re-observe: reported fresh (asleep again if outside the margin)
+  }
+
   /* Step 12: while the card detail covers the whole screen, the page underneath is hidden — stop checking its cards
      every frame (the detail's own cards made from now on are still watched). resume = watch them all again. */
   function livePause(on) {
     if (!liveIO || !window.WeakRef || on === livePaused) return;
     livePaused = on;
-    if (on) { liveIO.disconnect(); return; }
-    for (const ref of watched) { const el = ref.deref(); if (el) liveIO.observe(el); else watched.delete(ref); }
+    if (on) { liveIO.disconnect(); farIO.disconnect(); farBoxIO.disconnect(); return; }
+    for (const ref of watched) {
+      const el = ref.deref();
+      if (!el) { watched.delete(ref); continue; }
+      if (el._farIO) el._farIO.observe(el);
+      if (!el._far) liveIO.observe(el);
+    }
   }
 
   /* ---------- Lazy tabs (step 9.5) ----------
@@ -431,7 +470,7 @@
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
     openCard, closeCard, swapCard, route,
-    lazy, artImg, bindArt, watchLive, livePause,   // step 9.5 · livePause step 12
+    lazy, artImg, bindArt, watchLive, livePause, farOff, wakeNear,   // step 9.5 · livePause step 12 · farOff + wakeNear W4
     cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
