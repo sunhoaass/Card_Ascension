@@ -52,6 +52,17 @@
   --r-rainbow: conic-gradient(from 0deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0, #e8607a);
   --r-ascended: conic-gradient(from 0deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2, #fffaf0);
 
+  /* ---- Trait tiers (Trait Shop, js/traits.js): main colour + dark partner for the card gradient ---- */
+  --tr-common: #a9afba;     --tr-common-2: #3b404b;
+  --tr-uncommon: #7cc98a;   --tr-uncommon-2: #1d4628;
+  --tr-rare: #64acdf;       --tr-rare-2: #173a5c;
+  --tr-epic: #b58ae6;       --tr-epic-2: #3e2463;
+  --tr-legendary: #efb54e;  --tr-legendary-2: #6b4410;
+  --tr-mythic: #f0704e;     --tr-mythic-2: #6a1d10;
+  --tr-divine: #fff2cf;     --tr-divine-2: #b58a3c;
+  --tr-secret: #ff4d68;     --tr-secret-2: #12030a;
+  --tr-none: #7d7563;       --tr-none-2: #1a2238;
+
   /* ---- Game card (step 13, §3.5): the in-game look drawn over the cleaned picture (css/fx.css .gc, js/share.js gcSpec) ----
      Rarity frames above Normal are guesses until there are in-game pictures (owner's answer §3.5.4 item 2). */
   --gc-font-num: "Oswald", "TeX Gyre Heros Cn", "Arial Narrow", "Roboto Condensed", sans-serif;   /* HP / ATK */

@@ -31,6 +31,8 @@
     },
     "tier": "A",
     "tierNote": "Weakens, burns and hits the whole enemy deck: the best team card. Mid stats and a loss to Beast Emperor keep it at A.",
+    "bestTrait": "prodigy",
+    "bestTraitNote": "×1.25 ATK and HP lift his mid stats, and the +30% first hit pushes enemies toward his 20% execute line sooner.",
     "role": "Hybrid",
     "tags": [
       "aoe",
@@ -110,6 +112,8 @@
     },
     "tier": "B",
     "tierNote": "A deck-wide -20% debuff, 2x clone hits and a revive help any team, but the lowest ATK and HP lose too many 1-on-1s.",
+    "bestTrait": "prodigy",
+    "bestTraitNote": "Lowest ATK and HP in the library, so a flat ×1.25 to both matters most. He already revives once, so Undying adds less.",
     "role": "DPS",
     "tags": [
       "aoe",
@@ -189,6 +193,8 @@
     },
     "tier": "C",
     "tierNote": "A 3x opening hit and Shadow Garden buffs, but below-average stats and the worst matchups in the library drag it to C.",
+    "bestTrait": "prodigy",
+    "bestTraitNote": "The +30% first hit stacks on his 3x opener, and ×1.25 HP shores up below-average stats. His 30% dodge covers defense.",
     "role": "DPS",
     "tags": [
       "burst",
@@ -268,6 +274,8 @@
     },
     "tier": "S",
     "tierNote": "Top ATK and HP plus a passive that can't die win the most 1-on-1s. Only average team value keeps it below SS.",
+    "bestTrait": "undying",
+    "bestTraitNote": "A real second life after his 1 HP save, and every extra hit he takes adds +6% damage. Iron Body is the Rare pick.",
     "role": "Tank",
     "tags": [
       "damage-reduction",
@@ -315,4 +323,3 @@
     "updated": "2026-10-24"
   }
 ]
-

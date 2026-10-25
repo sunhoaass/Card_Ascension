@@ -192,11 +192,11 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 .nav__brand, .nav__foot { display: none; }
 .nav__list {
   position: relative; height: 100%;
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr));   /* --n = number of tabs (set on .nav__list in index.html) */
   list-style: none; margin: 0; padding: 0;
 }
 .nav__indicator {
-  position: absolute; left: 0; top: 0; bottom: 0; width: 20%;
+  position: absolute; left: 0; top: 0; bottom: 0; width: calc(100% / var(--n, 5));
   transform: translateX(calc(var(--i, 0) * 100%));
   transition: transform var(--t-slow) var(--ease);
   pointer-events: none;

@@ -9,10 +9,11 @@
      suggest(deck, kind, n = 3) -> [{ id, slot, gain, before, after }]   kind = "cards" | "support"
      band(score), modeConfig(id), PARTS
    }
-   deck = { mode, cards: [5 ids | null], support: [5 ids | null] } (the shape of cbi:decks)
+   deck = { mode, cards: [5 ids | null], support: [5 ids | null], traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks;
+          traits = the user's trait per card from js/traits.js, added by js/deck.js for the user's own decks only)
 
    The 5 parts (weights per mode from data/meta.json -> modes[].weights; default 30 / 25 / 20 / 15 / 10):
-     power     card Overall (unranked = 50) vs the best 5 cards in the library · support Value vs the best support
+     power     card Overall (unranked = 50) + its trait bonus vs the best 5 cards in the library (no traits) · support Value vs the best support
      synergy   cards with a partner from team.bestWith · support that fits the card above it · minus avoidWith clashes
      coverage  share of Meta cards (GOD/SS) the team beats (beats) · minus every weakTo tag shared by 3+ cards
      roles     the roles the mode asks for (modes[].roles, default Tank 1 · DPS 2; Hybrid fills any one)
@@ -51,6 +52,7 @@
     strongMin: 2,                         // "Strong vs": beaten by 2+ cards
     rolesNeed: 0.8, rolesAny: 0.2,        // roles: the mode's needs / every card has a role
     posNear: 0.5,                         // position: one slot away from its best slot
+    traitPts: 20,                         // card power: the strongest trait (Ascendant) adds this many points to a card's value
     threatTiers: ["GOD", "SS"],          // Meta cards (owner 2026-10-24: GOD + SS)
   };
   const BANDS = [
@@ -154,6 +156,10 @@
     const mv = s.modes && typeof s.modes === "object" ? num(s.modes[mode]) : null;
     return mv == null ? v : (v + clamp01(mv / 100) * 100) / 2;
   }
+  // trait bonus (PROGRESS §10.5): K.traitPts × power of the card's trait (0 no trait … 1 Ascendant), capped at 100
+  const traitOf = (deck, c) => (deck && deck.traits && typeof deck.traits === "object" && typeof deck.traits[c.id] === "string" ? deck.traits[c.id] : null);
+  const traitBonus = (deck, c) => { const id = traitOf(deck, c); return id && C.traits && C.traits.power ? K.traitPts * C.traits.power(id) : 0; };
+  const cardValT = (deck, c, mode) => Math.min(100, cardVal(c, mode) + traitBonus(deck, c));
   // the best possible deck in this mode: the 5 best cards (fewer than 5 ranked = the rest count as unranked 50),
   // and the best support in every slot (support may repeat)
   function bestOf(mode) {
@@ -192,15 +198,16 @@
     /* Card power */
     {
       const b = bestOf(mode);
-      const cAvg = at.reduce((a, c) => a + (c ? cardVal(c, mode) : 0), 0) / SLOTS;
+      const cAvg = at.reduce((a, c) => a + (c ? cardValT(deck, c, mode) : 0), 0) / SLOTS;
       const sAvg = sat.reduce((a, s) => a + (s ? supVal(s, mode) : 0), 0) / SLOTS;
       const cr = clamp01(cAvg / b.card), sr = clamp01(sAvg / b.sup);
       const v = l.sups.length ? K.powerCards * cr + K.powerSupport * sr : cr;
-      const avgOv = nCards ? members.reduce((a, c) => a + cardVal(c, mode), 0) / nCards : 0;
+      const avgOv = nCards ? members.reduce((a, c) => a + cardValT(deck, c, mode), 0) / nCards : 0;
+      const tb = members.reduce((a, c) => a + cardValT(deck, c, mode) - cardVal(c, mode), 0), nTr = members.filter((c) => traitBonus(deck, c) > 0).length;
       parts.power = {
-        v, noData: false,
+        v, noData: false, traits: nTr, traitPts: tb,
         note: nCards || nSup
-          ? `Cards ${Math.round(cr * 100)}% of the strongest team${nCards ? ` (avg ${fmt(avgOv)})` : ""}${l.sups.length ? ` · support ${Math.round(sr * 100)}%` : ""}`
+          ? `Cards ${Math.round(cr * 100)}% of the strongest team${nCards ? ` (avg ${fmt(avgOv)})` : ""}${nTr ? ` · ${nTr} with a trait (+${fmt(tb / nCards)} avg)` : ""}${l.sups.length ? ` · support ${Math.round(sr * 100)}%` : ""}`
           : "Add cards to build power",
       };
     }
@@ -393,7 +400,7 @@
       });
       if (best && best.raw > base.raw + EPS) out.push({ ...best, gain: best.raw - base.raw, before: base.score });
     });
-    const val = (id) => (key === "cards" ? cardVal(l.cardById.get(id), base.mode) : supVal(l.supById.get(id), base.mode));
+    const val = (id) => (key === "cards" ? cardValT(deck, l.cardById.get(id), base.mode) : supVal(l.supById.get(id), base.mode));
     return out.sort((a, b) => b.gain - a.gain || val(b.id) - val(a.id) || a.id.localeCompare(b.id)).slice(0, n);
   }
 

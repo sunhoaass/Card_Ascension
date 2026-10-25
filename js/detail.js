@@ -1148,6 +1148,7 @@
           ${overall}
         </section>
         ${C.grade.panelHTML(card)}
+        ${C.traits.panelHTML(card)}
         <section class="dpanel" aria-labelledby="d-t-abilities">
           <h3 class="dpanel__title" id="d-t-abilities">Passive / Skill</h3>
           <div class="ability">${abHTML}</div>
@@ -1210,6 +1211,7 @@
     el.sheetBody.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`);   // tier badge colour
     el.sheetBody.innerHTML = sheetHTML(card);
     C.grade.mountSlabs(el.sheetBody);   // step 13: the graded case in the Grade panel (only when this card has grades)
+    C.traits.mountPanel(el.sheetBody, card);   // Trait panel: recommended trait + the user's trait + boosted stats
     [["#d-beats", card.beats], ["#d-loses", card.losesTo], ["#d-with", card.team && card.team.bestWith]].forEach(([sel, ids]) => {
       const rowEl = $(sel, el.sheetBody);
       if (!rowEl) return;
