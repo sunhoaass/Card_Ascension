@@ -21,53 +21,52 @@
       "desc": ""
     },
     "scores": {
-      "atk": 75.0,
-      "hp": 75.0,
-      "passive": 93,
-      "skill": 93,
-      "matchup": 55.4,
-      "team": 92,
-      "overall": 78.9
+      "atk": 100.0,
+      "hp": 100.0,
+      "passive": 86,
+      "skill": 86,
+      "matchup": 55.0,
+      "team": 90,
+      "overall": 82.6
     },
-    "tier": "A",
-    "tierNote": "Weakens, burns and hits the whole enemy deck: the best team card. Mid stats and a loss to Beast Emperor keep it at A.",
+    "tier": "S",
+    "tierNote": "Top ATK and HP, plus burn and a 20% bench hit on every attack. Only a 1-on-1 loss to Moon Eye Ghost keeps it at S.",
     "bestTrait": "prodigy",
-    "bestTraitNote": "×1.25 ATK and HP lift his mid stats, and the +30% first hit pushes enemies toward his 20% execute line sooner.",
-    "role": "Hybrid",
+    "bestTraitNote": "Prodigy lifts its sim matchup 55 → 71, the best pick. More ATK also means a bigger bench hit. Rare pick: Iron Body.",
+    "role": "DPS",
     "tags": [
       "aoe",
       "debuff",
       "burn",
-      "execute",
-      "damage-reduction"
+      "execute"
     ],
     "weakTo": [
-      "undying",
-      "scaling"
+      "block",
+      "revive"
     ],
     "modes": {
-      "tower": 90,
-      "pvp": 88,
+      "tower": 86,
+      "pvp": 84,
       "story": 92,
-      "boss": 76
+      "boss": 78
     },
     "strengths": [
-      "Whole enemy deck deals 25% less damage from the start",
-      "Burns the whole enemy deck and hits the bench for 45%",
-      "Takes 30% less damage",
-      "Finishes enemies under 20% HP"
+      "Highest ATK and HP of the current cards",
+      "Every hit burns the whole enemy deck and hits the whole bench for 20%",
+      "Every enemy card deals 6.4% less damage from the start",
+      "Instantly kills enemies under 5% HP"
     ],
     "weaknesses": [
-      "Loses 1-on-1 to Beast Emperor: its undying passive survives the execute",
-      "Execute does nothing against bosses",
-      "Lower base stats than Beast Emperor"
+      "No defense of its own: no damage reduction, block or revive",
+      "Loses 1-on-1 to Moon Eye Ghost: 3 blocks and a revive outlast it",
+      "Execute does nothing against bosses"
     ],
     "beats": [
-      "moon-eye-ghost",
-      "atomic-shadow-lord"
+      "atomic-shadow-lord",
+      "beast-emperor"
     ],
     "losesTo": [
-      "beast-emperor"
+      "moon-eye-ghost"
     ],
     "team": {
       "position": "1",
@@ -77,7 +76,7 @@
       ],
       "bestSupport": []
     },
-    "notes": "Best opener: its fear, burn and bench hit weaken every enemy card before the rest of the team fights.",
+    "notes": "Best opener: every hit burns and splashes the whole enemy bench, so the rest of the team fights cards that are already hurt.",
     "updated": "2026-10-25",
     "obtain": "Rolls anywhere"
   },
@@ -103,54 +102,52 @@
       "desc": ""
     },
     "scores": {
-      "atk": 25.0,
-      "hp": 25.0,
-      "passive": 88,
-      "skill": 88,
-      "matchup": 47.0,
-      "team": 88,
-      "overall": 62.0
+      "atk": 75.0,
+      "hp": 75.0,
+      "passive": 84,
+      "skill": 84,
+      "matchup": 53.5,
+      "team": 76,
+      "overall": 72.5
     },
-    "tier": "B",
-    "tierNote": "A deck-wide -20% debuff, 2x clone hits and a revive help any team, but the lowest ATK and HP lose too many 1-on-1s.",
+    "tier": "A",
+    "tierNote": "Wins every 1-on-1 thanks to 3 full blocks and a revive, but mid stats and a small team effect hold it at A.",
     "bestTrait": "prodigy",
-    "bestTraitNote": "Lowest ATK and HP in the library, so a flat ×1.25 to both matters most. He already revives once, so Undying adds less.",
-    "role": "DPS",
+    "bestTraitNote": "Prodigy lifts its sim matchup 54 → 69. ×1.25 HP also makes its 14% revive bigger. Rare pick: Bloodlust.",
+    "role": "Hybrid",
     "tags": [
-      "aoe",
       "debuff",
-      "multi-hit",
       "block",
-      "revive"
+      "revive",
+      "cleave"
     ],
     "weakTo": [
-      "damage-reduction",
-      "undying"
+      "ignore-defense",
+      "burn"
     ],
     "modes": {
-      "tower": 86,
-      "pvp": 82,
-      "story": 88,
-      "boss": 72
+      "tower": 84,
+      "pvp": 86,
+      "story": 78,
+      "boss": 80
     },
     "strengths": [
-      "Hits twice per attack (Limbo clones)",
-      "Whole enemy deck deals 20% less damage",
-      "Blocks 3 hits and revives once at 50% HP",
-      "Perfect Susanoo hits the whole bench for 40%"
+      "Wins every 1-on-1 against the current cards",
+      "Blocks the first 3 hits completely",
+      "Comes back once with 14% HP",
+      "Every enemy card deals 5.5% less damage; every 2nd attack also hits the next card for 35%"
     ],
     "weaknesses": [
-      "Lowest base ATK and HP of the current cards",
-      "Damage-reduction tanks cut both of its hits",
-      "Ignore-defense attacks skip its Susanoo blocks"
+      "Atomic Shadow Lord ignores its blocks",
+      "Strong burn can flip its close fight with Dragon Emperor Monarch",
+      "Hits only one bench card, and only every 2nd attack"
     ],
     "beats": [
-      "atomic-shadow-lord"
-    ],
-    "losesTo": [
       "dragon-emperor-monarch",
+      "atomic-shadow-lord",
       "beast-emperor"
     ],
+    "losesTo": [],
     "team": {
       "position": "2",
       "bestWith": [
@@ -159,7 +156,7 @@
       ],
       "bestSupport": []
     },
-    "notes": "Stack its -20% with Dragon Emperor Monarch's -25%: enemies then deal only 60% damage.",
+    "notes": "Its blocks soak the first hits of every attacker. Stack its -5.5% with Dragon Emperor Monarch's -6.4%: enemies deal about 88% damage.",
     "updated": "2026-10-25",
     "obtain": "Rolls anywhere"
   },
@@ -187,16 +184,16 @@
     "scores": {
       "atk": 50.0,
       "hp": 50.0,
-      "passive": 82,
-      "skill": 82,
-      "matchup": 28.8,
-      "team": 72,
-      "overall": 58.7
+      "passive": 76,
+      "skill": 76,
+      "matchup": 41.6,
+      "team": 68,
+      "overall": 59.3
     },
     "tier": "C",
-    "tierNote": "A 3x opening hit and Shadow Garden buffs, but below-average stats and the worst matchups in the library drag it to C.",
+    "tierNote": "A 2.3x opener on every new enemy and a bench hit, but below-average stats and no 1-on-1 wins drag it to C.",
     "bestTrait": "prodigy",
-    "bestTraitNote": "The +30% first hit stacks on his 3x opener, and ×1.25 HP shores up below-average stats. His 30% dodge covers defense.",
+    "bestTraitNote": "Prodigy lifts its sim matchup 42 → 63. The +30% first hit stacks on its 2.3x opener. Rare pick: Bloodlust.",
     "role": "DPS",
     "tags": [
       "burst",
@@ -206,26 +203,26 @@
       "shadow-garden"
     ],
     "weakTo": [
-      "aoe",
-      "debuff",
-      "execute"
+      "damage-reduction",
+      "undying",
+      "revive"
     ],
     "modes": {
-      "tower": 70,
-      "pvp": 80,
-      "story": 86,
-      "boss": 58
+      "tower": 64,
+      "pvp": 72,
+      "story": 84,
+      "boss": 54
     },
     "strengths": [
-      "First hit on every new enemy does 3x",
-      "Blows through the whole enemy bench for 40%",
-      "Ignores every defense (damage reduction and blocks)",
-      "Dodges 30% of attacks"
+      "First hit on every new enemy does 2.3x",
+      "First attack also hits the whole enemy bench for 26%",
+      "Ignores shields, dodges and blocks",
+      "Dodges 20% of attacks"
     ],
     "weaknesses": [
-      "Lowest HP after Moon Eye Ghost: falls fast in long fights",
-      "The 3x only works once per enemy, so it is weak against bosses",
-      "Shadow Garden +25% does nothing yet (no other Shadow Garden cards)"
+      "Loses every 1-on-1 among the current cards",
+      "Below-average HP: falls fast in long fights",
+      "Shadow Garden +16% does nothing yet (no other Shadow Garden cards)"
     ],
     "beats": [],
     "losesTo": [
@@ -241,7 +238,7 @@
       ],
       "bestSupport": []
     },
-    "notes": "Cleaner: put it after the openers so its 3x hits finish cards that are already burned and splashed. Rank goes up if Shadow Garden cards are added.",
+    "notes": "Cleaner: after the openers its 2.3x first hit lands on every new, already-burned enemy. Rank goes up if Shadow Garden cards are added.",
     "updated": "2026-10-25",
     "obtain": "Rolls anywhere"
   },
@@ -267,62 +264,62 @@
       "desc": ""
     },
     "scores": {
-      "atk": 100.0,
-      "hp": 100.0,
-      "passive": 86,
-      "skill": 86,
-      "matchup": 68.8,
-      "team": 78,
-      "overall": 83.6
+      "atk": 25.0,
+      "hp": 25.0,
+      "passive": 80,
+      "skill": 80,
+      "matchup": 49.9,
+      "team": 72,
+      "overall": 57.1
     },
-    "tier": "S",
-    "tierNote": "Top ATK and HP plus a passive that can't die win the most 1-on-1s. Only average team value keeps it below SS.",
-    "bestTrait": "undying",
-    "bestTraitNote": "A real second life after his 1 HP save, and every extra hit he takes adds +6% damage. Iron Body is the Rare pick.",
+    "tier": "C",
+    "tierNote": "Takes 30% less damage and survives a killing blow, but the lowest ATK and HP now lose to Monarch and Ghost.",
+    "bestTrait": "prodigy",
+    "bestTraitNote": "Prodigy lifts its sim matchup 50 → 66, more than Undying (59): lowest stats gain most from ×1.25. Rare: Bloodlust.",
     "role": "Tank",
     "tags": [
       "damage-reduction",
       "undying",
       "cc-immune",
-      "scaling",
       "burst"
     ],
     "weakTo": [
-      "ignore-defense",
-      "debuff"
+      "block",
+      "burn"
     ],
     "modes": {
-      "tower": 88,
-      "pvp": 90,
-      "story": 82,
-      "boss": 92
+      "tower": 82,
+      "pvp": 74,
+      "story": 70,
+      "boss": 86
     },
     "strengths": [
-      "Highest ATK and HP of the current cards",
+      "Takes 30% less damage (the only damage reduction in the library)",
       "Survives the first killing blow at 1 HP",
-      "Takes 30% less damage and cannot be stunned or frozen",
-      "Gets +6% damage every time it is hit; 2.5x every 3rd attack"
+      "Every 3rd attack does 2.5x",
+      "Cannot be stunned, frozen or paralyzed"
     ],
     "weaknesses": [
+      "Lowest ATK and HP of the current cards",
       "No team effect: only helps itself",
-      "Ignore-defense attacks skip its 30% damage reduction",
-      "No AoE: kills one enemy at a time"
+      "No AoE: fights one enemy at a time"
     ],
     "beats": [
-      "dragon-emperor-monarch",
-      "moon-eye-ghost",
       "atomic-shadow-lord"
     ],
-    "losesTo": [],
+    "losesTo": [
+      "dragon-emperor-monarch",
+      "moon-eye-ghost"
+    ],
     "team": {
       "position": "4-5",
       "bestWith": [
-        "dragon-emperor-monarch",
-        "moon-eye-ghost"
+        "moon-eye-ghost",
+        "dragon-emperor-monarch"
       ],
       "bestSupport": []
     },
-    "notes": "Wins every 1-on-1 among the current cards. Best as the anchor at the back: it cannot die the first time and keeps getting stronger.",
+    "notes": "Anchor at the back: damage reduction and the 1 HP save make it the last card to fall. Dropped from S after the update: no more +6% per hit.",
     "updated": "2026-10-25",
     "obtain": "Rolls anywhere"
   }

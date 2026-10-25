@@ -824,3 +824,22 @@
   - **`obtain`:** PROGRESS §5.2 (โครงไฟล์) + §7 A ข้อ 2 (ต้องจดทุกครั้ง) · เว็บยังไม่แสดงช่องนี้ (W6 จะเอาไปใช้ใต้ Tier)
   - **ผลทดสอบ:** `data/cards.json` โหลดเป็น JSON ได้ · diff เฉพาะ 4 ใบ · ไม่ได้เปิดเว็บทดสอบ (ไม่แตะโค้ด)
   - **ไฟล์ที่ต้องอัป:** `data/cards.json` → `data/` · `images/cards/*.webp` 4 ไฟล์ → `images/cards/` · `images/cards/thumb/*.webp` 4 ไฟล์ → `images/cards/thumb/` · `PROGRESS.md`, `HISTORY.md` → root
+- 2026-10-25: **W2 วิเคราะห์ใหม่ทั้งคลัง (งานประจำ B · การ์ด 4 ใบ · ค่าหลังเกมอัปเดต W1)** (Claude Code · ไม่แตะโค้ดเว็บ จึงไม่เปลี่ยน `?v=` = ยัง `17`)
+
+    | การ์ด | ATK | HP | Passive | Skill | Matchup | Team | **Overall** | Tier (เดิม) | Role | ตำแหน่ง |
+    |---|---:|---:|---:|---:|---:|---:|---:|---|---|---|
+    | Dragon Emperor Monarch | 100 | 100 | 86 | 86 | 55.0 | 90 | **82.6** | **S** (A 78.9) | DPS (เดิม Hybrid) | 1 |
+    | Moon Eye Ghost | 75 | 75 | 84 | 84 | 53.5 | 76 | **72.5** | **A** (B 62.0) | Hybrid (เดิม DPS) | 2 |
+    | Atomic Shadow Lord | 50 | 50 | 76 | 76 | 41.6 | 68 | **59.3** | **C** (C 58.7) | DPS | 3 |
+    | Beast Emperor | 25 | 25 | 80 | 80 | 49.9 | 72 | **57.1** | **C** (S 83.6) | Tank | 4–5 |
+
+  - **ทำไมอันดับพลิก:** หลังเกมอัปเดต ATK/HP เรียงใหม่ DEM > MEG > ASL > BE (เดิม BE สูงสุด) · BE เสีย "+6% ต่อครั้งที่โดนตี" · ทุกใบโดนลดความสามารถ (ดีบัฟ 25% → 6.4% / 20% → 5.5%, execute 20% → 5%, DEM เสียลดดาเมจ 30%, MEG เสียตี 2 ครั้ง + ฟื้น 50% → 14%, ASL 3x → 2.3x) → คะแนน Passive/Team ลดทุกใบ · MEG ยังมีบล็อก 3 ครั้ง + ฟื้น จึงชนะ 1-1 ทุกใบ
+  - **ผลจำลอง 1-1** (Python · ตีสลับทีละตา · เฉลี่ย 2 แบบตีก่อน · 4,000 รอบต่อคู่ · เฉลี่ย burn 0/5/10% ATK · ตัวเลข = % รอบที่ชนะของใบซ้าย): MEG ชนะ DEM 83% (burn ≤ 5% MEG ชนะทุกรอบ เหลือ 9–13% HP · burn 10% = ใครตีก่อนชนะ) · MEG ชนะ ASL 86% (ASL หลบได้บ้าง) · MEG ชนะ BE 100% (เหลือ 8%) · DEM ชนะ ASL 97% (เหลือ 29%) · DEM ชนะ BE 83% (burn 0% = ใครตีก่อนชนะ เหลือ 0.6% · มี burn = DEM ชนะทุกรอบ) · BE ชนะ ASL 91% (เหลือ 20%)
+  - **ตรวจสูตรจำลอง:** รอบแรก DEM ชนะ BE 100% ทั้งที่นับมือได้ 8 ตีเท่ากัน → พบว่าไฟไหม้ 0 ดาเมจไปเรียก execute ฆ่า BE ที่เหลือ 1 HP → แก้ให้ execute เช็กเฉพาะตอนตี (ตรงกับสมมติฐานเดิม "execute = การโจมตีที่ฆ่า") แล้วผลตรงกับที่นับมือ
+  - **Trait (จำลอง Matchup ซ้ำโดยใส่ Trait ให้ใบนั้น · เฉลี่ย burn 3 ค่า):** DEM Prodigy 71.1 · Iron Body 65.1 · Bloodlust 65.0 · Undying 64.4 · Keen Eye 62.1 | MEG Prodigy 69.3 · Bloodlust 62.0 · Keen Eye 61.0 · Iron Body 57.7 · Undying 57.3 | ASL Prodigy 62.8 · Undying 57.7 · Bloodlust 52.0 · Keen Eye 51.8 · Iron Body 48.7 | BE Prodigy 66.0 · Bloodlust 60.5 · Undying 58.6 · Iron Body 57.5 · Keen Eye 55.7 → `bestTrait` = **Prodigy ทุกใบ** (BE เดิม Undying) · โน้ตบอกตัวเลือก Rare ที่ดีสุด
+  - **field ที่เขียนใหม่ทุกใบ:** `scores`, `tier`, `tierNote`, `bestTrait`, `bestTraitNote`, `role`, `tags`, `weakTo`, `modes`, `strengths`, `weaknesses`, `beats`, `losesTo`, `team.position`, `team.bestWith`, `notes`, `updated` · `team.bestSupport` = `[]` (ยังไม่มี support) · tag ใหม่ `cleave` (MEG ตีใบถัดไป) · เลิกใช้ `scaling` (BE เสียความสามารถนี้) และ `damage-reduction` ของ DEM · ไม่มี tag ไหนที่ ≥ 3 ใบแพ้ทางซ้ำ
+  - **`data/teams.json`:** Emperor Wall ลำดับเดิม (DEM → MEG → ASL → BE · ช่อง 5 ว่าง) เขียน `notes` ใหม่ตามความสามารถใหม่ · **คะแนนทีม 76 ทุกโหมด** (เดิม 68 · คำนวณด้วย `js/teamscore.js` ใน Node: Power 0.85 · Synergy 0.80 · Coverage 0.40 (ยังไม่มีการ์ด Meta = ได้ครึ่ง) · Roles 0.96 · Position 0.80)
+  - `data/meta.json`: `updated` → 2026-10-25
+  - **ทดสอบ (Chromium 390px):** Tier List: DEM อยู่แถว S · หน้ารายละเอียด BE ขึ้น Tier C + Overall 57 + `tierNote` ใหม่ · Deck → Meta Decks แสดง Emperor Wall ช่อง 1–4 ค่าใหม่ · ไม่มี JS error (404 เดียว = `audio/bgm.mp3` ที่ยังไม่มีใน repo)
+  - **คำถามใหม่ใน PROGRESS §8:** ค่า burn ของ DEM ต่อตา · ASL ข้ามการลดดาเมจของ BE ไหม (ทั้ง 2 ข้อเปลี่ยนผล 1-1 ได้)
+  - **ไฟล์ที่ต้องอัป:** `data/cards.json`, `data/teams.json`, `data/meta.json` → `data/` · `PROGRESS.md`, `HISTORY.md` → root
