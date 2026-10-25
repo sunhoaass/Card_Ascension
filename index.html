@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=18">
-  <link rel="stylesheet" href="css/base.css?v=18">
-  <link rel="stylesheet" href="css/fx.css?v=18">
-  <link rel="stylesheet" href="css/cards.css?v=18">
-  <link rel="stylesheet" href="css/tier.css?v=18">
-  <link rel="stylesheet" href="css/deck.css?v=18">
-  <link rel="stylesheet" href="css/support.css?v=18">
-  <link rel="stylesheet" href="css/grade.css?v=18">
-  <link rel="stylesheet" href="css/tiermaker.css?v=18">
-  <link rel="stylesheet" href="css/detail.css?v=18">
-  <link rel="stylesheet" href="css/traits.css?v=18">
+  <link rel="stylesheet" href="css/tokens.css?v=19">
+  <link rel="stylesheet" href="css/base.css?v=19">
+  <link rel="stylesheet" href="css/fx.css?v=19">
+  <link rel="stylesheet" href="css/cards.css?v=19">
+  <link rel="stylesheet" href="css/tier.css?v=19">
+  <link rel="stylesheet" href="css/deck.css?v=19">
+  <link rel="stylesheet" href="css/support.css?v=19">
+  <link rel="stylesheet" href="css/grade.css?v=19">
+  <link rel="stylesheet" href="css/tiermaker.css?v=19">
+  <link rel="stylesheet" href="css/detail.css?v=19">
+  <link rel="stylesheet" href="css/traits.css?v=19">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -97,6 +97,20 @@
       <symbol id="i-lens" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3.6" stroke-width=".8" stroke-dasharray="1.6 1.6"/><path d="M14.5 14.5 20.5 20.5" stroke-width="2.6"/><path d="M7.5 7.8a3.4 3.4 0 0 1 2.5-1.3"/></g></symbol>
       <symbol id="i-trait" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 7h10l3.5 4.5L12 21 3.5 11.5z"/><path d="M3.5 11.5h17M9.5 7 12 11.5 14.5 7M8 11.5 12 21l4-9.5" stroke-width="1"/><path d="M19 1.8v3.4M17.3 3.5h3.4M4.6 2.4v2.2M3.5 3.5h2.2" stroke-width="1.2"/></g></symbol>
       <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 4h12l4.5 5.5L12 21.5 1.5 9.5z" fill="currentColor" fill-opacity=".28" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M1.5 9.5h21M9 4l3 5.5L15 4M7 9.5l5 12 5-12" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/><path d="M7.4 6.2 5.6 8.6" style="stroke:var(--ink)" stroke-opacity=".8" stroke-width="1.2" stroke-linecap="round"/></symbol>
+      <!-- Trait icons (W5): one glyph per trait, drawn for this site (shapes like the game's, no game art) · tinted by the trait tier (--tc) via currentColor -->
+      <symbol id="tri-ascendant" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 6.6l1.2 3.1 3.3.2-2.6 2.1.9 3.2L12 13.4l-2.8 1.8.9-3.2-2.6-2.1 3.3-.2z" fill="currentColor" fill-opacity=".45"/><path d="M16.8 10.6c1.9-1.4 3.7-2.8 5.7-4.2-.5 2.9-2 4.9-4.4 6M17.4 13.3c1.4-.2 2.9-.8 3.9-1.8-.7 2.2-2.2 3.4-4.4 3.6M7.2 10.6C5.3 9.2 3.5 7.8 1.5 6.4c.5 2.9 2 4.9 4.4 6M6.6 13.3c-1.4-.2-2.9-.8-3.9-1.8.7 2.2 2.2 3.4 4.4 3.6" fill="none"/><path d="M12 2.6v2.2M10.2 18.4 12 20.6l1.8-2.2" fill="none" stroke-width="1.1"/></g></symbol>
+      <symbol id="tri-limitless" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-2-3-3.5-4-5.5-4a4 4 0 0 0 0 8c2 0 3.5-1 5.5-4s3.5-4 5.5-4a4 4 0 0 1 0 8c-2 0-3.5-1-5.5-4z" stroke-width="2"/><circle cx="6.5" cy="12" r="1.6" fill="currentColor" fill-opacity=".45" stroke="none"/><circle cx="17.5" cy="12" r="1.6" fill="currentColor" fill-opacity=".45" stroke="none"/><path d="M19.5 2.6v2.8M18.1 4h2.8" stroke-width="1.1"/></g></symbol>
+      <symbol id="tri-sage-mode" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M1.8 12C5 7.2 8.4 5.2 12 5.2s7 2 10.2 6.8C19 16.8 15.6 18.8 12 18.8S5 16.8 1.8 12z" fill="none"/><circle cx="12" cy="12" r="4" fill="currentColor" fill-opacity=".3"/><rect x="9.3" y="11.1" width="5.4" height="1.8" rx=".4" fill="currentColor"/><path d="M4.5 6.2 6 7.6M19.5 6.2 18 7.6" fill="none" stroke-linecap="round" stroke-width="1.1"/></g></symbol>
+      <symbol id="tri-awakened" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M4 14c2.6-3.6 5.2-5 8-5s5.4 1.4 8 5c-2.6 3.6-5.2 5-8 5s-5.4-1.4-8-5z" fill="none"/><circle cx="12" cy="14" r="2.6" fill="currentColor" fill-opacity=".45"/><circle cx="12" cy="14" r=".9" fill="currentColor" stroke="none"/><path d="M12 2.3v3.3M6 4.2l1.7 2.6M18 4.2l-1.7 2.6M1.8 8.6l2.8 1.3M22.2 8.6l-2.8 1.3" fill="none" stroke-width="1.3"/></g></symbol>
+      <symbol id="tri-undying" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M19 3.2c1.9 3.4.7 8-3.4 11.4-2.6 2.2-5.6 2.9-7.6 2.3-.5-3 .6-6.7 3.3-9.4 2.4-2.4 5-3.9 7.7-4.3z" fill="currentColor" fill-opacity=".28"/><path d="M4 21 17.6 5.4" fill="none"/><path d="M11.2 13.6l3.2-.3M12.6 10.8l3.4-.4M9.6 16.1l2.6.2" fill="none" stroke-width="1"/></g></symbol>
+      <symbol id="tri-prodigy" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M16 3l1.2 3.3 3.6.2-2.8 2.2 1 3.4L16 10.1l-3 2 1-3.4-2.8-2.2 3.6-.2z" fill="currentColor" fill-opacity=".45"/><path d="M3 21l7.6-7.6M2.4 16.4l5.2-4.2M7.6 21.6l4.2-5.2" fill="none"/><path d="M2.2 12.2h0M11.8 21.8h0" stroke-width="2"/></g></symbol>
+      <symbol id="tri-keen-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3" fill="currentColor" fill-opacity=".3"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/><circle cx="12" cy="12" r=".9" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="tri-bloodlust" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.5S5.5 10 5.5 14.6a6.5 6.5 0 0 0 13 0C18.5 10 12 2.5 12 2.5z" fill="currentColor" fill-opacity=".35"/><path d="M8.7 15.2a3.3 3.3 0 0 0 2.6 3" fill="none" stroke-width="1.2"/><path d="M19.6 4.2c0 .8-.6 1.5-1.2 1.5s-1.2-.7-1.2-1.5S18.4 2 18.4 2s1.2 1.4 1.2 2.2z" fill="currentColor" stroke-width=".9"/></g></symbol>
+      <symbol id="tri-iron-body" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.6l7.5 3v6c0 4.4-3.2 7.9-7.5 9.9-4.3-2-7.5-5.5-7.5-9.9v-6z" fill="currentColor" fill-opacity=".25"/><path d="M12 2.6v18.9M4.5 10.6h15" fill="none" stroke-width=".9"/></g></symbol>
+      <symbol id="tri-spirited" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2c1 4 5.6 6 5.6 11.6a5.6 5.6 0 0 1-11.2 0c0-3 1.8-4.6 2.6-6.6 1 2 1.6 3 2.6 3.6C11.6 7.6 11 5 12 2z" fill="currentColor" fill-opacity=".25"/><path d="M12 21a2.8 2.8 0 0 1-2.8-2.8c0-2 1.6-2.8 2.4-4.8 1.4 1.6 3.2 2.7 3.2 4.8A2.8 2.8 0 0 1 12 21z" fill="currentColor" fill-opacity=".6"/></g></symbol>
+      <symbol id="tri-nimble" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M3 18.5C6 10.5 12 5.2 21.2 4.2c-1.5 3-3.5 4.6-6 5.6 2.5.1 4-.3 5-.7-1.5 2.7-4 4.2-7 4.7 2 .3 3.5.1 4.5-.2-2 2.7-5.5 4.3-9.5 4.3-2 0-3.5.3-5.2.6z" fill="currentColor" fill-opacity=".25"/><path d="M6.5 15.2c3.2-3.8 6.8-6.6 11-8.6" fill="none" stroke-width="1"/></g></symbol>
+      <symbol id="tri-sharp" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M20.6 3.4l-.8 4.2-9.6 9.6-3.4-3.4 9.6-9.6z" fill="currentColor" fill-opacity=".3"/><path d="M18.6 5.4 9 15" fill="none" stroke-width=".9"/><path d="M4.8 12.4l6.8 6.8M7.2 16.8l-3 3" fill="none" stroke-width="1.8"/><circle cx="3.4" cy="20.6" r="1.1" fill="currentColor"/></g></symbol>
+      <symbol id="tri-tough" viewBox="0 0 24 24"><g stroke="currentColor" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2l8.5 3v6.6c0 5-3.5 8.6-8.5 10.6-5-2-8.5-5.6-8.5-10.6V5z" fill="none" stroke-width="1.8"/><path d="M12 5.4l5.5 2v4.3c0 3.3-2.3 5.8-5.5 7.2-3.2-1.4-5.5-3.9-5.5-7.2V7.4z" fill="currentColor" fill-opacity=".35" stroke-width="1.3"/><circle cx="6" cy="6.9" r=".7" fill="currentColor" stroke="none"/><circle cx="18" cy="6.9" r=".7" fill="currentColor" stroke="none"/></g></symbol>
       <symbol id="i-note" viewBox="0 0 24 24"><g fill="currentColor"><path d="M9 17.5V5.2l11-2.2v12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><ellipse cx="6.6" cy="17.6" rx="2.9" ry="2.3"/><ellipse cx="17.6" cy="15.1" rx="2.9" ry="2.3"/></g></symbol>
       <symbol id="i-flourish" viewBox="0 0 60 20"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M30 4l5 6-5 6-5-6z" fill="currentColor" fill-opacity=".25"/><path d="M25 10c-6 0-8-5-14-5-4 0-6 3-4 5M35 10c6 0 8-5 14-5 4 0 6 3 4 5"/><path d="M25 10C19 10 17 15 11 15c-4 0-6-3-4-5M35 10c6 0 8 5 14 5 4 0 6-3 4-5" stroke-width=".7"/></g></symbol>
       <symbol id="i-crest" viewBox="0 0 120 128">
@@ -604,66 +618,59 @@
       <div id="grade-detail-view" class="gdetail" hidden></div>
     </section>
 
-    <!-- Traits: the Trait Shop's 13 traits + a calculator (js/traits.js) -->
+    <!-- Traits (W5): search + card grid like the Grade page | the chosen card's Trait Shop (js/traits.js) -->
     <section id="page-traits" class="page" hidden aria-labelledby="traits-title">
       <div class="page__head">
         <p class="page__eyebrow">The Bloodline</p>
         <h1 id="traits-title" class="page__title">Traits</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead">Every trait in the Trait Shop. One roll costs 5 Shards, and every copy of a card shares the same trait. Pity = the roll that's guaranteed to hit that tier. Traits boost a card's stats but never change its Overall score or tier.</p>
+        <p class="page__lead">Pick a card to open its Trait Shop: set the trait you rolled and see its final ATK and HP. One roll costs 5 Shards, every copy of a card shares the same trait, and traits never change a card's Overall score or tier.</p>
       </div>
 
-      <div id="tr-tabs" class="seg glass" role="tablist" aria-label="Traits view" style="--n:2;--i:0">
-        <span class="seg__ind" aria-hidden="true"></span>
-        <button class="seg__btn fx-press" type="button" role="tab" data-tab="list" aria-selected="true" aria-controls="tr-list">All traits</button>
-        <button class="seg__btn fx-press" type="button" role="tab" data-tab="calc" aria-selected="false" aria-controls="tr-calc" tabindex="-1">Calculator</button>
-      </div>
-
-      <div id="tr-list" role="tabpanel">
-        <div id="tr-grid" class="trgrid"><div class="skeleton trskel"></div><div class="skeleton trskel"></div><div class="skeleton trskel"></div><div class="skeleton trskel"></div></div>
-        <div id="tr-empty" class="panel glass empty" hidden>
-          <svg class="empty__icon" aria-hidden="true"><use href="#i-trait"/></svg>
-          <h2 class="empty__title">No traits yet</h2>
-          <p class="empty__text">The Trait Shop list didn't load. Check your connection and refresh the page.</p>
-        </div>
-      </div>
-
-      <div id="tr-calc" role="tabpanel" hidden>
-        <div id="tc-empty" class="panel glass empty" hidden>
-          <svg class="empty__icon" aria-hidden="true"><use href="#i-fan"/></svg>
-          <h2 class="empty__title">No cards yet</h2>
-          <p class="empty__text">Once cards are added you can try every trait on them here.</p>
-        </div>
-        <div id="tc-body" class="trcalc">
-          <div class="trcalc__controls trcalc__a">
-            <label class="field trcalc__field">
-              <span class="trcalc__label">Card</span>
-              <select id="tc-card" aria-label="Card"></select>
+      <div id="trw" class="trw">
+        <div class="trw__pick">
+          <div id="trw-tools" class="tools" hidden>
+            <label class="field field--search">
+              <span class="sr-only">Search cards</span>
+              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="trw-search" type="search" placeholder="Search name or series" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
             </label>
-            <div class="trcalc__label">Trait</div>
-            <div id="tc-traits" class="trpick trcalc__traits" role="group" aria-label="Trait"></div>
-            <p id="tc-mine" class="trcalc__mine"></p>
-            <button id="tc-save" type="button" class="tm-btn tm-btn--primary fx-press trcalc__save" hidden>Save as my trait</button>
-          </div>
-          <div class="trcalc__controls trcalc__b">
-            <div class="trcalc__label">Rarity</div>
-            <div id="tc-rarity" class="rarity-picker trcalc__rarity" role="group" aria-label="Rarity"></div>
-            <div class="trcalc__label">Grades</div>
-            <div id="tc-steps" class="trcalc__steps"></div>
-            <button id="tc-use-grades" type="button" class="chip glass fx-press trcalc__use">Use my grades</button>
-          </div>
-          <div id="tc-result" class="panel glass trcalc__result" aria-live="polite">
-            <div id="tc-hero" class="trcalc__hero" data-card-list></div>
-            <div class="trcalc__nums">
-              <div class="trcalc__num trcalc__num--atk"><span class="trcalc__k">Final ATK</span><b data-cv="atk" data-value="0">0</b><small data-cs="atk"></small></div>
-              <div class="trcalc__num trcalc__num--hp"><span class="trcalc__k">Final HP</span><b data-cv="hp" data-value="0">0</b><small data-cs="hp"></small></div>
+            <div class="chip-row">
+              <button id="trw-mine" class="chip glass fx-press" type="button" aria-pressed="false">Cards with a trait <span class="chip__n" data-n>0</span></button>
             </div>
-            <ul id="tc-extra" class="trcalc__extra" hidden></ul>
-            <h3 id="tc-fx-title" class="trcalc__fxtitle">No trait</h3>
-            <ul id="tc-fx" class="trcalc__fx"></ul>
-            <p class="trcalc__note">Estimates: average hit and effective HP are worked out from the trait's numbers, not measured in game.</p>
+            <p class="tools__count"><span id="trw-count" aria-live="polite"></span><button id="trw-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
+          </div>
+
+          <div id="trw-grid" class="card-grid grade-grid trw__grid" data-no-detail><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+
+          <div id="trw-none" class="panel glass empty" hidden>
+            <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <h2 class="empty__title">No cards match</h2>
+            <p id="trw-none-text" class="empty__text">Try a different search or clear the filters.</p>
+            <button id="trw-none-reset" class="chip glass fx-press empty__btn" type="button">Reset filters</button>
+          </div>
+
+          <div id="trw-empty" class="panel glass empty" hidden>
+            <svg class="empty__icon" aria-hidden="true"><use href="#i-fan"/></svg>
+            <h2 class="empty__title">No cards yet</h2>
+            <p class="empty__text">Once cards are added you can set their traits here.</p>
           </div>
         </div>
+
+        <div id="trw-shop" class="trw__shop">
+          <div id="trs-head" class="panel glass trs" aria-live="polite"><div class="skeleton trs__skel"></div></div>
+          <div class="trs__listhead">
+            <h2 class="trs__listtitle">Trait Shop</h2>
+            <p class="trs__listsub">Rarest first · chance per roll · 1 roll = 5 Shards</p>
+          </div>
+          <div id="trs-list" class="trs__list" role="group" aria-label="Traits"><div class="skeleton trs__rowskel"></div><div class="skeleton trs__rowskel"></div><div class="skeleton trs__rowskel"></div></div>
+        </div>
+      </div>
+
+      <div id="tr-empty" class="panel glass empty" hidden>
+        <svg class="empty__icon" aria-hidden="true"><use href="#i-trait"/></svg>
+        <h2 class="empty__title">No traits yet</h2>
+        <p class="empty__text">The Trait Shop list didn't load. Check your connection and refresh the page.</p>
       </div>
     </section>
   </main>
@@ -746,19 +753,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=18"></script>
-  <script src="js/app.js?v=18"></script>
-  <script src="js/teamscore.js?v=18"></script>
-  <script src="js/share.js?v=18"></script>
-  <script src="js/cards.js?v=18"></script>
-  <script src="js/detail.js?v=18"></script>
-  <script src="js/tier.js?v=18"></script>
-  <script src="js/deck.js?v=18"></script>
-  <script src="js/support.js?v=18"></script>
-  <script src="js/grade.js?v=18"></script>
-  <script src="js/traits.js?v=18"></script>
-  <script src="js/tiermaker.js?v=18"></script>
-  <script src="js/music.js?v=18"></script>
+  <script src="js/fx.js?v=19"></script>
+  <script src="js/app.js?v=19"></script>
+  <script src="js/teamscore.js?v=19"></script>
+  <script src="js/share.js?v=19"></script>
+  <script src="js/cards.js?v=19"></script>
+  <script src="js/detail.js?v=19"></script>
+  <script src="js/tier.js?v=19"></script>
+  <script src="js/deck.js?v=19"></script>
+  <script src="js/support.js?v=19"></script>
+  <script src="js/grade.js?v=19"></script>
+  <script src="js/traits.js?v=19"></script>
+  <script src="js/tiermaker.js?v=19"></script>
+  <script src="js/music.js?v=19"></script>
 </body>
 </html>
 

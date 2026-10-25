@@ -6,11 +6,11 @@
      The Details sheet, the graded case label (js/grade.js) and the Deck page (one trait per slot = that card's trait)
      all read and write it through here. Every change fires the "cbi:trait" event ({ id, trait }).
    · Traits never change Overall / Tier (same as grades). The team score uses power() (PROGRESS.md §10.5).
-   · Traits tab (#traits): the 13 traits as cards in their tier colour + a calculator
-     (card + rarity + grades + trait -> final ATK / HP + the special effects in words).
+   · Traits tab (#traits, W5): search + card grid (like the Grade page) -> tap a card = its Trait Shop
+     (the card · its trait + final ATK / HP with your grades · the 13 traits with their own icons, tap = set it · Recommended).
    CBI.traits = { init, list(), byId(id), of(cardId), set(cardId, traitId|null), map(), power(id), mult(id), effects(t),
                   apply(card, rarity, grades, traitId), pillHTML(id), chipsHTML(selected), panelHTML(card), mountPanel(root, card),
-                  pickDialog(cardId) }
+                  pickDialog(cardId), colorStyle(t), iconHTML(t, cls) }
    Needs js/fx.js and js/app.js loaded first (C.grade, C.dialog are only used when something is tapped).
    ========================================================== */
 (function () {
@@ -119,10 +119,12 @@
   const oneIn = (t) => (t.chance > 0 ? Math.round(100 / t.chance).toLocaleString("en-US") : "–");
 
   /* ---------- small shared bits ---------- */
-  const GEM = `<svg class="tr-gem" aria-hidden="true"><use href="#i-gem"/></svg>`;
+  // W5: every trait has its own icon (index.html sprite #tri-<id>, drawn for this site) · a trait added later without one = the gem
+  const ICONS = new Set(["ascendant", "limitless", "sage-mode", "awakened", "undying", "prodigy", "keen-eye", "bloodlust", "iron-body", "spirited", "nimble", "sharp", "tough"]);
+  const iconHTML = (t, cls = "tr-gem") => `<svg class="${cls}" aria-hidden="true"><use href="#${t && ICONS.has(t.id) ? "tri-" + t.id : "i-gem"}"/></svg>`;
   function pillHTML(id, { none = "No trait" } = {}) {
     const t = byId(id);
-    return `<span class="trp${t ? "" : " trp--none"}" style="${colorStyle(t)}">${GEM}<span class="trp__name">${esc(t ? t.name : none)}</span>${t ? `<span class="trp__tier">${esc(t.tier)}</span>` : ""}</span>`;
+    return `<span class="trp${t ? "" : " trp--none"}" style="${colorStyle(t)}">${iconHTML(t)}<span class="trp__name">${esc(t ? t.name : none)}</span>${t ? `<span class="trp__tier">${esc(t.tier)}</span>` : ""}</span>`;
   }
   // chip row: "None" + every trait, rarest first · data-trait="" = none
   function chipsHTML(selected) {
@@ -202,7 +204,7 @@
     if (!C.dialog || !card) return null;
     const cur = of(cardId), rec = byId(card.bestTrait);
     const row = (t) => `<button type="button" class="trdlg__opt fx-press" data-pick-trait="${t ? esc(t.id) : ""}" aria-pressed="${(t ? t.id : null) === cur}" style="${colorStyle(t)}">
-        ${GEM}<span class="trdlg__name">${t ? esc(t.name) : "No trait"}${t && rec && rec.id === t.id ? ` <em>Recommended</em>` : ""}</span>
+        ${iconHTML(t)}<span class="trdlg__name">${t ? esc(t.name) : "No trait"}${t && rec && rec.id === t.id ? ` <em>Recommended</em>` : ""}</span>
         <span class="trdlg__tier">${t ? esc(t.tier) : ""}</span>
         <span class="trdlg__fx">${t ? esc(shortFx(t)) : "Base stats"}</span></button>`;
     const res = await C.dialog({
@@ -225,187 +227,391 @@
   }
 
   /* ==========================================================
-     Traits tab: the 13 traits + the calculator
+     Traits tab (W5): search + card grid like the Grade page | the chosen card's Trait Shop
+     (the card · its trait + final ATK / HP · the 13 traits, tap = set it · Recommended = bestTrait)
+     Phone: grid, then the shop under it · ≥ 900px: grid on the left (scrolls on its own), shop on the right.
      ========================================================== */
   const ui = {};
   let built = false;
-  const calc = { id: null, trait: null, g: [0, 0, 0, 0], card: null };
-  const cardsSorted = () => state.cards.filter((c) => c && c.id && c.base).slice()
-    .sort((a, b) => (C.isRanked(b) - C.isRanked(a)) || ((b.scores && b.scores.overall) || 0) - ((a.scores && a.scores.overall) || 0) || a.name.localeCompare(b.name));
+  let items = [];                             // cards in grid order
+  let sel = null, hero = null;                // chosen card id · its card in the shop
+  const tiles = new Map();                    // id -> mini card in the grid
+  const filter = { q: "", mine: false };
+  const wide = window.matchMedia("(min-width: 900px)");
+  const $$ = (s, r) => [...r.querySelectorAll(s)];
+  const cardOf = (id) => items.find((c) => c.id === id) || null;
+  const hay = new Map();                      // id -> "name series" in lower case (search)
 
-  function traitCardHTML(t) {
-    const fx = effects(t);
-    return `<button type="button" class="trc fx-press" data-tier="${esc(t.tier)}" data-calc-trait="${esc(t.id)}" style="${colorStyle(t)}" aria-label="${esc(t.name)}, ${esc(t.tier)}, ${fmtPct(t.chance)} per roll. ${esc(fx.join(", "))}. Tap to try it in the calculator">
-        <span class="trc__top">
-          <svg class="trc__gem" aria-hidden="true"><use href="#i-gem"/></svg>
-          <span class="trc__chance">${fmtPct(t.chance)}</span>
+  // same order as the Grade picker: ranked first (best Overall first), then by name
+  function compare(a, b) {
+    const ra = C.isRanked(a), rb = C.isRanked(b);
+    if (ra !== rb) return ra ? -1 : 1;
+    if (ra && a.scores.overall !== b.scores.overall) return b.scores.overall - a.scores.overall;
+    return a.name.localeCompare(b.name);
+  }
+  const matches = (c, words) => !words.length || words.every((w) => hay.get(c.id).includes(w));
+  const words = (q) => q.toLowerCase().split(/\s+/).filter(Boolean);
+
+  /* ---------- the grid ---------- */
+  // the card's trait as a round badge (left side, under the name in the picture, like the grade badge on the Grade page)
+  function tileBadge(el, id) {
+    const t = byId(of(id)), card = cardOf(id);
+    let b = $(".card__trait", el);
+    el.setAttribute("aria-label", `${card ? card.name : id}${t ? `, trait ${t.name}` : ", no trait"}. Open its Trait Shop`);
+    if (!t) { if (b) b.remove(); return; }
+    if (!b) { b = document.createElement("span"); b.className = "card__trait tri"; b.setAttribute("aria-hidden", "true"); el.appendChild(b); }
+    b.style.cssText = colorStyle(t);
+    b.innerHTML = iconHTML(t, "tri__ico");
+  }
+  function paintCounts() {
+    const n = items.filter((c) => of(c.id)).length;
+    $("[data-n]", ui.mine).textContent = n;
+    return n;
+  }
+  function applyList({ animate = false } = {}) {
+    if (!built) return;
+    const w = words(filter.q);
+    const out = items.filter((c) => (!filter.mine || of(c.id)) && matches(c, w));
+    const frag = document.createDocumentFragment();
+    out.forEach((c) => frag.appendChild(tiles.get(c.id)));
+    ui.grid.replaceChildren(frag);
+    if (animate) FX.stagger(ui.grid, 24, { cls: "fx-grid-in", max: 12, limit: 18, cleanup: true });
+    const n = paintCounts();
+    ui.mine.setAttribute("aria-pressed", String(filter.mine));
+    ui.count.textContent = out.length === items.length ? `${items.length} ${items.length === 1 ? "card" : "cards"}` : `${out.length} of ${items.length} cards`;
+    ui.reset.hidden = !(w.length || filter.mine);
+    ui.none.hidden = out.length > 0;
+    ui.noneText.textContent = filter.mine && !n ? "You haven't set a trait on any card yet. Tap a card to start." : "Try a different search or clear the filters.";
+  }
+  const shownIds = () => {
+    const ids = $$(".card[data-id]", ui.grid).map((el) => el.dataset.id);
+    return ids.length ? ids : items.map((c) => c.id);
+  };
+
+  /* ---------- the shop: trait list ---------- */
+  function rowHTML(t) {
+    return `<button type="button" class="trrow fx-press" data-tr="${esc(t.id)}" data-tier="${esc(t.tier)}" style="${colorStyle(t)}" aria-pressed="false">
+        <span class="tri tri--md">${iconHTML(t, "tri__ico")}</span>
+        <span class="trrow__main">
+          <span class="trrow__head"><span class="trrow__name">${esc(t.name)}</span><span class="trrow__tag trrow__tag--rec" data-rec hidden>Recommended</span><span class="trrow__tag trrow__tag--on" data-on hidden>Equipped</span></span>
+          <span class="trrow__tier">${esc(t.tier)}</span>
+          <span class="trrow__fx">${esc(shortFx(t))}</span>
+          <span class="trrow__note" data-note hidden></span>
         </span>
-        <span class="trc__title"><span class="trc__name">${esc(t.name)}</span><span class="trc__tier">${esc(t.tier)}</span></span>
-        <span class="trc__fx">${fx.map((e) => `<span>${esc(e)}</span>`).join("")}</span>
-        <span class="trc__foot"><span>1 in ${oneIn(t)} rolls</span><span>${t.pity ? `Pity ${t.pity.toLocaleString("en-US")} · ${(t.pity * ROLL()).toLocaleString("en-US")} Shards` : "No pity"}</span></span>
+        <span class="trrow__odds"><b>${fmtPct(t.chance)}</b><small>1 in ${oneIn(t)}</small><small>${t.pity ? `Pity ${t.pity.toLocaleString("en-US")}` : "No pity"}</small></span>
       </button>`;
   }
+  function rowLabel(t, { on, rec }) {
+    const pity = t.pity ? `pity at ${t.pity.toLocaleString("en-US")} rolls (${(t.pity * ROLL()).toLocaleString("en-US")} Shards)` : "no pity";
+    return `${t.name}, ${t.tier}, ${fmtPct(t.chance)} per roll, ${pity}. ${effects(t).join(", ")}.${on ? " Equipped." : ""}${rec ? " Recommended for this card." : ""}${sel ? (on ? "" : " Tap to set it as this card's trait.") : " Choose a card first."}`;
+  }
+  function paintList() {
+    const card = sel && cardOf(sel), mine = card ? of(card.id) : null, rec = card ? byId(card.bestTrait) : null;
+    const note = card ? String(card.bestTraitNote || "").trim() : "";
+    $$(".trrow", ui.list).forEach((b) => {
+      const t = byId(b.dataset.tr), on = !!card && t.id === mine, isRec = !!rec && t.id === rec.id;
+      b.setAttribute("aria-pressed", String(on));
+      b.classList.toggle("is-rec", isRec);
+      $("[data-on]", b).hidden = !on;
+      $("[data-rec]", b).hidden = !isRec;
+      const n = $("[data-note]", b);
+      n.hidden = !(isRec && note);
+      n.textContent = isRec ? note : "";
+      b.setAttribute("aria-label", rowLabel(t, { on, rec: isRec }));
+    });
+    ui.list.classList.toggle("is-idle", !card);
+  }
 
-  function stepperHTML(i, label) {
-    return `<div class="trstep" data-g="${i}">
-        <span class="trstep__k">${label} grade</span>
-        <button type="button" class="trstep__btn fx-press" data-gstep="-1" aria-label="Lower ${label} grade">−</button>
-        <span class="trstep__v" data-gv aria-live="polite"></span>
-        <button type="button" class="trstep__btn fx-press" data-gstep="1" aria-label="Raise ${label} grade">+</button>
+  /* ---------- the shop: the chosen card ---------- */
+  const CHANGE_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3l4 4-4 4"/><path d="M3 11V9a2 2 0 0 1 2-2h16"/><path d="M7 21l-4-4 4-4"/><path d="M21 13v2a2 2 0 0 1-2 2H3"/></svg>`;
+  function headEmptyHTML() {
+    const none = !items.length;
+    return `<div class="trs__top trs__top--empty">
+        <div class="trs__slot" aria-hidden="true"><svg><use href="#i-fan"/></svg></div>
+        <div class="trs__info">
+          <p class="trs__k">Trait Shop</p>
+          <h2 class="trs__name">${none ? "No cards yet" : "No card chosen"}</h2>
+          <p class="trs__hint">${none ? "Once cards are added you can set their traits here. The list below shows every trait in the shop." : "Tap a card to see its trait, its final ATK and HP, and the trait that suits it best."}</p>
+          ${none ? "" : `<button type="button" class="tm-btn tm-btn--primary fx-press trs__btn" data-act="change">${CHANGE_ICON}Choose a card</button>`}
+        </div>
       </div>`;
+  }
+  function headHTML(card) {
+    return `<div class="trs__top">
+        <div class="trs__hero" data-no-detail></div>
+        <div class="trs__info">
+          <p class="trs__k">${esc(card.series || "Trait Shop")}</p>
+          <h2 class="trs__name" tabindex="-1">${esc(card.name)}</h2>
+          <div class="trs__nums">
+            <div class="trs__num trs__num--atk"><span class="trs__nk">Final ATK</span><b data-cv="atk" data-value="0">0</b><small data-cs="atk"></small></div>
+            <div class="trs__num trs__num--hp"><span class="trs__nk">Final HP</span><b data-cv="hp" data-value="0">0</b><small data-cs="hp"></small></div>
+          </div>
+        </div>
+        <div class="trs__equip" data-equip></div>
+      </div>
+      <div class="trs__bar">
+        <button type="button" class="tm-btn fx-press trs__btn" data-act="change">${CHANGE_ICON}Change card</button>
+        <button type="button" class="tm-btn fx-press trs__btn" data-act="details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Card details</button>
+      </div>
+      <div class="rarity-picker trs__rarity" role="group" aria-label="Rarity">${C.rarityChipsHTML()}</div>
+      <p class="trs__cap" data-cap></p>
+      <ul class="trs__extra" data-extra hidden></ul>
+      <div class="trs__fxbox"><h3 class="trs__fxtitle" data-fxt></h3><ul class="trs__fx" data-fx></ul></div>
+      <p class="trs__note">Saved on this device: every copy of a card shares one trait. Average hit and effective HP are estimates from the trait's numbers.</p>`;
+  }
+  function equipHTML(t) {
+    return t
+      ? `<span class="tri tri--lg" style="${colorStyle(t)}">${iconHTML(t, "tri__ico")}</span>
+         <span class="trs__eqtext"><span class="trs__nk">Your trait</span><b style="${colorStyle(t)}">${esc(t.name)}</b><span class="trs__eqtier" style="${colorStyle(t)}">${esc(t.tier)}</span></span>
+         <button type="button" class="chip glass fx-press trs__clear" data-act="clear" aria-label="Remove ${esc(t.name)} from this card">Remove</button>`
+      : `<span class="tri tri--lg tri--none">${iconHTML(null, "tri__ico")}</span>
+         <span class="trs__eqtext"><span class="trs__nk">Your trait</span><b>None yet</b><span class="trs__eqtier">Tap a trait below</span></span>`;
+  }
+
+  function paint({ animate = false } = {}) {
+    paintList();
+    if (!sel) return;
+    const card = cardOf(sel), id = of(sel), g = C.grade.get ? C.grade.get(sel) : null;
+    const res = apply(card, state.rarity, g, id), t = res.trait;
+    const eq = $("[data-equip]", ui.head);
+    const was = eq.dataset.trait || "";
+    eq.innerHTML = equipHTML(t);
+    eq.style.cssText = t ? colorStyle(t) : "";
+    eq.dataset.trait = id || "";
+    if (animate && was !== (id || "") && !FX.reduced) { const b = $(".tri", eq); b.classList.remove("is-pop"); void b.offsetWidth; b.classList.add("is-pop"); }
+    const num = (k, v) => { const n = $(`[data-cv="${k}"]`, ui.head); if (animate) FX.countTo(n, v, { format: C.fmtStat, duration: 450 }); else { n.dataset.value = v; n.textContent = C.fmtStat(v); } };
+    num("atk", res.atk); num("hp", res.hp);
+    const gp = (i) => (g && g[i] ? ` · +${Number((g[i] * STEP * 100).toFixed(1))}% grade` : "");
+    $('[data-cs="atk"]', ui.head).textContent = `${C.fmtStat(res.baseAtk)}${gp(0)}${t && t.dmg !== 1 ? ` · ${xN(t.dmg)} trait` : ""}`;
+    $('[data-cs="hp"]', ui.head).textContent = `${C.fmtStat(res.baseHp)}${gp(3)}${t && t.hp !== 1 ? ` · ${xN(t.hp)} trait` : ""}`;
+    $("[data-cap]", ui.head).textContent = `${state.rarity}${g && (g[0] || g[3]) ? ` · with your grades (ATK ${g[0] || "–"} · HP ${g[3] || "–"})` : " · no grades"}${t ? ` · ${t.name}` : " · no trait"}`;
+    const extra = [];
+    if (t && t.crit) extra.push(`<li><span>Average hit with crits</span><b>${C.fmtStat(res.avgHit)}</b></li>`);
+    if (res.effHp !== res.hp) extra.push(`<li><span>Effective HP (dodge, damage cut, shield, revive)</span><b>${C.fmtStat(res.effHp)}</b></li>`);
+    const ex = $("[data-extra]", ui.head);
+    ex.innerHTML = extra.join("");
+    ex.hidden = !extra.length;
+    const fx = effects(t, { special: true });
+    const ft = $("[data-fxt]", ui.head);
+    ft.textContent = t ? `${t.name} · ${t.tier}` : "No trait";
+    ft.style.cssText = colorStyle(t);
+    $("[data-fx]", ui.head).innerHTML = t ? (fx.length ? fx.map((e) => `<li>${esc(e)}</li>`).join("") : `<li class="muted">No special effect: stats only.</li>`) : `<li class="muted">No trait: base stats. Tap a trait below to set the one you rolled.</li>`;
+    $(".trs__fxbox", ui.head).style.cssText = colorStyle(t);
+    C.setCardNums(hero, { atk: res.atk, hp: res.hp }, { animate: animate && hero.classList.contains("is-live") });
+  }
+
+  const heroLabel = () => hero.setAttribute("aria-label", `${cardOf(sel).name}, ${state.rarity}. Open card details`);
+  const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
+  // origin: the grid tile that was tapped (the card flies from it on a wide screen; a phone scrolls down to the shop)
+  function select(id, origin = null) {
+    const card = cardOf(id);
+    if (!card) return;
+    const first = !sel;
+    sel = id;
+    tiles.forEach((el, k) => { const on = k === id; el.classList.toggle("is-picked", on); if (on) el.setAttribute("aria-current", "true"); else el.removeAttribute("aria-current"); });
+    ui.head.innerHTML = headHTML(card);
+    hero = C.renderCard(card, state.rarity);
+    heroLabel();
+    $(".trs__hero", ui.head).appendChild(hero);
+    paint();
+    if (first) FX.stagger(ui.list, 26, { cls: "fx-up", max: 13, limit: 13, cleanup: true });
+    const r = origin && origin.isConnected ? origin.getBoundingClientRect() : null;
+    if (r && !wide.matches) {
+      const top = ui.shop.getBoundingClientRect().top + window.scrollY - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 58) - 8;
+      window.scrollTo({ top: Math.max(0, top), behavior: FX.reduced ? "auto" : "smooth" });
+      FX.flash(ui.head);
+    } else {
+      // wide: the grid stays in view while the page scrolls; if the shop's top is above the screen, bring it back
+      const top = ui.head.getBoundingClientRect().top, bar = $(".topbar"), off = (bar && bar.offsetHeight) || 0;
+      if (wide.matches && top < off) {
+        window.scrollTo({ top: Math.max(0, window.scrollY + top - off - 16), behavior: FX.reduced ? "auto" : "smooth" });
+        FX.flash(ui.head);
+      } else if (!(r && rectVisible(r) && FX.flip($(".trs__hero", ui.head), r))) {
+        FX.fade(hero, 1, { duration: 300 });
+        FX.flash(ui.head);
+      }
+    }
+  }
+
+  // tap a trait = it's this card's trait now (saved at once, toast with Undo) · the "cbi:trait" listener repaints
+  function equip(tid) {
+    const card = cardOf(sel);
+    if (!card) return;
+    const prev = of(card.id), next = byId(tid) ? tid : null;
+    if (prev === next) { if (next) FX.flash($(".trs__equip", ui.head)); return; }
+    set(card.id, next);
+    if (hero.classList.contains("is-live")) C.flashCard(hero);
+    const undo = { label: "Undo", fn: () => set(card.id, prev) };
+    FX.toast(next ? `${byId(next).name} set as ${card.name}'s trait` : `Trait removed from ${card.name}`, { action: undo });
+  }
+
+  /* ---------- Change card: a search window like the Grade picker (C.dialog, js/tiermaker.js) ---------- */
+  const CHUNK = 40;
+  async function changeDialog() {
+    if (!C.dialog || !items.length) return;
+    const res = await C.dialog({
+      title: sel ? "Change card" : "Choose a card",
+      html: `<div class="dk-pick">
+          <div class="dk-pick__head">
+            <label class="field field--search"><span class="sr-only">Search cards</span><svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="search" data-q autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Search name or series"></label>
+          </div>
+          <div class="dk-pick__scroll" data-scroll>
+            <div class="dk-pick__grid" data-grid role="list"></div>
+            <div data-more class="dk-pick__more" aria-hidden="true"></div>
+            <p class="dk-pick__empty" data-empty hidden>Nothing matches. Try another search.</p>
+          </div>
+          <p class="tm-field__note" data-count></p>
+        </div>`,
+      actions: [{ label: "Close", value: "cancel" }],
+      onMount(d, finish) {
+        $(".tm-dlg__sheet", d).classList.add("dk-pick-sheet");
+        const q = $("[data-q]", d), grid = $("[data-grid]", d), more = $("[data-more]", d), scroller = $("[data-scroll]", d);
+        const empty = $("[data-empty]", d), count = $("[data-count]", d);
+        let rows = [], n = 0, io = null;
+        const tile = (c) => {
+          const el = document.createElement("div");
+          el.className = "dk-tile";
+          el.tabIndex = 0;
+          el.setAttribute("role", "listitem");
+          el.dataset.id = c.id;
+          const art = C.renderCard(c, state.rarity, { mini: true, tilt: false });
+          art.tabIndex = -1; art.removeAttribute("role"); art.setAttribute("aria-hidden", "true");
+          tileBadge(art, c.id);
+          el.appendChild(art);
+          const t = byId(of(c.id));
+          if (c.id === sel) { el.classList.add("is-here"); el.insertAdjacentHTML("beforeend", `<span class="dk-tile__tag dk-tile__tag--here">Here</span>`); }
+          el.setAttribute("aria-label", `${c.name}${t ? `, trait ${t.name}` : ""}${c.id === sel ? ", open now" : ""}`);
+          return el;
+        };
+        const chunk = () => {
+          if (n >= rows.length) return;
+          const frag = document.createDocumentFragment();
+          rows.slice(n, n + CHUNK).forEach((c) => frag.appendChild(tile(c)));
+          n = Math.min(rows.length, n + CHUNK);
+          grid.appendChild(frag);
+        };
+        const run = () => {
+          const w = words(q.value);
+          rows = items.filter((c) => matches(c, w));
+          grid.replaceChildren(); n = 0; scroller.scrollTop = 0;
+          chunk();
+          empty.hidden = rows.length > 0;
+          count.textContent = `${rows.length} ${rows.length === 1 ? "card" : "cards"}${rows.length < items.length ? ` of ${items.length}` : ""}`;
+        };
+        if ("IntersectionObserver" in window) {
+          io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) chunk(); }, { root: scroller, rootMargin: "240px 0px" });
+          io.observe(more);
+        } else scroller.addEventListener("scroll", () => { if (scroller.scrollTop + scroller.clientHeight > scroller.scrollHeight - 300) chunk(); }, { passive: true });
+        q.addEventListener("input", run);
+        q.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); q.blur(); } });
+        const choose = (el) => { if (el) finish({ action: "pick", id: el.dataset.id }); };
+        grid.addEventListener("click", (e) => choose(e.target.closest(".dk-tile")));
+        grid.addEventListener("keydown", (e) => { const el = e.target.closest(".dk-tile"); if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); choose(el); } });
+        d.addEventListener("close", () => { if (io) io.disconnect(); }, { once: true });
+        run();
+        if (window.matchMedia("(pointer: fine)").matches) q.focus({ preventScroll: true });
+        else if (document.activeElement && document.activeElement.blur) document.activeElement.blur();   // no keyboard popping up on a phone
+      },
+    });
+    if (!res || res.action !== "pick") return;
+    if (res.id === sel) return;
+    select(res.id);
+    const tile = tiles.get(res.id);
+    if (wide.matches && tile && tile.isConnected && !rectVisible(tile.getBoundingClientRect())) tile.scrollIntoView({ block: "nearest", behavior: FX.reduced ? "auto" : "smooth" });
   }
 
   function build() {
     const list = data().list.slice().sort((a, b) => tierOrder(b) - tierOrder(a) || a.chance - b.chance);
-    ui.grid.innerHTML = list.map(traitCardHTML).join("");
+    ui.wrap.hidden = !list.length;
     ui.empty.hidden = list.length > 0;
-    ui.tabs.hidden = !list.length;
-    if (!list.length) { ui.list.hidden = false; ui.calcView.hidden = true; built = true; return; }
-    FX.stagger(ui.grid, 30, { cls: "fx-grid-in", max: 10, limit: 14, cleanup: true });
-
-    const cards = cardsSorted();
-    ui.calcEmpty.hidden = cards.length > 0;
-    ui.calcBody.hidden = !cards.length;
-    if (cards.length) {
-      ui.select.innerHTML = cards.map((c) => `<option value="${esc(c.id)}">${esc(c.name)}${C.isRanked(c) ? ` · Tier ${esc(c.tier)}` : ""}</option>`).join("");
-      ui.rarity.innerHTML = C.rarityChipsHTML();
-      ui.steps.innerHTML = stepperHTML(0, "ATK") + stepperHTML(3, "HP");
-      ui.chips.innerHTML = chipsHTML(null);
-      pickCard(cards[0].id, { animate: false });
-    }
     built = true;
-  }
-
-  function pickCard(id, { animate = true } = {}) {
-    const card = state.cards.find((c) => c.id === id);
-    if (!card) return;
-    calc.id = id;
-    ui.select.value = id;
-    const g = C.grade.get ? C.grade.get(id) : null;
-    calc.g = g ? g.slice() : [0, 0, 0, 0];
-    const mine = of(id);
-    if (mine) calc.trait = mine;
-    else if (!calc.touched) calc.trait = byId(card.bestTrait) ? card.bestTrait : null;
-    // the preview card (tap = card details, like every card on the site)
-    const el = C.renderCard(card, state.rarity);
-    ui.hero.replaceChildren(el);
-    calc.card = el;
-    if (animate) FX.flash(ui.hero);
-    paintCalc({ animate: false });
-  }
-
-  function paintCalc({ animate = true } = {}) {
-    if (!calc.id) return;
-    const card = state.cards.find((c) => c.id === calc.id);
-    const res = apply(card, state.rarity, calc.g, calc.trait), t = res.trait;
-    pressChips(ui.chips, calc.trait);
-    // grades
-    $$("[data-g]", ui.steps).forEach((s) => {
-      const g = calc.g[Number(s.dataset.g)];
-      $("[data-gv]", s).textContent = g ? `${g} · +${Number((g * STEP * 100).toFixed(1))}%` : "None";
-      $('[data-gstep="-1"]', s).disabled = g <= 0;
-      $('[data-gstep="1"]', s).disabled = g >= 10;
+    if (!list.length) return;
+    ui.list.innerHTML = list.map(rowHTML).join("");
+    ui.tools.hidden = !items.length;
+    ui.gridEmpty.hidden = items.length > 0;
+    items.forEach((c) => {
+      const el = C.renderCard(c, state.rarity, { mini: true });
+      tileBadge(el, c.id);
+      tiles.set(c.id, el);
     });
-    const saved = C.grade.get ? C.grade.get(calc.id) : null;
-    ui.useGrades.disabled = !saved;
-    ui.useGrades.textContent = saved ? `Use my grades (ATK ${saved[0] || "–"} · HP ${saved[3] || "–"})` : "No saved grades for this card";
-    // your trait / recommended
-    const mine = of(calc.id), rec = byId(card.bestTrait);
-    ui.mine.innerHTML = `<span class="trcalc__k">Your trait</span>${pillHTML(mine)}${rec ? `<span class="trcalc__k">Recommended</span>${pillHTML(rec.id)}` : ""}`;
-    ui.save.hidden = (calc.trait || null) === mine;
-    ui.save.textContent = calc.trait ? `Save ${byId(calc.trait).name} as my trait` : "Clear my trait for this card";
-    // numbers
-    const num = (k, v) => { const n = $(`[data-cv="${k}"]`, ui.result); if (animate) FX.countTo(n, v, { format: C.fmtStat, duration: 450 }); else { n.dataset.value = v; n.textContent = C.fmtStat(v); } };
-    num("atk", res.atk); num("hp", res.hp);
-    const gp = (i) => (calc.g[i] ? ` · +${Number((calc.g[i] * STEP * 100).toFixed(1))}% grade` : "");
-    $('[data-cs="atk"]', ui.result).textContent = `${state.rarity} ${C.fmtStat(res.baseAtk)}${gp(0)}${t && t.dmg !== 1 ? ` · ${xN(t.dmg)} trait` : ""}`;
-    $('[data-cs="hp"]', ui.result).textContent = `${state.rarity} ${C.fmtStat(res.baseHp)}${gp(3)}${t && t.hp !== 1 ? ` · ${xN(t.hp)} trait` : ""}`;
-    const extra = [];
-    if (t && t.crit) extra.push(`<li><span>Average hit with crits</span><b>${C.fmtStat(res.avgHit)}</b></li>`);
-    if (res.effHp !== res.hp) extra.push(`<li><span>Effective HP (dodge, damage cut, shield, revive)</span><b>${C.fmtStat(res.effHp)}</b></li>`);
-    ui.extra.innerHTML = extra.join("");
-    ui.extra.hidden = !extra.length;
-    const fx = effects(t, { special: true });
-    ui.fx.innerHTML = t ? (fx.length ? fx.map((e) => `<li>${esc(e)}</li>`).join("") : `<li class="muted">No special effect: stats only.</li>`) : `<li class="muted">No trait: base stats.</li>`;
-    ui.fxTitle.textContent = t ? `${t.name} · ${t.tier}` : "No trait";
-    ui.fxTitle.style.cssText = colorStyle(t);
-    C.setCardNums(calc.card, { atk: res.atk, hp: res.hp }, { animate: animate && calc.card.classList.contains("is-live") });
-  }
-  const $$ = (s, r) => [...r.querySelectorAll(s)];
-
-  function setTab(tab, { animate = true } = {}) {
-    const on = tab === "calc";
-    ui.tabs.style.setProperty("--i", on ? 1 : 0);
-    $$(".seg__btn", ui.tabs).forEach((b) => { const sel = b.dataset.tab === tab; b.setAttribute("aria-selected", String(sel)); b.tabIndex = sel ? 0 : -1; });
-    if (ui.list.hidden === on) return;
-    ui.list.hidden = on; ui.calcView.hidden = !on;
-    const show = on ? ui.calcView : ui.list;
-    if (animate) { show.classList.remove("fx-page-in"); void show.offsetWidth; show.classList.add("fx-page-in"); }
+    if (!items.length) ui.grid.replaceChildren();
+    ui.head.innerHTML = headEmptyHTML();
+    applyList({ animate: true });
+    paintList();
+    FX.stagger(ui.list, 26, { cls: "fx-up", max: 13, limit: 13, cleanup: true });
   }
 
   function bind() {
-    ui.tabs.addEventListener("click", (e) => { const b = e.target.closest(".seg__btn"); if (b) setTab(b.dataset.tab); });
-    ui.grid.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-calc-trait]");
+    ui.search.addEventListener("input", () => { filter.q = ui.search.value; applyList(); });
+    ui.search.addEventListener("keydown", (e) => { if (e.key === "Enter") ui.search.blur(); });
+    ui.mine.addEventListener("click", () => { filter.mine = !filter.mine; applyList({ animate: true }); });
+    const reset = () => { filter.q = ""; filter.mine = false; ui.search.value = ""; applyList({ animate: true }); };
+    ui.reset.addEventListener("click", reset);
+    ui.noneReset.addEventListener("click", reset);
+    ui.grid.addEventListener("click", (e) => { const el = e.target.closest(".card[data-id]"); if (el) select(el.dataset.id, el); });
+    ui.grid.addEventListener("keydown", (e) => {
+      if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); select(e.target.dataset.id, e.target); }
+    });
+    ui.list.addEventListener("click", (e) => {
+      const b = e.target.closest(".trrow");
       if (!b) return;
-      calc.trait = b.dataset.calcTrait; calc.touched = true;
-      setTab("calc");
-      paintCalc();
-      window.scrollTo({ top: Math.max(0, ui.calcView.getBoundingClientRect().top + window.scrollY - 90), behavior: FX.reduced ? "auto" : "smooth" });
-      FX.flash(ui.result);
+      if (!sel) { changeDialog(); return; }   // no card yet: pick one first
+      equip(b.dataset.tr);
     });
-    ui.select.addEventListener("change", () => pickCard(ui.select.value));
-    ui.chips.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-trait]");
-      if (!b) return;
-      calc.trait = b.dataset.trait || null; calc.touched = true;
-      paintCalc();
-      C.flashCard(calc.card);
+    ui.head.addEventListener("click", (e) => {
+      const a = e.target.closest("[data-act]");
+      if (a) {
+        if (a.dataset.act === "change") changeDialog();
+        else if (a.dataset.act === "clear") equip(null);
+        else if (a.dataset.act === "details" && hero) C.openCard(sel, hero, { list: shownIds() });
+        return;
+      }
+      // the shop's card opens the card details like every card on the site; swiping walks the grid's order
+      const c = e.target.closest(".trs__hero .card");
+      if (c) C.openCard(sel, c, { list: shownIds() });
     });
-    ui.steps.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-gstep]");
-      if (!b || b.disabled) return;
-      const i = Number(b.closest("[data-g]").dataset.g);
-      calc.g[i] = Math.max(0, Math.min(10, calc.g[i] + Number(b.dataset.gstep)));
-      paintCalc();
-    });
-    ui.useGrades.addEventListener("click", () => { const g = C.grade.get(calc.id); if (g) { calc.g = g.slice(); paintCalc(); } });
-    ui.save.addEventListener("click", () => {
-      set(calc.id, calc.trait);
-      FX.toast(calc.trait ? `${byId(calc.trait).name} saved as your trait for ${state.cards.find((c) => c.id === calc.id).name}` : "Trait cleared");
+    ui.head.addEventListener("keydown", (e) => {
+      if ((e.key === "Enter" || e.key === " ") && e.target.matches(".trs__hero .card")) { e.preventDefault(); C.openCard(sel, e.target, { list: shownIds() }); }
     });
     document.addEventListener("cbi:rarity", (e) => {
-      if (!built || !calc.card) return;
-      const card = state.cards.find((c) => c.id === calc.id);
+      if (!built) return;
+      tiles.forEach((el, id) => { C.setCardRarity(el, cardOf(id), e.detail, { animate: false }); tileBadge(el, id); });
+      if (!sel || !hero) return;
       // keep the trait numbers on screen while the rarity swaps underneath, then count to the new ones
-      const keep = ["atk", "hp"].map((k) => { const n = $(`[data-k="${k}"]`, calc.card); return [n.dataset.value, n.textContent]; });
-      C.setCardRarity(calc.card, card, e.detail, { animate: false });
-      ["atk", "hp"].forEach((k, j) => { const n = $(`[data-k="${k}"]`, calc.card); n.dataset.value = keep[j][0]; n.textContent = keep[j][1]; });
-      if (calc.card.classList.contains("is-live")) C.flashCard(calc.card);
-      paintCalc();
+      const keep = ["atk", "hp"].map((k) => { const n = $(`[data-k="${k}"]`, hero); return [n.dataset.value, n.textContent]; });
+      C.setCardRarity(hero, cardOf(sel), e.detail, { animate: false });
+      heroLabel();
+      ["atk", "hp"].forEach((k, j) => { const n = $(`[data-k="${k}"]`, hero); n.dataset.value = keep[j][0]; n.textContent = keep[j][1]; });
+      if (hero.classList.contains("is-live")) C.flashCard(hero);
+      paint({ animate: true });
     });
   }
 
   /* ---------- Boot ---------- */
   function init() {
     Object.assign(ui, {
-      tabs: $("#tr-tabs"), list: $("#tr-list"), grid: $("#tr-grid"), empty: $("#tr-empty"),
-      calcView: $("#tr-calc"), calcBody: $("#tc-body"), calcEmpty: $("#tc-empty"),
-      select: $("#tc-card"), rarity: $("#tc-rarity"), steps: $("#tc-steps"), useGrades: $("#tc-use-grades"),
-      chips: $("#tc-traits"), mine: $("#tc-mine"), save: $("#tc-save"), hero: $("#tc-hero"),
-      result: $("#tc-result"), extra: $("#tc-extra"), fx: $("#tc-fx"), fxTitle: $("#tc-fx-title"),
+      wrap: $("#trw"), empty: $("#tr-empty"), tools: $("#trw-tools"), search: $("#trw-search"), mine: $("#trw-mine"),
+      count: $("#trw-count"), reset: $("#trw-reset"), grid: $("#trw-grid"), none: $("#trw-none"), noneText: $("#trw-none-text"),
+      noneReset: $("#trw-none-reset"), gridEmpty: $("#trw-empty"), shop: $("#trw-shop"), head: $("#trs-head"), list: $("#trs-list"),
     });
     load();
     if (!ui.grid) return;
+    items = state.cards.filter((c) => c && c.id && c.base).slice().sort(compare);
+    items.forEach((c) => hay.set(c.id, (c.name + " " + (c.series || "")).toLowerCase()));
     bind();
     C.lazy("traits", build);
     // a trait changed somewhere (Details sheet, a deck slot, this page): keep every view in step
     document.addEventListener("cbi:trait", (e) => {
-      repaintPanels(e.detail && e.detail.id);
-      if (built && calc.id && e.detail && e.detail.id === calc.id) paintCalc({ animate: false });
+      const id = e.detail && e.detail.id;
+      repaintPanels(id);
+      if (!built) return;
+      const el = tiles.get(id);
+      if (el) tileBadge(el, id);
+      paintCounts();
+      if (id === sel) paint({ animate: true });
     });
     document.addEventListener("cbi:rarity", () => repaintPanels(null));
   }
 
-  C.traits = { init, list: () => data().list, byId, of, set, map, power, mult, effects, apply, pillHTML, chipsHTML, panelHTML, mountPanel, pickDialog, colorStyle, TIERS };
+  C.traits = { init, list: () => data().list, byId, of, set, map, power, mult, effects, apply, pillHTML, chipsHTML, panelHTML, mountPanel, pickDialog, colorStyle, iconHTML, TIERS };
 })();

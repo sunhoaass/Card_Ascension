@@ -1,6 +1,6 @@
 /* ==========================================================
    Card Battle Infinity — Traits (js/traits.js)
-   Trait cards in their tier colour (--tr-* in tokens.css, drawn here: no game icons) · calculator ·
+   Trait icon badges (W5 · glyphs drawn for this site in index.html, no game icons) · Traits tab: card grid | Trait Shop ·
    pills / chips used by the Details sheet, the graded case label and the Deck page · the trait picker dialog.
    Every coloured bit reads --tc (tier colour) and --tc2 (its dark partner), set inline by js/traits.js.
    ========================================================== */
@@ -35,111 +35,177 @@
 .trchip .chip__swatch { transform: rotate(45deg); border-radius: 2px; }
 
 /* ==========================================================
-   Traits tab: the 13 trait cards
+   Trait icon badge (W5): a tier-coloured medallion with the trait's own glyph (#tri-<id> in index.html)
    ========================================================== */
-.trgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
-@media (min-width: 720px) { .trgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1280px) { .trgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); } }
-@media (min-width: 1700px) { .trgrid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-.trskel { aspect-ratio: 4 / 3; }
-.trc {
-  position: relative; min-width: 0;
-  display: flex; flex-direction: column; gap: var(--s-3);
-  padding: var(--s-3) var(--s-3) var(--s-3);
-  text-align: left; color: var(--ink);
-  border: 1px solid color-mix(in srgb, var(--tc) 55%, transparent);
-  border-radius: var(--r-panel);
+.tri {
+  --ts: 40px;
+  position: relative; flex: none;
+  display: inline-grid; place-items: center;
+  width: var(--ts); height: var(--ts); border-radius: 30%;
+  color: color-mix(in srgb, var(--tc, var(--gold)) 45%, var(--ink));
   background:
-    radial-gradient(120% 70% at 0% 0%, color-mix(in srgb, var(--tc) 22%, transparent), transparent 60%),
-    linear-gradient(165deg, color-mix(in srgb, var(--tc2) 80%, var(--void)), var(--void) 75%);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tc) 30%, transparent);
-  overflow: hidden;
-  transition: border-color var(--t-med) var(--ease);
+    radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--tc, var(--gold)) 50%, transparent), transparent 70%),
+    linear-gradient(160deg, color-mix(in srgb, var(--tc2, var(--gold-lo)) 85%, var(--void)), var(--void));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tc, var(--gold)) 70%, transparent), inset 0 1px 0 color-mix(in srgb, var(--ink) 25%, transparent), 0 0 0 1px var(--gold-lo);
 }
-.trc::before {   /* tier stripe on the left edge */
-  content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0;
-  background: var(--tc); opacity: .85;
+.tri::after {   /* inner hairline, like the game's double frame */
+  content: ""; position: absolute; inset: 3px; border-radius: 26%;
+  border: 1px solid color-mix(in srgb, var(--tc, var(--gold)) 30%, transparent);
+  pointer-events: none;
 }
-.trc:hover, .trc:focus-visible { border-color: var(--tc); }
-/* the three rarest tiers glow a little (still: no animation) */
-.trc[data-tier="Mythic"], .trc[data-tier="Divine"], .trc[data-tier="Secret"] {
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tc) 45%, transparent), inset 0 0 22px color-mix(in srgb, var(--tc) 18%, transparent);
+.tri__ico { width: 64%; height: 64%; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .6)); }
+.tri--md { --ts: 44px; }
+.tri--lg { --ts: 56px; }
+.tri--none { --tc: var(--tr-none); --tc2: var(--void-2); color: var(--ink-faint); }
+/* the three rarest tiers glow a little (still, no animation) */
+[data-tier="Mythic"] > .tri, [data-tier="Divine"] > .tri, [data-tier="Secret"] > .tri {
+  box-shadow: inset 0 0 0 1px var(--tc), inset 0 1px 0 color-mix(in srgb, var(--ink) 30%, transparent), 0 0 0 1px var(--gold-lo), 0 0 14px color-mix(in srgb, var(--tc) 40%, transparent);
 }
-.trc[data-tier="Secret"] { border-width: 1.5px; }
-.trc__top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); min-width: 0; }
-.trc__gem { width: 30px; height: 30px; flex: none; color: var(--tc); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--tc) 45%, transparent)); }
-.trc__title { min-width: 0; display: flex; flex-direction: column; margin-top: calc(var(--s-1) * -1); }
-.trc__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; color: var(--ink); overflow-wrap: break-word; }
-.trc__tier { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tc); }
-.trc__chance {
-  flex: none; padding: 2px 7px; border-radius: var(--r-pill);
-  font-family: var(--gc-font-num); font-size: 13px; letter-spacing: .02em;
-  color: var(--void); background: var(--tc);
-}
-.trc__fx { display: grid; gap: 3px; font-size: var(--fs-xs); line-height: 1.35; color: var(--ink-dim); }
-.trc__fx span { position: relative; padding-left: 12px; }
-.trc__fx span::before { content: ""; position: absolute; left: 1px; top: .5em; width: 5px; height: 5px; transform: rotate(45deg); background: var(--tc); }
-.trc__fx span:nth-child(-n+2) { color: var(--ink); }
-.trc__foot { margin-top: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--s-2); padding-top: var(--s-2); border-top: 1px solid color-mix(in srgb, var(--tc) 22%, transparent); font-size: 11px; color: var(--ink-faint); }
+.tri.is-pop { animation: tri-pop 360ms var(--ease); }
+@keyframes tri-pop { 0% { transform: scale(.7); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+
+/* the card's trait on a grid tile: left side under the name in the picture (same spot as the grade badge, cqw = % of card width) */
+.card__trait { position: absolute; left: 2.4cqw; top: 15cqw; z-index: 5; --ts: max(22px, 19cqw); border-radius: 50%; }
+.card__trait::after { border-radius: 50%; inset: 2px; }
 
 /* ==========================================================
-   Traits tab: calculator
+   Traits tab (W5): card grid | Trait Shop
    ========================================================== */
-.trcalc { display: grid; gap: var(--s-5); grid-template-areas: "a" "r" "b"; }
-.trcalc__a { grid-area: a; } .trcalc__b { grid-area: b; } .trcalc__result { grid-area: r; }
-.trcalc[hidden] { display: none; }
-.trcalc__controls { min-width: 0; display: flex; flex-direction: column; gap: var(--s-2); }
-.trcalc__label, .trcalc__field .trcalc__label { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-top: var(--s-2); }
-.trcalc__field { display: flex; flex-direction: column; gap: var(--s-2); flex: none; }
-.trcalc__field select { padding-left: 14px; }
-.trcalc__rarity, .trcalc__traits { margin: 0 calc(var(--gutter) * -1); padding: 4px var(--gutter); }
-.trcalc__steps { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
-.trstep {
-  display: grid; grid-template-columns: 40px 1fr 40px; grid-template-rows: auto 40px; align-items: center; gap: 4px;
-  padding: var(--s-2); border: 1px solid var(--glass-line); border-radius: var(--r-panel); background: var(--glass-under);
-}
-.trstep__k { grid-column: 1 / -1; font-size: var(--fs-xs); color: var(--ink-dim); text-align: center; }
-.trstep__btn {
-  width: 40px; height: 40px; border-radius: var(--r-chip);
-  border: 1px solid var(--glass-line); background: var(--brass); color: var(--gold-hi);
-  font-size: 20px; line-height: 1;
-}
-.trstep__btn:disabled { opacity: .35; }
-.trstep__v { text-align: center; font-family: var(--gc-font-num); font-size: var(--fs-md); color: var(--ink); white-space: nowrap; }
-.trcalc__use { align-self: flex-start; }
-.trcalc__use:disabled { opacity: .5; }
-.trcalc__mine { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-1); }
-.trcalc__k { font-size: var(--fs-xs); color: var(--ink-faint); }
-.trcalc__save { align-self: flex-start; margin-top: var(--s-1); }
-[hidden].trcalc__save, [hidden].trcalc__extra { display: none; }
+.trw { display: grid; gap: var(--s-6); min-width: 0; }
+.trw[hidden] { display: none; }
+.trw__pick, .trw__shop { min-width: 0; }
+.trw__shop { display: grid; gap: var(--s-4); align-content: start; container-type: inline-size; }
+.trw__grid .card.is-picked { outline: 2px solid var(--rift); outline-offset: 3px; }
+#trw-tools .chip-row { margin-bottom: 0; }
 
-/* phone: card on the left, final numbers on the right, the rest under them */
-.trcalc__result { padding: var(--s-4); display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); gap: var(--s-4) var(--s-4); align-items: center; min-width: 0; }
-.trcalc__result > :not(.trcalc__hero):not(.trcalc__nums) { grid-column: 1 / -1; }
-.trcalc__hero { width: 100%; max-width: 210px; margin: 0 auto; }
-.trcalc__hero .card { width: 100%; }
-.trcalc__nums { display: grid; gap: var(--s-4); }
-.trcalc__num { min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left; }
-.trcalc__num b { font-family: var(--gc-font-num); font-weight: 700; font-size: var(--fs-2xl); line-height: 1.1; overflow-wrap: anywhere; }
-.trcalc__num--atk b { color: var(--atk); }
-.trcalc__num--hp b { color: var(--hp); }
-.trcalc__num small { font-size: 11px; color: var(--ink-faint); line-height: 1.35; }
-.trcalc__extra { display: grid; gap: var(--s-1); list-style: none; margin: 0; padding: var(--s-2) var(--s-3); border: 1px solid var(--glass-line); border-radius: var(--r-chip); }
-.trcalc__extra li { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--fs-xs); color: var(--ink-dim); }
-.trcalc__extra b { font-family: var(--gc-font-num); color: var(--ink); white-space: nowrap; }
-.trcalc__fxtitle { font-family: var(--font-display); font-size: var(--fs-sm); letter-spacing: .08em; color: var(--tc, var(--gold)); }
-.trcalc__fx { display: grid; gap: 4px; margin: calc(var(--s-3) * -1) 0 0; padding: 0; list-style: none; font-size: var(--fs-sm); color: var(--ink); }
-.trcalc__fx li:not(.muted) { position: relative; padding-left: 14px; }
-.trcalc__fx li:not(.muted)::before { content: ""; position: absolute; left: 2px; top: .55em; width: 6px; height: 6px; transform: rotate(45deg); background: var(--tc, var(--gold)); }
-.trcalc__note { font-size: 11px; color: var(--ink-faint); }
-@media (min-width: 900px) {
-  .trcalc { grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); grid-template-areas: "a r" "b r"; grid-template-rows: auto 1fr; align-items: start; gap: var(--s-5) var(--s-8); }
-  .trcalc__result { position: sticky; top: calc(var(--s-6)); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .trcalc__hero { grid-column: 1 / -1; width: min(100%, 210px); }
-  .trcalc__nums { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
-  .trcalc__num { text-align: center; }
-  .trcalc__rarity, .trcalc__traits { margin: 0; padding: 4px 0; flex-wrap: wrap; overflow: visible; }
+/* ---------- chosen card ---------- */
+.trs { padding: var(--s-4); display: grid; gap: var(--s-4); min-width: 0; }
+.trs__skel { height: 220px; }
+/* phone: card | name + final numbers, your trait full width under them · wide: your trait sits under the numbers */
+.trs__top { display: grid; grid-template-columns: minmax(0, 40%) minmax(0, 1fr); grid-template-areas: "hero info" "eq eq"; gap: var(--s-4); align-items: start; }
+.trs__top--empty { grid-template-areas: "hero info"; }
+.trs__hero, .trs__slot { grid-area: hero; }
+.trs__info { grid-area: info; }
+.trs__equip { grid-area: eq; }
+.trs__hero { width: 100%; max-width: 220px; }
+.trs__hero .card { width: 100%; }
+.trs__slot {
+  aspect-ratio: 5 / 7; width: 100%; max-width: 220px;
+  display: grid; place-items: center;
+  border: 1.5px dashed var(--glass-line); border-radius: var(--r-card);
+  color: var(--ink-faint);
 }
+.trs__slot svg { width: 40%; height: 40%; opacity: .6; }
+.trs__info { min-width: 0; display: grid; gap: var(--s-3); align-content: start; }
+.trs__k { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); overflow-wrap: anywhere; }
+.trs__name { margin-top: calc(var(--s-2) * -1); font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); line-height: 1.2; color: var(--ink); overflow-wrap: break-word; }
+.trs__name:focus { outline: none; }
+.trs__hint { font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-dim); }
+.trs__btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 44px; }
+.trs__btn svg { width: 17px; height: 17px; flex: none; }
+.trs__top--empty .trs__btn { justify-self: start; }
+
+.trs__equip {
+  display: flex; align-items: center; gap: var(--s-3); min-width: 0;
+  padding: var(--s-2) var(--s-3) var(--s-2) var(--s-2);
+  border: 1px solid color-mix(in srgb, var(--tc, var(--gold)) 45%, transparent); border-radius: var(--r-panel);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--tc2, var(--void-2)) 55%, var(--void)), var(--void) 75%);
+}
+.trs__eqtext { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.trs__eqtext b { font-family: var(--font-display); font-size: var(--fs-md); line-height: 1.2; color: var(--ink); overflow-wrap: break-word; }
+.trs__eqtier { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tc, var(--ink-faint)); }
+.trs__nk { font-size: var(--fs-xs); color: var(--ink-faint); }
+.trs__clear { min-height: 40px; }
+
+.trs__nums { display: grid; gap: var(--s-3); }
+.trs__num { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.trs__num b { font-family: var(--gc-font-num); font-weight: 700; font-size: var(--fs-xl); line-height: 1.1; overflow-wrap: anywhere; }
+.trs__num--atk b { color: var(--atk); }
+.trs__num--hp b { color: var(--hp); }
+.trs__num small { font-size: 11px; color: var(--ink-faint); line-height: 1.35; }
+
+.trs__bar { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.trs__bar .trs__btn { flex: 1 1 140px; }
+.trs__rarity { margin: 0 calc(var(--s-4) * -1); padding: 4px var(--s-4); }
+.trs__cap { margin-top: calc(var(--s-2) * -1); font-size: 11px; color: var(--ink-faint); }
+.trs__extra { display: grid; gap: var(--s-1); list-style: none; margin: 0; padding: var(--s-2) var(--s-3); border: 1px solid var(--glass-line); border-radius: var(--r-chip); }
+.trs__extra[hidden] { display: none; }
+.trs__extra li { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--fs-xs); color: var(--ink-dim); }
+.trs__extra b { font-family: var(--gc-font-num); color: var(--ink); white-space: nowrap; }
+.trs__fxbox { display: grid; gap: var(--s-2); padding-left: var(--s-3); border-left: 2px solid var(--tc, var(--glass-line)); }
+.trs__fxtitle { font-family: var(--font-display); font-size: var(--fs-sm); letter-spacing: .08em; color: var(--tc, var(--gold)); }
+.trs__fx { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); color: var(--ink); }
+.trs__fx li:not(.muted) { position: relative; padding-left: 14px; }
+.trs__fx li:not(.muted)::before { content: ""; position: absolute; left: 2px; top: .55em; width: 6px; height: 6px; transform: rotate(45deg); background: var(--tc, var(--gold)); }
+.trs__note { font-size: 11px; color: var(--ink-faint); }
+
+/* ---------- the 13 traits ---------- */
+.trs__listhead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-1) var(--s-3); margin-top: var(--s-2); }
+.trs__listtitle { font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-hi); }
+.trs__listsub { font-size: var(--fs-xs); color: var(--ink-faint); }
+.trs__list { display: grid; gap: var(--s-2); }
+.trs__rowskel { height: 68px; }
+@container (min-width: 640px) { .trs__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.trrow {
+  position: relative; min-width: 0; min-height: 68px;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-3);
+  padding: var(--s-2) var(--s-3) var(--s-2) var(--s-2);
+  text-align: left; color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--tc) 40%, transparent); border-radius: var(--r-panel);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--tc2) 60%, var(--void)), var(--void) 70%);
+  transition: border-color var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
+}
+.trrow:hover, .trrow:focus-visible { border-color: var(--tc); }
+.trrow[aria-pressed="true"] {
+  border-color: var(--tc);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--tc) 30%, var(--void)), color-mix(in srgb, var(--tc2) 50%, var(--void)) 70%);
+  box-shadow: inset 0 0 0 1px var(--tc), inset 0 1px 0 color-mix(in srgb, var(--ink) 18%, transparent);
+}
+.trrow.is-rec:not([aria-pressed="true"]) { border-color: color-mix(in srgb, var(--gold) 70%, transparent); }
+.trrow__main { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.trrow__head { display: flex; flex-wrap: wrap; align-items: center; gap: 2px var(--s-2); min-width: 0; }
+.trrow__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; overflow-wrap: break-word; }
+.trrow__tag {
+  padding: 1px 7px; border-radius: var(--r-pill); white-space: nowrap;
+  font-family: var(--font-display); font-weight: 700; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase;
+}
+.trrow__tag[hidden] { display: none; }
+.trrow__tag--rec { color: var(--on-gold); background: var(--brass-gold); }
+.trrow__tag--on { color: var(--void); background: var(--tc); }
+.trrow__tier { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tc); }
+.trrow__fx { font-size: var(--fs-xs); line-height: 1.4; color: var(--ink-dim); }
+.trrow__note { margin-top: 3px; font-size: var(--fs-xs); line-height: 1.4; color: var(--ink); font-style: italic; }
+.trrow__note[hidden] { display: none; }
+.trrow__odds { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; text-align: right; white-space: nowrap; }
+.trrow__odds b {
+  padding: 1px 7px; border-radius: var(--r-pill);
+  font-family: var(--gc-font-num); font-size: 13px; letter-spacing: .02em; color: var(--void); background: var(--tc);
+}
+.trrow__odds small { font-size: 10.5px; color: var(--ink-faint); }
+.trs__list.is-idle .trrow { cursor: default; }
+
+/* ---------- wide screens: grid on the left (scrolls on its own, stays in view), shop on the right ---------- */
+@media (min-width: 900px) {
+  .trw { grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr); align-items: start; gap: var(--s-6) var(--s-8); }
+  .trw__pick {
+    position: sticky; top: calc(var(--header-h) + var(--s-3));
+    max-height: calc(100dvh - var(--header-h) - var(--nav-h) - var(--s-6));
+    overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+    margin: calc(var(--s-1) * -1); padding: var(--s-1) var(--s-2) var(--s-4) var(--s-1);
+  }
+  .trw__grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+  .trs { padding: var(--s-5); }
+  .trs__top { grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "hero info" "hero eq"; gap: var(--s-4) var(--s-5); }
+  .trs__top--empty { grid-template-rows: auto; grid-template-areas: "hero info"; }
+  .trs__nums { grid-template-columns: 1fr 1fr; }
+  .trs__rarity { margin: 0; padding: 4px 0; flex-wrap: wrap; overflow: visible; }
+}
+@media (min-width: 1100px) {
+  /* no top bar or bottom menu here · the page zoom above 1920 px makes dvh too big, so divide by it */
+  .trw__pick { top: var(--s-6); max-height: calc(100dvh / var(--zoom, 1) - var(--s-12)); }
+  .trw__grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+}
+@media (min-width: 1700px) { .trw { grid-template-columns: minmax(300px, 1fr) minmax(0, 1fr); } }
 
 /* ==========================================================
    Details sheet: Trait panel (js/traits.js panelHTML)
@@ -209,4 +275,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .dk-slot:not(.is-empty) .dk-trait { animation: none; }
+  .tri.is-pop { animation: none; }
 }

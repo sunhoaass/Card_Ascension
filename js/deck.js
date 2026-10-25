@@ -382,7 +382,7 @@
     t.dataset.key = key; t.dataset.card = id;
     t.classList.toggle("dk-trait--none", !tr);
     t.style.cssText = C.traits.colorStyle(tr);
-    t.innerHTML = `<svg class="tr-gem" aria-hidden="true"><use href="#i-gem"/></svg><span>${tr ? esc(tr.name) : "Trait"}</span>`;
+    t.innerHTML = `${C.traits.iconHTML(tr)}<span>${tr ? esc(tr.name) : "Trait"}</span>`;
     t.setAttribute("aria-label", tr ? `${name}'s trait: ${tr.name} (${tr.tier}). Tap to change` : `Pick a trait for ${name}`);
   }
   async function pickTrait(btn) {
