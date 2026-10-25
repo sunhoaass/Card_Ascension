@@ -778,3 +778,9 @@
 
     - ผ่านเกณฑ์ ≥ 55 fps ทุกกรณี · เฟรมช้าสุดของใหม่ ≤ 50ms ทุกกรณี (เดิมมี 67ms 1 กรณี) · ใหม่อยู่ในช่วงแกว่งของเดิมทุกกรณี = ไม่ช้าลง · ไม่มี rAF วน (นับเลขเฉพาะตอนเปลี่ยนระดับ) · อนิเมชั่นกรอบผูก `.is-live` เหมือนเดิม
   - **ไฟล์:** `index.html`, `css/tokens.css`, `css/fx.css`, `css/cards.css`, `css/detail.css`, `css/deck.css`, `css/tiermaker.css`, `css/grade.css`, `js/app.js`, `js/grade.js`, `js/detail.js`, `js/share.js`, `images/cards/*.webp` (4) + `images/cards/thumb/*.webp` (4), ลบ `images/cards/thumb/s`, `PROGRESS.md` (กฎข้อ 7/9, ▶️ + "งานต่อไป" แบบ Claude Code ไม่มี zip, §3 ตารางการ์ด, §3.2, §3.3, §3.5, §4, §5.1), `HISTORY.md` · ไม่ต้องอัปเอง: merge pull request แล้ว Cloudflare Pages ดึงไปเอง
+- 2026-10-25: **แก้ตัวคูณ odds ของระดับให้ตรงเกม** (เจ้าของสั่ง · งานเล็ก push main)
+  - `data/meta.json` odds: Shiny 20→**20.2530358** · Rainbow 100→**100.2525271** · Secret 500→**500.2601102** · Divine 2500→**2500.3000310** · Cosmic 10000→**10000.2000040** · Ascended 50000 (เท่าเดิม) · stat ยัง ×3.5 …×93
+  - ที่มา: เกมเช็กกลายพันธุ์จากหายากสุดลงมา P(ระดับ) = โอกาสฐาน × (1 − ΣP ของระดับที่หายากกว่า) · ตัวคูณ = 1/P · ตรวจแล้วตรงเกมถึงหลักหน่วย (White Hawk Godhand Normal 1,479,930,262 → Shiny 29,973,080,546)
+  - โค้ดอื่น: `js/detail.js` ข้อความ "N× rarer" ปัดเป็น 4 หลักนัยสำคัญ (20.25× · 100.3× · 500.3× · 2,500× …) · `mockup/gilded-nocturne.html` ตาราง RAR แก้ตามนี้ · `js/app.js` `oddsAt` / `js/share.js` อ่านจาก meta อยู่แล้ว ไม่ต้องแก้
+  - `PROGRESS.md` §5.1 แก้ตัวเลข + หมายเหตุที่มา · `?v=` ทุกบรรทัดใน `index.html` เป็น 16
+  - **ไฟล์ที่ต้องอัป:** `index.html`, `js/detail.js`, `data/meta.json`, `mockup/gilded-nocturne.html`, `PROGRESS.md`, `HISTORY.md`

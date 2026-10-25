@@ -1185,7 +1185,7 @@
     q("atk-sub").textContent = subStat(card, "atk", r);
     q("hp-sub").textContent = subStat(card, "hp", r);
     EXTRA_STATS.forEach(([k]) => { if (!q(k)) return; setNum(q(k), C.statAt(card, k, r), C.fmtStat, anim); q(k + "-sub").textContent = subStat(card, k, r); });
-    q("odds-sub").textContent = r === "Normal" ? "Base odds" : `Normal ${C.fmtOdds(card.base.odds)} · ${info.odds}× rarer`;
+    q("odds-sub").textContent = r === "Normal" ? "Base odds" : `Normal ${C.fmtOdds(card.base.odds)} · ${Number(info.odds.toPrecision(4)).toLocaleString("en-US")}× rarer`;
   }
   function fillScores(card, anim) {
     if (!C.isRanked(card)) return;
