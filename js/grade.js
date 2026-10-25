@@ -7,6 +7,7 @@
    · Grades never change Overall scores or the Tier List
    · Card detail gets a "Grade" panel (panelHTML) with a button that opens the grader
    · Step 13 (§3.5.2): the grader's card and the detail panel show the card in a graded case (.slab, css/grade.css)
+   · Traits: the case label shows the user's trait for the card (js/traits.js) · the stats on the case stay grade-only
    Needs js/fx.js, js/app.js and js/cards.js loaded first.
    ========================================================== */
 (function () {
@@ -147,10 +148,16 @@
         <span class="lab__name">${esc(card.name)}</span>
         <span class="lab__line"><b>${esc(r)}</b> · ${C.isRanked(card) ? "Tier " + esc(card.tier) : "Unranked"}</span>
         <span class="lab__line">${esc(C.fmtOdds(C.oddsAt(card, r)))}</span>
+        ${traitLine(card)}
       </div>
       <div class="lab__r"><span class="lab__word">${WORD[g]}</span><span class="lab__grade">${g || "–"}</span></div>
       <div class="lab__row lab__row--stats"><span class="lab__stats"><span class="a">ATK ${C.fmtStat(graded(card, "atk", r, a[0]))}</span> · <span class="h">HP ${C.fmtStat(graded(card, "hp", r, a[3]))}</span></span></div>
       <div class="lab__row"><span class="lab__subs">ATK ${sub(a[0])} · DEF ${sub(a[1])} · STS ${sub(a[2])} · HP ${sub(a[3])}</span><span class="lab__code" aria-hidden="true"></span><span class="lab__cert">${cert.slice(0, 4)} ${cert.slice(4)}</span></div>`;
+  }
+  // the card's trait (js/traits.js, the user's pick) on the label · no trait = no line
+  function traitLine(card) {
+    const t = C.traits && C.traits.byId ? C.traits.byId(C.traits.of(card.id)) : null;
+    return t ? `<span class="lab__line lab__trait" style="${C.traits.colorStyle(t)}"><svg class="tr-gem" aria-hidden="true"><use href="#i-gem"/></svg><b>${esc(t.name)}</b></span>` : "";
   }
   // the glare runs once across the plastic the first time a case scrolls into view
   const sheenIO = "IntersectionObserver" in window
@@ -491,6 +498,12 @@
     });
     // rarity changed anywhere (cards.js): keep the hero, the numbers and the picker in step
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
+    // a trait changed (Details sheet, Deck, Traits page): the case labels show the new one
+    document.addEventListener("cbi:trait", (e) => {
+      const id = e.detail && e.detail.id;
+      sheetSlabs.forEach((x) => { if (!x.s.isConnected) sheetSlabs.delete(x); else if (x.card.id === id) { paintSlab(x.s, x.card, state.rarity, get(id) || ZERO(), { animate: false }); sheen(x.s); } });
+      if (cur === id && heroSlab) { paintHero({ animate: false, glare: true }); }
+    });
   }
 
   // keep the graded numbers on screen while the rarity swaps underneath, then count to the new ones

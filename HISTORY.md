@@ -784,3 +784,34 @@
   - โค้ดอื่น: `js/detail.js` ข้อความ "N× rarer" ปัดเป็น 4 หลักนัยสำคัญ (20.25× · 100.3× · 500.3× · 2,500× …) · `mockup/gilded-nocturne.html` ตาราง RAR แก้ตามนี้ · `js/app.js` `oddsAt` / `js/share.js` อ่านจาก meta อยู่แล้ว ไม่ต้องแก้
   - `PROGRESS.md` §5.1 แก้ตัวเลข + หมายเหตุที่มา · `?v=` ทุกบรรทัดใน `index.html` เป็น 16
   - **ไฟล์ที่ต้องอัป:** `index.html`, `js/detail.js`, `data/meta.json`, `mockup/gilded-nocturne.html`, `PROGRESS.md`, `HISTORY.md`
+- 2026-10-25: **ระบบ Trait (Trait Shop)** (เจ้าของสั่ง · `?v=17` · pull request จาก `claude/gracious-wright-vfq7ke`)
+  - **ข้อมูล:** `data/traits.json` ใหม่ 13 Trait (ชื่อ, ระดับ 8 ขั้น Common…Secret, โอกาส %, pity, ผลแยกเป็น field: dmg / hp / crit / dodge / reduce / lifesteal / shield / revive / firstHit) + `rollShards: 5` + `sameForCopies` · `data/cards.json` เพิ่ม `bestTrait` + `bestTraitNote` 4 ใบ (BE = Undying · DEM / MEG / ASL = Prodigy · เลือกในกลุ่ม Epic ลงมาตามความสามารถ เพราะ Legendary ขึ้นไปแรงกว่าทุกใบอยู่แล้ว)
+  - **แท็บ Traits (`#traits`, ปุ่มที่ 6):** หัวข้อ "The Bloodline" · สวิตช์ All traits | Calculator · การ์ด Trait 13 ใบ วาดด้วย CSS + SVG อัญมณีวาดเอง (`#i-gem`, ไม่ใช้ไอคอนเกม) สีตามระดับ (`--tr-*` ใหม่ใน tokens.css) โชว์โอกาส, 1 in N rolls, pity + Shards, ผลทุกข้อ · 3 ระดับบนมีแสงเรืองในกรอบ (นิ่ง ไม่วน) · เครื่องคำนวณ: การ์ด + Trait + ระดับ + เกรด ATK/HP (ดึงเกรดที่บันทึกไว้) → การ์ดตัวอย่างพร้อมเลขสุดท้าย + Final ATK/HP + แยกที่มา + Average hit / Effective HP (ประมาณ) + ผลพิเศษเป็นข้อความ + ปุ่มบันทึกเป็น Trait ของฉัน
+  - **Trait ต่อการ์ด (`cbi:traits` ใหม่):** เลือกได้ที่กล่อง Trait ในแผ่น Details (Recommended + เหตุผล + ชิป 14 ตัว + ATK/HP หลังเกรด × Trait) · ปุ่ม Trait ใต้ช่องใน Deck · ปุ่ม Save ในเครื่องคำนวณ · ป้ายหัวเคสเกรดโชว์ Trait (หน้า Grade + แผ่น Details) · ทุกที่ฟัง event `cbi:trait`
+  - **Deck:** Trait ต่อช่อง = Trait ของการ์ดใบนั้น (ในเกมทุกใบที่ซ้ำกันได้ Trait เดียวกัน) จึง**ไม่ต้องแก้ข้อมูล deck / ลิงก์แชร์ / ไฟล์สำรอง** (กฎ 11) · คะแนน deck ของผู้ใช้คิด Trait · deck ที่แชร์และ Meta Decks คิดแบบไม่มี Trait
+  - **สูตรคะแนนทีม (PROGRESS §10.5):** Trait เพิ่มค่าการ์ดใน Card power สูงสุด +20 (Ascendant) ตามพลัง Trait = ln(√(ดาเมจจริง × HP จริง)) เทียบ Ascendant · ตัวเทียบทีมที่แข็งที่สุดยังไม่มี Trait → deck ที่ไม่มี Trait คะแนนเท่าเดิม · ตัวอย่าง deck ทดสอบ BE + DEM + MEG (Tower): 57 → 58 เมื่อ BE ได้ Sage Mode (Card power 68% → 71%)
+  - **เมนู:** `.nav__list` ใช้ `--n` (6) แทนเลข 5 ใน base.css · วัดความกว้างชื่อ: 6 ปุ่มพอดีทุกจอถึง 320px (390px: "Tier List" 51px ในช่อง 62px) · ลอง 7 ปุ่ม: 390px พอดี (51/53px) แต่ 360px ล้น 2px → ขั้น Roll ต้องลด letter-spacing ≤ 400px (จดใน PROGRESS §3)
+  - **แก้เพิ่ม:** `.bs-sheet__body` ใส่ `grid-template-columns: minmax(0, 1fr)` (แถวชิป Trait เลื่อนข้างเคยดันแผ่น Details ให้กว้างเกินจอ เจอตอนทดสอบ)
+  - **ทดสอบ (Chromium · 390×844 มือถือ + 1280×800 · ข้อมูลจริง 4 ใบ):** ไม่มี error ใน console (มีแค่ 404 ของ `audio/bgm.mp3` ที่ตั้งใจ) ทุกหน้าที่แตะ · ไม่มี scroll แนวนอน · เครื่องคำนวณ: BE Normal ATK เกรด 2 + Ascendant = 862,040 × 1.05 × 2 = 1,810,284 ✓ · แผ่น Details: เลือก Ascendant/Limitless → ATK/HP เปลี่ยน + บันทึก `cbi:traits` + ป้ายเคสเปลี่ยน ✓ · Deck: ปุ่ม Trait → กล่องเลือก → คะแนน + โน้ต Card power เปลี่ยน ✓ · reduced motion ✓ · localStorage ถูกบล็อก = ใช้งานได้ ไม่พัง ✓ · เปิดการ์ดจากเครื่องคำนวณแล้ว Back = กลับมาหน้าเดิม ตำแหน่งเลื่อนเดิม การ์ด/Trait เดิม ✓
+  - **ผลวัด §11.3** (CPU ×6, 390×844 DPR 2.75, นิ้วจำลองเลื่อน 3 วิ, มัธยฐาน 3 รอบ · เดิม = HEAD ก่อนงานนี้ วัดบนเครื่องเดียวกันรอบเดียวกัน · deck ทดสอบมี Trait 2 ใบ · เครื่องวันนี้ 4 core ช้ากว่ารอบขั้น 13):
+
+    | ข้อมูล | หน้า | เดิม fps / เฟรมช้าสุด | ใหม่ fps / เฟรมช้าสุด | TaskDuration เดิม → ใหม่ |
+    |---|---|---:|---:|---:|
+    | ข้อมูลจริง 4 ใบ | #traits (ตาราง) | – | 59.3 / 33ms | – → 1.47s |
+    | ข้อมูลจริง 4 ใบ | #traits Calculator | – | 60.0 / 17ms | – → 1.26s |
+    | ข้อมูลจริง 4 ใบ | #deck editor | 60.0 / 17ms | 60.0 / 17ms | 1.28 → 1.29s |
+    | ข้อมูลจริง 4 ใบ | #cards | 58.7 / 33ms | 59.7 / 33ms | 1.91 → 1.86s |
+    | ข้อมูลจริง 4 ใบ | #grade | 60.0 / 17ms | 60.0 / 17ms | 1.20 → 1.16s |
+    | ข้อมูลจริง 4 ใบ | #tier | 59.7 / 33ms | 60.0 / 17ms | 1.71 → 1.85s |
+    | 60 Normal | #traits (ตาราง) | – | 59.3 / 50ms | – → 1.63s |
+    | 60 Normal | #traits Calculator | – | 58.0 / 50ms | – → 1.40s |
+    | 60 Normal | #deck editor | 60.0 / 17ms | 60.0 / 17ms | 1.30 → 1.24s |
+    | 60 Normal | #cards | 40.3 / 83ms | 41.1 / 83ms | 2.84 → 2.85s |
+    | 60 Ascended | #traits Calculator | – | 59.7 / 33ms | – → 1.44s |
+    | 60 Ascended | #deck editor | 59.7 / 33ms | 60.0 / 17ms | 2.02 → 1.80s |
+    | 60 Ascended | #cards | 37.7 / 100ms | 42.0 / 83ms | 3.03 → 2.56s |
+    | 60 Ascended | #tier/my | – | 60.0 / 17ms | – → 1.02s |
+
+    - หน้าใหม่ (Traits) และหน้าที่แก้ (Deck, Grade, Details) ผ่าน ≥ 55 fps · เฟรมช้าสุด ≤ 50ms · ไม่มี rAF วน (นับเลขเฉพาะตอนกด) · การ์ด Trait ไม่มีอนิเมชั่นวน · ไม่เพิ่ม backdrop-filter
+    - ⚠️ **#cards 60 ใบ ~40 fps ทั้งเดิมและใหม่** (ไฟล์เดิม HEAD ก็ได้เท่ากันบนเครื่องนี้ = ไม่ใช่จากงานนี้ · หน้า Cards ไม่ได้แตะ) ขั้น 13 วัดได้ 59 บนเครื่องคลาวด์ตัวก่อน → น่าจะเป็นเครื่องวัดวันนี้ช้ากว่า (4 core, ไม่มี GPU) · ถ้าอยากให้ตรวจลึก ให้สั่งแยก
+  - **ไฟล์:** ใหม่ `data/traits.json`, `js/traits.js`, `css/traits.css` · แก้ `index.html` (ปุ่มเมนู, section, sprite, `?v=17` ทุกบรรทัด), `css/tokens.css`, `css/base.css`, `css/detail.css`, `js/app.js`, `js/teamscore.js`, `js/deck.js`, `js/detail.js`, `js/grade.js`, `data/cards.json`, `PROGRESS.md`, `HISTORY.md`

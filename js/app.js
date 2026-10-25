@@ -6,16 +6,18 @@
    The Deck page (Meta Decks, later the deck builder) lives in js/deck.js
    The Support page (list + #support/<id> detail) lives in js/support.js
    The Grade page (card picker + #grade/<id>/<grades> grader) lives in js/grade.js
+   The Traits page (13 traits + calculator, the user's trait per card) lives in js/traits.js
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
-  const PAGES = ["tier", "cards", "support", "deck", "grade"];
+  const PAGES = ["tier", "cards", "support", "deck", "grade", "traits"];
   const PAGE_TITLES = {
     tier: "Card Battle Infinity — Tier List & Card Database",
     cards: "Cards — Card Battle Infinity",
     support: "Support — Card Battle Infinity",
     deck: "Deck — Card Battle Infinity",
     grade: "Card Grader — Card Battle Infinity",
+    traits: "Traits — Card Battle Infinity",
   };
   const STORE_KEY = "cbi:lastPage";
   const RARITY_KEY = "cbi:rarity";
@@ -29,7 +31,7 @@
   };
 
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
-  const state = { meta: null, cards: [], support: [], teams: [], rarity: "Normal", page: null, loaded: false, origin: null };
+  const state = { meta: null, cards: [], support: [], teams: [], traits: null, rarity: "Normal", page: null, loaded: false, origin: null };
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -269,7 +271,7 @@
   }
 
   /* ---------- Router ----------
-     #tier #cards #support #deck #grade  -> tabs
+     #tier #cards #support #deck #grade #traits -> tabs
      #card/<id>                    -> card detail, laid over whichever tab is underneath
      #support/<id> · #grade/<id>/<grades> -> detail views inside their own tab */
   function showPage(page, { scroll = false } = {}) {
@@ -373,13 +375,14 @@
     route();
 
     try {
-      const [meta, cards, support, teams] = await Promise.all([
+      const [meta, cards, support, teams, traits] = await Promise.all([
         loadJSON("data/meta.json"),
         loadJSON("data/cards.json"),
         loadJSON("data/support.json").catch(() => []),   // support cards (step 4); the page copes without it
         loadJSON("data/teams.json").catch(() => []),     // Meta Decks; the page copes without it
+        loadJSON("data/traits.json").catch(() => null),  // Trait Shop (js/traits.js); the site copes without it
       ]);
-      state.meta = meta; state.cards = cards; state.support = support; state.teams = teams;
+      state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits;
     } catch (err) {
       console.error(err);
       $("#card-grid").innerHTML = "";
@@ -398,6 +401,7 @@
     });
 
     state.loaded = true;
+    CBI.traits.init();   // first: the deck list's team scores read the user's traits
     CBI.tier.init();
     CBI.deck.init();
     CBI.cards.init();
@@ -434,6 +438,7 @@
     deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
     support: { init() {}, show() {} },              // replaced by js/support.js
     grade: { init() {}, show() {}, panelHTML() { return ""; }, mountSlabs() {} },   // replaced by js/grade.js
+    traits: { init() {}, of() { return null; }, map() { return {}; }, power() { return 0; }, panelHTML() { return ""; }, mountPanel() {} },   // replaced by js/traits.js
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

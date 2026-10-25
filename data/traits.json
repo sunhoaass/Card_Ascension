@@ -1,0 +1,21 @@
+{
+  "updated": "2026-10-25",
+  "rollShards": 5,
+  "sameForCopies": true,
+  "tiers": ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic", "Divine", "Secret"],
+  "traits": [
+    { "id": "ascendant", "name": "Ascendant", "tier": "Secret", "chance": 0.02, "pity": 6000, "dmg": 2, "hp": 2, "crit": { "chance": 20, "mult": 2.5 }, "revive": 50 },
+    { "id": "limitless", "name": "Limitless", "tier": "Divine", "chance": 0.07, "pity": 2500, "dmg": 1.7, "hp": 1.7, "dodge": 12, "reduce": 10 },
+    { "id": "sage-mode", "name": "Sage Mode", "tier": "Mythic", "chance": 0.2, "pity": 1000, "dmg": 1.5, "hp": 1.5, "lifesteal": 12, "shield": 15 },
+    { "id": "awakened", "name": "Awakened", "tier": "Legendary", "chance": 0.5, "pity": 400, "dmg": 1.35, "hp": 1.35, "crit": { "chance": 15, "mult": 2 } },
+    { "id": "undying", "name": "Undying", "tier": "Epic", "chance": 1.2, "pity": 150, "hp": 1.25, "revive": 30 },
+    { "id": "prodigy", "name": "Prodigy", "tier": "Epic", "chance": 2, "pity": 100, "dmg": 1.25, "hp": 1.25, "firstHit": 30 },
+    { "id": "keen-eye", "name": "Keen Eye", "tier": "Rare", "chance": 4, "dmg": 1.12, "crit": { "chance": 12, "mult": 2 } },
+    { "id": "bloodlust", "name": "Bloodlust", "tier": "Rare", "chance": 5, "dmg": 1.2, "lifesteal": 8 },
+    { "id": "iron-body", "name": "Iron Body", "tier": "Rare", "chance": 6, "hp": 1.2, "reduce": 6 },
+    { "id": "spirited", "name": "Spirited", "tier": "Uncommon", "chance": 10, "dmg": 1.12, "hp": 1.12 },
+    { "id": "nimble", "name": "Nimble", "tier": "Uncommon", "chance": 15, "dmg": 1.05, "hp": 1.05, "dodge": 5 },
+    { "id": "sharp", "name": "Sharp", "tier": "Common", "chance": 26, "dmg": 1.08 },
+    { "id": "tough", "name": "Tough", "tier": "Common", "chance": 30, "hp": 1.08 }
+  ]
+}

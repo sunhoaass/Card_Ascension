@@ -19,6 +19,9 @@
      setRarity() / setMode() and paints: the score ring (paintScore), "Score breakdown" (5 parts), "Strengths & weaknesses"
      (Strong vs / Weak vs / Fits modes), "Fill the gaps" (3 best cards / support for the empty slots, tap = add) and the
      score pill on each row of My Decks. "Compare" = a dialog with two decks side by side (stacked on a phone).
+   · Traits (js/traits.js): a trait button under each card slot of the editor. In the game every copy of a card has the same
+     trait, so a slot's trait IS that card's trait (cbi:traits, shared with the Details sheet). The user's own decks are scored
+     with their traits (mine()); shared decks and Meta Decks are scored without. The share link and backup are unchanged.
    Needs js/fx.js, js/app.js, js/teamscore.js, js/share.js, js/cards.js loaded first (C.dialog / C.support.card are made by later
    scripts and only used when something is tapped).
    ========================================================== */
@@ -106,6 +109,8 @@
   const modeOf = (id) => modes().find((m) => m.id === id) || modes()[0];
   const deckSpec = (d) => ({ id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice() });
   const anyCards = (d) => countOf(d.cards) + countOf(d.support) > 0;
+  // the user's own deck as the team score sees it: with the user's trait per card (js/traits.js)
+  const mine = (d) => ({ ...d, traits: C.traits.map() });
 
   /* ==========================================================
      Saving (localStorage, never crashes when blocked)
@@ -266,6 +271,15 @@
           slot._x = x;
           slot.appendChild(x);
           box.appendChild(add);
+          if (kind === "cards") {                          // the card's trait (js/traits.js)
+            const t = document.createElement("button");
+            t.type = "button";
+            t.className = "dk-trait fx-press";
+            t.dataset.act = "trait";
+            t.hidden = true;
+            slot._trait = t;
+            slot.appendChild(t);
+          }
         } else {
           const e = document.createElement("div");
           e.className = "dk-none";
@@ -337,6 +351,7 @@
         slot._x.hidden = !n;
         if (n) slot._x.setAttribute("aria-label", `Remove ${n.el.dataset.name} from ${kind === "cards" ? "slot" : "support slot"} ${i + 1}`);
       }
+      if (slot._trait) paintTrait(slot, n && !n.el.classList.contains("dk-item--missing") ? n.id : null);
       if (slot._empty && b.editable) slot._empty.setAttribute("aria-label", `Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}`);
     });
     b.shown[kind] = next.map((n) => (n ? { id: n.id, el: n.el } : null));
@@ -354,6 +369,41 @@
     if (cnt) cnt.textContent = `${countOf(d[kind])} / ${SLOTS}`;
   }
   const paintBoard = (b, d, opts) => KINDS.forEach((k) => paintKind(b, k, d, opts));
+
+  // trait button under a card slot: the card's trait in its tier colour, or "+ Trait"
+  function paintTrait(slot, id) {
+    const t = slot._trait;
+    t.hidden = !id;
+    if (!id) return;
+    const tr = C.traits.byId(C.traits.of(id)), name = lookup("cards", id).name;
+    const key = tr ? tr.id : "";
+    if (t.dataset.key === key && t.dataset.card === id) return;
+    t.dataset.key = key; t.dataset.card = id;
+    t.classList.toggle("dk-trait--none", !tr);
+    t.style.cssText = C.traits.colorStyle(tr);
+    t.innerHTML = `<svg class="tr-gem" aria-hidden="true"><use href="#i-gem"/></svg><span>${tr ? esc(tr.name) : "Trait"}</span>`;
+    t.setAttribute("aria-label", tr ? `${name}'s trait: ${tr.name} (${tr.tier}). Tap to change` : `Pick a trait for ${name}`);
+  }
+  async function pickTrait(btn) {
+    const slot = btn.closest(".dk-slot");
+    const id = slot && cur ? cur.cards[Number(slot.dataset.i)] : null;
+    if (!id || !lookup("cards", id) || !C.traits.pickDialog) return;
+    clearSel();
+    await C.traits.pickDialog(id);   // the "cbi:trait" event repaints the slot and the score
+  }
+  // a trait changed (here, in the Details sheet or on the Traits page)
+  function onTrait(e) {
+    const id = e.detail && e.detail.id;
+    if (mode === "editor" && cur && ed.root) {
+      ed.slots.cards.forEach((slot, i) => {
+        if (!slot._trait || cur.cards[i] !== id) return;
+        paintTrait(slot, id);
+        if (state.page === "deck" && !FX.reduced) FX.flash(slot._trait);
+      });
+      if (cur.cards.includes(id)) refresh();
+    }
+    if (mode === "index" && decks.some((d) => d.cards.includes(id))) renderIndex(false);
+  }
 
   /* ==========================================================
      Team score ring (step 11). paintScore(el, { score, band, label }, { animate, note })
@@ -578,7 +628,7 @@
       const wrap = $(`[data-sug-kind="${kind}"]`, box), row = $("[data-sug-row]", wrap);
       const empty = cur[kind].some((x) => !x);
       if (empty) anyEmpty = true;
-      const picks = empty && libs[kind].length ? TS().suggest(cur, kind, 3) : [];
+      const picks = empty && libs[kind].length ? TS().suggest(mine(cur), kind, 3) : [];
       wrap.hidden = !picks.length;
       if (picks.length) any = true;
       const before = new Set(row.children);
@@ -602,9 +652,9 @@
   // score + analysis of the deck in the editor; called after every change
   function refresh({ animate = true } = {}) {
     if (!cur || !TS()) return;
-    const r = TS().score(cur);
+    const d = mine(cur), r = TS().score(d);
     paintScore(ui.score, r, { animate, note: r.empty ? null : `${modeOf(cur.mode).name}${r.notes.length ? " · see the notes below" : ""}` });
-    paintAnalysis(ui.ana, cur, r, { animate, editable: true });
+    paintAnalysis(ui.ana, d, r, { animate, editable: true });
     scheduleSuggest();
   }
 
@@ -643,14 +693,14 @@
         const paint = (animate) => {
           const da = decks.find((x) => x.id === a), db = decks.find((x) => x.id === b);
           if (!da || !db) return;
-          const ra = TS().score(da), rb = TS().score(db);
+          const ra = TS().score(mine(da)), rb = TS().score(mine(db));
           [[da, ra, rb, "a"], [db, rb, ra, "b"]].forEach(([dk, r, o, tag]) => {
             const art = $(`[data-cmp-deck="${tag}"]`, d);
             $("[data-cmp-name]", art).textContent = dk.name;
             $("[data-cmp-meta]", art).textContent = `${modeOf(dk.mode).name} · ${countOf(dk.cards)}/${SLOTS} cards · ${countOf(dk.support)}/${SLOTS} support`;
             paintScore($(".dk-score", art), r, { animate, note: r.empty ? null : "" });
             paintParts($(".dk-parts", art), r, o);
-            const an = TS().analyze(dk);
+            const an = TS().analyze(mine(dk));
             const sw = swHTML(an, r, false);
             setHTML($("[data-strong]", art), sw.strong, false);
             setHTML($("[data-weak]", art), sw.weak, false);
@@ -1375,7 +1425,7 @@
     li.className = "tml dkl glass";
     li.dataset.deck = d.id;
     const nc = countOf(d.cards), ns = countOf(d.support), m = modeOf(d.mode);
-    const r = TS() ? TS().score(d) : null, sc = r && r.score != null ? r.score : null;
+    const r = TS() ? TS().score(mine(d)) : null, sc = r && r.score != null ? r.score : null;
     li.innerHTML = `
       <button type="button" class="tml__open dkl__open fx-press" data-act="open" aria-label="Open ${esc(d.name)}, ${esc(m.name)}, ${nc} of ${SLOTS} cards, ${ns} of ${SLOTS} support${sc != null ? `, team score ${sc}` : ""}">
         <span class="tml__text">
@@ -1643,6 +1693,7 @@
       case "sh-image": if (shared) saveImage(shared.deck, sh.root); break;
       case "undo": step(-1); break;
       case "redo": step(1); break;
+      case "trait": if (mode === "editor") pickTrait(btn); break;
       case "clear": { const slot = btn.closest(".dk-slot"); if (slot && mode === "editor") clearSlot(slot.dataset.kind, Number(slot.dataset.i)); break; }
       case "sel-details": if (sel) { const o = ed.shown[sel.kind][sel.i]; if (o) details(o.el, sel.kind); } break;
       case "sel-replace": if (sel) { const { kind, i } = sel; clearSel(); openPicker(kind, i); } break;
@@ -1744,6 +1795,7 @@
     });
     ui.metaList.addEventListener("click", (e) => { const b = e.target.closest("[data-copy]"); if (b) copyMeta(b); });
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
+    document.addEventListener("cbi:trait", onTrait);
   }
 
   /* The first time the Deck tab shows (step 9.5: nothing is built for a tab nobody opens) */

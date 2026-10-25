@@ -1,0 +1,211 @@
+/* ==========================================================
+   Card Battle Infinity — Traits (js/traits.js)
+   Trait cards in their tier colour (--tr-* in tokens.css, drawn here: no game icons) · calculator ·
+   pills / chips used by the Details sheet, the graded case label and the Deck page · the trait picker dialog.
+   Every coloured bit reads --tc (tier colour) and --tc2 (its dark partner), set inline by js/traits.js.
+   ========================================================== */
+.tr-gem { width: 1em; height: 1em; flex: none; color: var(--tc, var(--gold)); }
+
+/* ---------- Pill: gem + name + tier ---------- */
+.trp {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
+  min-height: 28px; padding: 3px 10px 3px 8px;
+  border: 1px solid color-mix(in srgb, var(--tc) 60%, transparent);
+  border-radius: var(--r-pill);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tc2) 70%, var(--void)), var(--void));
+  color: var(--tc); font-size: var(--fs-sm); font-weight: 600; line-height: 1.2;
+}
+.trp .tr-gem { font-size: 15px; }
+.trp__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+.trp__tier { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--tc); white-space: nowrap; }
+.trp--none { color: var(--ink-faint); }
+.trp--none .trp__name { color: var(--ink-dim); }
+
+/* ---------- Trait chips (a row that scrolls sideways) ---------- */
+.trpick {
+  display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none;
+  padding: 4px 0; scroll-snap-type: x proximity;
+}
+.trpick::-webkit-scrollbar { display: none; }
+.trchip[aria-pressed="true"] {
+  color: var(--ink); border-color: var(--tc);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--tc) 32%, transparent), color-mix(in srgb, var(--tc2) 60%, transparent));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ink) 18%, transparent), 0 0 0 1px color-mix(in srgb, var(--tc) 40%, transparent);
+}
+.trchip .chip__swatch { transform: rotate(45deg); border-radius: 2px; }
+
+/* ==========================================================
+   Traits tab: the 13 trait cards
+   ========================================================== */
+.trgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+@media (min-width: 720px) { .trgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .trgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); } }
+.trskel { aspect-ratio: 4 / 3; }
+.trc {
+  position: relative; min-width: 0;
+  display: flex; flex-direction: column; gap: var(--s-3);
+  padding: var(--s-3) var(--s-3) var(--s-3);
+  text-align: left; color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--tc) 55%, transparent);
+  border-radius: var(--r-panel);
+  background:
+    radial-gradient(120% 70% at 0% 0%, color-mix(in srgb, var(--tc) 22%, transparent), transparent 60%),
+    linear-gradient(165deg, color-mix(in srgb, var(--tc2) 80%, var(--void)), var(--void) 75%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tc) 30%, transparent);
+  overflow: hidden;
+  transition: border-color var(--t-med) var(--ease);
+}
+.trc::before {   /* tier stripe on the left edge */
+  content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--tc); opacity: .85;
+}
+.trc:hover, .trc:focus-visible { border-color: var(--tc); }
+/* the three rarest tiers glow a little (still: no animation) */
+.trc[data-tier="Mythic"], .trc[data-tier="Divine"], .trc[data-tier="Secret"] {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tc) 45%, transparent), inset 0 0 22px color-mix(in srgb, var(--tc) 18%, transparent);
+}
+.trc[data-tier="Secret"] { border-width: 1.5px; }
+.trc__top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); min-width: 0; }
+.trc__gem { width: 30px; height: 30px; flex: none; color: var(--tc); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--tc) 45%, transparent)); }
+.trc__title { min-width: 0; display: flex; flex-direction: column; margin-top: calc(var(--s-1) * -1); }
+.trc__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; color: var(--ink); overflow-wrap: break-word; }
+.trc__tier { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tc); }
+.trc__chance {
+  flex: none; padding: 2px 7px; border-radius: var(--r-pill);
+  font-family: var(--gc-font-num); font-size: 13px; letter-spacing: .02em;
+  color: var(--void); background: var(--tc);
+}
+.trc__fx { display: grid; gap: 3px; font-size: var(--fs-xs); line-height: 1.35; color: var(--ink-dim); }
+.trc__fx span { position: relative; padding-left: 12px; }
+.trc__fx span::before { content: ""; position: absolute; left: 1px; top: .5em; width: 5px; height: 5px; transform: rotate(45deg); background: var(--tc); }
+.trc__fx span:nth-child(-n+2) { color: var(--ink); }
+.trc__foot { margin-top: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--s-2); padding-top: var(--s-2); border-top: 1px solid color-mix(in srgb, var(--tc) 22%, transparent); font-size: 11px; color: var(--ink-faint); }
+
+/* ==========================================================
+   Traits tab: calculator
+   ========================================================== */
+.trcalc { display: grid; gap: var(--s-5); grid-template-areas: "a" "r" "b"; }
+.trcalc__a { grid-area: a; } .trcalc__b { grid-area: b; } .trcalc__result { grid-area: r; }
+.trcalc[hidden] { display: none; }
+.trcalc__controls { min-width: 0; display: flex; flex-direction: column; gap: var(--s-2); }
+.trcalc__label, .trcalc__field .trcalc__label { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-top: var(--s-2); }
+.trcalc__field { display: flex; flex-direction: column; gap: var(--s-2); flex: none; }
+.trcalc__field select { padding-left: 14px; }
+.trcalc__rarity, .trcalc__traits { margin: 0 calc(var(--gutter) * -1); padding: 4px var(--gutter); }
+.trcalc__steps { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+.trstep {
+  display: grid; grid-template-columns: 40px 1fr 40px; grid-template-rows: auto 40px; align-items: center; gap: 4px;
+  padding: var(--s-2); border: 1px solid var(--glass-line); border-radius: var(--r-panel); background: var(--glass-under);
+}
+.trstep__k { grid-column: 1 / -1; font-size: var(--fs-xs); color: var(--ink-dim); text-align: center; }
+.trstep__btn {
+  width: 40px; height: 40px; border-radius: var(--r-chip);
+  border: 1px solid var(--glass-line); background: var(--brass); color: var(--gold-hi);
+  font-size: 20px; line-height: 1;
+}
+.trstep__btn:disabled { opacity: .35; }
+.trstep__v { text-align: center; font-family: var(--gc-font-num); font-size: var(--fs-md); color: var(--ink); white-space: nowrap; }
+.trcalc__use { align-self: flex-start; }
+.trcalc__use:disabled { opacity: .5; }
+.trcalc__mine { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-1); }
+.trcalc__k { font-size: var(--fs-xs); color: var(--ink-faint); }
+.trcalc__save { align-self: flex-start; margin-top: var(--s-1); }
+[hidden].trcalc__save, [hidden].trcalc__extra { display: none; }
+
+/* phone: card on the left, final numbers on the right, the rest under them */
+.trcalc__result { padding: var(--s-4); display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); gap: var(--s-4) var(--s-4); align-items: center; min-width: 0; }
+.trcalc__result > :not(.trcalc__hero):not(.trcalc__nums) { grid-column: 1 / -1; }
+.trcalc__hero { width: 100%; max-width: 210px; margin: 0 auto; }
+.trcalc__hero .card { width: 100%; }
+.trcalc__nums { display: grid; gap: var(--s-4); }
+.trcalc__num { min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left; }
+.trcalc__num b { font-family: var(--gc-font-num); font-weight: 700; font-size: var(--fs-2xl); line-height: 1.1; overflow-wrap: anywhere; }
+.trcalc__num--atk b { color: var(--atk); }
+.trcalc__num--hp b { color: var(--hp); }
+.trcalc__num small { font-size: 11px; color: var(--ink-faint); line-height: 1.35; }
+.trcalc__extra { display: grid; gap: var(--s-1); list-style: none; margin: 0; padding: var(--s-2) var(--s-3); border: 1px solid var(--glass-line); border-radius: var(--r-chip); }
+.trcalc__extra li { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--fs-xs); color: var(--ink-dim); }
+.trcalc__extra b { font-family: var(--gc-font-num); color: var(--ink); white-space: nowrap; }
+.trcalc__fxtitle { font-family: var(--font-display); font-size: var(--fs-sm); letter-spacing: .08em; color: var(--tc, var(--gold)); }
+.trcalc__fx { display: grid; gap: 4px; margin: calc(var(--s-3) * -1) 0 0; padding: 0; list-style: none; font-size: var(--fs-sm); color: var(--ink); }
+.trcalc__fx li:not(.muted) { position: relative; padding-left: 14px; }
+.trcalc__fx li:not(.muted)::before { content: ""; position: absolute; left: 2px; top: .55em; width: 6px; height: 6px; transform: rotate(45deg); background: var(--tc, var(--gold)); }
+.trcalc__note { font-size: 11px; color: var(--ink-faint); }
+@media (min-width: 900px) {
+  .trcalc { grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); grid-template-areas: "a r" "b r"; grid-template-rows: auto 1fr; align-items: start; gap: var(--s-5) var(--s-8); }
+  .trcalc__result { position: sticky; top: calc(var(--s-6)); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .trcalc__hero { grid-column: 1 / -1; width: min(100%, 210px); }
+  .trcalc__nums { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
+  .trcalc__num { text-align: center; }
+  .trcalc__rarity, .trcalc__traits { margin: 0; padding: 4px 0; flex-wrap: wrap; overflow: visible; }
+}
+
+/* ==========================================================
+   Details sheet: Trait panel (js/traits.js panelHTML)
+   ========================================================== */
+.trrec { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.trrec__k { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.trrec__pick { min-height: 40px; display: inline-flex; align-items: center; border-radius: var(--r-pill); max-width: 100%; }
+.trrec__note { flex-basis: 100%; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink); }
+.trrec__more { flex-basis: 100%; font-size: 11px; color: var(--ink-faint); }
+.trrec + .trpick { margin-top: var(--s-3); }
+.trres { margin-top: var(--s-3); }
+.trres__nums { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+.trres__row { display: flex; flex-direction: column; gap: 1px; padding: var(--s-2) var(--s-3); border: 1px solid var(--glass-line); border-radius: var(--r-chip); min-width: 0; }
+.trres__k { font-size: 10px; font-weight: 700; letter-spacing: .12em; color: var(--ink-faint); }
+.trres__v { font-family: var(--gc-font-num); font-size: var(--fs-lg); line-height: 1.15; overflow-wrap: anywhere; }
+.trres__row--atk .trres__v { color: var(--atk); }
+.trres__row--hp .trres__v { color: var(--hp); }
+.trres__row small { font-size: 11px; color: var(--ink-faint); overflow-wrap: anywhere; }
+.trres__cap { margin-top: var(--s-2); font-size: 11px; color: var(--ink-faint); }
+.trres__fx { display: grid; gap: 3px; margin: var(--s-2) 0 0; padding: 0; list-style: none; font-size: var(--fs-sm); }
+.trres__fx li { position: relative; padding-left: 14px; }
+.trres__fx li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 6px; height: 6px; transform: rotate(45deg); background: var(--gold); }
+
+/* ==========================================================
+   Trait picker dialog (Deck slots)
+   ========================================================== */
+.trdlg { display: flex; flex-direction: column; gap: 6px; max-height: min(56vh, 520px); overflow-y: auto; overscroll-behavior: contain; margin: 0 -4px; padding: 2px 4px; }
+.trdlg__opt {
+  display: grid; grid-template-columns: 22px 1fr auto; grid-template-areas: "gem name tier" "gem fx fx"; align-items: center; gap: 1px var(--s-2);
+  flex: none; min-height: 52px; padding: 6px var(--s-3); text-align: left;
+  border: 1px solid color-mix(in srgb, var(--tc) 40%, transparent); border-radius: var(--r-chip);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tc2) 55%, var(--void)), var(--void));
+  color: var(--ink);
+}
+.trdlg__opt .tr-gem { grid-area: gem; font-size: 20px; }
+.trdlg__opt[aria-pressed="true"] { border-color: var(--tc); box-shadow: 0 0 0 1px var(--tc) inset; }
+.trdlg__name { grid-area: name; font-weight: 600; font-size: var(--fs-sm); }
+.trdlg__name em { font-style: normal; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold-hi); margin-left: 4px; }
+.trdlg__tier { grid-area: tier; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--tc); }
+.trdlg__fx { grid-area: fx; font-size: 11px; color: var(--ink-dim); }
+
+/* ==========================================================
+   Deck page: one trait button under each card slot (js/deck.js)
+   ========================================================== */
+.dk-trait {
+  position: relative; margin-top: 6px; height: 30px; min-width: 0;
+  display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 4px;
+  border: 1px solid color-mix(in srgb, var(--tc) 55%, transparent); border-radius: var(--r-chip);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tc2) 70%, var(--void)), var(--void));
+  color: var(--ink); font-size: 10px; font-weight: 600; line-height: 1;
+}
+.dk-trait::after { content: ""; position: absolute; inset: -5px -3px; }   /* 40px tall target */
+.dk-trait .tr-gem { font-size: 12px; }
+.dk-trait span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dk-trait--none { color: var(--ink-faint); border-style: dashed; }
+[hidden].dk-trait { display: none; }
+.dk-slot:not(.is-empty) .dk-trait { animation: fx-up var(--t-med) var(--ease) backwards; }
+@media (max-width: 479px) { .dk-trait .tr-gem { display: none; } }   /* phone: the whole name fits (the colour still shows the tier) */
+@media (min-width: 720px) { .dk-trait { font-size: 11px; height: 32px; } }
+
+/* ==========================================================
+   Graded case label: the card's trait (js/grade.js labelHTML)
+   ========================================================== */
+.lab__trait { display: inline-flex; align-items: center; gap: 3px; max-width: 100%; color: var(--slab-ink, inherit); }
+.lab__trait .tr-gem { font-size: 1.05em; color: var(--tc); filter: drop-shadow(0 0 1px var(--gc-edge)); }
+.lab__trait b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dk-slot:not(.is-empty) .dk-trait { animation: none; }
+}
