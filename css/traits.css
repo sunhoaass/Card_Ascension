@@ -40,6 +40,7 @@
 .trgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 @media (min-width: 720px) { .trgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 1280px) { .trgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); } }
+@media (min-width: 1700px) { .trgrid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 .trskel { aspect-ratio: 4 / 3; }
 .trc {
   position: relative; min-width: 0;

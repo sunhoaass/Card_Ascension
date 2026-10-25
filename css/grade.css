@@ -56,6 +56,7 @@
 .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
 @media (min-width: 600px) { .grade-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 @media (min-width: 1000px) { .grade-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .grade-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); } }   /* W3: 7 a row on a laptop, more on wide screens */
 #grade-tools .chip-row { margin-bottom: 0; }
 .chip__n {
   min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--r-pill);

@@ -40,7 +40,7 @@
 .deck__ghost small { color: var(--ink-faint); font-size: 10px; font-weight: 400; }
 .deck__support { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-3); }
 .deck__label { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
-.deck__notes { margin-top: var(--s-3); color: var(--ink-dim); font-size: var(--fs-sm); }
+.deck__notes { margin-top: var(--s-3); color: var(--ink-dim); font-size: var(--fs-sm); max-width: var(--measure, none); }
 
 /* ---------- Desktop ---------- */
 @media (min-width: 900px) {
@@ -384,6 +384,14 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
   .dk-top__main { align-content: center; }
   .dk-board { max-width: 760px; }
   .dk-row { gap: 14px; }
+}
+/* W3 wide PC: the board on the left, the analysis beside it (dense packing pulls the analysis up next to the board) */
+@media (min-width: 1700px) {
+  .dk-editor:not([hidden]) { display: grid; grid-template-columns: minmax(0, 760px) minmax(0, 1fr); grid-auto-flow: row dense; column-gap: var(--s-8); align-items: start; }
+  .dk-editor > * { grid-column: 1 / -1; }
+  .dk-editor > .dk-board, .dk-editor > .dk-board ~ .tm-hint { grid-column: 1; }
+  .dk-editor > .dk-analysis { grid-column: 2; grid-row: span 2; margin-top: 0; }
+  .dk-editor .dk-ana { max-width: none; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
 }
 
 /* ---------- Reduced motion: fades only ---------- */

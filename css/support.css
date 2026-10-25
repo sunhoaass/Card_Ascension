@@ -145,3 +145,4 @@
   .srow { padding: var(--s-4); grid-template-columns: 32px 64px minmax(0, 1fr) auto; }
   .sdetail .detail__hero .scard { width: 300px; }
 }
+@media (min-width: 1700px) { .slist { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

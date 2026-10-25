@@ -843,3 +843,28 @@
   - **ทดสอบ (Chromium 390px):** Tier List: DEM อยู่แถว S · หน้ารายละเอียด BE ขึ้น Tier C + Overall 57 + `tierNote` ใหม่ · Deck → Meta Decks แสดง Emperor Wall ช่อง 1–4 ค่าใหม่ · ไม่มี JS error (404 เดียว = `audio/bgm.mp3` ที่ยังไม่มีใน repo)
   - **คำถามใหม่ใน PROGRESS §8:** ค่า burn ของ DEM ต่อตา · ASL ข้ามการลดดาเมจของ BE ไหม (ทั้ง 2 ข้อเปลี่ยนผล 1-1 ได้)
   - **ไฟล์ที่ต้องอัป:** `data/cards.json`, `data/teams.json`, `data/meta.json` → `data/` · `PROGRESS.md`, `HISTORY.md` → root
+- 2026-10-25: **W3 จอคอมเต็มจอ + ซูมทั้งหน้าบนจอ > 1920** (Claude Code · `?v=17` → `18` ทุกบรรทัด)
+  - **สเปกเปลี่ยนกลางงาน (เจ้าของสั่ง):** รอบแรกทำแบบเพดาน 1600px + การ์ดโตตามจอ (`--grow`) → เจ้าของให้เปลี่ยนเป็น **ไม่มีเพดาน · ถึง 1920 ยืดเต็ม การ์ดเรียงได้มากขึ้น · > 1920 ขยายทั้งหน้าตามสัดส่วนจอ** · ของรอบแรกเอาออกหมด (ไม่มี `--grow`)
+  - **ที่เปลี่ยน:** `.main` ≥ 1100px เต็มความกว้าง (padding = gutter 32px · 40px ที่ ≥ 1600) · **สคริปต์ใน `<head>` ของ index.html** ตั้ง `html { zoom }` = min(กว้าง/1920, สูง/1080) เมื่อจอกว้าง > 1920 (2560×1440 = 1.333 · 3440×1440 = 1.333 แล้วเนื้อหาเต็มกว้าง ~2580px) + `--zoom` · อัปเดตเมื่อ resize · `--measure` 72ch คุม `.deck__notes` `.tm-hint` (`.page__lead` 62ch `.gnote` 60ch มีอยู่แล้ว) · Grade picker ≥ 1100px `auto-fill minmax(130px)` (1366 = 7 ใบ/แถวเท่าเดิม · 1920 = 11) · Traits 5 คอลัมน์ + Support 3 คอลัมน์ที่ ≥ 1700px · Deck editor ≥ 1700px = กระดาน (≤ 760px) ซ้าย + วิเคราะห์ขวา (grid `row dense`)
+  - **แก้พิกัดตอนซูม (Chromium วัดแล้ว: rect / clientX / scrollY เป็น px จอ แต่ความยาว CSS ถูกคูณ zoom):** ของกลางใหม่ `FX.zoom()` · หารใน `FX.press` (วงแสง), `FX.flip`, parallax เมือง (`scrollHeight × zoom`), `slide` + `landAt` ของ tiermaker.js / deck.js, ระยะเลื่อนแถบคำสั่ง deck · `.tm-layer` (ghost ตอนลาก + สำเนาที่ย่อหาย) `zoom: calc(1 / var(--zoom))` = ใช้ px จอตรงๆ · detail.js: ผง intro (`runIntro` หาร rect), การ์ดหันตามเมาส์, องศาต่อ px ตอนลาก, ลากแผ่น Details ลง
+  - **ทดสอบ (Chromium · การ์ดทดสอบ 60 ใบ):** แคปก่อน/หลัง 7 หน้า (`#tier` `#tier/my` `#cards` `#support` `#grade` `#deck` `#traits`) ที่ **390px และ 1366 เหมือนเดิมทุกพิกเซล** · 1920 / 2560 / 3440 เต็มจอ ไม่มี scroll แนวนอน · ขนาดการ์ด: แถว Tier List 120px ทุกจอ (2560 = 160px บนจอจริงเพราะซูม) · Cards grid ต่อแถว 1366 = 5 → 1920 = 7 → 2560 = 7 (ใหญ่ขึ้น ×1.33) → 3440 = 10 · Grade 7 → 11 → 11 → 15 · ที่ 1920 / 2560 / 3440: ลากการ์ดจาก pool ลงแถวใน Tier Maker → ghost อยู่ใต้ pointer + วางลงแถวได้ · เพิ่มการ์ดใน Deck 4 ใบ · เปิด/ปิดหน้ารายละเอียด (ผงรวมเป็นการ์ดตรงตำแหน่งการ์ด, ป้าย 4 ป้าย, ปิดแล้วบินกลับ) · ไม่มี error ใน console (มีแค่ 404 ของ `audio/bgm.mp3` ที่ยังไม่มีไฟล์)
+  - **ผลวัด §11.3** (390×844 DPR 2.75 · CPU ×6 · มัธยฐาน 3 รอบ · เดิม = HEAD ก่อนงานนี้ วัดเครื่องเดียวกัน · fps / เฟรมช้าสุด / TaskDuration):
+
+    | กรณี | เดิม | ใหม่ |
+    |---|---|---|
+    | ว่าง `#tier` | 60.0 / 17ms / 0.49s | 60.2 / 17ms / 0.44s |
+    | ว่าง `#cards` | 60.1 / 17ms / 0.49s | 60.2 / 17ms / 0.50s |
+    | 60 Normal `#tier` | 60.1 / 17ms / 0.92s | 60.1 / 17ms / 0.75s |
+    | 60 Normal `#tier/my` | 60.2 / 17ms / 0.50s | 60.1 / 17ms / 0.45s |
+    | 60 Normal `#cards` | 59.6 / 33ms / 1.10s | 60.0 / 33ms / 0.87s |
+    | 60 Normal `#support` | 60.1 / 17ms / 0.44s | 60.1 / 17ms / 0.51s |
+    | 60 Normal `#grade` | 60.0 / 17ms / 0.70s | 59.9 / 33ms / 0.71s |
+    | 60 Ascended `#tier` | 60.2 / 17ms / 1.05s | 60.0 / 17ms / 1.00s |
+    | 60 Ascended `#tier/my` | 60.3 / 17ms / 0.44s | 60.1 / 17ms / 0.47s |
+    | 60 Ascended `#cards` | 59.7 / 33ms / 1.30s | 59.8 / 33ms / 1.22s |
+    | 60 Ascended `#grade` | 59.5 / 50ms / 1.26s | 60.0 / 33ms / 1.14s |
+
+    - ผ่าน ≥ 55 fps + เฟรมช้าสุด ≤ 50ms ทุกกรณี (มือถือไม่ได้แตะ CSS · JS เพิ่มแค่การหาร) · ไม่มี rAF วน · ไม่เพิ่ม backdrop-filter · เครื่องคลาวด์ตัวนี้ `#cards` 60 ใบได้ ~60 (ที่ W4 เขียน ~40 มาจากเครื่องตัวก่อน)
+    - **จอคอม (วัดเพิ่ม · วิธีเดียวกันแต่ viewport คอม · เครื่องนี้ไม่มี GPU ตัวเลขคอมต่ำทั้งเดิมและใหม่):** 1920 `#cards` 60 Normal 29.6 → 26.8 · 60 Ascended 16.4 → 13.0 · 2560 `#cards` 60 Normal 25.4 → 19.1 · 60 Ascended 16.1 → 9.9 · `#tier` เท่าเดิม (17.6 → 17.7) · **สาเหตุ = การ์ดบนจอมากขึ้นตามสเปก** (การ์ดที่ aura เล่นอยู่ 15 → 21 ใบที่ 1920) ไม่ใช่โค้ดซูม → ส่งต่อ **W4** (ความเร็วหน้า Cards) ให้วัดจอคอมด้วย
+  - **ข้อควรรู้:** CSS `zoom` แบบมาตรฐานมีใน Chrome/Edge 128+, Firefox 126+ · Safari ใช้ zoom แบบเก่า (ยังไม่ได้ทดสอบ Safari บนจอ > 1920) · โค้ดใหม่ที่เอาตำแหน่งจอไปเขียนเป็น CSS ต้องหาร `FX.zoom()` (PROGRESS §3.3 ข้อ Breakpoint)
+  - **ไฟล์ที่ต้องอัป:** `index.html` → root · `css/tokens.css`, `css/base.css`, `css/deck.css`, `css/grade.css`, `css/support.css`, `css/tiermaker.css`, `css/traits.css` → `css/` · `js/fx.js`, `js/tiermaker.js`, `js/deck.js`, `js/detail.js` → `js/` · `PROGRESS.md`, `HISTORY.md` → root

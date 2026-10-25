@@ -19,6 +19,11 @@
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
   const FX = { get reduced() { return mq.matches; } };
 
+  /* ---------- Page zoom (W3) ----------
+     Screens wider than 1920px zoom the whole page (script in index.html <head>). Rects, pointer positions and scrollY are
+     then in screen px, CSS lengths in page px: divide a screen distance by FX.zoom() before writing it into a style. */
+  FX.zoom = () => document.documentElement.currentCSSZoom || parseFloat(document.documentElement.style.zoom) || 1;
+
   /* ---------- Press glow ring ---------- */
   FX.press = function (root = document) {
     root.addEventListener("pointerdown", (e) => {
@@ -27,8 +32,9 @@
       const r = btn.getBoundingClientRect();
       const ring = document.createElement("span");
       ring.className = "fx-ring";
-      ring.style.left = e.clientX - r.left + "px";
-      ring.style.top = e.clientY - r.top + "px";
+      const z = FX.zoom();
+      ring.style.left = (e.clientX - r.left) / z + "px";
+      ring.style.top = (e.clientY - r.top) / z + "px";
       btn.appendChild(ring);
       ring.addEventListener("animationend", () => ring.remove(), { once: true });
     }, { passive: true });
@@ -118,7 +124,8 @@
     if (FX.reduced || !rect || !el.animate) return null;
     const to = el.getBoundingClientRect();
     if (!to.width || !rect.width) return null;
-    const moved = `translate(${rect.left - to.left}px, ${rect.top - to.top}px) scale(${rect.width / to.width})`;
+    const z = FX.zoom();
+    const moved = `translate(${(rect.left - to.left) / z}px, ${(rect.top - to.top) / z}px) scale(${rect.width / to.width})`;
     el.style.transformOrigin = "0 0";
     const anim = el.animate(
       reverse ? [{ transform: "none" }, { transform: moved }] : [{ transform: moved }, { transform: "none" }],
@@ -288,7 +295,7 @@
     if (!anim) return;
     anim.pause();
     let max = 1;
-    const measure = () => { max = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+    const measure = () => { max = Math.max(1, document.documentElement.scrollHeight * FX.zoom() - innerHeight); };
     const sync = () => { if (!FX.reduced) anim.currentTime = Math.min(1, window.scrollY / max) * 1000; };
     measure(); sync();
     window.addEventListener("scroll", sync, { passive: true });
