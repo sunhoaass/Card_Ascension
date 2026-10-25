@@ -815,3 +815,4 @@
     - หน้าใหม่ (Traits) และหน้าที่แก้ (Deck, Grade, Details) ผ่าน ≥ 55 fps · เฟรมช้าสุด ≤ 50ms · ไม่มี rAF วน (นับเลขเฉพาะตอนกด) · การ์ด Trait ไม่มีอนิเมชั่นวน · ไม่เพิ่ม backdrop-filter
     - ⚠️ **#cards 60 ใบ ~40 fps ทั้งเดิมและใหม่** (ไฟล์เดิม HEAD ก็ได้เท่ากันบนเครื่องนี้ = ไม่ใช่จากงานนี้ · หน้า Cards ไม่ได้แตะ) ขั้น 13 วัดได้ 59 บนเครื่องคลาวด์ตัวก่อน → น่าจะเป็นเครื่องวัดวันนี้ช้ากว่า (4 core, ไม่มี GPU) · ถ้าอยากให้ตรวจลึก ให้สั่งแยก
   - **ไฟล์:** ใหม่ `data/traits.json`, `js/traits.js`, `css/traits.css` · แก้ `index.html` (ปุ่มเมนู, section, sprite, `?v=17` ทุกบรรทัด), `css/tokens.css`, `css/base.css`, `css/detail.css`, `js/app.js`, `js/teamscore.js`, `js/deck.js`, `js/detail.js`, `js/grade.js`, `data/cards.json`, `PROGRESS.md`, `HISTORY.md`
+- 2026-10-25: **จดสเปกแท็บ Roll** ลง PROGRESS §12 (รอเจ้าของสั่ง · ยังไม่ได้ทำโค้ด) · ▶️ ข้อ 5 ชี้ไป §12 · เพิ่มแถวในตาราง 📑 · **ไฟล์:** `PROGRESS.md`, `HISTORY.md`
