@@ -3,10 +3,10 @@
    Built from mockup/black-sun-intro.html (v2, §13.1) and fed with the real data/cards.json.
    · Opens over any page (#card/<id>), Back = the same page in the same state (nothing underneath changes)
    · Painting: drawn ONCE per screen width (canvas → <img>), level ring drawn once per level, moved only by
-     paused Web Animations (finger / phone tilt). The sun's running light, sparks and fog are CSS (GPU).
+     paused Web Animations (finger / mouse). The sun's running light, sparks and fog are CSS (GPU).
    · Card: tap = one 360° turn (900 ms, owner's exception to the 400 ms rule) · drag = turn (angle limited, never
-     edge-on) · flick = spins and slows down · double tap = zoom · leans with the phone's tilt (works together with
-     the finger · iPhone asks on the first tap of the card) / with the mouse on a PC. Flat 2D when it is straight,
+     edge-on) · flick = spins and slows down · double tap = zoom · leans toward the mouse on a PC (phone tilt moves
+     nothing: removed 2026-10-25). Flat 2D when it is straight,
      real 3D (thickness, two faces) only while it moves or leans. The holo sheen always shows (static at rest).
    · Labels: Tier (+ tierNote) / Passive / Skill / Strongest / Weakness · always visible, the dot on the card follows
      the card as it turns (paused Web Animations) · phone = above / below the card, tap = full text ·
@@ -396,7 +396,7 @@
   function prewarm() { if (!G && state.cards.length && !FX.lite) idle(() => { if (!G && !FX.lite) buildScene(); }, 3000); }
 
   /* ==========================================================
-     2. Parallax: paused Web Animations driven by finger / phone tilt
+     2. Parallax: paused Web Animations driven by finger / mouse
      ========================================================== */
   const PAR = [];
   function addPar(node, axis, px) {
@@ -405,7 +405,7 @@
     const a = node.animate(kf, { duration: 1000, fill: "both", easing: "linear" });
     a.pause(); a.currentTime = 500; PAR.push({ a, axis });
   }
-  let tx = 0, ty = 0, pcx = 0, pcy = 0, parRaf = 0, lastT = 0, tiltX = 0, tiltY = 0, touching = false;
+  let tx = 0, ty = 0, pcx = 0, pcy = 0, parRaf = 0, lastT = 0, touching = false;
   function setTarget(x, y) {
     tx = clamp(x, -1, 1); ty = clamp(y, -1, 1);
     if (!parRaf && !rm() && isOpen) { lastT = performance.now(); parRaf = requestAnimationFrame(parStep); }
@@ -421,39 +421,7 @@
   }
   function resetParallax() { cancelAnimationFrame(parRaf); parRaf = 0; tx = ty = pcx = pcy = 0; for (const p of PAR) p.a.currentTime = 500; }
   const INTERACTIVE = "button, a, input, select, .bs-wrap, .bs-sheet, .bs-scrim, .bs-co, .bs-pop, .bs-dock, .bs-top";
-  let g0 = null, b0 = null, tiltOn = false;
-  function onTilt(e) {
-    if (e.gamma == null || e.beta == null) return;
-    let gx = e.gamma, by = e.beta;
-    const ang = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
-    if (ang === 90) { gx = e.beta; by = -e.gamma; } else if (ang === -90 || ang === 270) { gx = -e.beta; by = e.gamma; }
-    if (g0 === null) { g0 = gx; b0 = by; }
-    g0 += (gx - g0) * 0.004; b0 += (by - b0) * 0.004;   // the baseline follows slowly: holding still = back to straight
-    const nx = clamp((gx - g0) / 18, -1, 1), ny = clamp((by - b0) / 18, -1, 1);
-    if (Math.abs(nx - tiltX) < 0.02 && Math.abs(ny - tiltY) < 0.02) return;
-    tiltX = nx; tiltY = ny;
-    if (!touching) setTarget(nx, ny);
-    setLean(-nx * LEAN.y, -ny * LEAN.x);                 // the card leans with the phone (together with the finger)
-  }
-  // only a phone / tablet tilts (desktop Chrome also exposes requestPermission)
-  const touchScreen = matchMedia("(pointer: coarse)").matches;
-  const needsTiltPermission = touchScreen && typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function";
-  let tiltGranted = false, tiltAsked = false;
-  function tiltListen(on) {
-    if (on === tiltOn) return;
-    if (on && needsTiltPermission && !tiltGranted) return;
-    if (on && (!touchScreen || !("DeviceOrientationEvent" in window))) return;
-    tiltOn = on; g0 = b0 = null;
-    if (on) addEventListener("deviceorientation", onTilt); else removeEventListener("deviceorientation", onTilt);
-  }
-  // iPhone: the motion permission can only be asked inside a tap → asked once, on the first tap of the card
-  function askTilt() {
-    if (!needsTiltPermission || tiltAsked || tiltGranted || rm()) return;
-    tiltAsked = true;
-    let p;
-    try { p = DeviceOrientationEvent.requestPermission(); } catch (e) { tiltAsked = false; return; }
-    Promise.resolve(p).then((s) => { if (s === "granted") { tiltGranted = true; if (isOpen) tiltListen(true); } }).catch(() => { tiltAsked = false; });
-  }
+  // no phone-tilt motion (owner, 2026-10-25): tilting the phone moves nothing · finger / mouse only
   function setupParallax() {
     addPar(el.skyX, "x", 16); addPar(el.skyY, "y", 12);
     addPar(el.sparkX, "x", 26); addPar(el.sparkY, "y", 18);
@@ -472,9 +440,9 @@
       else if (touching) fromPoint(e);
     }, { passive: true });
     el.root.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse" && !e.target.closest(INTERACTIVE)) { touching = true; fromPoint(e); } }, { passive: true });
-    const up = () => { if (touching) { touching = false; setTarget(tiltX, tiltY); } };
+    const up = () => { if (touching) { touching = false; setTarget(0, 0); } };
     el.root.addEventListener("pointerup", up); el.root.addEventListener("pointercancel", up);
-    el.root.addEventListener("mouseleave", () => { setTarget(tiltX, tiltY); if (!P) setLean(0, 0); });
+    el.root.addEventListener("mouseleave", () => { setTarget(0, 0); if (!P) setLean(0, 0); });
   }
 
   /* ==========================================================
@@ -887,13 +855,13 @@
   /* ==========================================================
      6. 3D card: tap = one 360° turn · drag = turn · flick = spins · release = spring back
      ========================================================== */
-  /* R3.ang / R3.tx = the turn (yaw) and up-down tilt (pitch) from the finger · ly / lx = the lean from the phone's tilt
+  /* R3.ang / R3.tx = the turn (yaw) and up-down tilt (pitch) from the finger · ly / lx = the lean from the mouse (PC)
      or the mouse (eased toward tly / tlx). Shown: yaw = ang + ly, pitch = tx + lx. Outside a spin (tap 360° / flick)
      both are soft-limited so the card never turns edge-on (owner, 2026-10-25). */
   const R3 = { ang: 0, vel: 0, tx: 0, vtx: 0, mode: "rest", target: 0, raf: 0, last: 0, release: false, tw: null, spin: false, base: 0, ly: 0, lx: 0, tly: 0, tlx: 0 };
   const SK = 90, SC = 2 * Math.sqrt(SK) * 0.62, KX = 140, CX = 2 * Math.sqrt(KX) * 0.75;
   const MAX_YAW = 42, MAX_PITCH = 24, DRAG_YAW = 36, DRAG_PITCH = 18;
-  const LEAN = { y: 16, x: 12 };   // degrees at full phone tilt / mouse at the edge
+  const LEAN = { y: 16, x: 12 };   // degrees with the mouse at the edge (PC only)
   const soft = (v, m) => m * Math.tanh(v / m);   // rubber-band limit: grows slower and slower toward ±m
   const HOLO_KF = Array.from({ length: 9 }, (_, k) => ({ transform: `translateX(${f2(Math.sin(k * Math.PI / 4) * 34)}%)` }));
   let A3 = null;
@@ -934,7 +902,7 @@
     A3.x.currentTime = xt; for (const a of A3.holoY) a.currentTime = xt;
     poseCallouts(t, xt);
   }
-  // the phone's tilt / the mouse sets where the card leans to (eased in tick)
+  // the mouse (PC) sets where the card leans to (eased in tick)
   function setLean(y, x) {
     if (!isOpen || rm() || el.root.hidden) return;
     const ny = Math.abs(y) < 0.6 ? 0 : y, nx = Math.abs(x) < 0.6 ? 0 : x;   // tiny = straight (flat 2D again)
@@ -977,7 +945,7 @@
     R3.raf = requestAnimationFrame(tick);
   }
   function buzz() { try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {} }
-  // stop the finger / spin part; the lean (phone tilt / mouse) carries on
+  // stop the finger / spin part; the lean (mouse) carries on
   function stopCard() {
     cancelAnimationFrame(R3.raf); R3.raf = 0;
     Object.assign(R3, { mode: "rest", ang: 0, tx: 0, vel: 0, vtx: 0, spin: false, base: 0 });
@@ -1049,8 +1017,6 @@
       else if (e.key === "z" || e.key === "Z") toggleZoom();
     });
     w.addEventListener("contextmenu", (e) => e.preventDefault());
-    // iPhone: ask for the motion permission on the first tap of the card (touchend / click both count as the tap)
-    w.addEventListener("touchend", askTilt, { passive: true }); w.addEventListener("click", askTilt);
   }
 
   /* ==========================================================
@@ -1416,7 +1382,7 @@
   }
   function reveal() {
     el.wrap.classList.add("is-in"); el.fore.classList.add("is-ready"); motesPlay(true); ready = true;
-    if (leaning()) { enter3D(); kick(); }   // the phone was already tilted / the mouse off-centre
+    if (leaning()) { enter3D(); kick(); }   // the mouse is already off-centre
     setOverall(cur, true);
     introTimers.push(setTimeout(() => { showCallouts(); introTimers.push(setTimeout(showHint, 1100)); }, 380));
     afterShow();
@@ -1567,7 +1533,6 @@
     idx = Math.max(0, list.indexOf(id));
     layout();
     resetLean();
-    if (!rm()) tiltListen(true);
     el.close.focus({ preventScroll: true });
 
     // every open = the scene fades in and the dust gathers into the card (owner, 2026-10-25 · was: fly from the tile)
@@ -1594,7 +1559,7 @@
     settled(false);
     stopIntro(); stopCard(); closeSheet(0, true); closePop(true); toggleZoom(false); hideHint();
     el.fore.classList.remove("is-ready");
-    cancelAnimationFrame(ovrRaf); resetParallax(); tiltListen(false); resetLean();
+    cancelAnimationFrame(ovrRaf); resetParallax(); resetLean();
     coAnims.forEach((a) => a.cancel()); coAnims = [];
     const target = id ? returnTarget(id) : null;
     let toRect = null;
