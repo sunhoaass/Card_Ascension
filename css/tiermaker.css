@@ -104,7 +104,7 @@
 .tm-switch[aria-checked="true"] .tm-switch__dot { transform: translateX(16px); background: var(--gold-hi); box-shadow: 0 0 10px var(--gold); }
 
 .tm-editor .rarity-picker { margin-bottom: var(--s-2); }
-.tm-hint { margin-bottom: var(--s-3); font-size: var(--fs-xs); color: var(--ink-faint); }
+.tm-hint { margin-bottom: var(--s-3); font-size: var(--fs-xs); color: var(--ink-faint); max-width: var(--measure, none); }
 
 /* ---------- Rows ---------- */
 .tm-rows { display: flex; flex-direction: column; gap: var(--s-2); }
@@ -200,7 +200,7 @@
 }
 
 /* ---------- Floating layer: the card you hold + fading copies ---------- */
-.tm-layer { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
+.tm-layer { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; zoom: calc(1 / var(--zoom, 1)); }   /* W3: undo the page zoom, ghosts are placed in screen px */
 .tm-ghost { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
 .tm-ghost__y { width: 100%; height: 100%; }   /* step 9.5: carries the ghost's y position (js: ghostAxis) */
 .tm-ghost__in { width: 100%; animation: tm-lift var(--t-med) var(--ease) both; }

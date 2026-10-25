@@ -142,7 +142,8 @@
     return a;
   }
   const stop = (el) => { if (el._tmAnim) { el._tmAnim.cancel(); el._tmAnim = null; } };
-  const slide = (el, dx, dy, duration = 260) => (FX.reduced ? null : anim(el, [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], { duration }));
+  // dx, dy are screen px (from rects): FX.zoom() turns them into page px
+  const slide = (el, dx, dy, duration = 260) => (FX.reduced ? null : anim(el, [{ transform: `translate(${dx / FX.zoom()}px, ${dy / FX.zoom()}px)` }, { transform: "none" }], { duration }));
   function popIn(el) {
     if (FX.reduced) return anim(el, [{ opacity: 0 }, { opacity: 1 }], { duration: 150 });
     return anim(el, [{ transform: "scale(.6)", opacity: 0 }, { transform: "scale(1.05)", opacity: 1, offset: 0.7 }, { transform: "none", opacity: 1 }], { duration: 260 });
@@ -169,7 +170,7 @@
     const dx = from.left + from.width / 2 - (to.left + to.width / 2);
     const dy = from.top + from.height / 2 - (to.top + to.height / 2);
     anim(el, [
-      { transform: `translate(${dx}px, ${dy}px) scale(${from.width / to.width})` },
+      { transform: `translate(${dx / FX.zoom()}px, ${dy / FX.zoom()}px) scale(${from.width / to.width})` },
       { transform: "scale(.95)", offset: 0.72 },
       { transform: "none" },
     ], { duration: 280 });

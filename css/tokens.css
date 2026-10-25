@@ -221,4 +221,11 @@
   --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
   --bs-ascended-lvl: #e6dcff;
 }
-@media (min-width: 1100px) { :root { --gutter: 32px; --orn-s: 24px; } }
+@media (min-width: 1100px) {
+  :root {
+    --gutter: 32px; --orn-s: 24px;
+    /* W3 PC: content fills the whole width (no cap) · screens wider than 1920 zoom the whole page (index.html <head>) */
+    --measure: 72ch;   /* long paragraphs keep a comfortable line length */
+  }
+}
+@media (min-width: 1600px) { :root { --gutter: 40px; } }

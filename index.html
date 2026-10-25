@@ -62,17 +62,29 @@
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&display=swap"></noscript>
-  <link rel="stylesheet" href="css/tokens.css?v=17">
-  <link rel="stylesheet" href="css/base.css?v=17">
-  <link rel="stylesheet" href="css/fx.css?v=17">
-  <link rel="stylesheet" href="css/cards.css?v=17">
-  <link rel="stylesheet" href="css/tier.css?v=17">
-  <link rel="stylesheet" href="css/deck.css?v=17">
-  <link rel="stylesheet" href="css/support.css?v=17">
-  <link rel="stylesheet" href="css/grade.css?v=17">
-  <link rel="stylesheet" href="css/tiermaker.css?v=17">
-  <link rel="stylesheet" href="css/detail.css?v=17">
-  <link rel="stylesheet" href="css/traits.css?v=17">
+  <!-- W3: screens wider than 1920px show the 1920px layout zoomed up (text, cards, buttons grow with the screen) · ≤ 1920 = normal layout -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      function fit() {
+        var s = Math.min(innerWidth / 1920, innerHeight / 1080);
+        var z = innerWidth > 1920 && s > 1 ? s.toFixed(3) : "";
+        d.style.zoom = z; d.style.setProperty("--zoom", z || 1);
+      }
+      fit(); addEventListener("resize", fit);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/tokens.css?v=18">
+  <link rel="stylesheet" href="css/base.css?v=18">
+  <link rel="stylesheet" href="css/fx.css?v=18">
+  <link rel="stylesheet" href="css/cards.css?v=18">
+  <link rel="stylesheet" href="css/tier.css?v=18">
+  <link rel="stylesheet" href="css/deck.css?v=18">
+  <link rel="stylesheet" href="css/support.css?v=18">
+  <link rel="stylesheet" href="css/grade.css?v=18">
+  <link rel="stylesheet" href="css/tiermaker.css?v=18">
+  <link rel="stylesheet" href="css/detail.css?v=18">
+  <link rel="stylesheet" href="css/traits.css?v=18">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -734,19 +746,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=17"></script>
-  <script src="js/app.js?v=17"></script>
-  <script src="js/teamscore.js?v=17"></script>
-  <script src="js/share.js?v=17"></script>
-  <script src="js/cards.js?v=17"></script>
-  <script src="js/detail.js?v=17"></script>
-  <script src="js/tier.js?v=17"></script>
-  <script src="js/deck.js?v=17"></script>
-  <script src="js/support.js?v=17"></script>
-  <script src="js/grade.js?v=17"></script>
-  <script src="js/traits.js?v=17"></script>
-  <script src="js/tiermaker.js?v=17"></script>
-  <script src="js/music.js?v=17"></script>
+  <script src="js/fx.js?v=18"></script>
+  <script src="js/app.js?v=18"></script>
+  <script src="js/teamscore.js?v=18"></script>
+  <script src="js/share.js?v=18"></script>
+  <script src="js/cards.js?v=18"></script>
+  <script src="js/detail.js?v=18"></script>
+  <script src="js/tier.js?v=18"></script>
+  <script src="js/deck.js?v=18"></script>
+  <script src="js/support.js?v=18"></script>
+  <script src="js/grade.js?v=18"></script>
+  <script src="js/traits.js?v=18"></script>
+  <script src="js/tiermaker.js?v=18"></script>
+  <script src="js/music.js?v=18"></script>
 </body>
 </html>
 

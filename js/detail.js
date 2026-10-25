@@ -430,9 +430,9 @@
     const fromPoint = (e) => { const r = el.root.getBoundingClientRect(); setTarget(((e.clientX - r.left) / r.width - 0.5) * 2, ((e.clientY - r.top) / r.height - 0.5) * 2); };
     // PC: the card faces the mouse (lean), the scene follows it (parallax)
     const mouseLean = (e) => {
-      const r = el.fore.getBoundingClientRect();
-      const mx = clamp((e.clientX - (r.left + LY.L + LY.cw / 2)) / Math.max(200, r.width / 2), -1, 1);
-      const my = clamp((e.clientY - (r.top + LY.T + LY.ch / 2)) / Math.max(200, r.height / 2), -1, 1);
+      const r = el.fore.getBoundingClientRect(), z = FX.zoom();
+      const mx = clamp((e.clientX - (r.left + (LY.L + LY.cw / 2) * z)) / Math.max(200, r.width / 2), -1, 1);
+      const my = clamp((e.clientY - (r.top + (LY.T + LY.ch / 2) * z)) / Math.max(200, r.height / 2), -1, 1);
       setLean(mx * LEAN.y, -my * LEAN.x);
     };
     el.root.addEventListener("pointermove", (e) => {
@@ -968,7 +968,7 @@
     el.fore.classList.toggle("is-zoom", on); closePop(true); if (on) hideHint();
   }
   let P = null, tapTimer = 0, lastTap = 0;
-  const dpp = () => 200 / Math.max(120, el.wrap.offsetWidth);   // degrees per pixel of finger movement
+  const dpp = () => 200 / Math.max(120, el.wrap.offsetWidth * FX.zoom());   // degrees per pixel of finger movement
   function setupCard() {
     const w = el.wrap;
     w.addEventListener("pointerdown", (e) => {
@@ -1257,7 +1257,7 @@
     head.addEventListener("pointerdown", (e) => {
       if (!sheetOpen || e.target.closest("button")) return;
       try { head.setPointerCapture(e.pointerId); } catch (err) {}
-      SD = { id: e.pointerId, y0: e.clientY, h: el.sheet.offsetHeight, s: [[e.clientY, performance.now()]], f: 0, anim: null };
+      SD = { id: e.pointerId, y0: e.clientY, h: el.sheet.offsetHeight * FX.zoom(), s: [[e.clientY, performance.now()]], f: 0, anim: null };
     });
     head.addEventListener("pointermove", (e) => {
       if (!SD || e.pointerId !== SD.id) return;
@@ -1397,7 +1397,7 @@
     el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in"); motesPlay(false); ready = false;
     if (rm()) { reveal(); return; }
     const sr = el.stage.getBoundingClientRect(), wr = el.wrap.getBoundingClientRect();
-    const W = sr.width, H = sr.height, cw = LY.cw, ch = LY.ch, L = wr.left - sr.left, T = wr.top - sr.top;
+    const z = FX.zoom(), W = sr.width / z, H = sr.height / z, cw = LY.cw, ch = LY.ch, L = (wr.left - sr.left) / z, T = (wr.top - sr.top) / z;
     const ctx = sizeCanvas(el.dust, W, H, 1);   // 1× on purpose: the dust looks the same, the layer is 7× smaller
     el.dust.hidden = false; el.dust.classList.remove("is-out");
     const nT = FX.lite ? 520 : 900, nS = FX.lite ? 140 : 240;    // answer (2) of §13.1: full dust, no cut

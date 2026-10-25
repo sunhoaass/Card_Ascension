@@ -401,7 +401,7 @@ html.is-detail .nav > * { opacity: .5; }   /* the menu is inert while a card det
   .card-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }   /* .grade-grid keeps its own columns (grade.css) */
   .main {
     max-width: none; margin: 0 0 0 var(--side-w);
-    padding: var(--s-10) max(var(--gutter), calc((100% - var(--side-w) - var(--max-w)) / 2)) var(--s-12);
+    padding: var(--s-10) var(--gutter) var(--s-12);   /* W3: full width, no cap */
   }
 }
 
