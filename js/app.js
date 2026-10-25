@@ -133,13 +133,43 @@
     if (window.WeakRef) watched.add(new WeakRef(el));
     liveIO.observe(el);
   }
+
+  /* ---------- Cards far off screen sleep (W4) ----------
+     farOff(card): more than one screen above / below = .is-far → content-visibility: auto (css/cards.css): no style,
+     layout or paint for what's inside, and not watched for .is-live (300 watched cards made every scroll frame slow).
+     Cards on or near the screen have no containment at all, so they look and cost exactly as before.
+     A card with no box (hidden tab, filtered out) keeps its state until it has one again. A new card starts asleep.
+     nearNow(card): wake it right away (a card just put in view would otherwise be empty for one frame). */
+  const farIO = liveIO && new IntersectionObserver((list) => list.forEach((e) => {
+    if (e.isIntersecting || e.boundingClientRect.height) setFar(e.target, !e.isIntersecting);
+  }), { rootMargin: "100% 0px" });
+  function setFar(el, far) {
+    if (!!el._far === far) return;
+    el._far = far;
+    el.classList.toggle("is-far", far);
+    if (far) { liveIO.unobserve(el); el.classList.remove("is-live"); }
+    else if (!livePaused) liveIO.observe(el);
+  }
+  function farOff(el) {
+    if (!farIO) return;
+    el._farW = true;
+    setFar(el, true);   // starts asleep: a new list lays out only what nearNow() wakes, the observer settles the rest
+    farIO.observe(el);
+  }
+  const nearNow = (el) => { if (farIO) setFar(el, false); };
+
   /* Step 12: while the card detail covers the whole screen, the page underneath is hidden — stop checking its cards
      every frame (the detail's own cards made from now on are still watched). resume = watch them all again. */
   function livePause(on) {
     if (!liveIO || !window.WeakRef || on === livePaused) return;
     livePaused = on;
-    if (on) { liveIO.disconnect(); return; }
-    for (const ref of watched) { const el = ref.deref(); if (el) liveIO.observe(el); else watched.delete(ref); }
+    if (on) { liveIO.disconnect(); farIO.disconnect(); return; }
+    for (const ref of watched) {
+      const el = ref.deref();
+      if (!el) { watched.delete(ref); continue; }
+      if (el._farW) farIO.observe(el);
+      if (!el._far) liveIO.observe(el);
+    }
   }
 
   /* ---------- Lazy tabs (step 9.5) ----------
@@ -431,7 +461,7 @@
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
     openCard, closeCard, swapCard, route,
-    lazy, artImg, bindArt, watchLive, livePause,   // step 9.5 · livePause step 12
+    lazy, artImg, bindArt, watchLive, livePause, farOff, nearNow,   // step 9.5 · livePause step 12 · farOff + nearNow W4
     cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
