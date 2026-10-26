@@ -105,9 +105,7 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
 .cw-name b { display: block; font: 700 16px/1.25 var(--font-display); color: var(--gold-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cw-name span { display: block; font-size: 12.5px; color: var(--bs-text); }
 .cw-tools { position: absolute; left: 0; right: 0; display: grid; justify-items: center; gap: 8px; padding: 0 10px; }
-.cw-tools.is-row { grid-auto-flow: column; justify-content: center; align-items: center; gap: 10px; }   /* short landscape screens: one row */
 .search { position: relative; width: min(420px, 100%); }
-.is-row .search { width: min(300px, 40vw); }
 .search input { width: 100%; height: 44px; padding: 0 44px 0 40px; border: 0; border-radius: 10px; background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line);
   font-size: 16px; color: var(--ink); outline: none; }   /* 16px: iPhone does not zoom in on focus */
 .search input::placeholder { color: var(--ink-faint); }
@@ -115,10 +113,6 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
 .search > svg { position: absolute; left: 12px; top: 12px; width: 20px; height: 20px; color: var(--gold); pointer-events: none; }
 .search .x { position: absolute; right: 2px; top: 2px; width: 40px; height: 40px; border: 0; border-radius: 8px; background: none; color: var(--ink-dim); font-size: 20px; }
 .search .x[hidden] { display: none; }
-.tiers { display: flex; gap: 3px; }
-.tchip { min-width: 40px; height: 40px; padding: 0 6px; border: 0; border-radius: var(--r-chip); background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line);
-  font: 700 13px var(--font-display); color: var(--tc, var(--gold-hi)); }
-.tchip[aria-pressed="true"] { background: color-mix(in srgb, var(--tc) 30%, var(--bs-glass)); box-shadow: inset 0 0 0 2px var(--tc); color: var(--ink); }
 .empty { position: absolute; left: 0; right: 0; display: grid; justify-items: center; align-content: center; gap: 10px; text-align: center; pointer-events: none; }
 .empty[hidden] { display: none; }
 .empty b { font: 700 18px var(--font-display); color: var(--gold-hi); text-shadow: 0 1px 8px var(--bs-shade); }
@@ -193,7 +187,6 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
       <label class="search"><svg aria-hidden="true"><use href="#i-search"/></svg>
         <input id="q" type="search" placeholder="Search name or series" autocomplete="off" enterkeyhint="search" aria-label="Search cards by name or series">
         <button type="button" class="x" id="qx" aria-label="Clear search" hidden>×</button></label>
-      <div class="tiers" id="tiers" role="group" aria-label="Filter by tier"></div>
     </div>
   </div>
   <div class="dock"></div>
@@ -216,7 +209,6 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
   const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const EASE = "cubic-bezier(.2,.8,.2,1)";
   const TIERS = ["GOD", "SS", "S", "A", "B", "C", "D"];
-  const TIER_COLOR = { GOD: "--t-god", SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d" };
   const S = { meta: null, real: [], cards: [], byId: new Map(), rarity: "Normal", lib: "real", gfx: "high", aura: "all" };
   const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
 
@@ -451,13 +443,14 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
 
   function wheelGeom() {
     const W = G.W, vv = window.visualViewport, H = vv ? Math.min(innerHeight, vv.offsetTop + vv.height) : innerHeight;   // the phone keyboard: stay above it
-    const side = G.side, pad = 12 + 6, row = W >= 640 && H < 560;
-    const toolsH = row ? 44 : 44 + 8 + 40, nameH = 40;
+    const side = G.side, pad = 12 + 6;
+    const toolsH = 44, nameH = 40;   // the search only (owner 2026-10-26: no tier chips)
     const toolsY = H - pad - toolsH, nameY = toolsY - 10 - nameH;
     const room = nameY - 10 - (TOP_H + 8);          // card height must fit above the name
     let ch;
-    if (side) ch = clamp(G.H * 0.3, 150, 380);
-    else ch = clamp(W * 0.36, 96, 190) * 1.4;
+    // owner 2026-10-26: 15% smaller than the first mockup (PC 30% → 25.5% of the height · phones 36% → 30.6% of the width)
+    if (side) ch = clamp(G.H * 0.255, 128, 323);
+    else ch = clamp(W * 0.306, 82, 162) * 1.4;
     // the cards stay under the black sun (the phone keyboard may push them over it: the wheel must stay in view)
     ch = Math.round(Math.max(110, Math.min(ch, room, nameY - 10 - (G.sy + G.R + 10)))); const cw = Math.round(ch / 1.4);
     const step = RM ? 0 : (side ? 20 : 25);             // degrees per card
@@ -466,15 +459,15 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
     const R = step ? gap / Math.sin(step * Math.PI / 180) : 0;
     const P = Math.max(900, R * 2.4);
     const cy = nameY - 10 - ch / 2;
-    return { W, H, cw, ch, cx: W / 2, cy, step, vis, dend: vis + 0.7, gap, R, P, nameY, toolsY, side, row };
+    return { W, H, cw, ch, cx: W / 2, cy, step, vis, dend: vis + 0.7, gap, R, P, nameY, toolsY, side };
   }
   // the look at each offset, sampled every 0.25 card (linear between samples)
   function lookFrames() {
     const out = [], n = Math.round(K.dend * 8);
     for (let i = 0; i <= n; i++) {
       const d = -K.dend + (2 * K.dend * i) / n, ad = Math.abs(d);
-      // middle ~95% → ~35% at the last card that shows → gone just after it
-      const op = ad <= K.vis ? 0.95 - 0.6 * (ad / K.vis) : Math.max(0, 0.35 * (1 - (ad - K.vis) / (K.dend - K.vis)));
+      // owner 2026-10-26: see-through so the scene shows · middle 75% → 25% at the last card that shows → gone just after it
+      const op = ad <= K.vis ? 0.75 - 0.5 * (ad / K.vis) : Math.max(0, 0.25 * (1 - (ad - K.vis) / (K.dend - K.vis)));
       const sc = 1 - 0.07 * Math.min(ad, K.dend);
       const transform = K.step
         ? `perspective(${K.P}px) translateZ(${-K.R}px) rotateY(${d * K.step}deg) translateZ(${K.R}px) scale(${sc})`
@@ -502,7 +495,6 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
     put($("cw"), 0, K.cy - K.ch / 2 - 30, K.W, K.ch + 60);   // the touch band: the card row + 30px above and below
     const top = (id, y) => { $(id).style.top = y + "px"; };
     top("cwName", K.nameY); top("tools", K.toolsY); top("empty", K.cy - 60);
-    $("tools").classList.toggle("is-row", K.row);
     $("empty").style.height = "120px";
     makeSlots();
     slots.forEach((s) => { s.el.style.left = (K.cx - K.cw / 2) + "px"; s.el.style.top = "30px"; });   // relative to .cw
@@ -657,11 +649,10 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
     if (e.key === "Enter" && N) { e.preventDefault(); if (inField) $("q").blur(); else openFromWheel(centerIdx()); }   // in the search: Enter closes the keyboard
   });
 
-  /* ---------- search: name / series + tier chips ---------- */
-  const filt = { q: "", tiers: new Set() };
+  /* ---------- search: name / series ---------- */
+  const filt = { q: "" };
   function matches(c) {
     const q = filt.q.trim().toLowerCase();
-    if (filt.tiers.size && !filt.tiers.has(c.tier)) return false;
     return !q || c.name.toLowerCase().includes(q) || (c.series || "").toLowerCase().includes(q);
   }
   function setList(ids, centerId, { animate = false } = {}) {
@@ -693,14 +684,7 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
       setList(ids, first, { animate: true });
     }, gone.length ? 160 : 0);
   }
-  function clearSearch() { filt.q = ""; filt.tiers.clear(); $("q").value = ""; syncChips(); applyFilter(); }
-  const syncChips = () => [...$("tiers").children].forEach((b) => b.setAttribute("aria-pressed", String(filt.tiers.has(b.dataset.t))));
-  $("tiers").innerHTML = TIERS.map((t) => `<button type="button" class="tchip fx-press" data-t="${t}" aria-pressed="false" style="--tc:var(${TIER_COLOR[t]})">${t}</button>`).join("");
-  $("tiers").addEventListener("click", (e) => {
-    const b = e.target.closest(".tchip"); if (!b) return;
-    const t = b.dataset.t; filt.tiers.has(t) ? filt.tiers.delete(t) : filt.tiers.add(t);
-    syncChips(); applyFilter();
-  });
+  function clearSearch() { filt.q = ""; $("q").value = ""; applyFilter(); }
   $("q").addEventListener("input", () => { filt.q = $("q").value; applyFilter(); });
   $("qx").addEventListener("click", () => { $("q").value = ""; filt.q = ""; applyFilter(); $("q").focus(); });
   $("clear2").addEventListener("click", clearSearch);
@@ -720,7 +704,7 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
     document.documentElement.classList.remove("is-open");
     $("bs").classList.remove("on"); $("bs").setAttribute("aria-hidden", "true");
     $("wheel").hidden = true; $("view").hidden = true; $("panel").hidden = true;
-    filt.q = ""; filt.tiers.clear(); $("q").value = ""; syncChips(); $("qx").hidden = true;   // the search starts empty next time
+    filt.q = ""; $("q").value = ""; $("qx").hidden = true;   // the search starts empty next time
     const from = curId && $("grid").querySelector(`[data-id="${CSS.escape(curId)}"]`);
     if (from && !RM) from.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 400, delay: 150, easing: EASE });
     curId = null;
@@ -754,7 +738,7 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
     $("wheel").hidden = false;
     layoutWheel();
     let ids = S.cards.filter(matches).map((c) => c.id);
-    if (!ids.includes(id)) { filt.q = ""; filt.tiers.clear(); $("q").value = ""; $("qx").hidden = true; syncChips(); ids = libraryOrder(); }
+    if (!ids.includes(id)) { filt.q = ""; $("q").value = ""; $("qx").hidden = true; ids = libraryOrder(); }
     setList(ids, id);
     const view = $("view");
     clearTimeout(introT); document.querySelectorAll(".dot").forEach((d) => d.remove());
@@ -838,7 +822,7 @@ html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms va
   function build() {
     const real = S.real.slice();
     let cards = real;
-    if (S.lib === "test") {   // 60 test cards (the 4 real ones repeated, every tier used) — for the speed check
+    if (S.lib === "test") {   // 60 test cards (the 4 real ones repeated, every tier used) — for the speed check and the search
       cards = [];
       for (let i = 0; i < 60; i++) {
         const c = real[i % real.length], n = Math.floor(i / real.length) + 1;
