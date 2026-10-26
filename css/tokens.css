@@ -208,6 +208,7 @@
   --bs-sky: linear-gradient(#161a3e, #110a28 70%);   /* stand-in until the painting is ready */
   --bs-top-fade: linear-gradient(180deg, rgba(5, 9, 34, .82), rgba(5, 9, 34, 0));
   --bs-dock-fade: linear-gradient(0deg, rgba(5, 8, 30, .9) 38%, rgba(5, 8, 30, 0));
+  --bs-dock-fade-side: linear-gradient(0deg, rgba(5, 8, 30, .6), rgba(5, 8, 30, .28) 55%, rgba(5, 8, 30, 0));   /* W7 round 3: PC bottom bar, the city shows */
   --bs-chip: rgba(20, 22, 40, .55);           /* small buttons on the painting */
   --bs-shade: rgba(0, 0, 30, .92);            /* text shadow that keeps labels readable on the painting */
   --bs-text: #dcd8ea;                         /* label / sheet body text */
