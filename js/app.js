@@ -373,25 +373,37 @@
 
   // Tab buttons: no history entries, same as before · tapping a tab always lands on its list (Tier List = Global)
   // W6: on a PC the left menu stays usable over the card detail → a tab there closes the card (its history entry becomes the tab)
+  // W8: the card sits on top of its wheel entry → step back to the first card entry, then it becomes the tab (popstate below)
+  let leaveTo = null;
   function go(page) {
     const fromCard = /^#\/?card\//.test(location.hash);
+    const depth = (fromCard && history.state && history.state.depth) || 0;
     showPage(page, { scroll: true });
-    if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
+    if (depth > 1) { leaveTo = page; history.go(1 - depth); }
+    else if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
     if (fromCard && state.loaded) CBI.detail.close();
     if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); CBI.deck.show(); }
   }
 
-  /* Card detail: each open pushes a history entry so the phone's Back button closes it.
-     The entry also keeps the list of cards it was opened from (cl), so swiping left / right in the detail walks
+  /* Card detail: each open pushes history entries so the phone's Back button walks out of it.
+     W8: two entries with the same #card/<id>: {v:"wheel"} under {v:"card"} → Back = the card wheel, Back again = the page.
+     wd = the wheel entry's depth (depth = entries above the page). A card opened from inside the detail (a card in the
+     Details) adds one more {v:"card"} over the same wheel.
+     The entries also keep the list of cards it was opened from (cl), so swiping left / right in the detail walks
      that list (Cards grid order, a tier row board, a Tier Maker list, a deck…). opts.list overrides it. */
   function openCard(id, originEl, opts = {}) {
     state.origin = originEl || null;
     const auto = CBI.detail.listFor ? CBI.detail.listFor(originEl, id) : null;   // also remembers where to fly back to
     const list = opts.list || auto;
-    const depth = ((history.state && history.state.depth) || 0) + 1;
-    const st = { depth };
-    if (list && list.length > 1 && list.length <= 3000) st.cl = list;
-    history.pushState(st, "", "#card/" + encodeURIComponent(id));
+    const prev = history.state || {}, url = "#card/" + encodeURIComponent(id);
+    let depth = (prev.depth || 0) + 1, wd = prev.wd;
+    const cl = list && list.length > 1 && list.length <= 3000 ? { cl: list } : {};
+    if (!(/^#\/?card\//.test(location.hash) && prev.v && wd > 0)) {
+      wd = depth;
+      history.pushState({ depth, wd, v: "wheel", ...cl }, "", url);
+      depth++;
+    }
+    history.pushState({ depth, wd, v: "card", ...cl }, "", url);
     route();
   }
   // Swipe in the detail: same history entry, new card (Back still closes the detail in one step)
@@ -414,6 +426,13 @@
       if (b) go(b.dataset.page);
     });
     window.addEventListener("hashchange", route);
+    // W8: go() stepped back out of a card → that entry becomes the tab (the same hash = no hashchange, so do it here)
+    window.addEventListener("popstate", () => {
+      if (!leaveTo) return;
+      const p = leaveTo; leaveTo = null;
+      history.replaceState(null, "", "#" + p);
+      route();
+    });
 
     showSkeletons();
     route();

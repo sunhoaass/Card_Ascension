@@ -472,7 +472,7 @@
     parRaf = done || !isOpen ? 0 : requestAnimationFrame(parStep);
   }
   function resetParallax() { cancelAnimationFrame(parRaf); parRaf = 0; tx = ty = pcx = pcy = 0; for (const p of PAR) p.a.currentTime = 500; }
-  const INTERACTIVE = "button, a, input, select, .bs-wrap, .bs-sheet, .bs-scrim, .bs-co, .is-strip, .bs-dock, .bs-top";
+  const INTERACTIVE = "button, a, input, select, .bs-wrap, .bs-sheet, .bs-scrim, .bs-co, .is-strip, .bs-dock, .bs-top, .bs-cw, .bs-cwtools, .bs-cwempty";
   // no phone-tilt motion (owner, 2026-10-25): tilting the phone moves nothing · finger / mouse only
   function setupParallax() {
     addPar(el.skyX, "x", 16); addPar(el.skyY, "y", 12);
@@ -713,6 +713,7 @@
     // the card's name in the top bar: smaller before it would be cut (only a very long name still ends in "…")
     fitLine(el.name, 10.5);   // too long even then: 2 lines (CSS .is-wrap)
     if (sheetOpen) sheetSide();
+    if (wheelOn) layoutWheel();
   }
   // W6 fix: re-check the size after the scene is up (phone browser bars grow / shrink, fonts arrive): an old size used to
   // leave the scene small with an empty strip at the bottom
@@ -838,7 +839,7 @@
   }
   // the mouse (PC) sets where the card leans to (eased in tick)
   function setLean(y, x) {
-    if (!isOpen || rm() || el.root.hidden) return;
+    if (!isOpen || rm() || el.root.hidden || wheelOn) return;
     const ny = Math.abs(y) < 0.6 ? 0 : y, nx = Math.abs(x) < 0.6 ? 0 : x;   // tiny = straight (flat 2D again)
     if (Math.abs(ny - R3.tly) < 0.15 && Math.abs(nx - R3.tlx) < 0.15 && (ny || nx || !A3)) return;
     R3.tly = ny; R3.tlx = nx;
@@ -973,7 +974,7 @@
   }
   function step(dir) {
     // during the intro (introRaf) the next swipe is allowed too: §4, the user can go on while it plays
-    if (list.length < 2 || switching || R3.mode !== "rest" || el.fore.classList.contains("is-zoom") || !(ready || introRaf) || sheetOpen) return;
+    if (wheelOn || list.length < 2 || switching || R3.mode !== "rest" || el.fore.classList.contains("is-zoom") || !(ready || introRaf) || sheetOpen) return;
     const id = list[(idx + dir + list.length) % list.length];
     if (!byId.has(id)) return;
     C.swapCard(id);                // same history entry (Back still closes the detail in one step)
@@ -1216,7 +1217,7 @@
     if (done) shAnims[0].onfinish = done;
   }
   function openSheet(name, to) {
-    if (!ready || !cur) return;
+    if (!ready || !cur || wheelOn) return;
     if (sheetOpen) { setTab(name || tab, { animate: true, to }); return; }
     fillSheet(); hideHint(); stopCard(); toggleZoom(false);
     setTab(name || "overview", { to });
@@ -1353,6 +1354,7 @@
     clearTimeout(faceTimer);
     if (hit) faceTimer = setTimeout(apply, WAVE_HIT); else apply();   // the card changes when the wave reaches it
     if (!isOpen) return;
+    wRarity();   // W8: the wheel's cards
     paintDock(false);
     moteColors();
     showCorona(state.rarity, false);
@@ -1441,10 +1443,11 @@
     setTimeout(prebakeCoronas, 3400);
   }
   // every open plays it (owner, 2026-10-25) · fast = swiping to the next card: the same intro at 0.75× the time
-  function runIntro(fast) {
+  // keep = the palace cycle goes on (swiping · W8: a card picked in the wheel, the scene stays as it is)
+  function runIntro(fast, keep = fast) {
     stopIntro(); stopCard(); toggleZoom(false); closeSheet(0, true); hideCallouts();
     el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in"); motesPlay(false); ready = false;
-    if (!fast || !cycling) palaceStart();   // W7: the palace forms from dust with the card (swiping keeps its cycle going)
+    if (!keep || !cycling) palaceStart();   // W7: the palace forms from dust with the card (swiping keeps its cycle going)
     if (rm()) { reveal(); return; }
     const sr = el.stage.getBoundingClientRect(), wr = el.wrap.getBoundingClientRect();
     const z = FX.zoom(), W = sr.width / z, H = sr.height / z, cw = LY.cw, ch = LY.ch, L = (wr.left - sr.left) / z, T = (wr.top - sr.top) / z;
@@ -1510,6 +1513,377 @@
   }
 
   /* ==========================================================
+     12. Card wheel (W8, from mockup/card-wheel.html): Back on the card view → every card on a cylinder over the same
+         scene (it keeps playing, the palace cycle does not restart) · tap a side card = it turns to the middle · tap the
+         middle one / Enter = its dust intro · Back at the wheel = the page it was opened from.
+         History: #card/<id> twice — {v:"wheel"} under {v:"card"} (CBI.openCard) · no new route, no new localStorage key.
+         The cylinder turns on the Y axis: the card at offset d (cards from the middle) is turned d × STEP degrees ·
+         wpos = the (fractional) index of the middle card · each visible card sits in a slot whose look is ONE paused Web
+         Animation over the offsets −DEND…+DEND (transform + opacity): per frame only currentTime is set · 11 slots, the
+         cards that turn out are reused · rAF only while it moves (drag, fling, snap).
+     ========================================================== */
+  const WPOOL = 11;
+  let wheelOn = false, wBusy = false, wTok = 0, WK = {};
+  let wl = [], wpos = 0, wN = 0, wwrap = true, wQ = "";
+  const wslots = [];                     // { el, inner, a (look), e (edge fade), idx, cardId, z, sel }
+  const wcache = new Map();              // id → mini card (LRU 24)
+  let wRaf = 0, wSpin = null, wDrag = null, wCenter = -1, wFiltT = 0;
+  const viewOf = () => { const s = history.state; return s && (s.v === "wheel" || s.v === "card") ? s.v : null; };
+  const wUrl = (id) => "#card/" + encodeURIComponent(id);
+  // a #card/<id> entry without a view (direct link, typed hash, an entry from before W8) → wheel + card entries
+  function wheelEntries(id) {
+    const st = history.state || {}, d = st.depth || 0, cl = Array.isArray(st.cl) ? { cl: st.cl } : {};
+    try {
+      if (d > 0) history.replaceState({ depth: d, wd: d, v: "wheel", ...cl }, "", wUrl(id));
+      else { history.replaceState(null, "", "#" + (state.page || "cards")); history.pushState({ depth: 1, wd: 1, v: "wheel" }, "", wUrl(id)); }
+      const w = history.state.depth;
+      history.pushState({ depth: w + 1, wd: w, v: "card", ...cl }, "", wUrl(id));
+    } catch (e) {}
+  }
+  // Back on the card view (button / Esc): one step down to the wheel entry under this card
+  function toWheel() {
+    const st = history.state || {};
+    if (st.v === "card" && st.wd > 0 && st.depth > st.wd) history.go(st.wd - st.depth);
+    else C.closeCard();
+  }
+  // the whole library in the Cards page order (cards its filters hide come after)
+  function wOrder() {
+    const o = C.cards.order().filter((id) => byId.has(id)), seen = new Set(o);
+    state.cards.forEach((c) => { if (!seen.has(c.id)) o.push(c.id); });
+    return o;
+  }
+  const wMatch = (c) => { const q = wQ.trim().toLowerCase(); return !q || String(c.name || "").toLowerCase().includes(q) || String(c.series || "").toLowerCase().includes(q); };
+
+  function wheelGeom() {
+    const rw = el.root.clientWidth, rh = el.root.clientHeight, z = FX.zoom();
+    const [W, H] = skySize(), sun = sunOf(W, H), sunB = sun.sy + sun.R - 26;   // in .bs coordinates (the sky starts 26px out)
+    const vv = window.visualViewport, kb = vv ? (vv.offsetTop + vv.height) / z : rh;   // the phone keyboard: stay above it
+    const foreB = el.fore.offsetTop + el.fore.clientHeight;                              // above the bottom bar (level dots)
+    // a very short screen (a phone on its side): the wheel takes the level dots' room too (they hide), so it stays under the sun
+    const low = kb >= foreB - 24 && foreB - 8 - 94 - (sunB + 10) < 110;
+    el.root.classList.toggle("is-wheel-low", low);
+    const toolsY = (kb < foreB - 24 ? kb - 12 : low ? rh - 8 : foreB - 8) - 44, nameY = toolsY - 10 - 40;
+    // owner 2026-10-26: PC 25.5 % of the height · phones 30.6 % of the width · always under the black sun
+    let ch = side ? clamp(rh * 0.255, 128, 323) : clamp(rw * 0.306, 82, 162) * 1.4;
+    ch = Math.round(Math.max(110, Math.min(ch, nameY - 10 - (TOP_H + 8), nameY - 10 - (sunB + 10))));
+    const cw = Math.round(ch / 1.4);
+    const step = rm() ? 0 : (side ? 20 : 25);            // degrees per card (reduced motion: a flat row)
+    const vis = side ? (rw >= 1200 ? 3 : 2.6) : 2;       // cards each side that still show (PC 5–7 · phones 3–5)
+    const gap = cw * (side ? 0.92 : 0.82);               // middle-to-next distance on screen
+    const R = step ? gap / Math.sin(step * Math.PI / 180) : 0;
+    return { rw, cw, ch, cx: rw / 2, cy: nameY - 10 - ch / 2, step, vis, dend: vis + 0.7, gap, R, P: Math.max(900, R * 2.4), nameY, toolsY };
+  }
+  // the look at each offset, sampled every 1/8 card (linear between samples)
+  function wFrames() {
+    const out = [], n = Math.round(WK.dend * 8);
+    for (let i = 0; i <= n; i++) {
+      const d = -WK.dend + (2 * WK.dend * i) / n, ad = Math.abs(d);
+      // owner 2026-10-26: see-through so the scene shows · middle 75 % → 25 % at the last card that shows → gone just after it
+      const op = ad <= WK.vis ? 0.75 - 0.5 * (ad / WK.vis) : Math.max(0, 0.25 * (1 - (ad - WK.vis) / (WK.dend - WK.vis)));
+      const sc = 1 - 0.07 * Math.min(ad, WK.dend);
+      const transform = WK.step
+        ? `perspective(${WK.P}px) translateZ(${-WK.R}px) rotateY(${d * WK.step}deg) translateZ(${WK.R}px) scale(${sc})`
+        : `perspective(${WK.P}px) translateZ(0px) rotateY(0deg) translateX(${d * WK.gap * 1.1}px) scale(${sc})`;
+      out.push({ transform, opacity: op, offset: i / n });
+    }
+    return out;
+  }
+  function wMakeSlots() {
+    wslots.forEach((s) => { s.a.cancel(); s.e.cancel(); s.el.remove(); });
+    wslots.length = 0;
+    const frames = wFrames();
+    for (let i = 0; i < WPOOL; i++) {
+      const sl = document.createElement("div"); sl.className = "bs-cwslot"; sl.hidden = true; sl.setAttribute("role", "option");
+      const inner = document.createElement("div"); inner.className = "bs-cwin"; sl.appendChild(inner);
+      Object.assign(sl.style, { width: WK.cw + "px", height: WK.ch + "px", left: (WK.cx - WK.cw / 2) + "px", top: "30px" });
+      el.cw.appendChild(sl);
+      const a = sl.animate(frames, { duration: 1000, fill: "both" }); a.pause();
+      const e = inner.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1000, fill: "both" }); e.pause();
+      wslots.push({ el: sl, inner, a, e, idx: -1, cardId: null, z: -1, sel: null });
+    }
+  }
+  function layoutWheel() {
+    if (!wheelOn) return;
+    WK = wheelGeom();
+    place(el.cw, { x: 0, y: WK.cy - WK.ch / 2 - 30, w: WK.rw, h: WK.ch + 60 });   // the touch band: the row + 30px above / below
+    el.cwName.style.top = WK.nameY + "px"; el.cwTools.style.top = WK.toolsY + "px";
+    el.cwEmpty.style.top = (WK.cy - 60) + "px";
+    wMakeSlots();
+    wDraw(true);
+  }
+  const wWrapD = (d) => (wwrap ? ((((d + wN / 2) % wN) + wN) % wN) - wN / 2 : d);
+  const wCenterIdx = () => (wN ? ((Math.round(wpos) % wN) + wN) % wN : -1);
+  const wMid = () => wslots.find((s) => s.idx >= 0 && Math.abs(wWrapD(s.idx - wpos)) < 0.5);
+  // the site's game card, small picture (thumb) · no finger tilt · the wheel takes the taps (pointer-events: none in CSS)
+  function wCard(id) {
+    let c = wcache.get(id);
+    const card = byId.get(id);
+    if (c) { wcache.delete(id); wcache.set(id, c); }
+    else {
+      c = C.renderCard(card, state.rarity, { mini: true, tilt: false });
+      c.removeAttribute("role"); c.tabIndex = -1; c.setAttribute("aria-hidden", "true");
+      C.loadArt(c);
+      wcache.set(id, c);
+      if (wcache.size > 24) wcache.delete(wcache.keys().next().value);
+    }
+    if (c.dataset.rarity !== state.rarity) C.setCardRarity(c, card, state.rarity, { animate: false });
+    return c;
+  }
+  // per frame: which cards show, which slot each one uses, and where it is on the cylinder
+  function wDraw(force) {
+    if (!wN || force) wslots.forEach((s) => { s.el.hidden = true; s.idx = -1; });
+    if (wN) {
+      const want = new Map();
+      for (let i = 0; i < wN; i++) { const d = wWrapD(i - wpos); if (Math.abs(d) < WK.dend) want.set(i, d); }
+      wslots.forEach((s) => { if (s.idx >= 0 && !want.has(s.idx)) { s.idx = -1; s.el.hidden = true; } });
+      for (const [i, d] of want) {
+        let s = wslots.find((x) => x.idx === i);
+        if (!s) {
+          s = wslots.find((x) => x.idx < 0); if (!s) continue;
+          s.idx = i;
+          const id = wl[i];
+          if (s.cardId !== id || force) { s.inner.replaceChildren(wCard(id)); s.cardId = id; s.sel = null; s.el.setAttribute("aria-label", (byId.get(id) || {}).name || id); }
+          s.el.hidden = false;
+        }
+        s.a.currentTime = clamp((d + WK.dend) / (2 * WK.dend), 0, 1) * 1000;
+        // small libraries: a card that crosses the back of the wheel (wrap) fades out first
+        s.e.currentTime = wwrap ? clamp((wN / 2 - Math.abs(d)) / 0.5, 0, 1) * 1000 : 1000;
+        const zi = 20 - Math.round(Math.abs(d) * 2);
+        if (zi !== s.z) { s.z = zi; s.el.style.zIndex = zi; }
+        const sel = Math.abs(d) < 0.5;
+        if (sel !== s.sel) { s.sel = sel; s.el.setAttribute("aria-selected", String(sel)); }
+      }
+    }
+    const c = wCenterIdx();
+    if (c !== wCenter) { wCenter = c; wShowName(true); }
+  }
+  function wShowName(animate) {
+    const card = wN ? byId.get(wl[wCenterIdx()]) : null;
+    const b = el.cwName.firstElementChild, sp = el.cwName.lastElementChild;
+    b.textContent = card ? card.name : "";
+    sp.textContent = card ? [C.isRanked(card) ? "Tier " + card.tier : "Unranked", card.series || ""].filter(Boolean).join(" · ") : "";
+    if (animate && card && !rm()) el.cwName.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 150, easing: E });
+  }
+
+  /* ---------- motion: drag, fling + snap, taps, mouse wheel, keys (rAF only while it moves) ---------- */
+  function wTick(t) {
+    wRaf = 0;
+    if (wSpin) {
+      const k = clamp((t - wSpin.t0) / wSpin.dur, 0, 1), e = 1 - Math.pow(1 - k, 3);   // ease-out cubic: slows down onto a card
+      wpos = wSpin.from + (wSpin.to - wSpin.from) * e;
+      if (k >= 1) { wpos = wSpin.to; wSpin = null; wDraw(); return; }
+    }
+    wDraw();
+    if (wSpin || wDrag) wRaf = requestAnimationFrame(wTick);
+  }
+  const wKick = () => { if (!wRaf) wRaf = requestAnimationFrame(wTick); };
+  function wStop() { cancelAnimationFrame(wRaf); wRaf = 0; wSpin = null; wDrag = null; if (el.cw) el.cw.classList.remove("is-drag"); }
+  function wSpinTo(target, dur) {
+    if (!wN) return;
+    if (!wwrap) target = clamp(target, 0, wN - 1);
+    const dist = Math.abs(target - wpos);
+    if (dist < 0.001) { wpos = target; wDraw(); return; }
+    wSpin = { from: wpos, to: target, t0: performance.now(), dur: rm() ? 1 : dur || clamp(220 + dist * 90, 260, 1100) };
+    wKick();
+  }
+  const wNorm = () => { if (wwrap && wN) { const n = Math.round(wpos / wN) * wN; wpos -= n; if (wSpin) { wSpin.from -= n; wSpin.to -= n; } } };
+  // the card under the finger (cards overlap at the edges: the one nearer the middle wins, it is drawn on top)
+  function wSlotAt(x, y) {
+    let best = null, bd = Infinity;
+    wslots.forEach((s) => {
+      if (s.idx < 0) return;
+      const r = s.el.getBoundingClientRect(), d = Math.abs(wWrapD(s.idx - wpos));
+      if (x >= r.left && x <= r.right && y >= r.top - 20 && y <= r.bottom + 20 && d < bd) { bd = d; best = s; }
+    });
+    return best;
+  }
+  function wKey(e) {
+    if (wBusy) return;
+    const inField = e.target === el.cwQ;
+    if ((e.key === "ArrowLeft" || e.key === "ArrowRight") && !inField) {
+      e.preventDefault();
+      wSpinTo((wSpin ? wSpin.to : Math.round(wpos)) + (e.key === "ArrowRight" ? 1 : -1), 300);
+    } else if (e.key === "Enter" && wN) {
+      if (inField) { e.preventDefault(); el.cwQ.blur(); }                       // in the search: Enter closes the keyboard
+      else if (!(e.target.closest && e.target.closest("button, a, input, select"))) { e.preventDefault(); wOpen(wCenterIdx()); }
+    }
+  }
+  function setupWheel() {
+    const cw = el.cw;
+    cw.addEventListener("pointerdown", (e) => {
+      if (!wheelOn || wBusy || !wN || e.button > 0) return;
+      wSpin = null; wNorm();
+      wDrag = { id: e.pointerId, x0: e.clientX, p0: wpos, moved: false, hist: [[e.timeStamp, e.clientX]] };
+      try { cw.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    cw.addEventListener("pointermove", (e) => {
+      if (!wDrag || e.pointerId !== wDrag.id) return;
+      const dx = (e.clientX - wDrag.x0) / FX.zoom();
+      if (!wDrag.moved && Math.abs(dx) < 7) return;
+      if (!wDrag.moved) { wDrag.moved = true; cw.classList.add("is-drag"); }
+      let p = wDrag.p0 - dx / WK.gap;
+      if (!wwrap) { const hi = wN - 1; if (p < 0) p *= 0.3; if (p > hi) p = hi + (p - hi) * 0.3; }   // rubber band at the ends
+      wpos = p;
+      wDrag.hist.push([e.timeStamp, e.clientX]); if (wDrag.hist.length > 6) wDrag.hist.shift();
+      wKick();
+    });
+    const end = (e) => {
+      if (!wDrag || e.pointerId !== wDrag.id) return;
+      const d = wDrag; wDrag = null; cw.classList.remove("is-drag");
+      if (!d.moved) {   // a tap: side card → it turns to the middle · middle card → open it
+        if (e.type === "pointercancel") return;
+        const hit = wSlotAt(e.clientX, e.clientY);
+        if (!hit) return;
+        const off = wWrapD(hit.idx - wpos);
+        if (Math.abs(off) < 0.5) wOpen(hit.idx); else wSpinTo(wpos + Math.round(off), 320);
+        return;
+      }
+      // fling: keep going with the finger's speed, slow down, stop exactly on a card
+      const h = d.hist, a = h[0], b = h[h.length - 1];
+      const v = b[0] - a[0] > 0 && e.timeStamp - b[0] < 90 ? -(b[1] - a[1]) / FX.zoom() / (b[0] - a[0]) / WK.gap : 0;   // cards per ms
+      const target = Math.round(wpos + clamp(v * 260, -14, 14));
+      wSpinTo(target, clamp(240 + Math.abs(target - wpos) * 85, 260, 1300));
+    };
+    cw.addEventListener("pointerup", end); cw.addEventListener("pointercancel", end);
+    let acc = 0, accT = 0;
+    cw.addEventListener("wheel", (e) => {
+      if (!wN || wBusy) return;
+      e.preventDefault();
+      acc += Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      clearTimeout(accT); accT = setTimeout(() => { acc = 0; }, 160);
+      if (Math.abs(acc) >= 50) { const n = Math.sign(acc); acc = 0; wSpinTo((wSpin ? wSpin.to : Math.round(wpos)) + n, 300); }
+    }, { passive: false });
+    el.cwQ.addEventListener("input", () => { wQ = el.cwQ.value; wFilter(); });
+    el.cwClear.addEventListener("click", () => { wClear(); el.cwQ.focus(); });
+    el.cwClear2.addEventListener("click", () => wClear());
+  }
+
+  /* ---------- search: name / series · the cards that no longer match fade out, the wheel lines up on the first match ---------- */
+  function wSetList(ids, centerId, animate) {
+    wl = ids; wN = ids.length; wwrap = wN >= 3;   // ≥ 3 cards: round (each card once) · 1–2: no wrap
+    const i = Math.max(0, ids.indexOf(centerId));
+    el.cwEmpty.hidden = wN > 0; el.cwName.style.visibility = wN ? "" : "hidden";
+    wCenter = -1;
+    if (!wN) { wpos = 0; wDraw(true); wShowName(false); return; }
+    if (animate && !rm()) {
+      wpos = i - 0.9; wDraw(true);
+      wslots.forEach((s) => { const c = s.idx >= 0 && s.inner.firstElementChild; if (c) c.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: E }); });
+      wSpinTo(i, 380);
+    } else { wpos = i; wDraw(true); }
+  }
+  function wFilter() {
+    const ids = wOrder().filter((id) => wMatch(byId.get(id)));
+    el.cwClear.hidden = !wQ;
+    const keep = wN ? wl[wCenterIdx()] : null;
+    const first = ids.includes(keep) && !wQ ? keep : ids[0];
+    clearTimeout(wFiltT);
+    if (rm() || !wN) { wSetList(ids, first, false); return; }
+    const gone = wslots.filter((s) => s.idx >= 0 && !ids.includes(wl[s.idx])).map((s) => s.inner.firstElementChild).filter(Boolean);
+    const outs = gone.map((c) => c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: "forwards", easing: E }));
+    wFiltT = setTimeout(() => { outs.forEach((a) => a.cancel()); if (wheelOn) wSetList(ids, first, true); }, outs.length ? 160 : 0);
+  }
+  function wClear() { wQ = ""; el.cwQ.value = ""; wFilter(); }
+
+  /* ---------- card view ⇄ wheel ---------- */
+  // card view → the wheel (Back): the card shrinks into the wheel's middle slot, the others turn in + fade in (400 ms)
+  function showWheel(animate) {
+    if (wheelOn || !cur) return;
+    wheelOn = true;
+    const mine = ++wTok, id = cur.id;
+    el.wrap.getAnimations().forEach((a) => a.cancel());   // a swipe's slide-out stops here (its next card never comes)
+    stopIntro(); introTimers.forEach(clearTimeout); introTimers = []; switching = false;
+    stopCard(); resetLean(); closeSheet(0, true); hideHint(); hideCallouts();
+    const zoomed = el.fore.classList.contains("is-zoom"); toggleZoom(false);
+    ready = false; el.fore.classList.remove("is-ready"); motesPlay(false);
+    el.root.classList.add("is-wheel");
+    el.name.textContent = "Choose a card"; fitLine(el.name, 10.5);
+    el.root.setAttribute("aria-label", "Card wheel");
+    el.close.setAttribute("aria-label", "Close the card wheel");
+    document.title = `Choose a card — ${baseTitle}`;
+    try { history.replaceState({ ...(history.state || {}) }, "", wUrl(id)); } catch (e) {}   // the card last looked at
+    el.wheel.hidden = false;
+    layoutWheel();
+    let ids = wOrder().filter((x) => wMatch(byId.get(x)));
+    if (!ids.includes(id)) { wQ = ""; el.cwQ.value = ""; ids = wOrder(); }
+    el.cwClear.hidden = !wQ;
+    wSetList(ids, id, false);
+    const big = el.wrap.classList.contains("is-in");
+    const done = () => {
+      if (mine !== wTok) return;
+      wBusy = false;
+      el.wrap.getAnimations().forEach((a) => a.cancel()); el.wrap.classList.remove("is-in");
+      el.root.classList.add("is-wheel-in");   // the hidden big card stops drawing (an Ascended one kept its ring turning)
+      wslots.forEach((s) => { s.inner.style.visibility = ""; });
+      if (matchMedia("(pointer: fine)").matches) el.cw.focus({ preventScroll: true });
+    };
+    if (!animate || rm() || !big || zoomed) {
+      el.wrap.classList.remove("is-in");
+      if (animate && !rm()) el.wheel.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250, easing: E });
+      done(); return;
+    }
+    wBusy = true;
+    const mid = wMid(), z = FX.zoom();
+    const a = el.wrap.getBoundingClientRect(), b = mid ? mid.el.getBoundingClientRect() : a;
+    const k = b.width / a.width, dx = (b.left + b.width / 2 - (a.left + a.width / 2)) / z, dy = (b.top + b.height / 2 - (a.top + a.height / 2)) / z;
+    if (mid) mid.inner.style.visibility = "hidden";
+    el.wrap.animate([{ transform: "none" }, { transform: `translate(${f1(dx)}px, ${f1(dy)}px) scale(${f2(k)})` }], { duration: 400, easing: E, fill: "forwards" });
+    el.wheel.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: E });
+    const i = wpos; wpos = i - 0.8; wDraw(); wSpinTo(i, 400);
+    setTimeout(done, 400);
+  }
+  // the wheel → a card: the chosen card lifts in the middle, the wheel fades away, then the dust intro of that card
+  function leaveWheel(id) {
+    const card = byId.get(id);
+    if (!wheelOn || !card) return;
+    const mine = ++wTok;
+    wStop(); wBusy = true; el.cwQ.blur();
+    const mid = wMid(), lift = [];
+    if (!rm()) {
+      if (mid && mid.cardId === id) lift.push(mid.inner.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(-22px) scale(1.06)", opacity: 0 }], { duration: 380, easing: E, fill: "forwards" }));
+      lift.push(el.wheel.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 360, easing: E, fill: "forwards" }));
+    }
+    setTimeout(() => {
+      if (mine !== wTok) return;
+      lift.forEach((a) => a.cancel());
+      wBusy = false;
+      if (viewOf() === "wheel") return;   // Back again while it lifted: stay on the wheel
+      wheelOn = false; wStop();
+      el.wheel.hidden = true; el.root.classList.remove("is-wheel", "is-wheel-low", "is-wheel-in");
+      el.close.setAttribute("aria-label", "Back to the card wheel");
+      list = listFromHistory(id); idx = Math.max(0, list.indexOf(id));
+      el.root.classList.toggle("is-single", list.length < 2);
+      show(card); resetLean();
+      el.close.focus({ preventScroll: true });
+      runIntro(false, true);   // the same intro as an open · the scene and its palace cycle go on
+    }, rm() ? 0 : 240);
+  }
+  // tap the middle card / Enter: the wheel entry now names that card, its card entry goes on top
+  function wOpen(i) {
+    if (wBusy || i < 0 || !wN) return;
+    const id = wl[i], st = history.state || {}, d = st.depth || 0;
+    const cl = Array.isArray(st.cl) && st.cl.includes(id) ? { cl: st.cl } : {};
+    try {
+      history.replaceState({ ...st, v: "wheel" }, "", wUrl(id));
+      history.pushState({ depth: d + 1, wd: d, v: "card", ...cl }, "", wUrl(id));
+    } catch (e) {}
+    leaveWheel(id);
+  }
+  // the level changed while the wheel shows: its cards follow (flash + numbers count on the ones in view)
+  function wRarity() {
+    for (const [id, c] of wcache) { const card = byId.get(id); if (card && c.dataset.rarity !== state.rarity) C.setCardRarity(c, card, state.rarity, { animate: wheelOn && c.isConnected && !rm() }); }
+  }
+  function wReset() {
+    wStop(); wTok++; wheelOn = false; wBusy = false; clearTimeout(wFiltT);
+    if (!el.wheel) return;
+    el.wheel.getAnimations().forEach((a) => a.cancel());
+    el.wheel.hidden = true; el.root.classList.remove("is-wheel", "is-wheel-low", "is-wheel-in");
+    el.close.setAttribute("aria-label", "Back to the card wheel");
+    wQ = ""; el.cwQ.value = ""; el.cwClear.hidden = true;
+    wslots.forEach((s) => { s.a.cancel(); s.e.cancel(); s.el.remove(); }); wslots.length = 0;
+    wcache.clear(); wl = []; wN = 0; wCenter = -1;
+  }
+
+  /* ==========================================================
      11. Open / close (shared element from / back to the tile it was opened from)
      ========================================================== */
   const LIST_SCOPE = "[data-card-list], #card-grid, #tier-list, #tm-rows, #tm-sh-rows, #tm-pool, .dk-row, .deck, .mini-row";
@@ -1555,12 +1929,16 @@
     });
   }
   // fade with the scene (the labels, ring and Details button follow .is-ready on the foreground through CSS)
-  const chrome = () => [el.stage, el.top, el.dock];
+  const chrome = () => [el.stage, el.top, el.dock, el.wheel];
   let settleTimer = 0, fades = [], pagerTimer = 0;
   function open(id) {
     const card = byId.get(id);
     if (!card) { C.closeCard(); return; }        // unknown id in the link -> back to the page
     if (isOpen) {
+      // W8: the same #card/<id> holds two views (popstate and hashchange can both land here: each step is idempotent)
+      const v = viewOf();
+      if (v === "wheel") { if (!wheelOn) showWheel(true); return; }   // Back on the card view
+      if (wheelOn) { leaveWheel(id); return; }                         // Forward from the wheel to its card
       if (cur && cur.id === id) return;
       // another card while open (a card in the sheet, or the phone's Back to the previous card)
       const prevId = cur && cur.id;
@@ -1571,6 +1949,9 @@
       switchTo(id, a >= 0 && b < a ? -1 : 1);
       return;
     }
+    // W8: a direct #card/<id> link (or an old entry) gets its wheel entry: Back → the wheel → Back → the page
+    if (!viewOf()) wheelEntries(id);
+    wReset();
     token++;
     const mine = token;
     isOpen = true; ready = false;
@@ -1597,7 +1978,9 @@
     // wait for the painting at most 1.2 s (a lite phone paints on its first open; the stand-in sky shows meanwhile)
     fades = chrome().map((n) => FX.fade(n, 1, { duration: 300 }));
     hideCallouts(); el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in");
-    Promise.race([sceneP || Promise.resolve(), new Promise((r) => setTimeout(r, 1200))]).then(() => { if (mine === token && isOpen) runIntro(); });
+    // W8: an open straight into the wheel (Forward from the page, a reload on the wheel) shows the wheel right away
+    if (viewOf() === "wheel") { palaceStart(); showWheel(false); }
+    else Promise.race([sceneP || Promise.resolve(), new Promise((r) => setTimeout(r, 1200))]).then(() => { if (mine === token && isOpen && !wheelOn) runIntro(); });
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => { if (mine === token && isOpen) settled(true); }, 520);
     // W6 fix: the size can still change right after opening (phone browser bar, fonts) → measure again
@@ -1620,8 +2003,9 @@
   function close() {
     if (!isOpen) return;
     isOpen = false; ready = false;
-    const id = cur && cur.id;
+    const id = cur && cur.id, inWheel = wheelOn;
     const mine = ++token;
+    wStop(); wTok++;
     clearTimeout(settleTimer);
     settled(false);
     stopIntro(); stopCard(); closeSheet(0, true); toggleZoom(false); hideHint();
@@ -1637,6 +2021,8 @@
     const flight = toRect && el.wrap.classList.contains("is-in") ? FX.flip(el.wrap, toRect, { reverse: true, duration: 320 }) : null;
     if (target && flight) { target.style.visibility = "hidden"; hiddenEl = target; }
     const runs = fades.concat(flight || FX.fade(el.wrap, 0, { duration: 200 }));
+    // W8: Back at the wheel = the page it was opened from · the tile of the card last looked at lights up again
+    if (inWheel && toRect && !rm()) target.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 400, delay: 150, easing: E });
     Promise.all(runs.map(settle)).then(() => { if (mine === token) finish(target); });
   }
   function finish(target) {
@@ -1655,6 +2041,7 @@
     prevFocus = null; originEl = null; scopeEl = null; cur = null;
     faceCache.clear(); el.faceF.textContent = ""; el.faceB.textContent = "";
     el.sheetBody.textContent = ""; sheetKey = "";
+    wReset();
   }
 
   /* ---------- tapping any card on the site opens this ---------- */
@@ -1678,6 +2065,7 @@
       ovr: g("bs-ovr"), ovrArc: g("bs-ovrArc"), ovrNum: g("bs-ovrNum"), ovrLbl: g("bs-ovrLbl"), dbtn: g("bs-details"),
       hint: g("bs-hint"), dock: g("bs-dock"), dockL: g("bs-dockL"), dockR: g("bs-dockR"), lv: g("bs-lv"), lvName: g("bs-lvName"),
       prev: g("bs-prev"), next: g("bs-next"), gfx: g("bs-gfx"), tint: g("bs-tint"), wave: g("bs-wave"), glow: g("bs-glow"),
+      wheel: g("bs-wheel"), cw: g("bs-cw"), cwName: g("bs-cwName"), cwTools: g("bs-cwTools"), cwQ: g("bs-cwQ"), cwClear: g("bs-cwClear"), cwEmpty: g("bs-cwEmpty"), cwClear2: g("bs-cwClear2"),
       palace: g("bs-palace"), palaceImg: g("bs-palaceImg"), pdust: [g("bs-pdust0"), g("bs-pdust1")], gold: g("bs-gold"), city: g("bs-city"), still: g("bs-still"), fall: g("bs-fall"),
       scrim: g("bs-scrim"), sheet: g("bs-sheet"), sheetHead: g("bs-sheetHead"), shThumb: g("bs-shThumb"), shTitle: g("bs-shTitle"), shSub: g("bs-shSub"), sheetX: g("bs-sheetX"), sheetBody: g("bs-sheetBody"),
       shLv: g("bs-shLv"), shLvName: g("bs-shLvName"), tabs: g("bs-tabs"),
@@ -1691,21 +2079,29 @@
       if (!isOpen) return;
       if (e.key === "Escape") {
         e.preventDefault();
-        if (sheetOpen) closeSheet(0); else if (el.fore.classList.contains("is-zoom")) toggleZoom(false); else C.closeCard();
-      } else if (!sheetOpen && (e.key === "ArrowRight" || e.key === "ArrowLeft") && !(e.target.closest && e.target.closest("input, select, textarea"))) {
+        // W8: card view → the wheel · the wheel → the page (a search with text is cleared first)
+        if (wheelOn) { if (document.activeElement === el.cwQ && el.cwQ.value) wClear(); else if (!wBusy) C.closeCard(); }
+        else if (sheetOpen) closeSheet(0); else if (el.fore.classList.contains("is-zoom")) toggleZoom(false); else toWheel();
+      } else if (wheelOn) wKey(e);
+      else if (!sheetOpen && (e.key === "ArrowRight" || e.key === "ArrowLeft") && !(e.target.closest && e.target.closest("input, select, textarea"))) {
         e.preventDefault(); step(e.key === "ArrowRight" ? 1 : -1);
       }
     });
-    el.close.addEventListener("click", () => C.closeCard());
+    el.close.addEventListener("click", () => { if (wheelOn) { if (!wBusy) C.closeCard(); } else toWheel(); });
+    // W8: card ⇄ wheel share one URL (#card/<id>): history steps between them fire popstate only, no hashchange
+    addEventListener("popstate", () => { const m = location.hash.match(/^#\/?card\/([^/?#]+)/); if (isOpen && m) open(decodeURIComponent(m[1])); });
     document.addEventListener("cbi:rarity", onRarity);
     document.addEventListener("visibilitychange", () => { if (isOpen) hush(document.hidden || sheetOpen); });   // W7: tab hidden = loops stop
     if (!state.cards.length) return;
 
     buildLv(el.lv); buildLv(el.shLv); buildCallouts();
-    setupCard(); setupSwipe(); setupSheet(); setupParallax(); setupGfx();
+    setupCard(); setupSwipe(); setupSheet(); setupParallax(); setupGfx(); setupWheel();
     let rt = 0, rt2 = 0;
     // phone browser bars show / hide without always firing window resize: watch the visual viewport too
     if (window.visualViewport) visualViewport.addEventListener("resize", () => { clearTimeout(rt2); rt2 = setTimeout(relayoutIfResized, 200); });
+    // W8: the phone keyboard (search) only shrinks the visual viewport: the wheel and its search move above it
+    let rt3 = 0;
+    if (window.visualViewport) visualViewport.addEventListener("resize", () => { if (!wheelOn) return; clearTimeout(rt3); rt3 = setTimeout(() => { if (wheelOn) layoutWheel(); }, 60); });
     addEventListener("orientationchange", () => setTimeout(relayoutIfResized, 350));
     addEventListener("resize", () => {
       clearTimeout(rt);

@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=25">
-  <link rel="stylesheet" href="css/base.css?v=25">
-  <link rel="stylesheet" href="css/fx.css?v=25">
-  <link rel="stylesheet" href="css/cards.css?v=25">
-  <link rel="stylesheet" href="css/tier.css?v=25">
-  <link rel="stylesheet" href="css/deck.css?v=25">
-  <link rel="stylesheet" href="css/support.css?v=25">
-  <link rel="stylesheet" href="css/grade.css?v=25">
-  <link rel="stylesheet" href="css/tiermaker.css?v=25">
-  <link rel="stylesheet" href="css/detail.css?v=25">
-  <link rel="stylesheet" href="css/traits.css?v=25">
+  <link rel="stylesheet" href="css/tokens.css?v=26">
+  <link rel="stylesheet" href="css/base.css?v=26">
+  <link rel="stylesheet" href="css/fx.css?v=26">
+  <link rel="stylesheet" href="css/cards.css?v=26">
+  <link rel="stylesheet" href="css/tier.css?v=26">
+  <link rel="stylesheet" href="css/deck.css?v=26">
+  <link rel="stylesheet" href="css/support.css?v=26">
+  <link rel="stylesheet" href="css/grade.css?v=26">
+  <link rel="stylesheet" href="css/tiermaker.css?v=26">
+  <link rel="stylesheet" href="css/detail.css?v=26">
+  <link rel="stylesheet" href="css/traits.css?v=26">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -744,6 +744,18 @@
       <p class="sr-only" id="bs-help">Tap to spin. Drag to turn. Move the mouse to lean it. Double tap to zoom. Swipe outside the card or use the arrow keys for the next card. Tap a label to open that part of the details.</p>
     </div>
 
+    <!-- W8 card wheel (Back on the card view): every card on a turning cylinder over the same scene · js/detail.js §12 -->
+    <div class="bs-wheel" id="bs-wheel" hidden data-no-detail>
+      <div class="bs-cw" id="bs-cw" tabindex="0" role="listbox" aria-label="Card wheel. Swipe or use the arrow keys, Enter opens the middle card."></div>
+      <div class="bs-cwempty" id="bs-cwEmpty" hidden><b>No cards found</b><button class="fx-press" id="bs-cwClear2" type="button">Clear</button></div>
+      <div class="bs-cwname" id="bs-cwName" aria-live="polite"><b></b><span></span></div>
+      <div class="bs-cwtools" id="bs-cwTools">
+        <label class="bs-cwsearch"><svg aria-hidden="true"><use href="#i-lens"/></svg>
+          <input id="bs-cwQ" type="search" placeholder="Search name or series" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Search cards by name or series">
+          <button class="fx-press" id="bs-cwClear" type="button" aria-label="Clear search" hidden>×</button></label>
+      </div>
+    </div>
+
     <p class="bs-hint" id="bs-hint"><b>Tap</b> spin · <b>Drag</b> turn · <b>2× tap</b> zoom · <b>Swipe</b> ← →</p>
 
     <nav class="bs-dock" id="bs-dock" aria-label="Card level">
@@ -785,19 +797,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=25"></script>
-  <script src="js/app.js?v=25"></script>
-  <script src="js/teamscore.js?v=25"></script>
-  <script src="js/share.js?v=25"></script>
-  <script src="js/cards.js?v=25"></script>
-  <script src="js/detail.js?v=25"></script>
-  <script src="js/tier.js?v=25"></script>
-  <script src="js/deck.js?v=25"></script>
-  <script src="js/support.js?v=25"></script>
-  <script src="js/grade.js?v=25"></script>
-  <script src="js/traits.js?v=25"></script>
-  <script src="js/tiermaker.js?v=25"></script>
-  <script src="js/music.js?v=25"></script>
+  <script src="js/fx.js?v=26"></script>
+  <script src="js/app.js?v=26"></script>
+  <script src="js/teamscore.js?v=26"></script>
+  <script src="js/share.js?v=26"></script>
+  <script src="js/cards.js?v=26"></script>
+  <script src="js/detail.js?v=26"></script>
+  <script src="js/tier.js?v=26"></script>
+  <script src="js/deck.js?v=26"></script>
+  <script src="js/support.js?v=26"></script>
+  <script src="js/grade.js?v=26"></script>
+  <script src="js/traits.js?v=26"></script>
+  <script src="js/tiermaker.js?v=26"></script>
+  <script src="js/music.js?v=26"></script>
 </body>
 </html>
 
