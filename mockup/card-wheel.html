@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-visual">
+<meta name="theme-color" content="#0d1235">
+<title>Card Wheel Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/fx.css">
+<!--
+  Card Battle Infinity — W8 mockup: the card wheel on the card detail scene (does NOT touch the live site · PROGRESS §13 W8)
+  Flow: tap a card on the (stand-in) Cards page → the card view (stand-in dust intro) → Back → the wheel on the same
+  scene (the palace cycle is not restarted) → tap the middle card → that card's intro, the wheel goes away → Back → the
+  wheel again → Back at the wheel → the Cards page where it was. Back = the on-screen button, Esc, or the phone /
+  browser Back (two history entries per open card: "wheel" under "card", both #card/<id>).
+  Wheel = every card in the Cards page order (Overall high → low), on a turning cylinder (3D, Y axis): each slot is
+  turned by one paused Web Animation (offset -D…+D) whose currentTime is set per frame (no style.transform per frame) ·
+  only the cards near the middle exist (a pool of 11 slots, the ones that turn out are reused) · rAF only while it moves.
+  Scene = mockup/silver-scene.html with the live site's round 3 geometry (js/detail.js sunOf / geometry).
+  The game cards use the site's own CSS (css/fx.css) and the markup of CBI.renderCard (js/app.js).
+-->
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bs-night); color: var(--ink); font-family: var(--font-body); }
+body { min-height: 100vh; }
+img { display: block; max-width: none; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+/* ---------- stand-in Cards page (what Back at the wheel returns to) ---------- */
+.page { padding: 16px 16px 40px; max-width: 1180px; margin: 0 auto; }
+.page__kicker { margin: 18px 0 2px; font: 600 12px var(--font-display); letter-spacing: .3em; text-transform: uppercase; color: var(--ink-dim); text-align: center; }
+.page h1 { margin: 0 0 6px; font: 700 31px var(--font-display); text-align: center; color: var(--gold-hi); }
+.page p { margin: 0 auto 18px; max-width: 34em; color: var(--ink-dim); font-size: 14px; text-align: center; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px; }
+html.is-open .page { visibility: hidden; }
+
+/* ---------- the scene ---------- */
+.bs { position: fixed; inset: 0; z-index: 10; overflow: hidden; background: var(--bs-sky); opacity: 0; visibility: hidden; transition: opacity 300ms var(--ease), visibility 0s 300ms; }
+html.is-open .bs { opacity: 1; visibility: visible; transition: opacity 300ms var(--ease); }
+.scene { position: absolute; inset: 0; overflow: hidden; }
+.scene > * { position: absolute; pointer-events: none; }
+.gold, .palace, .dust { opacity: 0; }
+.fogwrap { left: -40px; right: -40px; bottom: -6px; height: 32%; overflow: hidden; }
+.fog { position: absolute; left: 0; top: 0; height: 100%; display: flex; animation: fog 70s linear infinite; }
+.fog img { height: 100%; width: auto; }
+@keyframes fog { to { transform: translateX(-50%); } }
+.fall { width: 0; }
+.fall i { position: absolute; left: -9px; top: 0; width: 18px; height: 70px; background: var(--bs-fall); opacity: 0; animation: fall 2.6s linear infinite; }
+.fall i:nth-child(2) { animation-delay: -.9s; width: 12px; left: -6px; }
+.fall i:nth-child(3) { animation-delay: -1.7s; }
+@keyframes fall { 0% { transform: translateY(0) scaleY(.6); opacity: 0; } 15% { opacity: .9; } 80% { opacity: .6; } 100% { transform: translateY(var(--len, 300px)) scaleY(1.3); opacity: 0; } }
+.spark { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--bs-spark-sv); box-shadow: var(--bs-spark-sv-glow); opacity: 0; animation: tw 3.4s ease-in-out infinite; }
+@keyframes tw { 0%, 100% { opacity: 0; transform: scale(.4); } 45% { opacity: .9; transform: scale(1); } }
+.bs.is-low .fog, .bs.is-low .fall i, .bs.is-low .spark { animation-play-state: paused; }
+.bs.is-low .fall { display: none; }
+
+/* ---------- top bar ---------- */
+.top { position: absolute; z-index: 6; left: 0; right: 0; top: 0; height: calc(44px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) 8px 0; display: flex; align-items: center; gap: 8px; background: var(--bs-top-fade); }
+.back { flex: none; display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px 0 8px; border: 0; border-radius: var(--r-chip); background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line);
+  font: 700 12px var(--font-display); letter-spacing: .05em; color: var(--gold-hi); }
+.back svg { width: 18px; height: 18px; }
+.ttl { flex: 1; min-width: 0; font: 700 12px var(--font-display); letter-spacing: .05em; color: var(--gold-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 6px var(--bs-shade); }
+.ttl span { display: inline-block; }
+.gear { flex: none; width: 40px; height: 40px; border: 0; border-radius: var(--r-chip); background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line); color: var(--gold); font-size: 18px; }
+
+/* ---------- card view (stand-ins for the live page's card, label strip, Overall + Details) ---------- */
+.view { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.view[hidden] { display: none; }
+.big { position: absolute; }
+.big .card { width: 100%; }
+.big .card:hover, .cw .card:hover { --lift: 0px; transform: translateY(0); }   /* no lift / tilt here: the scene turns them (tilt:false) */
+.strip { position: absolute; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; pointer-events: auto; padding: 0 10px; }
+.strip::-webkit-scrollbar { display: none; }
+.chipco { flex: none; display: grid; align-content: center; min-width: 148px; height: 56px; padding: 0 12px; border-radius: 10px; background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line); }
+.chipco b { font: 700 12px var(--font-display); letter-spacing: .04em; color: var(--gold-hi); white-space: nowrap; }
+.chipco span { font-size: 12.5px; color: var(--bs-text); white-space: nowrap; }
+.chipco--bad b { color: var(--bs-bad-hi); }
+.box { position: absolute; display: grid; align-content: center; gap: 2px; padding: 10px 12px; border-radius: 8px; background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line); pointer-events: auto; }
+.box b { font: 700 13px var(--font-display); color: var(--gold-hi); }
+.box span { font-size: 13px; color: var(--bs-text); }
+.box--bad b { color: var(--bs-bad-hi); }
+.ovr { position: absolute; display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--bs-glass); box-shadow: inset 0 0 0 3px var(--gold); font: 700 18px var(--font-display); color: var(--gold-hi); }
+.dbtn { position: absolute; width: 124px; height: 46px; border: 0; border-radius: 8px; pointer-events: auto; font: 700 14px var(--font-display); letter-spacing: .06em; color: var(--on-gold); background: var(--brass-gold); }
+.dock { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 84px; background: var(--bs-dock-fade); pointer-events: none; }
+.bs.is-side .dock { height: 64px; background: var(--bs-dock-fade-side); }
+.hud { transition: opacity 200ms var(--ease); }
+.view.is-quiet .hud { opacity: 0; }
+.dot { position: absolute; z-index: 8; width: 5px; height: 5px; margin: -2.5px; border-radius: 50%; background: var(--bs-spark); box-shadow: var(--bs-spark-glow); pointer-events: none; }
+
+/* ---------- the wheel ---------- */
+.wheel { position: absolute; inset: 0; z-index: 4; }
+.wheel[hidden] { display: none; }
+.cw { position: absolute; left: 0; right: 0; touch-action: none; cursor: grab; outline: none; }
+.cw.is-drag { cursor: grabbing; }
+.cw:focus-visible::after { content: ""; position: absolute; inset: 6px 12px; border-radius: 12px; box-shadow: inset 0 0 0 2px var(--gold); pointer-events: none; }
+.cw-slot { position: absolute; left: 0; top: 0; backface-visibility: hidden; }
+.cw-slot[hidden] { display: none; }
+.cw-in { width: 100%; }
+.cw .card { width: 100%; pointer-events: none; }                    /* the wheel takes the taps (tap side = turn, tap middle = open) */
+.cw-name { position: absolute; left: 12px; right: 12px; text-align: center; pointer-events: none; text-shadow: 0 1px 8px var(--bs-shade), 0 0 2px var(--bs-shade); }
+.cw-name b { display: block; font: 700 16px/1.25 var(--font-display); color: var(--gold-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cw-name span { display: block; font-size: 12.5px; color: var(--bs-text); }
+.cw-tools { position: absolute; left: 0; right: 0; display: grid; justify-items: center; gap: 8px; padding: 0 10px; }
+.cw-tools.is-row { grid-auto-flow: column; justify-content: center; align-items: center; gap: 10px; }   /* short landscape screens: one row */
+.search { position: relative; width: min(420px, 100%); }
+.is-row .search { width: min(300px, 40vw); }
+.search input { width: 100%; height: 44px; padding: 0 44px 0 40px; border: 0; border-radius: 10px; background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line);
+  font-size: 16px; color: var(--ink); outline: none; }   /* 16px: iPhone does not zoom in on focus */
+.search input::placeholder { color: var(--ink-faint); }
+.search input:focus { box-shadow: inset 0 0 0 1.5px var(--gold); }
+.search > svg { position: absolute; left: 12px; top: 12px; width: 20px; height: 20px; color: var(--gold); pointer-events: none; }
+.search .x { position: absolute; right: 2px; top: 2px; width: 40px; height: 40px; border: 0; border-radius: 8px; background: none; color: var(--ink-dim); font-size: 20px; }
+.search .x[hidden] { display: none; }
+.tiers { display: flex; gap: 3px; }
+.tchip { min-width: 40px; height: 40px; padding: 0 6px; border: 0; border-radius: var(--r-chip); background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line);
+  font: 700 13px var(--font-display); color: var(--tc, var(--gold-hi)); }
+.tchip[aria-pressed="true"] { background: color-mix(in srgb, var(--tc) 30%, var(--bs-glass)); box-shadow: inset 0 0 0 2px var(--tc); color: var(--ink); }
+.empty { position: absolute; left: 0; right: 0; display: grid; justify-items: center; align-content: center; gap: 10px; text-align: center; pointer-events: none; }
+.empty[hidden] { display: none; }
+.empty b { font: 700 18px var(--font-display); color: var(--gold-hi); text-shadow: 0 1px 8px var(--bs-shade); }
+.empty button { pointer-events: auto; min-width: 120px; height: 44px; border: 0; border-radius: 8px; font: 700 14px var(--font-display); letter-spacing: .06em; color: var(--on-gold); background: var(--brass-gold); }
+
+/* ---------- mockup controls ---------- */
+.panel { position: absolute; z-index: 9; right: 8px; top: calc(52px + env(safe-area-inset-top)); width: min(300px, calc(100vw - 16px)); padding: 10px 12px 12px; border-radius: 12px;
+  background: rgba(8, 11, 30, .94); box-shadow: inset 0 0 0 1px var(--bs-glass-line), 0 10px 30px rgba(0, 0, 0, .5); font-size: 13px; }
+.panel[hidden] { display: none; }
+.panel h2 { margin: 0 0 4px; font: 700 13px var(--font-display); color: var(--gold-hi); }
+.row { margin-top: 10px; }
+.row > span { display: block; margin-bottom: 5px; color: var(--ink-dim); font-size: 12px; }
+.seg2 { display: flex; gap: 6px; }
+.seg2 button, .panel select { flex: 1; min-height: 40px; border: 0; border-radius: 8px; background: rgba(255, 255, 255, .07); box-shadow: inset 0 0 0 1px rgba(216, 180, 106, .35); font-size: 13px; }
+.panel select { width: 100%; padding: 0 8px; }
+.panel option { background: var(--void); }
+.seg2 button[aria-pressed="true"] { color: var(--on-gold); background: var(--brass-gold); }
+.meter { margin-top: 10px; color: var(--ink-dim); font-size: 12px; }
+.toast { position: fixed; z-index: 20; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); max-width: calc(100vw - 32px); padding: 10px 14px; border-radius: 10px; background: var(--bs-glass);
+  box-shadow: inset 0 0 0 1px var(--bs-glass-line); font-size: 14px; transform: translateX(-50%); pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) { .fog, .fall i, .spark { animation: none; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<main class="page" id="page">
+  <p class="page__kicker">The Archive</p>
+  <h1>Cards</h1>
+  <p>Stand-in for the Cards page. Tap a card → the card view → Back → the card wheel → Back → here, at the same scroll position.</p>
+  <div class="grid" id="grid" data-card-list></div>
+</main>
+
+<section class="bs" id="bs" aria-label="Card detail" aria-hidden="true">
+  <div class="scene" id="scene">
+    <img class="sky" id="sky" src="../images/silver/sky.webp" alt="">
+    <div class="fall" id="fall"><i></i><i></i><i></i></div>
+    <canvas class="sun" id="sun"></canvas>
+    <img class="gold" id="gold" src="../images/silver/gold.webp" alt="">
+    <img class="city" id="city" src="../images/silver/city.webp" alt="">
+    <img class="palace" id="palace" src="../images/silver/palace.webp" alt="">
+    <img class="dust" id="dust0" src="../images/silver/dust0.webp" alt="">
+    <img class="dust" id="dust1" src="../images/silver/dust1.webp" alt="">
+    <div class="fogwrap"><div class="fog"><img src="../images/silver/fog.webp" alt=""><img src="../images/silver/fog.webp" alt=""></div></div>
+  </div>
+
+  <div class="top">
+    <button type="button" class="back fx-press" id="back" aria-label="Back"><svg aria-hidden="true"><use href="#i-back"/></svg>Back</button>
+    <div class="ttl" id="ttl"><span></span></div>
+    <button type="button" class="gear fx-press" id="gear" aria-label="Mockup options" aria-expanded="false">⚙</button>
+  </div>
+
+  <div class="view" id="view" hidden>
+    <div class="big" id="big"></div>
+    <div class="hud" id="hud">
+      <div class="strip" id="strip"></div>
+      <div id="boxes"></div>
+      <div class="ovr" id="ovr">—</div>
+      <button type="button" class="dbtn fx-press" id="dbtn">Details ⌃</button>
+    </div>
+  </div>
+
+  <div class="wheel" id="wheel" hidden>
+    <div class="cw" id="cw" tabindex="0" role="listbox" aria-label="Card wheel. Swipe or use the arrow keys, Enter opens the middle card."></div>
+    <div class="empty" id="empty" hidden><b>No cards found</b><button type="button" class="fx-press" id="clear2">Clear</button></div>
+    <div class="cw-name" id="cwName" aria-live="polite"><b></b><span></span></div>
+    <div class="cw-tools" id="tools">
+      <label class="search"><svg aria-hidden="true"><use href="#i-search"/></svg>
+        <input id="q" type="search" placeholder="Search name or series" autocomplete="off" enterkeyhint="search" aria-label="Search cards by name or series">
+        <button type="button" class="x" id="qx" aria-label="Clear search" hidden>×</button></label>
+      <div class="tiers" id="tiers" role="group" aria-label="Filter by tier"></div>
+    </div>
+  </div>
+  <div class="dock"></div>
+
+  <section class="panel" id="panel" aria-label="Mockup options" hidden>
+    <h2>W8 wheel mockup</h2>
+    <div class="row"><span>Cards in the library</span><div class="seg2" data-k="lib"><button type="button" data-v="real" aria-pressed="true">4 real</button><button type="button" data-v="test">60 test</button></div></div>
+    <div class="row"><span>Rarity (the level picker on the site)</span><select id="rar"></select></div>
+    <div class="row"><span>Auras in the wheel (Shiny and up)</span><div class="seg2" data-k="aura"><button type="button" data-v="all" aria-pressed="true">All move</button><button type="button" data-v="mid">Middle only</button></div></div>
+    <div class="row"><span>Graphics</span><div class="seg2" data-k="gfx"><button type="button" data-v="low">Low</button><button type="button" data-v="high" aria-pressed="true">High</button></div></div>
+    <div class="meter" id="meter">Spin the wheel: the frame rate of the last spin shows here.</div>
+  </section>
+</section>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const EASE = "cubic-bezier(.2,.8,.2,1)";
+  const TIERS = ["GOD", "SS", "S", "A", "B", "C", "D"];
+  const TIER_COLOR = { GOD: "--t-god", SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d" };
+  const S = { meta: null, real: [], cards: [], byId: new Map(), rarity: "Normal", lib: "real", gfx: "high", aura: "all" };
+  const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+
+  /* ======================================================================
+     Game card = the markup of CBI.renderCard (js/app.js) + its number fitting · look from css/fx.css
+     ====================================================================== */
+  const rarityOf = (n) => S.meta.rarities.find((r) => r.name === n) || S.meta.rarities[0];
+  const statAt = (c, k, r) => (c.exact && c.exact[r] && c.exact[r][k]) || Math.round(c.base[k] * rarityOf(r).stat);
+  const SHORT = [[1e18, "Qi"], [1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]];
+  const shortNum = (n) => { for (const [v, s] of SHORT) if (n >= v) { const x = n / v; return (x >= 100 ? Math.round(x) : Number(x.toFixed(1))) + s; } return String(Math.round(n)); };
+  const fmtOdds = (n) => "1 in " + shortNum(n);
+  const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
+  const thumbOf = (src) => { const i = src.lastIndexOf("/"); return src.slice(0, i + 1) + "thumb/" + src.slice(i + 1); };
+  const FIT = { hp: [12.4, 43.2, "num"], atk: [14.2, 57.5, "num"], odds: [5.8, 36.8, "pop"], rar: [4.9, 36.8, "pop"] };
+  const fitCache = new Map(); let fitCtx = null, fitFonts = null;
+  function textW(kind, text) {
+    const key = kind + "|" + text; let w = fitCache.get(key); if (w !== undefined) return w;
+    if (!fitCtx) fitCtx = document.createElement("canvas").getContext("2d");
+    if (!fitFonts) { const cs = getComputedStyle(document.documentElement); fitFonts = { num: cs.getPropertyValue("--gc-font-num").trim() || "sans-serif", pop: cs.getPropertyValue("--gc-font-pop").trim() || "sans-serif" }; }
+    if (kind === "num") { fitCtx.font = `700 100px ${fitFonts.num}`; w = fitCtx.measureText(text).width / 100 - 0.01 * text.length; }
+    else { const t = text.toUpperCase(); fitCtx.font = `italic 400 100px ${fitFonts.pop}`; w = fitCtx.measureText(t).width / 100 + 0.02 * t.length; }
+    fitCache.set(key, w); return w;
+  }
+  function fitCard(el) {
+    for (const k of ["hp", "atk", "odds", "rar"]) {
+      const span = el.querySelector(`[data-k="${k}"]`); if (!span) continue;
+      const [base, room, kind] = FIT[k], need = textW(kind, span.textContent) * base;
+      span.style.fontSize = need > room ? Math.floor(base * room / need * 0.97 * 100) / 100 + "cqw" : "";
+    }
+  }
+  function renderCard(card, rarity, { mini = false } = {}) {
+    const el = document.createElement("article");
+    el.className = "card gc" + (mini ? " card--mini gc--mini" : "");
+    el.dataset.rarity = rarity; el.dataset.id = card.id;
+    const atk = statAt(card, "atk", rarity), hp = statAt(card, "hp", rarity);
+    const src = "../" + card.image, url = mini ? thumbOf(src) : src;
+    el.innerHTML = `
+      <span class="gc__glow"></span>
+      <div class="gc__art"><img src="${esc(url)}" alt="" width="${mini ? 300 : 600}" height="${mini ? 420 : 840}" decoding="async"></div>
+      <span class="gc__name">${esc(card.name)}</span>
+      <span class="gc__ring"><i></i></span>
+      <span class="gc__sweep"></span>
+      <span class="gc__hp"><span class="gc__num" data-k="hp">${fmtStat(hp)}</span></span>
+      <span class="gc__odds"><span class="gc__pop" data-k="odds">${fmtOdds(card.base.odds * rarityOf(rarity).odds)}</span></span>
+      <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
+      <span class="gc__atk"><span class="gc__num" data-k="atk">${fmtStat(atk)}</span></span>
+      <span class="gc__sheen"><span class="card__glare"></span></span>
+      <span class="gc__flash"></span>`;
+    fitCard(el);
+    return el;
+  }
+
+  /* ======================================================================
+     Scene: mockup/silver-scene.html + the live round 3 geometry (js/detail.js sunOf / geometry)
+     ====================================================================== */
+  const TOP_H = 44;
+  const SKY = { w: 1369, h: 898, cx: 698, cy: 216, r: 80, fallEnd: 790 };
+  const GOLD = { x: 322, w: 752, h: 352 };
+  const CITY = { w: 1369, h: 768, top: 61, mass: 470, spire: 150 };
+  const PAL = { w: 1349, h: 784, top: 219 };
+  let G = null;
+  function sunOf(W, H) {
+    const portrait = H >= W;
+    const R = Math.max(clamp(Math.min(W, H * 0.55) * (portrait ? (H < 780 ? 0.09 : 0.118) : 0.15), 34, 84), SKY.r * W / SKY.w);
+    const sy = Math.max(portrait ? clamp(H * 0.108, 84, 150) : clamp(H * 0.135, 84, 170), 26 + TOP_H + 10 + R) - 26;
+    return { sy, R, portrait };
+  }
+  const put = (n, x, y, w, h) => Object.assign(n.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px" });
+  function scene() {
+    const W = innerWidth, H = innerHeight, { sy, R, portrait } = sunOf(W, H), sx = W / 2, s = R / SKY.r;
+    const sky = { x: sx - SKY.cx * s, y: sy - SKY.cy * s, w: SKY.w * s, h: SKY.h * s };
+    put($("sky"), sky.x, sky.y, sky.w, sky.h);
+    put($("gold"), sky.x + GOLD.x * s, sky.y, GOLD.w * s, GOLD.h * s);
+    const skyB = sky.y + sky.h, gb = H - (portrait ? 0 : 12), need = gb - skyB + 70;
+    const third = portrait ? 0 : CITY.w * (H - 52) / 3 / (CITY.h - CITY.mass);
+    const spire = portrait ? Infinity : CITY.w * (gb - sy - R * 1.25) / (CITY.h - CITY.spire);
+    const GW = Math.max(Math.min(Math.max(W * (portrait ? 1.9 : 1.02), third), spire), CITY.w * need / (CITY.h - CITY.top));
+    const k = GW / CITY.w, gh = CITY.h * k;
+    put($("city"), (W - GW) / 2, gb - gh + CITY.top * k, GW, (CITY.h - CITY.top) * k);
+    const k2 = GW / PAL.w, pal = { x: (W - GW) / 2, y: gb - (PAL.h - PAL.top) * k2, w: GW, h: (PAL.h - PAL.top) * k2 };
+    ["palace", "dust0", "dust1"].forEach((id) => put($(id), pal.x, pal.y, pal.w, pal.h));
+    const f0 = sy + R * 1.6, f1 = Math.max(f0 + 40, sky.y + SKY.fallEnd * s);
+    put($("fall"), sx, f0, 0, 0); $("fall").style.setProperty("--len", Math.round(f1 - f0) + "px");
+    ["dust0", "dust1"].forEach((id) => { $(id).style.transformOrigin = `50% ${Math.round(((f1 - pal.y) / pal.h) * 100)}%`; });
+    drawSun(sx, sy, R);
+    G = { W, H, sx, sy, R, portrait, side: !portrait && W >= 768 || (!portrait && W >= 600 && H < 500) };
+    $("bs").classList.toggle("is-side", G.side);
+    sparks();
+  }
+  function drawSun(sx, sy, R) {
+    const cv = $("sun"), d = Math.min(devicePixelRatio || 1, 2), Z = R * 3;
+    cv.width = Math.round(Z * 2 * d); cv.height = Math.round(Z * 2 * d); put(cv, sx - Z, sy - Z, Z * 2, Z * 2);
+    const c = cv.getContext("2d"); c.setTransform(d, 0, 0, d, 0, 0); c.translate(Z, Z);
+    let g = c.createLinearGradient(0, -R, 0, 0);
+    g.addColorStop(0, "rgba(10,10,18,1)"); g.addColorStop(0.55, "rgba(10,10,18,.85)"); g.addColorStop(1, "rgba(10,10,18,0)");
+    c.fillStyle = g; c.beginPath(); c.arc(0, 0, R * 1.005, 0, Math.PI * 2); c.fill();
+    for (const [w, a] of [[R * 0.42, 0.18], [R * 0.16, 0.55], [R * 0.06, 0.9]]) {
+      g = c.createLinearGradient(0, -R * 1.3, 0, -R * 0.1);
+      g.addColorStop(0, `rgba(240,242,255,${a})`); g.addColorStop(0.7, `rgba(240,242,255,${a * 0.4})`); g.addColorStop(1, "rgba(240,242,255,0)");
+      c.strokeStyle = g; c.lineWidth = w; c.beginPath(); c.arc(0, 0, R * 1.08, Math.PI * 1.05, Math.PI * 1.95); c.stroke();
+    }
+  }
+  function sparks() {
+    document.querySelectorAll(".spark").forEach((n) => n.remove());
+    let seed = 11; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 14; i++) {
+      const n = document.createElement("i"); n.className = "spark";
+      const a = Math.PI * (0.15 + r() * 0.7), d = G.R * (2 + r() * 5);
+      n.style.left = (G.sx + Math.cos(a) * d * (r() < 0.5 ? -1 : 1) * 1.6) + "px"; n.style.top = Math.min(G.H * 0.8, G.sy + Math.sin(a) * d) + "px";
+      n.style.animationDelay = (-r() * 3.4).toFixed(2) + "s"; n.style.animationDuration = (2.8 + r() * 2.4).toFixed(2) + "s";
+      $("scene").appendChild(n);
+    }
+  }
+  // the 13.5 s cycle (PHASES of js/detail.js) · one animation per phase · started once per open from the Cards page:
+  // Back → the wheel and wheel → a card keep it running (W8: the scene stays, the palace cycle does not restart)
+  const PH = [["calm", 1500], ["gold", 3000], ["form", 3500], ["stay", 3000], ["fade", 1800], ["gap", 700]];
+  const SE = "cubic-bezier(.2,.7,.2,1)";
+  let anims = [], timer = 0, phaseI = 0;
+  const run = (n, kf, dur, ez) => { anims.push(n.animate(kf, { duration: dur, fill: "forwards", easing: ez || "linear" })); };
+  function settle() { anims.forEach((a) => { try { a.commitStyles(); } catch (e) {} a.cancel(); }); anims = []; }
+  function phase(i) {
+    settle(); phaseI = i;
+    const [name, dur] = PH[i], gold = $("gold"), city = $("city"), pal = $("palace"), d0 = $("dust0"), d1 = $("dust1");
+    if (name === "gold") run(gold, [{ opacity: 0 }, { opacity: 1, offset: 0.25 }, { opacity: 0.7, offset: 0.45 }, { opacity: 1 }], 1400, "ease-out");
+    if (name === "form") {
+      [[d0, "-4%"], [d1, "5%"]].forEach(([d, x], j) => run(d, [
+        { opacity: 0, transform: `translate(${x}, 6%) scale(.12, .3)` }, { opacity: 1, offset: 0.12 },
+        { opacity: 1, transform: "none", offset: 0.62 + j * 0.04 }, { opacity: 0, transform: "none" }], dur, SE));
+      run(pal, [{ opacity: 0 }, { opacity: 0, offset: 0.35 }, { opacity: 1, offset: 0.85 }, { opacity: 1 }], dur, "ease-in-out");
+      run(city, [{ opacity: 1 }, { opacity: 1, offset: 0.3 }, { opacity: 0, offset: 0.85 }, { opacity: 0 }], dur, "ease-in-out");
+    }
+    if (name === "fade") {
+      [[d0, "-5%", "-12%"], [d1, "6%", "-17%"]].forEach(([d, x, y]) => run(d, [
+        { opacity: 0, transform: "none" }, { opacity: 1, offset: 0.18 }, { opacity: 0, transform: `translate(${x}, ${y}) scale(1.08)` }], dur, "ease-in"));
+      run(pal, [{ opacity: 1 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }], dur, "ease-in");
+      run(city, [{ opacity: 0 }, { opacity: 0, offset: 0.3 }, { opacity: 1 }], dur, "ease-out");
+      run(gold, [{ opacity: 1 }, { opacity: 1, offset: 0.25 }, { opacity: 0 }], dur, "ease-in");
+    }
+    timer = setTimeout(() => phase((i + 1) % PH.length), dur);
+  }
+  function stopCycle() { clearTimeout(timer); anims.forEach((a) => a.cancel()); anims = []; ["gold", "city", "palace", "dust0", "dust1"].forEach((id) => { $(id).style.opacity = ""; $(id).style.transform = ""; }); }
+  function startCycle() {
+    stopCycle();
+    if (RM || S.gfx === "low") { $("gold").style.opacity = 1; $("palace").style.opacity = 1; $("city").style.opacity = 0; return; }   // still picture
+    phase(0);
+  }
+
+  /* ======================================================================
+     Card view (stand-in for the live page): card low, label strip / boxes, Overall + Details · stand-in dust intro
+     ====================================================================== */
+  let curId = null, bigCard = null, introT = 0;
+  function cardRect() {
+    const { W, H, sy, R, side } = G, sunB = sy + R + 14;
+    if (!side) {   // W7 round 2 phones: card ≤ 58% wide, bottom on the label strip → Overall + Details → bottom bar
+      const rowY = H - 84 - 8 - 54, stripY = rowY - 10 - 56, cb = stripY - 12;
+      const cw = Math.round(clamp(Math.min(W * 0.58, (cb - sunB) / 1.4), 100, 420)), ch = Math.round(cw * 1.4);
+      return { x: Math.round((W - cw) / 2), y: cb - ch, w: cw, h: ch, rowY, stripY };
+    }
+    const cb = H - 64 - 14;   // W7 round 3 PC: ≈ 45% of the screen height, bottom just above the bottom bar
+    let ch = Math.round(Math.min(H * 0.45, cb - sunB)), cw = Math.round(Math.min(ch / 1.4, 560, W * 0.42));
+    cw = Math.max(cw, 100); ch = Math.round(cw * 1.4);
+    return { x: Math.round((W - cw) / 2), y: cb - ch, w: cw, h: ch };
+  }
+  function layoutView() {
+    const r = cardRect(), { W, H, side } = G;
+    put($("big"), r.x, r.y, r.w, r.h);
+    if (!side) {
+      $("strip").style.display = ""; $("boxes").style.display = "none";
+      put($("strip"), 0, r.stripY, W, 56);
+      const rx = (W - 192) / 2; put($("ovr"), rx, r.rowY, 54, 54); put($("dbtn"), rx + 68, r.rowY + 4, 124, 46);
+    } else {
+      $("strip").style.display = "none"; $("boxes").style.display = "";
+      const bw = clamp(r.x - 48, 150, 240);
+      [...$("boxes").children].forEach((b, i) => put(b, i % 2 ? r.x + r.w + 24 : r.x - 24 - bw, r.y + (i < 2 ? r.h * 0.06 : r.h * 0.6), bw, 74));
+      put($("ovr"), W - 124 - 16 - 14 - 54, H - 54 - 5, 54, 54); put($("dbtn"), W - 124 - 16, H - 46 - 9, 124, 46);
+    }
+  }
+  function fillView(card) {
+    const sh = card.short || {}, ranked = card.scores && card.scores.overall > 0 && card.tier;
+    const items = [["Tier " + (ranked ? card.tier : "—"), sh.tier], ["Passive / Skill", sh.ability], ["Weakness", sh.weak, 1], ["Strongest", sh.strong]];
+    $("strip").innerHTML = items.map(([t, d, bad]) => `<div class="chipco${bad ? " chipco--bad" : ""}"><b>${esc(t)}</b>${d ? `<span>${esc(d)}</span>` : ""}</div>`).join("");
+    $("boxes").innerHTML = items.map(([t, d, bad]) => `<div class="box${bad ? " box--bad" : ""}"><b>${esc(t)}</b>${d ? `<span>${esc(d)}</span>` : ""}</div>`).join("");
+    $("ovr").textContent = ranked ? Math.round(card.scores.overall) : "—";
+  }
+  function setTitle(text) {
+    const s = $("ttl").firstElementChild;
+    if (s.textContent === text) return;
+    s.textContent = text;
+    if (!RM) s.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: EASE });
+  }
+  // stand-in for runIntro() (the real dust → card intro stays as it is on the site): gold dust gathers into the card
+  function intro(card, { fast = false } = {}) {
+    clearTimeout(introT);
+    document.querySelectorAll(".dot").forEach((d) => d.remove());
+    const host = $("big");
+    host.textContent = "";
+    bigCard = renderCard(card, S.rarity); bigCard.classList.add("is-live");
+    host.appendChild(bigCard);
+    fillView(card); layoutView();
+    const view = $("view");
+    view.hidden = false; view.classList.add("is-quiet");
+    const dur = fast ? 900 : 1200;
+    if (RM) { bigCard.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250 }); view.classList.remove("is-quiet"); return; }
+    const r = cardRect(), cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+    for (let i = 0; i < 28; i++) {
+      const d = document.createElement("i"); d.className = "dot";
+      const a = Math.random() * Math.PI * 2, far = r.w * (0.7 + Math.random() * 0.9);
+      d.style.left = cx + "px"; d.style.top = cy + "px";
+      $("bs").appendChild(d);
+      const tx = Math.cos(a) * far, ty = Math.sin(a) * far * 1.2, ex = (Math.random() - 0.5) * r.w * 0.8, ey = (Math.random() - 0.5) * r.h * 0.8;
+      d.animate([{ opacity: 0, transform: `translate(${tx}px, ${ty}px) scale(.6)` }, { opacity: 1, offset: 0.25 },
+        { opacity: 0.9, transform: `translate(${ex}px, ${ey}px) scale(1)`, offset: 0.75 }, { opacity: 0, transform: `translate(${ex * 0.3}px, ${ey * 0.3}px) scale(.4)` }],
+        { duration: dur, delay: i * 8, easing: SE }).onfinish = () => d.remove();
+    }
+    bigCard.animate([{ opacity: 0, transform: "translateY(0) scale(.92)" }, { opacity: 0, offset: 0.45 }, { opacity: 1, transform: "translateY(0) scale(1)" }], { duration: dur, easing: SE });
+    introT = setTimeout(() => view.classList.remove("is-quiet"), dur);
+  }
+
+  /* ======================================================================
+     The wheel
+     A cylinder turning on the Y axis: the card at offset d (cards from the middle) is turned d × STEP degrees.
+     pos = the (fractional) index of the card in the middle · each visible card sits in a slot whose look is one paused
+     Web Animation over the offsets -DEND…+DEND (transform + opacity) → per frame only currentTime is set.
+     ====================================================================== */
+  const POOL = 11;
+  let list = [], pos = 0, N = 0, wrap = true;
+  let K = {};                          // geometry: card size, angle, radius, how many show
+  const slots = [];                    // { el, inner, a (look), e (edge fade), idx, cardId }
+  const cache = new Map();             // id|rarity → card element (LRU, the ones that turned out are reused)
+  let rafId = 0, spin = null, lastCenter = -1;
+  const isOpen = () => !$("wheel").hidden;
+
+  function wheelGeom() {
+    const W = G.W, vv = window.visualViewport, H = vv ? Math.min(innerHeight, vv.offsetTop + vv.height) : innerHeight;   // the phone keyboard: stay above it
+    const side = G.side, pad = 12 + 6, row = W >= 640 && H < 560;
+    const toolsH = row ? 44 : 44 + 8 + 40, nameH = 40;
+    const toolsY = H - pad - toolsH, nameY = toolsY - 10 - nameH;
+    const room = nameY - 10 - (TOP_H + 8);          // card height must fit above the name
+    let ch;
+    if (side) ch = clamp(G.H * 0.3, 150, 380);
+    else ch = clamp(W * 0.36, 96, 190) * 1.4;
+    // the cards stay under the black sun (the phone keyboard may push them over it: the wheel must stay in view)
+    ch = Math.round(Math.max(110, Math.min(ch, room, nameY - 10 - (G.sy + G.R + 10)))); const cw = Math.round(ch / 1.4);
+    const step = RM ? 0 : (side ? 20 : 25);             // degrees per card
+    const vis = side ? (W >= 1200 ? 3 : 2.6) : 2;       // cards each side that still show (PC 5–7 · phones 3–5)
+    const gap = cw * (side ? 0.92 : 0.82);              // middle-to-next distance on screen
+    const R = step ? gap / Math.sin(step * Math.PI / 180) : 0;
+    const P = Math.max(900, R * 2.4);
+    const cy = nameY - 10 - ch / 2;
+    return { W, H, cw, ch, cx: W / 2, cy, step, vis, dend: vis + 0.7, gap, R, P, nameY, toolsY, side, row };
+  }
+  // the look at each offset, sampled every 0.25 card (linear between samples)
+  function lookFrames() {
+    const out = [], n = Math.round(K.dend * 8);
+    for (let i = 0; i <= n; i++) {
+      const d = -K.dend + (2 * K.dend * i) / n, ad = Math.abs(d);
+      // middle ~95% → ~35% at the last card that shows → gone just after it
+      const op = ad <= K.vis ? 0.95 - 0.6 * (ad / K.vis) : Math.max(0, 0.35 * (1 - (ad - K.vis) / (K.dend - K.vis)));
+      const sc = 1 - 0.07 * Math.min(ad, K.dend);
+      const transform = K.step
+        ? `perspective(${K.P}px) translateZ(${-K.R}px) rotateY(${d * K.step}deg) translateZ(${K.R}px) scale(${sc})`
+        : `perspective(${K.P}px) translateZ(0px) rotateY(0deg) translateX(${d * K.gap * 1.1}px) scale(${sc})`;   // reduced motion: a flat row
+      out.push({ transform, opacity: op, offset: i / n });
+    }
+    return out;
+  }
+  function makeSlots() {
+    slots.forEach((s) => { s.a.cancel(); s.e.cancel(); s.el.remove(); });
+    slots.length = 0;
+    const frames = lookFrames();
+    for (let i = 0; i < POOL; i++) {
+      const el = document.createElement("div"); el.className = "cw-slot"; el.hidden = true; el.setAttribute("role", "option");
+      const inner = document.createElement("div"); inner.className = "cw-in"; el.appendChild(inner);
+      el.style.width = K.cw + "px"; el.style.height = K.ch + "px";
+      $("cw").appendChild(el);
+      const a = el.animate(frames, { duration: 1000, fill: "both" }); a.pause();
+      const e = inner.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1000, fill: "both" }); e.pause();
+      slots.push({ el, inner, a, e, idx: -1, cardId: null, z: -1, sel: null });
+    }
+  }
+  function layoutWheel() {
+    K = wheelGeom();
+    put($("cw"), 0, K.cy - K.ch / 2 - 30, K.W, K.ch + 60);   // the touch band: the card row + 30px above and below
+    const top = (id, y) => { $(id).style.top = y + "px"; };
+    top("cwName", K.nameY); top("tools", K.toolsY); top("empty", K.cy - 60);
+    $("tools").classList.toggle("is-row", K.row);
+    $("empty").style.height = "120px";
+    makeSlots();
+    slots.forEach((s) => { s.el.style.left = (K.cx - K.cw / 2) + "px"; s.el.style.top = "30px"; });   // relative to .cw
+    draw(true);
+  }
+  const wrapD = (d) => (wrap ? ((((d + N / 2) % N) + N) % N) - N / 2 : d);
+  function cardEl(id) {
+    const key = id + "|" + S.rarity;
+    let el = cache.get(key);
+    if (el) { cache.delete(key); cache.set(key, el); return el; }
+    el = renderCard(S.byId.get(id), S.rarity, { mini: true });
+    el.classList.toggle("is-live", S.aura === "all");
+    cache.set(key, el);
+    if (cache.size > 24) cache.delete(cache.keys().next().value);
+    return el;
+  }
+  // per frame: which cards show, which slot each one uses, and where it is on the cylinder
+  function draw(force) {
+    if (!N || force) slots.forEach((s) => { s.el.hidden = true; s.idx = -1; });
+    if (!N) return;
+    const want = new Map();
+    for (let i = 0; i < N; i++) { const d = wrapD(i - pos); if (Math.abs(d) < K.dend) want.set(i, d); }
+    slots.forEach((s) => { if (s.idx >= 0 && !want.has(s.idx)) { s.idx = -1; s.el.hidden = true; } });
+    for (const [i, d] of want) {
+      let s = slots.find((x) => x.idx === i);
+      if (!s) {
+        s = slots.find((x) => x.idx < 0); if (!s) continue;
+        s.idx = i;
+        const id = list[i];
+        if (s.cardId !== id || force) { s.inner.textContent = ""; s.inner.appendChild(cardEl(id)); s.cardId = id; s.sel = null; }
+        s.el.hidden = false;
+      }
+      s.a.currentTime = clamp((d + K.dend) / (2 * K.dend), 0, 1) * 1000;
+      // small libraries: a card that crosses the back of the wheel (wrap) fades out first
+      s.e.currentTime = wrap ? clamp((N / 2 - Math.abs(d)) / 0.5, 0, 1) * 1000 : 1000;
+      const z = 20 - Math.round(Math.abs(d) * 2);
+      if (z !== s.z) { s.z = z; s.el.style.zIndex = z; }
+      const sel = Math.abs(d) < 0.5;
+      if (sel !== s.sel || force) {
+        s.sel = sel; s.el.setAttribute("aria-selected", String(sel));
+        const c = s.inner.firstElementChild;   // option "Middle only": the turning ring / sweep only on the middle card
+        if (c) c.classList.toggle("is-live", S.aura === "all" || sel);
+      }
+    }
+    const c = centerIdx();
+    if (c !== lastCenter) { lastCenter = c; showName(); }
+  }
+  const centerIdx = () => (N ? ((Math.round(pos) % N) + N) % N : -1);
+  function showName(animate = true) {
+    const card = N ? S.byId.get(list[centerIdx()]) : null;
+    const b = $("cwName").firstElementChild, sp = $("cwName").lastElementChild;
+    b.textContent = card ? card.name : ""; sp.textContent = card ? [card.tier ? "Tier " + card.tier : "", card.series || ""].filter(Boolean).join(" · ") : "";
+    if (animate && !RM && card) $("cwName").animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 150, easing: EASE });
+  }
+
+  /* ---------- motion: drag, fling + snap, taps, wheel, keys (rAF only while it moves) ---------- */
+  let fr = null;   // frame-rate meter for the mockup panel
+  function tick(t) {
+    rafId = 0;
+    if (fr) { if (fr.last) { const dt = t - fr.last; fr.n++; fr.worst = Math.max(fr.worst, dt); } else fr.t0 = t; fr.last = t; }
+    if (spin) {
+      const k = clamp((t - spin.t0) / spin.dur, 0, 1), e = 1 - Math.pow(1 - k, 3);
+      pos = spin.from + (spin.to - spin.from) * e;
+      if (k >= 1) { pos = spin.to; const done = spin.done; spin = null; draw(); meterEnd(); if (done) done(); return; }
+    }
+    draw();
+    if (spin || drag) rafId = requestAnimationFrame(tick);
+    else meterEnd();
+  }
+  const kick = () => { if (!rafId) { if (!fr) fr = { n: 0, worst: 0, last: 0 }; rafId = requestAnimationFrame(tick); } };
+  function meterEnd() {
+    if (!fr || drag || spin) return;
+    if (fr.n > 8) $("meter").textContent = `Last spin: ${Math.round(fr.n * 1000 / (fr.last - fr.t0))} fps · slowest frame ${Math.round(fr.worst)} ms · ${N} cards`;
+    fr = null;
+  }
+  function spinTo(target, dur, done) {
+    if (!N) return;
+    if (!wrap) target = clamp(target, 0, N - 1);
+    const dist = Math.abs(target - pos);
+    if (dist < 0.001) { pos = target; draw(); if (done) done(); return; }
+    spin = { from: pos, to: target, t0: performance.now(), dur: RM ? 1 : dur || clamp(220 + dist * 90, 260, 1100), done };
+    kick();
+  }
+  const norm = () => { if (wrap && N) { const n = Math.round(pos / N) * N; pos -= n; if (spin) { spin.from -= n; spin.to -= n; } } };
+
+  let drag = null;
+  const cw = $("cw");
+  cw.addEventListener("pointerdown", (e) => {
+    if (!N || e.button > 0) return;
+    spin = null; norm();
+    drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, p0: pos, moved: false, hist: [[e.timeStamp, e.clientX]] };
+    cw.setPointerCapture(e.pointerId);
+  });
+  cw.addEventListener("pointermove", (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x0;
+    if (!drag.moved && Math.abs(dx) < 7) return;
+    if (!drag.moved) { drag.moved = true; cw.classList.add("is-drag"); }
+    let p = drag.p0 - dx / K.gap;
+    if (!wrap) { const lo = 0, hi = N - 1; if (p < lo) p = lo - (lo - p) * 0.3; if (p > hi) p = hi + (p - hi) * 0.3; }   // rubber band at the ends
+    pos = p;
+    drag.hist.push([e.timeStamp, e.clientX]); if (drag.hist.length > 6) drag.hist.shift();
+    kick();
+  });
+  const endDrag = (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const d = drag; drag = null; cw.classList.remove("is-drag");
+    if (!d.moved) {   // a tap: side card → turn it to the middle · middle card → open it
+      if (e.type === "pointercancel") return;
+      const hit = slotAt(e.clientX, e.clientY);
+      if (!hit) return;
+      const off = wrapD(hit.idx - pos);
+      if (Math.abs(off) < 0.5) openFromWheel(hit.idx);
+      else spinTo(pos + Math.round(off), 320);
+      return;
+    }
+    // fling: keep going with the finger's speed, slow down, stop exactly on a card
+    const h = d.hist, a = h[0], b = h[h.length - 1];
+    const v = b[0] - a[0] > 0 && e.timeStamp - b[0] < 90 ? -(b[1] - a[1]) / (b[0] - a[0]) / K.gap : 0;   // cards per ms
+    const target = Math.round(pos + clamp(v * 260, -14, 14));
+    spinTo(target, clamp(240 + Math.abs(target - pos) * 85, 260, 1300));
+  };
+  cw.addEventListener("pointerup", endDrag); cw.addEventListener("pointercancel", endDrag);
+  // the card under the finger (cards overlap at the edges: the one nearer the middle wins, as it is drawn on top)
+  function slotAt(x, y) {
+    let best = null, bd = Infinity;
+    slots.forEach((s) => {
+      if (s.idx < 0) return;
+      const r = s.el.getBoundingClientRect(), d = Math.abs(wrapD(s.idx - pos));
+      if (x >= r.left && x <= r.right && y >= r.top - 20 && y <= r.bottom + 20 && d < bd) { bd = d; best = s; }
+    });
+    return best;
+  }
+  let wheelAcc = 0, wheelT = 0;
+  cw.addEventListener("wheel", (e) => {
+    if (!N) return;
+    e.preventDefault();
+    wheelAcc += Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    clearTimeout(wheelT); wheelT = setTimeout(() => { wheelAcc = 0; }, 160);
+    const base = spin ? spin.to : Math.round(pos);
+    if (Math.abs(wheelAcc) >= 50) { const n = Math.sign(wheelAcc); wheelAcc = 0; spinTo(base + n, 300); }
+  }, { passive: false });
+  document.addEventListener("keydown", (e) => {
+    if (!$("bs").classList.contains("on")) return;
+    if (e.key === "Escape") { e.preventDefault(); if (document.activeElement === $("q") && $("q").value) { clearSearch(); return; } goBack(); return; }
+    if (!isOpen() || busy) return;
+    const inField = document.activeElement === $("q");
+    if ((e.key === "ArrowLeft" || e.key === "ArrowRight") && !inField) {
+      e.preventDefault(); const base = spin ? spin.to : Math.round(pos);
+      spinTo(base + (e.key === "ArrowRight" ? 1 : -1), 300);
+    }
+    if (e.key === "Enter" && N) { e.preventDefault(); if (inField) $("q").blur(); else openFromWheel(centerIdx()); }   // in the search: Enter closes the keyboard
+  });
+
+  /* ---------- search: name / series + tier chips ---------- */
+  const filt = { q: "", tiers: new Set() };
+  function matches(c) {
+    const q = filt.q.trim().toLowerCase();
+    if (filt.tiers.size && !filt.tiers.has(c.tier)) return false;
+    return !q || c.name.toLowerCase().includes(q) || (c.series || "").toLowerCase().includes(q);
+  }
+  function setList(ids, centerId, { animate = false } = {}) {
+    list = ids; N = ids.length; wrap = N >= 3;
+    const i = Math.max(0, ids.indexOf(centerId));
+    $("empty").hidden = N > 0; $("cwName").style.visibility = N ? "" : "hidden";
+    lastCenter = -1;
+    if (!N) { pos = 0; draw(); showName(false); return; }
+    if (animate && !RM) {
+      pos = i - 0.9; draw(true);
+      slots.forEach((s) => { const c = s.idx >= 0 && s.inner.firstElementChild; if (c) c.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: EASE }); });
+      spinTo(i, 380);
+    }
+    else { pos = i; draw(true); }
+  }
+  let filtT = 0;
+  function applyFilter() {
+    const ids = S.cards.filter(matches).map((c) => c.id);
+    $("qx").hidden = !filt.q;
+    const keep = N ? list[centerIdx()] : null;
+    const first = ids.includes(keep) && !filt.q ? keep : ids[0];
+    // the cards that no longer match fade out, then the wheel lines up again softly on the first match
+    if (RM || !N) { setList(ids, first, { animate: false }); return; }
+    const gone = slots.filter((s) => s.idx >= 0 && !ids.includes(list[s.idx]));
+    clearTimeout(filtT);
+    gone.forEach((s) => s.inner.firstElementChild && s.inner.firstElementChild.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: "forwards", easing: EASE }));
+    filtT = setTimeout(() => {
+      gone.forEach((s) => s.inner.firstElementChild && s.inner.firstElementChild.getAnimations().forEach((a) => a.cancel()));
+      setList(ids, first, { animate: true });
+    }, gone.length ? 160 : 0);
+  }
+  function clearSearch() { filt.q = ""; filt.tiers.clear(); $("q").value = ""; syncChips(); applyFilter(); }
+  const syncChips = () => [...$("tiers").children].forEach((b) => b.setAttribute("aria-pressed", String(filt.tiers.has(b.dataset.t))));
+  $("tiers").innerHTML = TIERS.map((t) => `<button type="button" class="tchip fx-press" data-t="${t}" aria-pressed="false" style="--tc:var(${TIER_COLOR[t]})">${t}</button>`).join("");
+  $("tiers").addEventListener("click", (e) => {
+    const b = e.target.closest(".tchip"); if (!b) return;
+    const t = b.dataset.t; filt.tiers.has(t) ? filt.tiers.delete(t) : filt.tiers.add(t);
+    syncChips(); applyFilter();
+  });
+  $("q").addEventListener("input", () => { filt.q = $("q").value; applyFilter(); });
+  $("qx").addEventListener("click", () => { $("q").value = ""; filt.q = ""; applyFilter(); $("q").focus(); });
+  $("clear2").addEventListener("click", clearSearch);
+
+  /* ======================================================================
+     Views + history: "#card/<id>" twice — {v:"wheel"} under {v:"card"} — so Back (button / Esc / phone) shows the wheel
+     ====================================================================== */
+  let busy = false;
+  function libraryOrder() { return S.cards.map((c) => c.id); }   // = C.cards.order(): the Cards page order (Overall high → low)
+  function openOverlay() {
+    document.documentElement.classList.add("is-open");
+    $("bs").classList.add("on"); $("bs").setAttribute("aria-hidden", "false");
+    scene(); startCycle();
+  }
+  function closeOverlay() {
+    stopCycle(); clearTimeout(introT);
+    document.documentElement.classList.remove("is-open");
+    $("bs").classList.remove("on"); $("bs").setAttribute("aria-hidden", "true");
+    $("wheel").hidden = true; $("view").hidden = true; $("panel").hidden = true;
+    filt.q = ""; filt.tiers.clear(); $("q").value = ""; syncChips(); $("qx").hidden = true;   // the search starts empty next time
+    const from = curId && $("grid").querySelector(`[data-id="${CSS.escape(curId)}"]`);
+    if (from && !RM) from.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 400, delay: 150, easing: EASE });
+    curId = null;
+  }
+  function showCard(id, { from = null } = {}) {
+    curId = id;
+    const card = S.byId.get(id);
+    setTitle(card.name);
+    if (from === "wheel") {
+      // the chosen card lifts in the middle, the wheel fades away, then the dust intro of that card
+      busy = true;
+      const mid = slots.find((s) => s.idx >= 0 && Math.abs(wrapD(s.idx - pos)) < 0.5);
+      if (!RM) {
+        if (mid) mid.inner.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(-22px) scale(1.06)", opacity: 0 }], { duration: 380, easing: EASE, fill: "forwards" });
+        $("wheel").animate([{ opacity: 1 }, { opacity: 0 }], { duration: 360, easing: EASE, fill: "forwards" });
+      }
+      setTimeout(() => {
+        $("wheel").getAnimations().forEach((a) => a.cancel());
+        if (mid) mid.inner.getAnimations().forEach((a) => a.cancel());
+        $("wheel").hidden = true; busy = false;
+        intro(card, { fast: true });
+      }, RM ? 0 : 240);
+      return;
+    }
+    $("wheel").hidden = true;
+    intro(card);
+  }
+  function showWheel() {
+    const id = curId;
+    setTitle("Choose a card");
+    $("wheel").hidden = false;
+    layoutWheel();
+    let ids = S.cards.filter(matches).map((c) => c.id);
+    if (!ids.includes(id)) { filt.q = ""; filt.tiers.clear(); $("q").value = ""; $("qx").hidden = true; syncChips(); ids = libraryOrder(); }
+    setList(ids, id);
+    const view = $("view");
+    clearTimeout(introT); document.querySelectorAll(".dot").forEach((d) => d.remove());
+    if (RM || view.hidden || !bigCard) { view.hidden = true; if (!RM) $("wheel").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250 }); return; }
+    // the card being looked at shrinks into the wheel's middle slot · the others turn in and fade in (~400 ms)
+    busy = true;
+    view.classList.add("is-quiet");
+    const mid = slots.find((s) => s.idx >= 0 && Math.abs(wrapD(s.idx - pos)) < 0.5);
+    const a = bigCard.getBoundingClientRect(), b = mid ? mid.el.getBoundingClientRect() : a;
+    const k = b.width / a.width, dx = b.left + b.width / 2 - (a.left + a.width / 2), dy = b.top + b.height / 2 - (a.top + a.height / 2);
+    if (mid) mid.inner.style.visibility = "hidden";
+    bigCard.animate([{ transform: "translate(0,0) scale(1)" }, { transform: `translate(${dx}px, ${dy}px) scale(${k})` }], { duration: 400, easing: EASE, fill: "forwards" });
+    $("wheel").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: EASE });
+    const i = pos; pos = i - 0.8; draw(); spinTo(i, 400);
+    setTimeout(() => {
+      if (mid) mid.inner.style.visibility = "";
+      view.hidden = true; view.classList.remove("is-quiet"); busy = false;
+      bigCard.getAnimations().forEach((x) => x.cancel());
+      if (matchMedia("(pointer: fine)").matches) cw.focus({ preventScroll: true });
+    }, 400);
+  }
+  function openFromWheel(i) {
+    if (busy || i < 0) return;
+    const id = list[i];
+    try { history.replaceState({ v: "wheel" }, "", "#card/" + encodeURIComponent(id)); history.pushState({ v: "card" }, "", "#card/" + encodeURIComponent(id)); } catch {}
+    $("q").blur();
+    showCard(id, { from: "wheel" });
+  }
+  function openFromPage(id) {
+    history.pushState({ v: "wheel" }, "", "#card/" + encodeURIComponent(id));
+    history.pushState({ v: "card" }, "", "#card/" + encodeURIComponent(id));
+    openOverlay(); showCard(id);
+  }
+  function goBack() { if (!busy) history.back(); }
+  addEventListener("popstate", (e) => {
+    const v = e.state && e.state.v, id = decodeURIComponent((location.hash.match(/^#card\/(.+)$/) || [])[1] || "");
+    if (!v || !S.byId.has(id)) { if ($("bs").classList.contains("on")) closeOverlay(); return; }
+    if (!$("bs").classList.contains("on")) { openOverlay(); curId = id; }
+    if (v === "wheel") showWheel();
+    else showCard(id);
+  });
+  $("back").addEventListener("click", goBack);
+  $("dbtn").addEventListener("click", () => toast("Details opens as on the live site (not in this mockup)"));
+  $("grid").addEventListener("click", (e) => { const c = e.target.closest(".card[data-id]"); if (c) openFromPage(c.dataset.id); });
+  $("grid").addEventListener("keydown", (e) => { const c = e.target.closest(".card[data-id]"); if (c && e.key === "Enter") openFromPage(c.dataset.id); });
+
+  /* ---------- mockup panel ---------- */
+  $("gear").addEventListener("click", () => { const p = $("panel"); p.hidden = !p.hidden; $("gear").setAttribute("aria-expanded", String(!p.hidden)); });
+  document.querySelectorAll(".seg2[data-k]").forEach((seg) => seg.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    seg.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    if (seg.dataset.k === "lib") { S.lib = b.dataset.v; build(); if (isOpen()) { clearSearch(); setList(libraryOrder(), S.byId.has(curId) ? curId : S.cards[0].id); } }
+    if (seg.dataset.k === "aura") { S.aura = b.dataset.v; cache.clear(); if (isOpen()) draw(true); }
+    if (seg.dataset.k === "gfx") { S.gfx = b.dataset.v; $("bs").classList.toggle("is-low", S.gfx === "low"); startCycle(); }
+  }));
+  $("rar").addEventListener("change", () => {
+    S.rarity = $("rar").value; store.set("cbi:rarity", S.rarity);
+    renderGrid();
+    if (isOpen()) draw(true);
+    else if (bigCard && curId) { const c = renderCard(S.byId.get(curId), S.rarity); c.classList.add("is-live"); bigCard.replaceWith(c); bigCard = c; }
+  });
+  function toast(text) {
+    const t = document.createElement("div"); t.className = "toast"; t.textContent = text; document.body.appendChild(t);
+    t.animate([{ opacity: 0, transform: "translate(-50%, 12px)" }, { opacity: 1, transform: "translate(-50%, 0)" }], { duration: 250, easing: EASE });
+    setTimeout(() => t.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 250 }).onfinish = () => t.remove(), 2600);
+  }
+
+  /* ---------- relayout: resize, rotate, the phone keyboard (visualViewport) ---------- */
+  let rt = 0;
+  function relayout() {
+    if (!$("bs").classList.contains("on")) return;
+    const oldW = G && G.W, oldH = G && G.H;
+    if (!G || oldW !== innerWidth || Math.abs(oldH - innerHeight) > 40 && !document.activeElement.matches("input")) scene();
+    if (!$("view").hidden) layoutView();
+    if (isOpen()) { const c = list[centerIdx()]; layoutWheel(); if (c) { pos = list.indexOf(c); draw(true); } }
+  }
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(relayout, 100); });
+  if (window.visualViewport) visualViewport.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(relayout, 60); });
+
+  /* ---------- data ---------- */
+  function build() {
+    const real = S.real.slice();
+    let cards = real;
+    if (S.lib === "test") {   // 60 test cards (the 4 real ones repeated, every tier used) — for the speed check
+      cards = [];
+      for (let i = 0; i < 60; i++) {
+        const c = real[i % real.length], n = Math.floor(i / real.length) + 1;
+        cards.push(n === 1 ? c : { ...c, id: c.id + "-t" + n, name: c.name + " " + n, tier: TIERS[i % TIERS.length], scores: { ...c.scores, overall: Math.max(1, c.scores.overall - n * 1.7) } });
+      }
+    }
+    const ranked = (c) => !!(c.scores && c.scores.overall > 0 && c.tier);
+    cards.sort((a, b) => (ranked(a) !== ranked(b) ? (ranked(a) ? -1 : 1) : (b.scores.overall || 0) - (a.scores.overall || 0)));
+    S.cards = cards; S.byId = new Map(cards.map((c) => [c.id, c]));
+    cache.clear();
+    renderGrid();
+  }
+  function renderGrid() {
+    const g = $("grid"); g.textContent = "";
+    S.cards.forEach((c) => { const el = renderCard(c, S.rarity, { mini: true }); el.tabIndex = 0; el.setAttribute("role", "button"); el.setAttribute("aria-label", c.name); g.appendChild(el); });
+  }
+  Promise.all([fetch("../data/meta.json").then((r) => r.json()), fetch("../data/cards.json").then((r) => r.json())]).then(([meta, cards]) => {
+    S.meta = meta; S.real = cards;
+    const saved = store.get("cbi:rarity");
+    if (meta.rarities.some((r) => r.name === saved)) S.rarity = saved;
+    $("rar").innerHTML = meta.rarities.map((r) => `<option${r.name === S.rarity ? " selected" : ""}>${esc(r.name)}</option>`).join("");
+    build();
+    // a direct #card/<id> link: Back → the wheel → Back → the Cards page
+    const m = location.hash.match(/^#card\/(.+)$/), id = m && decodeURIComponent(m[1]);
+    if (id && S.byId.has(id)) {
+      history.replaceState({ v: "page" }, "", "#cards");
+      openFromPage(id);
+    } else if (!location.hash) history.replaceState({ v: "page" }, "", "#cards");
+    if (document.fonts) document.fonts.ready.then(() => { fitCache.clear(); fitFonts = null; document.querySelectorAll(".gc").forEach(fitCard); });
+  }).catch((err) => { console.error(err); $("grid").innerHTML = `<p>Could not load ../data/cards.json — open this file through a web server (the GitHub Pages / pull request preview).</p>`; });
+})();
+</script>
+</body>
+</html>
