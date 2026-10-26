@@ -130,9 +130,8 @@
       b = wrap.firstElementChild;
       b.classList.add("card__grade");
       el.appendChild(b);
-      return;
-    }
-    setOrb(b, g, opts);
+    } else setOrb(b, g, opts);
+    if (el.classList.contains("card")) C.watchLive(el);   // W4: a grade-10 badge turns only while its card is watched
   }
   /* ==========================================================
      Graded case (.slab, step 13 · §3.5.2): a clear plastic case drawn in CSS, a paper label on top

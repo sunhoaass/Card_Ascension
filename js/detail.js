@@ -155,11 +155,18 @@
 
   /* The painting is drawn in small slices (a generator that yields) run in idle gaps, so it never blocks a tap:
      measured as one 1.5 s task on a 6× slowed phone before slicing. */
+  // W4: painting ahead (prewarm, the detail still closed) waits while the page underneath scrolls and only starts a
+  // slice with real idle time left — a slice that ran into a scroll frame was the slowest frame of the Cards page
+  let lastScroll = -1e9;
+  addEventListener("scroll", () => { lastScroll = performance.now(); }, { passive: true, capture: true });
+  // the same for each long piece of the painting: run f when idle and, while the detail is closed, not scrolling
+  function calm(f, t) { idle(function go() { if (el.root.hidden && performance.now() - lastScroll < 400) idle(go, t); else f(); }, t); }
   function sliced(gen) {
     return new Promise((res) => {
       const next = (f) => (el.root.hidden && window.requestIdleCallback ? requestIdleCallback(f, { timeout: 2000 }) : setTimeout(f, 0));
       const step = (dl) => {
         const t0 = performance.now(), open = !el.root.hidden;
+        if (!open && (t0 - lastScroll < 400 || (dl && dl.timeRemaining && !dl.didTimeout && dl.timeRemaining() < 8))) { next(step); return; }
         const more = () => (dl && dl.timeRemaining && !open ? dl.timeRemaining() > 3 : performance.now() - t0 < (open ? 24 : 10));
         let r;
         do { r = gen.next(); } while (!r.done && more());
@@ -395,7 +402,7 @@
     clearCoronaCache(); prebaked = false;
     G = geometry(W, H);
     const steps = [() => paint(), () => showCorona(state.rarity, true), () => makeMask(), () => { buildSparks(); return buildFog(); }];
-    sceneP = steps.reduce((p, f) => p.then(() => new Promise((res) => idle(() => Promise.resolve(f()).then(res, res), 400))), Promise.resolve());
+    sceneP = steps.reduce((p, f) => p.then(() => new Promise((res) => calm(() => Promise.resolve(f()).then(res, res), 400))), Promise.resolve());
     return sceneP;
   }
   function ensureScene() {
@@ -405,7 +412,7 @@
   }
   // paint ahead while idle so the first open is instant · lite devices (≤ 4 GB / ≤ 4 cores / slow probe) paint on
   // the first open instead (a stand-in sky shows meanwhile), so no long painting task lands while they scroll
-  function prewarm() { if (!G && state.cards.length && !FX.lite) idle(() => { if (!G && !FX.lite) buildScene(); }, 3000); }
+  function prewarm() { if (!G && state.cards.length && !FX.lite) calm(() => { if (!G && !FX.lite) buildScene(); }, 3000); }
 
   /* ==========================================================
      2. Parallax: paused Web Animations driven by finger / mouse
@@ -465,6 +472,7 @@
   function makeFace(card) {
     const c = C.renderCard(card, state.rarity, { tilt: false });
     c.removeAttribute("role"); c.tabIndex = -1; c.setAttribute("aria-hidden", "true");
+    C.loadArt(c);   // W4: card pictures wait to be on screen · the intro reads this one before it is shown
     return c;
   }
   function faces(card) {

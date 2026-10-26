@@ -101,11 +101,14 @@
   /* ---------- Card art <img> (step 9.5) ----------
      lazy + async decode + width/height (no layout jump). Small cards (mini: tier rows, Tier Maker pool, decks, Grade picker)
      ask for the 300×420 thumbnail images/cards/thumb/<id>.webp first; if it isn't there they fall back to the big
-     image, and if that is missing too, to the generated art. Routine A makes both files (§7). */
+     image, and if that is missing too, to the generated art. Routine A makes both files (§7).
+     defer (W4, cards from renderCard): no src yet, only data-src — the card's own on-screen watcher below loads it and the
+     cards next to it. loading="lazy" made Chrome keep checking every picture not seen yet on every scroll frame. */
   const thumbOf = (src) => { const i = src.lastIndexOf("/"); return src.slice(0, i + 1) + "thumb/" + src.slice(i + 1); };
-  function artImg(src, small = false) {
+  function artImg(src, small = false, defer = false) {
     const [w, h] = small ? [300, 420] : [600, 840];
-    return `<img src="${esc(small ? thumbOf(src) : src)}"${small ? ` data-full="${esc(src)}"` : ""} alt="" width="${w}" height="${h}" loading="lazy" decoding="async">`;
+    const url = esc(small ? thumbOf(src) : src);
+    return `<img ${defer ? "data-src" : "src"}="${url}"${small ? ` data-full="${esc(src)}"` : ""} alt="" width="${w}" height="${h}"${defer ? "" : ` loading="lazy"`} decoding="async">`;
   }
   function bindArt(root, item) {
     const img = $("img", root);
@@ -121,17 +124,52 @@
 
   /* ---------- Auras only move on screen (step 9.5) ----------
      Every card from renderCard() is watched; on-screen cards get .is-live and css/fx.css only animates those.
-     A card in a hidden tab, scrolled away or detached has no running animation at all. */
+     A card in a hidden tab, scrolled away or detached has no running animation at all.
+     W4: the same watcher loads the card's picture (and the pictures of the next / previous NEAR cards in its row or
+     grid, so they are there before they scroll in). Every watched card costs the main thread on every scroll frame,
+     so a card whose look never loops (Normal big cards, every mini card unless it has a turning grade-10 badge)
+     is let go once its picture is loading. setCardRarity() / the grade badge watch it again when that changes. */
+  const NEAR = 12;
   const liveIO = "IntersectionObserver" in window
-    ? new IntersectionObserver((list) => list.forEach((e) => e.target.classList.toggle("is-live", e.isIntersecting)), { rootMargin: "24px 0px" })
+    ? new IntersectionObserver((list) => list.forEach((e) => {
+      const el = e.target;
+      el.classList.toggle("is-live", e.isIntersecting);
+      if (e.isIntersecting) loadNear(el);
+      if (!loops(el) && !pending(el)) liveIO.unobserve(el);
+    }), { rootMargin: "24px 0px" })
     : null;
+  const pending = (el) => !!$(".gc__art img[data-src]", el);
+  const loops = (el) => !el.classList.contains("gc") || !!el.querySelector('.gorb[data-band="rainbow"]') ||
+    (!el.classList.contains("gc--mini") && el.dataset.rarity !== "Normal");
+  // start loading a deferred card picture (artImg defer) · safe to call on any card, any number of times
+  function loadArt(el) {
+    const img = el && $(".gc__art img[data-src]", el);
+    if (!img) return;
+    img.src = img.dataset.src;
+    delete img.dataset.src;
+  }
+  function loadNear(el) {
+    loadArt(el);
+    let node = el;   // a card alone in a wrapper (deck slot, Tier Maker item): its neighbours are the wrapper's
+    for (let i = 0; i < 2 && node.parentElement && node.parentElement.childElementCount === 1; i++) node = node.parentElement;
+    const near = (sib) => {
+      const c = sib.classList.contains("card") ? sib : sib.querySelector(".card");
+      if (!c || !pending(c)) return;
+      loadArt(c);
+      if (!loops(c)) liveIO.unobserve(c);
+    };
+    for (let i = 0, s = node.nextElementSibling; s && i < NEAR; i++, s = s.nextElementSibling) near(s);
+    for (let i = 0, s = node.previousElementSibling; s && i < NEAR; i++, s = s.previousElementSibling) near(s);
+  }
   // every watched card, weakly held (a card the page dropped can still be garbage-collected)
   const watched = new Set();
+  const seen = new WeakSet();
   let livePaused = false;
+  // also "watch again" (W4): calling it twice on one element is fine
   function watchLive(el) {
-    if (!liveIO) { el.classList.add("is-live"); return; }
-    if (window.WeakRef) watched.add(new WeakRef(el));
-    liveIO.observe(el);
+    if (!liveIO) { el.classList.add("is-live"); loadArt(el); return; }
+    if (window.WeakRef && !seen.has(el)) { seen.add(el); watched.add(new WeakRef(el)); }
+    if (!livePaused || !el.isConnected || el.closest("#detail")) liveIO.observe(el);
   }
   /* Step 12: while the card detail covers the whole screen, the page underneath is hidden — stop checking its cards
      every frame (the detail's own cards made from now on are still watched). resume = watch them all again. */
@@ -209,7 +247,7 @@
     const atk = statAt(card, "atk", rarity), hp = statAt(card, "hp", rarity);
     el.innerHTML = `
       <span class="gc__glow"></span>
-      <div class="gc__art">${card.image ? artImg(card.image, mini) : placeholderArt(card)}</div>
+      <div class="gc__art">${card.image ? artImg(card.image, mini, true) : placeholderArt(card)}</div>
       <span class="gc__name">${esc(card.name)}</span>
       <span class="gc__ring"><i></i></span>
       <span class="gc__sweep"></span>
@@ -257,6 +295,9 @@
     rar.textContent = rarity; fitNum(rar, "rar");
     if (animate) flashCard(el);
     setCardNums(el, { atk: statAt(card, "atk", rarity), hp: statAt(card, "hp", rarity) }, { animate });
+    // W4: a card let go by the on-screen watcher may loop now · one that stopped looping can be let go
+    if (loops(el)) watchLive(el);
+    else if (liveIO && !pending(el)) liveIO.unobserve(el);
   }
 
   /* Rarity chip buttons (the click is handled once for the whole site in js/cards.js) */
@@ -434,7 +475,7 @@
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
     openCard, closeCard, swapCard, route,
-    lazy, artImg, bindArt, watchLive, livePause,   // step 9.5 · livePause step 12
+    lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
