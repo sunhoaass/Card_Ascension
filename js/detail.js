@@ -10,9 +10,8 @@
      real 3D (thickness, two faces) only while it moves or leans. The card looks exactly like on the Cards page
      (W6: no extra sheen).
    · Labels (W6): dark glass boxes · Tier (top left) / Passive / Skill (top right) / Weakness (bottom left) /
-     Strongest (bottom right) · icon + title + one line (+ obtain under Tier) · a thin gold elbow line from the card's
-     edge to the box (the last bit follows the card as it turns: paused Web Animations) · drawn once after the
-     intro · tap = that tab of the Details · phone = 2×2 under the card · ≥ 768px = left / right of the card
+     Strongest (bottom right) · icon + title + the card's "short" line (+ obtain under Tier) · no pointer lines ·
+     fade up once after the intro · tap = that tab of the Details · phone = 2×2 under the card · side = left / right
    · Level change (W6): sun ring + running light + a faint tint of the scene take the level's colour, a light wave
      runs from the sun down to the card and the card glows softly
    · Graphics Low / High (W6, cbi:gfx · Low by default with ≤ 4 GB RAM): Low = no running light, still sparks /
@@ -76,10 +75,13 @@
     if (!el.root.hidden && el.sky.clientWidth) return [el.sky.clientWidth, el.sky.clientHeight];
     return [innerWidth - sideW() + 52, innerHeight + 52];
   }
+  const TOP_H = 44;   // = .bs --bs-top-h · W6 fix: the top bar never covers the black sun
   function sunOf(W, H) {
     const portrait = H >= W;
-    const sy = portrait ? clamp(H * 0.108, 84, 150) : clamp(H * 0.135, 84, 170);
-    const R = clamp(Math.min(W, H * 0.55) * (portrait ? 0.118 : 0.15), 34, 84);
+    // short phones (iPhone SE…): a smaller sun leaves the card more height
+    const R = clamp(Math.min(W, H * 0.55) * (portrait ? (H < 780 ? 0.09 : 0.118) : 0.15), 34, 84);
+    // sky coordinates start 26px above the screen: the sun's top edge stays 10px under the top bar
+    const sy = Math.max(portrait ? clamp(H * 0.108, 84, 150) : clamp(H * 0.135, 84, 170), 26 + TOP_H + 10 + R);
     return { sy, R, portrait };
   }
   function geometry(W, H) {
@@ -530,27 +532,42 @@
     return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0;
   };
   const obtainOf = (card) => String(card.obtain || "").trim();
-  // one label = { t: title (HTML), d: one line (text), o: obtain line (text), empty }
+  // W6 fix: the line under each title = the card's "short" text for that label (cards.json · ≤ 30 characters, written in
+  // task B) · a card without it shows the title only (never a cut sentence)
+  const shortOf = (card, key) => String((card.short && card.short[key]) || "").trim();
   function coData(card, key) {
+    const d = shortOf(card, key);
     if (key === "tier") {
-      const ranked = C.isRanked(card), note = String(card.tierNote || "").trim();
-      if (!ranked) return { t: "Unranked", d: note || "Not scored yet", o: obtainOf(card) };
-      return { t: `Tier <span class="bs-co__tier">${esc(card.tier)}</span>`, d: note || `Overall ${f1(pct(card.scores.overall))} / 100`, o: obtainOf(card) };
+      const ranked = C.isRanked(card);
+      return { t: ranked ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>` : "Unranked", d, o: obtainOf(card) };
     }
-    if (key === "ability") {
-      const ab = abilities(card);
-      if (!ab.length) return { empty: true, t: "Passive / Skill", d: "None" };
-      return { t: "Passive / Skill", d: ab[0].n || ab[0].d };
+    return { t: { ability: "Passive / Skill", strong: "Strongest", weak: "Weakness" }[key], d };
+  }
+  /* W6 round 2 · bigger screens: the boxes add whole items while there is room (js grow() in layout: never a cut
+     sentence, ≤ 4 items, a box never taller than half the card) · phones stay title + short line */
+  function extrasOf(card, key) {
+    const li = (t, cls = "") => `<span class="bs-co__li ${cls}">${t}</span>`;
+    if (key === "tier") {
+      const note = String(card.tierNote || "").trim(), out = [];
+      if (note) out.push(li(esc(note)));
+      if (C.isRanked(card)) out.push(li(`Overall ${f1(pct(card.scores.overall))} / 100`, "is-meta"));
+      return out;
     }
+    if (key === "ability") return abilities(card).flatMap((a) => [a.n ? li(`<b>${esc(a.n)}</b>`) : "", a.d ? li(esc(a.d)) : ""]).filter(Boolean);
     const good = key === "strong";
-    const pts = arr(good ? card.strengths : card.weaknesses).map(String);
+    // the short line already sums up the first point: the box goes on from the 2nd one
+    const pts = arr(good ? card.strengths : card.weaknesses).map(String).slice(shortOf(card, key) ? 1 : 0, 4);
     const vs = names(card, good ? card.beats : card.losesTo);
-    const tags = good ? [] : arr(card.weakTo).map(String);
-    const modes = bestModes(card, good);
-    const d = pts[0] || (vs.length ? `${good ? "Beats" : "Loses to"} ${joinShort(vs, 2)}` : tags.length ? `Weak to ${joinShort(tags, 2)}`
-      : modes[0] ? `${good ? "Best" : "Weakest"} mode: ${modes[0]}` : "");
-    if (!d) return { empty: true, t: good ? "Strongest" : "Weakness", d: "Not analyzed yet" };
-    return { t: good ? "Strongest" : "Weakness", d };
+    return [...pts.map((t) => li(esc(t), good ? "is-good" : "is-bad")), vs.length ? li(`${good ? "Beats" : "Loses to"}: ${esc(vs.join(", "))}`, "is-meta") : ""].filter(Boolean);
+  }
+  function grow(o, budget) {
+    o.x.textContent = ""; o.x.hidden = false;   // measured while shown (a hidden box would let everything "fit")
+    if (o.el.offsetHeight > budget) { o.x.hidden = true; return; }
+    for (const h of (o.extras || []).slice(0, 4)) {
+      o.x.insertAdjacentHTML("beforeend", h);
+      if (o.el.offsetHeight > budget) { o.x.lastElementChild.remove(); break; }
+    }
+    o.x.hidden = !o.x.childElementCount;
   }
   function buildCallouts() {
     CO_DEF.forEach((d) => {
@@ -558,91 +575,24 @@
       b.type = "button";
       b.className = "bs-co fx-press " + (d.cls || "");
       b.setAttribute("aria-haspopup", "dialog");
-      b.innerHTML = `<svg class="bs-co__i" aria-hidden="true"><use href="#${d.icon}"/></svg><span class="bs-co__t"><span class="bs-co__n"></span><span class="bs-co__d"></span><span class="bs-co__o"></span></span>`;
-      // the line = static elbow segments (box … elbow, axis-aligned) + the last bit (elbow → the card) that follows the card:
-      // outer (follows the card's pitch) > b (follows its turn) > i (what you see, grows in on show)
-      const mk = (cls) => { const n = document.createElement("div"); n.className = cls; n.innerHTML = "<b><i></i></b>"; return n; };
-      const line = mk("bs-line"), dot = mk("bs-dot");
-      const segs = [0, 1, 2].map(() => { const s = document.createElement("i"); s.className = "bs-seg"; return s; });
-      el.callouts.append(...segs, line, dot, b);
-      const o = { d, el: b, line, dot, segs, segOn: 0, lineV: line.querySelector("i"), dotV: dot.querySelector("i"), poses: null, data: null };
+      b.innerHTML = `<svg class="bs-co__i" aria-hidden="true"><use href="#${d.icon}"/></svg><span class="bs-co__n"></span><span class="bs-co__d"></span><span class="bs-co__o"></span><span class="bs-co__x" hidden></span>`;
+      el.callouts.append(b);
+      const o = { d, el: b, x: b.querySelector(".bs-co__x"), extras: [], data: null };
       b.addEventListener("click", () => { if (ready) openSheet(d.tab, d.to); });
       coEls.push(o);
     });
   }
   function fillCallouts(card) {
     for (const o of coEls) {
-      const x = coData(card, o.d.key); o.data = x;
-      o.el.classList.toggle("is-empty", !!x.empty);
+      const x = coData(card, o.d.key); o.data = x; o.extras = extrasOf(card, o.d.key);
       o.el.querySelector(".bs-co__n").innerHTML = x.t;      // our own markup, the tier letter escaped (esc) above
-      o.el.querySelector(".bs-co__d").textContent = x.d;
+      const sd = o.el.querySelector(".bs-co__d"); sd.textContent = x.d; sd.hidden = !x.d;
       const ob = o.el.querySelector(".bs-co__o"); ob.textContent = x.o || ""; ob.hidden = !x.o;
-      o.el.title = x.d;
-      o.el.setAttribute("aria-label", `${o.el.querySelector(".bs-co__n").textContent}: ${x.d}${x.o ? ". " + x.o : ""}. Open details`);
+      const title = o.el.querySelector(".bs-co__n").textContent;
+      o.el.setAttribute("aria-label", `${title}${x.d ? ": " + x.d : ""}${x.o ? ". " + x.o : ""}. Open details`);
       if (o.d.key === "tier") { if (C.isRanked(card)) o.el.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`); else o.el.style.removeProperty("--tc"); }
     }
   }
-  /* The last bit of a label's line runs from its elbow (fixed) to a dot ON the card's edge, and that dot follows the card
-     as it turns / leans: the card's 3D pose is projected ahead (once per layout) into paused Web Animations — yaw 0–360°
-     (37 steps, same timing as the card's rotor) and pitch −30…30° (13 steps, same as its tilt) — and apply3D() only
-     sets currentTime. No style writes per frame (§4.1). Yaw and pitch are combined additively (close enough at the
-     limited lean angles). */
-  const PERSP = 1100;   // = .bs-wrap.is-3d .bs-zoom perspective in detail.css
-  let poseYT = 0, posePT = 500;
-  function placeCo(o, ax, ay, ex, ey) {
-    o.dot.style.left = ax + "px"; o.dot.style.top = ay + "px";
-    o.line.style.left = ex + "px"; o.line.style.top = ey + "px";
-    if (o.poses) o.poses.forEach((a) => a.cancel());
-    const cx = LY.L + LY.cw / 2, cy = LY.T + LY.ch / 2, px = ax - cx, py = ay - cy;
-    const yDot = [], yLine = [], pDot = [], pLine = [];
-    let prev = null;
-    for (let k = 0; k <= 36; k++) {
-      const th = k * Math.PI / 18, sc = PERSP / (PERSP + px * Math.sin(th));
-      const x = px * Math.cos(th) * sc, y = py * sc;
-      yDot.push({ transform: `translate(${f2(x - px)}px,${f2(y - py)}px)` });
-      const vx = cx + x - ex, vy = cy + y - ey;
-      let ang = Math.atan2(vy, vx) * 180 / Math.PI;
-      if (prev !== null) { while (ang - prev > 180) ang -= 360; while (ang - prev < -180) ang += 360; }
-      prev = ang;
-      yLine.push({ transform: `rotate(${f2(ang)}deg) scaleX(${(Math.hypot(vx, vy) / 100).toFixed(4)})` });
-    }
-    const v0x = ax - ex, v0y = ay - ey, v2 = Math.max(1, v0x * v0x + v0y * v0y);
-    for (let k = 0; k <= 12; k++) {
-      const ph = (k * 5 - 30) * Math.PI / 180, sc = PERSP / (PERSP - py * Math.sin(ph));
-      const dy = py * Math.cos(ph) * sc - py;
-      pDot.push({ transform: `translate(0px,${f2(dy)}px)` });
-      // shear that moves only the line's far end (on the card) by dy, the elbow end stays put
-      pLine.push({ transform: `matrix(1,${(dy * v0x / v2).toFixed(5)},0,${(1 + dy * v0y / v2).toFixed(5)},0,0)` });
-    }
-    const mk = (n, kf, d) => { const a = n.animate(kf, { duration: d, fill: "both", easing: "linear" }); a.pause(); return a; };
-    o.poses = [mk(o.dot.firstChild, yDot, 3600), mk(o.dot, pDot, 1000), mk(o.line.firstChild, yLine, 3600), mk(o.line, pLine, 1000)];
-    o.poses[0].currentTime = o.poses[2].currentTime = poseYT;
-    o.poses[1].currentTime = o.poses[3].currentTime = posePT;
-  }
-  // the fixed part of the elbow: pts = [elbow (next to the card), …, the box edge], each step horizontal or vertical
-  function placeSegs(o, pts) {
-    let n = 0;
-    for (let i = 0; i + 1 < pts.length && n < o.segs.length; i++) {
-      const [x0, y0] = pts[i], [x1, y1] = pts[i + 1];
-      if (Math.abs(x1 - x0) < 0.5 && Math.abs(y1 - y0) < 0.5) continue;
-      const s = o.segs[n++], h = Math.abs(y1 - y0) < 0.5;
-      s.className = "bs-seg " + (h ? "is-h" : "is-v");
-      s.style.left = Math.round(Math.min(x0, x1) - (h ? 0 : 0.5)) + "px";
-      s.style.top = Math.round(Math.min(y0, y1) - (h ? 0.5 : 0)) + "px";
-      s.style.width = h ? Math.round(Math.abs(x1 - x0)) + "px" : "";
-      s.style.height = h ? "" : Math.round(Math.abs(y1 - y0)) + "px";
-      // it grows out from the end nearest the card
-      s.style.transformOrigin = h ? (x1 >= x0 ? "0 50%" : "100% 50%") : (y1 >= y0 ? "50% 0" : "50% 100%");
-    }
-    o.segOn = n;
-    o.segs.forEach((s, i) => { s.hidden = i >= n; });
-  }
-  function poseCallouts(yt, pt) {
-    if (yt === poseYT && pt === posePT) return;
-    poseYT = yt; posePT = pt;
-    for (const o of coEls) if (o.poses) { o.poses[0].currentTime = o.poses[2].currentTime = yt; o.poses[1].currentTime = o.poses[3].currentTime = pt; }
-  }
-
   /* ==========================================================
      5. Layout: phone (labels 2×2 under the card) · side (≥ 768: labels left / right, bigger card)
      ========================================================== */
@@ -652,63 +602,74 @@
     if (on) { el.dockL.appendChild(el.ovr); el.dockR.appendChild(el.dbtn); ["left", "top"].forEach((p) => { el.ovr.style[p] = ""; el.dbtn.style[p] = ""; }); }
     else { el.foreY.appendChild(el.ovr); el.foreY.appendChild(el.dbtn); }
   }
-  const GUT = 9;   // stacked: the lines to the lower boxes run 9px outside the box grid
+  // W6 fix: label text is never cut ("…"): a line that doesn't fit shrinks in 0.5px steps (down to MIN_FS) until it does
+  // a line that still doesn't fit at MIN_FS (a 30-character line on a 360px phone) wraps to a 2nd line rather than being cut
+  const MIN_FS = 10.5;
+  function fitLine(n, min = MIN_FS) {
+    n.style.fontSize = ""; n.classList.remove("is-wrap");
+    if (n.hidden) return;
+    let fs = parseFloat(getComputedStyle(n).fontSize);
+    while (n.scrollWidth > n.clientWidth + 0.5 && fs > min) { fs -= 0.5; n.style.fontSize = fs + "px"; }
+    if (n.scrollWidth > n.clientWidth + 0.5) n.classList.add("is-wrap");
+  }
+  function fitLines(o) { o.el.querySelectorAll(".bs-co__n, .bs-co__d, .bs-co__o").forEach((n) => fitLine(n)); }
+  // all four short lines end up the same size (the smallest one any box needed), so the boxes read evenly
+  function evenShorts() {
+    const ds = coEls.map((o) => o.el.querySelector(".bs-co__d")).filter((n) => !n.hidden && !n.classList.contains("is-wrap"));
+    if (!ds.length) return;
+    const fs = Math.min(...ds.map((n) => parseFloat(getComputedStyle(n).fontSize)));
+    ds.forEach((n) => { n.style.fontSize = fs + "px"; });
+  }
+  const HINT_ROOM = 38;   // stacked: the first-time hint sits above the bottom bar, under the Overall ring + Details
   function layout() {
     if (el.root.hidden) return;
     const rw = el.root.clientWidth, rh = el.root.clientHeight;
+    if (!rw || !rh) return;
     // side = labels left / right (landscape, ≥ 768) · otherwise stacked: 2×2 boxes under the card (phones, portrait tablets)
     side = (rw >= 768 && rw >= rh * 0.95) || (rw >= 600 && rw > rh * 1.15);
     el.root.classList.toggle("is-side", side);
     const fw = el.fore.clientWidth, fh = el.fore.clientHeight;
     const topH = el.fore.offsetTop;
     const [W, H] = skySize(), sun = sunOf(W, H);
-    const sunB = sun.sy + sun.R - 26 - topH + 12;   // bottom of the black sun in foreground coordinates
+    const sunB = Math.round(sun.sy + sun.R - 26 - topH + 12);   // just under the black sun, in foreground coordinates
     const co = {}; coEls.forEach((o) => { co[o.d.key] = o; o.el.style.height = ""; });
-    let cw, useHud = false, top = 0, T, L, ch, B;
+    let cw, useHud = false, T, L, ch, B;
 
     if (!side) {
-      // phone: card · 2×2 boxes · Overall ring + Details · (level dots in the bottom bar)
-      const gw = Math.min(fw - 32, 660), PAD = Math.round((fw - gw) / 2), bw = Math.floor((gw - 10) / 2);
-      coEls.forEach((o) => { o.el.style.width = bw + "px"; });
+      // card (right under the sun, as big as the screen allows) · 2×2 boxes · Overall ring + Details · first-time hint
+      const gw = Math.min(fw - 20, 640), x0 = Math.round((fw - gw) / 2), bw = Math.floor((gw - 8) / 2), x1 = x0 + bw + 8;
+      coEls.forEach((o) => { o.el.style.width = bw + "px"; o.x.textContent = ""; o.x.hidden = true; fitLines(o); }); evenShorts();
+      // obtain shares the Tier title row when it fits there, otherwise it takes its own line (never over the title)
+      { const ob = co.tier.el.querySelector(".bs-co__o"), tn = co.tier.el.querySelector(".bs-co__n");
+        ob.classList.remove("is-below");
+        if (!ob.hidden && (ob.scrollWidth > ob.clientWidth + 0.5 || tn.getBoundingClientRect().right > ob.getBoundingClientRect().left - 4)) { ob.classList.add("is-below"); fitLine(ob); } }
       const h1 = Math.max(co.tier.el.offsetHeight, co.ability.el.offsetHeight), h2 = Math.max(co.weak.el.offsetHeight, co.strong.el.offsetHeight);
-      const below = 24 + h1 + 10 + h2 + 16 + 60 + 6;
-      top = clamp(sunB, 8, fh * 0.14);
-      cw = clamp(Math.min(fw * 0.6, (fh - top - below) / 1.4), 110, 520);
-      cw = Math.round(cw); ch = Math.round(cw * 1.4);
+      const short = fh < 600;   // short phone: the first-time hint floats over the bottom bar instead of taking a row
+      el.root.classList.toggle("is-short", short);
+      const below = 14 + h1 + 8 + h2 + 12 + 60 + (short ? 6 : HINT_ROOM);
+      const top = Math.max(8, sunB);
+      cw = Math.round(clamp(Math.min(fw * 0.74, (fh - top - below) / 1.4), 110, 520)); ch = Math.round(cw * 1.4);
       moveHud(false);
       L = Math.round((fw - cw) / 2);
-      T = Math.round(top + Math.max(0, fh - top - below - ch) * 0.4);
+      T = Math.round(top + Math.max(0, fh - top - below - ch) * 0.35);
       B = T + ch;
-      LY = { L, T, cw, ch, fw, fh, B };
+      LY = { L, T, cw, ch, fw, fh, B, rw, rh };
       el.root.style.setProperty("--cw", cw + "px");
       el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
-      const y1 = B + 24, y2 = y1 + h1 + 10, x0 = PAD, x1 = PAD + bw + 10;
+      const y1 = B + 14, y2 = y1 + h1 + 8;
       const put = (o, x, y, h) => { o.el.style.left = x + "px"; o.el.style.top = y + "px"; o.el.style.height = h + "px"; };
       put(co.tier, x0, y1, h1); put(co.ability, x1, y1, h1); put(co.weak, x0, y2, h2); put(co.strong, x1, y2, h2);
-      // upper boxes: from the card's bottom edge, down, across, down into the top of the box
-      [[co.tier, L + cw * 0.27, x0 + bw / 2], [co.ability, L + cw * 0.73, x1 + bw / 2]].forEach(([o, ax, bx]) => {
-        ax = Math.round(ax); bx = Math.round(bx);
-        const ey = B + 12;
-        placeCo(o, ax, B, ax, ey);
-        placeSegs(o, [[ax, ey], [bx, ey], [bx, y1]]);
-      });
-      // lower boxes: from the card's side, out to the screen edge, down, into the outer side of the box
-      [[co.weak, -1], [co.strong, 1]].forEach(([o, s]) => {
-        const ay = Math.round(T + ch * 0.82), ax = s < 0 ? L : L + cw;
-        const gx = s < 0 ? x0 - GUT : x1 + bw + GUT, ex = Math.round(ax + s * Math.min(14, Math.max(4, (Math.abs(ax - gx) - 4) / 2)));
-        const by = Math.round(y2 + h2 / 2);
-        placeCo(o, ax, ay, ex, ay);
-        placeSegs(o, [[ex, ay], [gx, ay], [gx, by], [s < 0 ? x0 : x1 + bw, by]]);
-      });
-      // Overall ring + Details side by side under the boxes
-      const dbw = el.dbtn.offsetWidth || 120, rowW = 60 + 14 + dbw, rx = Math.round((fw - rowW) / 2), ry = Math.round(y2 + h2 + 16);
+      const dbw = el.dbtn.offsetWidth || 120, rowW = 60 + 14 + dbw, rx = Math.round((fw - rowW) / 2), ry = Math.round(y2 + h2 + 12);
       el.ovr.style.left = rx + "px"; el.ovr.style.top = ry + "px";
       el.dbtn.style.left = (rx + 74) + "px"; el.dbtn.style.top = (ry + 6) + "px";
+      el.root.style.removeProperty("--hint-w");
     } else {
-      const gap = 60, maxW = fw >= 1200 ? 340 : 300;
-      const cap = Math.min(440, fw * 0.42, fw - 2 * (190 + gap));
-      top = fh < 520 ? 8 : Math.min(sunB, fh * 0.2);
-      const under = Math.min(cap, (fh - top - 128) * 0.714);
+      el.root.classList.remove("is-short");
+      // card in the middle, right under the sun · boxes left / right of it (no pointer lines: owner, W6 round 2)
+      const gap = 32, wMin = 190;
+      const cap = Math.min(560, fw * 0.42, fw - 2 * (wMin + gap + 14));
+      const top = fh < 400 ? Math.max(8, Math.min(sunB, fh * 0.32)) : Math.max(8, sunB);
+      const under = Math.min(cap, (fh - top - 18 - 60 - 8 - 48 - 10) * 0.714);   // card + ring + Details + 10px above the bottom bar
       const inBar = Math.min(cap, (fh - top - 14) * 0.714);
       useHud = under < inBar * 0.85;
       cw = Math.round(Math.max(120, useHud ? inBar : under));
@@ -717,45 +678,48 @@
       moveHud(useHud);
       const below = hud ? 0 : 18 + 60 + 8 + 48;   // a clear gap between the card and the Overall ring
       L = Math.round((fw - cw) / 2);
-      T = Math.max(8, (fh - below - ch) / 2); T = Math.round(Math.max(T, Math.min(top, fh - below - ch - 4)));
+      T = Math.round(Math.max(top, top + (fh - top - below - ch - 8) * 0.3));
       B = T + ch;
-      LY = { L, T, cw, ch, fw, fh, B };
+      LY = { L, T, cw, ch, fw, fh, B, rw, rh };
       el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
       if (!hud) {
         el.ovr.style.left = (fw / 2 - 30) + "px"; el.ovr.style.top = (B + 18) + "px";
         el.dbtn.style.left = Math.round(fw / 2 - el.dbtn.offsetWidth / 2) + "px"; el.dbtn.style.top = (B + 86) + "px";
       }
-      // left / right columns: the upper box near the card's top, the lower one near its bottom
-      const w = Math.max(150, Math.min(maxW, L - gap - 14));
-      coEls.forEach((o) => { o.el.style.width = w + "px"; });
+      const w = Math.round(clamp(L - gap - 16, wMin, 380));   // the boxes use the room beside the card
+      coEls.forEach((o) => { o.el.style.width = w + "px"; o.x.textContent = ""; fitLines(o); }); evenShorts();
+      const budget = Math.floor((ch * 0.88 - 16) / 2);          // each box: at most half the card (upper + lower never meet)
+      coEls.forEach((o) => grow(o, budget));
       for (const [a, b, right] of [[co.tier, co.weak, false], [co.ability, co.strong, true]]) {
         const x = right ? L + cw + gap : L - gap - w;
         const ha = a.el.offsetHeight, hb = b.el.offsetHeight;
-        let ya = T + ch * 0.05, yb = B - ch * 0.05 - hb;
-        ya = Math.max(4, ya);
+        // upper box from the card's top part down, lower box from its bottom part up
+        let ya = T + ch * 0.06, yb = B - ch * 0.06 - hb;
         if (yb < ya + ha + 16) yb = ya + ha + 16;
         if (yb + hb > fh - 4) { const s = yb + hb - (fh - 4); yb -= s; ya = Math.max(4, ya - s); }
-        const ex = Math.round(right ? L + cw + gap / 2 : L - gap / 2), bx = right ? x : x + w, ax = right ? L + cw : L;
-        [[a, ya, ha, 0.3], [b, yb, hb, 0.7]].forEach(([o, y, h, f]) => {
-          y = Math.round(y);
-          o.el.style.left = x + "px"; o.el.style.top = y + "px";
-          const ay = Math.round(T + ch * f), by = Math.round(y + h / 2);
-          placeCo(o, ax, ay, ex, ay);
-          placeSegs(o, [[ex, ay], [ex, by], [bx, by]]);
-        });
+        [[a, ya], [b, yb]].forEach(([o, y]) => { o.el.style.left = x + "px"; o.el.style.top = Math.round(y) + "px"; });
       }
+      el.root.style.setProperty("--hint-w", Math.max(160, Math.round(fw / 2 - sun.R - 28)) + "px");   // the hint stays left of the sun
     }
     const zs = Math.min(1.7, (fh - 16) / ch, (fw - 24) / cw);
     el.zoom.style.setProperty("--zs", zs.toFixed(3)); el.zoom.style.setProperty("--zy", Math.round(fh / 2 - (T + ch / 2)) + "px");
     el.pager.textContent = list.length > 1 ? `${idx + 1} / ${list.length}${side ? "" : " · swipe ← →"}` : "";
+    // the card's name in the top bar: smaller before it would be cut (only a very long name still ends in "…")
+    fitLine(el.name, 10.5);   // too long even then: 2 lines (CSS .is-wrap)
     if (sheetOpen) sheetSide();
   }
+  // W6 fix: re-check the size after the scene is up (phone browser bars grow / shrink, fonts arrive): an old size used to
+  // leave the scene small with an empty strip at the bottom
+  function relayoutIfResized() {
+    if (!isOpen || el.root.hidden) return;
+    if (el.root.clientWidth !== LY.rw || el.root.clientHeight !== LY.rh) { layout(); if (Math.abs(LY.cw - motesCW) > 2) { buildMotes(); targetCache = null; } }
+  }
 
-  /* ---------- labels: drawn once after the intro (dot → line along the elbow → box fades in) ---------- */
+  /* ---------- labels: once the intro is over the boxes fade up one after another (once per card) ---------- */
   let coAnims = [];
   function hideCallouts() {
     coAnims.forEach((a) => a.cancel()); coAnims = [];
-    for (const o of coEls) for (const x of [o.el, o.lineV, o.dotV, ...o.segs]) { x.style.opacity = ""; x.style.transform = ""; }
+    for (const o of coEls) { o.el.style.opacity = ""; o.el.style.transform = ""; }
   }
   // a finished animation still keeps its element as its own layer; commit the end state as plain styles instead (§13.1 lesson 6)
   function keep(an) { an.onfinish = () => { try { an.commitStyles(); } catch (e) {} an.cancel(); const i = coAnims.indexOf(an); if (i >= 0) coAnims.splice(i, 1); }; return an; }
@@ -763,23 +727,9 @@
     hideCallouts();
     const on = { fill: "forwards" };
     const push = (...xs) => xs.forEach((x) => coAnims.push(keep(x)));
-    const segK = (s) => (s.classList.contains("is-h") ? ["scaleX(0)", "scaleX(1)"] : ["scaleY(0)", "scaleY(1)"]);
     coEls.forEach((o, i) => {
-      const d = i * 90, segs = o.segs.slice(0, o.segOn);
-      if (rm()) {
-        push(o.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: d, ...on }),
-          o.lineV.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(1)" }], { duration: 1, ...on }),
-          o.dotV.animate([{ transform: "scale(1)" }, { transform: "scale(1)" }], { duration: 1, ...on }),
-          ...segs.map((s) => { const k = segK(s)[1]; return s.animate([{ transform: k }, { transform: k }], { duration: 1, ...on }); }));
-        return;
-      }
-      let t = d;
-      push(o.dotV.animate([{ transform: "scale(0)" }, { transform: "scale(1.5)", offset: 0.6 }, { transform: "scale(1)" }], { duration: 240, delay: t, easing: E, ...on }));
-      t += 90;
-      push(o.lineV.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 110, delay: t, easing: "linear", ...on }));
-      t += 110;
-      segs.forEach((s) => { const [a, b] = segK(s); push(s.animate([{ transform: a }, { transform: b }], { duration: 110, delay: t, easing: "linear", ...on })); t += 110; });
-      push(o.el.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 280, delay: t - 60, easing: E, ...on }));
+      push(o.el.animate(rm() ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }],
+        { duration: 280, delay: i * 90, easing: E, ...on }));
     });
   }
 
@@ -865,7 +815,6 @@
     if (!A3) return;
     A3.all.forEach((a) => a.cancel()); A3 = null;
     el.wrap.classList.remove("is-3d"); busy(false);
-    poseCallouts(0, 500);
   }
   function busy(on) { el.fore.classList.toggle("is-busy", on); }   // motes swirl: only while it really turns, not for a lean
   function shown() {
@@ -880,7 +829,6 @@
     A3.y.currentTime = t;
     const xt = (clamp(pitch, -30, 30) + 30) / 60 * 1000;
     A3.x.currentTime = xt;
-    poseCallouts(t, xt);
   }
   // the mouse (PC) sets where the card leans to (eased in tick)
   function setLean(y, x) {
@@ -1595,7 +1543,7 @@
   }
   // fade with the scene (the labels, ring and Details button follow .is-ready on the foreground through CSS)
   const chrome = () => [el.stage, el.top, el.dock];
-  let settleTimer = 0, fades = [];
+  let settleTimer = 0, fades = [], pagerTimer = 0;
   function open(id) {
     const card = byId.get(id);
     if (!card) { C.closeCard(); return; }        // unknown id in the link -> back to the page
@@ -1639,6 +1587,15 @@
     Promise.race([sceneP || Promise.resolve(), new Promise((r) => setTimeout(r, 1200))]).then(() => { if (mine === token && isOpen) runIntro(); });
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => { if (mine === token && isOpen) settled(true); }, 520);
+    // W6 fix: the size can still change right after opening (phone browser bar, fonts) → measure again
+    requestAnimationFrame(() => requestAnimationFrame(relayoutIfResized));
+    setTimeout(relayoutIfResized, 600);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (mine === token && isOpen) layout(); });
+    // "1 / 4 · swipe" shows only on this device's very first card (then fades away for good)
+    let seen = 2; try { seen = Number(localStorage.getItem("cbi:bsHint")) || 0; } catch (e) {}
+    clearTimeout(pagerTimer);
+    el.pager.classList.toggle("is-on", seen === 0 && list.length > 1);
+    if (seen === 0) pagerTimer = setTimeout(() => el.pager.classList.remove("is-on"), 6500);
   }
 
   // the scene fully covers the page: stop drawing / checking what is underneath (it comes back before the card flies home)
@@ -1729,11 +1686,15 @@
 
     buildLv(el.lv); buildLv(el.shLv); buildCallouts();
     setupCard(); setupSwipe(); setupSheet(); setupParallax(); setupGfx();
-    let rt = 0;
+    let rt = 0, rt2 = 0;
+    // phone browser bars show / hide without always firing window resize: watch the visual viewport too
+    if (window.visualViewport) visualViewport.addEventListener("resize", () => { clearTimeout(rt2); rt2 = setTimeout(relayoutIfResized, 200); });
+    addEventListener("orientationchange", () => setTimeout(relayoutIfResized, 350));
     addEventListener("resize", () => {
       clearTimeout(rt);
       rt = setTimeout(() => {
         if (!isOpen) return;
+        clearTimeout(rt2);
         setBackground(true);   // the left menu: usable ≥ 1100px only
         layout();
         if (Math.abs(LY.cw - motesCW) > 2) { buildMotes(); targetCache = null; }

@@ -6,11 +6,11 @@
    · layouts: phone (< 768px): the 4 label boxes 2×2 under the card, Overall ring + Details under them
               side  (≥ 768px, or a landscape phone): label boxes left / right, bigger card;
               "HUD" = Overall ring + Details move into the bottom bar when height is short
-   · W6: dark glass label boxes + thin gold elbow lines · Back = glass, Details = matte gold · Low / High graphics
+   · W6: dark glass label boxes · Back = glass, Details = matte gold · Low / High graphics
      (.bs.is-low) · Details = full screen on a phone, a full-height panel on the right ≥ 768px (.is-sheet-side)
    ========================================================== */
 .bs {
-  --bs-top-h: 52px;
+  --bs-top-h: 44px;                         /* = TOP_H in js/detail.js (the sun is placed under it) */
   --bs-dock-h: 84px;
   --cw: 226px;                              /* card width: set by js/detail.js layout() */
   --ch: calc(var(--cw) * 1.4);
@@ -93,20 +93,23 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 }
 /* W6 Back: dark glass + thin gold edge + icon */
 .bs-back {
-  flex: none; display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0 14px 0 8px; border-radius: var(--r-chip);
-  font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: .06em; color: var(--gold-hi);
+  flex: none; display: inline-flex; align-items: center; gap: 1px; min-height: 40px; padding: 0 11px 0 6px; border-radius: var(--r-chip);
+  font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .06em; color: var(--gold-hi);
   background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line);
 }
-.bs-back svg { width: 20px; height: 20px; color: var(--gold); }
+.bs-back svg { width: 18px; height: 18px; color: var(--gold); }
 .bs-back:hover { box-shadow: inset 0 0 0 1px var(--gold); }
 .bs-back:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
 /* W6 graphics quality Low | High (the site's .seg switch, compact) */
 .bs-gfx { flex: none; width: auto; max-width: none; margin: 0; padding: 2px; --n: 2; background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line); }
 .bs-gfx .seg__ind { top: 2px; bottom: 2px; left: 2px; width: calc((100% - 4px) / 2); }
-.bs-gfx .seg__btn { min-height: 40px; min-width: 50px; padding: 0 10px; font-size: 12px; }
+.bs-gfx .seg__btn { min-height: 38px; min-width: 46px; padding: 0 9px; font-size: 11.5px; }
 .bs-top__t { flex: 1; min-width: 0; line-height: 1.15; }
-.bs-top__t b { display: block; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .05em; color: var(--gold-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bs-top__t small { display: block; font-size: 11px; color: var(--ink-dim); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bs-top__t b { display: block; font-family: var(--font-display); font-weight: 700; font-size: 12px; line-height: 1.2; letter-spacing: .05em; color: var(--gold-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bs-top__t b.is-wrap { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+/* "1 / 4 · swipe" = only on this device's first card, then it fades out (js open) */
+.bs-top__t small { display: block; height: 0; font-size: 10.5px; line-height: 13px; color: var(--ink-dim); letter-spacing: .04em; white-space: nowrap; overflow: hidden; opacity: 0; transition: opacity 600ms var(--ease); }
+.bs-top__t small.is-on { height: 13px; opacity: 1; }
 .bs-ibtn {
   position: relative; flex: none; min-width: 40px; height: 40px; padding: 0 10px; border-radius: var(--r-chip);
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -172,49 +175,54 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-mote { position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px 2px var(--c, var(--lvl)), 0 0 14px 3px color-mix(in srgb, var(--c, var(--lvl)) 45%, transparent); opacity: 0; }
 .bs-mote.sm { width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px; }
 
-/* ---------------- Labels (W6): dark glass boxes + thin gold elbow lines ---------------- */
+/* ---------------- Labels (W6): dark glass boxes (no pointer lines: owner, W6 round 2) ---------------- */
 .bs-callouts { position: absolute; inset: 0; pointer-events: none; transition: opacity var(--t-med) var(--ease); }
 .bs-fore.is-zoom .bs-callouts, .bs-fore:not(.is-ready) .bs-callouts, .bs.is-sheet .bs-callouts { opacity: 0; }
 .bs-fore.is-zoom .bs-callouts *, .bs-fore:not(.is-ready) .bs-callouts *, .bs.is-sheet .bs-callouts * { pointer-events: none !important; }
-/* the fixed part of an elbow: axis-aligned 1px bars that grow out from the card side (js placeSegs) */
-.bs-seg { position: absolute; display: block; background: var(--bs-line); box-shadow: var(--bs-line-glow); }
-.bs-seg.is-h { height: 1px; transform: scaleX(0); }
-.bs-seg.is-v { width: 1px; transform: scaleY(0); }
-.bs-seg[hidden] { display: none; }
-/* the last bit (elbow → card) = outer (card pitch) > b (card turn) > i (what you see) · the outer two only move by paused
-   Web Animations (js placeCo / poseCallouts) so the dot stays on the card's edge while it turns */
-.bs-line, .bs-dot { position: absolute; width: 0; height: 0; transform-origin: 0 0; }
-.bs-line > b { position: absolute; left: 0; top: -.5px; width: 100px; height: 1px; transform-origin: 0 50%; }
-.bs-line i { position: absolute; inset: 0; transform-origin: 100% 50%; transform: scaleX(0); background: var(--bs-line); box-shadow: var(--bs-line-glow); }
-.bs-dot > b { position: absolute; left: 0; top: 0; }
-.bs-dot i { position: absolute; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%;
-  background: var(--gold-hi); box-shadow: 0 0 0 1.5px rgba(10, 12, 30, .7), 0 0 8px color-mix(in srgb, var(--gold) 70%, transparent); transform: scale(0); }
+/* icon + title on the first row, the short line and obtain under them at full box width · every line stays on one line and
+   is never cut: js fitLines() shrinks a line that doesn't fit */
 .bs-co {
-  position: absolute; display: flex; align-items: flex-start; gap: 8px; min-height: 44px; padding: 8px 10px; text-align: left;
+  position: absolute; display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: start; align-items: center;
+  column-gap: 7px; row-gap: 3px; min-height: 44px; padding: 8px 10px; text-align: left;
   border-radius: var(--r-chip); pointer-events: auto; opacity: 0; transform: translateY(6px);
   background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line), 0 6px 18px rgba(0, 0, 0, .35);
   transition: box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
 }
 .bs-co:hover, .bs-co:focus-visible { box-shadow: inset 0 0 0 1px var(--gold), 0 6px 18px rgba(0, 0, 0, .35); }
 .bs-co:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
-.bs-co__i { flex: none; width: 20px; height: 20px; margin-top: 1px; color: var(--gold); }
-.bs-co__t { display: block; flex: 1; min-width: 0; }
-.bs-co__t > span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bs-co__i { width: 18px; height: 18px; color: var(--gold); }
+.bs-co > span { display: block; min-width: 0; white-space: nowrap; overflow: hidden; }
+.bs-co__d { grid-column: 1 / -1; }
+/* obtain: under the short line on wide screens · on phones it shares the title row (saves height for the card) */
+.bs-co__o { grid-column: 1 / -1; }
+.bs:not(.is-side) .bs-co { grid-template-columns: auto minmax(0, auto) minmax(0, 1fr); }
+.bs:not(.is-side) .bs-co__o { grid-column: 3; grid-row: 1; justify-self: end; padding-left: 6px; }
+.bs:not(.is-side) .bs-co__o.is-below { grid-column: 1 / -1; grid-row: auto; justify-self: start; padding-left: 0; }
+.bs-co > span.is-wrap { white-space: normal; }
+/* bigger screens: whole extra items under the short line (js grow) */
+.bs-co > span.bs-co__x { grid-column: 1 / -1; white-space: normal; display: grid; gap: 5px; margin-top: 5px; padding-top: 7px; border-top: 1px solid color-mix(in srgb, var(--gold) 22%, transparent); }
+.bs-co > span.bs-co__x[hidden] { display: none; }
+.bs-co__li { display: block; position: relative; font-size: 14px; line-height: 1.45; color: var(--bs-text); overflow-wrap: anywhere; }
+.bs-co__li b { font-family: var(--font-display); font-weight: 700; color: var(--ink); letter-spacing: .03em; }
+.bs-co__li.is-meta { color: var(--ink-dim); font-size: 13px; }
+.bs-co__li.is-good, .bs-co__li.is-bad { padding-left: 18px; }
+.bs-co__li.is-good::before, .bs-co__li.is-bad::before { position: absolute; left: 1px; top: 0; font-weight: 700; }
+.bs-co__li.is-good::before { content: "✓"; color: var(--good); }
+.bs-co__li.is-bad::before { content: "✕"; color: var(--bad); }
 .bs-co__n { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .04em; line-height: 1.25; color: var(--gold-hi); }
-.bs-co__d { margin-top: 2px; font-size: 12.5px; line-height: 1.35; color: var(--bs-text); }
-.bs-co__o { margin-top: 3px; font-size: 11.5px; line-height: 1.3; color: var(--ink-dim); }
-.bs-co__o[hidden] { display: none !important; }
+.bs-co__d { font-size: 13px; line-height: 1.35; color: var(--bs-text); }
+.bs-co__o { font-size: 11.5px; line-height: 1.3; color: var(--ink-dim); }
+.bs-co > span[hidden] { display: none; }
 .bs-co__tier { color: color-mix(in srgb, var(--tc, var(--gold-hi)) 75%, #fff); }
-.bs-co.is-empty .bs-co__d { color: var(--ink-faint); }
 .bs-co--bad .bs-co__n { color: var(--bs-bad-hi); }
 @media (min-width: 600px) {   /* stacked boxes on a portrait tablet: the same sizes as the side layout */
-  .bs .bs-co { padding: 10px 12px; gap: 10px; }
+  .bs .bs-co { padding: 10px 12px; column-gap: 9px; }
   .bs .bs-co__i { width: 22px; height: 22px; }
   .bs .bs-co__n { font-size: 16px; }
   .bs .bs-co__d { font-size: 14px; }
   .bs .bs-co__o { font-size: 12.5px; }
 }
-.bs.is-side .bs-co { padding: 10px 12px; gap: 10px; }
+.bs.is-side .bs-co { padding: 10px 12px; column-gap: 9px; }
 .bs.is-side .bs-co__i { width: 22px; height: 22px; }
 .bs.is-side .bs-co__n { font-size: 16px; }
 .bs.is-side .bs-co__d { font-size: 14px; }
@@ -269,11 +277,14 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs.is-side .bs-lv__name { height: 16px; font-size: 10.5px; }
 
 /* first-time hint (fades away by itself) */
-.bs-hint { position: absolute; z-index: 4; left: 50%; top: calc(var(--bs-top-h) + 4px); transform: translateX(-50%); max-width: calc(100% - 24px);
+.bs-hint { position: absolute; z-index: 4; left: 50%; bottom: calc(var(--bs-dock-h) + var(--safe-b) + 4px); transform: translateX(-50%); max-width: calc(100% - 24px);
   margin: 0; padding: 6px 12px; border-radius: var(--r-pill); background: rgba(6, 9, 32, .78); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 30%, transparent);
-  font-size: 11.5px; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; opacity: 0; transition: opacity 600ms var(--ease); }
+  font-size: 11.5px; color: var(--ink-dim); white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 600ms var(--ease); }
 .bs-hint b { color: var(--gold-hi); font-weight: 600; }
 .bs-hint.is-on { opacity: 1; }
+.bs.is-short .bs-hint { bottom: calc(var(--safe-b) + 4px); z-index: 5; }
+/* side: under the top bar, left of the black sun (never over it, never over the card) */
+.bs.is-side .bs-hint { left: 8px; bottom: auto; top: calc(var(--bs-top-h) + 6px); transform: none; max-width: var(--hint-w, 300px); white-space: normal; border-radius: 12px; line-height: 1.45; }
 
 /* ---------------- Details (W6): phone = full screen · ≥ 768px = a full-height panel on the right ---------------- */
 .bs-scrim { position: absolute; inset: 0; z-index: 20; background: var(--bs-scrim); }
