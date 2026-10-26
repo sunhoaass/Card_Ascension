@@ -69,6 +69,11 @@
   cursor: pointer;
   touch-action: pan-y;
 }
+/* W4: a finger landing on a page with many cards made Chrome hit-test every part of every card (~14 layers each).
+   A clipped card is skipped whole when the finger is not on it. The clip is a plain rectangle 48px outside the card
+   (wider than the card shadow and the widest glow), so nothing that shows today is cut. Not overflow: clip — its
+   rounded corner made every turning frame an extra drawing pass. The detail scene's 3D card is left as it was. */
+.card:not(.bs-face .card) { clip-path: inset(-48px); }
 .card.is-tilting { transition: transform 60ms linear; }
 .card:focus-visible { outline-offset: 4px; }
 .card.is-tilting, .card:hover {
