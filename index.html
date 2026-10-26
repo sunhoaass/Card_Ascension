@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=19">
-  <link rel="stylesheet" href="css/base.css?v=19">
-  <link rel="stylesheet" href="css/fx.css?v=19">
-  <link rel="stylesheet" href="css/cards.css?v=19">
-  <link rel="stylesheet" href="css/tier.css?v=19">
-  <link rel="stylesheet" href="css/deck.css?v=19">
-  <link rel="stylesheet" href="css/support.css?v=19">
-  <link rel="stylesheet" href="css/grade.css?v=19">
-  <link rel="stylesheet" href="css/tiermaker.css?v=19">
-  <link rel="stylesheet" href="css/detail.css?v=19">
-  <link rel="stylesheet" href="css/traits.css?v=19">
+  <link rel="stylesheet" href="css/tokens.css?v=20">
+  <link rel="stylesheet" href="css/base.css?v=20">
+  <link rel="stylesheet" href="css/fx.css?v=20">
+  <link rel="stylesheet" href="css/cards.css?v=20">
+  <link rel="stylesheet" href="css/tier.css?v=20">
+  <link rel="stylesheet" href="css/deck.css?v=20">
+  <link rel="stylesheet" href="css/support.css?v=20">
+  <link rel="stylesheet" href="css/grade.css?v=20">
+  <link rel="stylesheet" href="css/tiermaker.css?v=20">
+  <link rel="stylesheet" href="css/detail.css?v=20">
+  <link rel="stylesheet" href="css/traits.css?v=20">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -96,6 +96,10 @@
       <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H18v14H5.5c-.8 0-1.5.7-1.5 1.5z"/><path d="M4 19.5C4 20.3 4.7 21 5.5 21H19"/><path d="M8 8h6M8 11h4"/><path d="M15 4v5l1.5-1 1.5 1V4" stroke-width="1.2"/></g></symbol>
       <symbol id="i-lens" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3.6" stroke-width=".8" stroke-dasharray="1.6 1.6"/><path d="M14.5 14.5 20.5 20.5" stroke-width="2.6"/><path d="M7.5 7.8a3.4 3.4 0 0 1 2.5-1.3"/></g></symbol>
       <symbol id="i-trait" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 7h10l3.5 4.5L12 21 3.5 11.5z"/><path d="M3.5 11.5h17M9.5 7 12 11.5 14.5 7M8 11.5 12 21l4-9.5" stroke-width="1"/><path d="M19 1.8v3.4M17.3 3.5h3.4M4.6 2.4v2.2M3.5 3.5h2.2" stroke-width="1.2"/></g></symbol>
+      <!-- Card detail label icons (W6): Tier = i-crown · Passive / Skill = star · Strongest = sword · Weakness = cracked shield -->
+      <symbol id="i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="m12 3.2 2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/><path d="M12 7.6v5.2M9.6 10.6h4.8" stroke-width="1"/></g></symbol>
+      <symbol id="i-sword" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M19.5 3.5h1v1L10 15l-1-1z"/><path d="M17.8 5.2 9.5 13.5" stroke-width="1"/><path d="m6.2 12.8 5 5M8.2 15.8l-3.6 3.6"/><circle cx="4" cy="20" r="1.1" fill="currentColor"/></g></symbol>
+      <symbol id="i-shield-broken" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3 4.5 5.8v5.6c0 4.6 3.1 8 7.5 9.6 4.4-1.6 7.5-5 7.5-9.6V5.8z"/><path d="m12.6 3.3-1.9 4.6 2.7 2.2-2.4 3.6 1.6 2.3-.9 3.4"/></g></symbol>
       <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 4h12l4.5 5.5L12 21.5 1.5 9.5z" fill="currentColor" fill-opacity=".28" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M1.5 9.5h21M9 4l3 5.5L15 4M7 9.5l5 12 5-12" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/><path d="M7.4 6.2 5.6 8.6" style="stroke:var(--ink)" stroke-opacity=".8" stroke-width="1.2" stroke-linecap="round"/></symbol>
       <!-- Trait icons (W5): one glyph per trait, drawn for this site (shapes like the game's, no game art) · tinted by the trait tier (--tc) via currentColor -->
       <symbol id="tri-ascendant" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 6.6l1.2 3.1 3.3.2-2.6 2.1.9 3.2L12 13.4l-2.8 1.8.9-3.2-2.6-2.1 3.3-.2z" fill="currentColor" fill-opacity=".45"/><path d="M16.8 10.6c1.9-1.4 3.7-2.8 5.7-4.2-.5 2.9-2 4.9-4.4 6M17.4 13.3c1.4-.2 2.9-.8 3.9-1.8-.7 2.2-2.2 3.4-4.4 3.6M7.2 10.6C5.3 9.2 3.5 7.8 1.5 6.4c.5 2.9 2 4.9 4.4 6M6.6 13.3c-1.4-.2-2.9-.8-3.9-1.8.7 2.2 2.2 3.4 4.4 3.6" fill="none"/><path d="M12 2.6v2.2M10.2 18.4 12 20.6l1.8-2.2" fill="none" stroke-width="1.1"/></g></symbol>
@@ -684,6 +688,8 @@
           <div class="bs-pulse" id="bs-pulse"><i></i><i></i></div>
           <img class="bs-corona" id="bs-coronaA" alt="">
           <img class="bs-corona" id="bs-coronaB" alt="">
+          <div class="bs-tint" id="bs-tint"></div>
+          <div class="bs-wave" id="bs-wave"></div>
         </div>
       </div></div>
       <div class="bs-par" id="bs-sparkX"><div class="bs-par" id="bs-sparkY"><div class="bs-sparks" id="bs-sparks"></div></div></div>
@@ -692,11 +698,16 @@
     </div>
 
     <header class="bs-top">
-      <button id="detail-close" class="detail__back fx-press" type="button" aria-label="Close card details">
+      <button id="detail-close" class="bs-back fx-press" type="button" aria-label="Close card details">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
         <span>Back</span>
       </button>
       <div class="bs-top__t"><b id="bs-name">Card</b><small id="bs-pager"></small></div>
+      <div class="seg bs-gfx" id="bs-gfx" role="group" aria-label="Graphics quality" title="Graphics quality">
+        <span class="seg__ind" aria-hidden="true"></span>
+        <button class="seg__btn fx-press" type="button" data-gfx="low" aria-pressed="false">Low</button>
+        <button class="seg__btn fx-press" type="button" data-gfx="high" aria-pressed="true">High</button>
+      </div>
     </header>
 
     <div class="bs-fore" id="bs-fore">
@@ -706,6 +717,7 @@
           <div class="bs-zoom" id="bs-zoom">
             <div class="bs-motes"><div class="bs-swirl" id="bs-swirl"></div></div>
             <div class="bs-mat" id="bs-mat"></div>
+            <div class="bs-glow" id="bs-glow"></div>
             <div class="bs-tilt" id="bs-tiltEl"><div class="bs-rotor" id="bs-rotor">
               <div class="bs-face bs-face--front" id="bs-faceF"></div>
               <div class="bs-face bs-face--back" id="bs-faceB"></div>
@@ -720,7 +732,7 @@
         <button class="bs-dbtn fx-press" id="bs-details" type="button" aria-haspopup="dialog">Details
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
       </div></div>
-      <p class="sr-only" id="bs-help">Tap to spin. Drag to turn. Move the mouse to lean it. Double tap to zoom. Swipe outside the card or use the arrow keys for the next card.</p>
+      <p class="sr-only" id="bs-help">Tap to spin. Drag to turn. Move the mouse to lean it. Double tap to zoom. Swipe outside the card or use the arrow keys for the next card. Tap a label to open that part of the details.</p>
     </div>
 
     <p class="bs-hint" id="bs-hint"><b>Tap</b> spin · <b>Drag</b> turn · <b>Double-tap</b> zoom · <b>Swipe outside</b> next card</p>
@@ -748,24 +760,35 @@
           <button class="bs-sheet__x fx-press" id="bs-sheetX" type="button" aria-label="Close details">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
+        <div class="bs-sheet__lv">
+          <div class="bs-lv" id="bs-shLv" role="group" aria-label="Level"><span class="bs-lv__ind"></span></div>
+          <span class="bs-sheet__lvname" id="bs-shLvName" aria-live="polite"></span>
+        </div>
+        <div class="seg bs-tabs" id="bs-tabs" role="tablist" aria-label="Card details">
+          <span class="seg__ind" aria-hidden="true"></span>
+          <button class="seg__btn" type="button" role="tab" id="bs-tab-overview" data-tab="overview" aria-controls="bs-pane-overview" aria-selected="true">Overview</button>
+          <button class="seg__btn" type="button" role="tab" id="bs-tab-score" data-tab="score" aria-controls="bs-pane-score" aria-selected="false" tabindex="-1">Score</button>
+          <button class="seg__btn" type="button" role="tab" id="bs-tab-team" data-tab="team" aria-controls="bs-pane-team" aria-selected="false" tabindex="-1">Team</button>
+          <button class="seg__btn" type="button" role="tab" id="bs-tab-mine" data-tab="mine" aria-controls="bs-pane-mine" aria-selected="false" tabindex="-1">My card</button>
+        </div>
       </div>
       <div class="bs-sheet__body" id="bs-sheetBody"></div>
     </section>
   </div>
 
-  <script src="js/fx.js?v=19"></script>
-  <script src="js/app.js?v=19"></script>
-  <script src="js/teamscore.js?v=19"></script>
-  <script src="js/share.js?v=19"></script>
-  <script src="js/cards.js?v=19"></script>
-  <script src="js/detail.js?v=19"></script>
-  <script src="js/tier.js?v=19"></script>
-  <script src="js/deck.js?v=19"></script>
-  <script src="js/support.js?v=19"></script>
-  <script src="js/grade.js?v=19"></script>
-  <script src="js/traits.js?v=19"></script>
-  <script src="js/tiermaker.js?v=19"></script>
-  <script src="js/music.js?v=19"></script>
+  <script src="js/fx.js?v=20"></script>
+  <script src="js/app.js?v=20"></script>
+  <script src="js/teamscore.js?v=20"></script>
+  <script src="js/share.js?v=20"></script>
+  <script src="js/cards.js?v=20"></script>
+  <script src="js/detail.js?v=20"></script>
+  <script src="js/tier.js?v=20"></script>
+  <script src="js/deck.js?v=20"></script>
+  <script src="js/support.js?v=20"></script>
+  <script src="js/grade.js?v=20"></script>
+  <script src="js/traits.js?v=20"></script>
+  <script src="js/tiermaker.js?v=20"></script>
+  <script src="js/music.js?v=20"></script>
 </body>
 </html>
 

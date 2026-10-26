@@ -7,13 +7,20 @@
    · Card: tap = one 360° turn (900 ms, owner's exception to the 400 ms rule) · drag = turn (angle limited, never
      edge-on) · flick = spins and slows down · double tap = zoom · leans toward the mouse on a PC (phone tilt moves
      nothing: removed 2026-10-25). Flat 2D when it is straight,
-     real 3D (thickness, two faces) only while it moves or leans. The holo sheen always shows (static at rest).
-   · Labels: Tier (+ tierNote) / Passive / Skill / Strongest / Weakness · always visible, the dot on the card follows
-     the card as it turns (paused Web Animations) · phone = above / below the card, tap = full text ·
-     ≥ 768px = left / right of the card with the full text
+     real 3D (thickness, two faces) only while it moves or leans. The card looks exactly like on the Cards page
+     (W6: no extra sheen).
+   · Labels (W6): dark glass boxes · Tier (top left) / Passive / Skill (top right) / Weakness (bottom left) /
+     Strongest (bottom right) · icon + title + one line (+ obtain under Tier) · a thin gold elbow line from the card's
+     edge to the box (the last bit follows the card as it turns: paused Web Animations) · drawn once after the
+     intro · tap = that tab of the Details · phone = 2×2 under the card · ≥ 768px = left / right of the card
+   · Level change (W6): sun ring + running light + a faint tint of the scene take the level's colour, a light wave
+     runs from the sun down to the card and the card glows softly
+   · Graphics Low / High (W6, cbi:gfx · Low by default with ≤ 4 GB RAM): Low = no running light, still sparks /
+     fog / motes, no parallax
    · Swipe left / right (outside the card), ‹ › or the arrow keys = the next card of the list it was opened from
      (that list rides in history.state.cl, see CBI.openCard). The next and previous cards are built ahead.
-   · Details = a sheet with every panel the old detail page had (stats, Overall, Grade, abilities, matchups, team)
+   · Details (W6) = phone: full screen · ≥ 768px: a full-height panel on the right (card + scene stay on the left)
+     · sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team / My card
    · Intro (dust gathering into the card) plays every time a card opens · a little faster when swiping to the next.
    Rules (PROGRESS §4.1, §11): rAF only while something moves (intro ~2.6 s, card physics, parallax) ·
    per-frame changes = paused Web Animations, never style.transform · auras only on screen (.is-live).
@@ -56,6 +63,7 @@
   let isOpen = false, ready = false, token = 0;
   let scopeEl = null, pendingScope = null, originEl = null, hiddenEl = null, prevFocus = null, baseTitle = "";
   let side = false, hud = false;
+  let gfx = "high";          // graphics quality (W6): "high" | "low" · cbi:gfx
   let LY = { L: 0, T: 0, cw: 0, ch: 0, fw: 0, fh: 0 };
 
   /* ==========================================================
@@ -362,9 +370,11 @@
     const r = rng(11);
     for (let i = 0; i < 26; i++) {
       const x = r() * w, y = h * (0.35 + r() * 0.7), rx = 60 + r() * 150, ry = 18 + r() * 40;
+      // W6: one colour per puff for its three wrap-around copies (a new colour per copy made a hard seam where the strip repeats)
+      const col = `rgba(${185 + r() * 30 | 0},${180 + r() * 25 | 0},235,${(0.16 + r() * 0.16).toFixed(3)})`;
       for (const dx of [-w, 0, w]) {
         const g = ctx.createRadialGradient(x + dx, y, 0, x + dx, y, rx);
-        g.addColorStop(0, `rgba(${185 + r() * 30 | 0},${180 + r() * 25 | 0},235,${0.16 + r() * 0.16})`); g.addColorStop(1, "rgba(180,175,230,0)");
+        g.addColorStop(0, col); g.addColorStop(1, "rgba(180,175,230,0)");
         ctx.fillStyle = g; ctx.save(); ctx.translate(x + dx, y); ctx.scale(1, ry / rx); ctx.translate(-(x + dx), -y);
         ctx.beginPath(); ctx.arc(x + dx, y, rx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       }
@@ -407,6 +417,7 @@
   }
   let tx = 0, ty = 0, pcx = 0, pcy = 0, parRaf = 0, lastT = 0, touching = false;
   function setTarget(x, y) {
+    if (gfx === "low") return;   // Low graphics: the scene stays still
     tx = clamp(x, -1, 1); ty = clamp(y, -1, 1);
     if (!parRaf && !rm() && isOpen) { lastT = performance.now(); parRaf = requestAnimationFrame(parStep); }
   }
@@ -420,7 +431,7 @@
     parRaf = done || !isOpen ? 0 : requestAnimationFrame(parStep);
   }
   function resetParallax() { cancelAnimationFrame(parRaf); parRaf = 0; tx = ty = pcx = pcy = 0; for (const p of PAR) p.a.currentTime = 500; }
-  const INTERACTIVE = "button, a, input, select, .bs-wrap, .bs-sheet, .bs-scrim, .bs-co, .bs-pop, .bs-dock, .bs-top";
+  const INTERACTIVE = "button, a, input, select, .bs-wrap, .bs-sheet, .bs-scrim, .bs-co, .bs-dock, .bs-top";
   // no phone-tilt motion (owner, 2026-10-25): tilting the phone moves nothing · finger / mouse only
   function setupParallax() {
     addPar(el.skyX, "x", 16); addPar(el.skyY, "y", 12);
@@ -452,8 +463,6 @@
   function makeFace(card) {
     const c = C.renderCard(card, state.rarity, { tilt: false });
     c.removeAttribute("role"); c.tabIndex = -1; c.setAttribute("aria-hidden", "true");
-    const h = document.createElement("span"); h.className = "bs-holo"; h.innerHTML = "<b><i></i></b>";   // the clip box never moves (it used to slide off the card)
-    c.appendChild(h);
     return c;
   }
   function faces(card) {
@@ -492,10 +501,10 @@
      4. Labels (Tier / Passive / Skill / Strongest / Weakness) from the real data
      ========================================================== */
   const CO_DEF = [
-    { key: "tier", k: "Tier", pos: "tl", cls: "bs-co--tier" },
-    { key: "ability", k: "Passive / Skill", pos: "tr" },
-    { key: "strong", k: "Strongest", pos: "bl", cls: "bs-co--good" },
-    { key: "weak", k: "Weakness", pos: "br", cls: "bs-co--bad" },
+    { key: "tier", k: "Tier", pos: "tl", icon: "i-crown", tab: "score", cls: "bs-co--tier" },
+    { key: "ability", k: "Passive / Skill", pos: "tr", icon: "i-star", tab: "overview", to: "#d-t-abilities" },
+    { key: "weak", k: "Weakness", pos: "bl", icon: "i-shield-broken", tab: "overview", to: "#d-t-pc", cls: "bs-co--bad" },
+    { key: "strong", k: "Strongest", pos: "br", icon: "i-sword", tab: "overview", to: "#d-t-pc", cls: "bs-co--good" },
   ];
   const coEls = [];
   const names = (card, ids) => arr(ids).map((i) => byId.get(i)).filter((c) => c && c.id !== card.id).map((c) => c.name);
@@ -520,87 +529,68 @@
     const v = [s && s.passive, s && s.skill].filter((x) => x !== "" && x != null).map(Number).filter(Number.isFinite);
     return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0;
   };
-  // returns { empty, n, d (short, HTML), full (HTML), pop (HTML) }
+  const obtainOf = (card) => String(card.obtain || "").trim();
+  // one label = { t: title (HTML), d: one line (text), o: obtain line (text), empty }
   function coData(card, key) {
     if (key === "tier") {
       const ranked = C.isRanked(card), note = String(card.tierNote || "").trim();
-      const ov = ranked ? `Overall ${f1(pct(card.scores.overall))} / 100` : "";
-      if (!ranked) return { n: "Unranked", d: esc(note || "Not scored yet"), full: `<p>${esc(note || "This card hasn't been scored yet.")}</p>`, pop: `<h4>Unranked</h4><p>${esc(note || "This card hasn't been scored yet.")}</p>` };
-      const n = `Tier ${card.tier}`;
-      return { n, d: esc(note || ov), full: (note ? `<p>${esc(note)}</p>` : "") + `<p class="meta">${esc(ov)}</p>`, pop: `<h4>${esc(n)}</h4>${note ? `<p>${esc(note)}</p>` : ""}<p class="meta">${esc(ov)}</p>` };
+      if (!ranked) return { t: "Unranked", d: note || "Not scored yet", o: obtainOf(card) };
+      return { t: `Tier <span class="bs-co__tier">${esc(card.tier)}</span>`, d: note || `Overall ${f1(pct(card.scores.overall))} / 100`, o: obtainOf(card) };
     }
     if (key === "ability") {
       const ab = abilities(card);
-      if (!ab.length) return { empty: true, n: "No passive / skill", d: "", full: "", pop: `<h4>Passive / Skill</h4><p>This card has no passive or skill${C.isRanked(card) ? "" : " listed yet"}.</p>` };
-      const first = ab[0], n = first.n || first.kind, many = ab.length > 1;
-      const block = (a, h) => `${many ? `<p class="meta">${a.kind}</p>` : ""}${a.n ? `<${h}>${esc(a.n)}</${h}>` : ""}${a.d ? `<p>${esc(a.d)}</p>` : ""}`;
-      return {
-        n, d: esc(first.d || (ab[1] ? ab[1].n || ab[1].d : "")),
-        full: (first.d ? `<p>${esc(first.d)}</p>` : "") + ab.slice(1).map((a) => block(a, "b")).join(""),
-        pop: many ? ab.map((a) => block(a, "h4")).join("") : `<h4>${esc(n)}</h4>${first.d ? `<p>${esc(first.d)}</p>` : ""}`,
-      };
+      if (!ab.length) return { empty: true, t: "Passive / Skill", d: "None" };
+      return { t: "Passive / Skill", d: ab[0].n || ab[0].d };
     }
     const good = key === "strong";
     const pts = arr(good ? card.strengths : card.weaknesses).map(String);
     const vs = names(card, good ? card.beats : card.losesTo);
     const tags = good ? [] : arr(card.weakTo).map(String);
     const modes = bestModes(card, good);
-    if (!pts.length && !vs.length && !tags.length) {
-      return { empty: true, n: "Not analyzed yet", d: "", full: "", pop: `<h4>${good ? "Strongest" : "Weakness"}</h4><p>This card hasn't been analyzed yet.</p>` };
-    }
-    const n = pts[0] || (vs.length ? `${good ? "Beats" : "Loses to"} ${vs.length} card${vs.length > 1 ? "s" : ""}` : `Weak to ${tags[0]}`);
-    const rest = pts.slice(1);
-    const vsLine = vs.length ? `<b>${good ? "Beats" : "Loses to"}</b> ${esc(joinShort(vs, 2))}` : "";
-    const d = vsLine || (rest[0] ? esc(rest[0]) : tags.length ? `<b>Weak to</b> ${esc(joinShort(tags, 2))}` : "");
-    const meta = [
-      vs.length ? `${good ? "Beats" : "Loses to"}: ${vs.join(", ")}` : "",
-      tags.length ? `Weak to: ${tags.join(", ")}` : "",
-      modes.length ? `${good ? "Best" : "Weakest"} mode: ${modes[0]}` : "",
-    ].filter(Boolean).map((t) => `<p class="meta">${esc(t)}</p>`).join("");
-    const ul = rest.length ? `<ul>${rest.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : "";
-    return { n, d, full: ul + meta, pop: `<h4>${esc(n)}</h4>${ul}${meta}` };
+    const d = pts[0] || (vs.length ? `${good ? "Beats" : "Loses to"} ${joinShort(vs, 2)}` : tags.length ? `Weak to ${joinShort(tags, 2)}`
+      : modes[0] ? `${good ? "Best" : "Weakest"} mode: ${modes[0]}` : "");
+    if (!d) return { empty: true, t: good ? "Strongest" : "Weakness", d: "Not analyzed yet" };
+    return { t: good ? "Strongest" : "Weakness", d };
   }
-  let popEl = null;
   function buildCallouts() {
     CO_DEF.forEach((d) => {
       const b = document.createElement("button");
       b.type = "button";
-      b.className = "bs-co " + (d.cls || "") + (d.pos[1] === "r" ? " is-r is-right" : " is-left");
-      b.setAttribute("aria-expanded", "false"); b.setAttribute("aria-controls", "bs-pop");
-      b.innerHTML = `<span class="bs-co__k">${d.k}</span><span class="bs-co__n"></span><span class="bs-co__d"></span><span class="bs-co__full"></span>`;
-      // each part = outer (follows the card's pitch) > b (follows its turn) > i (what you see, grows in on show)
+      b.className = "bs-co fx-press " + (d.cls || "");
+      b.setAttribute("aria-haspopup", "dialog");
+      b.innerHTML = `<svg class="bs-co__i" aria-hidden="true"><use href="#${d.icon}"/></svg><span class="bs-co__t"><span class="bs-co__n"></span><span class="bs-co__d"></span><span class="bs-co__o"></span></span>`;
+      // the line = static elbow segments (box … elbow, axis-aligned) + the last bit (elbow → the card) that follows the card:
+      // outer (follows the card's pitch) > b (follows its turn) > i (what you see, grows in on show)
       const mk = (cls) => { const n = document.createElement("div"); n.className = cls; n.innerHTML = "<b><i></i></b>"; return n; };
-      const line = mk("bs-line"), dot = mk("bs-dot"), end = mk("bs-dot bs-dot--end");
-      el.callouts.append(line, dot, end, b);
-      const o = { d, el: b, line, dot, end, lineV: line.querySelector("i"), dotV: dot.querySelector("i"), endV: end.querySelector("i"), poses: null, data: null, y: 0, x: 0, w: 0, lh: 0 };
-      b.addEventListener("click", () => { if (!side) togglePop(o); });
+      const line = mk("bs-line"), dot = mk("bs-dot");
+      const segs = [0, 1, 2].map(() => { const s = document.createElement("i"); s.className = "bs-seg"; return s; });
+      el.callouts.append(...segs, line, dot, b);
+      const o = { d, el: b, line, dot, segs, segOn: 0, lineV: line.querySelector("i"), dotV: dot.querySelector("i"), poses: null, data: null };
+      b.addEventListener("click", () => { if (ready) openSheet(d.tab, d.to); });
       coEls.push(o);
     });
-    popEl = document.createElement("div");
-    popEl.className = "bs-pop"; popEl.id = "bs-pop"; popEl.hidden = true; popEl.setAttribute("role", "region");
-    el.foreY.appendChild(popEl);
   }
   function fillCallouts(card) {
     for (const o of coEls) {
       const x = coData(card, o.d.key); o.data = x;
       o.el.classList.toggle("is-empty", !!x.empty);
-      o.el.classList.toggle("is-longn", x.n.length > 56);   // a long sentence as the title reads better in the body font
-      o.el.querySelector(".bs-co__n").textContent = x.n;
-      o.el.querySelector(".bs-co__d").innerHTML = x.d;      // escaped above (esc) + our own <b>
-      o.el.querySelector(".bs-co__full").innerHTML = x.full;
-      o.el.setAttribute("aria-label", `${o.d.k}: ${x.n}${side ? "" : ". Show full text"}`);
+      o.el.querySelector(".bs-co__n").innerHTML = x.t;      // our own markup, the tier letter escaped (esc) above
+      o.el.querySelector(".bs-co__d").textContent = x.d;
+      const ob = o.el.querySelector(".bs-co__o"); ob.textContent = x.o || ""; ob.hidden = !x.o;
+      o.el.title = x.d;
+      o.el.setAttribute("aria-label", `${o.el.querySelector(".bs-co__n").textContent}: ${x.d}${x.o ? ". " + x.o : ""}. Open details`);
       if (o.d.key === "tier") { if (C.isRanked(card)) o.el.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`); else o.el.style.removeProperty("--tc"); }
     }
   }
-  /* A label's line runs from its own label (fixed) to a dot ON the card. The dot follows the card as it turns / leans:
-     the card's 3D pose is projected ahead (once per layout) into paused Web Animations — yaw 0–360° (37 steps, same
-     timing as the card's rotor) and pitch −30…30° (13 steps, same as its tilt) — and apply3D() only sets currentTime.
-     No style writes per frame (§4.1). Yaw and pitch are combined additively (close enough at the limited lean angles). */
+  /* The last bit of a label's line runs from its elbow (fixed) to a dot ON the card's edge, and that dot follows the card
+     as it turns / leans: the card's 3D pose is projected ahead (once per layout) into paused Web Animations — yaw 0–360°
+     (37 steps, same timing as the card's rotor) and pitch −30…30° (13 steps, same as its tilt) — and apply3D() only
+     sets currentTime. No style writes per frame (§4.1). Yaw and pitch are combined additively (close enough at the
+     limited lean angles). */
   const PERSP = 1100;   // = .bs-wrap.is-3d .bs-zoom perspective in detail.css
   let poseYT = 0, posePT = 500;
   function placeCo(o, ax, ay, ex, ey) {
     o.dot.style.left = ax + "px"; o.dot.style.top = ay + "px";
-    o.end.style.left = ex + "px"; o.end.style.top = ey + "px";
     o.line.style.left = ex + "px"; o.line.style.top = ey + "px";
     if (o.poses) o.poses.forEach((a) => a.cancel());
     const cx = LY.L + LY.cw / 2, cy = LY.T + LY.ch / 2, px = ax - cx, py = ay - cy;
@@ -621,13 +611,31 @@
       const ph = (k * 5 - 30) * Math.PI / 180, sc = PERSP / (PERSP - py * Math.sin(ph));
       const dy = py * Math.cos(ph) * sc - py;
       pDot.push({ transform: `translate(0px,${f2(dy)}px)` });
-      // shear that moves only the line's far end (on the card) by dy, the label end stays put
+      // shear that moves only the line's far end (on the card) by dy, the elbow end stays put
       pLine.push({ transform: `matrix(1,${(dy * v0x / v2).toFixed(5)},0,${(1 + dy * v0y / v2).toFixed(5)},0,0)` });
     }
     const mk = (n, kf, d) => { const a = n.animate(kf, { duration: d, fill: "both", easing: "linear" }); a.pause(); return a; };
     o.poses = [mk(o.dot.firstChild, yDot, 3600), mk(o.dot, pDot, 1000), mk(o.line.firstChild, yLine, 3600), mk(o.line, pLine, 1000)];
     o.poses[0].currentTime = o.poses[2].currentTime = poseYT;
     o.poses[1].currentTime = o.poses[3].currentTime = posePT;
+  }
+  // the fixed part of the elbow: pts = [elbow (next to the card), …, the box edge], each step horizontal or vertical
+  function placeSegs(o, pts) {
+    let n = 0;
+    for (let i = 0; i + 1 < pts.length && n < o.segs.length; i++) {
+      const [x0, y0] = pts[i], [x1, y1] = pts[i + 1];
+      if (Math.abs(x1 - x0) < 0.5 && Math.abs(y1 - y0) < 0.5) continue;
+      const s = o.segs[n++], h = Math.abs(y1 - y0) < 0.5;
+      s.className = "bs-seg " + (h ? "is-h" : "is-v");
+      s.style.left = Math.round(Math.min(x0, x1) - (h ? 0 : 0.5)) + "px";
+      s.style.top = Math.round(Math.min(y0, y1) - (h ? 0.5 : 0)) + "px";
+      s.style.width = h ? Math.round(Math.abs(x1 - x0)) + "px" : "";
+      s.style.height = h ? "" : Math.round(Math.abs(y1 - y0)) + "px";
+      // it grows out from the end nearest the card
+      s.style.transformOrigin = h ? (x1 >= x0 ? "0 50%" : "100% 50%") : (y1 >= y0 ? "50% 0" : "50% 100%");
+    }
+    o.segOn = n;
+    o.segs.forEach((s, i) => { s.hidden = i >= n; });
   }
   function poseCallouts(yt, pt) {
     if (yt === poseYT && pt === posePT) return;
@@ -636,7 +644,7 @@
   }
 
   /* ==========================================================
-     5. Layout: phone (labels above / below) · side (≥ 768: labels left / right, full text, bigger card)
+     5. Layout: phone (labels 2×2 under the card) · side (≥ 768: labels left / right, bigger card)
      ========================================================== */
   function moveHud(on) {
     if (on === hud && el.ovr.parentElement !== null && (on ? el.ovr.parentElement === el.dockL : el.ovr.parentElement === el.foreY)) return;
@@ -644,105 +652,110 @@
     if (on) { el.dockL.appendChild(el.ovr); el.dockR.appendChild(el.dbtn); ["left", "top"].forEach((p) => { el.ovr.style[p] = ""; el.dbtn.style[p] = ""; }); }
     else { el.foreY.appendChild(el.ovr); el.foreY.appendChild(el.dbtn); }
   }
+  const GUT = 9;   // stacked: the lines to the lower boxes run 9px outside the box grid
   function layout() {
     if (el.root.hidden) return;
     const rw = el.root.clientWidth, rh = el.root.clientHeight;
-    side = rw >= 768 || (rw >= 600 && rw > rh * 1.15);
+    // side = labels left / right (landscape, ≥ 768) · otherwise stacked: 2×2 boxes under the card (phones, portrait tablets)
+    side = (rw >= 768 && rw >= rh * 0.95) || (rw >= 600 && rw > rh * 1.15);
     el.root.classList.toggle("is-side", side);
     const fw = el.fore.clientWidth, fh = el.fore.clientHeight;
     const topH = el.fore.offsetTop;
     const [W, H] = skySize(), sun = sunOf(W, H);
     const sunB = sun.sy + sun.R - 26 - topH + 12;   // bottom of the black sun in foreground coordinates
-    let cw, useHud = false, top = 0;
-    if (!side) cw = clamp(Math.min(fw * 0.58, (fh - 214) * 0.714), 130, 260);
-    else {
-      const cap = Math.min(440, fw * 0.42, fw - 2 * (170 + 56));
+    const co = {}; coEls.forEach((o) => { co[o.d.key] = o; o.el.style.height = ""; });
+    let cw, useHud = false, top = 0, T, L, ch, B;
+
+    if (!side) {
+      // phone: card · 2×2 boxes · Overall ring + Details · (level dots in the bottom bar)
+      const gw = Math.min(fw - 32, 660), PAD = Math.round((fw - gw) / 2), bw = Math.floor((gw - 10) / 2);
+      coEls.forEach((o) => { o.el.style.width = bw + "px"; });
+      const h1 = Math.max(co.tier.el.offsetHeight, co.ability.el.offsetHeight), h2 = Math.max(co.weak.el.offsetHeight, co.strong.el.offsetHeight);
+      const below = 24 + h1 + 10 + h2 + 16 + 60 + 6;
+      top = clamp(sunB, 8, fh * 0.14);
+      cw = clamp(Math.min(fw * 0.6, (fh - top - below) / 1.4), 110, 520);
+      cw = Math.round(cw); ch = Math.round(cw * 1.4);
+      moveHud(false);
+      L = Math.round((fw - cw) / 2);
+      T = Math.round(top + Math.max(0, fh - top - below - ch) * 0.4);
+      B = T + ch;
+      LY = { L, T, cw, ch, fw, fh, B };
+      el.root.style.setProperty("--cw", cw + "px");
+      el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
+      const y1 = B + 24, y2 = y1 + h1 + 10, x0 = PAD, x1 = PAD + bw + 10;
+      const put = (o, x, y, h) => { o.el.style.left = x + "px"; o.el.style.top = y + "px"; o.el.style.height = h + "px"; };
+      put(co.tier, x0, y1, h1); put(co.ability, x1, y1, h1); put(co.weak, x0, y2, h2); put(co.strong, x1, y2, h2);
+      // upper boxes: from the card's bottom edge, down, across, down into the top of the box
+      [[co.tier, L + cw * 0.27, x0 + bw / 2], [co.ability, L + cw * 0.73, x1 + bw / 2]].forEach(([o, ax, bx]) => {
+        ax = Math.round(ax); bx = Math.round(bx);
+        const ey = B + 12;
+        placeCo(o, ax, B, ax, ey);
+        placeSegs(o, [[ax, ey], [bx, ey], [bx, y1]]);
+      });
+      // lower boxes: from the card's side, out to the screen edge, down, into the outer side of the box
+      [[co.weak, -1], [co.strong, 1]].forEach(([o, s]) => {
+        const ay = Math.round(T + ch * 0.82), ax = s < 0 ? L : L + cw;
+        const gx = s < 0 ? x0 - GUT : x1 + bw + GUT, ex = Math.round(ax + s * Math.min(14, Math.max(4, (Math.abs(ax - gx) - 4) / 2)));
+        const by = Math.round(y2 + h2 / 2);
+        placeCo(o, ax, ay, ex, ay);
+        placeSegs(o, [[ex, ay], [gx, ay], [gx, by], [s < 0 ? x0 : x1 + bw, by]]);
+      });
+      // Overall ring + Details side by side under the boxes
+      const dbw = el.dbtn.offsetWidth || 120, rowW = 60 + 14 + dbw, rx = Math.round((fw - rowW) / 2), ry = Math.round(y2 + h2 + 16);
+      el.ovr.style.left = rx + "px"; el.ovr.style.top = ry + "px";
+      el.dbtn.style.left = (rx + 74) + "px"; el.dbtn.style.top = (ry + 6) + "px";
+    } else {
+      const gap = 60, maxW = fw >= 1200 ? 340 : 300;
+      const cap = Math.min(440, fw * 0.42, fw - 2 * (190 + gap));
       top = fh < 520 ? 8 : Math.min(sunB, fh * 0.2);
       const under = Math.min(cap, (fh - top - 128) * 0.714);
       const inBar = Math.min(cap, (fh - top - 14) * 0.714);
       useHud = under < inBar * 0.85;
-      cw = Math.max(120, useHud ? inBar : under);
-    }
-    cw = Math.round(cw);
-    const ch = Math.round(cw * 1.4);
-    el.root.style.setProperty("--cw", cw + "px");
-    moveHud(side && useHud);
-    const below = hud ? 0 : 18 + 60 + 8 + 40;   // a clear gap between the card and the Overall ring
-    const L = Math.round((fw - cw) / 2);
-    let T;
-    if (!side) T = 76 + Math.max(0, (fh - 76 - below - ch) * 0.5);
-    else { T = Math.max(8, (fh - below - ch) / 2); T = Math.max(T, Math.min(top, fh - below - ch - 4)); }
-    T = Math.round(T);
-    const B = T + ch;
-    LY = { L, T, cw, ch, fw, fh, B };
-    el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
-    if (!hud) {
-      el.ovr.style.left = (fw / 2 - 30) + "px"; el.ovr.style.top = (B + 18) + "px";
-      el.dbtn.style.left = Math.round(fw / 2 - el.dbtn.offsetWidth / 2) + "px"; el.dbtn.style.top = (B + 86) + "px";
+      cw = Math.round(Math.max(120, useHud ? inBar : under));
+      ch = Math.round(cw * 1.4);
+      el.root.style.setProperty("--cw", cw + "px");
+      moveHud(useHud);
+      const below = hud ? 0 : 18 + 60 + 8 + 48;   // a clear gap between the card and the Overall ring
+      L = Math.round((fw - cw) / 2);
+      T = Math.max(8, (fh - below - ch) / 2); T = Math.round(Math.max(T, Math.min(top, fh - below - ch - 4)));
+      B = T + ch;
+      LY = { L, T, cw, ch, fw, fh, B };
+      el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
+      if (!hud) {
+        el.ovr.style.left = (fw / 2 - 30) + "px"; el.ovr.style.top = (B + 18) + "px";
+        el.dbtn.style.left = Math.round(fw / 2 - el.dbtn.offsetWidth / 2) + "px"; el.dbtn.style.top = (B + 86) + "px";
+      }
+      // left / right columns: the upper box near the card's top, the lower one near its bottom
+      const w = Math.max(150, Math.min(maxW, L - gap - 14));
+      coEls.forEach((o) => { o.el.style.width = w + "px"; });
+      for (const [a, b, right] of [[co.tier, co.weak, false], [co.ability, co.strong, true]]) {
+        const x = right ? L + cw + gap : L - gap - w;
+        const ha = a.el.offsetHeight, hb = b.el.offsetHeight;
+        let ya = T + ch * 0.05, yb = B - ch * 0.05 - hb;
+        ya = Math.max(4, ya);
+        if (yb < ya + ha + 16) yb = ya + ha + 16;
+        if (yb + hb > fh - 4) { const s = yb + hb - (fh - 4); yb -= s; ya = Math.max(4, ya - s); }
+        const ex = Math.round(right ? L + cw + gap / 2 : L - gap / 2), bx = right ? x : x + w, ax = right ? L + cw : L;
+        [[a, ya, ha, 0.3], [b, yb, hb, 0.7]].forEach(([o, y, h, f]) => {
+          y = Math.round(y);
+          o.el.style.left = x + "px"; o.el.style.top = y + "px";
+          const ay = Math.round(T + ch * f), by = Math.round(y + h / 2);
+          placeCo(o, ax, ay, ex, ay);
+          placeSegs(o, [[ex, ay], [ex, by], [bx, by]]);
+        });
+      }
     }
     const zs = Math.min(1.7, (fh - 16) / ch, (fw - 24) / cw);
     el.zoom.style.setProperty("--zs", zs.toFixed(3)); el.zoom.style.setProperty("--zy", Math.round(fh / 2 - (T + ch / 2)) + "px");
-
-    if (side) {
-      // full text left / right of the card; each label at most half the height (it scrolls inside beyond that)
-      const gap = 44, maxW = fw >= 1200 ? 380 : 320;
-      const w = Math.max(120, Math.min(maxW, L - gap - 14));
-      el.root.style.setProperty("--co-max", Math.floor((fh - 22) / 2) + "px");
-      const col = { l: [], r: [] };
-      for (const o of coEls) {
-        const right = o.d.pos[1] === "r";
-        o.el.style.width = w + "px";
-        o.el.style.left = (right ? L + cw + gap : L - gap - w) + "px";
-        col[right ? "r" : "l"].push(o);
-      }
-      for (const k of ["l", "r"]) {
-        const [a, b] = col[k];                    // a = top label, b = bottom label
-        const ha = a.el.offsetHeight, hb = b.el.offsetHeight;
-        let ya = T + ch * 0.26 - ha / 2, yb = T + ch * 0.74 - hb / 2;
-        ya = Math.max(4, ya);
-        if (yb < ya + ha + 14) yb = ya + ha + 14;
-        if (yb + hb > fh - 4) { const s = yb + hb - (fh - 4); yb -= s; ya = Math.max(4, ya - s); }
-        [[a, ya, ha], [b, yb, hb]].forEach(([o, y, h]) => {
-          y = Math.round(y);
-          o.el.classList.toggle("is-scroll", o.el.scrollHeight > o.el.clientHeight + 2);   // more text inside: fade the bottom edge
-          const right = k === "r", x = parseFloat(o.el.style.left);
-          o.el.style.top = y + "px";
-          const ey = y + Math.min(h / 2, 24), ex = right ? x - 3 : x + w + 3;
-          const ax = right ? L + cw : L, ay = clamp(ey, T + 14, B - 14);
-          Object.assign(o, { x, y, w, lh: h, bottom: o.d.pos[0] === "b", right });
-          placeCo(o, ax, ay, ex, ey);
-        });
-      }
-      closePop(true);
-    } else {
-      el.root.style.removeProperty("--co-max");
-      coEls.forEach((o) => o.el.classList.remove("is-scroll"));
-      const dbw = el.dbtn.offsetWidth || 100;
-      for (const o of coEls) {
-        const right = o.d.pos[1] === "r", bottom = o.d.pos[0] === "b";
-        let x, w;
-        if (!bottom) { w = Math.floor(fw / 2 - 20); x = right ? Math.ceil(fw / 2 + 6) : 14; }
-        else { w = Math.floor(Math.min(170, (fw - dbw) / 2 - 22)); x = right ? fw - 14 - w : 14; }
-        o.el.style.left = x + "px"; o.el.style.width = w + "px";
-        const lh = o.el.offsetHeight;
-        let y, ax, ay, ex, ey;
-        if (!bottom) { y = Math.max(2, T - 22 - lh); ex = right ? x + 18 : x + w - 18; ey = y + lh + 3; ax = right ? L + cw * 0.76 : L + cw * 0.24; ay = T; }
-        else { y = Math.min(B + 22, fh - lh - 2); ex = right ? x + 18 : x + w - 18; ey = y - 3; ax = right ? L + cw * 0.78 : L + cw * 0.22; ay = B; }
-        o.el.style.top = y + "px";
-        Object.assign(o, { x, y, w, lh, bottom, right });
-        placeCo(o, ax, ay, ex, ey);
-      }
-      if (openCo) placePop(openCo);
-    }
     el.pager.textContent = list.length > 1 ? `${idx + 1} / ${list.length}${side ? "" : " · swipe ← →"}` : "";
+    if (sheetOpen) sheetSide();
   }
 
-  /* ---------- labels show / hide ---------- */
+  /* ---------- labels: drawn once after the intro (dot → line along the elbow → box fades in) ---------- */
   let coAnims = [];
   function hideCallouts() {
     coAnims.forEach((a) => a.cancel()); coAnims = [];
-    for (const o of coEls) for (const x of [o.el, o.lineV, o.dotV, o.endV]) { x.style.opacity = ""; x.style.transform = ""; }
-    closePop(true);
+    for (const o of coEls) for (const x of [o.el, o.lineV, o.dotV, ...o.segs]) { x.style.opacity = ""; x.style.transform = ""; }
   }
   // a finished animation still keeps its element as its own layer; commit the end state as plain styles instead (§13.1 lesson 6)
   function keep(an) { an.onfinish = () => { try { an.commitStyles(); } catch (e) {} an.cancel(); const i = coAnims.indexOf(an); if (i >= 0) coAnims.splice(i, 1); }; return an; }
@@ -750,53 +763,24 @@
     hideCallouts();
     const on = { fill: "forwards" };
     const push = (...xs) => xs.forEach((x) => coAnims.push(keep(x)));
+    const segK = (s) => (s.classList.contains("is-h") ? ["scaleX(0)", "scaleX(1)"] : ["scaleY(0)", "scaleY(1)"]);
     coEls.forEach((o, i) => {
-      const d = i * 140;
+      const d = i * 90, segs = o.segs.slice(0, o.segOn);
       if (rm()) {
         push(o.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: d, ...on }),
           o.lineV.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(1)" }], { duration: 1, ...on }),
           o.dotV.animate([{ transform: "scale(1)" }, { transform: "scale(1)" }], { duration: 1, ...on }),
-          o.endV.animate([{ transform: "scale(1)" }, { transform: "scale(1)" }], { duration: 1, ...on }));
+          ...segs.map((s) => { const k = segK(s)[1]; return s.animate([{ transform: k }, { transform: k }], { duration: 1, ...on }); }));
         return;
       }
-      push(
-        o.dotV.animate([{ transform: "scale(0)" }, { transform: "scale(1.5)", offset: 0.6 }, { transform: "scale(1)" }], { duration: 260, delay: d, easing: E, ...on }),
-        o.lineV.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 260, delay: d + 120, easing: E, ...on }),
-        o.endV.animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 160, delay: d + 360, easing: E, ...on }),
-        o.el.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300, delay: d + 380, easing: E, ...on }),
-      );
+      let t = d;
+      push(o.dotV.animate([{ transform: "scale(0)" }, { transform: "scale(1.5)", offset: 0.6 }, { transform: "scale(1)" }], { duration: 240, delay: t, easing: E, ...on }));
+      t += 90;
+      push(o.lineV.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 110, delay: t, easing: "linear", ...on }));
+      t += 110;
+      segs.forEach((s) => { const [a, b] = segK(s); push(s.animate([{ transform: a }, { transform: b }], { duration: 110, delay: t, easing: "linear", ...on })); t += 110; });
+      push(o.el.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 280, delay: t - 60, easing: E, ...on }));
     });
-  }
-
-  /* ---------- tap a label (phone) = full explanation ---------- */
-  let openCo = null;
-  function togglePop(o) {
-    if (openCo === o) { closePop(); return; }
-    closePop(true);
-    popEl.classList.toggle("is-bad", o.d.key === "weak");
-    popEl.innerHTML = o.data ? o.data.pop : "";
-    popEl.setAttribute("aria-label", o.d.k);
-    popEl.hidden = false; openCo = o; o.el.setAttribute("aria-expanded", "true");
-    placePop(o);
-    void popEl.offsetWidth; popEl.classList.add("is-on");
-  }
-  function placePop(o) {
-    const pw = Math.min(300, LY.fw - 28);
-    popEl.style.width = pw + "px";
-    popEl.style.maxHeight = Math.max(120, LY.fh - 8) + "px";
-    const ph = popEl.offsetHeight;
-    const left = clamp(o.right ? o.x + o.w - pw : o.x, 14, LY.fw - pw - 14);
-    const below = !o.bottom;
-    const top = clamp(below ? o.y + o.lh + 6 : o.y - 6 - ph, 2, Math.max(2, LY.fh - ph - 2));
-    popEl.style.left = left + "px"; popEl.style.top = top + "px";
-    popEl.style.setProperty("--py", below ? "-6px" : "6px");
-  }
-  function closePop(instant) {
-    if (!openCo) return;
-    openCo.el.setAttribute("aria-expanded", "false"); openCo = null;
-    popEl.classList.remove("is-on");
-    if (instant || rm()) popEl.hidden = true;
-    else setTimeout(() => { if (!openCo) popEl.hidden = true; }, 210);
   }
 
   /* ---------- Overall ring ---------- */
@@ -846,7 +830,7 @@
     moteColors();
   }
   const moteAnims = () => [...el.swirl.querySelectorAll(".bs-mote")].flatMap((m) => m.getAnimations());
-  function motesPlay(on) { moteAnims().forEach((x) => (on ? x.play() : x.pause())); }
+  function motesPlay(on) { on = on && gfx !== "low"; moteAnims().forEach((x) => (on ? x.play() : x.pause())); }
   function moteColors() {
     const lv = lvOf(state.rarity), ms = el.swirl.children;
     for (let i = 0; i < ms.length; i++) ms[i].style.setProperty("--c", lv.byAngle ? lv.pal[i % lv.pal.length] : lv.pal[i % 2 ? 0 : 1]);
@@ -863,7 +847,6 @@
   const MAX_YAW = 42, MAX_PITCH = 24, DRAG_YAW = 36, DRAG_PITCH = 18;
   const LEAN = { y: 16, x: 12 };   // degrees with the mouse at the edge (PC only)
   const soft = (v, m) => m * Math.tanh(v / m);   // rubber-band limit: grows slower and slower toward ±m
-  const HOLO_KF = Array.from({ length: 9 }, (_, k) => ({ transform: `translateX(${f2(Math.sin(k * Math.PI / 4) * 34)}%)` }));
   let A3 = null;
   const mod360 = (a) => ((a % 360) + 360) % 360;
   const leaning = () => Math.abs(R3.tly) > 0.01 || Math.abs(R3.tlx) > 0.01 || Math.abs(R3.ly) > 0.05 || Math.abs(R3.lx) > 0.05;
@@ -873,16 +856,13 @@
     const lin = { duration: 3600, fill: "both", easing: "linear" };
     const y = el.rotor.animate([{ transform: "rotateY(0deg)" }, { transform: "rotateY(360deg)" }], lin);
     const x = el.tiltEl.animate([{ transform: "rotateX(-30deg)" }, { transform: "rotateX(30deg)" }], { duration: 1000, fill: "both" });
-    const holos = [...el.rotor.querySelectorAll(".bs-holo i")].map((h) => h.animate(HOLO_KF, lin));
-    const holoY = [...el.rotor.querySelectorAll(".bs-holo b")].map((h) => h.animate([{ transform: "translateY(22%)" }, { transform: "translateY(-22%)" }], { duration: 1000, fill: "both" }));
-    A3 = { y, x, holos, holoY, all: [y, x, ...holos, ...holoY] };
+    A3 = { y, x, all: [y, x] };
     A3.all.forEach((a) => a.pause());
     apply3D();
   }
-  // back to flat 2D (card straight): the holo keeps its last place (#7: a still sheen, no looping animation)
+  // back to flat 2D (card straight)
   function exit3D() {
     if (!A3) return;
-    for (const a of A3.holos.concat(A3.holoY)) { try { a.commitStyles(); } catch (e) {} }
     A3.all.forEach((a) => a.cancel()); A3 = null;
     el.wrap.classList.remove("is-3d"); busy(false);
     poseCallouts(0, 500);
@@ -897,9 +877,9 @@
     if (!A3) return;
     const [yaw, pitch] = shown();
     const t = mod360(yaw) * 10;
-    A3.y.currentTime = t; for (const a of A3.holos) a.currentTime = t;
+    A3.y.currentTime = t;
     const xt = (clamp(pitch, -30, 30) + 30) / 60 * 1000;
-    A3.x.currentTime = xt; for (const a of A3.holoY) a.currentTime = xt;
+    A3.x.currentTime = xt;
     poseCallouts(t, xt);
   }
   // the mouse (PC) sets where the card leans to (eased in tick)
@@ -958,14 +938,14 @@
     if (R3.mode === "drag" || !el.wrap.classList.contains("is-in")) return;
     if (rm()) { el.faceF.querySelectorAll(".gc__flash").forEach((f) => f.animate([{ opacity: 0.4 }, { opacity: 0 }], { duration: 300 })); return; }
     if (R3.mode === "rest") R3.ang = 0;
-    closePop(); hideHint(); enter3D(); busy(true);
+    hideHint(); enter3D(); busy(true);
     const a0 = R3.ang, a1 = (Math.round(a0 / 360) + 1) * 360;   // one more full turn, always ends on the front
     R3.mode = "tween"; R3.spin = true; R3.tw = { a0, a1, t0: performance.now(), dur: 900 }; R3.release = false;
     kick();
   }
   function toggleZoom(force) {
     const on = typeof force === "boolean" ? force : !el.fore.classList.contains("is-zoom");
-    el.fore.classList.toggle("is-zoom", on); closePop(true); if (on) hideHint();
+    el.fore.classList.toggle("is-zoom", on); if (on) hideHint();
   }
   let P = null, tapTimer = 0, lastTap = 0;
   const dpp = () => 200 / Math.max(120, el.wrap.offsetWidth * FX.zoom());   // degrees per pixel of finger movement
@@ -980,7 +960,7 @@
       if (!P || e.pointerId !== P.id || rm()) return;
       const dx = e.clientX - P.x0, dy = e.clientY - P.y0, now = performance.now();
       if (!P.drag && Math.hypot(dx, dy) > 7) {
-        P.drag = true; clearTimeout(tapTimer); tapTimer = 0; closePop(); hideHint();
+        P.drag = true; clearTimeout(tapTimer); tapTimer = 0; hideHint();
         if (R3.mode === "rest") R3.ang = 0;
         R3.base = Math.round(R3.ang / 360) * 360;          // the front it springs back to (a grab mid-spin stays a spin)
         P.a0 = R3.ang - dx * dpp(); R3.mode = "drag"; R3.vel = 0; R3.vtx = 0;
@@ -1025,7 +1005,6 @@
   let SW = null, switching = false;
   function setupSwipe() {
     el.root.addEventListener("pointerdown", (e) => {
-      if (openCo && !e.target.closest(".bs-co, .bs-pop")) closePop();
       if (e.target.closest(INTERACTIVE)) { SW = null; return; }
       SW = { id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now() };
     });
@@ -1053,7 +1032,7 @@
     const i = list.indexOf(id);
     if (i >= 0) idx = i;
     const visible = el.wrap.classList.contains("is-in");
-    switching = true; stopIntro(); closePop(true); hideHint(); stopCard(); toggleZoom(false);
+    switching = true; stopIntro(); hideHint(); stopCard(); toggleZoom(false);
     introTimers.forEach(clearTimeout); introTimers = [];
     hideCallouts();
     const mine = token;
@@ -1085,7 +1064,8 @@
   function afterShow() { prefillSheet(); prepNeighbours(); }
 
   /* ==========================================================
-     8. Details sheet: every panel of the old detail page
+     8. Details (W6): phone = full screen · ≥ 768 = a full-height panel on the right (the card + scene stay on the left)
+        sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team / My card
      ========================================================== */
   // Passive + Skill (15 % + 15 %) = one "Passive / Skill" row of 30 % (the card has one ability slot) · Overall unchanged
   const SCORE_ROWS = [["atk", "ATK", 12.5], ["hp", "HP", 12.5], ["ability", "Passive / Skill", 30], ["matchup", "Matchup", 25], ["team", "Team", 20]];
@@ -1099,59 +1079,43 @@
     if (/^\d+\s*[-–]\s*\d+$/.test(t)) return "Slots " + t.replace(/\s*[-–]\s*/, "–");
     return t;
   };
-  function subStat(card, key, r) {
-    if (card.exact && card.exact[r] && card.exact[r][key]) return "Game value";
-    if (r === "Normal") return "Base value";
-    return `Normal ${C.fmtStat(card.base[key])} × ${C.rarityOf(r).stat}`;
-  }
+  const TABS = ["overview", "score", "team", "mine"];
+  const modesOf = (card) => (card.modes && typeof card.modes === "object" ? Object.entries(card.modes) : [])
+    .map(([id, v]) => [id, Number(v)]).filter(([, v]) => Number.isFinite(v)).sort((a, b) => b[1] - a[1]);
+  const bar = (label, v, i, extra = "") => `
+        <div class="score" style="--v:${pct(v) / 100};--d:${150 + i * 60}ms">
+          <span class="score__name">${label}</span>${extra}
+          <span class="score__num" data-value="${Math.round(pct(v))}">${Math.round(pct(v))}</span>
+          <span class="score__track"><i></i></span>
+        </div>`;
   function sheetHTML(card) {
     const ranked = C.isRanked(card);
     const s = card.scores || {}, team = card.team || {};
     const strengths = arr(card.strengths), weaknesses = arr(card.weaknesses);
     const ab = abilities(card);
-    const abHTML = ab.length ? ab.map((a) => `${ab.length > 1 ? `<span class="ability__kind">${a.kind}</span>` : ""}${a.n ? `<b class="ability__name">${esc(a.n)}</b>` : ""}${a.d ? `<p class="ability__desc">${esc(a.d)}</p>` : ""}`).join("") : `<p class="muted">None</p>`;
+    const abHTML = ab.length ? ab.map((a) => `<div class="ability">${ab.length > 1 ? `<span class="ability__kind">${a.kind}</span>` : ""}${a.n ? `<b class="ability__name">${esc(a.n)}</b>` : ""}${a.d ? `<p class="ability__desc">${esc(a.d)}</p>` : ""}</div>`).join("") : `<p class="muted">None</p>`;
     const note = String(card.tierNote || "").trim();
     const bullets = (a, cls) => a.length ? `<ul class="pc pc--${cls}">${a.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : `<p class="muted">Not analyzed yet</p>`;
     const supports = arr(team.bestSupport).map((id) => { const f = state.support.find((x) => x.id === id); return f && f.name ? f.name : pretty(id); });
     const slot = fmtSlot(team.position);
     const resolve = (ids) => arr(ids).map((id) => byId.get(id)).filter((c) => c && c.id !== card.id);
     const beats = resolve(card.beats), loses = resolve(card.losesTo), withs = resolve(team.bestWith);
-    const row = (id, a) => a.length ? `<div class="mini-row" id="${id}"></div>` : `<p class="muted">Not analyzed yet</p>`;
-    const overall = ranked ? `
-      <div class="overall">
-        <div class="overall__score"><span class="overall__num" data-d="overall" data-value="0">0</span><span class="overall__max">/ 100</span></div>
-        <div class="overall__tier"><span class="badge badge--tier">${esc(card.tier)}</span><small>Tier</small></div>
-      </div>
-      <div class="scores">${SCORE_ROWS.map(([k, label, w], i) => `
-        <div class="score" style="--v:${pct(scoreOf(s, k)) / 100};--d:${150 + i * 60}ms">
-          <span class="score__name">${label}</span><span class="score__weight">${w}%</span>
-          <span class="score__num" data-d="s-${k}" data-value="0">0</span>
-          <span class="score__track"><i></i></span>
-        </div>`).join("")}</div>`
-      : `<div class="unranked"><span class="badge badge--muted">Unranked</span><span>This card hasn't been scored yet. Its Overall score and tier will show up here once it is.</span></div>`;
-    return `
-        <div class="detail__badges">
-          ${ranked ? `<span class="badge badge--tier">Tier ${esc(card.tier)}</span>` : `<span class="badge badge--muted">Unranked</span>`}
-          ${card.role && !/\|/.test(card.role) ? `<span class="badge">${esc(card.role)}</span>` : ""}
-        </div>
-        <div class="rarity-picker" role="group" aria-label="Rarity">${C.rarityChipsHTML()}</div>
-        <div class="dstats${EXTRA_STATS.some(([k]) => hasBase(card, k)) ? " dstats--more" : ""}">
-          <div class="dstat dstat--atk"><div class="dstat__label">ATK</div><div class="dstat__value" data-d="atk" data-value="0">0</div><div class="dstat__sub" data-d="atk-sub"></div></div>
-          <div class="dstat dstat--hp"><div class="dstat__label">HP</div><div class="dstat__value" data-d="hp" data-value="0">0</div><div class="dstat__sub" data-d="hp-sub"></div></div>
-          ${EXTRA_STATS.filter(([k]) => hasBase(card, k)).map(([k, label]) => `<div class="dstat dstat--${k}"><div class="dstat__label">${label}</div><div class="dstat__value" data-d="${k}" data-value="0">0</div><div class="dstat__sub" data-d="${k}-sub"></div></div>`).join("")}
-          <div class="dstat dstat--odds"><div class="dstat__label">Pull odds</div><div class="dstat__value" data-d="odds"></div><div class="dstat__sub" data-d="odds-sub"></div></div>
-        </div>
-        <section class="dpanel" aria-labelledby="d-t-overall">
-          <h3 class="dpanel__title" id="d-t-overall">Overall score</h3>
-          ${ranked ? `<p class="dpanel__sub">Weighted sum of five scores, each out of 100.</p>` : ""}
-          ${note ? `<p class="dpanel__note">${esc(note)}</p>` : ""}
-          ${overall}
+    const row = (id, a) => a.length ? `<div class="mini-row" id="${id}" data-card-list></div>` : `<p class="muted">Not analyzed yet</p>`;
+    const modes = modesOf(card);
+    const stat = (k, label) => `<div class="bs-stat bs-stat--${k}"><dt>${label}</dt><dd data-d="${k}" data-value="0">0</dd></div>`;
+    const pane = (id, html) => `<div class="bs-pane" id="bs-pane-${id}" role="tabpanel" aria-labelledby="bs-tab-${id}" tabindex="-1" data-pane="${id}" hidden>${html}</div>`;
+    const overview = `
+        <section class="dpanel" aria-labelledby="d-t-stats">
+          <h3 class="dpanel__title" id="d-t-stats">Stats <span class="bs-stats__lv" data-d="lv">${esc(state.rarity)}</span></h3>
+          <dl class="bs-stats">
+            ${stat("atk", "ATK")}${stat("hp", "HP")}
+            ${EXTRA_STATS.filter(([k]) => hasBase(card, k)).map(([k, label]) => stat(k, label)).join("")}
+            <div class="bs-stat bs-stat--odds"><dt>Pull odds</dt><dd data-d="odds"></dd></div>
+          </dl>
         </section>
-        ${C.grade.panelHTML(card)}
-        ${C.traits.panelHTML(card)}
         <section class="dpanel" aria-labelledby="d-t-abilities">
           <h3 class="dpanel__title" id="d-t-abilities">Passive / Skill</h3>
-          <div class="ability">${abHTML}</div>
+          ${abHTML}
         </section>
         <section class="dpanel" aria-labelledby="d-t-pc">
           <h3 class="dpanel__title" id="d-t-pc">Strengths &amp; weaknesses</h3>
@@ -1160,6 +1124,25 @@
             <div><h4 class="pc__title pc__title--bad">Weaknesses</h4>${bullets(weaknesses, "bad")}</div>
           </div>
         </section>
+        ${card.updated ? `<p class="detail__foot">Updated ${esc(card.updated)}</p>` : ""}`;
+    const score = ranked ? `
+        <section class="dpanel" aria-labelledby="d-t-overall">
+          <h3 class="dpanel__title" id="d-t-overall">Overall score</h3>
+          <div class="overall">
+            <div class="overall__score"><span class="overall__num" data-d="overall" data-value="0">0</span><span class="overall__max">/ 100</span></div>
+            <div class="overall__tier"><span class="badge badge--tier">${esc(card.tier)}</span><small>Tier</small></div>
+          </div>
+          ${note ? `<h4 class="bs-sub">Why tier ${esc(card.tier)}</h4><p class="dpanel__note">${esc(note)}</p>` : ""}
+          <h4 class="bs-sub">Score breakdown</h4>
+          <p class="dpanel__sub">Weighted sum of five scores, each out of 100.</p>
+          <div class="scores">${SCORE_ROWS.map(([k, label, w], i) => bar(label, scoreOf(s, k), i, `<span class="score__weight">${w}%</span>`).replace('class="score__num"', `class="score__num" data-d="s-${k}"`)).join("")}</div>
+        </section>`
+      : `<section class="dpanel" aria-labelledby="d-t-overall">
+          <h3 class="dpanel__title" id="d-t-overall">Overall score</h3>
+          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>This card hasn't been scored yet. Its Overall score and tier will show up here once it is.</span></div>
+          ${note ? `<p class="dpanel__note">${esc(note)}</p>` : ""}
+        </section>`;
+    const teamHTML = `
         <section class="dpanel" aria-labelledby="d-t-match">
           <h3 class="dpanel__title" id="d-t-match">Matchups</h3>
           <div class="group"><h4 class="group__title group__title--good">Beats <span class="group__count">${beats.length || ""}</span></h4>${row("d-beats", beats)}</div>
@@ -1170,23 +1153,25 @@
           <div class="group"><h4 class="group__title">Best slot</h4><div class="chips">${slot ? `<span class="badge">${esc(slot)}</span>` : `<span class="muted">Not analyzed yet</span>`}</div></div>
           <div class="group"><h4 class="group__title">Works well with</h4>${row("d-with", withs)}</div>
           <div class="group"><h4 class="group__title">Recommended support</h4>${supports.length ? `<div class="chips">${supports.map((n) => `<span class="supchip">${esc(n)}</span>`).join("")}</div>` : `<p class="muted">Not analyzed yet</p>`}</div>
+          ${card.notes ? `<div class="group"><h4 class="group__title">Notes</h4><p class="dpanel__note">${esc(card.notes)}</p></div>` : ""}
         </section>
-        <footer class="detail__foot">
-          ${card.notes ? `<p>${esc(card.notes)}</p>` : ""}
-          ${card.updated ? `<p>Updated ${esc(card.updated)}</p>` : ""}
-        </footer>`;
+        <section class="dpanel" aria-labelledby="d-t-modes">
+          <h3 class="dpanel__title" id="d-t-modes">Modes</h3>
+          ${modes.length ? `<div class="scores">${modes.map(([id, v], i) => bar(esc(modeName(id)), v, i)).join("")}</div>` : `<p class="muted">Not analyzed yet</p>`}
+        </section>`;
+    return pane("overview", overview) + pane("score", score) + pane("team", teamHTML) +
+      pane("mine", C.traits.panelHTML(card) + C.grade.panelHTML(card));
   }
   const q = (k) => el.sheetBody.querySelector(`[data-d="${k}"]`);
   const setNum = (n, v, fmt, anim) => { if (!n) return; if (anim) FX.countTo(n, v, { format: fmt }); else { n.dataset.value = v; n.textContent = fmt(v); } };
+  // W6: no "Normal … × 93" / "… × rarer" lines any more · just the numbers at the chosen level
   function fillStats(card, anim) {
-    const r = state.rarity, info = C.rarityOf(r);
+    const r = state.rarity;
     setNum(q("atk"), C.statAt(card, "atk", r), C.fmtStat, anim);
     setNum(q("hp"), C.statAt(card, "hp", r), C.fmtStat, anim);
     q("odds").textContent = C.fmtOdds(C.oddsAt(card, r));
-    q("atk-sub").textContent = subStat(card, "atk", r);
-    q("hp-sub").textContent = subStat(card, "hp", r);
-    EXTRA_STATS.forEach(([k]) => { if (!q(k)) return; setNum(q(k), C.statAt(card, k, r), C.fmtStat, anim); q(k + "-sub").textContent = subStat(card, k, r); });
-    q("odds-sub").textContent = r === "Normal" ? "Base odds" : `Normal ${C.fmtOdds(card.base.odds)} · ${Number(info.odds.toPrecision(4)).toLocaleString("en-US")}× rarer`;
+    q("lv").textContent = r;
+    EXTRA_STATS.forEach(([k]) => { if (q(k)) setNum(q(k), C.statAt(card, k, r), C.fmtStat, anim); });
   }
   function fillScores(card, anim) {
     if (!C.isRanked(card)) return;
@@ -1195,20 +1180,22 @@
     SCORE_ROWS.forEach(([k]) => setNum(q("s-" + k), scoreOf(s, k), fmt, anim));
   }
   function sheetSub(card) {
-    return `${C.isRanked(card) ? `Tier ${card.tier}` : "Unranked"} · ${state.rarity}${card.series ? " · " + card.series : ""}`;
+    const ranked = C.isRanked(card), ob = obtainOf(card);
+    return `${ranked ? `<span class="badge badge--tier">Tier ${esc(card.tier)}</span>` : `<span class="badge badge--muted">Unranked</span>`}` +
+      `<span class="bs-sheet__meta">${esc(state.rarity)}${card.series ? " · " + esc(card.series) : ""}</span>` +
+      (ob ? `<span class="bs-sheet__obtain">${esc(ob)}</span>` : "");
   }
-  const el2 = {};
-  let sheetOpen = false, shAnims = [], SD = null, sheetKey = "";
+  let sheetOpen = false, shAnims = [], SD = null, sheetKey = "", tab = "overview";
   function prefillSheet() { setTimeout(() => idle(() => { if (isOpen && !sheetOpen) fillSheet(); }), 0); }
   function fillSheet() {
     const card = cur;
     if (!card || sheetKey === card.id) return;
     sheetKey = card.id;
     el.shTitle.textContent = card.name;
-    el.shSub.textContent = sheetSub(card);
+    el.sheet.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`);   // tier badge colour (head + Score tab)
+    el.shSub.innerHTML = sheetSub(card);
     el.shThumb.innerHTML = card.image ? C.artImg(card.image, true) : C.placeholderArt(card);
     if (card.image) C.bindArt(el.shThumb, card);
-    el.sheetBody.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`);   // tier badge colour
     el.sheetBody.innerHTML = sheetHTML(card);
     C.grade.mountSlabs(el.sheetBody);   // step 13: the graded case in the Grade panel (only when this card has grades)
     C.traits.mountPanel(el.sheetBody, card);   // Trait panel: recommended trait + the user's trait + boosted stats
@@ -1219,32 +1206,78 @@
         .forEach((c) => rowEl.appendChild(C.renderCard(c, state.rarity, { mini: true })));
     });
     fillStats(card, false); fillScores(card, false);
+    setTab(tab);
     el.sheet.classList.add("is-ready-paint");
+  }
+  const paneOf = (name) => el.sheetBody.querySelector(`[data-pane="${name}"]`);
+  // switch tab · animate = the pane fades in, its numbers count and its bars grow (§4) · to = a panel to bring into view
+  function setTab(name, { animate = false, to = null } = {}) {
+    if (!TABS.includes(name)) name = "overview";
+    tab = name;
+    el.tabs.style.setProperty("--i", TABS.indexOf(name));
+    el.tabs.querySelectorAll("[role=tab]").forEach((b) => { const on = b.dataset.tab === name; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; });
+    el.sheetBody.querySelectorAll(".bs-pane").forEach((p) => { p.hidden = p.dataset.pane !== name; });
     el.sheetBody.scrollTop = 0;
+    const pane = paneOf(name);
+    if (!pane) return;
+    if (animate) {
+      if (!rm()) { pane.classList.remove("fx-page-in"); void pane.offsetWidth; pane.classList.add("fx-page-in"); }
+      paneCount(name);
+    }
+    if (to) {
+      const t = pane.querySelector(to), sec = t && t.closest("section");
+      if (sec && sec !== pane.firstElementChild) {
+        const z = FX.zoom();
+        el.sheetBody.scrollTop += (sec.getBoundingClientRect().top - el.sheetBody.getBoundingClientRect().top) / z - 12;
+      }
+      if (sec) setTimeout(() => FX.flash(sec), animate ? 120 : 340);
+    }
+  }
+  // numbers count up from 0 · score bars grow (the shown tab only)
+  function paneCount(name) {
+    const pane = paneOf(name);
+    if (!pane || !cur) return;
+    pane.querySelectorAll("[data-d][data-value]").forEach((n) => { n.dataset.value = 0; n.textContent = "0"; });
+    if (name === "overview") fillStats(cur, true);
+    if (name === "score") fillScores(cur, true);
+    pane.classList.remove("is-replay"); void pane.offsetWidth; pane.classList.add("is-replay");
+  }
+  // side panel: the scene moves left by half the panel so the card stays in view (CSS, transform only)
+  function sheetSide() {
+    const on = sheetOpen && side;
+    el.root.classList.toggle("is-sheet", sheetOpen);
+    el.root.classList.toggle("is-sheet-side", on);
+    if (on) el.root.style.setProperty("--shw", Math.round(el.sheet.offsetWidth) + "px");
+    el.sheet.setAttribute("aria-modal", String(!side));
+    el.scrim.hidden = !sheetOpen || side;
   }
   function moveSheet(f0, f1v, dur, easing, done) {
     shAnims.forEach((a) => a.cancel());
     const o = { duration: Math.max(90, dur * Math.max(0.35, Math.abs(f1v - f0))), easing, fill: "forwards" };
+    const tr = (f) => ({ transform: side ? `translateX(${f2(f * 100)}%)` : `translateY(${f2(f * 100)}%)` });
     shAnims = rm()
-      ? [el.sheet.animate([{ opacity: 1 - f0 }, { opacity: 1 - f1v }], o), el.scrim.animate([{ opacity: 1 - f0 }, { opacity: 1 - f1v }], o)]
-      : [el.sheet.animate([{ transform: `translateY(${f2(f0 * 100)}%)` }, { transform: `translateY(${f2(f1v * 100)}%)` }], o), el.scrim.animate([{ opacity: 1 - f0 }, { opacity: 1 - f1v }], o)];
+      ? [el.sheet.animate([{ opacity: 1 - f0 }, { opacity: 1 - f1v }], o)]
+      : [el.sheet.animate([tr(f0), tr(f1v)], o)];
+    if (!side) shAnims.push(el.scrim.animate([{ opacity: 1 - f0 }, { opacity: 1 - f1v }], o));
     if (done) shAnims[0].onfinish = done;
   }
-  function openSheet() {
-    if (sheetOpen || !ready || !cur) return;
-    fillSheet(); el.sheetBody.scrollTop = 0; closePop(true); hideHint(); stopCard(); toggleZoom(false);
-    el.sheet.inert = false; el.sheet.classList.add("is-open"); el.scrim.hidden = false; sheetOpen = true;
+  function openSheet(name, to) {
+    if (!ready || !cur) return;
+    if (sheetOpen) { setTab(name || tab, { animate: true, to }); return; }
+    fillSheet(); hideHint(); stopCard(); toggleZoom(false);
+    setTab(name || "overview", { to });
+    el.sheet.inert = false; el.sheet.classList.add("is-open"); sheetOpen = true;
+    sheetSide();
     moveSheet(1, 0, 320, E);
     // §4: numbers count up · score bars grow · panels come up one after another
-    el.sheetBody.querySelectorAll("[data-value]").forEach((n) => { if (n.dataset.d && n.dataset.d !== "odds") { n.dataset.value = 0; n.textContent = "0"; } });
-    fillStats(cur, true); fillScores(cur, true);
-    el.sheetBody.classList.remove("is-replay"); void el.sheetBody.offsetWidth; el.sheetBody.classList.add("is-replay");
-    FX.stagger(el.sheetBody, 50, { cls: "fx-up", max: 8, cleanup: true });
+    paneCount(tab);
+    FX.stagger(paneOf(tab), 50, { cls: "fx-up", max: 8, cleanup: true });
     el.sheetX.focus({ preventScroll: true });
   }
   function closeSheet(from, instant) {
     if (!sheetOpen) return;
     sheetOpen = false;
+    el.root.classList.remove("is-sheet", "is-sheet-side");
     const done = () => { shAnims.forEach((a) => a.cancel()); shAnims = []; el.sheet.classList.remove("is-open"); el.sheet.inert = true; el.scrim.hidden = true; if (!instant && isOpen) el.dbtn.focus({ preventScroll: true }); };
     if (instant) { done(); return; }
     moveSheet(from || 0, 1, 260, "cubic-bezier(.4,0,1,1)", done);
@@ -1253,9 +1286,18 @@
     el.dbtn.addEventListener("click", () => openSheet());
     el.sheetX.addEventListener("click", () => closeSheet(0));
     el.scrim.addEventListener("click", () => closeSheet(0));
+    el.tabs.addEventListener("click", (e) => { const b = e.target.closest("[data-tab]"); if (b && b.dataset.tab !== tab) setTab(b.dataset.tab, { animate: true }); });
+    el.tabs.addEventListener("keydown", (e) => {
+      const k = { ArrowRight: 1, ArrowLeft: -1, Home: -9, End: 9 }[e.key];
+      if (!k) return;
+      e.preventDefault(); e.stopPropagation();
+      const i = clamp(Math.abs(k) === 9 ? (k > 0 ? 3 : 0) : TABS.indexOf(tab) + k, 0, 3);
+      setTab(TABS[i], { animate: true });
+      el.tabs.querySelector(`[data-tab="${TABS[i]}"]`).focus();
+    });
     const head = el.sheetHead;
     head.addEventListener("pointerdown", (e) => {
-      if (!sheetOpen || e.target.closest("button")) return;
+      if (!sheetOpen || side || e.target.closest("button")) return;   // pull down to close: phone only
       try { head.setPointerCapture(e.pointerId); } catch (err) {}
       SD = { id: e.pointerId, y0: e.clientY, h: el.sheet.offsetHeight * FX.zoom(), s: [[e.clientY, performance.now()]], f: 0, anim: null };
     });
@@ -1264,6 +1306,7 @@
       const f = clamp((e.clientY - SD.y0) / SD.h, 0, 1);
       if (!SD.anim && f > 0.004) {   // the finger drives a paused animation (no style writes per frame)
         shAnims.forEach((a) => a.cancel()); shAnims = [];
+        el.scrim.hidden = false;
         SD.anim = [el.sheet.animate([{ transform: "translateY(0)" }, { transform: "translateY(100%)" }], { duration: 1000, fill: "both" }),
                    el.scrim.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1000, fill: "both" })];
         SD.anim.forEach((a) => a.pause());
@@ -1294,10 +1337,9 @@
   function hideHint() { if (hintDone) return; hintDone = true; el.hint.classList.remove("is-on"); }
 
   /* ==========================================================
-     9. Level dots (the site-wide rarity)
+     9. Level dots (the site-wide rarity): bottom bar + the Details head · a level change = a light wave (W6)
      ========================================================== */
-  function buildDock() {
-    const box = el.lv;
+  function buildLv(box) {
     state.meta.rarities.forEach((r, i) => {
       const b = document.createElement("button");
       b.type = "button"; b.dataset.i = i; b.dataset.name = r.name;
@@ -1313,34 +1355,80 @@
   }
   function paintDock(instant) {
     const i = Math.max(0, state.meta.rarities.findIndex((r) => r.name === state.rarity));
-    el.lv.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.i === i)));
-    if (instant) el.lvInd.style.transition = "none";
-    el.lvInd.style.transform = `translateX(${i * 40}px)`;
-    if (instant) { void el.lvInd.offsetWidth; el.lvInd.style.transition = ""; }
-    el.lvName.textContent = state.rarity;
-    if (!instant && !rm()) el.lvName.animate([{ opacity: 0, transform: "translateY(3px)" }, { opacity: 1, transform: "none" }], { duration: 220, easing: E });
-    [el.fore, el.dock, el.sheet, el.wrap, el.hint].forEach((x) => { x.dataset.lvl = state.rarity; });
+    [[el.lv, el.lvName], [el.shLv, el.shLvName]].forEach(([box, name]) => {
+      const ind = box.querySelector(".bs-lv__ind");
+      box.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.i === i)));
+      if (instant) ind.style.transition = "none";
+      ind.style.transform = `translateX(${i * 40}px)`;
+      if (instant) { void ind.offsetWidth; ind.style.transition = ""; }
+      name.textContent = state.rarity;
+      if (!instant && !rm()) name.animate([{ opacity: 0, transform: "translateY(3px)" }, { opacity: 1, transform: "none" }], { duration: 220, easing: E });
+    });
+    [el.stage, el.fore, el.dock, el.sheet, el.wrap, el.hint].forEach((x) => { x.dataset.lvl = state.rarity; });
   }
-  // the rarity changed anywhere (dots here, chips in the sheet): update the scene
+  /* the light wave: a ring of the level's colour runs from the black sun down to the card (one-shot, transform /
+     opacity only), then the card glows softly · never a white full-screen flash */
+  const WAVE_HIT = 380;
+  function wave() {
+    if (!G || el.root.hidden) return;
+    const w = el.wave, z = FX.zoom();
+    const fr = el.fore.getBoundingClientRect(), sr = el.stage.getBoundingClientRect();
+    // the sky starts 26px outside the stage (parallax room): the card's bottom in sky coordinates
+    const cx = (fr.left - sr.left) / z + LY.L + LY.cw / 2 + 26, cy = (fr.top - sr.top) / z + LY.B + 26;
+    const r = Math.round(Math.max(120, Math.hypot(cx - G.sx, cy - G.sy)));
+    Object.assign(w.style, { left: G.sx + "px", top: G.sy + "px", width: 2 * r + "px", height: 2 * r + "px", margin: `${-r}px 0 0 ${-r}px` });
+    w.getAnimations().forEach((a) => a.cancel());
+    w.animate([{ transform: "scale(.06)", opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 0.9, offset: 0.62 }, { transform: "scale(1)", opacity: 0 }],
+      { duration: 700, easing: "cubic-bezier(.35,.55,.45,1)" });
+    el.glow.getAnimations().forEach((a) => a.cancel());
+    el.glow.animate([{ opacity: 0, transform: "scale(.94)" }, { opacity: 0.85, transform: "scale(1.02)", offset: 0.35 }, { opacity: 0, transform: "scale(1.08)" }],
+      { duration: 640, delay: WAVE_HIT - 80, easing: "ease-out" });
+  }
+  // the rarity changed anywhere (dots here, the Traits page, the Cards page…): update the scene
+  let faceTimer = 0;
   function onRarity() {
-    for (const [id, fc] of faceCache) {
-      const card = byId.get(id); if (!card) continue;
-      const live = isOpen && fc.f.isConnected;
-      C.setCardRarity(fc.f, card, state.rarity, { animate: live });
-      C.setCardRarity(fc.b, card, state.rarity, { animate: false });
-    }
+    const hit = isOpen && ready && !rm() && !el.root.hidden;
+    const apply = () => {
+      for (const [id, fc] of faceCache) {
+        const card = byId.get(id); if (!card) continue;
+        if (fc.f.dataset.rarity !== state.rarity) C.setCardRarity(fc.f, card, state.rarity, { animate: isOpen && fc.f.isConnected });
+        if (fc.b.dataset.rarity !== state.rarity) C.setCardRarity(fc.b, card, state.rarity, { animate: false });
+      }
+    };
+    clearTimeout(faceTimer);
+    if (hit) faceTimer = setTimeout(apply, WAVE_HIT); else apply();   // the card changes when the wave reaches it
     if (!isOpen) return;
     paintDock(false);
     moteColors();
     showCorona(state.rarity, false);
+    if (hit) wave();
     if (cur) {
       el.wrap.setAttribute("aria-label", `${cur.name}, ${C.isRanked(cur) ? "tier " + cur.tier : "unranked"}, ${state.rarity}. Tap to spin`);
-      el.shSub.textContent = sheetSub(cur);
       if (sheetKey === cur.id) {
+        el.shSub.innerHTML = sheetSub(cur);
         fillStats(cur, sheetOpen);
         el.sheetBody.querySelectorAll(".card[data-id]").forEach((c) => { const d = byId.get(c.dataset.id); if (d) C.setCardRarity(c, d, state.rarity, { animate: sheetOpen }); });
       }
     }
+  }
+
+  /* ---------- graphics quality Low / High (W6) · Low = no running light, still sparks / fog / motes, no parallax ---------- */
+  const GFX_KEY = "cbi:gfx";
+  function setGfx(v, save) {
+    gfx = v === "low" ? "low" : "high";
+    el.root.classList.toggle("is-low", gfx === "low");
+    el.gfx.style.setProperty("--i", gfx === "low" ? 0 : 1);
+    el.gfx.querySelectorAll("[data-gfx]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.gfx === gfx)));
+    if (save) { try { localStorage.setItem(GFX_KEY, gfx); } catch (e) {} }
+    if (gfx === "low") resetParallax();
+    if (isOpen && ready) motesPlay(true);
+  }
+  function setupGfx() {
+    let v = null;
+    try { v = localStorage.getItem(GFX_KEY); } catch (e) {}
+    if (v !== "low" && v !== "high") v = navigator.deviceMemory && navigator.deviceMemory <= 4 ? "low" : "high";   // ≤ 4 GB RAM starts at Low
+    setGfx(v, false);
+    el.gfx.addEventListener("click", (e) => { const b = e.target.closest("[data-gfx]"); if (b && b.dataset.gfx !== gfx) setGfx(b.dataset.gfx, true); });
   }
 
   /* ==========================================================
@@ -1387,7 +1475,8 @@
     el.wrap.classList.add("is-in"); el.fore.classList.add("is-ready"); motesPlay(true); ready = true;
     if (leaning()) { enter3D(); kick(); }   // the mouse is already off-centre
     setOverall(cur, true);
-    introTimers.push(setTimeout(() => { showCallouts(); introTimers.push(setTimeout(showHint, 1100)); }, 380));
+    // W6: once the dust has settled (intro end) the lines draw out and the boxes fade in, once per card
+    introTimers.push(setTimeout(() => { showCallouts(); introTimers.push(setTimeout(showHint, 1100)); }, rm() ? 0 : 600));
     afterShow();
     setTimeout(prebakeCoronas, 3400);
   }
@@ -1495,9 +1584,14 @@
     const t = page ? page.querySelector(`.card[data-id="${CSS.escape(id)}"]`) : null;
     return t && t.getClientRects().length ? t : null;
   }
+  // the page underneath can't be reached while the scene is up · ≥ 1100px the left menu stays usable (W6: a tab closes the card)
+  const wideNav = () => matchMedia("(min-width: 1100px)").matches;
   function setBackground(on) {
     document.documentElement.classList.toggle("is-detail", on);
-    [".topbar", ".nav", ".main"].forEach((sel) => { const n = $(sel); if (!n) return; if (on) n.setAttribute("inert", ""); else n.removeAttribute("inert"); });
+    [".topbar", ".nav", ".main"].forEach((sel) => {
+      const n = $(sel); if (!n) return;
+      if (on && !(sel === ".nav" && wideNav())) n.setAttribute("inert", ""); else n.removeAttribute("inert");
+    });
   }
   // fade with the scene (the labels, ring and Details button follow .is-ready on the foreground through CSS)
   const chrome = () => [el.stage, el.top, el.dock];
@@ -1560,7 +1654,7 @@
     const mine = ++token;
     clearTimeout(settleTimer);
     settled(false);
-    stopIntro(); stopCard(); closeSheet(0, true); closePop(true); toggleZoom(false); hideHint();
+    stopIntro(); stopCard(); closeSheet(0, true); toggleZoom(false); hideHint();
     el.fore.classList.remove("is-ready");
     cancelAnimationFrame(ovrRaf); resetParallax(); resetLean();
     coAnims.forEach((a) => a.cancel()); coAnims = [];
@@ -1610,9 +1704,10 @@
       fore: g("bs-fore"), callouts: g("bs-callouts"), wrap: g("bs-wrap"), zoom: g("bs-zoom"), swirl: g("bs-swirl"), mat: g("bs-mat"),
       tiltEl: g("bs-tiltEl"), rotor: g("bs-rotor"), faceF: g("bs-faceF"), faceB: g("bs-faceB"),
       ovr: g("bs-ovr"), ovrArc: g("bs-ovrArc"), ovrNum: g("bs-ovrNum"), ovrLbl: g("bs-ovrLbl"), dbtn: g("bs-details"),
-      hint: g("bs-hint"), dock: g("bs-dock"), dockL: g("bs-dockL"), dockR: g("bs-dockR"), lv: g("bs-lv"), lvInd: g("bs-lvInd"), lvName: g("bs-lvName"),
-      prev: g("bs-prev"), next: g("bs-next"),
+      hint: g("bs-hint"), dock: g("bs-dock"), dockL: g("bs-dockL"), dockR: g("bs-dockR"), lv: g("bs-lv"), lvName: g("bs-lvName"),
+      prev: g("bs-prev"), next: g("bs-next"), gfx: g("bs-gfx"), tint: g("bs-tint"), wave: g("bs-wave"), glow: g("bs-glow"),
       scrim: g("bs-scrim"), sheet: g("bs-sheet"), sheetHead: g("bs-sheetHead"), shThumb: g("bs-shThumb"), shTitle: g("bs-shTitle"), shSub: g("bs-shSub"), sheetX: g("bs-sheetX"), sheetBody: g("bs-sheetBody"),
+      shLv: g("bs-shLv"), shLvName: g("bs-shLvName"), tabs: g("bs-tabs"),
     });
     coronaFront = g("bs-coronaA"); coronaBack = g("bs-coronaB");
 
@@ -1623,7 +1718,7 @@
       if (!isOpen) return;
       if (e.key === "Escape") {
         e.preventDefault();
-        if (sheetOpen) closeSheet(0); else if (openCo) closePop(); else if (el.fore.classList.contains("is-zoom")) toggleZoom(false); else C.closeCard();
+        if (sheetOpen) closeSheet(0); else if (el.fore.classList.contains("is-zoom")) toggleZoom(false); else C.closeCard();
       } else if (!sheetOpen && (e.key === "ArrowRight" || e.key === "ArrowLeft") && !(e.target.closest && e.target.closest("input, select, textarea"))) {
         e.preventDefault(); step(e.key === "ArrowRight" ? 1 : -1);
       }
@@ -1632,13 +1727,14 @@
     document.addEventListener("cbi:rarity", onRarity);
     if (!state.cards.length) return;
 
-    buildDock(); buildCallouts();
-    setupCard(); setupSwipe(); setupSheet(); setupParallax();
+    buildLv(el.lv); buildLv(el.shLv); buildCallouts();
+    setupCard(); setupSwipe(); setupSheet(); setupParallax(); setupGfx();
     let rt = 0;
     addEventListener("resize", () => {
       clearTimeout(rt);
       rt = setTimeout(() => {
         if (!isOpen) return;
+        setBackground(true);   // the left menu: usable ≥ 1100px only
         layout();
         if (Math.abs(LY.cw - motesCW) > 2) { buildMotes(); targetCache = null; }
         const [W] = skySize();

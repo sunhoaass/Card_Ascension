@@ -331,9 +331,12 @@
   }
 
   // Tab buttons: no history entries, same as before · tapping a tab always lands on its list (Tier List = Global)
+  // W6: on a PC the left menu stays usable over the card detail → a tab there closes the card (its history entry becomes the tab)
   function go(page) {
+    const fromCard = /^#\/?card\//.test(location.hash);
     showPage(page, { scroll: true });
     if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
+    if (fromCard && state.loaded) CBI.detail.close();
     if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); CBI.deck.show(); }
   }
 

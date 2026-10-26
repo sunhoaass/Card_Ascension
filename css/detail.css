@@ -3,9 +3,11 @@
    Markup: #detail in index.html · behaviour: js/detail.js
    · REST = flat 2D card · 3D (thickness, both faces) only while it moves or leans (phone tilt / mouse)
    · every per-frame change is a paused Web Animation (currentTime), never style.transform
-   · layouts: phone (< 768px): labels above / below the card
-              side  (≥ 768px, or a landscape phone): labels left / right with the full text,
-              bigger card; "HUD" = Overall ring + Details move into the bottom bar when height is short
+   · layouts: phone (< 768px): the 4 label boxes 2×2 under the card, Overall ring + Details under them
+              side  (≥ 768px, or a landscape phone): label boxes left / right, bigger card;
+              "HUD" = Overall ring + Details move into the bottom bar when height is short
+   · W6: dark glass label boxes + thin gold elbow lines · Back = glass, Details = matte gold · Low / High graphics
+     (.bs.is-low) · Details = full screen on a phone, a full-height panel on the right ≥ 768px (.is-sheet-side)
    ========================================================== */
 .bs {
   --bs-top-h: 52px;
@@ -55,12 +57,19 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-pulse i {
   position: absolute; left: var(--sx, 50%); top: var(--sy, 12%);
   width: var(--pr, 1600px); height: var(--pr, 1600px); margin: calc(var(--pr, 1600px) / -2) 0 0 calc(var(--pr, 1600px) / -2);
-  border-radius: 50%; background: var(--bs-pulse);
+  border-radius: 50%;   /* W6: the level's colour (--lvl from [data-lvl] on the stage; a token can't hold it: --lvl changes per element) */
+  background: radial-gradient(circle, transparent 38%, transparent 41%, color-mix(in srgb, var(--lvl) 45%, #fff) 46%, color-mix(in srgb, var(--lvl) 70%, #fff) 48.5%, transparent 52%);
   transform: scale(.06); opacity: 0;
   animation: bs-pulse 4.2s cubic-bezier(.35, .1, .4, 1) infinite;
 }
 .bs-pulse i:nth-child(2) { animation-delay: 2.1s; }
 @keyframes bs-pulse { 0% { transform: scale(.06); opacity: 0; } 8% { opacity: 1; } 70% { opacity: .9; } 100% { transform: scale(1); opacity: 0; } }
+/* W6 level colour: a faint tint over the whole painting + a one-shot light wave from the sun on a level change (js wave()) */
+.bs-tint { position: absolute; inset: 0; pointer-events: none; opacity: .22;
+  background: radial-gradient(120% 75% at 50% 18%, color-mix(in srgb, var(--lvl) 70%, transparent), color-mix(in srgb, var(--lvl) 25%, transparent) 55%, transparent 85%); }
+.bs-stage[data-lvl="Normal"] .bs-tint { opacity: 0; }
+.bs-wave { position: absolute; left: 0; top: 0; width: 0; height: 0; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle, transparent 60%, color-mix(in srgb, var(--lvl) 22%, transparent) 76%, color-mix(in srgb, var(--lvl) 55%, transparent) 88%, color-mix(in srgb, var(--lvl) 80%, #fff) 94%, transparent 100%); }
 .bs-sparks { position: absolute; inset: -26px; pointer-events: none; }
 .bs-sparks i {
   position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%;
@@ -79,10 +88,22 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 /* ---------------- Top bar ---------------- */
 .bs-top {
   position: absolute; left: 0; right: 0; top: 0; z-index: 5; height: var(--bs-top-h);
-  display: flex; align-items: center; gap: 8px; padding: 0 10px 0 4px;
+  display: flex; align-items: center; gap: 8px; padding: 0 8px;
   background: var(--bs-top-fade);
 }
-.bs-top .detail__back { flex: none; }
+/* W6 Back: dark glass + thin gold edge + icon */
+.bs-back {
+  flex: none; display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0 14px 0 8px; border-radius: var(--r-chip);
+  font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: .06em; color: var(--gold-hi);
+  background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line);
+}
+.bs-back svg { width: 20px; height: 20px; color: var(--gold); }
+.bs-back:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.bs-back:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
+/* W6 graphics quality Low | High (the site's .seg switch, compact) */
+.bs-gfx { flex: none; width: auto; max-width: none; margin: 0; padding: 2px; --n: 2; background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line); }
+.bs-gfx .seg__ind { top: 2px; bottom: 2px; left: 2px; width: calc((100% - 4px) / 2); }
+.bs-gfx .seg__btn { min-height: 40px; min-width: 50px; padding: 0 10px; font-size: 12px; }
 .bs-top__t { flex: 1; min-width: 0; line-height: 1.15; }
 .bs-top__t b { display: block; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .05em; color: var(--gold-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bs-top__t small { display: block; font-size: 11px; color: var(--ink-dim); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -128,22 +149,18 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-wrap[data-lvl="Cosmic"] { --edge: linear-gradient(90deg, #14184a, #a796ff 50%, #14184a); }
 .bs-wrap[data-lvl="Ascended"] { --edge: linear-gradient(180deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2); }
 .bs-mat { position: absolute; inset: -14px; border-radius: 16px; pointer-events: none; opacity: 0; background: var(--bs-mat); }
+.bs-glow { position: absolute; inset: -16%; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--lvl) 60%, transparent), color-mix(in srgb, var(--lvl) 22%, transparent) 60%, transparent); }   /* soft glow when the level wave reaches the card */
 
-/* the site's game card (CBI.renderCard) scaled to the scene: everything inside it is in cqw, so it follows --cw */
+/* the site's game card (CBI.renderCard) scaled to the scene: everything inside it is in cqw, so it follows --cw ·
+   W6: it looks exactly like on the Cards page (no extra sheen, the card's own shadow) */
 .bs-face .card {
   position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto;
   cursor: inherit; touch-action: none; transition: none;
   transform: translateY(0);              /* 2D at rest (not "none", see fx.css) · the site's hover lift/tilt is off here */
-  --gc-shadow: 0 14px 34px rgba(0, 0, 0, .6);
 }
 .bs-face .card:hover, .bs-face .card.is-tilting { --lift: 0px; transform: translateY(0); }
 .bs-face .card__glare { display: none; }
-
-/* holo sheen: always on · its place follows the card's angle (paused Web Animations on b / i) and stays put at rest
-   (no looping animation) · .bs-holo itself never moves: it is the clip box (it used to slide off the card when tilted) */
-.bs-holo { position: absolute; inset: 0; z-index: 6; pointer-events: none; border-radius: var(--gc-corner); overflow: hidden; }
-.bs-holo b { position: absolute; inset: 0; }
-.bs-holo i { position: absolute; top: -25%; bottom: -25%; left: -60%; width: 220%; background: var(--bs-holo); }
 
 /* light motes around the card (colour = level) */
 .bs-motes { position: absolute; inset: 0; pointer-events: none; transition: transform 500ms var(--ease), opacity 400ms var(--ease); }
@@ -155,83 +172,53 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-mote { position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px 2px var(--c, var(--lvl)), 0 0 14px 3px color-mix(in srgb, var(--c, var(--lvl)) 45%, transparent); opacity: 0; }
 .bs-mote.sm { width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px; }
 
-/* ---------------- Labels + lines (a line ends at the edge of its own label) ---------------- */
+/* ---------------- Labels (W6): dark glass boxes + thin gold elbow lines ---------------- */
 .bs-callouts { position: absolute; inset: 0; pointer-events: none; transition: opacity var(--t-med) var(--ease); }
-.bs-fore.is-zoom .bs-callouts, .bs-fore:not(.is-ready) .bs-callouts { opacity: 0; }
-.bs-fore.is-zoom .bs-callouts *, .bs-fore:not(.is-ready) .bs-callouts * { pointer-events: none !important; }
-.bs-fore.is-zoom .bs-pop { display: none; }
-/* line / dot = outer (card pitch) > b (card turn) > i (what you see) · the outer two only move by paused Web Animations
-   (js placeCo / poseCallouts) · the line starts at its label (fixed) and ends on the card (moves with the card) */
+.bs-fore.is-zoom .bs-callouts, .bs-fore:not(.is-ready) .bs-callouts, .bs.is-sheet .bs-callouts { opacity: 0; }
+.bs-fore.is-zoom .bs-callouts *, .bs-fore:not(.is-ready) .bs-callouts *, .bs.is-sheet .bs-callouts * { pointer-events: none !important; }
+/* the fixed part of an elbow: axis-aligned 1px bars that grow out from the card side (js placeSegs) */
+.bs-seg { position: absolute; display: block; background: var(--bs-line); box-shadow: var(--bs-line-glow); }
+.bs-seg.is-h { height: 1px; transform: scaleX(0); }
+.bs-seg.is-v { width: 1px; transform: scaleY(0); }
+.bs-seg[hidden] { display: none; }
+/* the last bit (elbow → card) = outer (card pitch) > b (card turn) > i (what you see) · the outer two only move by paused
+   Web Animations (js placeCo / poseCallouts) so the dot stays on the card's edge while it turns */
 .bs-line, .bs-dot { position: absolute; width: 0; height: 0; transform-origin: 0 0; }
-.bs-line > b { position: absolute; left: 0; top: -.75px; width: 100px; height: 1.5px; transform-origin: 0 50%; }
-.bs-line i { position: absolute; inset: 0; transform-origin: 100% 50%; transform: scaleX(0); border-radius: 2px;
-  background: linear-gradient(270deg, color-mix(in srgb, var(--lvl) 85%, #fff), rgba(235, 240, 255, .9));
-  box-shadow: 0 0 6px color-mix(in srgb, var(--lvl) 70%, transparent); }
+.bs-line > b { position: absolute; left: 0; top: -.5px; width: 100px; height: 1px; transform-origin: 0 50%; }
+.bs-line i { position: absolute; inset: 0; transform-origin: 100% 50%; transform: scaleX(0); background: var(--bs-line); box-shadow: var(--bs-line-glow); }
 .bs-dot > b { position: absolute; left: 0; top: 0; }
-.bs-dot i { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%;
-  background: radial-gradient(circle, #fff 0 28%, color-mix(in srgb, var(--lvl) 90%, #fff) 32% 48%, transparent 52%);
-  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--lvl) 80%, transparent), 0 0 10px color-mix(in srgb, var(--lvl) 80%, transparent); transform: scale(0); }
-.bs-dot--end i { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; background: color-mix(in srgb, var(--lvl) 80%, #fff); box-shadow: 0 0 6px var(--lvl); }
-.bs-co { position: absolute; display: block; min-height: 44px; padding: 4px 6px; border-radius: 6px; text-align: left; pointer-events: auto; opacity: 0; transform: translateY(6px); transition: background-color var(--t-fast) var(--ease); }
-.bs-co > span { display: block; }
-.bs-co:active { background: rgba(255, 255, 255, .06); }
-.bs-co[aria-expanded="true"] { background: rgba(10, 14, 40, .55); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lvl) 45%, transparent); }
-.bs-co__k { display: flex !important; align-items: center; gap: 6px; font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: .16em; color: color-mix(in srgb, var(--lvl) 75%, #fff); text-shadow: 0 1px 6px var(--bs-shade); text-transform: uppercase; }
-.bs-co__k::before { content: ""; width: 6px; height: 6px; transform: rotate(45deg); background: currentColor; flex: none; }
-.bs-co__k::after { content: "+"; margin-left: 2px; font-family: var(--font-body); font-size: 13px; letter-spacing: 0; opacity: .75; }
-.bs-co[aria-expanded="true"] .bs-co__k::after { content: "–"; }
-.bs-co__n { margin-top: 1px; font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--ink); text-shadow: 0 1px 8px var(--bs-shade); line-height: 1.2;
-  display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
-.bs-co__d { margin-top: 2px; font-size: 11.5px; line-height: 1.35; color: var(--bs-text); text-shadow: 0 1px 6px var(--bs-shade), 0 0 2px var(--bs-shade);
-  display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
-.bs-co__full { display: none !important; }
-.bs-co--tier .bs-co__n { color: color-mix(in srgb, var(--tc, var(--ink)) 70%, var(--ink)); }
-.bs-co.is-empty .bs-co__n { color: var(--ink-faint); font-family: var(--font-body); font-weight: 500; font-size: 12.5px; }
-.bs-co--good .bs-co__d b { color: var(--good); font-weight: 600; }
-.bs-co--bad .bs-co__k { color: var(--bs-bad-hi); }
-.bs-co--bad .bs-co__d b { color: var(--bad); font-weight: 600; }
-.bs-co.is-r { text-align: right; }
-.bs-co.is-r .bs-co__k { justify-content: flex-end; }
-
-/* side layout: full text, nothing to expand, text leans toward the card */
-.bs.is-side .bs-co { cursor: default; max-height: var(--co-max, none); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scrollbar-width: thin; }   /* pan-y: scrolls inside itself (overrides .bs none) */
-.bs.is-side .bs-co:active { background: none; }
-.bs.is-side .bs-co__k::after { content: none; }
-.bs.is-side .bs-co__d { display: none !important; }
-.bs.is-side .bs-co__n { -webkit-line-clamp: unset; display: block !important; font-size: clamp(14px, calc(var(--cw) * .045), 17px); }
-.bs.is-side .bs-co__k { font-size: clamp(10.5px, calc(var(--cw) * .03), 12px); }
-.bs.is-side .bs-co__full { display: block !important; margin-top: 4px; font-size: clamp(12.5px, calc(var(--cw) * .036), 14.5px); line-height: 1.5; color: var(--bs-text); text-shadow: 0 1px 6px var(--bs-shade), 0 0 2px var(--bs-shade); overflow-wrap: anywhere; }
-.bs.is-side .bs-co.is-longn .bs-co__n { font-family: var(--font-body); font-weight: 600; font-size: clamp(13px, calc(var(--cw) * .038), 15px); line-height: 1.45; }
-.bs.is-side .bs-co.is-scroll { -webkit-mask-image: linear-gradient(#000 calc(100% - 28px), transparent); mask-image: linear-gradient(#000 calc(100% - 28px), transparent); padding-bottom: 18px; }
-.bs.is-side .bs-co.is-left { text-align: right; }
-.bs.is-side .bs-co.is-left .bs-co__k { justify-content: flex-end; }
-.bs.is-side .bs-co.is-right { text-align: left; }
-.bs.is-side .bs-co.is-right .bs-co__k { justify-content: flex-start; }
-.bs-co__full p { margin: 0; }
-.bs-co__full p + p, .bs-co__full ul + p, .bs-co__full p + ul { margin-top: 5px; }
-.bs-co__full .meta { color: var(--ink-dim); font-size: .92em; }
-.bs-co__full ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; }
-.bs-co__full li::before { content: "✓ "; color: var(--good); font-weight: 700; }
-.bs-co--bad .bs-co__full li::before { content: "✕ "; color: var(--bad); }
-
-/* tap a label (phone) = full explanation */
-.bs-pop { position: absolute; z-index: 3; padding: 12px 14px 13px; border-radius: var(--r-panel); pointer-events: auto;
-  background: var(--panel-fill); box-shadow: 0 0 0 1px color-mix(in srgb, var(--lvl) 45%, transparent), 0 16px 34px rgba(0, 0, 0, .6);
-  font-size: 13px; line-height: 1.5; color: var(--ink); opacity: 0; transform: translateY(var(--py, 6px)) scale(.97);
-  transition: opacity 200ms var(--ease), transform 200ms var(--ease); max-height: calc(100% - 4px); overflow-y: auto; touch-action: pan-y; overscroll-behavior: contain; }
-.bs-pop.is-on { opacity: 1; transform: none; }
-.bs-pop[hidden] { display: none; }
-.bs-pop h4 { margin: 0 0 4px; font-family: var(--font-display); font-size: 14px; color: color-mix(in srgb, var(--lvl) 65%, #fff); overflow-wrap: anywhere; }
-.bs-pop p { margin: 0; color: var(--bs-text); overflow-wrap: anywhere; }
-.bs-pop p + p, .bs-pop ul + p, .bs-pop p + ul { margin-top: 6px; }
-.bs-pop ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
-.bs-pop li { display: flex; gap: 8px; overflow-wrap: anywhere; }
-.bs-pop li::before { content: "✓"; color: var(--good); font-weight: 700; }
-.bs-pop.is-bad li::before { content: "✕"; color: var(--bad); }
-.bs-pop .meta { font-size: 11.5px; color: var(--ink-dim); }
-.bs-pop .meta + h4 { margin-top: 0; }
-.bs-pop p + .meta { margin-top: 10px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--gold) 18%, transparent); }
-.bs-co__full b { display: block; margin-top: 4px; color: var(--ink); font-family: var(--font-display); }
+.bs-dot i { position: absolute; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%;
+  background: var(--gold-hi); box-shadow: 0 0 0 1.5px rgba(10, 12, 30, .7), 0 0 8px color-mix(in srgb, var(--gold) 70%, transparent); transform: scale(0); }
+.bs-co {
+  position: absolute; display: flex; align-items: flex-start; gap: 8px; min-height: 44px; padding: 8px 10px; text-align: left;
+  border-radius: var(--r-chip); pointer-events: auto; opacity: 0; transform: translateY(6px);
+  background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line), 0 6px 18px rgba(0, 0, 0, .35);
+  transition: box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.bs-co:hover, .bs-co:focus-visible { box-shadow: inset 0 0 0 1px var(--gold), 0 6px 18px rgba(0, 0, 0, .35); }
+.bs-co:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
+.bs-co__i { flex: none; width: 20px; height: 20px; margin-top: 1px; color: var(--gold); }
+.bs-co__t { display: block; flex: 1; min-width: 0; }
+.bs-co__t > span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bs-co__n { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .04em; line-height: 1.25; color: var(--gold-hi); }
+.bs-co__d { margin-top: 2px; font-size: 12.5px; line-height: 1.35; color: var(--bs-text); }
+.bs-co__o { margin-top: 3px; font-size: 11.5px; line-height: 1.3; color: var(--ink-dim); }
+.bs-co__o[hidden] { display: none !important; }
+.bs-co__tier { color: color-mix(in srgb, var(--tc, var(--gold-hi)) 75%, #fff); }
+.bs-co.is-empty .bs-co__d { color: var(--ink-faint); }
+.bs-co--bad .bs-co__n { color: var(--bs-bad-hi); }
+@media (min-width: 600px) {   /* stacked boxes on a portrait tablet: the same sizes as the side layout */
+  .bs .bs-co { padding: 10px 12px; gap: 10px; }
+  .bs .bs-co__i { width: 22px; height: 22px; }
+  .bs .bs-co__n { font-size: 16px; }
+  .bs .bs-co__d { font-size: 14px; }
+  .bs .bs-co__o { font-size: 12.5px; }
+}
+.bs.is-side .bs-co { padding: 10px 12px; gap: 10px; }
+.bs.is-side .bs-co__i { width: 22px; height: 22px; }
+.bs.is-side .bs-co__n { font-size: 16px; }
+.bs.is-side .bs-co__d { font-size: 14px; }
+.bs.is-side .bs-co__o { font-size: 12.5px; }
 
 /* ---------------- Overall ring + Details button ---------------- */
 .bs-ovr, .bs-dbtn { position: absolute; left: 0; top: 0; pointer-events: auto; opacity: 0; transition: opacity var(--t-slow) var(--ease); }
@@ -246,10 +233,13 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-ovr.is-unranked b { font-size: 17px; color: var(--ink-dim); }
 .bs-ovr.is-bump { animation: bs-bump .32s var(--ease); }
 @keyframes bs-bump { 50% { transform: scale(1.08); } }
-.bs-dbtn { height: 40px; padding: 0 16px; border-radius: var(--r-chip); display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--on-gold); background: var(--brass-gold);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, .45); }
-.bs-dbtn svg { width: 14px; height: 14px; }
+/* Details = the main button: matte gold, dark text, ≥ 44px · a faint glow only on hover / press (no running light, no ornate border) */
+.bs-dbtn { height: 48px; padding: 0 22px; border-radius: var(--r-chip); display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: .08em; color: var(--on-gold); background: var(--gold);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .45); transition: opacity var(--t-slow) var(--ease), box-shadow var(--t-med) var(--ease), transform var(--t-fast) var(--ease); }
+.bs-dbtn svg { width: 16px; height: 16px; }
+.bs-dbtn:hover, .bs-dbtn:active, .bs-dbtn:focus-visible { box-shadow: 0 6px 16px rgba(0, 0, 0, .45), 0 0 22px color-mix(in srgb, var(--gold-hi) 45%, transparent); }
+.bs-dbtn:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 3px; }
 .bs-dbtn:active { transform: scale(.96); }
 
 /* ---------------- Bottom bar: 7 level dots (+ ‹ › and the HUD on wide screens) ---------------- */
@@ -262,6 +252,7 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-dock__r { justify-content: flex-end; }
 .bs-dock .bs-ovr, .bs-dock .bs-dbtn { position: relative; left: auto; top: auto; }
 .bs-dock .bs-ovr { width: 52px; height: 52px; }
+.bs-dock .bs-dbtn { height: 44px; padding: 0 18px; font-size: 14px; }
 .bs-dock .bs-ovr b { top: 12px; font-size: 17px; }
 .bs-dock .bs-ovr small { top: 31px; font-size: 6.5px; }
 .bs-lv { position: relative; display: flex; justify-content: center; width: max-content; }
@@ -273,43 +264,111 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-lv__ind::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; border: 1.5px solid var(--gold-hi); box-shadow: 0 0 12px color-mix(in srgb, var(--gold-hi) 55%, transparent); }
 .bs-lv__name { height: 18px; margin-top: 1px; text-align: center; font-family: var(--font-display); font-size: 11.5px; font-weight: 700; letter-spacing: .2em; color: var(--gold-hi); text-transform: uppercase; }
 .bs-arrow { width: 40px; padding: 0; }
-.bs:not(.is-side) .bs-arrow, .bs.is-single .bs-arrow { display: none; }
+.bs.is-single .bs-arrow { display: none; }
+@media (max-width: 767px) { .bs-arrow { display: none; } }
 .bs.is-side .bs-lv__name { height: 16px; font-size: 10.5px; }
 
 /* first-time hint (fades away by itself) */
-.bs-hint { position: absolute; z-index: 4; left: 50%; bottom: calc(var(--bs-dock-h) + var(--safe-b) + 4px); transform: translateX(-50%); max-width: calc(100% - 24px);
+.bs-hint { position: absolute; z-index: 4; left: 50%; top: calc(var(--bs-top-h) + 4px); transform: translateX(-50%); max-width: calc(100% - 24px);
   margin: 0; padding: 6px 12px; border-radius: var(--r-pill); background: rgba(6, 9, 32, .78); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 30%, transparent);
   font-size: 11.5px; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; opacity: 0; transition: opacity 600ms var(--ease); }
 .bs-hint b { color: var(--gold-hi); font-weight: 600; }
 .bs-hint.is-on { opacity: 1; }
 
-/* ---------------- Details sheet (the full card data, same panels as before) ---------------- */
+/* ---------------- Details (W6): phone = full screen · ≥ 768px = a full-height panel on the right ---------------- */
 .bs-scrim { position: absolute; inset: 0; z-index: 20; background: var(--bs-scrim); }
 .bs-scrim[hidden] { display: none; }
 .bs-sheet:not(.is-open) { transform: translateY(calc(100% + 24px)); visibility: hidden; }
-.bs-sheet { position: absolute; z-index: 21; left: 0; right: 0; bottom: 0; margin: 0 auto; max-width: 640px; max-height: min(86dvh, 860px);
-  display: flex; flex-direction: column; border-radius: 16px 16px 0 0; background: var(--panel-fill);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent), 0 -18px 40px rgba(0, 0, 0, .55); }
-@media (min-width: 1200px) { .bs-sheet { max-width: 760px; } }
-.bs-sheet__head { flex: none; position: relative; padding: 18px 16px 12px; touch-action: none; cursor: grab; border-bottom: 1px solid color-mix(in srgb, var(--gold) 18%, transparent); }
-.bs-sheet__grip { position: absolute; left: 50%; top: 7px; width: 42px; height: 4px; margin-left: -21px; border-radius: 4px; background: color-mix(in srgb, var(--gold-hi) 50%, transparent); }
+.bs-sheet { position: absolute; z-index: 21; inset: 0; display: flex; flex-direction: column; background: var(--panel-fill); font-size: 16px; }
+.bs.is-side .bs-sheet { left: auto; width: min(560px, max(380px, 46%)); border-left: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); box-shadow: -18px 0 40px rgba(0, 0, 0, .5); }
+.bs.is-side .bs-sheet:not(.is-open) { transform: translateX(calc(100% + 24px)); }
+/* the scene (card, ring, level dots) slides left by half the panel, the labels fade: the card stays in view */
+.bs-fore, .bs-dock__mid { transition: transform 320ms var(--ease); }
+.bs.is-sheet-side .bs-fore, .bs.is-sheet-side .bs-dock__mid { transform: translateX(calc(var(--shw, 480px) / -2)); }
+.bs.is-sheet-side .bs-hint { opacity: 0; }
+.bs.is-sheet-side .bs-dock .bs-ovr { opacity: 0; }   /* the level dots slide over it */
+/* sticky head: picture · name · tier · level · obtain + level dots + tabs */
+.bs-sheet__head { flex: none; position: relative; padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 10px; touch-action: none; cursor: grab;
+  border-bottom: 1px solid color-mix(in srgb, var(--gold) 22%, transparent); background: var(--bs-sheet-head); }
+.bs.is-side .bs-sheet__head { cursor: default; padding-top: 14px; }
+.bs-sheet__grip { position: absolute; left: 50%; top: 6px; width: 42px; height: 4px; margin-left: -21px; border-radius: 4px; background: color-mix(in srgb, var(--gold-hi) 50%, transparent); }
+.bs.is-side .bs-sheet__grip { display: none; }
 .bs-sheet__row { display: flex; align-items: center; gap: 12px; }
-.bs-sheet__thumb { position: relative; flex: none; width: 44px; height: 62px; border-radius: 5px; overflow: hidden; box-shadow: 0 0 0 2px var(--lvl); }
+.bs-sheet__thumb { position: relative; flex: none; width: 48px; height: 67px; border-radius: 5px; overflow: hidden; box-shadow: 0 0 0 2px var(--lvl); }
 .bs-sheet__thumb svg, .bs-sheet__thumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .bs-sheet__title { flex: 1; min-width: 0; }
-.bs-sheet__title h2 { margin: 0; font-family: var(--font-display); font-size: 18px; letter-spacing: .04em; color: var(--gold-hi); overflow-wrap: anywhere; }
-.bs-sheet__title p { margin: 2px 0 0; font-size: 12px; color: var(--ink-dim); }
-.bs-sheet__x { flex: none; width: 40px; height: 40px; border-radius: var(--r-chip); display: grid; place-items: center; color: var(--gold-hi); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent); position: relative; }
-.bs-sheet__body { flex: 1; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: 14px 16px calc(18px + var(--safe-b)); display: grid; grid-template-columns: minmax(0, 1fr); grid-auto-rows: max-content; gap: var(--s-4); align-content: start; }   /* max-content: a scrolling chip row must not shrink to 0 */
-.bs-sheet__body .rarity-picker { margin-bottom: 0; }
-.bs-sheet__body .ability__desc + .ability__kind, .bs-sheet__body .ability__name + .ability__kind { margin-top: var(--s-3); }
-.dpanel__note { margin: 0 0 var(--s-3); font-size: var(--fs-sm); color: var(--bs-text); line-height: 1.5; }
-.bs-sheet__body.is-replay .score__track i { animation: fx-bar var(--t-slow) var(--ease) both; animation-delay: var(--d, 0ms); }
+.bs-sheet__title h2 { margin: 0; font-family: var(--font-display); font-size: 19px; line-height: 1.2; letter-spacing: .04em; color: var(--gold-hi); overflow-wrap: anywhere; }
+.bs-sheet__title p { margin: 5px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 16px; color: var(--ink-dim); }
+.bs-sheet__title .badge { min-height: 26px; padding: 0 9px; font-size: 14px; }
+.bs-sheet__obtain { flex-basis: 100%; color: var(--bs-text); }
+.bs-sheet__x { flex: none; width: 44px; height: 44px; border-radius: var(--r-chip); display: grid; place-items: center; color: var(--gold-hi);
+  background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line); position: relative; }
+.bs.is-side .bs-sheet__x svg { transform: rotate(-90deg); }   /* the panel slides away to the right */
+.bs-sheet__lv { display: flex; align-items: center; gap: 6px; margin: 8px -6px 0; overflow: hidden; }
+.bs-sheet__lv .bs-lv { flex: none; }
+.bs-sheet__lvname { min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: .14em; color: var(--gold-hi); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bs-tabs { --n: 4; max-width: none; margin: 8px 0 0; }
+.bs-tabs .seg__btn { min-height: 44px; padding: 0 4px; font-family: var(--font-body); font-size: 16px; font-weight: 600; letter-spacing: 0; }
+.bs-tabs .seg__btn:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: -2px; }
+/* short screens (a phone on its side): a slimmer head so the content keeps most of the height */
+@media (max-height: 520px) {
+  .bs-sheet__head { padding-top: 10px; padding-bottom: 8px; }
+  .bs-sheet__thumb { width: 34px; height: 48px; }
+  .bs-sheet__title h2 { font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bs-sheet__title p { margin-top: 2px; }
+  .bs-sheet__obtain { flex-basis: auto; }
+  .bs-sheet__lv, .bs-tabs { margin-top: 4px; }
+}
+/* body: plain vertical scrolling, one column of panels with equal gaps, no sideways scrolling */
+.bs-sheet__body { flex: 1; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: 16px 16px calc(24px + var(--safe-b)); }
+.bs-pane { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: start; outline: none; }
+.bs-pane[hidden] { display: none; }
+.bs-sheet__body .dpanel { padding: 18px 16px; }
+/* text ≥ 16px everywhere in the Details (W6) */
+.bs-sheet__body .dpanel__title { font-size: 16px; }
+.bs-sheet__body .dpanel__sub, .bs-sheet__body .muted, .bs-sheet__body .score__name, .bs-sheet__body .score__weight, .bs-sheet__body .score__num,
+.bs-sheet__body .pc li, .bs-sheet__body .pc__title, .bs-sheet__body .group__title, .bs-sheet__body .ability__desc, .bs-sheet__body .ability__kind,
+.bs-sheet__body .unranked, .bs-sheet__body .overall__max, .bs-sheet__body .overall__tier small, .bs-sheet__body .detail__foot,
+.bs-sheet__body .badge, .bs-sheet__body .supchip, .bs-sheet__body .chip { font-size: 16px; }
+/* the My card tab reuses the Trait + Grade panels: same rule there */
+.bs-sheet__body :is(.trrec__k, .trrec__note, .trrec__more, .trp__name, .trp__tier, .trres__k, .trres__row small, .trres__cap, .trres__fx, .gsum__overall small, .gsum__list li) { font-size: 16px; }
+.bs-sheet__body .trres__v { font-size: 22px; }
+.bs-sheet__body .ability__name { font-size: 19px; }
+.bs-sheet__body .dpanel__title + *, .bs-sheet__body .dpanel__sub + * { margin-top: 14px; }
+.dpanel__note { margin: 0 0 var(--s-3); font-size: 16px; color: var(--bs-text); line-height: 1.55; }
+.bs-sub { margin: 18px 0 6px; font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--ink); }
+.bs-sub + .dpanel__note { margin-bottom: 0; }
+.bs-sheet__body .ability + .ability { margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid rgba(216, 180, 106, .18); }
+.bs-sheet__body .proscons { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.bs-sheet__body .scores { display: grid; gap: 14px; }
+.bs-sheet__body .detail__foot { margin: 0; padding: 0 4px; }
+/* big stats: one panel, label left / number right (no boxes inside the box) */
+.bs-stats__lv { margin-left: 6px; color: var(--ink-dim); letter-spacing: .08em; }
+.bs-stats { display: grid; margin: 0; }
+.bs-stat { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 10px 0; }
+.bs-stat + .bs-stat { border-top: 1px solid rgba(216, 180, 106, .14); }
+.bs-stat dt { font-size: 16px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+.bs-stat dd { margin: 0; min-width: 0; text-align: right; font-family: var(--font-display); font-weight: 700; font-size: 26px; line-height: 1.1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.bs-stat--atk dd { color: var(--atk); }
+.bs-stat--hp dd { color: var(--hp); }
+.bs-stat--odds dd { color: var(--gold-hi); }
+/* mini cards wrap into rows (no horizontal scroller inside the sheet) */
+.bs-sheet__body .mini-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 12px; margin: 10px 0 0; padding: 0; overflow: visible; }
+.bs-sheet__body .mini-row .card { width: 100%; }
+.bs-sheet__body .group > .muted { margin-top: 6px; }
+.bs-sheet__body .group + .group { margin-top: 18px; }
+.bs-pane.is-replay .score__track i { animation: fx-bar var(--t-slow) var(--ease) both; animation-delay: var(--d, 0ms); }
+
+/* ---------------- Low graphics (W6): no running light, sparks / fog / motes stand still (parallax off in js) ---------------- */
+.bs.is-low .bs-pulse { display: none; }
+.bs.is-low .bs-sparks i { animation: none; opacity: .6; transform: none; }
+.bs.is-low .bs-fog { animation: none; }
+.bs.is-low .bs-swirl { animation: none; }
 
 /* ---------------- Reduced motion: still picture, fades only ---------------- */
 @media (prefers-reduced-motion: reduce) {
   .bs-pulse i, .bs-sparks i, .bs-fog { animation: none !important; }
   .bs-sparks i { opacity: .7; transform: none; }
-  .bs-zoom, .bs-lv__ind, .bs-motes { transition: none; }
+  .bs-zoom, .bs-lv__ind, .bs-motes, .bs-fore, .bs-dock__mid { transition: none; }
 }
 
