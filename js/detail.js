@@ -73,7 +73,7 @@
   /* ==========================================================
      1. The scene (W7 round 2: the layers of the owner's clip of the game's opening · placed once per width)
      ========================================================== */
-  let G = null, sceneP = null, sceneW = 0;
+  let G = null, sceneP = null, sceneW = 0, sceneH = 0;
   function sideW() { return innerWidth >= 1100 ? (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--side-w")) || 252) : 0; }
   // the sky is 26px bigger than the scene on every side (parallax room)
   function skySize() {
@@ -87,7 +87,7 @@
      = the ground frames, their files start at row 61 / 219 · dust = palace dots in 2 layers · fog = a strip that wraps */
   const SKY = { src: "images/silver/sky.webp", w: 1369, h: 898, cx: 698, cy: 216, r: 80, fallEnd: 790 };
   const GOLD = { src: "images/silver/gold.webp", x: 322, w: 752, h: 352 };
-  const CITY = { src: "images/silver/city.webp", w: 1369, h: 768, top: 61 };
+  const CITY = { src: "images/silver/city.webp", w: 1369, h: 768, top: 61, mass: 470, spire: 150 };   // rows: the castle's spire · the roofs start
   const PAL = { src: "images/silver/palace.webp", w: 1349, h: 784, top: 219 };
   const DUSTS = ["images/silver/dust0.webp", "images/silver/dust1.webp"];
   const FOG = "images/silver/fog.webp";
@@ -110,21 +110,29 @@
     }));
     return picCache.get(src);
   }
-  function geometry(W, H) {
+  // Hv = the screen's height in sky coordinates (the sky box is 100lvh: taller than the screen while the page is zoomed > 1920)
+  function geometry(W, H, Hv = H) {
     const { sy, R, portrait } = sunOf(W, H), sx = W / 2, s = R / SKY.r;
     const sky = { x: sx - SKY.cx * s, y: sy - SKY.cy * s, w: SKY.w * s, h: SKY.h * s };
     const gold = { x: sky.x + GOLD.x * s, y: sky.y, w: GOLD.w * s, h: GOLD.h * s };
     // the ground (dark city ⇄ crystal palace): at the bottom, wider than a phone (castle + gate stay centred), grown up
-    // until it overlaps the sky picture (no empty dark band between them) · landscape: its bottom 14 % below the screen
-    const skyB = sky.y + sky.h, need = H - skyB + 70;
-    const GW = Math.max(W * (portrait ? 1.9 : 1.02), CITY.w * need / (CITY.h - CITY.top));
+    // until it overlaps the sky picture (no empty dark band between them)
+    // W7 round 3 · landscape (PC) = big like the clip: the whole ground stands on the screen's bottom edge (12px under it:
+    // room for the parallax · the stained-glass gate in view), its roofs ≈ the lower third of the screen, never narrower
+    // than the screen (a 4:3 screen crops its sides, the castle + gate stay centred) · but the castle's spire stays under
+    // the black sun (an ultrawide screen gets a ground narrower than the screen: its sides fade into the roots + fog)
+    const skyB = sky.y + sky.h;
+    const HL = portrait ? H : Math.min(H, Hv);   // phones keep the 100lvh box (browser bars)
+    const gb = HL - (portrait ? 0 : 12), need = gb - skyB + 70;
+    const third = portrait ? 0 : CITY.w * (HL - 52) / 3 / (CITY.h - CITY.mass);
+    const spire = portrait ? Infinity : CITY.w * (gb - sy - R * 1.25) / (CITY.h - CITY.spire);
+    const GW = Math.max(Math.min(Math.max(W * (portrait ? 1.9 : 1.02), third), spire), CITY.w * need / (CITY.h - CITY.top));
     const k = GW / CITY.w, gh = CITY.h * k;
-    const gb = H + (portrait ? 0 : Math.min(gh * 0.14, Math.max(0, gh - CITY.top * k - need)));
     const city = { x: (W - GW) / 2, y: gb - gh + CITY.top * k, w: GW, h: (CITY.h - CITY.top) * k };
     const k2 = GW / PAL.w;
     const pal = { x: (W - GW) / 2, y: gb - (PAL.h - PAL.top) * k2, w: GW, h: (PAL.h - PAL.top) * k2 };
     const fall0 = sy + R * 1.6, fall1 = Math.max(fall0 + 40, sky.y + SKY.fallEnd * s);
-    return { W, H, sx, sy, R, s, CH: Math.ceil(sy + R * 1.9), sky, gold, city, pal, fall0, fall1, portrait };
+    return { W, H, HL, sx, sy, R, s, CH: Math.ceil(sy + R * 1.9), sky, gold, city, pal, fall0, fall1, portrait };
   }
   // a static <img> costs nothing per frame; a big <canvas> layer is re-sent every frame something moves (mockup: drag 32 → 60 fps)
   function bake(cv, type, q) { return new Promise((res) => cv.toBlob((b) => { cv.width = cv.height = 1; res(b ? URL.createObjectURL(b) : ""); }, type, q)); }
@@ -395,7 +403,7 @@
   function swapUrl(img, url) { const old = img.src; return setImg(img, url).then(() => { if (old.startsWith("blob:")) URL.revokeObjectURL(old); img.hidden = !url; }); }
   function bakeStill() {
     if (!G || stillFor === G || !el.bg.classList.contains("is-on")) return Promise.resolve();
-    const g0 = G, { W, H, gold, pal } = G;
+    const g0 = G, { W, H, HL, gold, pal } = G;
     const cv = document.createElement("canvas");
     const ctx = sizeCanvas(cv, W, H, dprFor(W, H));
     ctx.drawImage(el.bg, 0, 0, W, H);
@@ -403,7 +411,7 @@
     if (G.palImg) ctx.drawImage(G.palImg, pal.x, pal.y, pal.w, pal.h);
     else if (G.cityImg) ctx.drawImage(G.cityImg, G.city.x, G.city.y, G.city.w, G.city.h);
     const f = el.fog.querySelector("img");   // the fog strip at rest: .bs-fogwrap = 40px wider each side, 10px under the screen
-    if (f && f.complete && f.naturalWidth) { const fh = (H - 52) * 0.34; ctx.drawImage(f, -14, H - 26 - 10 - fh, W + 28, fh); }
+    if (f && f.complete && f.naturalWidth) { const fh = (HL - 52) * 0.34; ctx.drawImage(f, -14, HL - 26 - 10 - fh, W + 28, fh); }
     return bake(cv, "image/jpeg", 0.9).then((url) => {
       if (G !== g0) { URL.revokeObjectURL(url); return; }
       stillFor = g0;
@@ -414,9 +422,9 @@
   // build (or rebuild for a new width) the whole scene · one long task per piece, spread over idle time
   function buildScene() {
     const [W, H] = skySize();
-    sceneW = W;
+    sceneW = W; sceneH = H;
     clearCoronaCache(); prebaked = false; stillFor = null; el.root.classList.remove("has-still");
-    const g0 = G = geometry(W, H);
+    const g0 = G = geometry(W, H, innerHeight / FX.zoom() + 52);
     const pics = () => Promise.all([SKY.src, GOLD.src, CITY.src, PAL.src, ...DUSTS].map(loadPic))
       .then(([s, g, c, p]) => Object.assign(g0, { skyImg: s, goldImg: g, cityImg: c, palImg: p }));
     const steps = [pics, () => paint(), () => showCorona(state.rarity, true), () => makeMask(), () => { buildSparks(); buildFog(); }, () => buildGround(), () => (gfx === "low" ? bakeStill() : null)];
@@ -424,9 +432,14 @@
     return sceneP;
   }
 
+  // a new width = a new scene · W7 round 3: a landscape screen also for a new height (the ground is sized on it) ·
+  // portrait phones never for the height (their browser bars grow / shrink it)
+  function stale() {
+    const [W, H] = skySize();
+    return !G || Math.abs(W - sceneW) > 40 || (W > H && Math.abs(H - sceneH) > 40);
+  }
   function ensureScene() {
-    const [W] = skySize();
-    if (!G || Math.abs(W - sceneW) > 40) return buildScene();
+    if (stale()) return buildScene();
     return sceneP || Promise.resolve();
   }
   // paint ahead while idle so the first open is instant · lite devices (≤ 4 GB / ≤ 4 cores / slow probe) paint on
@@ -536,7 +549,6 @@
     { key: "strong", k: "Strongest", pos: "br", icon: "i-sword", tab: "overview", to: "#d-t-pc", cls: "bs-co--good" },
   ];
   const coEls = [];
-  const names = (card, ids) => arr(ids).map((i) => byId.get(i)).filter((c) => c && c.id !== card.id).map((c) => c.name);
   const joinShort = (a, n) => a.slice(0, n).join(", ") + (a.length > n ? ` +${a.length - n}` : "");
   const modeName = (id) => { const m = arr(state.meta && state.meta.modes).find((x) => x.id === id); return m ? m.name : pretty(id); };
   function bestModes(card, top) {
@@ -570,48 +582,22 @@
     }
     return { t: { ability: "Passive / Skill", strong: "Strongest", weak: "Weakness" }[key], d };
   }
-  /* W6 round 2 · bigger screens: the boxes add whole items while there is room (js grow() in layout: never a cut
-     sentence, ≤ 4 items, a box never taller than half the card) · phones stay title + short line */
-  function extrasOf(card, key) {
-    const li = (t, cls = "") => `<span class="bs-co__li ${cls}">${t}</span>`;
-    if (key === "tier") {
-      const note = String(card.tierNote || "").trim(), out = [];
-      if (note) out.push(li(esc(note)));
-      if (C.isRanked(card)) out.push(li(`Overall ${f1(pct(card.scores.overall))} / 100`, "is-meta"));
-      return out;
-    }
-    if (key === "ability") return abilities(card).flatMap((a) => [a.n ? li(`<b>${esc(a.n)}</b>`) : "", a.d ? li(esc(a.d)) : ""]).filter(Boolean);
-    const good = key === "strong";
-    // the short line already sums up the first point: the box goes on from the 2nd one
-    const pts = arr(good ? card.strengths : card.weaknesses).map(String).slice(shortOf(card, key) ? 1 : 0, 4);
-    const vs = names(card, good ? card.beats : card.losesTo);
-    return [...pts.map((t) => li(esc(t), good ? "is-good" : "is-bad")), vs.length ? li(`${good ? "Beats" : "Loses to"}: ${esc(vs.join(", "))}`, "is-meta") : ""].filter(Boolean);
-  }
-  function grow(o, budget) {
-    o.x.textContent = ""; o.x.hidden = false;   // measured while shown (a hidden box would let everything "fit")
-    if (o.el.offsetHeight > budget) { o.x.hidden = true; return; }
-    for (const h of (o.extras || []).slice(0, 4)) {
-      o.x.insertAdjacentHTML("beforeend", h);
-      if (o.el.offsetHeight > budget) { o.x.lastElementChild.remove(); break; }
-    }
-    o.x.hidden = !o.x.childElementCount;
-  }
   function buildCallouts() {
     CO_DEF.forEach((d) => {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "bs-co fx-press " + (d.cls || "");
       b.setAttribute("aria-haspopup", "dialog");
-      b.innerHTML = `<svg class="bs-co__i" aria-hidden="true"><use href="#${d.icon}"/></svg><span class="bs-co__n"></span><span class="bs-co__d"></span><span class="bs-co__o"></span><span class="bs-co__x" hidden></span>`;
+      b.innerHTML = `<svg class="bs-co__i" aria-hidden="true"><use href="#${d.icon}"/></svg><span class="bs-co__n"></span><span class="bs-co__d"></span><span class="bs-co__o"></span>`;
       el.callouts.append(b);
-      const o = { d, el: b, x: b.querySelector(".bs-co__x"), extras: [], data: null };
+      const o = { d, el: b, data: null };
       b.addEventListener("click", () => { if (ready) openSheet(d.tab, d.to); });
       coEls.push(o);
     });
   }
   function fillCallouts(card) {
     for (const o of coEls) {
-      const x = coData(card, o.d.key); o.data = x; o.extras = extrasOf(card, o.d.key);
+      const x = coData(card, o.d.key); o.data = x;
       o.el.querySelector(".bs-co__n").innerHTML = x.t;      // our own markup, the tier letter escaped (esc) above
       const sd = o.el.querySelector(".bs-co__d"); sd.textContent = x.d; sd.hidden = !x.d;
       const ob = o.el.querySelector(".bs-co__o"); ob.textContent = x.o || ""; ob.hidden = !x.o;
@@ -621,7 +607,8 @@
     }
   }
   /* ==========================================================
-     5. Layout (W7 round 2): phone (smaller card standing low, a label strip under it) · side (≥ 768: labels left / right)
+     5. Layout (W7 round 2): phone (smaller card standing low, a label strip under it) · side (≥ 768: labels left / right ·
+        W7 round 3: card ≈ 45 % of the screen height, small boxes)
      ========================================================== */
   function moveHud(on) {
     if (on === hud && el.ovr.parentElement !== null && (on ? el.ovr.parentElement === el.dockL : el.ovr.parentElement === el.foreY)) return;
@@ -667,7 +654,7 @@
       /* W7 round 2 (owner's picks): a smaller card (≤ 58 % of the width) standing low, so the sun → light fall → palace
          line stays in view · under it ONE short strip of the 4 labels (swipe sideways) · Overall ring + Details · hint */
       coEls.forEach((o) => {
-        ["left", "top", "width"].forEach((p) => { o.el.style[p] = ""; }); o.x.textContent = ""; o.x.hidden = true;
+        ["left", "top", "width"].forEach((p) => { o.el.style[p] = ""; });
         o.el.querySelectorAll(".bs-co__n, .bs-co__d, .bs-co__o").forEach((n) => { n.style.fontSize = ""; n.classList.remove("is-wrap"); });   // chips size to their text
       });
       const short = fh < 600;   // short phone: the first-time hint floats over the bottom bar instead of taking a row
@@ -691,12 +678,14 @@
     } else {
       el.root.classList.remove("is-short");
       el.callouts.style.top = "";
-      /* W7 round 2 (owner's picks): the card ≤ 60 % of the free height, standing low (its bottom just above the bottom
-         bar, Overall ring + Details in the bar) so the light fall above it stays in view · boxes left / right of it */
-      const gap = 32, wMin = 190;
+      /* W7 round 3 (owner's picks): the card ≈ 45 % of the whole screen height, standing low (its bottom just above the
+         bottom bar, Overall ring + Details in the bar) and always under the black sun (a very short screen shrinks it, down
+         to a card whose numbers still read) · small boxes left / right of it: icon + title + short line (+ obtain under
+         Tier), ≤ 240px, so the wings, the roots and the palace towers beside the card stay in view (details: the sheet) */
+      const gap = 28, wMin = 150, wMax = 240;
       const cap = Math.min(560, fw * 0.42, fw - 2 * (wMin + gap + 14));
-      const top = fh < 400 ? Math.max(8, Math.min(sunB, fh * 0.32)) : Math.max(8, sunB);
-      cw = Math.round(Math.max(120, Math.min(cap, fh * 0.6 / 1.4, (fh - 14 - top) / 1.4)));
+      const top = Math.max(8, sunB);
+      cw = Math.round(Math.max(100, Math.min(cap, rh * 0.45 / 1.4, (fh - 14 - top) / 1.4)));
       ch = Math.round(cw * 1.4);
       el.root.style.setProperty("--cw", cw + "px");
       moveHud(true);
@@ -705,10 +694,8 @@
       B = T + ch;
       LY = { L, T, cw, ch, fw, fh, B, rw, rh };
       el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
-      const w = Math.round(clamp(L - gap - 16, wMin, 380));   // the boxes use the room beside the card
-      coEls.forEach((o) => { o.el.style.width = w + "px"; o.x.textContent = ""; fitLines(o); }); evenShorts();
-      const budget = Math.floor((ch * 0.88 - 16) / 2);          // each box: at most half the card (upper + lower never meet)
-      coEls.forEach((o) => grow(o, budget));
+      const w = Math.round(clamp(L - gap - 16, wMin, wMax));
+      coEls.forEach((o) => { o.el.style.width = w + "px"; fitLines(o); }); evenShorts();
       for (const [a, b, right] of [[co.tier, co.weak, false], [co.ability, co.strong, true]]) {
         const x = right ? L + cw + gap : L - gap - w;
         const ha = a.el.offsetHeight, hb = b.el.offsetHeight;
@@ -1728,8 +1715,7 @@
         setBackground(true);   // the left menu: usable ≥ 1100px only
         layout();
         if (Math.abs(LY.cw - motesCW) > 2) { buildMotes(); targetCache = null; }
-        const [W] = skySize();
-        if (Math.abs(W - sceneW) > 40) buildScene();
+        if (stale()) buildScene();
       }, 160);
     });
     (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { if (isOpen) layout(); });
