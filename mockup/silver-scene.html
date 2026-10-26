@@ -56,6 +56,21 @@ img { display: block; max-width: none; }
 .card { position: absolute; border-radius: 12px; overflow: hidden; box-shadow: 0 18px 50px rgba(0, 0, 0, .55); }
 .card img { width: 100%; height: 100%; object-fit: cover; }
 .box { position: absolute; border-radius: 8px; background: var(--glass); box-shadow: inset 0 0 0 1px var(--glass-line); padding: 8px 10px; font: 700 12px Cinzel, serif; color: var(--gold-hi); }
+/* round 2 layout (owner's picks): smaller card, standing low (the sun → light fall → palace line stays clear) ·
+   phones: the 4 labels become one short strip (swipe sideways) instead of the 2×2 boxes */
+.strip { position: absolute; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; pointer-events: auto; padding: 0 10px; scroll-padding: 10px; }
+.strip::-webkit-scrollbar { display: none; }
+.chip { flex: none; display: grid; grid-template-columns: auto 1fr; column-gap: 7px; align-content: center; min-width: 148px; height: 56px; padding: 0 12px 0 10px;
+  border-radius: 10px; background: var(--glass); box-shadow: inset 0 0 0 1px var(--glass-line); }
+.chip i { grid-row: span 2; align-self: center; font-style: normal; font-size: 16px; color: var(--gold); }
+.chip b { font: 700 12px Cinzel, serif; letter-spacing: .04em; color: var(--gold-hi); white-space: nowrap; }
+.chip span { font-size: 12.5px; color: #dcd8ea; white-space: nowrap; }
+.chip--bad b { color: #ff9aa8; }
+.ovr, .dbtn { z-index: 1; }
+.ovr { position: absolute; display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: rgba(8, 11, 30, .8);
+  box-shadow: inset 0 0 0 3px #d8b46a; font: 700 18px Cinzel, serif; color: var(--gold-hi); }
+.dbtn { position: absolute; display: grid; place-items: center; width: 124px; height: 46px; border-radius: 8px; font: 700 14px Cinzel, serif; letter-spacing: .06em;
+  color: #23190a; background: linear-gradient(180deg, #e9cf8f, #c9a35a); }
 .dock { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: linear-gradient(0deg, rgba(5, 8, 30, .9) 38%, rgba(5, 8, 30, 0)); }
 
 /* controls */
@@ -91,6 +106,13 @@ button[aria-pressed="true"] { color: #23190a; background: linear-gradient(180deg
   <div class="top"><b>‹ Back</b><span>Dragon Emperor Monarch</span></div>
   <div class="card" id="card"><img src="clean-art/dragon-emperor-monarch.webp" alt=""></div>
   <div class="box" id="b0">Tier S</div><div class="box" id="b1">Passive / Skill</div><div class="box" id="b2">Weakness</div><div class="box" id="b3">Strongest</div>
+  <div class="strip" id="strip">
+    <div class="chip"><i>♛</i><b>Tier S</b><span>Top ATK &amp; HP · burns all</span></div>
+    <div class="chip"><i>★</i><b>Passive / Skill</b><span>Burn all · Bench 20%</span></div>
+    <div class="chip chip--bad"><i>⛉</i><b>Weakness</b><span>No block or revive</span></div>
+    <div class="chip"><i>⚔</i><b>Strongest</b><span>Highest ATK &amp; HP</span></div>
+  </div>
+  <div class="ovr" id="ovr">83</div><div class="dbtn" id="dbtn">Details ⌃</div>
   <div class="dock"></div>
 </div>
 
@@ -145,21 +167,30 @@ button[aria-pressed="true"] { color: #23190a; background: linear-gradient(180deg
     put($("fall"), sun.sx, f0, 0, 0); $("fall").style.setProperty("--len", Math.round(f1 - f0) + "px");
     ["dust0", "dust1"].forEach((id) => { $(id).style.transformOrigin = `50% ${Math.round(((f1 - pb.y) / pb.h) * 100)}%`; });
     drawSun(sun);
-    // the card as on the live page (coverage)
-    const fh = H - 44 - 84, top = Math.max(8, sun.sy + sun.R + 12 - 44);
-    let cw, T;
-    if (!sun.portrait && W >= 768) { cw = Math.round(Math.min(560, W * 0.42, (fh - top - 150) * 0.714)); T = 44 + top; }
-    else { cw = Math.round(clamp(Math.min(W * 0.74, (fh - top - 252) / 1.4), 110, 520)); T = 44 + top; }
-    const ch = Math.round(cw * 1.4), cl = Math.round((W - cw) / 2);
-    put($("card"), cl, T, cw, ch);
+    // the card (round 2): smaller and standing low, so the light fall above it and the palace beside it stay in view
+    // phones: card → one short label strip → Overall ring + Details → bottom bar · PC: card bottom just above the bottom bar,
+    // labels left / right of it, ring + Details in the bottom bar
+    const side = !sun.portrait && W >= 768, DOCK = side ? 64 : 84, sunB = sun.sy + sun.R + 14;
     const boxes = [0, 1, 2, 3].map((i) => $("b" + i));
-    if (!sun.portrait && W >= 768) {
-      const bw = clamp(cl - 48, 160, 380);
-      boxes.forEach((b, i) => put(b, i % 2 ? cl + cw + 32 : cl - 32 - bw, T + (i < 2 ? ch * 0.06 : ch * 0.7), bw, 90));
+    let cw, ch, T, cl;
+    if (!side) {
+      const rowY = H - DOCK - 8 - 54, stripY = rowY - 10 - 56, cb = stripY - 12;
+      cw = Math.round(clamp(Math.min(W * 0.58, (cb - sunB) / 1.4), 110, 420)); ch = Math.round(cw * 1.4);
+      T = cb - ch; cl = Math.round((W - cw) / 2);
+      put($("strip"), 0, stripY, W, 56); $("strip").style.display = "";
+      boxes.forEach((b) => { b.style.display = "none"; });
+      const rw = 54 + 14 + 124, rx = (W - rw) / 2;
+      put($("ovr"), rx, rowY, 54, 54); put($("dbtn"), rx + 68, rowY + 4, 124, 46);
     } else {
-      const gw = Math.min(W - 20, 640), x0 = (W - gw) / 2, bw = (gw - 8) / 2;
-      boxes.forEach((b, i) => put(b, x0 + (i % 2) * (bw + 8), T + ch + 14 + (i < 2 ? 0 : 68), bw, 60));
+      const cb = H - DOCK - 18;
+      ch = Math.round(Math.min((H - 44 - DOCK) * 0.6, cb - sunB)); cw = Math.round(Math.min(ch / 1.4, W * 0.34)); ch = Math.round(cw * 1.4);
+      T = cb - ch; cl = Math.round((W - cw) / 2);
+      $("strip").style.display = "none";
+      const bw = clamp(cl - 64, 160, 340);
+      boxes.forEach((b, i) => { b.style.display = ""; put(b, i % 2 ? cl + cw + 32 : cl - 32 - bw, T + (i < 2 ? ch * 0.04 : ch * 0.62), bw, 90); });
+      put($("ovr"), W - 124 - 16 - 14 - 54, H - 54 - 5, 54, 54); put($("dbtn"), W - 124 - 16, H - 46 - 9, 124, 46);
     }
+    put($("card"), cl, T, cw, ch);
     L = { W, H, sun, s };
     sparks();
   }
