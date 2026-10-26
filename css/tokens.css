@@ -215,6 +215,12 @@
   --bs-scrim: rgba(2, 4, 18, .62);
   --bs-spark: #fff3c4;
   --bs-spark-glow: 0 0 6px 2px rgba(255, 206, 110, .75), 0 0 16px 4px rgba(255, 190, 80, .25);
+  --bs-spark-sv: #f4f6ff;                     /* W7: silver motes among the gold ones */
+  --bs-spark-sv-glow: 0 0 6px 2px rgba(200, 212, 255, .75), 0 0 14px 4px rgba(170, 190, 255, .25);
+  --bs-palace-op: .58;                        /* W7: the crystal palace at rest: present, never brighter than the card */
+  --bs-glint: radial-gradient(circle, #fff 0 6%, rgba(255, 228, 160, .85) 13%, rgba(255, 214, 140, 0) 34%),
+    radial-gradient(50% 6% at 50% 50%, rgba(255, 242, 205, .95), rgba(255, 220, 150, 0)),
+    radial-gradient(6% 50% at 50% 50%, rgba(255, 242, 205, .95), rgba(255, 220, 150, 0));   /* gold star glint on a spire tip */
   --bs-mat: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(225, 230, 255, .55) 55%, transparent);
   --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
   --bs-ascended-lvl: #e6dcff;

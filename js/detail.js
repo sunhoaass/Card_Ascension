@@ -21,6 +21,11 @@
    · Details (W6) = phone: full screen · ≥ 768px: a full-height panel on the right (card + scene stay on the left)
      · sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team / My card
    · Intro (dust gathering into the card) plays every time a card opens · a little faster when swiping to the next.
+   · W7 scene (mixed): the owner's AI night-sky picture (images/scene/sky-wide | sky-tall, the city kept in view) with
+     the black sun + silver light + light fall painted on it in code · the crystal palace (black background made
+     transparent) stands behind the city cut-out, forms from dust when a card opens and again every 10 s (form → stay →
+     dissolve) · gold flash every 5 s · fog · motes · loops stop while the Details are open / the tab is hidden ·
+     Low = one still picture
    Rules (PROGRESS §4.1, §11): rAF only while something moves (intro ~2.6 s, card physics, parallax) ·
    per-frame changes = paused Web Animations, never style.transform · auras only on screen (.is-live).
    ========================================================== */
@@ -84,11 +89,47 @@
     const sy = Math.max(portrait ? clamp(H * 0.108, 84, 150) : clamp(H * 0.135, 84, 170), 26 + TOP_H + 10 + R);
     return { sy, R, portrait };
   }
+  /* W7: the night sky = the owner's AI picture (wide for landscape screens, tall for portrait). The city is cut out of
+     it once more (city-*.webp, drawn over the crystal palace) so the palace stands behind the city instead of floating.
+     Picture fractions: spire = top of the city's tallest spires · foot = where the palace's base hides behind the city */
+  const PIC = {
+    wide: { src: "images/scene/sky-wide.webp", city: "images/scene/city-wide.webp", w: 1376, h: 768, cityTop: 476, spire: 0.665, foot: 0.8 },
+    tall: { src: "images/scene/sky-tall.webp", city: "images/scene/city-tall.webp", w: 768, h: 1376, cityTop: 1087, spire: 0.815, foot: 0.885 },
+  };
+  // the crystal palace (black background made transparent, its slab faded out) · tips = spire tips (gold glints)
+  const PALACE = { src: "images/scene/palace.webp", w: 1136, h: 740, tip: 0.018, foot: 0.86,
+    tips: [[0.5, 0.018], [0.423, 0.191], [0.561, 0.208], [0.307, 0.3], [0.711, 0.205], [0.692, 0.3]] };
+  const picCache = new Map();
+  function loadPic(src) {
+    if (!picCache.has(src)) picCache.set(src, new Promise((res) => {
+      const im = new Image(); im.decoding = "async";
+      im.onload = () => (im.decode ? im.decode().catch(() => {}) : Promise.resolve()).then(() => res(im));
+      im.onerror = () => { picCache.delete(src); res(null); };
+      im.src = src;
+    }));
+    return picCache.get(src);
+  }
+  // cover the sky · portrait screens may zoom in up to 15 % so the city sits above the bottom bar (owner: keep the city in view)
+  function placePic(pic, W, H, portrait) {
+    const s0 = Math.max(W / pic.w, H / pic.h), want = H * (portrait ? 0.79 : 0.7);
+    const s = clamp((H - want) / ((1 - pic.spire) * pic.h), s0, s0 * 1.15);
+    const dw = pic.w * s, dh = pic.h * s;
+    return { pic, s, dw, dh, dx: (W - dw) / 2, dy: clamp(want - pic.spire * dh, H - dh, 0) };
+  }
   function geometry(W, H) {
     const { sy, R, portrait } = sunOf(W, H), sx = W / 2, lite = FX.lite;
     const r = rng(20261024);
     const wings = [], roots = [], trunk = [];
-    const nW = lite ? 340 : 560, reach = Math.max(W * 0.62, R * 5.2);
+    const bg = placePic(W / H < 1 ? PIC.tall : PIC.wide, W, H, portrait);
+    // the palace: its foot behind the city, its top spire under the black sun (room for the light fall in between) ·
+    // never wider than the card's surroundings need (it must not compete with the card)
+    const footY = bg.dy + bg.pic.foot * bg.dh, topMin = sy + R * (portrait ? 2.3 : 2.0);
+    let ph = Math.max(60, (footY - topMin) / (PALACE.foot - PALACE.tip)), pw = ph * PALACE.w / PALACE.h;
+    const maxW = W * (portrait ? 1.08 : 0.6);
+    if (pw > maxW) { pw = maxW; ph = pw * PALACE.h / PALACE.w; }
+    const pal = { w: pw, h: ph, x: (W - pw) / 2, y: footY - PALACE.foot * ph };
+    // silver wings: fine threads that leave the sun's rim, sweep out and droop (W7: finer + denser than W6)
+    const nW = lite ? 380 : 760, reach = Math.max(W * 0.66, R * 5.6);
     for (let i = 0; i < nW; i++) {
       const sd = i % 2 ? 1 : -1;
       const d0 = -0.5 + Math.pow(r(), 0.8) * 1.85;
@@ -102,10 +143,10 @@
       const wav = (r() - 0.5) * 0.05;
       const pts = [[px, py]]; let x = px, y = py; const steps = Math.max(10, len / 9 | 0);
       for (let s = 0; s < steps; s++) {
-        ang += curl * (s / steps) * 10 + wav * Math.sin(s * 0.5) + (r() - 0.5) * 0.06;
+        ang += curl * (s / steps) * 10 + wav * Math.sin(s * 0.5) + (r() - 0.5) * 0.05;
         x += Math.cos(ang) * len / steps; y += Math.sin(ang) * len / steps; pts.push([x, y]);
       }
-      wings.push({ pts, w: 0.35 + Math.pow(r(), 1.5) * 2.4, a: 0.18 + r() * 0.55, c: r(), d0 });
+      wings.push({ pts, w: 0.25 + Math.pow(r(), 2.2) * 2.3, a: 0.16 + r() * 0.52, c: r(), d0 });
     }
     const branch = (x, y, ang, len, w, depth) => {
       const pts = [[x, y]]; const steps = Math.max(6, len / 9 | 0);
@@ -114,23 +155,31 @@
         x += Math.cos(ang) * len / steps; y += Math.sin(ang) * len / steps; pts.push([x, y]);
         if (depth > 0 && s > 2 && r() < 0.085) branch(x, y, ang + (r() < 0.5 ? -1 : 1) * (0.35 + r() * 0.6), len * (0.35 + r() * 0.3), w * 0.62, depth - 1);
       }
-      roots.push({ pts, w, a: 0.25 + r() * 0.5, c: r() });
+      roots.push({ pts, w, a: 0.2 + r() * 0.45, c: r() });
     };
-    const nR = lite ? 10 : 15;
+    const nR = lite ? 8 : 12;
     for (let i = 0; i < nR; i++) {
       const a = Math.PI * (0.08 + 0.84 * (i + r() * 0.6) / nR);
       const out = (a - Math.PI / 2) * 1.5;
-      branch(sx + Math.cos(a) * R, sy + Math.sin(a) * R, a + out * 0.35, (0.35 + r() * 0.45) * H * 0.75, 1.1 + r() * 1.6, lite ? 2 : 3);
+      branch(sx + Math.cos(a) * R, sy + Math.sin(a) * R, a + out * 0.35, (0.3 + r() * 0.4) * H * 0.7, 0.8 + r() * 1.2, lite ? 2 : 3);
     }
-    const nT = lite ? 30 : 46, tyEnd = H * (0.5 + r() * 0.04);
+    // the light fall (W7): fine silver threads pour from the sun's underside, narrow to a neck, then spread like a veil
+    // onto the palace's top spire
+    const fallEnd = Math.max(sy + R * 2.1, pal.y + pal.h * 0.1);
+    const nT = lite ? 60 : 120, spread = Math.max(R * 1.3, pal.w * 0.17);
     for (let i = 0; i < nT; i++) {
-      const a = Math.PI * (0.32 + 0.36 * r());
+      const a = Math.PI * (0.3 + 0.4 * r());
       const x0 = sx + Math.cos(a) * R * 0.95, y0 = sy + Math.sin(a) * R * 0.95;
-      const x1 = sx + (r() - 0.5) * R * 0.6, y1 = tyEnd + (r() - 0.5) * H * 0.12;
-      const pts = []; for (let s = 0; s <= 14; s++) { const t = s / 14; const pinch = Math.sin(t * Math.PI) * 0.75; pts.push([lerp(x0, x1, t) + (sx - lerp(x0, x1, t)) * pinch * 0.6 + (r() - 0.5) * 1.5, lerp(y0, y1, t)]); }
-      trunk.push({ pts, w: 0.4 + r() * 1.8, a: 0.3 + r() * 0.6, c: r() });
+      const x1 = sx + Math.pow(r(), 1.7) * (r() < 0.5 ? -1 : 1) * spread, y1 = fallEnd + (r() - 0.25) * Math.min(pal.h * 0.16, R * 1.6);
+      const sway = (r() - 0.5) * R * 0.3, ph0 = r() * 6;
+      const pts = [];
+      for (let s = 0; s <= 20; s++) {
+        const t = s / 20, bx = lerp(x0, x1, t * t), neck = Math.sin(Math.min(1, t * 1.7) * Math.PI) * 0.55;
+        pts.push([bx + (sx - bx) * neck + Math.sin(t * 5 + ph0) * sway * t, lerp(y0, y1, t)]);
+      }
+      trunk.push({ pts, w: 0.3 + Math.pow(r(), 2) * 1.7, a: 0.22 + r() * 0.55, c: r() });
     }
-    return { W, H, sx, sy, R, CH: Math.ceil(sy + R * 1.9), wings, roots, trunk };
+    return { W, H, sx, sy, R, CH: Math.ceil(sy + R * 1.9), wings, roots, trunk, bg, pal, fallEnd, portrait };
   }
   function strokePoly(ctx, pts) {
     ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
@@ -175,6 +224,10 @@
       next(step);
     });
   }
+  // W7: canvas drawing is only recorded until something reads the pixels, so the whole painting used to be rasterized in
+  // one long task when it was saved (625 ms on the 6× slowed phone, while the Cards page scrolled): reading one pixel at
+  // each pause point rasterizes it slice by slice instead
+  const flush = (c) => { try { c.getImageData(0, 0, 1, 1); } catch (e) {} };
   function paint() {
     return sliced(paintGen()).then((cv) => {
       const img = el.bg, old = img.src;
@@ -182,66 +235,98 @@
     });
   }
   function* paintGen() {
-    const { W, H, sx, sy, R } = G;
+    const { W, H, sx, sy, R, bg, pal, fallEnd } = G;
     const cv = document.createElement("canvas");
     const ctx = sizeCanvas(cv, W, H, dprFor(W, H));
     const r = rng(7), lite = FX.lite;
-    let g = ctx.createRadialGradient(sx, sy + H * 0.18, 10, sx, sy + H * 0.2, Math.max(W, H) * 0.85);
-    g.addColorStop(0, "#2449d6"); g.addColorStop(0.35, "#1533a8"); g.addColorStop(0.7, "#0b1f78"); g.addColorStop(1, "#060f45");
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    const daub = ["#2d5cf0", "#1a3cc0", "#0f2a96", "#4a72ff", "#0a1d74", "#6a8cff", "#1c2a8a", "#3a2f9e"];
-    const nD = Math.round((lite ? 420 : 760) * Math.max(1, (W * H) / (442 * 948) * 0.6));
-    for (let i = 0; i < nD; i++) {
-      ctx.globalAlpha = 0.035 + r() * 0.09; ctx.fillStyle = pick(daub, r());
-      ctx.beginPath(); ctx.ellipse(r() * W, r() * H, 14 + r() * 70, 3 + r() * 12, (r() - 0.5) * 1.2, 0, Math.PI * 2); ctx.fill();
-      if (i % 120 === 119) yield;
+    // 1. the night sky picture (W7) · a plain night gradient if it could not load
+    let g;
+    if (G.sky) ctx.drawImage(G.sky, bg.dx, bg.dy, bg.dw, bg.dh);
+    else {
+      g = ctx.createRadialGradient(sx, sy + H * 0.18, 10, sx, sy + H * 0.2, Math.max(W, H) * 0.85);
+      g.addColorStop(0, "#2449d6"); g.addColorStop(0.35, "#1533a8"); g.addColorStop(0.7, "#0b1f78"); g.addColorStop(1, "#060f45");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     }
-    yield;
-    ctx.lineWidth = 1.4; ctx.strokeStyle = "#7d9bff";
-    for (let i = 0; i < 9; i++) {
-      const cx = r() * W, cy = H * (0.2 + r() * 0.55), rr = 10 + r() * 22; ctx.globalAlpha = 0.07 + r() * 0.08;
-      ctx.beginPath(); for (let t = 0; t < 14; t += 0.2) { const rad = rr * t / 14; ctx.lineTo(cx + Math.cos(t) * rad, cy + Math.sin(t) * rad); } ctx.stroke();
-    }
-    for (let i = 0; i < (lite ? 40 : 70); i++) {
-      const s0 = r() < 0.5 ? r() * W * 0.32 : W - r() * W * 0.32, y = H * (0.18 + r() * 0.6), s = 5 + r() * 18;
-      ctx.globalAlpha = 0.06 + r() * 0.14;
-      if (r() < 0.5) { ctx.fillStyle = r() < 0.5 ? "#5f86ff" : "#2a4bd0"; ctx.fillRect(s0, y, s, s); }
-      else { ctx.strokeStyle = "#8fb0ff"; ctx.lineWidth = 1.2; ctx.strokeRect(s0, y, s, s); }
-    }
-    g = ctx.createLinearGradient(0, H * 0.6, 0, H); g.addColorStop(0, "rgba(20,24,90,0)"); g.addColorStop(0.55, "rgba(14,16,60,.55)"); g.addColorStop(1, "rgba(8,10,40,.85)");
-    ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, H * 0.6, W, H * 0.4);
-    ctx.lineCap = "round"; ctx.lineJoin = "round";
-    for (const l of G.roots) { const c = pick(["#6f8cff", "#86a2ff", "#a9bcff", "#5ea8ff"], l.c); ctx.globalAlpha = l.a * 0.22; ctx.strokeStyle = c; ctx.lineWidth = l.w * 3.2; strokePoly(ctx, l.pts); }
-    yield;
+    flush(ctx); yield;
+    // 2. a darker hollow round the sun, so the black sun and the silver light read on the painted sky
+    g = ctx.createRadialGradient(sx, sy, R * 0.9, sx, sy, R * 5.5);
+    g.addColorStop(0, "rgba(3,6,32,.55)"); g.addColorStop(0.5, "rgba(3,6,32,.2)"); g.addColorStop(1, "rgba(3,6,32,0)");
+    ctx.fillStyle = g; ctx.fillRect(sx - R * 5.5, sy - R * 5.5, R * 11, R * 11);
+    // 3. silver light: the soft glows screen-blended (they light the picture up instead of covering it) · the threads are
+    // plain strokes (screen-blended strokes cost 3–4× more to draw)
+    ctx.globalCompositeOperation = "screen"; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    g = ctx.createRadialGradient(sx, sy, R * 0.9, sx, sy, R * 3.6);
+    g.addColorStop(0, "rgba(205,214,255,.5)"); g.addColorStop(0.35, "rgba(180,192,255,.18)"); g.addColorStop(1, "rgba(180,192,255,0)");
+    ctx.fillStyle = g; ctx.fillRect(sx - R * 3.6, sy - R * 3.6, R * 7.2, R * 7.2);
+    // the light fall's glow column + the mist where it lands on the palace
+    const sp = Math.max(R * 1.3, pal.w * 0.17);
+    g = ctx.createLinearGradient(0, sy, 0, fallEnd + R);
+    g.addColorStop(0, "rgba(196,208,255,.3)"); g.addColorStop(0.6, "rgba(176,192,255,.14)"); g.addColorStop(1, "rgba(176,192,255,0)");
+    ctx.fillStyle = g; ctx.beginPath();
+    ctx.moveTo(sx - R * 0.55, sy); ctx.lineTo(sx + R * 0.55, sy);
+    ctx.quadraticCurveTo(sx + R * 0.25, (sy + fallEnd) / 2, sx + sp * 1.1, fallEnd + R); ctx.lineTo(sx - sp * 1.1, fallEnd + R);
+    ctx.quadraticCurveTo(sx - R * 0.25, (sy + fallEnd) / 2, sx - R * 0.55, sy); ctx.fill();
+    ctx.save(); ctx.translate(sx, fallEnd); ctx.scale(1, 0.32);
+    g = ctx.createRadialGradient(0, 0, 0, 0, 0, sp * 1.9);
+    g.addColorStop(0, "rgba(222,230,255,.42)"); g.addColorStop(0.5, "rgba(200,212,255,.14)"); g.addColorStop(1, "rgba(200,212,255,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, sp * 1.9, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    ctx.globalCompositeOperation = "source-over";
+    flush(ctx); yield;
+    // roots: a faint wide glow, then the thread
     let k = 0;
-    for (const l of G.roots) { taper(ctx, l, pick(["#9fb4ff", "#c4d0ff", "#e3e8ff", "#8fd0ff"], l.c), 0.7); if (++k % 40 === 0) yield; }
-    yield;
-    for (const l of G.trunk) taper(ctx, l, pick(SILVER, l.c * 0.6), 0.9);
-    yield;
+    for (const l of G.roots) { ctx.globalAlpha = l.a * 0.16; ctx.strokeStyle = pick(["#6f8cff", "#86a2ff", "#a9bcff"], l.c); ctx.lineWidth = l.w * 4; strokePoly(ctx, l.pts); if (++k % 50 === 0) { flush(ctx); yield; } }
+    for (const l of G.roots) { taper(ctx, l, pick(["#9fb4ff", "#c4d0ff", "#e3e8ff", "#8fd0ff"], l.c), 0.65); if (++k % 50 === 0) { flush(ctx); yield; } }
+    flush(ctx); yield;
+    G.trunk.forEach((l, i) => { if (i % 3 === 0) { ctx.globalAlpha = l.a * 0.12; ctx.strokeStyle = "#c9d3ff"; ctx.lineWidth = l.w * 4.5 + 1; strokePoly(ctx, l.pts); } });
+    flush(ctx); yield;
+    for (const l of G.trunk) taper(ctx, l, pick(SILVER, l.c * 0.7), 0.85);
+    flush(ctx); yield;
+    // mist along the wings (screen-blended glows)
+    ctx.globalCompositeOperation = "screen";
     for (const sd of [-1, 1]) {
       ctx.save(); ctx.translate(sx + sd * R * 1.9, sy - R * 0.25); ctx.rotate(sd * -0.22); ctx.scale(1, 0.42);
-      const gm = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 2.4); gm.addColorStop(0, "rgba(240,240,255,.42)"); gm.addColorStop(0.55, "rgba(225,222,255,.18)"); gm.addColorStop(1, "rgba(220,220,255,0)");
+      const gm = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 2.4); gm.addColorStop(0, "rgba(240,240,255,.36)"); gm.addColorStop(0.55, "rgba(225,222,255,.14)"); gm.addColorStop(1, "rgba(220,220,255,0)");
       ctx.globalAlpha = 1; ctx.fillStyle = gm; ctx.beginPath(); ctx.arc(0, 0, R * 2.4, 0, Math.PI * 2); ctx.fill(); ctx.restore();
     }
     for (let i = 0; i < (lite ? 50 : 90); i++) {
-      const l = G.wings[(r() * G.wings.length) | 0], k = (Math.pow(r(), 1.5) * l.pts.length * 0.7) | 0, p = l.pts[k], q = l.pts[Math.min(l.pts.length - 1, k + 3)];
+      const l = G.wings[(r() * G.wings.length) | 0], k2 = (Math.pow(r(), 1.5) * l.pts.length * 0.7) | 0, p = l.pts[k2], q = l.pts[Math.min(l.pts.length - 1, k2 + 3)];
       const rx = R * (0.6 + r() * 1.5), ang = Math.atan2(q[1] - p[1], q[0] - p[0]);
       ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(ang); ctx.scale(1, 0.26 + r() * 0.2);
-      const gg = ctx.createRadialGradient(0, 0, 0, 0, 0, rx); gg.addColorStop(0, r() < 0.5 ? "rgba(238,238,255,.3)" : "rgba(212,202,255,.26)"); gg.addColorStop(1, "rgba(220,220,255,0)");
+      const gg = ctx.createRadialGradient(0, 0, 0, 0, 0, rx); gg.addColorStop(0, r() < 0.5 ? "rgba(238,238,255,.24)" : "rgba(212,202,255,.2)"); gg.addColorStop(1, "rgba(220,220,255,0)");
       ctx.globalAlpha = 1; ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(0, 0, rx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      if (i % 30 === 29) yield;
+      if (i % 30 === 29) { flush(ctx); yield; }
     }
-    yield;
+    ctx.globalCompositeOperation = "source-over";
+    flush(ctx); yield;
+    // wings: the brighter threads get a soft glow first, then every thread (tapering: thick at the sun, fine at the tip)
     const WING = ["#ffffff", "#f1f2ff", "#e2e3ff", "#d6d0ff", "#c4cdff", "#b9b0f0", "#a9bdff"];
     for (const l of G.wings) {
-      const col = pick(WING, l.c);
-      taper(ctx, l, col, 1);
-      if (l.c < 0.4) for (const o of [-1.8, 1.8]) { ctx.save(); ctx.translate(0, o); const a = l.a; l.a = a * 0.45; taper(ctx, l, col, 0.8); l.a = a; ctx.restore(); }
-      if (++k % 40 === 0) yield;
+      if (l.a > 0.5) { ctx.globalAlpha = l.a * 0.08; ctx.strokeStyle = "#cfd6ff"; ctx.lineWidth = l.w * 5 + 2; strokePoly(ctx, l.pts.slice(0, Math.max(2, l.pts.length * 0.7 | 0))); }
+      if (++k % 60 === 0) { flush(ctx); yield; }
     }
-    yield;
-    ctx.globalAlpha = 0.5; g = ctx.createRadialGradient(sx, sy, R * 0.9, sx, sy, R * 3.2); g.addColorStop(0, "rgba(235,240,255,.55)"); g.addColorStop(1, "rgba(235,240,255,0)");
-    ctx.fillStyle = g; ctx.fillRect(sx - R * 3.4, sy - R * 3.4, R * 6.8, R * 6.8);
+    flush(ctx); yield;
+    for (const l of G.wings) {
+      // W7: screen-blended threads add up fast on the picture: drawn a little fainter and finer than the W6 painting
+      const col = pick(WING, l.c), a = l.a;
+      l.a = a * 0.72; taper(ctx, l, col, 0.85);
+      if (l.c < 0.2) for (const o of [-1.6, 1.6]) { ctx.save(); ctx.translate(0, o); l.a = a * 0.28; taper(ctx, l, col, 0.6); ctx.restore(); }
+      l.a = a;
+      if (++k % 40 === 0) { flush(ctx); yield; }
+    }
+    flush(ctx); yield;
+    // tiny flecks of light caught on the threads
+    ctx.fillStyle = "#fff";
+    for (let i = 0; i < (lite ? 240 : 520); i++) {
+      const l = r() < 0.8 ? G.wings[(r() * G.wings.length) | 0] : G.trunk[(r() * G.trunk.length) | 0];
+      const p = l.pts[(Math.pow(r(), 1.3) * (l.pts.length - 1)) | 0];
+      ctx.globalAlpha = 0.25 + r() * 0.7; ctx.beginPath(); ctx.arc(p[0] + (r() - 0.5) * 3, p[1] + (r() - 0.5) * 3, 0.35 + Math.pow(r(), 3) * 1.3, 0, Math.PI * 2); ctx.fill();
+    }
+    flush(ctx); yield;
+    // 4. the black sun
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 0.5; g = ctx.createRadialGradient(sx, sy, R * 0.9, sx, sy, R * 3.2); g.addColorStop(0, "rgba(235,240,255,.5)"); g.addColorStop(1, "rgba(235,240,255,0)");
+    ctx.globalCompositeOperation = "screen"; ctx.fillStyle = g; ctx.fillRect(sx - R * 3.4, sy - R * 3.4, R * 6.8, R * 6.8);
+    ctx.globalCompositeOperation = "source-over";
     ctx.globalAlpha = 1; g = ctx.createRadialGradient(sx - R * 0.2, sy - R * 0.25, R * 0.1, sx, sy, R);
     g.addColorStop(0, "#191a24"); g.addColorStop(0.7, "#07070d"); g.addColorStop(1, "#020205");
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(sx, sy, R, 0, Math.PI * 2); ctx.fill();
@@ -252,12 +337,9 @@
       ctx.beginPath(); ctx.arc(sx + (r() - 0.5) * R * 0.2, sy + (r() - 0.5) * R * 0.2, rad, a0, a0 + 0.6 + r() * 1.6); ctx.stroke();
     }
     ctx.restore();
-    g = ctx.createLinearGradient(0, H * 0.72, 0, H); g.addColorStop(0, "rgba(150,145,215,0)"); g.addColorStop(1, "rgba(170,165,225,.42)");
-    ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, H * 0.72, W, H * 0.28);
-    g = ctx.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.35, W / 2, H * 0.45, Math.max(W, H) * 0.8);
-    g.addColorStop(0, "rgba(0,0,20,0)"); g.addColorStop(1, "rgba(0,0,20,.55)"); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    for (let i = 0; i < 26; i++) { ctx.globalAlpha = 0.25 + r() * 0.4; ctx.fillStyle = "#e8c46a"; ctx.beginPath(); ctx.arc(r() * W, H * (0.15 + r() * 0.55), 0.8 + r() * 1.6, 0, Math.PI * 2); ctx.fill(); }
-    ctx.globalAlpha = 1;
+    // 5. a light vignette (the picture has its own)
+    g = ctx.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.4, W / 2, H * 0.45, Math.max(W, H) * 0.85);
+    g.addColorStop(0, "rgba(0,0,20,0)"); g.addColorStop(1, "rgba(0,0,20,.4)"); ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     return cv;
   }
 
@@ -273,10 +355,10 @@
     ctx.lineCap = "round";
     return sliced((function* () {
       let k = 0;
-      for (const l of G.roots) { taper(ctx, l, "#fff", 1.6); if (++k % 60 === 0) yield; }
+      for (const l of G.roots) { taper(ctx, l, "#fff", 1.6); if (++k % 60 === 0) { flush(ctx); yield; } }
       for (const l of G.trunk) taper(ctx, l, "#fff", 1.4);
-      yield;
-      for (const l of G.wings) { taper(ctx, l, "#fff", 1.5); if (++k % 80 === 0) yield; }
+      flush(ctx); yield;
+      for (const l of G.wings) { taper(ctx, l, "#fff", 1.5); if (++k % 80 === 0) { flush(ctx); yield; } }
       ctx.globalAlpha = 1; ctx.fillStyle = "#000"; ctx.globalCompositeOperation = "destination-out";
       ctx.beginPath(); ctx.arc(sx, sy, R * 0.98, 0, Math.PI * 2); ctx.fill();
     })()).then(() => new Promise((res) => cv.toBlob((b) => {
@@ -364,30 +446,33 @@
       const l = G.wings[(r() * G.wings.length) | 0], p = l.pts[(Math.pow(r(), 1.4) * l.pts.length * 0.8) | 0];
       const near = i < n * 0.65;
       const x = near ? p[0] : r() * W, y = near ? p[1] : H * (0.25 + r() * 0.45);
-      if (r() < 0.45) s.className = "sm";
+      s.className = (r() < 0.45 ? "sm" : "") + (r() < 0.35 ? " sv" : "");   // sv = a silver mote among the gold ones
       s.style.left = (x + 26) + "px"; s.style.top = (y + 26) + "px";
-      s.style.animationDelay = (-r() * 3.4).toFixed(2) + "s"; s.style.animationDuration = (2.6 + r() * 2.2).toFixed(2) + "s";
+      s.style.animationDelay = (-r() * 3.4).toFixed(2) + "s"; s.style.animationDuration = (2.6 + r() * 2.4).toFixed(2) + "s";
       frag.appendChild(s);
     }
     box.appendChild(frag);
   }
+  // W7 fog: blue-white like the picture's own mist · round puffs + long thin wisps
   function buildFog() {
     const fog = el.fog;
     const w = G.W + 28, h = Math.round((G.H - 52) * 0.4);
     const cv = document.createElement("canvas");
     const ctx = sizeCanvas(cv, w, h, FX.lite ? 0.5 : 0.75);   // fog is blurry anyway
     const r = rng(11);
-    for (let i = 0; i < 26; i++) {
-      const x = r() * w, y = h * (0.35 + r() * 0.7), rx = 60 + r() * 150, ry = 18 + r() * 40;
+    const puff = (x, y, rx, ry, col) => {
       // W6: one colour per puff for its three wrap-around copies (a new colour per copy made a hard seam where the strip repeats)
-      const col = `rgba(${185 + r() * 30 | 0},${180 + r() * 25 | 0},235,${(0.16 + r() * 0.16).toFixed(3)})`;
       for (const dx of [-w, 0, w]) {
         const g = ctx.createRadialGradient(x + dx, y, 0, x + dx, y, rx);
-        g.addColorStop(0, col); g.addColorStop(1, "rgba(180,175,230,0)");
+        g.addColorStop(0, col); g.addColorStop(1, "rgba(150,175,235,0)");
         ctx.fillStyle = g; ctx.save(); ctx.translate(x + dx, y); ctx.scale(1, ry / rx); ctx.translate(-(x + dx), -y);
         ctx.beginPath(); ctx.arc(x + dx, y, rx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       }
-    }
+    };
+    for (let i = 0; i < (FX.lite ? 24 : 34); i++)
+      puff(r() * w, h * (0.38 + r() * 0.68), 60 + r() * 150, 18 + r() * 40, `rgba(${150 + r() * 40 | 0},${175 + r() * 30 | 0},${232 + r() * 20 | 0},${(0.14 + r() * 0.16).toFixed(3)})`);
+    for (let i = 0; i < (FX.lite ? 8 : 14); i++)
+      puff(r() * w, h * (0.3 + r() * 0.5), 140 + r() * 220, 5 + r() * 9, `rgba(${200 + r() * 30 | 0},${215 + r() * 25 | 0},255,${(0.12 + r() * 0.14).toFixed(3)})`);
     return bake(cv, "image/png").then((url) => {
       const old = fog.dataset.url; if (old) URL.revokeObjectURL(old);
       fog.dataset.url = url; fog.textContent = "";
@@ -395,14 +480,195 @@
     });
   }
 
+  /* ---------- W7: the crystal palace (behind the city) · gold flash · the city in front ---------- */
+  const place = (n, b) => Object.assign(n.style, { left: b.x + "px", top: b.y + "px", width: b.w + "px", height: b.h + "px" });
+  const cityBox = () => { const { bg } = G, t = bg.pic.cityTop * bg.s; return { x: bg.dx, y: bg.dy + t, w: bg.dw, h: bg.dh - t }; };
+  // the gold flash: a warm bloom round the sun ring + a short beam down the light fall (drawn once, opacity pulses in CSS)
+  const goldBox = () => { const { W, sx, sy, R } = G, w = Math.min(W, R * 9), y = Math.max(0, sy - R * 2.6); return { x: sx - w / 2, y, w, h: sy + R * 4.2 - y }; };
+  function bakeGold() {
+    const { sx, sy, R } = G, b = goldBox(), X = sx - b.x, Y = sy - b.y;
+    const cv = document.createElement("canvas");
+    const ctx = sizeCanvas(cv, b.w, b.h, 0.6);   // soft light: low resolution is enough
+    let g = ctx.createRadialGradient(X, Y, R * 0.9, X, Y, R * 2.8);
+    g.addColorStop(0, "rgba(255,222,150,.9)"); g.addColorStop(0.22, "rgba(255,198,110,.4)"); g.addColorStop(1, "rgba(255,180,90,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, b.w, b.h);
+    ctx.save(); ctx.translate(X, Y + R * 0.1); ctx.scale(1, 0.16);
+    g = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 4.4); g.addColorStop(0, "rgba(255,226,160,.55)"); g.addColorStop(1, "rgba(255,200,120,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R * 4.4, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    g = ctx.createLinearGradient(0, Y + R, 0, b.h);
+    g.addColorStop(0, "rgba(255,214,140,.42)"); g.addColorStop(1, "rgba(255,200,120,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(X - R * 0.4, Y + R * 0.8); ctx.lineTo(X + R * 0.4, Y + R * 0.8); ctx.lineTo(X + R * 0.9, b.h); ctx.lineTo(X - R * 0.9, b.h); ctx.fill();
+    ctx.globalCompositeOperation = "destination-out";   // the black sun stays black
+    ctx.beginPath(); ctx.arc(X, Y, R * 0.97, 0, Math.PI * 2); ctx.fill();
+    return bake(cv, "image/png").then((url) => { place(el.gold, b); return swapUrl(el.gold, url); });
+  }
+  function swapUrl(img, url) { const old = img.src; return setImg(img, url).then(() => { if (old.startsWith("blob:")) URL.revokeObjectURL(old); img.hidden = !url; }); }
+  // the dust the palace forms from: the palace's own shape sampled into dots, split over 2 layers that fly in from
+  // different sides (W7 speed: 2 layers · each layer is one picture moved by transform / opacity: no per-dot work per frame)
+  const DUST_FROM = [["-7%", "18%", 1.15], ["7%", "26%", 0.92]];
+  const DUST_TO = [["-5%", "-10%", 1.07], ["5%", "-16%", 1.04]];
+  function* dustGen(urls) {
+    const { pal } = G, n = 2, want = FX.lite ? 1400 : 2600;
+    const sw = Math.max(40, Math.round(pal.w / 2.5)), sh = Math.max(30, Math.round(pal.h / 2.5));
+    const sc = document.createElement("canvas"); sc.width = sw; sc.height = sh;
+    const sctx = sc.getContext("2d"); sctx.drawImage(G.palImg, 0, 0, sw, sh);
+    let data; try { data = sctx.getImageData(0, 0, sw, sh).data; } catch (e) { return; }
+    sc.width = sc.height = 1;
+    let sum = 0; for (let i = 3; i < data.length; i += 4) sum += Math.pow(data[i] / 255, 1.3);
+    const k = want / Math.max(1, sum), r = rng(404);
+    const dpr = Math.min(devicePixelRatio || 1, 1.5), layers = [];
+    for (let j = 0; j < n; j++) { const cv = document.createElement("canvas"); layers.push({ cv, ctx: sizeCanvas(cv, pal.w, pal.h, dpr) }); }
+    const COLS = ["#ffffff", "#e6ebff", "#cdd8ff", "#dcd2ff"];
+    yield;
+    const fx = pal.w / sw, fy = pal.h / sh;
+    for (let y = 0; y < sh; y++) {
+      for (let x = 0; x < sw; x++) {
+        const a = Math.pow(data[(y * sw + x) * 4 + 3] / 255, 1.3) * k;
+        if (r() >= a) continue;
+        const L = layers[(r() * n) | 0].ctx, s = 0.8 + Math.pow(r(), 3) * 1.8, px = (x + r()) * fx, py = (y + r()) * fy;
+        L.globalAlpha = 0.5 + r() * 0.5; L.fillStyle = COLS[(r() * 4) | 0]; L.fillRect(px - s / 2, py - s / 2, s, s);
+        if (s > 1.9) { L.globalAlpha = 0.18; L.beginPath(); L.arc(px, py, s * 1.8, 0, Math.PI * 2); L.fill(); }
+      }
+      if (y % 24 === 23) yield;
+    }
+    for (const l of layers) urls.push(l.cv);
+  }
+  function buildPalace() {
+    const box = el.palace, { pal } = G;
+    palaceStop();
+    box.querySelectorAll(".bs-palace__dust").forEach((d) => { if (d.src.startsWith("blob:")) URL.revokeObjectURL(d.src); d.remove(); });
+    if (G.cityImg) { place(el.city, cityBox()); el.city.src = G.bg.pic.city; el.city.hidden = false; } else el.city.hidden = true;
+    if (!G.palImg) { box.hidden = true; return bakeGold(); }
+    place(box, pal);
+    el.palaceImg.src = PALACE.src;
+    el.glints.textContent = "";
+    const r = rng(9);
+    PALACE.tips.forEach(([x, y], i) => {
+      const s = document.createElement("i");
+      s.className = "bs-glint" + (i ? " sm" : "");
+      s.style.left = (x * 100).toFixed(2) + "%"; s.style.top = (y * 100).toFixed(2) + "%";
+      s.style.animationDelay = (-r() * 3).toFixed(2) + "s"; s.style.animationDuration = (2.2 + r() * 1.6).toFixed(2) + "s";
+      el.glints.appendChild(s);
+    });
+    box.hidden = false;
+    const cvs = [];
+    return bakeGold().then(() => (gfx === "low" || rm() ? null : sliced(dustGen(cvs))))
+      .then(() => Promise.all(cvs.map((cv) => bake(cv, "image/png"))))
+      .then((urls) => {
+        urls.filter(Boolean).forEach((u, i) => {
+          const im = new Image(); im.alt = ""; im.className = "bs-palace__dust"; im.src = u; im.dataset.k = i;
+          box.insertBefore(im, el.glints);
+        });
+        if (isOpen && cycling) palaceStart();
+      });
+  }
+  /* the palace cycle (W7): forms from dust when a card opens, then every 10 s · form → stay → dissolve · one-shot Web
+     Animations (transform / opacity) per phase: while it stays and between cycles nothing animates (an endless animation
+     with a still stretch still repaints every frame: −8 fps on the 6× slowed test phone) · paused while the Details are open
+     or the tab is hidden · Low / reduced motion = it stands still (CSS) */
+  const PHASES = [["form", 3200], ["stay", 4000], ["fade", 2100], ["gap", 700]];   // = 10 s
+  let palAnims = [], cycling = false, hushed = false;
+  const PC = { i: 0, t0: 0, left: 0, timer: 0 };
+  const palaceOp = () => parseFloat(getComputedStyle(el.root).getPropertyValue("--bs-palace-op")) || 0.58;
+  const palParts = () => [el.palaceImg, ...el.palace.querySelectorAll(".bs-palace__dust")];
+  function palaceStop() {
+    clearTimeout(PC.timer); PC.timer = 0; PC.t0 = 0; goldStop();
+    palAnims.forEach((a) => a.cancel()); palAnims = [];
+    palParts().forEach((n) => { n.style.opacity = ""; n.style.transform = ""; });
+    el.palace.classList.remove("is-stay");
+  }
+  function palacePhase(i) {
+    palAnims.forEach((a) => { try { a.commitStyles(); } catch (e) {} a.cancel(); }); palAnims = [];
+    const [name, dur] = PHASES[i];
+    Object.assign(PC, { i, t0: performance.now(), left: dur });
+    const ease = "cubic-bezier(.2,.7,.2,1)", o = { duration: dur, fill: "forwards" }, op = palaceOp();
+    const dust = [...el.palace.querySelectorAll(".bs-palace__dust")];
+    const tr = (t) => `translate(${t[0]},${t[1]}) scale(${t[2]})`;
+    el.palace.classList.toggle("is-stay", name === "stay");   // gold glints twinkle only while it stands (CSS)
+    if (name === "form") {
+      palAnims.push(el.palaceImg.animate([{ opacity: 0 }, { opacity: 0, offset: 0.3, easing: ease }, { opacity: op, offset: 0.84 }, { opacity: op }], o));
+      dust.forEach((d) => palAnims.push(d.animate([{ opacity: 0, transform: tr(DUST_FROM[d.dataset.k % 2]), easing: ease }, { opacity: 0.95, offset: 0.2 },
+        { opacity: 1, transform: "none", offset: 0.66 }, { opacity: 0, transform: "none" }], o)));
+    } else if (name === "fade") {
+      palAnims.push(el.palaceImg.animate([{ opacity: op, easing: "ease-in" }, { opacity: 0, offset: 0.67 }, { opacity: 0 }], o));
+      dust.forEach((d) => palAnims.push(d.animate([{ opacity: 0, transform: "none", easing: "ease-in" }, { opacity: 0.9, offset: 0.24 }, { opacity: 0, transform: tr(DUST_TO[d.dataset.k % 2]) }], o)));
+    }
+    if (hushed) palAnims.forEach((a) => a.pause());
+    else PC.timer = setTimeout(() => palacePhase((i + 1) % PHASES.length), dur);
+  }
+  // the gold flash (W7): a one-shot flare every 5 s, in step with the palace (an endless CSS loop repainted every frame)
+  const GOLD = { every: 5000, timer: 0, anim: null, t0: 0, left: 0 };
+  function goldFlash() {
+    if (GOLD.anim) GOLD.anim.cancel();
+    GOLD.anim = el.gold.animate([{ opacity: 0.16 }, { opacity: 0.95, offset: 0.14 }, { opacity: 0.32, offset: 0.42 }, { opacity: 0.6, offset: 0.6 }, { opacity: 0.16 }], { duration: 2400, easing: "ease-in-out" });
+    GOLD.anim.onfinish = () => { GOLD.anim = null; };
+    Object.assign(GOLD, { t0: performance.now(), left: GOLD.every });
+    GOLD.timer = hushed ? 0 : setTimeout(goldFlash, GOLD.every);
+    if (hushed) GOLD.anim.pause();
+  }
+  function goldStop() { clearTimeout(GOLD.timer); if (GOLD.anim) GOLD.anim.cancel(); Object.assign(GOLD, { timer: 0, anim: null, t0: 0 }); }
+  function goldHold(on) {
+    if (!GOLD.t0) return;
+    if (on) { if (!GOLD.timer) return; clearTimeout(GOLD.timer); GOLD.timer = 0; GOLD.left = Math.max(0, GOLD.left - (performance.now() - GOLD.t0)); if (GOLD.anim) GOLD.anim.pause(); }
+    else if (!GOLD.timer) { GOLD.t0 = performance.now(); if (GOLD.anim) GOLD.anim.play(); GOLD.timer = setTimeout(goldFlash, GOLD.left); }
+  }
+  function palaceStart() {
+    palaceStop(); cycling = true;
+    if (!G || gfx === "low" || rm()) return;
+    if (!el.gold.hidden) Object.assign(GOLD, { t0: performance.now(), left: 2600, timer: setTimeout(goldFlash, 2600) });   // the first flare as the palace stands
+    if (!G.palImg || el.palace.hidden) return;
+    palacePhase(0);
+  }
+  // pause / resume the cycle where it is (the phase timer + the phase's animations)
+  function palaceHold(on) {
+    if (!cycling || !PC.t0) return;
+    if (on) {
+      if (!PC.timer) return;
+      clearTimeout(PC.timer); PC.timer = 0; PC.left = Math.max(0, PC.left - (performance.now() - PC.t0));
+      palAnims.forEach((a) => a.pause());
+    } else if (!PC.timer) {
+      PC.t0 = performance.now(); palAnims.forEach((a) => a.play());
+      const i = PC.i; PC.timer = setTimeout(() => palacePhase((i + 1) % PHASES.length), PC.left);
+    }
+  }
+  // stop the scene's own loops (Details open, tab hidden) and start them again where they were
+  function hush(on) {
+    hushed = !!on;
+    el.root.classList.toggle("is-hush", hushed);
+    palaceHold(hushed); goldHold(hushed);
+    motesPlay(ready);
+  }
+
+  /* Low graphics (W7) = one still picture: the painting + palace + gold + city + fog flattened into a single image */
+  let stillFor = null;
+  function bakeStill() {
+    if (!G || stillFor === G || !el.bg.classList.contains("is-on")) return Promise.resolve();
+    const g0 = G, { W, H, pal, bg } = G;
+    const cv = document.createElement("canvas");
+    const ctx = sizeCanvas(cv, W, H, dprFor(W, H));
+    ctx.drawImage(el.bg, 0, 0, W, H);
+    if (G.palImg && !el.palace.hidden) { ctx.globalAlpha = palaceOp(); ctx.drawImage(G.palImg, pal.x, pal.y, pal.w, pal.h); }
+    if (!el.gold.hidden) { const b = goldBox(); ctx.globalAlpha = 0.3; ctx.drawImage(el.gold, b.x, b.y, b.w, b.h); }
+    ctx.globalAlpha = 1;
+    if (G.cityImg) { const b = cityBox(); ctx.drawImage(G.cityImg, b.x, b.y, b.w, b.h); }
+    const f = el.fog.querySelector("img");   // the fog strip at rest: .bs-fogwrap = 40px wider each side, 10px under the screen
+    if (f && f.complete && f.naturalWidth) { const fh = (H - 52) * 0.4; ctx.drawImage(f, -14, H - 26 - 10 - fh, W + 28, fh); }
+    return bake(cv, "image/jpeg", 0.9).then((url) => {
+      if (G !== g0) { URL.revokeObjectURL(url); return; }
+      stillFor = g0;
+      return swapUrl(el.still, url).then(() => { el.root.classList.add("has-still"); });
+    });
+  }
+
   // build (or rebuild for a new width) the whole painting · one long task per piece, spread over idle time
   function buildScene() {
     const [W, H] = skySize();
     sceneW = W;
-    clearCoronaCache(); prebaked = false;
-    G = geometry(W, H);
-    const steps = [() => paint(), () => showCorona(state.rarity, true), () => makeMask(), () => { buildSparks(); return buildFog(); }];
-    sceneP = steps.reduce((p, f) => p.then(() => new Promise((res) => calm(() => Promise.resolve(f()).then(res, res), 400))), Promise.resolve());
+    clearCoronaCache(); prebaked = false; stillFor = null; el.root.classList.remove("has-still");
+    const g0 = G = geometry(W, H);
+    const pics = () => Promise.all([loadPic(g0.bg.pic.src), loadPic(PALACE.src), loadPic(g0.bg.pic.city)]).then(([s, p, c]) => { g0.sky = s; g0.palImg = p; g0.cityImg = c; });
+    const steps = [pics, () => paint(), () => showCorona(state.rarity, true), () => makeMask(), () => { buildSparks(); return buildFog(); }, () => buildPalace(), () => (gfx === "low" ? bakeStill() : null)];
+    sceneP = steps.reduce((p, f) => p.then(() => new Promise((res) => calm(() => (G === g0 ? Promise.resolve(f()) : Promise.resolve()).then(res, res), 400))), Promise.resolve());
     return sceneP;
   }
   function ensureScene() {
@@ -788,7 +1054,7 @@
     moteColors();
   }
   const moteAnims = () => [...el.swirl.querySelectorAll(".bs-mote")].flatMap((m) => m.getAnimations());
-  function motesPlay(on) { on = on && gfx !== "low"; moteAnims().forEach((x) => (on ? x.play() : x.pause())); }
+  function motesPlay(on) { on = on && gfx !== "low" && !hushed; moteAnims().forEach((x) => (on ? x.play() : x.pause())); }
   function moteColors() {
     const lv = lvOf(state.rarity), ms = el.swirl.children;
     for (let i = 0; i < ms.length; i++) ms[i].style.setProperty("--c", lv.byAngle ? lv.pal[i % lv.pal.length] : lv.pal[i % 2 ? 0 : 1]);
@@ -1223,7 +1489,7 @@
     fillSheet(); hideHint(); stopCard(); toggleZoom(false);
     setTab(name || "overview", { to });
     el.sheet.inert = false; el.sheet.classList.add("is-open"); sheetOpen = true;
-    sheetSide();
+    sheetSide(); hush(true);   // W7: the scene's loops stop while the Details are open
     moveSheet(1, 0, 320, E);
     // §4: numbers count up · score bars grow · panels come up one after another
     paneCount(tab);
@@ -1234,6 +1500,7 @@
     if (!sheetOpen) return;
     sheetOpen = false;
     el.root.classList.remove("is-sheet", "is-sheet-side");
+    if (isOpen) hush(document.hidden);
     const done = () => { shAnims.forEach((a) => a.cancel()); shAnims = []; el.sheet.classList.remove("is-open"); el.sheet.inert = true; el.scrim.hidden = true; if (!instant && isOpen) el.dbtn.focus({ preventScroll: true }); };
     if (instant) { done(); return; }
     moveSheet(from || 0, 1, 260, "cubic-bezier(.4,0,1,1)", done);
@@ -1378,6 +1645,12 @@
     if (save) { try { localStorage.setItem(GFX_KEY, gfx); } catch (e) {} }
     if (gfx === "low") resetParallax();
     if (isOpen && ready) motesPlay(true);
+    // W7: Low = one still picture (palace cycle off) · High = the palace layers again (their dust is made on first need)
+    if (G && sceneP) sceneP.then(() => {
+      if (gfx === "low") { palaceStop(); return bakeStill(); }
+      if (G.palImg && !el.palace.querySelector(".bs-palace__dust")) return buildPalace();
+      if (isOpen && cycling) palaceStart();
+    });
   }
   function setupGfx() {
     let v = null;
@@ -1440,6 +1713,7 @@
   function runIntro(fast) {
     stopIntro(); stopCard(); toggleZoom(false); closeSheet(0, true); hideCallouts();
     el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in"); motesPlay(false); ready = false;
+    if (!fast || !cycling) palaceStart();   // W7: the palace forms from dust with the card (swiping keeps its cycle going)
     if (rm()) { reveal(); return; }
     const sr = el.stage.getBoundingClientRect(), wr = el.wrap.getBoundingClientRect();
     const z = FX.zoom(), W = sr.width / z, H = sr.height / z, cw = LY.cw, ch = LY.ch, L = (wr.left - sr.left) / z, T = (wr.top - sr.top) / z;
@@ -1620,6 +1894,7 @@
     clearTimeout(settleTimer);
     settled(false);
     stopIntro(); stopCard(); closeSheet(0, true); toggleZoom(false); hideHint();
+    palaceStop(); cycling = false;
     el.fore.classList.remove("is-ready");
     cancelAnimationFrame(ovrRaf); resetParallax(); resetLean();
     coAnims.forEach((a) => a.cancel()); coAnims = [];
@@ -1639,6 +1914,7 @@
     el.wrap.style.transformOrigin = "";
     el.root.hidden = true;
     el.wrap.classList.remove("is-in"); el.fore.classList.remove("is-ready");
+    hushed = false; el.root.classList.remove("is-hush");
     hideCallouts(); motesPlay(false);
     setBackground(false);
     document.title = baseTitle;
@@ -1671,6 +1947,7 @@
       ovr: g("bs-ovr"), ovrArc: g("bs-ovrArc"), ovrNum: g("bs-ovrNum"), ovrLbl: g("bs-ovrLbl"), dbtn: g("bs-details"),
       hint: g("bs-hint"), dock: g("bs-dock"), dockL: g("bs-dockL"), dockR: g("bs-dockR"), lv: g("bs-lv"), lvName: g("bs-lvName"),
       prev: g("bs-prev"), next: g("bs-next"), gfx: g("bs-gfx"), tint: g("bs-tint"), wave: g("bs-wave"), glow: g("bs-glow"),
+      palace: g("bs-palace"), palaceImg: g("bs-palaceImg"), glints: g("bs-glints"), gold: g("bs-gold"), city: g("bs-city"), still: g("bs-still"),
       scrim: g("bs-scrim"), sheet: g("bs-sheet"), sheetHead: g("bs-sheetHead"), shThumb: g("bs-shThumb"), shTitle: g("bs-shTitle"), shSub: g("bs-shSub"), sheetX: g("bs-sheetX"), sheetBody: g("bs-sheetBody"),
       shLv: g("bs-shLv"), shLvName: g("bs-shLvName"), tabs: g("bs-tabs"),
     });
@@ -1690,6 +1967,7 @@
     });
     el.close.addEventListener("click", () => C.closeCard());
     document.addEventListener("cbi:rarity", onRarity);
+    document.addEventListener("visibilitychange", () => { if (isOpen) hush(document.hidden || sheetOpen); });   // W7: tab hidden = loops stop
     if (!state.cards.length) return;
 
     buildLv(el.lv); buildLv(el.shLv); buildCallouts();
