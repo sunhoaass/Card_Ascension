@@ -398,6 +398,44 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-sheet__body .group + .group { margin-top: 18px; }
 .bs-pane.is-replay .score__track i { animation: fx-bar var(--t-slow) var(--ease) both; animation-delay: var(--d, 0ms); }
 
+/* ---------------- W8 card wheel (Back on the card view · js/detail.js §12 · from mockup/card-wheel.html) ----------------
+   every card on a cylinder over the same scene · see-through cards (middle 75 % → 25 % at the sides: the scene shows) ·
+   js turns each slot with one paused Web Animation (transform + opacity) · ≥ 1100px the left menu stays usable */
+.bs-wheel { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.bs-wheel[hidden] { display: none; }
+.bs-cw { position: absolute; left: 0; top: 0; pointer-events: auto; touch-action: none; cursor: grab; outline: none; }
+.bs-cw.is-drag { cursor: grabbing; }
+.bs-cw:focus-visible::after { content: ""; position: absolute; inset: 6px 12px; border-radius: 12px; box-shadow: inset 0 0 0 2px var(--gold); pointer-events: none; }
+.bs-cwslot { position: absolute; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.bs-cwslot[hidden] { display: none; }
+.bs-cwin { width: 100%; height: 100%; }
+.bs-cw .card { width: 100%; pointer-events: none; }   /* the wheel takes the taps (side card = turn it in, middle card = open it) */
+.bs-cw .card:hover { --lift: 0px; transform: translateY(0); }
+.bs-cwname { position: absolute; left: 12px; right: 12px; text-align: center; pointer-events: none; text-shadow: 0 1px 8px var(--bs-shade), 0 0 2px var(--bs-shade); }
+.bs-cwname b { display: block; font-family: var(--font-display); font-size: 16px; font-weight: 700; line-height: 1.25; letter-spacing: .04em; color: var(--gold-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bs-cwname span { display: block; font-size: 12.5px; line-height: 1.4; color: var(--bs-text); }
+.bs-cwtools { position: absolute; left: 0; right: 0; display: grid; justify-items: center; padding: 0 10px; pointer-events: none; }
+.bs-cwsearch { position: relative; width: min(420px, 100%); pointer-events: auto; }
+.bs-cwsearch input { width: 100%; height: 44px; padding: 0 44px 0 40px; border: 0; border-radius: 10px; outline: none; font: inherit; font-size: 16px; color: var(--ink);   /* 16px: iPhone does not zoom in on focus */
+  background: var(--bs-glass); box-shadow: inset 0 0 0 1px var(--bs-glass-line); -webkit-appearance: none; appearance: none; transition: box-shadow var(--t-fast) var(--ease); }
+.bs-cwsearch input::placeholder { color: var(--ink-faint); }
+.bs-cwsearch input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.bs-cwsearch input:focus { box-shadow: inset 0 0 0 1.5px var(--gold); }
+.bs-cwsearch > svg { position: absolute; left: 11px; top: 11px; width: 22px; height: 22px; color: var(--gold); pointer-events: none; }
+.bs-cwsearch button { position: absolute; right: 2px; top: 2px; width: 40px; height: 40px; border-radius: 8px; font-size: 22px; line-height: 1; color: var(--ink-dim); }
+.bs-cwsearch button[hidden] { display: none; }
+.bs-cwempty { position: absolute; left: 0; right: 0; height: 120px; display: grid; justify-items: center; align-content: center; gap: 10px; text-align: center; pointer-events: none; }
+.bs-cwempty[hidden] { display: none; }
+.bs-cwempty b { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--gold-hi); text-shadow: 0 1px 8px var(--bs-shade); }
+.bs-cwempty button { pointer-events: auto; min-width: 120px; height: 44px; padding: 0 20px; border-radius: var(--r-chip); font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: .08em;
+  color: var(--on-gold); background: var(--gold); box-shadow: 0 6px 16px rgba(0, 0, 0, .45); }
+/* the card view's labels, Overall ring, Details, hint, ‹ › and "1 / 4" fade while the wheel shows (the level dots stay) */
+.bs.is-wheel .bs-callouts, .bs.is-wheel .bs-ovr, .bs.is-wheel .bs-dbtn, .bs.is-wheel .bs-motes, .bs.is-wheel .bs-hint, .bs.is-wheel .bs-arrow, .bs.is-wheel .bs-top__t small {
+  opacity: 0; pointer-events: none !important; transition: opacity 200ms var(--ease); }
+.bs.is-wheel .bs-wrap { pointer-events: none; }
+.bs.is-wheel-in .bs-wrap { display: none; }   /* once the card has shrunk into the wheel: it stops drawing */
+.bs.is-wheel.is-wheel-low .bs-dock { visibility: hidden; }   /* a phone on its side: the wheel needs that room (visibility: the open fade holds the opacity) */
+
 /* ---------------- Low graphics (W6): no running light, sparks / fog / motes stand still (parallax off in js) ---------------- */
 .bs.is-low .bs-pulse { display: none; }
 .bs.is-low .bs-sparks i { animation: none; opacity: .6; transform: none; }
