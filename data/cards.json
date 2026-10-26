@@ -31,6 +31,12 @@
     },
     "tier": "S",
     "tierNote": "Top ATK and HP, plus burn and a 20% bench hit on every attack. Only a 1-on-1 loss to Moon Eye Ghost keeps it at S.",
+    "short": {
+      "tier": "Top ATK & HP · burns all",
+      "ability": "Burn all · Bench 20% · Exec 5%",
+      "strong": "Highest ATK & HP",
+      "weak": "No block or revive"
+    },
     "bestTrait": "prodigy",
     "bestTraitNote": "Prodigy lifts its sim matchup 55 → 71, the best pick. More ATK also means a bigger bench hit. Rare pick: Iron Body.",
     "role": "DPS",
@@ -112,6 +118,12 @@
     },
     "tier": "A",
     "tierNote": "Wins every 1-on-1 thanks to 3 full blocks and a revive, but mid stats and a small team effect hold it at A.",
+    "short": {
+      "tier": "Wins every 1-on-1",
+      "ability": "Block 3 hits · Revive 14%",
+      "strong": "Beats all 3 cards 1-on-1",
+      "weak": "Shadow Lord ignores blocks"
+    },
     "bestTrait": "prodigy",
     "bestTraitNote": "Prodigy lifts its sim matchup 54 → 69. ×1.25 HP also makes its 14% revive bigger. Rare pick: Bloodlust.",
     "role": "Hybrid",
@@ -192,6 +204,12 @@
     },
     "tier": "C",
     "tierNote": "A 2.3x opener on every new enemy and a bench hit, but below-average stats and no 1-on-1 wins drag it to C.",
+    "short": {
+      "tier": "2.3x opener · weak stats",
+      "ability": "2.3x first hit · Bench 26%",
+      "strong": "Ignores shields & dodges",
+      "weak": "Loses every 1-on-1"
+    },
     "bestTrait": "prodigy",
     "bestTraitNote": "Prodigy lifts its sim matchup 42 → 63. The +30% first hit stacks on its 2.3x opener. Rare pick: Bloodlust.",
     "role": "DPS",
@@ -274,6 +292,12 @@
     },
     "tier": "C",
     "tierNote": "Takes 30% less damage and survives a killing blow, but the lowest ATK and HP now lose to Monarch and Ghost.",
+    "short": {
+      "tier": "Tanky but lowest stats",
+      "ability": "-30% dmg · Survives at 1 HP",
+      "strong": "Takes 30% less damage",
+      "weak": "Lowest ATK and HP"
+    },
     "bestTrait": "prodigy",
     "bestTraitNote": "Prodigy lifts its sim matchup 50 → 66, more than Undying (59): lowest stats gain most from ×1.25. Rare: Bloodlust.",
     "role": "Tank",

@@ -218,11 +218,9 @@
   --bs-mat: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(225, 230, 255, .55) 55%, transparent);
   --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
   --bs-ascended-lvl: #e6dcff;
-  /* W6: label boxes, lines, buttons and the Details head on the scene */
+  /* W6: label boxes, buttons and the Details head on the scene */
   --bs-glass: rgba(8, 11, 30, .74);                 /* dark glass (no blur: §4.1) */
   --bs-glass-line: color-mix(in srgb, var(--gold) 55%, transparent);
-  --bs-line: color-mix(in srgb, var(--gold-hi) 85%, transparent);   /* thin gold elbow lines */
-  --bs-line-glow: 0 0 5px color-mix(in srgb, var(--gold) 45%, transparent);
   --bs-sheet-head: linear-gradient(180deg, rgba(18, 22, 44, .98), rgba(14, 17, 36, .98));
 }
 @media (min-width: 1100px) {
