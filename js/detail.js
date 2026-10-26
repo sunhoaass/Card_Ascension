@@ -95,7 +95,10 @@
     const portrait = H >= W;
     // short phones (iPhone SE…): a smaller sun leaves the card more height · W7 round 2: the wings always reach both
     // screen edges (a big PC gets a bigger sun)
-    const R = Math.max(clamp(Math.min(W, H * 0.55) * (portrait ? (H < 780 ? 0.09 : 0.118) : 0.15), 34, 84), SKY.r * W / SKY.w);
+    let R = Math.max(clamp(Math.min(W, H * 0.55) * (portrait ? (H < 780 ? 0.09 : 0.118) : 0.15), 34, 84), SKY.r * W / SKY.w);
+    // a tall, wide portrait page (a phone in "desktop site" mode ≈ 980 × 1860): the 84px cap left the sky picture ending
+    // halfway down with a hard edge over the dark night · it reaches ≈ 62 % down like on a phone (normal phones, tablets, PCs unchanged)
+    if (portrait && W >= 600 && H >= W * 1.6) R = Math.max(R, SKY.r * H * 0.68 / SKY.h);
     // sky coordinates start 26px above the screen: the sun's top edge stays 10px under the top bar
     const sy = Math.max(portrait ? clamp(H * 0.108, 84, 150) : clamp(H * 0.135, 84, 170), 26 + TOP_H + 10 + R);
     return { sy, R, portrait };
