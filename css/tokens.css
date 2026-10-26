@@ -204,8 +204,8 @@
   --t-spin: 900ms;    /* card detail: one full 360° turn (owner's exception to the 400 ms rule, §4) */
 
   /* ---- Card detail "Black Sun" scene (step 12, css/detail.css · the painting itself is drawn in js/detail.js) ---- */
-  --bs-night: #050a26;                       /* behind the painting while it is being drawn */
-  --bs-sky: radial-gradient(120% 90% at 50% 34%, #1533a8, #0b1f78 55%, #060f45);   /* stand-in until the painting is ready */
+  --bs-night: #110a28;                       /* behind the painting while it is being drawn (W7 round 2: the clip's night) */
+  --bs-sky: linear-gradient(#161a3e, #110a28 70%);   /* stand-in until the painting is ready */
   --bs-top-fade: linear-gradient(180deg, rgba(5, 9, 34, .82), rgba(5, 9, 34, 0));
   --bs-dock-fade: linear-gradient(0deg, rgba(5, 8, 30, .9) 38%, rgba(5, 8, 30, 0));
   --bs-chip: rgba(20, 22, 40, .55);           /* small buttons on the painting */
@@ -217,10 +217,7 @@
   --bs-spark-glow: 0 0 6px 2px rgba(255, 206, 110, .75), 0 0 16px 4px rgba(255, 190, 80, .25);
   --bs-spark-sv: #f4f6ff;                     /* W7: silver motes among the gold ones */
   --bs-spark-sv-glow: 0 0 6px 2px rgba(200, 212, 255, .75), 0 0 14px 4px rgba(170, 190, 255, .25);
-  --bs-palace-op: .58;                        /* W7: the crystal palace at rest: present, never brighter than the card */
-  --bs-glint: radial-gradient(circle, #fff 0 6%, rgba(255, 228, 160, .85) 13%, rgba(255, 214, 140, 0) 34%),
-    radial-gradient(50% 6% at 50% 50%, rgba(255, 242, 205, .95), rgba(255, 220, 150, 0)),
-    radial-gradient(6% 50% at 50% 50%, rgba(255, 242, 205, .95), rgba(255, 220, 150, 0));   /* gold star glint on a spire tip */
+  --bs-fall: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(205, 220, 255, .45) 45%, rgba(190, 205, 255, 0));   /* W7: light running down the light fall */
   --bs-mat: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(225, 230, 255, .55) 55%, transparent);
   --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
   --bs-ascended-lvl: #e6dcff;

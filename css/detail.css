@@ -43,9 +43,7 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 [data-lvl="Ascended"] { --lvl: var(--bs-ascended-lvl); }
 
 /* ---------------- Painting (drawn once, then <img>) ---------------- */
-/* stand-in until the painting is ready (W7: the same night picture, wide on landscape screens) */
-.bs-stage { position: absolute; inset: 0; overflow: hidden; touch-action: none; background: url(../images/scene/sky-tall.webp) 50% 100% / cover no-repeat, var(--bs-sky); }
-@media (min-aspect-ratio: 1/1) { .bs-stage { background-image: url(../images/scene/sky-wide.webp), var(--bs-sky); } }
+.bs-stage { position: absolute; inset: 0; overflow: hidden; touch-action: none; background: var(--bs-sky); }   /* stand-in until the painting is ready */
 .bs-par { position: absolute; inset: 0; will-change: transform; }
 .bs-sky { position: absolute; inset: -26px; height: calc(100lvh + 52px); }
 .bs-sky .bs-bg, .bs-sky .bs-pulse { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -81,32 +79,35 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-sparks i.sm { width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px; }
 .bs-sparks i.sv { background: var(--bs-spark-sv); box-shadow: var(--bs-spark-sv-glow); }
 @keyframes bs-spark { 0%, 100% { opacity: 0; transform: scale(.4); } 45% { opacity: 1; transform: scale(1); } 60% { opacity: .85; transform: scale(.9); } }
-.bs-fogwrap { position: absolute; left: -40px; right: -40px; bottom: -10px; height: 40%; overflow: hidden; pointer-events: none; }
+.bs-fogwrap { position: absolute; left: -40px; right: -40px; bottom: -10px; height: 34%; overflow: hidden; pointer-events: none; }
 .bs-fog { position: absolute; left: 0; top: 0; height: 100%; width: 200%; display: flex; animation: bs-fog 46s linear infinite; }
 .bs-fog img { width: 50%; height: 100%; flex: none; display: block; }
 @keyframes bs-fog { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .bs-dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; transition: opacity 600ms var(--ease); }
 .bs-dust.is-out { opacity: 0; }
 
-/* W7: crystal palace (behind the city cut-out .bs-city) · gold flash · Low = one still picture (.bs-still) */
-.bs-palace, .bs-gold, .bs-city { position: absolute; pointer-events: none; }
-.bs-sky img { max-width: none; }   /* sized in px by js (the site's img max-width would squeeze the wide city cut-out) */
-.bs-palace[hidden], .bs-gold[hidden], .bs-city[hidden] { display: none; }
-.bs-palace__solid, .bs-palace__dust { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 50% 88%; }
-.bs-palace__solid, .bs-palace__dust { opacity: 0; }   /* High: js cycles them from the first card open */
-.bs.is-low .bs-palace__solid { opacity: var(--bs-palace-op); }            /* Low (before its still picture is ready): at rest */
-.bs-palace__glints { position: absolute; inset: 0; display: none; }
-.bs-palace.is-stay .bs-palace__glints, .bs.is-low .bs-palace__glints { display: block; }   /* only while the palace stands */
-.bs-glint { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; background: var(--bs-glint); opacity: 0; transform: scale(.3); animation: bs-glint 3s ease-in-out infinite; }
-.bs-glint.sm { width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; }
-@keyframes bs-glint { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); } 40% { opacity: 1; transform: scale(1) rotate(18deg); } 60% { opacity: .7; transform: scale(.8) rotate(26deg); } }
-/* gold light flashes in a rhythm (js goldFlash: a quick flare, a fall, a smaller second one, every 5 s) */
-.bs-gold { opacity: .16; }
+/* W7 round 2 (after the owner's clip): gold flecks · the ground = dark city ⇄ crystal palace + its dust · light running
+   down the light fall · js places them in sky coordinates and runs the cycle · Low = one still picture (.bs-still) */
+.bs-palace, .bs-gold, .bs-city, .bs-fall { position: absolute; pointer-events: none; }
+.bs-sky img { max-width: none; }   /* sized in px by js (the site's img max-width would squeeze the wide ground) */
+.bs-palace[hidden], .bs-gold[hidden], .bs-city[hidden], .bs-fall[hidden] { display: none; }
+.bs-palace__solid, .bs-palace__dust { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+/* at rest (before the cycle starts): the dark city · Low (before its still picture) / reduced motion: the palace + gold */
+.bs-gold, .bs-palace__solid, .bs-palace__dust { opacity: 0; }
+.bs.is-low .bs-gold, .bs.is-low .bs-palace__solid { opacity: 1; }
+.bs.is-low .bs-city { opacity: 0; }
+/* each glow is as tall as the fall (js sets its height) with the light drawn in its top 70px: translateY(100%) = the whole
+   fall, and the keyframes stay fixed values (a var() in keyframes keeps the animation off the compositor: main thread every frame) */
+.bs-fall { width: 0; }
+.bs-fall i { position: absolute; left: -9px; top: -70px; width: 18px; height: 100%; background: var(--bs-fall) 50% 0 / 100% 70px no-repeat; opacity: 0; animation: bs-fall 2.6s linear infinite; }
+.bs-fall i:nth-child(2) { animation-delay: -.9s; width: 12px; left: -6px; }
+.bs-fall i:nth-child(3) { animation-delay: -1.7s; }
+@keyframes bs-fall { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 80% { opacity: .6; } 100% { transform: translateY(100%); opacity: 0; } }
 .bs-sky .bs-still { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 400ms var(--ease); }
 .bs.is-low.has-still .bs-still { opacity: 1; }
-.bs.is-low.has-still .bs-palace, .bs.is-low.has-still .bs-gold, .bs.is-low.has-still .bs-city, .bs.is-low.has-still .bs-fogwrap, .bs.is-low .bs-sparks { visibility: hidden; }
+.bs.is-low.has-still .bs-palace, .bs.is-low.has-still .bs-gold, .bs.is-low.has-still .bs-city, .bs.is-low.has-still .bs-fogwrap, .bs.is-low .bs-sparks, .bs.is-low .bs-fall { visibility: hidden; }
 /* W7: the scene's loops stop while the Details are open or the tab is hidden (js hush) */
-.bs.is-hush .bs-pulse i, .bs.is-hush .bs-sparks i, .bs.is-hush .bs-fog, .bs.is-hush .bs-glint { animation-play-state: paused; }
+.bs.is-hush .bs-pulse i, .bs.is-hush .bs-sparks i, .bs.is-hush .bs-fog, .bs.is-hush .bs-fall i { animation-play-state: paused; }
 
 /* ---------------- Top bar ---------------- */
 .bs-top {
@@ -245,6 +246,17 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
   .bs .bs-co__d { font-size: 14px; }
   .bs .bs-co__o { font-size: 12.5px; }
 }
+/* W7 round 2 (owner's pick): phones / portrait tablets = ONE short strip of the 4 labels under the card (swipe sideways) */
+.bs-callouts.is-strip { inset: auto 0 auto 0; height: 56px; display: flex; gap: 8px; padding: 0 10px; overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; pointer-events: auto; touch-action: pan-x; overscroll-behavior-x: contain; }
+.bs-callouts.is-strip::-webkit-scrollbar { display: none; }
+.bs .is-strip .bs-co { position: relative; flex: none; height: 56px; min-height: 0; min-width: 148px; padding: 0 12px 0 10px; align-content: center;
+  grid-template-columns: auto auto; grid-template-rows: auto auto; row-gap: 2px; column-gap: 7px; box-shadow: inset 0 0 0 1px var(--bs-glass-line); }
+.bs .is-strip .bs-co__i { grid-row: span 2; width: 20px; height: 20px; }
+.bs .is-strip .bs-co__n { font-size: 13px; }
+.bs .is-strip .bs-co__d { grid-column: 2; font-size: 13px; }
+.bs .is-strip .bs-co__o, .bs .is-strip .bs-co__x { display: none; }
+.bs .is-strip .bs-co > span { overflow: visible; }
 .bs.is-side .bs-co { padding: 10px 12px; column-gap: 9px; }
 .bs.is-side .bs-co__i { width: 22px; height: 22px; }
 .bs.is-side .bs-co__n { font-size: 16px; }
@@ -397,17 +409,13 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs.is-low .bs-pulse { display: none; }
 .bs.is-low .bs-sparks i { animation: none; opacity: .6; transform: none; }
 .bs.is-low .bs-fog { animation: none; }
-.bs.is-low .bs-swirl { animation: none; }
-.bs.is-low .bs-glint { animation: none; }
-.bs.is-low .bs-glint { opacity: .8; transform: none; }
+.bs.is-low .bs-swirl, .bs.is-low .bs-fall i { animation: none; }
 
 /* ---------------- Reduced motion: still picture, fades only ---------------- */
 @media (prefers-reduced-motion: reduce) {
-  .bs-pulse i, .bs-sparks i, .bs-fog, .bs-glint { animation: none !important; }
-  .bs-glint { opacity: .8; transform: none; }
-  .bs-gold { opacity: .3; }
-  .bs-palace__solid { opacity: var(--bs-palace-op); }
-  .bs-palace__glints { display: block; }
+  .bs-pulse i, .bs-sparks i, .bs-fog, .bs-fall i { animation: none !important; }
+  .bs-gold, .bs-palace__solid { opacity: 1; }
+  .bs-city { opacity: 0; }
   .bs-sparks i { opacity: .7; transform: none; }
   .bs-zoom, .bs-lv__ind, .bs-motes, .bs-fore, .bs-dock__mid { transition: none; }
 }
