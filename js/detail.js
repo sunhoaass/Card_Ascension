@@ -11,7 +11,7 @@
      (W6: no extra sheen).
    · Labels (W6): dark glass boxes · Tier (top left) / Passive / Skill (top right) / Weakness (bottom left) /
      Strongest (bottom right) · icon + title + the card's "short" line (+ obtain under Tier) · no pointer lines ·
-     fade up once after the intro · tap = that tab of the Details · phone = 2×2 under the card · side = left / right
+     fade up once after the intro · tap = that tab of the Details · phone = one strip under the card (W7) · side = left / right
    · Level change (W6): sun ring + running light + a faint tint of the scene take the level's colour, a light wave
      runs from the sun down to the card and the card glows softly
    · Graphics Low / High (W6, cbi:gfx · Low by default with ≤ 4 GB RAM): Low = no running light, still sparks /
@@ -21,11 +21,11 @@
    · Details (W6) = phone: full screen · ≥ 768px: a full-height panel on the right (card + scene stay on the left)
      · sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team / My card
    · Intro (dust gathering into the card) plays every time a card opens · a little faster when swiping to the next.
-   · W7 scene (mixed): the owner's AI night-sky picture (images/scene/sky-wide | sky-tall, the city kept in view) with
-     the black sun + silver light + light fall painted on it in code · the crystal palace (black background made
-     transparent) stands behind the city cut-out, forms from dust when a card opens and again every 10 s (form → stay →
-     dissolve) · gold flash every 5 s · fog · motes · loops stop while the Details are open / the tab is hidden ·
-     Low = one still picture
+   · W7 scene (round 2, after the owner's clip of the game's opening): the owner's cut frames (images/silver) — sky with
+     the black sun + silver wings + blue roots + light fall, gold flecks, the dark city ⇄ the crystal palace + its dust,
+     fog — with the sun's top + ring, the level ring, the running light and sparkles in code · a 13.5 s cycle (gold lights
+     up → dust rises where the light fall lands, the city becomes the palace → stays → dissolves) · loops stop while the
+     Details are open / the tab is hidden · Low = one still picture · the card is smaller and stands low (owner's picks)
    Rules (PROGRESS §4.1, §11): rAF only while something moves (intro ~2.6 s, card physics, parallax) ·
    per-frame changes = paused Web Animations, never style.transform · auras only on screen (.is-live).
    ========================================================== */
@@ -71,7 +71,7 @@
   let LY = { L: 0, T: 0, cw: 0, ch: 0, fw: 0, fh: 0 };
 
   /* ==========================================================
-     1. The painting (from the mockup; drawn once per width)
+     1. The scene (W7 round 2: the layers of the owner's clip of the game's opening · placed once per width)
      ========================================================== */
   let G = null, sceneP = null, sceneW = 0;
   function sideW() { return innerWidth >= 1100 ? (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--side-w")) || 252) : 0; }
@@ -81,24 +81,25 @@
     return [innerWidth - sideW() + 52, innerHeight + 52];
   }
   const TOP_H = 44;   // = .bs --bs-top-h · W6 fix: the top bar never covers the black sun
+  /* W7 round 2 pictures (images/silver, cut by the owner from the clip · owner's decision, PROGRESS rule 10):
+     sky = sun + wings + blue roots + light fall, 1369 × 898 (the frame's top extended by 130 px), the black sun at
+     (698, 216) r 80, the light fall ends ≈ row 790 · gold = flecks + ring at (322, 0) · city (dark) and palace (crystal)
+     = the ground frames, their files start at row 61 / 219 · dust = palace dots in 2 layers · fog = a strip that wraps */
+  const SKY = { src: "images/silver/sky.webp", w: 1369, h: 898, cx: 698, cy: 216, r: 80, fallEnd: 790 };
+  const GOLD = { src: "images/silver/gold.webp", x: 322, w: 752, h: 352 };
+  const CITY = { src: "images/silver/city.webp", w: 1369, h: 768, top: 61 };
+  const PAL = { src: "images/silver/palace.webp", w: 1349, h: 784, top: 219 };
+  const DUSTS = ["images/silver/dust0.webp", "images/silver/dust1.webp"];
+  const FOG = "images/silver/fog.webp";
   function sunOf(W, H) {
     const portrait = H >= W;
-    // short phones (iPhone SE…): a smaller sun leaves the card more height
-    const R = clamp(Math.min(W, H * 0.55) * (portrait ? (H < 780 ? 0.09 : 0.118) : 0.15), 34, 84);
+    // short phones (iPhone SE…): a smaller sun leaves the card more height · W7 round 2: the wings always reach both
+    // screen edges (a big PC gets a bigger sun)
+    const R = Math.max(clamp(Math.min(W, H * 0.55) * (portrait ? (H < 780 ? 0.09 : 0.118) : 0.15), 34, 84), SKY.r * W / SKY.w);
     // sky coordinates start 26px above the screen: the sun's top edge stays 10px under the top bar
     const sy = Math.max(portrait ? clamp(H * 0.108, 84, 150) : clamp(H * 0.135, 84, 170), 26 + TOP_H + 10 + R);
     return { sy, R, portrait };
   }
-  /* W7: the night sky = the owner's AI picture (wide for landscape screens, tall for portrait). The city is cut out of
-     it once more (city-*.webp, drawn over the crystal palace) so the palace stands behind the city instead of floating.
-     Picture fractions: spire = top of the city's tallest spires · foot = where the palace's base hides behind the city */
-  const PIC = {
-    wide: { src: "images/scene/sky-wide.webp", city: "images/scene/city-wide.webp", w: 1376, h: 768, cityTop: 476, spire: 0.665, foot: 0.8 },
-    tall: { src: "images/scene/sky-tall.webp", city: "images/scene/city-tall.webp", w: 768, h: 1376, cityTop: 1087, spire: 0.815, foot: 0.885 },
-  };
-  // the crystal palace (black background made transparent, its slab faded out) · tips = spire tips (gold glints)
-  const PALACE = { src: "images/scene/palace.webp", w: 1136, h: 740, tip: 0.018, foot: 0.86,
-    tips: [[0.5, 0.018], [0.423, 0.191], [0.561, 0.208], [0.307, 0.3], [0.711, 0.205], [0.692, 0.3]] };
   const picCache = new Map();
   function loadPic(src) {
     if (!picCache.has(src)) picCache.set(src, new Promise((res) => {
@@ -109,99 +110,29 @@
     }));
     return picCache.get(src);
   }
-  // cover the sky · portrait screens may zoom in up to 15 % so the city sits above the bottom bar (owner: keep the city in view)
-  function placePic(pic, W, H, portrait) {
-    const s0 = Math.max(W / pic.w, H / pic.h), want = H * (portrait ? 0.79 : 0.7);
-    const s = clamp((H - want) / ((1 - pic.spire) * pic.h), s0, s0 * 1.15);
-    const dw = pic.w * s, dh = pic.h * s;
-    return { pic, s, dw, dh, dx: (W - dw) / 2, dy: clamp(want - pic.spire * dh, H - dh, 0) };
-  }
   function geometry(W, H) {
-    const { sy, R, portrait } = sunOf(W, H), sx = W / 2, lite = FX.lite;
-    const r = rng(20261024);
-    const wings = [], roots = [], trunk = [];
-    const bg = placePic(W / H < 1 ? PIC.tall : PIC.wide, W, H, portrait);
-    // the palace: its foot behind the city, its top spire under the black sun (room for the light fall in between) ·
-    // never wider than the card's surroundings need (it must not compete with the card)
-    const footY = bg.dy + bg.pic.foot * bg.dh, topMin = sy + R * (portrait ? 2.3 : 2.0);
-    let ph = Math.max(60, (footY - topMin) / (PALACE.foot - PALACE.tip)), pw = ph * PALACE.w / PALACE.h;
-    const maxW = W * (portrait ? 1.08 : 0.6);
-    if (pw > maxW) { pw = maxW; ph = pw * PALACE.h / PALACE.w; }
-    const pal = { w: pw, h: ph, x: (W - pw) / 2, y: footY - PALACE.foot * ph };
-    // silver wings: fine threads that leave the sun's rim, sweep out and droop (W7: finer + denser than W6)
-    const nW = lite ? 380 : 760, reach = Math.max(W * 0.66, R * 5.6);
-    for (let i = 0; i < nW; i++) {
-      const sd = i % 2 ? 1 : -1;
-      const d0 = -0.5 + Math.pow(r(), 0.8) * 1.85;
-      const a0 = sd > 0 ? -d0 : Math.PI + d0;
-      const rad = R * (0.92 + Math.pow(r(), 2) * 0.7);
-      const px = sx + Math.cos(a0) * rad, py = sy + Math.sin(a0) * rad;
-      const len = (0.3 + Math.pow(r(), 0.7) * 0.8) * reach * (1 - Math.max(0, d0 - 0.6) * 0.45);
-      const d1 = d0 * (0.55 + r() * 0.25) + (r() - 0.5) * 0.15;
-      let ang = sd > 0 ? -d1 : Math.PI + d1;
-      const curl = (0.4 + r() * 1.1) * (portrait ? 0.0085 : 0.0055) * sd;
-      const wav = (r() - 0.5) * 0.05;
-      const pts = [[px, py]]; let x = px, y = py; const steps = Math.max(10, len / 9 | 0);
-      for (let s = 0; s < steps; s++) {
-        ang += curl * (s / steps) * 10 + wav * Math.sin(s * 0.5) + (r() - 0.5) * 0.05;
-        x += Math.cos(ang) * len / steps; y += Math.sin(ang) * len / steps; pts.push([x, y]);
-      }
-      wings.push({ pts, w: 0.25 + Math.pow(r(), 2.2) * 2.3, a: 0.16 + r() * 0.52, c: r(), d0 });
-    }
-    const branch = (x, y, ang, len, w, depth) => {
-      const pts = [[x, y]]; const steps = Math.max(6, len / 9 | 0);
-      for (let s = 0; s < steps; s++) {
-        ang += (r() - 0.5) * 0.28 + (Math.PI / 2 - ang) * 0.012;
-        x += Math.cos(ang) * len / steps; y += Math.sin(ang) * len / steps; pts.push([x, y]);
-        if (depth > 0 && s > 2 && r() < 0.085) branch(x, y, ang + (r() < 0.5 ? -1 : 1) * (0.35 + r() * 0.6), len * (0.35 + r() * 0.3), w * 0.62, depth - 1);
-      }
-      roots.push({ pts, w, a: 0.2 + r() * 0.45, c: r() });
-    };
-    const nR = lite ? 8 : 12;
-    for (let i = 0; i < nR; i++) {
-      const a = Math.PI * (0.08 + 0.84 * (i + r() * 0.6) / nR);
-      const out = (a - Math.PI / 2) * 1.5;
-      branch(sx + Math.cos(a) * R, sy + Math.sin(a) * R, a + out * 0.35, (0.3 + r() * 0.4) * H * 0.7, 0.8 + r() * 1.2, lite ? 2 : 3);
-    }
-    // the light fall (W7): fine silver threads pour from the sun's underside, narrow to a neck, then spread like a veil
-    // onto the palace's top spire
-    const fallEnd = Math.max(sy + R * 2.1, pal.y + pal.h * 0.1);
-    const nT = lite ? 60 : 120, spread = Math.max(R * 1.3, pal.w * 0.17);
-    for (let i = 0; i < nT; i++) {
-      const a = Math.PI * (0.3 + 0.4 * r());
-      const x0 = sx + Math.cos(a) * R * 0.95, y0 = sy + Math.sin(a) * R * 0.95;
-      const x1 = sx + Math.pow(r(), 1.7) * (r() < 0.5 ? -1 : 1) * spread, y1 = fallEnd + (r() - 0.25) * Math.min(pal.h * 0.16, R * 1.6);
-      const sway = (r() - 0.5) * R * 0.3, ph0 = r() * 6;
-      const pts = [];
-      for (let s = 0; s <= 20; s++) {
-        const t = s / 20, bx = lerp(x0, x1, t * t), neck = Math.sin(Math.min(1, t * 1.7) * Math.PI) * 0.55;
-        pts.push([bx + (sx - bx) * neck + Math.sin(t * 5 + ph0) * sway * t, lerp(y0, y1, t)]);
-      }
-      trunk.push({ pts, w: 0.3 + Math.pow(r(), 2) * 1.7, a: 0.22 + r() * 0.55, c: r() });
-    }
-    return { W, H, sx, sy, R, CH: Math.ceil(sy + R * 1.9), wings, roots, trunk, bg, pal, fallEnd, portrait };
+    const { sy, R, portrait } = sunOf(W, H), sx = W / 2, s = R / SKY.r;
+    const sky = { x: sx - SKY.cx * s, y: sy - SKY.cy * s, w: SKY.w * s, h: SKY.h * s };
+    const gold = { x: sky.x + GOLD.x * s, y: sky.y, w: GOLD.w * s, h: GOLD.h * s };
+    // the ground (dark city ⇄ crystal palace): at the bottom, wider than a phone (castle + gate stay centred), grown up
+    // until it overlaps the sky picture (no empty dark band between them) · landscape: its bottom 14 % below the screen
+    const skyB = sky.y + sky.h, need = H - skyB + 70;
+    const GW = Math.max(W * (portrait ? 1.9 : 1.02), CITY.w * need / (CITY.h - CITY.top));
+    const k = GW / CITY.w, gh = CITY.h * k;
+    const gb = H + (portrait ? 0 : Math.min(gh * 0.14, Math.max(0, gh - CITY.top * k - need)));
+    const city = { x: (W - GW) / 2, y: gb - gh + CITY.top * k, w: GW, h: (CITY.h - CITY.top) * k };
+    const k2 = GW / PAL.w;
+    const pal = { x: (W - GW) / 2, y: gb - (PAL.h - PAL.top) * k2, w: GW, h: (PAL.h - PAL.top) * k2 };
+    const fall0 = sy + R * 1.6, fall1 = Math.max(fall0 + 40, sky.y + SKY.fallEnd * s);
+    return { W, H, sx, sy, R, s, CH: Math.ceil(sy + R * 1.9), sky, gold, city, pal, fall0, fall1, portrait };
   }
-  function strokePoly(ctx, pts) {
-    ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
-    for (let i = 1; i < pts.length - 1; i++) { const mx = (pts[i][0] + pts[i + 1][0]) / 2, my = (pts[i][1] + pts[i + 1][1]) / 2; ctx.quadraticCurveTo(pts[i][0], pts[i][1], mx, my); }
-    const l = pts[pts.length - 1]; ctx.lineTo(l[0], l[1]); ctx.stroke();
-  }
-  function taper(ctx, line, color, scale) {
-    const n = line.pts.length;
-    ctx.strokeStyle = color;
-    ctx.globalAlpha = line.a * 0.55; ctx.lineWidth = line.w * scale; strokePoly(ctx, line.pts);
-    ctx.globalAlpha = line.a * 0.8; ctx.lineWidth = line.w * scale * 1.5; strokePoly(ctx, line.pts.slice(0, Math.max(2, n * 0.55 | 0)));
-    ctx.globalAlpha = line.a; ctx.lineWidth = line.w * scale * 2.1; strokePoly(ctx, line.pts.slice(0, Math.max(2, n * 0.22 | 0)));
-  }
-  const SILVER = ["#ffffff", "#e8ecff", "#cdd6ff", "#b7c6ff", "#9fb4ff"];
-  const pick = (a, t) => a[Math.min(a.length - 1, (t * a.length) | 0)];
   // a static <img> costs nothing per frame; a big <canvas> layer is re-sent every frame something moves (mockup: drag 32 → 60 fps)
   function bake(cv, type, q) { return new Promise((res) => cv.toBlob((b) => { cv.width = cv.height = 1; res(b ? URL.createObjectURL(b) : ""); }, type, q)); }
   function setImg(img, url) { img.src = url; return img.decode ? img.decode().catch(() => {}) : Promise.resolve(); }
   function sizeCanvas(cv, w, h, dpr) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); return c; }
   // big screens: cap the pixel count (a 1920px PC at DPR 2 would be 9 MP)
   const dprFor = (W, H) => Math.max(0.75, Math.min(devicePixelRatio || 1, FX.lite ? 1.25 : 2, Math.sqrt(4.2e6 / (W * H))));
-
+  const pick = (a, t) => a[Math.min(a.length - 1, (t * a.length) | 0)];
   /* The painting is drawn in small slices (a generator that yields) run in idle gaps, so it never blocks a tap:
      measured as one 1.5 s task on a 6× slowed phone before slicing. */
   // W4: painting ahead (prewarm, the detail still closed) waits while the page underneath scrolls and only starts a
@@ -234,131 +165,48 @@
       return bake(cv, "image/jpeg", 0.92).then((url) => setImg(img, url)).then(() => { if (old.startsWith("blob:")) URL.revokeObjectURL(old); img.classList.add("is-on"); });
     });
   }
+  // the night + the sky picture placed on the sun, and the sun's top + white ring the frame cut off (drawn once per width)
   function* paintGen() {
-    const { W, H, sx, sy, R, bg, pal, fallEnd } = G;
+    const { W, H, sx, sy, R, sky } = G;
     const cv = document.createElement("canvas");
     const ctx = sizeCanvas(cv, W, H, dprFor(W, H));
-    const r = rng(7), lite = FX.lite;
-    // 1. the night sky picture (W7) · a plain night gradient if it could not load
-    let g;
-    if (G.sky) ctx.drawImage(G.sky, bg.dx, bg.dy, bg.dw, bg.dh);
-    else {
-      g = ctx.createRadialGradient(sx, sy + H * 0.18, 10, sx, sy + H * 0.2, Math.max(W, H) * 0.85);
-      g.addColorStop(0, "#2449d6"); g.addColorStop(0.35, "#1533a8"); g.addColorStop(0.7, "#0b1f78"); g.addColorStop(1, "#060f45");
-      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    }
+    let g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#161a3e"); g.addColorStop(0.7, "#110a28"); g.addColorStop(1, "#110a28");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    if (G.skyImg) ctx.drawImage(G.skyImg, sky.x, sky.y, sky.w, sky.h);
     flush(ctx); yield;
-    // 2. a darker hollow round the sun, so the black sun and the silver light read on the painted sky
-    g = ctx.createRadialGradient(sx, sy, R * 0.9, sx, sy, R * 5.5);
-    g.addColorStop(0, "rgba(3,6,32,.55)"); g.addColorStop(0.5, "rgba(3,6,32,.2)"); g.addColorStop(1, "rgba(3,6,32,0)");
-    ctx.fillStyle = g; ctx.fillRect(sx - R * 5.5, sy - R * 5.5, R * 11, R * 11);
-    // 3. silver light: the soft glows screen-blended (they light the picture up instead of covering it) · the threads are
-    // plain strokes (screen-blended strokes cost 3–4× more to draw)
-    ctx.globalCompositeOperation = "screen"; ctx.lineCap = "round"; ctx.lineJoin = "round";
-    g = ctx.createRadialGradient(sx, sy, R * 0.9, sx, sy, R * 3.6);
-    g.addColorStop(0, "rgba(205,214,255,.5)"); g.addColorStop(0.35, "rgba(180,192,255,.18)"); g.addColorStop(1, "rgba(180,192,255,0)");
-    ctx.fillStyle = g; ctx.fillRect(sx - R * 3.6, sy - R * 3.6, R * 7.2, R * 7.2);
-    // the light fall's glow column + the mist where it lands on the palace
-    const sp = Math.max(R * 1.3, pal.w * 0.17);
-    g = ctx.createLinearGradient(0, sy, 0, fallEnd + R);
-    g.addColorStop(0, "rgba(196,208,255,.3)"); g.addColorStop(0.6, "rgba(176,192,255,.14)"); g.addColorStop(1, "rgba(176,192,255,0)");
-    ctx.fillStyle = g; ctx.beginPath();
-    ctx.moveTo(sx - R * 0.55, sy); ctx.lineTo(sx + R * 0.55, sy);
-    ctx.quadraticCurveTo(sx + R * 0.25, (sy + fallEnd) / 2, sx + sp * 1.1, fallEnd + R); ctx.lineTo(sx - sp * 1.1, fallEnd + R);
-    ctx.quadraticCurveTo(sx - R * 0.25, (sy + fallEnd) / 2, sx - R * 0.55, sy); ctx.fill();
-    ctx.save(); ctx.translate(sx, fallEnd); ctx.scale(1, 0.32);
-    g = ctx.createRadialGradient(0, 0, 0, 0, 0, sp * 1.9);
-    g.addColorStop(0, "rgba(222,230,255,.42)"); g.addColorStop(0.5, "rgba(200,212,255,.14)"); g.addColorStop(1, "rgba(200,212,255,0)");
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, sp * 1.9, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    ctx.globalCompositeOperation = "source-over";
-    flush(ctx); yield;
-    // roots: a faint wide glow, then the thread
-    let k = 0;
-    for (const l of G.roots) { ctx.globalAlpha = l.a * 0.16; ctx.strokeStyle = pick(["#6f8cff", "#86a2ff", "#a9bcff"], l.c); ctx.lineWidth = l.w * 4; strokePoly(ctx, l.pts); if (++k % 50 === 0) { flush(ctx); yield; } }
-    for (const l of G.roots) { taper(ctx, l, pick(["#9fb4ff", "#c4d0ff", "#e3e8ff", "#8fd0ff"], l.c), 0.65); if (++k % 50 === 0) { flush(ctx); yield; } }
-    flush(ctx); yield;
-    G.trunk.forEach((l, i) => { if (i % 3 === 0) { ctx.globalAlpha = l.a * 0.12; ctx.strokeStyle = "#c9d3ff"; ctx.lineWidth = l.w * 4.5 + 1; strokePoly(ctx, l.pts); } });
-    flush(ctx); yield;
-    for (const l of G.trunk) taper(ctx, l, pick(SILVER, l.c * 0.7), 0.85);
-    flush(ctx); yield;
-    // mist along the wings (screen-blended glows)
-    ctx.globalCompositeOperation = "screen";
-    for (const sd of [-1, 1]) {
-      ctx.save(); ctx.translate(sx + sd * R * 1.9, sy - R * 0.25); ctx.rotate(sd * -0.22); ctx.scale(1, 0.42);
-      const gm = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 2.4); gm.addColorStop(0, "rgba(240,240,255,.36)"); gm.addColorStop(0.55, "rgba(225,222,255,.14)"); gm.addColorStop(1, "rgba(220,220,255,0)");
-      ctx.globalAlpha = 1; ctx.fillStyle = gm; ctx.beginPath(); ctx.arc(0, 0, R * 2.4, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    }
-    for (let i = 0; i < (lite ? 50 : 90); i++) {
-      const l = G.wings[(r() * G.wings.length) | 0], k2 = (Math.pow(r(), 1.5) * l.pts.length * 0.7) | 0, p = l.pts[k2], q = l.pts[Math.min(l.pts.length - 1, k2 + 3)];
-      const rx = R * (0.6 + r() * 1.5), ang = Math.atan2(q[1] - p[1], q[0] - p[0]);
-      ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(ang); ctx.scale(1, 0.26 + r() * 0.2);
-      const gg = ctx.createRadialGradient(0, 0, 0, 0, 0, rx); gg.addColorStop(0, r() < 0.5 ? "rgba(238,238,255,.24)" : "rgba(212,202,255,.2)"); gg.addColorStop(1, "rgba(220,220,255,0)");
-      ctx.globalAlpha = 1; ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(0, 0, rx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      if (i % 30 === 29) { flush(ctx); yield; }
-    }
-    ctx.globalCompositeOperation = "source-over";
-    flush(ctx); yield;
-    // wings: the brighter threads get a soft glow first, then every thread (tapering: thick at the sun, fine at the tip)
-    const WING = ["#ffffff", "#f1f2ff", "#e2e3ff", "#d6d0ff", "#c4cdff", "#b9b0f0", "#a9bdff"];
-    for (const l of G.wings) {
-      if (l.a > 0.5) { ctx.globalAlpha = l.a * 0.08; ctx.strokeStyle = "#cfd6ff"; ctx.lineWidth = l.w * 5 + 2; strokePoly(ctx, l.pts.slice(0, Math.max(2, l.pts.length * 0.7 | 0))); }
-      if (++k % 60 === 0) { flush(ctx); yield; }
-    }
-    flush(ctx); yield;
-    for (const l of G.wings) {
-      // W7: screen-blended threads add up fast on the picture: drawn a little fainter and finer than the W6 painting
-      const col = pick(WING, l.c), a = l.a;
-      l.a = a * 0.72; taper(ctx, l, col, 0.85);
-      if (l.c < 0.2) for (const o of [-1.6, 1.6]) { ctx.save(); ctx.translate(0, o); l.a = a * 0.28; taper(ctx, l, col, 0.6); ctx.restore(); }
-      l.a = a;
-      if (++k % 40 === 0) { flush(ctx); yield; }
-    }
-    flush(ctx); yield;
-    // tiny flecks of light caught on the threads
-    ctx.fillStyle = "#fff";
-    for (let i = 0; i < (lite ? 240 : 520); i++) {
-      const l = r() < 0.8 ? G.wings[(r() * G.wings.length) | 0] : G.trunk[(r() * G.trunk.length) | 0];
-      const p = l.pts[(Math.pow(r(), 1.3) * (l.pts.length - 1)) | 0];
-      ctx.globalAlpha = 0.25 + r() * 0.7; ctx.beginPath(); ctx.arc(p[0] + (r() - 0.5) * 3, p[1] + (r() - 0.5) * 3, 0.35 + Math.pow(r(), 3) * 1.3, 0, Math.PI * 2); ctx.fill();
-    }
-    flush(ctx); yield;
-    // 4. the black sun
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 0.5; g = ctx.createRadialGradient(sx, sy, R * 0.9, sx, sy, R * 3.2); g.addColorStop(0, "rgba(235,240,255,.5)"); g.addColorStop(1, "rgba(235,240,255,0)");
-    ctx.globalCompositeOperation = "screen"; ctx.fillStyle = g; ctx.fillRect(sx - R * 3.4, sy - R * 3.4, R * 6.8, R * 6.8);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 1; g = ctx.createRadialGradient(sx - R * 0.2, sy - R * 0.25, R * 0.1, sx, sy, R);
-    g.addColorStop(0, "#191a24"); g.addColorStop(0.7, "#07070d"); g.addColorStop(1, "#020205");
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(sx, sy, R, 0, Math.PI * 2); ctx.fill();
-    ctx.save(); ctx.beginPath(); ctx.arc(sx, sy, R * 0.98, 0, Math.PI * 2); ctx.clip();
-    for (let i = 0; i < 46; i++) {
-      const rad = R * (0.15 + r() * 0.8), a0 = r() * Math.PI * 2;
-      ctx.globalAlpha = 0.18 + r() * 0.3; ctx.strokeStyle = r() < 0.5 ? "#2c2d3c" : "#3a3b4e"; ctx.lineWidth = 0.6 + r() * 1.6;
-      ctx.beginPath(); ctx.arc(sx + (r() - 0.5) * R * 0.2, sy + (r() - 0.5) * R * 0.2, rad, a0, a0 + 0.6 + r() * 1.6); ctx.stroke();
+    ctx.save(); ctx.translate(sx, sy);
+    g = ctx.createLinearGradient(0, -R, 0, 0);
+    g.addColorStop(0, "rgba(10,10,18,1)"); g.addColorStop(0.55, "rgba(10,10,18,.85)"); g.addColorStop(1, "rgba(10,10,18,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R * 1.005, 0, Math.PI * 2); ctx.fill();
+    for (const [w, a] of [[R * 0.42, 0.18], [R * 0.16, 0.55], [R * 0.06, 0.9]]) {   // strongest on top, gone by the sides
+      g = ctx.createLinearGradient(0, -R * 1.3, 0, -R * 0.1);
+      g.addColorStop(0, `rgba(240,242,255,${a})`); g.addColorStop(0.7, `rgba(240,242,255,${a * 0.4})`); g.addColorStop(1, "rgba(240,242,255,0)");
+      ctx.strokeStyle = g; ctx.lineWidth = w; ctx.beginPath(); ctx.arc(0, 0, R * 1.08, Math.PI * 1.05, Math.PI * 1.95); ctx.stroke();
     }
     ctx.restore();
-    // 5. a light vignette (the picture has its own)
-    g = ctx.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.4, W / 2, H * 0.45, Math.max(W, H) * 0.85);
-    g.addColorStop(0, "rgba(0,0,20,0)"); g.addColorStop(1, "rgba(0,0,20,.4)"); ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     return cv;
   }
 
-  // tendril mask for the running light (half resolution, drawn once)
+  // mask for the running light (level colour): the bright strands of the sky picture (half resolution, made once)
   let maskURL = null;
   function makeMask() {
     const pulse = el.pulse;
     const ok = CSS.supports("mask-image", "url(a.png)") || CSS.supports("-webkit-mask-image", "url(a.png)");
-    if (!ok) { pulse.hidden = true; return Promise.resolve(); }
-    const { W, H, sx, sy, R } = G;
+    if (!ok || !G.skyImg) { pulse.hidden = true; return Promise.resolve(); }
+    const { W, H, sx, sy, R, sky } = G;
     const cv = document.createElement("canvas");
     const ctx = sizeCanvas(cv, W, H, 0.5);
-    ctx.lineCap = "round";
+    ctx.drawImage(G.skyImg, sky.x, sky.y, sky.w, sky.h);
     return sliced((function* () {
-      let k = 0;
-      for (const l of G.roots) { taper(ctx, l, "#fff", 1.6); if (++k % 60 === 0) { flush(ctx); yield; } }
-      for (const l of G.trunk) taper(ctx, l, "#fff", 1.4);
-      flush(ctx); yield;
-      for (const l of G.wings) { taper(ctx, l, "#fff", 1.5); if (++k % 80 === 0) { flush(ctx); yield; } }
+      let img; try { img = ctx.getImageData(0, 0, cv.width, cv.height); } catch (e) { return; }
+      const d = img.data, w = cv.width;
+      for (let i = 0, y = 0; i < d.length; i += 4) {
+        const a = clamp(((d[i] + d[i + 1] + d[i + 2]) / 765 - 0.42) / 0.38, 0, 1);
+        d[i] = d[i + 1] = d[i + 2] = 255; d[i + 3] = a * 255;
+        if ((i / 4) % w === w - 1 && ++y % 60 === 0) yield;
+      }
+      ctx.putImageData(img, 0, 0);
       ctx.globalAlpha = 1; ctx.fillStyle = "#000"; ctx.globalCompositeOperation = "destination-out";
       ctx.beginPath(); ctx.arc(sx, sy, R * 0.98, 0, Math.PI * 2); ctx.fill();
     })()).then(() => new Promise((res) => cv.toBlob((b) => {
@@ -398,15 +246,13 @@
     ctx.globalAlpha = 0.9; ctx.strokeStyle = lv.byAngle ? "#fff" : lv.pal[0]; ctx.lineWidth = 1.6;
     ctx.beginPath(); ctx.arc(sx, sy, R, 0, Math.PI * 2); ctx.stroke();
     const n = FX.lite ? 240 : 420;
-    const upper = G.wings.filter((l) => l.d0 > -0.15);
+    // flecks of the level's colour on the inner wings (W7 round 2: round the ring, sweeping outward like the wings)
     for (let i = 0; i < n; i++) {
-      const l = upper[(r() * upper.length) | 0];
-      const t = Math.pow(r(), 2.3) * 0.6;
-      const k = Math.min(l.pts.length - 2, (t * l.pts.length) | 0);
-      const p = l.pts[k], q = l.pts[k + 1];
-      if (p[1] > sy + R * 0.35) continue;
-      const ang = Math.atan2(q[1] - p[1], q[0] - p[0]);
-      const len = r() < 0.4 ? 0.6 : 1.5 + r() * 4.5, x = p[0] + (r() - 0.5) * 6, y = p[1] + (r() - 0.5) * 6;
+      const a = -Math.PI * 1.1 + r() * Math.PI * 1.2, rad = R * (1.04 + Math.pow(r(), 2) * 1.3);
+      const x = sx + Math.cos(a) * rad * 1.25, y = sy + Math.sin(a) * rad;
+      if (y > sy + R * 0.35) continue;
+      const ang = a + (Math.cos(a) > 0 ? 1 : -1) * (Math.PI / 2 - 0.45) + (r() - 0.5) * 0.4;
+      const len = r() < 0.4 ? 0.6 : 1.5 + r() * 4.5;
       ctx.globalAlpha = 0.45 + r() * 0.55; ctx.strokeStyle = col(Math.atan2(y - sy, x - sx), r()); ctx.lineWidth = 0.8 + r() * 1.8;
       ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(ang) * len, y + Math.sin(ang) * len); ctx.stroke();
     }
@@ -438,14 +284,14 @@
   }
 
   function buildSparks() {
-    const { W, H } = G, box = el.sparks, r = rng(5);
+    const { W, H, sx, sy, R } = G, box = el.sparks, r = rng(5);
     box.textContent = "";
     const n = FX.lite ? 8 : 16, frag = document.createDocumentFragment();
     for (let i = 0; i < n; i++) {
       const s = document.createElement("i");
-      const l = G.wings[(r() * G.wings.length) | 0], p = l.pts[(Math.pow(r(), 1.4) * l.pts.length * 0.8) | 0];
-      const near = i < n * 0.65;
-      const x = near ? p[0] : r() * W, y = near ? p[1] : H * (0.25 + r() * 0.45);
+      const near = i < n * 0.65, sd = r() < 0.5 ? -1 : 1;
+      // near = among the wings beside the sun · the rest float over the roots below
+      const x = near ? sx + sd * R * (1.5 + r() * 5) : r() * W, y = near ? sy - R * 0.6 + r() * R * 2.2 : H * (0.3 + r() * 0.4);
       s.className = (r() < 0.45 ? "sm" : "") + (r() < 0.35 ? " sv" : "");   // sv = a silver mote among the gold ones
       s.style.left = (x + 26) + "px"; s.style.top = (y + 26) + "px";
       s.style.animationDelay = (-r() * 3.4).toFixed(2) + "s"; s.style.animationDuration = (2.6 + r() * 2.4).toFixed(2) + "s";
@@ -453,170 +299,75 @@
     }
     box.appendChild(frag);
   }
-  // W7 fog: blue-white like the picture's own mist · round puffs + long thin wisps
+  // the clip's lavender fog: one strip (wraps left-right) moving slowly
   function buildFog() {
-    const fog = el.fog;
-    const w = G.W + 28, h = Math.round((G.H - 52) * 0.4);
-    const cv = document.createElement("canvas");
-    const ctx = sizeCanvas(cv, w, h, FX.lite ? 0.5 : 0.75);   // fog is blurry anyway
-    const r = rng(11);
-    const puff = (x, y, rx, ry, col) => {
-      // W6: one colour per puff for its three wrap-around copies (a new colour per copy made a hard seam where the strip repeats)
-      for (const dx of [-w, 0, w]) {
-        const g = ctx.createRadialGradient(x + dx, y, 0, x + dx, y, rx);
-        g.addColorStop(0, col); g.addColorStop(1, "rgba(150,175,235,0)");
-        ctx.fillStyle = g; ctx.save(); ctx.translate(x + dx, y); ctx.scale(1, ry / rx); ctx.translate(-(x + dx), -y);
-        ctx.beginPath(); ctx.arc(x + dx, y, rx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      }
-    };
-    for (let i = 0; i < (FX.lite ? 24 : 34); i++)
-      puff(r() * w, h * (0.38 + r() * 0.68), 60 + r() * 150, 18 + r() * 40, `rgba(${150 + r() * 40 | 0},${175 + r() * 30 | 0},${232 + r() * 20 | 0},${(0.14 + r() * 0.16).toFixed(3)})`);
-    for (let i = 0; i < (FX.lite ? 8 : 14); i++)
-      puff(r() * w, h * (0.3 + r() * 0.5), 140 + r() * 220, 5 + r() * 9, `rgba(${200 + r() * 30 | 0},${215 + r() * 25 | 0},255,${(0.12 + r() * 0.14).toFixed(3)})`);
-    return bake(cv, "image/png").then((url) => {
-      const old = fog.dataset.url; if (old) URL.revokeObjectURL(old);
-      fog.dataset.url = url; fog.textContent = "";
-      for (let k = 0; k < 2; k++) { const im = new Image(); im.alt = ""; im.src = url; fog.appendChild(im); }
-    });
+    if (el.fog.childElementCount) return;
+    for (let k = 0; k < 2; k++) { const im = new Image(); im.alt = ""; im.decoding = "async"; im.src = FOG; el.fog.appendChild(im); }
   }
 
-  /* ---------- W7: the crystal palace (behind the city) · gold flash · the city in front ---------- */
+  /* ---------- W7 round 2: gold flecks · the ground (dark city ⇄ crystal palace + its dust) · light running down the fall ---------- */
   const place = (n, b) => Object.assign(n.style, { left: b.x + "px", top: b.y + "px", width: b.w + "px", height: b.h + "px" });
-  const cityBox = () => { const { bg } = G, t = bg.pic.cityTop * bg.s; return { x: bg.dx, y: bg.dy + t, w: bg.dw, h: bg.dh - t }; };
-  // the gold flash: a warm bloom round the sun ring + a short beam down the light fall (drawn once, opacity pulses in CSS)
-  const goldBox = () => { const { W, sx, sy, R } = G, w = Math.min(W, R * 9), y = Math.max(0, sy - R * 2.6); return { x: sx - w / 2, y, w, h: sy + R * 4.2 - y }; };
-  function bakeGold() {
-    const { sx, sy, R } = G, b = goldBox(), X = sx - b.x, Y = sy - b.y;
-    const cv = document.createElement("canvas");
-    const ctx = sizeCanvas(cv, b.w, b.h, 0.6);   // soft light: low resolution is enough
-    let g = ctx.createRadialGradient(X, Y, R * 0.9, X, Y, R * 2.8);
-    g.addColorStop(0, "rgba(255,222,150,.9)"); g.addColorStop(0.22, "rgba(255,198,110,.4)"); g.addColorStop(1, "rgba(255,180,90,0)");
-    ctx.fillStyle = g; ctx.fillRect(0, 0, b.w, b.h);
-    ctx.save(); ctx.translate(X, Y + R * 0.1); ctx.scale(1, 0.16);
-    g = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 4.4); g.addColorStop(0, "rgba(255,226,160,.55)"); g.addColorStop(1, "rgba(255,200,120,0)");
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R * 4.4, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    g = ctx.createLinearGradient(0, Y + R, 0, b.h);
-    g.addColorStop(0, "rgba(255,214,140,.42)"); g.addColorStop(1, "rgba(255,200,120,0)");
-    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(X - R * 0.4, Y + R * 0.8); ctx.lineTo(X + R * 0.4, Y + R * 0.8); ctx.lineTo(X + R * 0.9, b.h); ctx.lineTo(X - R * 0.9, b.h); ctx.fill();
-    ctx.globalCompositeOperation = "destination-out";   // the black sun stays black
-    ctx.beginPath(); ctx.arc(X, Y, R * 0.97, 0, Math.PI * 2); ctx.fill();
-    return bake(cv, "image/png").then((url) => { place(el.gold, b); return swapUrl(el.gold, url); });
-  }
-  function swapUrl(img, url) { const old = img.src; return setImg(img, url).then(() => { if (old.startsWith("blob:")) URL.revokeObjectURL(old); img.hidden = !url; }); }
-  // the dust the palace forms from: the palace's own shape sampled into dots, split over 2 layers that fly in from
-  // different sides (W7 speed: 2 layers · each layer is one picture moved by transform / opacity: no per-dot work per frame)
-  const DUST_FROM = [["-7%", "18%", 1.15], ["7%", "26%", 0.92]];
-  const DUST_TO = [["-5%", "-10%", 1.07], ["5%", "-16%", 1.04]];
-  function* dustGen(urls) {
-    const { pal } = G, n = 2, want = FX.lite ? 1400 : 2600;
-    const sw = Math.max(40, Math.round(pal.w / 2.5)), sh = Math.max(30, Math.round(pal.h / 2.5));
-    const sc = document.createElement("canvas"); sc.width = sw; sc.height = sh;
-    const sctx = sc.getContext("2d"); sctx.drawImage(G.palImg, 0, 0, sw, sh);
-    let data; try { data = sctx.getImageData(0, 0, sw, sh).data; } catch (e) { return; }
-    sc.width = sc.height = 1;
-    let sum = 0; for (let i = 3; i < data.length; i += 4) sum += Math.pow(data[i] / 255, 1.3);
-    const k = want / Math.max(1, sum), r = rng(404);
-    const dpr = Math.min(devicePixelRatio || 1, 1.5), layers = [];
-    for (let j = 0; j < n; j++) { const cv = document.createElement("canvas"); layers.push({ cv, ctx: sizeCanvas(cv, pal.w, pal.h, dpr) }); }
-    const COLS = ["#ffffff", "#e6ebff", "#cdd8ff", "#dcd2ff"];
-    yield;
-    const fx = pal.w / sw, fy = pal.h / sh;
-    for (let y = 0; y < sh; y++) {
-      for (let x = 0; x < sw; x++) {
-        const a = Math.pow(data[(y * sw + x) * 4 + 3] / 255, 1.3) * k;
-        if (r() >= a) continue;
-        const L = layers[(r() * n) | 0].ctx, s = 0.8 + Math.pow(r(), 3) * 1.8, px = (x + r()) * fx, py = (y + r()) * fy;
-        L.globalAlpha = 0.5 + r() * 0.5; L.fillStyle = COLS[(r() * 4) | 0]; L.fillRect(px - s / 2, py - s / 2, s, s);
-        if (s > 1.9) { L.globalAlpha = 0.18; L.beginPath(); L.arc(px, py, s * 1.8, 0, Math.PI * 2); L.fill(); }
-      }
-      if (y % 24 === 23) yield;
-    }
-    for (const l of layers) urls.push(l.cv);
-  }
-  function buildPalace() {
-    const box = el.palace, { pal } = G;
+  function buildGround() {
     palaceStop();
-    box.querySelectorAll(".bs-palace__dust").forEach((d) => { if (d.src.startsWith("blob:")) URL.revokeObjectURL(d.src); d.remove(); });
-    if (G.cityImg) { place(el.city, cityBox()); el.city.src = G.bg.pic.city; el.city.hidden = false; } else el.city.hidden = true;
-    if (!G.palImg) { box.hidden = true; return bakeGold(); }
-    place(box, pal);
-    el.palaceImg.src = PALACE.src;
-    el.glints.textContent = "";
-    const r = rng(9);
-    PALACE.tips.forEach(([x, y], i) => {
-      const s = document.createElement("i");
-      s.className = "bs-glint" + (i ? " sm" : "");
-      s.style.left = (x * 100).toFixed(2) + "%"; s.style.top = (y * 100).toFixed(2) + "%";
-      s.style.animationDelay = (-r() * 3).toFixed(2) + "s"; s.style.animationDuration = (2.2 + r() * 1.6).toFixed(2) + "s";
-      el.glints.appendChild(s);
-    });
-    box.hidden = false;
-    const cvs = [];
-    return bakeGold().then(() => (gfx === "low" || rm() ? null : sliced(dustGen(cvs))))
-      .then(() => Promise.all(cvs.map((cv) => bake(cv, "image/png"))))
-      .then((urls) => {
-        urls.filter(Boolean).forEach((u, i) => {
-          const im = new Image(); im.alt = ""; im.className = "bs-palace__dust"; im.src = u; im.dataset.k = i;
-          box.insertBefore(im, el.glints);
-        });
-        if (isOpen && cycling) palaceStart();
-      });
+    const { gold, city, pal, sx, fall0, fall1 } = G;
+    if (G.goldImg) { place(el.gold, gold); el.gold.src = GOLD.src; }
+    el.gold.hidden = !G.goldImg;
+    if (G.cityImg) { place(el.city, city); el.city.src = CITY.src; }
+    el.city.hidden = !G.cityImg;
+    const ok = !!(G.palImg && G.cityImg);
+    if (G.palImg) {
+      place(el.palace, pal); el.palaceImg.src = PAL.src;
+      // the dust shoots up from where the light fall lands
+      el.pdust.forEach((d, i) => { d.src = DUSTS[i]; d.style.transformOrigin = `50% ${Math.round(((fall1 - pal.y) / pal.h) * 100)}%`; });
+    }
+    el.palace.hidden = !G.palImg;
+    Object.assign(el.fall.style, { left: sx + "px", top: fall0 + "px", height: Math.round(fall1 - fall0) + "px" });
+    el.fall.hidden = false;
+    G.ground = ok;
+    if (isOpen && cycling) palaceStart();
   }
-  /* the palace cycle (W7): forms from dust when a card opens, then every 10 s · form → stay → dissolve · one-shot Web
-     Animations (transform / opacity) per phase: while it stays and between cycles nothing animates (an endless animation
-     with a still stretch still repaints every frame: −8 fps on the 6× slowed test phone) · paused while the Details are open
-     or the tab is hidden · Low / reduced motion = it stands still (CSS) */
-  const PHASES = [["form", 3200], ["stay", 4000], ["fade", 2100], ["gap", 700]];   // = 10 s
+  /* the cycle (like the clip, 13.5 s): calm → gold flecks light up on the wings → dust rises where the light fall lands and
+     the dark city turns into the crystal palace → it stays → it breaks into dust, the dark city comes back, the gold fades.
+     Starts with each card open · one-shot Web Animations per phase (transform / opacity), so nothing animates while it
+     stays (an endless animation with a still stretch still repaints every frame: −8 fps on the 6× slowed test phone) ·
+     paused while the Details are open or the tab is hidden · Low / reduced motion = the palace + gold standing still */
+  const PHASES = [["calm", 1500], ["gold", 3000], ["form", 3500], ["stay", 3000], ["fade", 1800], ["gap", 700]];
   let palAnims = [], cycling = false, hushed = false;
   const PC = { i: 0, t0: 0, left: 0, timer: 0 };
-  const palaceOp = () => parseFloat(getComputedStyle(el.root).getPropertyValue("--bs-palace-op")) || 0.58;
-  const palParts = () => [el.palaceImg, ...el.palace.querySelectorAll(".bs-palace__dust")];
+  const palParts = () => [el.gold, el.city, el.palaceImg, ...el.pdust];
   function palaceStop() {
-    clearTimeout(PC.timer); PC.timer = 0; PC.t0 = 0; goldStop();
+    clearTimeout(PC.timer); PC.timer = 0; PC.t0 = 0;
     palAnims.forEach((a) => a.cancel()); palAnims = [];
     palParts().forEach((n) => { n.style.opacity = ""; n.style.transform = ""; });
-    el.palace.classList.remove("is-stay");
   }
   function palacePhase(i) {
     palAnims.forEach((a) => { try { a.commitStyles(); } catch (e) {} a.cancel(); }); palAnims = [];
     const [name, dur] = PHASES[i];
     Object.assign(PC, { i, t0: performance.now(), left: dur });
-    const ease = "cubic-bezier(.2,.7,.2,1)", o = { duration: dur, fill: "forwards" }, op = palaceOp();
-    const dust = [...el.palace.querySelectorAll(".bs-palace__dust")];
-    const tr = (t) => `translate(${t[0]},${t[1]}) scale(${t[2]})`;
-    el.palace.classList.toggle("is-stay", name === "stay");   // gold glints twinkle only while it stands (CSS)
-    if (name === "form") {
-      palAnims.push(el.palaceImg.animate([{ opacity: 0 }, { opacity: 0, offset: 0.3, easing: ease }, { opacity: op, offset: 0.84 }, { opacity: op }], o));
-      dust.forEach((d) => palAnims.push(d.animate([{ opacity: 0, transform: tr(DUST_FROM[d.dataset.k % 2]), easing: ease }, { opacity: 0.95, offset: 0.2 },
-        { opacity: 1, transform: "none", offset: 0.66 }, { opacity: 0, transform: "none" }], o)));
+    const E2 = "cubic-bezier(.2,.7,.2,1)";
+    const run = (n, kf, d, easing) => palAnims.push(n.animate(kf, { duration: d || dur, fill: "forwards", easing: easing || "linear" }));
+    const [d0, d1] = el.pdust;
+    if (name === "calm") palParts().forEach((n) => { n.style.opacity = ""; n.style.transform = ""; });   // a clean start every cycle
+    else if (name === "gold") run(el.gold, [{ opacity: 0 }, { opacity: 1, offset: 0.25 }, { opacity: 0.7, offset: 0.45 }, { opacity: 1 }], 1400, "ease-out");
+    else if (name === "form") {
+      [[d0, "-4%"], [d1, "5%"]].forEach(([d, x], j) => run(d, [
+        { opacity: 0, transform: `translate(${x}, 6%) scale(.12, .3)` }, { opacity: 1, offset: 0.12 },
+        { opacity: 1, transform: "none", offset: 0.62 + j * 0.04 }, { opacity: 0, transform: "none" }], 0, E2));
+      run(el.palaceImg, [{ opacity: 0 }, { opacity: 0, offset: 0.35 }, { opacity: 1, offset: 0.85 }, { opacity: 1 }], 0, "ease-in-out");
+      run(el.city, [{ opacity: 1 }, { opacity: 1, offset: 0.3 }, { opacity: 0, offset: 0.85 }, { opacity: 0 }], 0, "ease-in-out");
     } else if (name === "fade") {
-      palAnims.push(el.palaceImg.animate([{ opacity: op, easing: "ease-in" }, { opacity: 0, offset: 0.67 }, { opacity: 0 }], o));
-      dust.forEach((d) => palAnims.push(d.animate([{ opacity: 0, transform: "none", easing: "ease-in" }, { opacity: 0.9, offset: 0.24 }, { opacity: 0, transform: tr(DUST_TO[d.dataset.k % 2]) }], o)));
+      [[d0, "-5%", "-12%"], [d1, "6%", "-17%"]].forEach(([d, x, y]) => run(d, [
+        { opacity: 0, transform: "none" }, { opacity: 1, offset: 0.18 }, { opacity: 0, transform: `translate(${x}, ${y}) scale(1.08)` }], 0, "ease-in"));
+      run(el.palaceImg, [{ opacity: 1 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }], 0, "ease-in");
+      run(el.city, [{ opacity: 0 }, { opacity: 0, offset: 0.3 }, { opacity: 1 }], 0, "ease-out");
+      run(el.gold, [{ opacity: 1 }, { opacity: 1, offset: 0.25 }, { opacity: 0 }], 0, "ease-in");
     }
     if (hushed) palAnims.forEach((a) => a.pause());
     else PC.timer = setTimeout(() => palacePhase((i + 1) % PHASES.length), dur);
   }
-  // the gold flash (W7): a one-shot flare every 5 s, in step with the palace (an endless CSS loop repainted every frame)
-  const GOLD = { every: 5000, timer: 0, anim: null, t0: 0, left: 0 };
-  function goldFlash() {
-    if (GOLD.anim) GOLD.anim.cancel();
-    GOLD.anim = el.gold.animate([{ opacity: 0.16 }, { opacity: 0.95, offset: 0.14 }, { opacity: 0.32, offset: 0.42 }, { opacity: 0.6, offset: 0.6 }, { opacity: 0.16 }], { duration: 2400, easing: "ease-in-out" });
-    GOLD.anim.onfinish = () => { GOLD.anim = null; };
-    Object.assign(GOLD, { t0: performance.now(), left: GOLD.every });
-    GOLD.timer = hushed ? 0 : setTimeout(goldFlash, GOLD.every);
-    if (hushed) GOLD.anim.pause();
-  }
-  function goldStop() { clearTimeout(GOLD.timer); if (GOLD.anim) GOLD.anim.cancel(); Object.assign(GOLD, { timer: 0, anim: null, t0: 0 }); }
-  function goldHold(on) {
-    if (!GOLD.t0) return;
-    if (on) { if (!GOLD.timer) return; clearTimeout(GOLD.timer); GOLD.timer = 0; GOLD.left = Math.max(0, GOLD.left - (performance.now() - GOLD.t0)); if (GOLD.anim) GOLD.anim.pause(); }
-    else if (!GOLD.timer) { GOLD.t0 = performance.now(); if (GOLD.anim) GOLD.anim.play(); GOLD.timer = setTimeout(goldFlash, GOLD.left); }
-  }
   function palaceStart() {
     palaceStop(); cycling = true;
-    if (!G || gfx === "low" || rm()) return;
-    if (!el.gold.hidden) Object.assign(GOLD, { t0: performance.now(), left: 2600, timer: setTimeout(goldFlash, 2600) });   // the first flare as the palace stands
-    if (!G.palImg || el.palace.hidden) return;
+    if (!G || !G.ground || gfx === "low" || rm()) return;
     palacePhase(0);
   }
   // pause / resume the cycle where it is (the phase timer + the phase's animations)
@@ -635,24 +386,24 @@
   function hush(on) {
     hushed = !!on;
     el.root.classList.toggle("is-hush", hushed);
-    palaceHold(hushed); goldHold(hushed);
+    palaceHold(hushed);
     motesPlay(ready);
   }
 
-  /* Low graphics (W7) = one still picture: the painting + palace + gold + city + fog flattened into a single image */
+  /* Low graphics = one still picture: the painting + gold + crystal palace + fog flattened into a single image */
   let stillFor = null;
+  function swapUrl(img, url) { const old = img.src; return setImg(img, url).then(() => { if (old.startsWith("blob:")) URL.revokeObjectURL(old); img.hidden = !url; }); }
   function bakeStill() {
     if (!G || stillFor === G || !el.bg.classList.contains("is-on")) return Promise.resolve();
-    const g0 = G, { W, H, pal, bg } = G;
+    const g0 = G, { W, H, gold, pal } = G;
     const cv = document.createElement("canvas");
     const ctx = sizeCanvas(cv, W, H, dprFor(W, H));
     ctx.drawImage(el.bg, 0, 0, W, H);
-    if (G.palImg && !el.palace.hidden) { ctx.globalAlpha = palaceOp(); ctx.drawImage(G.palImg, pal.x, pal.y, pal.w, pal.h); }
-    if (!el.gold.hidden) { const b = goldBox(); ctx.globalAlpha = 0.3; ctx.drawImage(el.gold, b.x, b.y, b.w, b.h); }
-    ctx.globalAlpha = 1;
-    if (G.cityImg) { const b = cityBox(); ctx.drawImage(G.cityImg, b.x, b.y, b.w, b.h); }
+    if (G.goldImg) ctx.drawImage(G.goldImg, gold.x, gold.y, gold.w, gold.h);
+    if (G.palImg) ctx.drawImage(G.palImg, pal.x, pal.y, pal.w, pal.h);
+    else if (G.cityImg) ctx.drawImage(G.cityImg, G.city.x, G.city.y, G.city.w, G.city.h);
     const f = el.fog.querySelector("img");   // the fog strip at rest: .bs-fogwrap = 40px wider each side, 10px under the screen
-    if (f && f.complete && f.naturalWidth) { const fh = (H - 52) * 0.4; ctx.drawImage(f, -14, H - 26 - 10 - fh, W + 28, fh); }
+    if (f && f.complete && f.naturalWidth) { const fh = (H - 52) * 0.34; ctx.drawImage(f, -14, H - 26 - 10 - fh, W + 28, fh); }
     return bake(cv, "image/jpeg", 0.9).then((url) => {
       if (G !== g0) { URL.revokeObjectURL(url); return; }
       stillFor = g0;
@@ -660,17 +411,19 @@
     });
   }
 
-  // build (or rebuild for a new width) the whole painting · one long task per piece, spread over idle time
+  // build (or rebuild for a new width) the whole scene · one long task per piece, spread over idle time
   function buildScene() {
     const [W, H] = skySize();
     sceneW = W;
     clearCoronaCache(); prebaked = false; stillFor = null; el.root.classList.remove("has-still");
     const g0 = G = geometry(W, H);
-    const pics = () => Promise.all([loadPic(g0.bg.pic.src), loadPic(PALACE.src), loadPic(g0.bg.pic.city)]).then(([s, p, c]) => { g0.sky = s; g0.palImg = p; g0.cityImg = c; });
-    const steps = [pics, () => paint(), () => showCorona(state.rarity, true), () => makeMask(), () => { buildSparks(); return buildFog(); }, () => buildPalace(), () => (gfx === "low" ? bakeStill() : null)];
+    const pics = () => Promise.all([SKY.src, GOLD.src, CITY.src, PAL.src, ...DUSTS].map(loadPic))
+      .then(([s, g, c, p]) => Object.assign(g0, { skyImg: s, goldImg: g, cityImg: c, palImg: p }));
+    const steps = [pics, () => paint(), () => showCorona(state.rarity, true), () => makeMask(), () => { buildSparks(); buildFog(); }, () => buildGround(), () => (gfx === "low" ? bakeStill() : null)];
     sceneP = steps.reduce((p, f) => p.then(() => new Promise((res) => calm(() => (G === g0 ? Promise.resolve(f()) : Promise.resolve()).then(res, res), 400))), Promise.resolve());
     return sceneP;
   }
+
   function ensureScene() {
     const [W] = skySize();
     if (!G || Math.abs(W - sceneW) > 40) return buildScene();
@@ -706,7 +459,7 @@
     parRaf = done || !isOpen ? 0 : requestAnimationFrame(parStep);
   }
   function resetParallax() { cancelAnimationFrame(parRaf); parRaf = 0; tx = ty = pcx = pcy = 0; for (const p of PAR) p.a.currentTime = 500; }
-  const INTERACTIVE = "button, a, input, select, .bs-wrap, .bs-sheet, .bs-scrim, .bs-co, .bs-dock, .bs-top";
+  const INTERACTIVE = "button, a, input, select, .bs-wrap, .bs-sheet, .bs-scrim, .bs-co, .is-strip, .bs-dock, .bs-top";
   // no phone-tilt motion (owner, 2026-10-25): tilting the phone moves nothing · finger / mouse only
   function setupParallax() {
     addPar(el.skyX, "x", 16); addPar(el.skyY, "y", 12);
@@ -868,7 +621,7 @@
     }
   }
   /* ==========================================================
-     5. Layout: phone (labels 2×2 under the card) · side (≥ 768: labels left / right, bigger card)
+     5. Layout (W7 round 2): phone (smaller card standing low, a label strip under it) · side (≥ 768: labels left / right)
      ========================================================== */
   function moveHud(on) {
     if (on === hud && el.ovr.parentElement !== null && (on ? el.ovr.parentElement === el.dockL : el.ovr.parentElement === el.foreY)) return;
@@ -899,7 +652,7 @@
     if (el.root.hidden) return;
     const rw = el.root.clientWidth, rh = el.root.clientHeight;
     if (!rw || !rh) return;
-    // side = labels left / right (landscape, ≥ 768) · otherwise stacked: 2×2 boxes under the card (phones, portrait tablets)
+    // side = labels left / right (landscape, ≥ 768) · otherwise stacked: a label strip under the card (phones, portrait tablets)
     side = (rw >= 768 && rw >= rh * 0.95) || (rw >= 600 && rw > rh * 1.15);
     el.root.classList.toggle("is-side", side);
     const fw = el.fore.clientWidth, fh = el.fore.clientHeight;
@@ -907,59 +660,51 @@
     const [W, H] = skySize(), sun = sunOf(W, H);
     const sunB = Math.round(sun.sy + sun.R - 26 - topH + 12);   // just under the black sun, in foreground coordinates
     const co = {}; coEls.forEach((o) => { co[o.d.key] = o; o.el.style.height = ""; });
-    let cw, useHud = false, T, L, ch, B;
+    let cw, T, L, ch, B;
 
+    el.callouts.classList.toggle("is-strip", !side);
     if (!side) {
-      // card (right under the sun, as big as the screen allows) · 2×2 boxes · Overall ring + Details · first-time hint
-      const gw = Math.min(fw - 20, 640), x0 = Math.round((fw - gw) / 2), bw = Math.floor((gw - 8) / 2), x1 = x0 + bw + 8;
-      coEls.forEach((o) => { o.el.style.width = bw + "px"; o.x.textContent = ""; o.x.hidden = true; fitLines(o); }); evenShorts();
-      // obtain shares the Tier title row when it fits there, otherwise it takes its own line (never over the title)
-      { const ob = co.tier.el.querySelector(".bs-co__o"), tn = co.tier.el.querySelector(".bs-co__n");
-        ob.classList.remove("is-below");
-        if (!ob.hidden && (ob.scrollWidth > ob.clientWidth + 0.5 || tn.getBoundingClientRect().right > ob.getBoundingClientRect().left - 4)) { ob.classList.add("is-below"); fitLine(ob); } }
-      const h1 = Math.max(co.tier.el.offsetHeight, co.ability.el.offsetHeight), h2 = Math.max(co.weak.el.offsetHeight, co.strong.el.offsetHeight);
+      /* W7 round 2 (owner's picks): a smaller card (≤ 58 % of the width) standing low, so the sun → light fall → palace
+         line stays in view · under it ONE short strip of the 4 labels (swipe sideways) · Overall ring + Details · hint */
+      coEls.forEach((o) => {
+        ["left", "top", "width"].forEach((p) => { o.el.style[p] = ""; }); o.x.textContent = ""; o.x.hidden = true;
+        o.el.querySelectorAll(".bs-co__n, .bs-co__d, .bs-co__o").forEach((n) => { n.style.fontSize = ""; n.classList.remove("is-wrap"); });   // chips size to their text
+      });
       const short = fh < 600;   // short phone: the first-time hint floats over the bottom bar instead of taking a row
       el.root.classList.toggle("is-short", short);
-      const below = 14 + h1 + 8 + h2 + 12 + 60 + (short ? 6 : HINT_ROOM);
+      const STRIP = 56, rowY0 = fh - (short ? 6 : HINT_ROOM) - 60, stripY0 = rowY0 - 10 - STRIP, cb = stripY0 - 12;
       const top = Math.max(8, sunB);
-      cw = Math.round(clamp(Math.min(fw * 0.74, (fh - top - below) / 1.4), 110, 520)); ch = Math.round(cw * 1.4);
+      cw = Math.round(clamp(Math.min(fw * 0.58, (cb - top) / 1.4), 110, 420)); ch = Math.round(cw * 1.4);
       moveHud(false);
       L = Math.round((fw - cw) / 2);
-      T = Math.round(top + Math.max(0, fh - top - below - ch) * 0.35);
+      T = Math.max(top, cb - ch);
       B = T + ch;
       LY = { L, T, cw, ch, fw, fh, B, rw, rh };
       el.root.style.setProperty("--cw", cw + "px");
       el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
-      const y1 = B + 14, y2 = y1 + h1 + 8;
-      const put = (o, x, y, h) => { o.el.style.left = x + "px"; o.el.style.top = y + "px"; o.el.style.height = h + "px"; };
-      put(co.tier, x0, y1, h1); put(co.ability, x1, y1, h1); put(co.weak, x0, y2, h2); put(co.strong, x1, y2, h2);
-      const dbw = el.dbtn.offsetWidth || 120, rowW = 60 + 14 + dbw, rx = Math.round((fw - rowW) / 2), ry = Math.round(y2 + h2 + 12);
+      const stripY = B + 12, ry = stripY + STRIP + 10;
+      el.callouts.style.top = stripY + "px";
+      const dbw = el.dbtn.offsetWidth || 120, rowW = 60 + 14 + dbw, rx = Math.round((fw - rowW) / 2);
       el.ovr.style.left = rx + "px"; el.ovr.style.top = ry + "px";
       el.dbtn.style.left = (rx + 74) + "px"; el.dbtn.style.top = (ry + 6) + "px";
       el.root.style.removeProperty("--hint-w");
     } else {
       el.root.classList.remove("is-short");
-      // card in the middle, right under the sun · boxes left / right of it (no pointer lines: owner, W6 round 2)
+      el.callouts.style.top = "";
+      /* W7 round 2 (owner's picks): the card ≤ 60 % of the free height, standing low (its bottom just above the bottom
+         bar, Overall ring + Details in the bar) so the light fall above it stays in view · boxes left / right of it */
       const gap = 32, wMin = 190;
       const cap = Math.min(560, fw * 0.42, fw - 2 * (wMin + gap + 14));
       const top = fh < 400 ? Math.max(8, Math.min(sunB, fh * 0.32)) : Math.max(8, sunB);
-      const under = Math.min(cap, (fh - top - 18 - 60 - 8 - 48 - 10) * 0.714);   // card + ring + Details + 10px above the bottom bar
-      const inBar = Math.min(cap, (fh - top - 14) * 0.714);
-      useHud = under < inBar * 0.85;
-      cw = Math.round(Math.max(120, useHud ? inBar : under));
+      cw = Math.round(Math.max(120, Math.min(cap, fh * 0.6 / 1.4, (fh - 14 - top) / 1.4)));
       ch = Math.round(cw * 1.4);
       el.root.style.setProperty("--cw", cw + "px");
-      moveHud(useHud);
-      const below = hud ? 0 : 18 + 60 + 8 + 48;   // a clear gap between the card and the Overall ring
+      moveHud(true);
       L = Math.round((fw - cw) / 2);
-      T = Math.round(Math.max(top, top + (fh - top - below - ch - 8) * 0.3));
+      T = Math.round(Math.max(top, fh - 14 - ch));
       B = T + ch;
       LY = { L, T, cw, ch, fw, fh, B, rw, rh };
       el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
-      if (!hud) {
-        el.ovr.style.left = (fw / 2 - 30) + "px"; el.ovr.style.top = (B + 18) + "px";
-        el.dbtn.style.left = Math.round(fw / 2 - el.dbtn.offsetWidth / 2) + "px"; el.dbtn.style.top = (B + 86) + "px";
-      }
       const w = Math.round(clamp(L - gap - 16, wMin, 380));   // the boxes use the room beside the card
       coEls.forEach((o) => { o.el.style.width = w + "px"; o.x.textContent = ""; fitLines(o); }); evenShorts();
       const budget = Math.floor((ch * 0.88 - 16) / 2);          // each box: at most half the card (upper + lower never meet)
@@ -1645,10 +1390,9 @@
     if (save) { try { localStorage.setItem(GFX_KEY, gfx); } catch (e) {} }
     if (gfx === "low") resetParallax();
     if (isOpen && ready) motesPlay(true);
-    // W7: Low = one still picture (palace cycle off) · High = the palace layers again (their dust is made on first need)
+    // W7: Low = one still picture (cycle off) · High = the cycle again
     if (G && sceneP) sceneP.then(() => {
       if (gfx === "low") { palaceStop(); return bakeStill(); }
-      if (G.palImg && !el.palace.querySelector(".bs-palace__dust")) return buildPalace();
       if (isOpen && cycling) palaceStart();
     });
   }
@@ -1947,7 +1691,7 @@
       ovr: g("bs-ovr"), ovrArc: g("bs-ovrArc"), ovrNum: g("bs-ovrNum"), ovrLbl: g("bs-ovrLbl"), dbtn: g("bs-details"),
       hint: g("bs-hint"), dock: g("bs-dock"), dockL: g("bs-dockL"), dockR: g("bs-dockR"), lv: g("bs-lv"), lvName: g("bs-lvName"),
       prev: g("bs-prev"), next: g("bs-next"), gfx: g("bs-gfx"), tint: g("bs-tint"), wave: g("bs-wave"), glow: g("bs-glow"),
-      palace: g("bs-palace"), palaceImg: g("bs-palaceImg"), glints: g("bs-glints"), gold: g("bs-gold"), city: g("bs-city"), still: g("bs-still"),
+      palace: g("bs-palace"), palaceImg: g("bs-palaceImg"), pdust: [g("bs-pdust0"), g("bs-pdust1")], gold: g("bs-gold"), city: g("bs-city"), still: g("bs-still"), fall: g("bs-fall"),
       scrim: g("bs-scrim"), sheet: g("bs-sheet"), sheetHead: g("bs-sheetHead"), shThumb: g("bs-shThumb"), shTitle: g("bs-shTitle"), shSub: g("bs-shSub"), sheetX: g("bs-sheetX"), sheetBody: g("bs-sheetBody"),
       shLv: g("bs-shLv"), shLvName: g("bs-shLvName"), tabs: g("bs-tabs"),
     });
