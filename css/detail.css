@@ -8,6 +8,7 @@
               "HUD" = Overall ring + Details move into the bottom bar when height is short
    · W6: dark glass label boxes · Back = glass, Details = matte gold · Low / High graphics
      (.bs.is-low) · Details = full screen on a phone, a full-height panel on the right ≥ 768px (.is-sheet-side)
+   · W9: big card in the middle (js layout) · big PC label boxes with extra items (.bs-co__x) · bigger PC level dots
    ========================================================== */
 .bs {
   --bs-top-h: 44px;                         /* = TOP_H in js/detail.js (the sun is placed under it) */
@@ -223,6 +224,16 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs:not(.is-side) .bs-co__o { grid-column: 3; grid-row: 1; justify-self: end; padding-left: 6px; }
 .bs:not(.is-side) .bs-co__o.is-below { grid-column: 1 / -1; grid-row: auto; justify-self: start; padding-left: 0; }
 .bs-co > span.is-wrap { white-space: normal; }
+/* W9 (back from W6 round 2) · PC: whole extra items under the short line (js grow) */
+.bs-co > span.bs-co__x { grid-column: 1 / -1; white-space: normal; display: grid; gap: 5px; margin-top: 5px; padding-top: 7px; border-top: 1px solid color-mix(in srgb, var(--gold) 22%, transparent); }
+.bs-co > span.bs-co__x[hidden] { display: none; }
+.bs-co__li { display: block; position: relative; font-size: 14px; line-height: 1.45; color: var(--bs-text); overflow-wrap: anywhere; }
+.bs-co__li b { font-family: var(--font-display); font-weight: 700; color: var(--ink); letter-spacing: .03em; }
+.bs-co__li.is-meta { color: var(--ink-dim); font-size: 13px; }
+.bs-co__li.is-good, .bs-co__li.is-bad { padding-left: 18px; }
+.bs-co__li.is-good::before, .bs-co__li.is-bad::before { position: absolute; left: 1px; top: 0; font-weight: 700; }
+.bs-co__li.is-good::before { content: "✓"; color: var(--good); }
+.bs-co__li.is-bad::before { content: "✕"; color: var(--bad); }
 .bs-co__n { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .04em; line-height: 1.25; color: var(--gold-hi); }
 .bs-co__d { font-size: 13px; line-height: 1.35; color: var(--bs-text); }
 .bs-co__o { font-size: 11.5px; line-height: 1.3; color: var(--ink-dim); }
@@ -245,14 +256,22 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs .is-strip .bs-co__i { grid-row: span 2; width: 20px; height: 20px; }
 .bs .is-strip .bs-co__n { font-size: 13px; }
 .bs .is-strip .bs-co__d { grid-column: 2; font-size: 13px; }
-.bs .is-strip .bs-co__o { display: none; }
+.bs .is-strip .bs-co__o, .bs .is-strip .bs-co__x { display: none; }
 .bs .is-strip .bs-co > span { overflow: visible; }
-/* W7 round 3 (owner's pick): PC = small boxes left / right of the card (≤ 240px · icon + title + short line + obtain) */
+/* a phone on its side (short side screen): small boxes (W7 round 3 sizes, ≤ 260px · js) */
 .bs.is-side .bs-co { padding: 8px 11px; column-gap: 8px; row-gap: 2px; }
 .bs.is-side .bs-co__i { width: 20px; height: 20px; }
 .bs.is-side .bs-co__n { font-size: 15px; }
 .bs.is-side .bs-co__d { font-size: 13.5px; }
 .bs.is-side .bs-co__o { font-size: 12px; }
+/* W9 (owner's pick "big like the picture"): PC = big boxes left / right of the card (190–380px, extra items) */
+@media (min-height: 560px) {
+  .bs.is-side .bs-co { padding: 10px 12px; column-gap: 9px; row-gap: 3px; }
+  .bs.is-side .bs-co__i { width: 22px; height: 22px; }
+  .bs.is-side .bs-co__n { font-size: 16px; }
+  .bs.is-side .bs-co__d { font-size: 14px; }
+  .bs.is-side .bs-co__o { font-size: 12.5px; }
+}
 
 /* ---------------- Overall ring + Details button ---------------- */
 .bs-ovr, .bs-dbtn { position: absolute; left: 0; top: 0; pointer-events: auto; opacity: 0; transition: opacity var(--t-slow) var(--ease); }
@@ -303,6 +322,17 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs.is-side .bs-lv__name { height: 16px; font-size: 10.5px; text-shadow: 0 1px 4px var(--bs-shade); }
 /* W7 round 3: PC = a lighter bottom bar, the city + gate show through it (the ring, Details and dots have their own backs) */
 .bs.is-side .bs-dock { background: var(--bs-dock-fade-side); }
+/* W9 (owner: "bigger, easier to see"): PC level dots ≈ 1.5× (40 → 56px buttons, 16 → 24px dots, name 13px, ‹ › 52px) ·
+   not on a phone on its side (short screen) · the Details head keeps its 40px dots (js placeInd reads the real size) */
+@media (min-height: 560px) {
+  .bs.is-side { --bs-dock-h: 86px; }
+  .bs.is-side .bs-dock .bs-lv button, .bs.is-side .bs-dock .bs-lv__ind { width: 56px; height: 56px; }
+  .bs.is-side .bs-dock .bs-lv button i { width: 24px; height: 24px; box-shadow: 0 0 0 2px rgba(0, 0, 0, .55), 0 0 11px var(--sg, transparent); }
+  .bs.is-side .bs-dock .bs-lv__ind::before { inset: 9px; border-width: 2px; }
+  .bs.is-side .bs-dock .bs-lv__name { height: 20px; font-size: 13px; }
+  .bs.is-side .bs-dock .bs-arrow { width: 52px; min-width: 52px; height: 52px; }
+  .bs.is-side .bs-dock .bs-arrow svg { width: 24px; height: 24px; }
+}
 
 /* first-time hint (fades away by itself) */
 .bs-hint { position: absolute; z-index: 4; left: 50%; bottom: calc(var(--bs-dock-h) + var(--safe-b) + 4px); transform: translateX(-50%); max-width: calc(100% - 24px);
