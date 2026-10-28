@@ -2941,5 +2941,77 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "serpent-sin-mage",
+    "name": "Serpent Sin Mage",
+    "image": "images/support/serpent-sin-mage.webp",
+    "effect": {
+      "name": "Perfect Cube",
+      "desc": "Merlin's Perfect Cube: the first 3 debuffs that would hit the supported card each fight are blocked, and it takes {0}% less damage.",
+      "vals": [
+        8
+      ],
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 54.5,
+          "y": 104.17,
+          "w": 6.83,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 2.0,
+          "gr": 2.17
+        }
+      ]
+    },
+    "odds": 16400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "slug-princess-hokage",
+    "name": "Slug Princess Hokage",
+    "image": "images/support/slug-princess-hokage.webp",
+    "effect": {
+      "name": "Creation Rebirth",
+      "desc": "Tsunade's Creation Rebirth: the first time the supported card drops under 30% HP, it heals {0}% of its max HP.",
+      "vals": [
+        18
+      ],
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 37.17,
+          "y": 106.83,
+          "w": 10.67,
+          "h": 5.33,
+          "cap": 5.33,
+          "gl": 1.5,
+          "gr": 1.83
+        }
+      ]
+    },
+    "odds": 15100000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
