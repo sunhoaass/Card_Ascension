@@ -4562,5 +4562,855 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "blood-red-knight",
+    "name": "Blood-Red Knight",
+    "series": "",
+    "image": "images/cards/blood-red-knight.webp",
+    "base": {
+      "atk": 12517,
+      "hp": 83446,
+      "def": 0,
+      "status": 0,
+      "odds": 200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Blood-Red Commander",
+      "desc": "Igris, the knight who never yields. Its first hit on each new enemy does 2x damage. Shadows raised by your deck are 25% stronger. Once, takes the killing blow for Sung Jinwoo. Takes 15% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "blue-flame-son",
+    "name": "Blue Flame Son",
+    "series": "",
+    "image": "images/cards/blue-flame-son.webp",
+    "base": {
+      "atk": 13886,
+      "hp": 92576,
+      "def": 0,
+      "status": 0,
+      "odds": 432000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kurikara: Blue Flames",
+      "desc": "Rin unseals his blue flames. Each hit adds 3 Burn stacks (2.5% of the enemy's max HP per turn each, up to 4, 3 turns). Can't be burned. Every hit sets the whole enemy deck on fire for 1 turn. Under 41% HP: +41% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bomb-girl",
+    "name": "Bomb Girl",
+    "series": "",
+    "image": "images/cards/bomb-girl.webp",
+    "base": {
+      "atk": 9313,
+      "hp": 62088,
+      "def": 0,
+      "status": 0,
+      "odds": 187000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bomb Devil",
+      "desc": "Reze: 35% chance per hit to plant a bomb that explodes next turn for 1.42x the hit. Every 2nd attack also hits the card behind for 35%. When knocked out, it explodes for 42% of its max HP on the enemy in front."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "calm-water-pillar",
+    "name": "Calm Water Pillar",
+    "series": "",
+    "image": "images/cards/calm-water-pillar.webp",
+    "base": {
+      "atk": 22097,
+      "hp": 147310,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Rain Storm",
+    "passive": {
+      "name": "Dead Calm",
+      "desc": "Giyu: The first attack from each new enemy does nothing and it strikes back. +60% damage against Demon cards. Takes 25% less damage. 45% chance to counter-attack when hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "candy-beam-majin",
+    "name": "Candy Beam Majin",
+    "series": "",
+    "image": "images/cards/candy-beam-majin.webp",
+    "base": {
+      "atk": 6659,
+      "hp": 44390,
+      "def": 0,
+      "status": 0,
+      "odds": 77000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Pure Evil Regeneration",
+      "desc": "Kid Buu regenerates from a single cell. Heals 5.8% of its max HP every turn. Comes back once with 36% HP. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cat-guard-royal",
+    "name": "Cat Guard Royal",
+    "series": "",
+    "image": "images/cards/cat-guard-royal.webp",
+    "base": {
+      "atk": 8626,
+      "hp": 57508,
+      "def": 0,
+      "status": 0,
+      "odds": 138000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Terpsichora",
+      "desc": "Neferpitou's Nen boosts her body. Its first hit on each new enemy does 2.2x damage. 25% chance to dodge each hit. Heals 5% of its max HP every turn. Once, takes the killing blow for Meruem."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "chain-scarlet-eye",
+    "name": "Chain Scarlet Eye",
+    "series": "",
+    "image": "images/cards/chain-scarlet-eye.webp",
+    "base": {
+      "atk": 10282,
+      "hp": 68546,
+      "def": 0,
+      "status": 0,
+      "odds": 152000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Emperor Time",
+      "desc": "Kurapika's Scarlet Eyes unlock every chain. +60% damage against Spider cards. 30% chance per hit to Seal the enemy's ability for 2 turns. Heals 5% of its max HP every turn. +40% damage. Loses 4% of its max HP every attack."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "claw-boss-psychic",
+    "name": "Claw Boss Psychic",
+    "series": "",
+    "image": "images/cards/claw-boss-psychic.webp",
+    "base": {
+      "atk": 13572,
+      "hp": 90480,
+      "def": 0,
+      "status": 0,
+      "odds": 350000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Divine Tree",
+      "desc": "Toichiro's power grows. +8.2% damage every turn (up to 6 times). Every enemy card starts with 9.9% less damage. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "colossal-strategist",
+    "name": "Colossal Strategist",
+    "series": "",
+    "image": "images/cards/colossal-strategist.webp",
+    "base": {
+      "atk": 9655,
+      "hp": 64368,
+      "def": 0,
+      "status": 0,
+      "odds": 178000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Colossal Detonation",
+      "desc": "Armin's plan. When knocked out, it explodes for 80% of its max HP on the enemy in front. Every other card in your deck gets +10% damage. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "copy-eye-sensei",
+    "name": "Copy Eye Sensei",
+    "series": "",
+    "image": "images/cards/copy-eye-sensei.webp",
+    "base": {
+      "atk": 6826,
+      "hp": 45504,
+      "def": 0,
+      "status": 0,
+      "odds": 97000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Copy Ninja",
+      "desc": "Kakashi: Copies the ability of every enemy card it faces. 20% chance to dodge each hit. 25% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crazy-diamond-pompadour",
+    "name": "Crazy Diamond Pompadour",
+    "series": "",
+    "image": "images/cards/crazy-diamond-pompadour.webp",
+    "base": {
+      "atk": 12428,
+      "hp": 82852,
+      "def": 0,
+      "status": 0,
+      "odds": 342000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Crazy Diamond",
+      "desc": "Josuke's Stand restores anything. While on the bench, heals the card in front 6% of its max HP every turn. Heals 5% of its max HP every turn. Ignores shields, dodges and barriers. 30% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crimson-spear-hound",
+    "name": "Crimson Spear Hound",
+    "series": "",
+    "image": "images/cards/crimson-spear-hound.webp",
+    "base": {
+      "atk": 14251,
+      "hp": 95004,
+      "def": 0,
+      "status": 0,
+      "odds": 259000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Gae Bolg",
+      "desc": "Cu Chulainn's spear reverses cause and effect. Its attacks can't be dodged. Instantly kills enemies under 15% HP (not bosses). Survives its first killing blow with 1 HP. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "dark-captain",
+    "name": "Dark Captain",
+    "series": "",
+    "image": "images/cards/dark-captain.webp",
+    "base": {
+      "atk": 17790,
+      "hp": 118600,
+      "def": 0,
+      "status": 0,
+      "odds": 298000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dark Cloaked Dimension Slash",
+      "desc": "Yami cuts through space. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 50%. Under 50% HP: +40% damage. 20% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "disguise-assassin",
+    "name": "Disguise Assassin",
+    "series": "",
+    "image": "images/cards/disguise-assassin.webp",
+    "base": {
+      "atk": 13284,
+      "hp": 88558,
+      "def": 0,
+      "status": 0,
+      "odds": 393000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Disguise",
+      "desc": "Nagumo's disguises fool everyone. 35% chance to dodge each hit. Its first hit on each new enemy does 2.2x damage. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "dragon-butler",
+    "name": "Dragon Butler",
+    "series": "",
+    "image": "images/cards/dragon-butler.webp",
+    "base": {
+      "atk": 10291,
+      "hp": 68608,
+      "def": 0,
+      "status": 0,
+      "odds": 230000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dragonoid Fist",
+      "desc": "Sebas' dragon strength. +30% damage. 30% chance to counter-attack when hit. Nazarick cards in your deck get +10% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "dragon-grandpa-assassin",
+    "name": "Dragon Grandpa Assassin",
+    "series": "",
+    "image": "images/cards/dragon-grandpa-assassin.webp",
+    "base": {
+      "atk": 17145,
+      "hp": 114302,
+      "def": 0,
+      "status": 0,
+      "odds": 145000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dragon Dive",
+      "desc": "Zeno: Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. With Killua in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "dual-blade-gamer",
+    "name": "Dual Blade Gamer",
+    "series": "",
+    "image": "images/cards/dual-blade-gamer.webp",
+    "base": {
+      "atk": 14198,
+      "hp": 94654,
+      "def": 0,
+      "status": 0,
+      "odds": 452000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Starburst Stream",
+      "desc": "Kirito's dual blades. Always attacks twice (each hit does 0.8x damage). Every 3rd attack does 2x damage. Survives its first killing blow with 1 HP. 20% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "explosion-rival",
+    "name": "Explosion Rival",
+    "series": "",
+    "image": "images/cards/explosion-rival.webp",
+    "base": {
+      "atk": 11633,
+      "hp": 77554,
+      "def": 0,
+      "status": 0,
+      "odds": 159000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Howitzer Impact",
+      "desc": "Bakugo: Every 2nd attack also hits the card behind for 35%. Every 3rd attack does 2.32x damage. +5.3% damage every turn (up to 6 times). With Deku in the deck, both get +13% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fairy-king-spear",
+    "name": "Fairy King Spear",
+    "series": "",
+    "image": "images/cards/fairy-king-spear.webp",
+    "base": {
+      "atk": 14065,
+      "hp": 93764,
+      "def": 0,
+      "status": 0,
+      "odds": 319000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Spirit Spear Chastiefol",
+      "desc": "King's Chastiefol splits into a hundred blades. 56% chance to attack twice (each hit does 0.75x damage). Every 2nd attack also hits the card behind for 35%. Blocks the first 2 hits completely."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "finest-knight",
+    "name": "Finest Knight",
+    "series": "",
+    "image": "images/cards/finest-knight.webp",
+    "base": {
+      "atk": 11501,
+      "hp": 76672,
+      "def": 0,
+      "status": 0,
+      "odds": 225000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Al Clauzeria",
+      "desc": "Julius's spirits power his sword. 25% chance to dodge each hit. 25% chance to crit for 1.8x damage. Its first hit on each new enemy does 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fire-fist-brother",
+    "name": "Fire Fist Brother",
+    "series": "",
+    "image": "images/cards/fire-fist-brother.webp",
+    "base": {
+      "atk": 7919,
+      "hp": 52792,
+      "def": 0,
+      "status": 0,
+      "odds": 85000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Fire Fist",
+      "desc": "Ace: Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Once, takes the killing blow for Luffy."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flame-colonel",
+    "name": "Flame Colonel",
+    "series": "",
+    "image": "images/cards/flame-colonel.webp",
+    "base": {
+      "atk": 13582,
+      "hp": 90544,
+      "def": 0,
+      "status": 0,
+      "odds": 412000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Flame Alchemy",
+      "desc": "Roy snaps. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Every 3rd attack does 2.2x damage. Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flame-hero",
+    "name": "Flame Hero",
+    "series": "",
+    "image": "images/cards/flame-hero.webp",
+    "base": {
+      "atk": 8522,
+      "hp": 56812,
+      "def": 0,
+      "status": 0,
+      "odds": 155000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Prominence Burn",
+      "desc": "Endeavor: Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 40% HP: +60% damage. Can't be burned. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flash-goddess",
+    "name": "Flash Goddess",
+    "series": "",
+    "image": "images/cards/flash-goddess.webp",
+    "base": {
+      "atk": 7798,
+      "hp": 51986,
+      "def": 0,
+      "status": 0,
+      "odds": 129000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Shunko",
+      "desc": "Yoruichi, the Flash Goddess. 40% chance to dodge each hit. 50% chance to attack twice. 20% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flashy-sound-pillar",
+    "name": "Flashy Sound Pillar",
+    "series": "",
+    "image": "images/cards/flashy-sound-pillar.webp",
+    "base": {
+      "atk": 8008,
+      "hp": 53388,
+      "def": 0,
+      "status": 0,
+      "odds": 123000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Musical Score",
+      "desc": "Tengen reads the enemy's rhythm. Every 3rd attack does 2.5x damage. 35% chance per hit to plant a bomb that explodes next turn for 1.5x the hit. +25% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

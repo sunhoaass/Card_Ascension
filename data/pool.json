@@ -2224,6 +2224,377 @@
       "src": "RobloxScreenShot20261028_121219001.png",
       "round": 6,
       "oddsShort": true
+    },
+    {
+      "id": "blood-red-knight",
+      "kind": "card",
+      "name": "Blood-Red Knight",
+      "series": "",
+      "odds": 200000,
+      "atk": 12517,
+      "hp": 83446,
+      "src": "RobloxScreenShot20261028_121222566.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "blue-flame-son",
+      "kind": "card",
+      "name": "Blue Flame Son",
+      "series": "",
+      "odds": 432000,
+      "atk": 13886,
+      "hp": 92576,
+      "src": "RobloxScreenShot20261028_121233451.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "blue-healer-cat-knight",
+      "kind": "support",
+      "name": "Blue Healer Cat Knight",
+      "series": "",
+      "odds": 737000,
+      "vals": [
+        3.8
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_121238697.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "bomb-girl",
+      "kind": "card",
+      "name": "Bomb Girl",
+      "series": "",
+      "odds": 187000,
+      "atk": 9313,
+      "hp": 62088,
+      "src": "RobloxScreenShot20261028_121243372.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "calm-water-pillar",
+      "kind": "card",
+      "name": "Calm Water Pillar",
+      "series": "",
+      "odds": 31000,
+      "atk": 22097,
+      "hp": 147310,
+      "src": "RobloxScreenShot20261028_121247887.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "candy-beam-majin",
+      "kind": "card",
+      "name": "Candy Beam Majin",
+      "series": "",
+      "odds": 77000,
+      "atk": 6659,
+      "hp": 44390,
+      "src": "RobloxScreenShot20261028_121252500.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "cat-guard-royal",
+      "kind": "card",
+      "name": "Cat Guard Royal",
+      "series": "",
+      "odds": 138000,
+      "atk": 8626,
+      "hp": 57508,
+      "src": "RobloxScreenShot20261028_121257054.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "chain-scarlet-eye",
+      "kind": "card",
+      "name": "Chain Scarlet Eye",
+      "series": "",
+      "odds": 152000,
+      "atk": 10282,
+      "hp": 68546,
+      "src": "RobloxScreenShot20261028_121301235.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "charge-commander",
+      "kind": "support",
+      "name": "Charge Commander",
+      "series": "",
+      "odds": 558000,
+      "vals": [
+        11
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_121304782.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "cherry-blossom-medic",
+      "kind": "support",
+      "name": "Cherry Blossom Medic",
+      "series": "",
+      "odds": 520000,
+      "vals": [
+        53
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_121308070.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "claw-boss-psychic",
+      "kind": "card",
+      "name": "Claw Boss Psychic",
+      "series": "",
+      "odds": 350000,
+      "atk": 13572,
+      "hp": 90480,
+      "src": "RobloxScreenShot20261028_121310539.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "colossal-strategist",
+      "kind": "card",
+      "name": "Colossal Strategist",
+      "series": "",
+      "odds": 178000,
+      "atk": 9655,
+      "hp": 64368,
+      "src": "RobloxScreenShot20261028_121320568.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "copy-eye-sensei",
+      "kind": "card",
+      "name": "Copy Eye Sensei",
+      "series": "",
+      "odds": 97000,
+      "atk": 6826,
+      "hp": 45504,
+      "src": "RobloxScreenShot20261028_121324837.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "crazy-diamond-pompadour",
+      "kind": "card",
+      "name": "Crazy Diamond Pompadour",
+      "series": "",
+      "odds": 342000,
+      "atk": 12428,
+      "hp": 82852,
+      "src": "RobloxScreenShot20261028_121330322.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "crimson-spear-hound",
+      "kind": "card",
+      "name": "Crimson Spear Hound",
+      "series": "",
+      "odds": 259000,
+      "atk": 14251,
+      "hp": 95004,
+      "src": "RobloxScreenShot20261028_121334055.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "dark-captain",
+      "kind": "card",
+      "name": "Dark Captain",
+      "series": "",
+      "odds": 298000,
+      "atk": 17790,
+      "hp": 118600,
+      "src": "RobloxScreenShot20261028_121338322.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "disguise-assassin",
+      "kind": "card",
+      "name": "Disguise Assassin",
+      "series": "",
+      "odds": 393000,
+      "atk": 13284,
+      "hp": 88558,
+      "src": "RobloxScreenShot20261028_121342640.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "dragon-butler",
+      "kind": "card",
+      "name": "Dragon Butler",
+      "series": "",
+      "odds": 230000,
+      "atk": 10291,
+      "hp": 68608,
+      "src": "RobloxScreenShot20261028_121348279.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "dragon-grandpa-assassin",
+      "kind": "card",
+      "name": "Dragon Grandpa Assassin",
+      "series": "",
+      "odds": 145000,
+      "atk": 17145,
+      "hp": 114302,
+      "src": "RobloxScreenShot20261028_121353827.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "dual-blade-gamer",
+      "kind": "card",
+      "name": "Dual Blade Gamer",
+      "series": "",
+      "odds": 452000,
+      "atk": 14198,
+      "hp": 94654,
+      "src": "RobloxScreenShot20261028_121356926.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "explosion-rival",
+      "kind": "card",
+      "name": "Explosion Rival",
+      "series": "",
+      "odds": 159000,
+      "atk": 11633,
+      "hp": 77554,
+      "src": "RobloxScreenShot20261028_121400834.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "fairy-king-spear",
+      "kind": "card",
+      "name": "Fairy King Spear",
+      "series": "",
+      "odds": 319000,
+      "atk": 14065,
+      "hp": 93764,
+      "src": "RobloxScreenShot20261028_121406227.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "finest-knight",
+      "kind": "card",
+      "name": "Finest Knight",
+      "series": "",
+      "odds": 225000,
+      "atk": 11501,
+      "hp": 76672,
+      "src": "RobloxScreenShot20261028_121430373.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "fire-fist-brother",
+      "kind": "card",
+      "name": "Fire Fist Brother",
+      "series": "",
+      "odds": 85000,
+      "atk": 7919,
+      "hp": 52792,
+      "src": "RobloxScreenShot20261028_121433951.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "flame-colonel",
+      "kind": "card",
+      "name": "Flame Colonel",
+      "series": "",
+      "odds": 412000,
+      "atk": 13582,
+      "hp": 90544,
+      "src": "RobloxScreenShot20261028_121438856.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "flame-hero",
+      "kind": "card",
+      "name": "Flame Hero",
+      "series": "",
+      "odds": 155000,
+      "atk": 8522,
+      "hp": 56812,
+      "src": "RobloxScreenShot20261028_121443553.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "flash-goddess",
+      "kind": "card",
+      "name": "Flash Goddess",
+      "series": "",
+      "odds": 129000,
+      "atk": 7798,
+      "hp": 51986,
+      "src": "RobloxScreenShot20261028_121447355.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "flashy-sound-pillar",
+      "kind": "card",
+      "name": "Flashy Sound Pillar",
+      "series": "",
+      "odds": 123000,
+      "atk": 8008,
+      "hp": 53388,
+      "src": "RobloxScreenShot20261028_121450375.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "flower-hand-scholar",
+      "kind": "support",
+      "name": "Flower Hand Scholar",
+      "series": "",
+      "odds": 641000,
+      "vals": [
+        9,
+        4.5
+      ],
+      "type": "splash",
+      "src": "RobloxScreenShot20261028_121456540.png",
+      "round": 7,
+      "oddsShort": true
+    },
+    {
+      "id": "future-sight-dog",
+      "kind": "support",
+      "name": "Future Sight Dog",
+      "series": "",
+      "odds": 612000,
+      "vals": [
+        50
+      ],
+      "type": "damage-reduction",
+      "src": "RobloxScreenShot20261028_121506586.png",
+      "round": 7,
+      "oddsShort": true
     }
   ]
 }
