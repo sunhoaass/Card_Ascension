@@ -28,6 +28,7 @@
     Secret: "var(--r-secret)", Divine: "var(--r-divine-2)",
     Cosmic: "linear-gradient(135deg,var(--r-cosmic),var(--r-cosmic-2))",
     Ascended: "linear-gradient(135deg,#a9eef5,#c5a8f5,#f5b4dc,#f8e7a8)",
+    Godlike: "linear-gradient(135deg,#fffdf4,#f6e2a8)", Godly: "linear-gradient(135deg,#ff7aa8,#f7a35c,#ffd36a)",
   };
 
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
@@ -56,12 +57,14 @@
     return Math.round(card.base[key] * rarityOf(rarity).stat);
   }
   function oddsAt(card, rarity) { return card.base.odds * rarityOf(rarity).odds; }
-  /* Game style (owner's answer §3.5.4 item 3, step 13): one decimal + K M B T Qa Qi · 100 and up = whole number
-     (1 in 59 · 1 in 29.5K · 1 in 9.5B · 1 in 140T) */
-  const SHORT = [[1e18, "Qi"], [1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]];
+  /* Game style (owner's answer §3.5.4 item 3, step 13 · checked on the game's Bald Cadet 2026-10-28):
+     under 10,000 = the whole number with commas · K = whole number · M B T Qa Qi = one decimal (100 and up = whole)
+     (1 in 59 · 1 in 1,195 · 1 in 30K · 1 in 148K · 1 in 14.8M · 1 in 9.5B · 1 in 140T) */
+  const SHORT = [[1e18, "Qi"], [1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"]];
   function shortNum(n) {
-    for (const [v, s] of SHORT) if (n >= v) { const x = n / v; return (x >= 100 ? Math.round(x) : Number(x.toFixed(1))) + s; }
-    return String(Math.round(n));
+    if (Math.round(n) < 1e4) return Math.round(n).toLocaleString("en-US");
+    if (Math.round(n / 1e3) < 1000) return Math.round(n / 1e3) + "K";
+    for (const [v, s] of SHORT) if (n >= v || v === 1e6) { const x = n / v; return (x >= 100 ? Math.round(x) : Number(x.toFixed(1))) + s; }
   }
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
@@ -307,6 +310,16 @@
     ).join("");
   }
 
+  /* 9 rarities don't fit a phone: the chip rows scroll sideways · keep the picked chip in view (owner 2026-10-28) */
+  function revealChip(root = document) {
+    root.querySelectorAll(".rarity-picker").forEach((row) => {
+      const b = row.querySelector('[aria-pressed="true"]');
+      if (!b || !row.clientWidth || row.scrollWidth <= row.clientWidth) return;
+      const rr = row.getBoundingClientRect(), br = b.getBoundingClientRect();
+      if (br.left < rr.left + 16 || br.right > rr.right - 16) row.scrollLeft += br.left - rr.left - (rr.width - br.width) / 2;
+    });
+  }
+
   function showSkeletons() {
     $("#card-grid").innerHTML = '<div class="skeleton"></div>'.repeat(4);
   }
@@ -341,6 +354,7 @@
       else if (page === "deck") CBI.deck.enter({ restore: keep });
     }
     if ((changed || scroll) && !keep) window.scrollTo({ top: 0 });
+    requestAnimationFrame(() => revealChip());
   }
 
   const pageFromHash = () => {
@@ -492,7 +506,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js

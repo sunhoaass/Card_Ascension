@@ -739,6 +739,7 @@
     ui.modeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkMode === cur.mode)));
     ui.mode.style.setProperty("--i", Math.max(0, all.findIndex((x) => x.id === cur.mode)));
     ui.rarity.querySelectorAll("[data-dk-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkRarity === cur.rarity)));
+    requestAnimationFrame(() => C.revealChip(ui.rarity.parentNode));
     ui.hint.textContent = fine.matches
       ? "Click an empty slot to add a card. Drag a card to another slot, or click it and then click where it should go."
       : "Tap an empty slot to add a card. Hold a card to drag it, or tap it and then tap where it should go.";
