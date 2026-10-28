@@ -2318,5 +2318,855 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "white-smoke-hunter",
+    "name": "White Smoke Hunter",
+    "series": "",
+    "image": "images/cards/white-smoke-hunter.webp",
+    "base": {
+      "atk": 777,
+      "hp": 5182,
+      "def": 0,
+      "status": 0,
+      "odds": 453
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "White Snake",
+      "desc": "Smoker's smoke binds. 25% chance per hit to Weaken the enemy (15% less damage for the fight). Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "armored-titan",
+    "name": "Armored Titan",
+    "series": "",
+    "image": "images/cards/armored-titan.webp",
+    "base": {
+      "atk": 3229,
+      "hp": 21524,
+      "def": 0,
+      "status": 0,
+      "odds": 16000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Armored Skin",
+      "desc": "Reiner: Takes 30% less damage. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "asaemon-swordswoman",
+    "name": "Asaemon Swordswoman",
+    "series": "",
+    "image": "images/cards/asaemon-swordswoman.webp",
+    "base": {
+      "atk": 4781,
+      "hp": 31872,
+      "def": 0,
+      "status": 0,
+      "odds": 34000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Yamada Asaemon",
+      "desc": "Sagiri reads the flow of Tao. Its first hit on each new enemy does 1.8x damage. With Gabimaru in the deck, both get +15% damage and HP. 15% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "axe-prodigy",
+    "name": "Axe Prodigy",
+    "series": "",
+    "image": "images/cards/axe-prodigy.webp",
+    "base": {
+      "atk": 4907,
+      "hp": 32712,
+      "def": 0,
+      "status": 0,
+      "odds": 35000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kaiju Axe",
+      "desc": "Kikoru: +30% damage against Kaiju cards. Its first hit on each new enemy does 1.8x damage. +10% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "axe-warrior-kid",
+    "name": "Axe Warrior Kid",
+    "series": "",
+    "image": "images/cards/axe-warrior-kid.webp",
+    "base": {
+      "atk": 4298,
+      "hp": 28656,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lightning Strike",
+      "desc": "Stark is terrified but never runs. Takes 20% less damage. Every 3rd attack does 2.2x damage. With Frieren in the deck: +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bamboo-box-sister",
+    "name": "Bamboo Box Sister",
+    "series": "",
+    "image": "images/cards/bamboo-box-sister.webp",
+    "base": {
+      "atk": 2421,
+      "hp": 16142,
+      "def": 0,
+      "status": 0,
+      "odds": 11000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Exploding Blood",
+      "desc": "Nezuko: Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 5% of its max HP every turn. Once, takes the killing blow for Tanjiro."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "battle-maniac",
+    "name": "Battle Maniac",
+    "series": "",
+    "image": "images/cards/battle-maniac.webp",
+    "base": {
+      "atk": 3616,
+      "hp": 24108,
+      "def": 0,
+      "status": 0,
+      "odds": 26000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lightning Magic",
+      "desc": "Luck's lightning boots. 30% chance to dodge each hit. 45% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bird-queen",
+    "name": "Bird Queen",
+    "series": "",
+    "image": "images/cards/bird-queen.webp",
+    "base": {
+      "atk": 3402,
+      "hp": 22680,
+      "def": 0,
+      "status": 0,
+      "odds": 23000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Haikuikku",
+      "desc": "Filo is ridiculously fast. 30% chance to dodge each hit. 40% chance to attack twice. With Naofumi in the deck: +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "blood-copy-girl",
+    "name": "Blood Copy Girl",
+    "series": "",
+    "image": "images/cards/blood-copy-girl.webp",
+    "base": {
+      "atk": 2808,
+      "hp": 18722,
+      "def": 0,
+      "status": 0,
+      "odds": 15000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Transform",
+      "desc": "Toga drinks the enemy's blood and becomes them. Copies the ability of every enemy card it faces. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 15% of the damage it deals."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "blue-flame-villain",
+    "name": "Blue Flame Villain",
+    "series": "",
+    "image": "images/cards/blue-flame-villain.webp",
+    "base": {
+      "atk": 2925,
+      "hp": 19502,
+      "def": 0,
+      "status": 0,
+      "odds": 15000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Cremation",
+      "desc": "Dabi's blue flames. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Loses 4% of its max HP every attack. +40% damage against Fire cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "boar-head-brawler",
+    "name": "Boar Head Brawler",
+    "series": "",
+    "image": "images/cards/boar-head-brawler.webp",
+    "base": {
+      "atk": 2486,
+      "hp": 16570,
+      "def": 0,
+      "status": 0,
+      "odds": 12000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Beast Breathing",
+      "desc": "Inosuke's twin jagged blades. 40% chance to attack twice. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns). 15% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "boogie-woogie-brother",
+    "name": "Boogie Woogie Brother",
+    "series": "",
+    "image": "images/cards/boogie-woogie-brother.webp",
+    "base": {
+      "atk": 3007,
+      "hp": 20046,
+      "def": 0,
+      "status": 0,
+      "odds": 9772
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Boogie Woogie",
+      "desc": "Todo claps and swaps places. Each hit swaps the enemy's front card with a random one (not bosses). Takes 10% less damage. With Yuji in the deck: both +15% damage, and Yuji gets +25% Black Flash chance."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bowel-hunter",
+    "name": "Bowel Hunter",
+    "series": "",
+    "image": "images/cards/bowel-hunter.webp",
+    "base": {
+      "atk": 3229,
+      "hp": 21524,
+      "def": 0,
+      "status": 0,
+      "odds": 20000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bowel Hunter",
+      "desc": "Elsa: Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 5% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "butterfly-coin-girl",
+    "name": "Butterfly Coin Girl",
+    "series": "",
+    "image": "images/cards/butterfly-coin-girl.webp",
+    "base": {
+      "atk": 2582,
+      "hp": 17216,
+      "def": 0,
+      "status": 0,
+      "odds": 12000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Flower Breathing: Equinoctial Vermilion Eye",
+      "desc": "Kanao's eyes read every move. 30% chance to dodge each hit. 30% chance to counter-attack when hit (0.8x damage). +25% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "candy-majin",
+    "name": "Candy Majin",
+    "series": "",
+    "image": "images/cards/candy-majin.webp",
+    "base": {
+      "atk": 2171,
+      "hp": 14476,
+      "def": 0,
+      "status": 0,
+      "odds": 8140
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Majin Regeneration",
+      "desc": "Fat Buu bounces back. Heals 7% of its max HP every turn. Takes 10% less damage. Heals 30% of its max HP after each kill."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cannon-captain",
+    "name": "Cannon Captain",
+    "series": "",
+    "image": "images/cards/cannon-captain.webp",
+    "base": {
+      "atk": 4282,
+      "hp": 28548,
+      "def": 0,
+      "status": 0,
+      "odds": 34000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Fortitude Cannon",
+      "desc": "Mina Ashiro: Every 3rd attack does 2.5x damage. Ignores shields, dodges and barriers. Takes 15% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cart-titan-girl",
+    "name": "Cart Titan Girl",
+    "series": "",
+    "image": "images/cards/cart-titan-girl.webp",
+    "base": {
+      "atk": 3051,
+      "hp": 20338,
+      "def": 0,
+      "status": 0,
+      "odds": 17000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Endurance Titan",
+      "desc": "Pieck's Cart Titan never tires. Heals 5% of its max HP every turn. 35% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "clay-art-bomber",
+    "name": "Clay Art Bomber",
+    "series": "",
+    "image": "images/cards/clay-art-bomber.webp",
+    "base": {
+      "atk": 2258,
+      "hp": 15054,
+      "def": 0,
+      "status": 0,
+      "odds": 9595
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Art is an Explosion!",
+      "desc": "Deidara: 30% chance per hit to plant a bomb that explodes next turn for 1.5x the hit. When knocked out, it explodes for 50% of its max HP on the enemy in front."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "colossal-titan-boy",
+    "name": "Colossal Titan Boy",
+    "series": "",
+    "image": "images/cards/colossal-titan-boy.webp",
+    "base": {
+      "atk": 2858,
+      "hp": 19050,
+      "def": 0,
+      "status": 0,
+      "odds": 16000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Colossal Steam",
+      "desc": "Bertholdt: Whoever hits it gets 2 Burn stacks (2% max HP per turn, up to 4). When it comes in, Stuns the enemy in front for 1 turn. With Reiner in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crazy-slots-hunter",
+    "name": "Crazy Slots Hunter",
+    "series": "",
+    "image": "images/cards/crazy-slots-hunter.webp",
+    "base": {
+      "atk": 2850,
+      "hp": 18998,
+      "def": 0,
+      "status": 0,
+      "odds": 14000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Crazy Slots",
+      "desc": "Kite spins the slot machine every hit. Each hit: 50% chance to do 2.6x damage, otherwise 0.5x. After an unlucky hit, its next hit does 1.5x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crimson-eldest-brother",
+    "name": "Crimson Eldest Brother",
+    "series": "",
+    "image": "images/cards/crimson-eldest-brother.webp",
+    "base": {
+      "atk": 2318,
+      "hp": 15454,
+      "def": 0,
+      "status": 0,
+      "odds": 10000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Piercing Blood",
+      "desc": "Choso: Every 2nd attack also hits the card behind for 50%. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns). Once, takes the killing blow for Yuji."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crossbow-fiend-hunter",
+    "name": "Crossbow Fiend Hunter",
+    "series": "",
+    "image": "images/cards/crossbow-fiend-hunter.webp",
+    "base": {
+      "atk": 3048,
+      "hp": 20318,
+      "def": 0,
+      "status": 0,
+      "odds": 17000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "First Devil Hunter",
+      "desc": "Quanxi: Always attacks twice (each hit does 0.65x damage). Its attacks can't be dodged. 25% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crystal-titan",
+    "name": "Crystal Titan",
+    "series": "",
+    "image": "images/cards/crystal-titan.webp",
+    "base": {
+      "atk": 2908,
+      "hp": 19386,
+      "def": 0,
+      "status": 0,
+      "odds": 16000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Crystal Hardening",
+      "desc": "Annie: +25% damage. Ignores shields, dodges and barriers. Once under 30% HP, blocks the next 3 hits."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cyborg-disciple",
+    "name": "Cyborg Disciple",
+    "series": "",
+    "image": "images/cards/cyborg-disciple.webp",
+    "base": {
+      "atk": 3145,
+      "hp": 20968,
+      "def": 0,
+      "status": 0,
+      "odds": 19000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Incineration Cannon",
+      "desc": "Genos: Every 3rd attack does 2.5x damage. Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Loses 3% of its max HP every attack. With Saitama in the deck: +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cyborg-sister",
+    "name": "Cyborg Sister",
+    "series": "",
+    "image": "images/cards/cyborg-sister.webp",
+    "base": {
+      "atk": 2358,
+      "hp": 15722,
+      "def": 0,
+      "status": 0,
+      "odds": 8443
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Infinite Energy Barrage",
+      "desc": "Android 18: +5% damage every turn (up to 6 times). 25% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
