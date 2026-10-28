@@ -1,1 +1,243 @@
-[]
+[
+  {
+    "id": "automail-mechanic",
+    "name": "Automail Mechanic",
+    "image": "images/support/automail-mechanic.webp",
+    "effect": {
+      "name": "Automail Tune-Up",
+      "desc": "Winry tunes up the automail: the supported card gets {0}% more max HP.",
+      "vals": [
+        5
+      ],
+      "type": "max-hp"
+    },
+    "odds": 146,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flying-cat-partner",
+    "name": "Flying Cat Partner",
+    "image": "images/support/flying-cat-partner.webp",
+    "effect": {
+      "name": "Max Speed",
+      "desc": "Happy flies at max speed: the supported card has a {0}% chance to attack twice.",
+      "vals": [
+        4
+      ],
+      "type": "double-attack"
+    },
+    "odds": 256,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fox-kit-trickster",
+    "name": "Fox Kit Trickster",
+    "image": "images/support/fox-kit-trickster.webp",
+    "effect": {
+      "name": "Fox Fire",
+      "desc": "Shippo's fox fire: every hit sets the enemy on fire ({0}% of its max HP every turn, up to 3 stacks).",
+      "vals": [
+        0.4
+      ],
+      "type": "burn"
+    },
+    "odds": 204,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "gate-healer",
+    "name": "Gate Healer",
+    "image": "images/support/gate-healer.webp",
+    "effect": {
+      "name": "Healer's Light",
+      "desc": "Lee Joohee's healing light: at the start of the supported card's turns, EVERY card in your deck heals {0}% of its max HP.",
+      "vals": [
+        0.9
+      ],
+      "type": "heal"
+    },
+    "odds": 130,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "inventor-girl",
+    "name": "Inventor Girl",
+    "image": "images/support/inventor-girl.webp",
+    "effect": {
+      "name": "My Babies!",
+      "desc": "Hatsume's newest baby: every fight the supported card gets a random {0}% boost to its damage or its max HP.",
+      "vals": [
+        3
+      ],
+      "type": "random-boost"
+    },
+    "odds": 359,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "navigation-pixie",
+    "name": "Navigation Pixie",
+    "image": "images/support/navigation-pixie.webp",
+    "effect": {
+      "name": "Navigation Assist",
+      "desc": "Yui maps out the enemy's weak spots: the supported card deals {0}% more damage.",
+      "vals": [
+        2
+      ],
+      "type": "dmg"
+    },
+    "odds": 183,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "pig-captain",
+    "name": "Pig Captain",
+    "image": "images/support/pig-captain.webp",
+    "effect": {
+      "name": "Leftover Duty",
+      "desc": "Captain Hawk refuses to quit: the supported card has a {0}% chance to survive a killing blow at 1 HP (once per fight) and gets {1}% more max HP.",
+      "vals": [
+        23,
+        3
+      ],
+      "type": "revive"
+    },
+    "odds": 287,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "plant-healer",
+    "name": "Plant Healer",
+    "image": "images/support/plant-healer.webp",
+    "effect": {
+      "name": "Flower Cradle",
+      "desc": "Mimosa's flower cradle: every time the supported card is hit, it heals {0}% of that damage.",
+      "vals": [
+        6
+      ],
+      "type": "heal"
+    },
+    "odds": 163,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "portal-playboy",
+    "name": "Portal Playboy",
+    "image": "images/support/portal-playboy.webp",
+    "effect": {
+      "name": "Spatial Escape",
+      "desc": "Finral opens a portal: the supported card dodges {0}% of hits.",
+      "vals": [
+        9
+      ],
+      "type": "dodge"
+    },
+    "odds": 229,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spirit-sidekick",
+    "name": "Spirit Sidekick",
+    "image": "images/support/spirit-sidekick.webp",
+    "effect": {
+      "name": "Evil Spirit Grudge",
+      "desc": "Dimple holds a grudge: the supported card gets {0}% more damage every time it is hit.",
+      "vals": [
+        1
+      ],
+      "type": "dmg"
+    },
+    "odds": 321,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  }
+]
