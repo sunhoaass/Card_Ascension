@@ -3013,5 +3013,113 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "spirit-wave-master",
+    "name": "Spirit Wave Master",
+    "image": "images/support/spirit-wave-master.webp",
+    "effect": {
+      "name": "Spirit Wave Orb",
+      "desc": "Genkai's Spirit Wave: every other attack, the supported card's spirit energy hits again for {0}% of the damage.",
+      "vals": [
+        45
+      ],
+      "type": "echo",
+      "pos": [
+        {
+          "i": 0,
+          "x": 38.5,
+          "y": 105.83,
+          "w": 10.33,
+          "h": 5.0,
+          "cap": 4.83,
+          "gl": 2.0,
+          "gr": 1.67
+        }
+      ]
+    },
+    "odds": 19600000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sweet-tooth-detective",
+    "name": "Sweet Tooth Detective",
+    "image": "images/support/sweet-tooth-detective.webp",
+    "effect": {
+      "name": "Deductive Reasoning",
+      "desc": "L reads the enemy: every hit of the supported card Weakens the enemy {0}% more (up to 4 times).",
+      "vals": [
+        8.3
+      ],
+      "type": "weaken",
+      "pos": [
+        {
+          "i": 0,
+          "x": 23.5,
+          "y": 109.5,
+          "w": 14.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 2.5,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 18000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "chainsaw-pup-devil",
+    "name": "Chainsaw Pup Devil",
+    "image": "images/support/chainsaw-pup-devil.webp",
+    "effect": {
+      "name": "Chainsaw Heart",
+      "desc": "Pochita gives his heart: when the supported card is knocked out it has a {0}% chance to rev back up with 40% HP (once per fight).",
+      "vals": [
+        53
+      ],
+      "type": "revive",
+      "pos": [
+        {
+          "i": 0,
+          "x": 63.0,
+          "y": 97.33,
+          "w": 9.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 2.0,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 220400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

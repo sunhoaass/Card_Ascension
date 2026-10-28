@@ -8812,5 +8812,923 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "space-pirate-overlord",
+    "name": "Space Pirate Overlord",
+    "series": "",
+    "image": "images/cards/space-pirate-overlord.webp",
+    "base": {
+      "atk": 28162,
+      "hp": 187744,
+      "def": 0,
+      "status": 0,
+      "odds": 2900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Meteoric Burst",
+      "desc": "Boros goes all out. +62% damage. Heals 7.9% of its max HP every turn. Every 3rd attack does 2.32x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "special-grade-student",
+    "name": "Special Grade Student",
+    "series": "",
+    "image": "images/cards/special-grade-student.webp",
+    "base": {
+      "atk": 27620,
+      "hp": 184136,
+      "def": 0,
+      "status": 0,
+      "odds": 1400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Rika Unleashed",
+      "desc": "Yuta copies techniques. Copies the ability of every enemy card it faces. Comes back once with 21% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spider-half-demon",
+    "name": "Spider Half-Demon",
+    "series": "",
+    "image": "images/cards/spider-half-demon.webp",
+    "base": {
+      "atk": 33421,
+      "hp": 222804,
+      "def": 0,
+      "status": 0,
+      "odds": 5000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Shikon Jewel",
+      "desc": "Naraku's body is made of demons. Each kill gives it 14% of the defeated card's damage and HP. Each hit adds 2 Poison stacks (1.7% of the enemy's max HP per turn each, up to 4, 3 turns). Blocks the first 2 hits completely. Comes back once with 28% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spider-head",
+    "name": "Spider Head",
+    "series": "",
+    "image": "images/cards/spider-head.webp",
+    "base": {
+      "atk": 24768,
+      "hp": 165120,
+      "def": 0,
+      "status": 0,
+      "odds": 2000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Skill Hunter",
+      "desc": "Chrollo steals abilities with his book. Copies the ability of every enemy card it faces. Each hit drains 3.2% of the enemy's max HP per turn for 3 turns, healing it. 13% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "stampede-gunman",
+    "name": "Stampede Gunman",
+    "series": "",
+    "image": "images/cards/stampede-gunman.webp",
+    "base": {
+      "atk": 78222,
+      "hp": 521482,
+      "def": 0,
+      "status": 0,
+      "odds": 13200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Angel Arm",
+      "desc": "Vash refuses to kill. 24% chance to dodge each hit. Every 3rd attack does 2.06x damage. Every 2nd attack also hits the card behind for 35%. Takes 5.3% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "star-rage-sorcerer",
+    "name": "Star Rage Sorcerer",
+    "series": "",
+    "image": "images/cards/star-rage-sorcerer.webp",
+    "base": {
+      "atk": 66841,
+      "hp": 445608,
+      "def": 0,
+      "status": 0,
+      "odds": 306000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Starfall Night",
+    "passive": {
+      "name": "Star Rage",
+      "desc": "Yuki: +40% damage. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 50%. Instantly kills enemies under 15% HP (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "stone-prayer-pillar",
+    "name": "Stone Prayer Pillar",
+    "series": "",
+    "image": "images/cards/stone-prayer-pillar.webp",
+    "base": {
+      "atk": 26291,
+      "hp": 175276,
+      "def": 0,
+      "status": 0,
+      "odds": 1600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Stone Breathing",
+      "desc": "Gyomei, the strongest Hashira. Ignores shields, dodges and barriers. Takes 25% less damage. Every 2nd attack also hits the card behind for 50%. +40% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sword-demon",
+    "name": "Sword Demon",
+    "series": "",
+    "image": "images/cards/sword-demon.webp",
+    "base": {
+      "atk": 36511,
+      "hp": 243404,
+      "def": 0,
+      "status": 0,
+      "odds": 3200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sword Demon",
+      "desc": "Wilhelm's Sword Demon style. Its first hit on each new enemy does 2.2x damage. Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). With Reinhard in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "tensen-lord",
+    "name": "Tensen Lord",
+    "series": "",
+    "image": "images/cards/tensen-lord.webp",
+    "base": {
+      "atk": 66841,
+      "hp": 445608,
+      "def": 0,
+      "status": 0,
+      "odds": 306000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Sakura Love",
+    "passive": {
+      "name": "Tensen Full Bloom",
+      "desc": "Rien's Tao blooms. Heals 5.6% of its max HP every turn. Each hit drains 3.3% of the enemy's max HP per turn for 3 turns, healing it. Takes 7% less from an attack each time it has seen it (up to 4 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "the-goliath",
+    "name": "The Goliath",
+    "series": "",
+    "image": "images/cards/the-goliath.webp",
+    "base": {
+      "atk": 31748,
+      "hp": 211656,
+      "def": 0,
+      "status": 0,
+      "odds": 2700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Goliath Mode",
+      "desc": "Thomas Andre is a living fortress. Takes 30% less damage. +10% damage every time it is hit. Survives its first killing blow with 1 HP. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "thousand-year-witch",
+    "name": "Thousand-Year Witch",
+    "series": "",
+    "image": "images/cards/thousand-year-witch.webp",
+    "base": {
+      "atk": 39100,
+      "hp": 260664,
+      "def": 0,
+      "status": 0,
+      "odds": 8100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Demon Hunter",
+      "desc": "Frieren has hunted demons for a thousand years. +59% damage against Demon cards. Every enemy card starts with 15% less damage. Blocks the first 2 hits completely. 39% chance to attack twice. Party cards in your deck get +15% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "three-sword-hunter",
+    "name": "Three Sword Hunter",
+    "series": "",
+    "image": "images/cards/three-sword-hunter.webp",
+    "base": {
+      "atk": 38393,
+      "hp": 255950,
+      "def": 0,
+      "status": 0,
+      "odds": 1000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "King of Hell: Purgatory Onigiri",
+      "desc": "Zoro: Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "time-skip-assassin",
+    "name": "Time Skip Assassin",
+    "series": "",
+    "image": "images/cards/time-skip-assassin.webp",
+    "base": {
+      "atk": 22475,
+      "hp": 149836,
+      "def": 0,
+      "status": 0,
+      "odds": 853000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Time Skip",
+      "desc": "Hit skips time. Ignores shields, dodges and barriers. Its attacks can't be dodged. Its first hit on each new enemy does 2.2x damage. 35% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "tornado-esper",
+    "name": "Tornado Esper",
+    "series": "",
+    "image": "images/cards/tornado-esper.webp",
+    "base": {
+      "atk": 31927,
+      "hp": 212846,
+      "def": 0,
+      "status": 0,
+      "odds": 2800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Psychic Tornado",
+      "desc": "Tatsumaki throws the whole battlefield. Every hit also hits the whole enemy bench for 20%. Blocks the first 3 hits completely. Can't be stunned, frozen or paralyzed. +9.1% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ultimate-life-form",
+    "name": "Ultimate Life Form",
+    "series": "",
+    "image": "images/cards/ultimate-life-form.webp",
+    "base": {
+      "atk": 37300,
+      "hp": 248668,
+      "def": 0,
+      "status": 0,
+      "odds": 6800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ultimate Life Form",
+      "desc": "Kars: Takes 11% less from an attack each time it has seen it (up to 4 times). Heals 7.7% of its max HP every turn. Every 2nd attack also hits the card behind for 38%. Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "undefeated-reaper",
+    "name": "Undefeated Reaper",
+    "series": "",
+    "image": "images/cards/undefeated-reaper.webp",
+    "base": {
+      "atk": 42180,
+      "hp": 281198,
+      "def": 0,
+      "status": 0,
+      "odds": 7400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "IXA and Narukami",
+      "desc": "Arima, the CCG's Reaper. +50% damage against Ghoul cards. Blocks the first 2 hits completely. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). 40% chance to counter-attack when hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "unlimited-blade-archer",
+    "name": "Unlimited Blade Archer",
+    "series": "",
+    "image": "images/cards/unlimited-blade-archer.webp",
+    "base": {
+      "atk": 35986,
+      "hp": 239906,
+      "def": 0,
+      "status": 0,
+      "odds": 4200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Unlimited Blade Works",
+      "desc": "EMIYA's reality marble. Copies the ability of every enemy card it faces. Blocks the first 2 hits completely."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "war-devil-girl",
+    "name": "War Devil Girl",
+    "series": "",
+    "image": "images/cards/war-devil-girl.webp",
+    "base": {
+      "atk": 55582,
+      "hp": 370548,
+      "def": 0,
+      "status": 0,
+      "odds": 2600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Weapon Creation",
+      "desc": "Yoru turns things into weapons. Every 2nd attack also hits the card behind for 35%. Its first hit on each new enemy does 1.76x damage. Loses 4% of its max HP every attack. +23% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "wind-spirit-rival",
+    "name": "Wind Spirit Rival",
+    "series": "",
+    "image": "images/cards/wind-spirit-rival.webp",
+    "base": {
+      "atk": 56858,
+      "hp": 379052,
+      "def": 0,
+      "status": 0,
+      "odds": 5700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Spirit of Zephyr",
+      "desc": "Yuno: Every 2nd attack also hits the card behind for 35%. 24% chance to dodge each hit. Every 3rd attack does 1.67x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "wrath-fuhrer",
+    "name": "Wrath Fuhrer",
+    "series": "",
+    "image": "images/cards/wrath-fuhrer.webp",
+    "base": {
+      "atk": 47772,
+      "hp": 318478,
+      "def": 0,
+      "status": 0,
+      "odds": 11500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ultimate Eye",
+      "desc": "King Bradley sees every move. 45% chance to dodge each hit. 40% chance to counter-attack when hit. 30% chance to crit for 2x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "yellow-flash-hokage",
+    "name": "Yellow Flash Hokage",
+    "series": "",
+    "image": "images/cards/yellow-flash-hokage.webp",
+    "base": {
+      "atk": 25671,
+      "hp": 171138,
+      "def": 0,
+      "status": 0,
+      "odds": 1200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Flying Raijin",
+      "desc": "Minato is the fastest shinobi. Always attacks twice (each hit does 0.7x damage). Its attacks can't be dodged. 30% chance to dodge each hit. With Naruto in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "beast-mode-scholar",
+    "name": "Beast Mode Scholar",
+    "series": "",
+    "image": "images/cards/beast-mode-scholar.webp",
+    "base": {
+      "atk": 81857,
+      "hp": 545716,
+      "def": 0,
+      "status": 0,
+      "odds": 23800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Beast Unleashed",
+      "desc": "Gohan's hidden potential. Under 50% HP: +80% damage. +10% damage every time it is hit. Every 2nd attack also hits the card behind for 50%. With Piccolo in the deck: +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bloody-valkyrie",
+    "name": "Bloody Valkyrie",
+    "series": "",
+    "image": "images/cards/bloody-valkyrie.webp",
+    "base": {
+      "atk": 100047,
+      "hp": 666982,
+      "def": 0,
+      "status": 0,
+      "odds": 81300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Einherjar",
+      "desc": "Shalltear's blood frenzy. Heals 26% of the damage it deals. 35% chance to attack twice. Under 44% HP: +53% damage. Comes back once with 35% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "captain-commander-flame",
+    "name": "Captain-Commander Flame",
+    "series": "",
+    "image": "images/cards/captain-commander-flame.webp",
+    "base": {
+      "atk": 90665,
+      "hp": 604434,
+      "def": 0,
+      "status": 0,
+      "odds": 40700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ryujin Jakka: Zanka no Tachi",
+      "desc": "Yamamoto: Every hit sets the whole enemy deck on fire for 1 turn. Each hit adds 3 Burn stacks (0.9% of the enemy's max HP per turn each, up to 4, 3 turns). Ignores shields, dodges and barriers. Can't be burned. Every enemy card starts with 4.3% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "clown-court-mage",
+    "name": "Clown Court Mage",
+    "series": "",
+    "image": "images/cards/clown-court-mage.webp",
+    "base": {
+      "atk": 137613,
+      "hp": 917420,
+      "def": 0,
+      "status": 0,
+      "odds": 69700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Al Goa / Al Huma / Al Fula",
+      "desc": "Roswaal masters every element. Every hit sets the whole enemy deck on fire for 1 turn. 22% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Every hit also hits the whole enemy bench for 20%. Takes 11% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crimson-ogre-general",
+    "name": "Crimson Ogre General",
+    "series": "",
+    "image": "images/cards/crimson-ogre-general.webp",
+    "base": {
+      "atk": 117524,
+      "hp": 783496,
+      "def": 0,
+      "status": 0,
+      "odds": 59800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hell Flare",
+      "desc": "Benimaru: Every hit sets the whole enemy deck on fire for 1 turn. Every hit also hits the whole enemy bench for 20%. Each hit adds 3 Burn stacks (1.2% of the enemy's max HP per turn each, up to 4, 3 turns). Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sun-dance-slayer",
+    "name": "Sun Dance Slayer",
+    "series": "",
+    "image": "images/cards/sun-dance-slayer.webp",
+    "base": {
+      "atk": 66841,
+      "hp": 445608,
+      "def": 0,
+      "status": 0,
+      "odds": 306000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Solar Eclipse",
+    "passive": {
+      "name": "Hinokami Kagura",
+      "desc": "Tanjiro's Sun Breathing burns demons. +90% damage against Demon cards. Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 40% HP: +75% damage. With Nezuko in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
