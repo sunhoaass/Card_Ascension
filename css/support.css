@@ -1,7 +1,7 @@
 /* ==========================================================
-   Support page (step 4): ranked list + support detail
-   Toolbar, panels, stat tiles, score bars and mini cards are shared with
-   cards.css / tier.css. Colors, spacing, type and motion come from tokens.css.
+   Support (step 4 · 2026-10-28): the gilded support tile used by the Tier List, Deck and Tier Maker
+   (the Support side of the Cards page uses the game card, .gc--sup in fx.css · its detail = the card detail).
+   Colors, spacing, type and motion come from tokens.css.
    ========================================================== */
 
 /* ---------- Support card art (no rarity: one fixed brass frame with corner ornaments) ---------- */
@@ -90,67 +90,9 @@
 }
 .scard.is-tilting .scard__glare, .scard:hover .scard__glare { opacity: 1; }
 
-/* ---------- Ranked list (a table on a phone: one row per support card) ---------- */
-.slist { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
-.slist:empty { display: none; }
-.srow {
-  width: 100%; min-height: 96px;
-  display: grid; grid-template-columns: 28px 52px minmax(0, 1fr) auto; align-items: center; gap: var(--s-3);
-  padding: var(--s-3);
-  border-radius: var(--r-chip);
-  background: var(--panel-fill); border: 1px solid var(--glass-line);
-  box-shadow: inset 0 1px 0 rgba(255, 232, 180, .06);
-  text-align: left; color: var(--ink);
-  transition: transform var(--t-fast) var(--ease), border-color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
-}
-.srow:hover { border-color: var(--gold); }
-.srow__rank { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); color: var(--gold); font-variant-numeric: tabular-nums; }
-.srow__thumb { display: block; }
-.srow__main { display: grid; gap: 2px; min-width: 0; }
-.srow__nameline { display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
-.srow__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); letter-spacing: .03em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.srow__sample { flex: none; min-height: 20px; padding: 0 6px; font-size: 11px; }
-.srow__effect {
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
-  color: var(--ink-dim); font-size: var(--fs-sm); line-height: 1.35; overflow-wrap: anywhere;
-}
-.srow__odds { color: var(--ink-faint); font-size: var(--fs-xs); }
-.srow__bar { display: block; height: 5px; margin-top: 6px; border-radius: 3px; background: rgba(216, 180, 106, .12); overflow: hidden; }
-.srow__bar i {
-  display: block; height: 100%; border-radius: inherit;
-  background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
-  transform: scaleX(var(--v, 0)); transform-origin: left;
-}
-.srow__score { display: grid; justify-items: center; gap: 2px; min-width: 56px; }
-.srow__score .badge--tier { min-height: 32px; min-width: 32px; padding: 0 6px; justify-content: center; font-size: var(--fs-sm); }
-.srow__score .badge--muted { font-size: var(--fs-xs); }
-.srow__value { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); line-height: 1; color: var(--gold-hi); font-variant-numeric: tabular-nums; }
-.srow__score small { color: var(--ink-faint); font-size: 11px; }
+/* the values written on the picture (the numbers were erased from it · js/app.js supNumsHTML, .gc__sv in fx.css):
+   a box the size of the picture, so the positions in cqw (% of the card width) land where they were */
+.scard__sv { position: absolute; inset: 0; display: block; container-type: inline-size; pointer-events: none; }
 
 .support-note { margin-top: var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
-
-/* ---------- Detail (inside the page) ---------- */
-.sdetail__bar { margin: calc(var(--s-2) * -1) 0 var(--s-2) -8px; }
-.sdetail .detail__content { padding-top: var(--s-3); }
-/* fixed-width column: without it the 5-slot deck rows widen the grid past the phone screen */
-.sdetail .detail__main { grid-template-columns: minmax(0, 1fr); }
-.sdetail .detail__hero .scard { width: min(64vw, 270px); --orn-s: 30px; }
-.sdetail .deck-list { margin-top: var(--s-2); }
-.sdetail .group > .muted, .sdetail .group > div > .muted { margin-top: var(--s-2); }
-.sdetail .deck__name { font-size: var(--fs-md); }
-.deck__sup--here { color: var(--gold-hi); font-weight: 600; }
-.sdetail h2:focus { outline: none; }
-
-@media (min-width: 900px) {
-  .slist { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
-  .srow { padding: var(--s-4); grid-template-columns: 32px 64px minmax(0, 1fr) auto; }
-  .sdetail .detail__hero .scard { width: 300px; }
-}
-@media (min-width: 1700px) { .slist { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-/* ---------- Effect values by rarity (2026-10-28: Normal × (1 + 0.25 × level), picked with the site-wide rarity chips) ---------- */
 [hidden].rarity-picker { display: none; }
-.sd-lv { margin-left: var(--s-2); color: var(--ink-dim); font-weight: 600; letter-spacing: .06em; text-transform: none; }
-.sd-rarity { margin: var(--s-3) 0; padding: 4px 0; }
-.dpanel__title + .sd-rarity { margin-top: var(--s-3); }
-.sd-lv-note { margin-top: var(--s-2); }

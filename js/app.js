@@ -4,13 +4,14 @@
    The Cards page (search / filters / sort) lives in js/cards.js · the card detail ("Black Sun" scene) in js/detail.js
    The Tier List page (Global cards / support + My Lists) lives in js/tier.js
    The Deck page (Meta Decks, later the deck builder) lives in js/deck.js
-   The Support page (list + #support/<id> detail) lives in js/support.js
+   Support cards (owner 2026-10-28): a Cards | Support switch on the Cards page (#cards / #support) · the Support grid lives in
+   js/support.js · a support opens the same card detail as a card (#card/<id>) · renderCard() draws both kinds
    The Grade page (card picker + #grade/<id>/<grades> grader) lives in js/grade.js
    The Traits page (13 traits + calculator, the user's trait per card) lives in js/traits.js
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
-  const PAGES = ["tier", "cards", "support", "deck", "grade", "traits"];
+  const PAGES = ["tier", "cards", "deck", "grade", "traits"];   // #support = the Cards page, Support side (no menu button since 2026-10-28)
   const PAGE_TITLES = {
     tier: "Card Battle Infinity — Tier List & Card Database",
     cards: "Cards — Card Battle Infinity",
@@ -32,7 +33,8 @@
   };
 
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
-  const state = { meta: null, cards: [], support: [], teams: [], traits: null, rarity: "Normal", page: null, loaded: false, origin: null };
+  // kind: the Cards page's side ("cards" | "support", #cards / #support)
+  const state = { meta: null, cards: [], support: [], teams: [], traits: null, rarity: "Normal", page: null, kind: "cards", loaded: false, origin: null };
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -92,12 +94,13 @@
   const supVals = (s) => (s && s.effect && typeof s.effect === "object" && Array.isArray(s.effect.vals) ? s.effect.vals : []);
   const supValue = (s, rarity) => supAt(supVals(s)[0], rarity);  // the main value (vals[0]) at a rarity · 0 = none
   const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => { const v = supVals(s)[+i]; return v == null ? m : String(supAt(v, rarity)); });
+  const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
      Only the strongest meta.rankTop (50) cards and 50 support are ranked (owner 2026-10-28): the rest stay unranked for good
      (in the library, searchable, usable in decks, never in the Tier List). New cards from routine A are unranked too. */
-  const isRanked = (card) => !!(card.scores && card.scores.overall > 0 && card.tier);
-  const cardLabel = (card, rarity) => `${card.name}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", unranked"}`;
+  const isRanked = (card) => !!(card.scores && (isSupport(card) ? card.scores.value : card.scores.overall) > 0 && card.tier);
+  const cardLabel = (card, rarity) => `${card.name}${isSupport(card) ? ", support" : ""}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", unranked"}`;
 
   /* ---------- Placeholder art (until real images exist) ----------
      Step 9.6b: jewel-tone gradient + a gothic arch window + the initials in Cinzel.
@@ -255,9 +258,15 @@
     ["hp", "atk", "odds", "rar"].forEach((k) => fitNum($(`[data-k="${k}"]`, el), k, samples[k]));
   }
   // the web fonts (Oswald, Bangers) arrive after the first cards: measure again with the real ones
+  const supById = (id) => (Array.isArray(state.support) ? state.support.find((x) => x && x.id === id) : null);
   function refitAll() {
     fitCache.clear();
-    for (const ref of watched) { const el = ref.deref(); if (el) fitCard(el); }
+    svFont = "";
+    for (const ref of watched) {
+      const el = ref.deref(); if (!el) continue;
+      fitCard(el);
+      if (el.dataset.kind === "support") { const s = supById(el.dataset.id); if (s) fitSupport(el, s); }
+    }
   }
   if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", refitAll);
 
@@ -265,6 +274,7 @@
      The game's own card (§3.5): cleaned picture + HP / 1 IN X / rarity / ATK drawn on top.
      .card = tap / tilt / keyboard · .gc = the look (see css/fx.css). tilt:false = no finger tilt (the detail scene turns its card by itself) */
   function renderCard(card, rarity, { mini = false, tilt = true } = {}) {
+    if (isSupport(card)) return renderSupport(card, rarity, { mini, tilt });
     const el = document.createElement("article");
     el.className = "card gc" + (mini ? " card--mini gc--mini" : "") + (card.image ? "" : " gc--noart");
     el.dataset.rarity = rarity;
@@ -316,6 +326,7 @@
      animate:false (cards off-screen or not in the page) just swaps the values. */
   function setCardRarity(el, card, rarity, { animate = true } = {}) {
     if (el.dataset.rarity === rarity) return;
+    if (isSupport(card)) { setSupportRarity(el, card, rarity, { animate }); return; }
     el.dataset.rarity = rarity;
     el.setAttribute("aria-label", cardLabel(card, rarity));
     const odds = $('[data-k="odds"]', el), rar = $('[data-k="rar"]', el);
@@ -324,6 +335,101 @@
     if (animate) flashCard(el);
     setCardNums(el, { atk: statAt(card, "atk", rarity), hp: statAt(card, "hp", rarity) }, { animate });
     // W4: a card let go by the on-screen watcher may loop now · one that stopped looping can be let go
+    if (loops(el)) watchLive(el);
+    else if (liveIO && !pending(el)) liveIO.unobserve(el);
+  }
+
+  /* ---------- Support cards in the game's look (owner 2026-10-28) ----------
+     The picture keeps the ability text, but its level-scaling numbers ({0}% {1}% … in effect.desc) are erased by
+     tools/support_nums.py, which saves where each one was (effect.pos, cqw: % of the card width · x y w h of the digits,
+     gl / gr = the free space left / right of them). The web writes the value for the chosen rarity in the same spot,
+     in the same font (Oswald), colour and size; a longer number is squeezed sideways to fit its line (never reflowed).
+     The card has the 1 IN X + rarity pills and the rarity frame like a card · no HP / ATK. Odds = the Normal odds. */
+  const SV = { cap: 0.82, top: 0.10, w: 600 };   // Oswald: digit height ÷ font size · digits' top under a line-height 1 box · weight
+  const supPos = (s) => (s && s.effect && Array.isArray(s.effect.pos) ? s.effect.pos.filter((p) => p && p.h > 0 && supVals(s)[p.i] != null) : []);
+  const fmtSv = (v) => v + "%";
+  let svCtx = null, svFont = "";
+  function svW(text) {                              // text width at font-size 1 (em)
+    const key = "sv|" + text;
+    let w = fitCache.get(key);
+    if (w !== undefined) return w;
+    if (!svCtx) { const cv = document.createElement("canvas"); svCtx = cv.getContext && cv.getContext("2d"); }
+    if (!svCtx) return 0;
+    if (!svFont) svFont = getComputedStyle(document.documentElement).getPropertyValue("--gc-font-text").trim() || "sans-serif";
+    svCtx.font = `${SV.w} 100px ${svFont}`;
+    w = svCtx.measureText(text).width / 100;
+    fitCache.set(key, w);
+    return w;
+  }
+  // squeeze: the Normal value is as wide as the number that was in the picture · a longer one also fits its gaps (70 %)
+  function fitSv(span, s, p, sample) {
+    const fs = p.h / SV.cap, room = p.w + 1.4 * Math.min(p.gl || 0, p.gr || 0);
+    const base = svW(fmtSv(supAt(supVals(s)[p.i], "Normal"))) * fs;
+    const k = base > 0 ? Math.max(0.82, Math.min(1.12, p.w / base)) : 1;
+    const need = svW(sample || span.textContent) * fs * k;
+    const sx = need > room ? k * room / need : k;
+    span.style.setProperty("--sx", sx.toFixed(3));
+  }
+  function supNumsHTML(s, rarity) {
+    return supPos(s).map((p) => {
+      const fs = p.h / SV.cap, v = supAt(supVals(s)[p.i], rarity);
+      return `<span class="gc__sv" style="left:${(p.x + p.w / 2).toFixed(2)}cqw;top:${(p.y - SV.top * fs).toFixed(2)}cqw;font-size:${fs.toFixed(2)}cqw"><span class="gc__svn" data-sv="${p.i}" data-value="${v}">${fmtSv(v)}</span></span>`;
+    }).join("");
+  }
+  function fitSupport(el, s, samples = {}) {
+    const pos = supPos(s);
+    el.querySelectorAll(".gc__svn").forEach((n) => { const p = pos.find((x) => x.i === +n.dataset.sv); if (p) fitSv(n, s, p, samples[p.i]); });
+  }
+  function renderSupport(s, rarity, { mini = false, tilt = true } = {}) {
+    const el = document.createElement("article");
+    el.className = "card gc gc--sup" + (mini ? " card--mini gc--mini" : "") + (s.image ? "" : " gc--noart");
+    el.dataset.rarity = rarity;
+    el.dataset.id = s.id;
+    el.dataset.kind = "support";
+    el.tabIndex = 0;
+    el.setAttribute("role", "button");
+    el.setAttribute("aria-label", cardLabel(s, rarity));
+    const odds = Number(s.odds) > 0 ? Number(s.odds) : 0;
+    el.innerHTML = `
+      <span class="gc__glow"></span>
+      <div class="gc__art">${s.image ? artImg(s.image, mini, true) : placeholderArt(s)}</div>
+      <span class="gc__name">${esc(s.name)}</span>
+      <span class="gc__ring"><i></i></span>
+      <span class="gc__sweep"></span>
+      ${odds ? `<span class="gc__odds"><span class="gc__pop" data-k="odds">${fmtOdds(odds)}</span></span>` : ""}
+      <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
+      ${s.image ? supNumsHTML(s, rarity) : ""}
+      ${s.mock ? `<span class="gc__mock">mock</span>` : ""}
+      <span class="gc__sheen"><span class="card__glare"></span></span>
+      <span class="gc__flash"></span>`;
+    fitCard(el);
+    fitSupport(el, s);
+    bindArt(el, s);
+    if (tilt) FX.tilt(el);
+    watchLive(el);
+    return el;
+  }
+  /* support values at a rarity · animate = count to them (650 ms, like ATK / HP) */
+  function setSupportNums(el, s, rarity, { animate = true } = {}) {
+    const pos = supPos(s);
+    el.querySelectorAll(".gc__svn").forEach((n) => {
+      const p = pos.find((x) => x.i === +n.dataset.sv); if (!p) return;
+      const v = supAt(supVals(s)[p.i], rarity), a = fmtSv(v), b = n.textContent;
+      const dec = String(v).includes(".") || b.includes(".");
+      if (animate && !FX.reduced) {
+        fitSv(n, s, p, a.length >= b.length ? a : b);
+        FX.countTo(n, v, { duration: 650, format: (x) => (x === v ? a : fmtSv(dec ? x.toFixed(1) : Math.round(x))) });
+        clearTimeout(n._fitT); n._fitT = setTimeout(() => { n.textContent = a; fitSv(n, s, p); }, 700);
+      } else { n.dataset.value = v; n.textContent = a; fitSv(n, s, p); }
+    });
+  }
+  function setSupportRarity(el, s, rarity, { animate = true } = {}) {
+    el.dataset.rarity = rarity;
+    el.setAttribute("aria-label", cardLabel(s, rarity));
+    const rar = $('[data-k="rar"]', el);
+    if (rar) { rar.textContent = rarity; fitNum(rar, "rar"); }
+    if (animate) flashCard(el);
+    setSupportNums(el, s, rarity, { animate });
     if (loops(el)) watchLive(el);
     else if (liveIO && !pending(el)) liveIO.unobserve(el);
   }
@@ -350,14 +456,16 @@
   }
 
   /* ---------- Router ----------
-     #tier #cards #support #deck #grade #traits -> tabs
-     #card/<id>                    -> card detail, laid over whichever tab is underneath
-     #support/<id> · #grade/<id>/<grades> -> detail views inside their own tab */
+     #tier #cards #deck #grade #traits -> tabs · #support = the Cards tab, Support side
+     #card/<id>                    -> card (or support) detail, laid over whichever tab is underneath
+     #support/<id> (old links)     -> the Support side + that support's detail
+     #grade/<id>/<grades>          -> the grader inside the Grade tab */
   function showPage(page, { scroll = false } = {}) {
     if (!PAGES.includes(page)) page = "tier";
     const changed = state.page !== page;
     // Back from a support detail opened on the Tier List or a deck: put that page back where it was (js/tier.js, js/deck.js saved the position)
     const keep = !scroll && (page === "tier" || page === "deck") && !!(history.state && typeof history.state.tierY === "number");
+    const kindChanged = page === "cards" && CBI.cards.kind && CBI.cards.kind() !== state.kind;
     state.page = page;
     document.querySelectorAll(".page").forEach((p) => {
       const on = p.id === "page-" + page;
@@ -371,9 +479,11 @@
       else b.removeAttribute("aria-current");
     });
     $(".nav__list").style.setProperty("--i", PAGES.indexOf(page));
-    document.title = PAGE_TITLES[page];   // tab / history / share title follows the page
-    store.set(STORE_KEY, page);
+    const side = page === "cards" && state.kind === "support" ? "support" : page;
+    document.title = PAGE_TITLES[side];   // tab / history / share title follows the page
+    store.set(STORE_KEY, side);           // "support" = the Cards tab, Support side (reopens there)
     runLazy(page);   // first visit to this tab: build its cards now (step 9.5)
+    if (page === "cards" && state.loaded) CBI.cards.view(state.kind, { animate: kindChanged && !changed });
     if (changed && state.loaded) {
       if (page === "tier") CBI.tier.enter({ restore: keep });
       else if (page === "deck") CBI.deck.enter({ restore: keep });
@@ -384,8 +494,11 @@
 
   const pageFromHash = () => {
     const seg = location.hash.replace(/^#\/?/, "").split("/")[0];
+    if (seg === "support") return "cards";
     return PAGES.includes(seg) ? seg : null;
   };
+  // the Cards page's side from the hash (#cards / #support) · null = keep the one shown last
+  const kindFromHash = () => { const seg = location.hash.replace(/^#\/?/, "").split("/")[0]; return seg === "support" ? "support" : seg === "cards" ? "cards" : null; };
 
   // #deck = My Decks (list) · #deck/meta = Meta Decks · #deck/my/<id> = one deck's editor · #deck/s/<data> = a shared deck (view only)
   // #tier = Global · #tier/my = My Lists · #tier/s/<data> = a shared list (shown inside My Lists, view only)
@@ -398,13 +511,22 @@
       if (state.loaded) CBI.detail.open(decodeURIComponent(m[1]));
       return;
     }
+    // an old #support/<id> link (the support detail used to live in the Support tab): the Support side + the card detail
+    const sm = location.hash.match(/^#\/?support\/([^/?#]+)/);
+    if (sm && state.loaded) {
+      try { history.replaceState(null, "", "#support"); } catch {}
+      route();
+      if ((state.support || []).some((x) => x && x.id === decodeURIComponent(sm[1]))) openCard(decodeURIComponent(sm[1]), null, { list: CBI.support.order() });
+      return;
+    }
     if (state.loaded) CBI.detail.close();
-    showPage(pageFromHash() || (state.page === null ? store.get(STORE_KEY) || "tier" : "tier"));
+    let first = state.page === null ? store.get(STORE_KEY) || "tier" : "tier";
+    if (first === "support") { first = "cards"; if (!location.hash) { try { history.replaceState(null, "", "#support"); } catch {} } }   // reopened on the Support side
+    const k = kindFromHash();
+    if (k) state.kind = k;
+    showPage(pageFromHash() || first);
     if (state.loaded) CBI.tier.show(tierViewFromHash());
     if (state.loaded) CBI.deck.show();   // #deck = My Decks · #deck/meta · #deck/my/<id> = the editor · #deck/s/<data> = a shared deck
-    // #support/<id> = support detail inside the Support tab · any other hash = back to the support list
-    const sm = location.hash.match(/^#\/?support\/([^/?#]+)/);
-    if (state.loaded) CBI.support.show(sm ? decodeURIComponent(sm[1]) : null);
     // #grade/<id>[/<atk>-<def>-<status>-<hp>] = grader inside the Grade tab · any other hash = back to the card picker
     const gm = location.hash.match(/^#\/?grade\/([^/?#]+)(?:\/([0-9-]+))?/);
     if (state.loaded) CBI.grade.show(gm ? decodeURIComponent(gm[1]) : null, gm ? gm[2] : null);
@@ -417,11 +539,12 @@
   function go(page) {
     const fromCard = /^#\/?card\//.test(location.hash);
     const depth = (fromCard && history.state && history.state.depth) || 0;
+    const h = page === "cards" && state.kind === "support" ? "support" : page;   // the Cards tab reopens on the side shown last
     showPage(page, { scroll: true });
-    if (depth > 1) { leaveTo = page; history.go(1 - depth); }
-    else if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
+    if (depth > 1) { leaveTo = h; history.go(1 - depth); }
+    else if (location.hash !== "#" + h) history.replaceState(null, "", "#" + h);
     if (fromCard && state.loaded) CBI.detail.close();
-    if (state.loaded) { CBI.support.show(null, { restore: false }); CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); CBI.deck.show(); }
+    if (state.loaded) { CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); CBI.deck.show(); }
   }
 
   /* Card detail: each open pushes history entries so the phone's Back button walks out of it.
@@ -452,7 +575,7 @@
   function closeCard() {
     const depth = (history.state && history.state.depth) || 0;
     if (depth > 0) history.go(-depth);
-    else { history.replaceState(null, "", "#" + (state.page || "cards")); route(); }
+    else { history.replaceState(null, "", "#" + (state.page === "cards" && state.kind === "support" ? "support" : state.page || "cards")); route(); }
   }
 
   /* ---------- Boot ---------- */
@@ -485,6 +608,7 @@
         loadJSON("data/traits.json").catch(() => null),  // Trait Shop (js/traits.js); the site copes without it
       ]);
       state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits;
+      if (Array.isArray(support)) support.forEach((x) => { if (x && x.id) { x.kind = "support"; if (!x.name) x.name = x.id.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); } });
       topOnly(cards, (c) => c.scores && c.scores.overall);
       topOnly(support, (s) => s.scores && s.scores.value);
     } catch (err) {
@@ -534,14 +658,15 @@
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rankTop, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
+    isSupport, supAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
-    cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js
+    cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
     deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
-    support: { init() {}, show() {} },              // replaced by js/support.js
-    grade: { init() {}, show() {}, panelHTML() { return ""; }, mountSlabs() {} },   // replaced by js/grade.js
+    support: { init() {}, order() { return []; }, open() {} },   // replaced by js/support.js
+    grade: { init() {}, show() {}, panelHTML() { return ""; }, supPanelHTML() { return ""; }, mountSlabs() {} },   // replaced by js/grade.js
     traits: { init() {}, of() { return null; }, map() { return {}; }, power() { return 0; }, panelHTML() { return ""; }, mountPanel() {} },   // replaced by js/traits.js
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

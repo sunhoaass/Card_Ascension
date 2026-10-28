@@ -213,6 +213,7 @@
 .lab__grade { display: inline-block; margin-top: 2px; font: 700 40px/0.95 var(--gc-font-num); color: var(--slab-ink); font-variant-numeric: tabular-nums; }
 .slab[data-band="rainbow"] .lab__grade { background: var(--slab-g10); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .lab__grade.is-pop { animation: g-orb 360ms var(--ease); }
+.lab__grade--long { font-size: 30px; }   /* a support's Value (82.5) instead of a 1–2 digit grade */
 .lab__row { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 8px; min-width: 0; }
 .lab__row--stats { border-top: 1px solid rgba(60, 50, 30, .25); padding-top: 4px; margin-top: 1px; }
 .lab__stats { font: 700 12px/1.2 var(--gc-font-num); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

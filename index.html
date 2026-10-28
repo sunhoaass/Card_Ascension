@@ -60,8 +60,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&display=swap"></noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@600;700&display=swap"></noscript>
   <!-- W3: screens wider than 1920px show the 1920px layout zoomed up (text, cards, buttons grow with the screen) · ≤ 1920 = normal layout -->
   <script>
     (function () {
@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=30">
-  <link rel="stylesheet" href="css/base.css?v=30">
-  <link rel="stylesheet" href="css/fx.css?v=30">
-  <link rel="stylesheet" href="css/cards.css?v=30">
-  <link rel="stylesheet" href="css/tier.css?v=30">
-  <link rel="stylesheet" href="css/deck.css?v=30">
-  <link rel="stylesheet" href="css/support.css?v=30">
-  <link rel="stylesheet" href="css/grade.css?v=30">
-  <link rel="stylesheet" href="css/tiermaker.css?v=30">
-  <link rel="stylesheet" href="css/detail.css?v=30">
-  <link rel="stylesheet" href="css/traits.css?v=30">
+  <link rel="stylesheet" href="css/tokens.css?v=31">
+  <link rel="stylesheet" href="css/base.css?v=31">
+  <link rel="stylesheet" href="css/fx.css?v=31">
+  <link rel="stylesheet" href="css/cards.css?v=31">
+  <link rel="stylesheet" href="css/tier.css?v=31">
+  <link rel="stylesheet" href="css/deck.css?v=31">
+  <link rel="stylesheet" href="css/support.css?v=31">
+  <link rel="stylesheet" href="css/grade.css?v=31">
+  <link rel="stylesheet" href="css/tiermaker.css?v=31">
+  <link rel="stylesheet" href="css/detail.css?v=31">
+  <link rel="stylesheet" href="css/traits.css?v=31">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -174,11 +174,10 @@
       <svg class="brand__crest" aria-hidden="true"><use href="#i-crest"/></svg>
       <span class="brand__name">Card Battle Infinity</span>
     </a>
-    <ul class="nav__list" style="--n:6">
+    <ul class="nav__list" style="--n:5">
       <li aria-hidden="true" class="nav__indicator"></li>
       <li><button class="nav__btn fx-press" data-page="tier" type="button"><svg aria-hidden="true"><use href="#i-crown"/></svg><span>Tier List</span></button></li>
       <li><button class="nav__btn fx-press" data-page="cards" type="button"><svg aria-hidden="true"><use href="#i-fan"/></svg><span>Cards</span></button></li>
-      <li><button class="nav__btn fx-press" data-page="support" type="button"><svg aria-hidden="true"><use href="#i-potion"/></svg><span>Support</span></button></li>
       <li><button class="nav__btn fx-press" data-page="deck" type="button"><svg aria-hidden="true"><use href="#i-book"/></svg><span>Deck</span></button></li>
       <li><button class="nav__btn fx-press" data-page="grade" type="button"><svg aria-hidden="true"><use href="#i-lens"/></svg><span>Grade</span></button></li>
       <li><button class="nav__btn fx-press" data-page="traits" type="button"><svg aria-hidden="true"><use href="#i-trait"/></svg><span>Traits</span></button></li>
@@ -471,15 +470,22 @@
       </div>
     </section>
 
-    <!-- Cards: search / filters / sort live in js/cards.js -->
+    <!-- Cards: a Cards | Support switch (#cards / #support, 2026-10-28) · cards: search / filters / sort in js/cards.js · support grid in js/support.js -->
     <section id="page-cards" class="page" hidden aria-labelledby="cards-title">
       <div class="page__head">
-        <p class="page__eyebrow">The Archive</p>
+        <p class="page__eyebrow" id="cards-eyebrow">The Archive</p>
         <h1 id="cards-title" class="page__title">Cards</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead">Pick a rarity to see each card's ATK, HP and pull odds at that level. Tap a card for the full breakdown.</p>
+        <p class="page__lead" id="cards-lead">Pick a rarity to see each card's ATK, HP and pull odds at that level. Tap a card for the full breakdown.</p>
       </div>
 
+      <div id="cards-kind" class="seg glass" role="tablist" aria-label="Show cards or support" style="--n:2;--i:0">
+        <span class="seg__ind" aria-hidden="true"></span>
+        <button id="cards-tab-cards" class="seg__btn fx-press" type="button" role="tab" data-kind="cards" aria-selected="true" aria-controls="cards-view">Cards</button>
+        <button id="cards-tab-support" class="seg__btn fx-press" type="button" role="tab" data-kind="support" aria-selected="false" aria-controls="support-view" tabindex="-1">Support</button>
+      </div>
+
+      <div id="cards-view" role="tabpanel" aria-labelledby="cards-tab-cards">
       <div id="cards-tools" class="tools" hidden>
         <div id="rarity-picker" class="rarity-picker" role="group" aria-label="Rarity"></div>
         <div class="tools__main">
@@ -492,10 +498,10 @@
             <label class="field">
               <span class="sr-only">Sort by</span>
               <select id="card-sort">
+                <option value="odds" selected>Sort: Rarest</option>
                 <option value="overall">Sort: Overall</option>
                 <option value="atk">Sort: ATK</option>
                 <option value="hp">Sort: HP</option>
-                <option value="odds">Sort: Pull odds</option>
               </select>
             </label>
             <button id="card-dir" class="iconbtn glass fx-press" type="button" data-dir="desc" aria-label="Sort order: high to low. Tap to reverse.">
@@ -525,19 +531,12 @@
         <h2 class="empty__title">No cards yet</h2>
         <p class="empty__text">The card library is being filled in. Check back soon.</p>
       </div>
-    </section>
+      </div>
 
-    <!-- Support: list + #support/<id> detail, both in js/support.js -->
-    <section id="page-support" class="page" hidden aria-labelledby="support-title">
-      <div id="support-list-view">
-        <div class="page__head">
-          <p class="page__eyebrow">The Apothecary</p>
-          <h1 id="support-title" class="page__title">Support</h1>
-          <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-          <p class="page__lead">Support cards ranked by value, with the cards and decks they work best in. Tap one for the full breakdown.</p>
-        </div>
-
+      <!-- Support side (#support): the same game-card grid, built the first time it shows (js/support.js) -->
+      <div id="support-view" role="tabpanel" aria-labelledby="cards-tab-support" hidden>
         <div id="support-tools" class="tools" hidden>
+          <div id="support-rarity" class="rarity-picker" role="group" aria-label="Rarity: effect values at this level"></div>
           <div class="tools__main">
             <label class="field field--search">
               <span class="sr-only">Search support cards</span>
@@ -548,8 +547,9 @@
               <label class="field">
                 <span class="sr-only">Sort by</span>
                 <select id="support-sort">
+                  <option value="odds" selected>Sort: Rarest</option>
                   <option value="value">Sort: Value</option>
-                  <option value="odds">Sort: Pull odds</option>
+                  <option value="effect">Sort: Effect value</option>
                 </select>
               </label>
               <button id="support-dir" class="iconbtn glass fx-press" type="button" data-dir="desc" aria-label="Sort order: high to low. Tap to reverse.">
@@ -557,12 +557,11 @@
               </button>
             </div>
           </div>
-          <div id="support-rarity" class="rarity-picker" role="group" aria-label="Rarity: effect values at this level" hidden></div>
           <div id="support-filters" class="chip-row" role="group" aria-label="Filter by tier"></div>
           <p class="tools__count"><span id="support-count" aria-live="polite"></span><button id="support-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
         </div>
 
-        <ol id="support-list" class="slist"></ol>
+        <div id="support-grid" class="card-grid" data-card-list></div>
         <p id="support-note" class="support-note" hidden></p>
 
         <div id="support-none" class="panel glass empty" hidden>
@@ -575,11 +574,9 @@
         <div id="support-empty" class="panel glass empty" hidden>
           <svg class="empty__icon" aria-hidden="true"><use href="#i-potion"/></svg>
           <h2 class="empty__title">No support cards yet</h2>
-          <p class="empty__text">Support rankings will show here once the first support cards are added.</p>
+          <p class="empty__text">Support cards will show here once the first ones are added.</p>
         </div>
       </div>
-
-      <div id="support-detail-view" class="sdetail" hidden></div>
     </section>
 
     <!-- Grade: card picker + #grade/<id>/<grades> grader, both in js/grade.js -->
@@ -798,19 +795,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=30"></script>
-  <script src="js/app.js?v=30"></script>
-  <script src="js/teamscore.js?v=30"></script>
-  <script src="js/share.js?v=30"></script>
-  <script src="js/cards.js?v=30"></script>
-  <script src="js/detail.js?v=30"></script>
-  <script src="js/tier.js?v=30"></script>
-  <script src="js/deck.js?v=30"></script>
-  <script src="js/support.js?v=30"></script>
-  <script src="js/grade.js?v=30"></script>
-  <script src="js/traits.js?v=30"></script>
-  <script src="js/tiermaker.js?v=30"></script>
-  <script src="js/music.js?v=30"></script>
+  <script src="js/fx.js?v=31"></script>
+  <script src="js/app.js?v=31"></script>
+  <script src="js/teamscore.js?v=31"></script>
+  <script src="js/share.js?v=31"></script>
+  <script src="js/cards.js?v=31"></script>
+  <script src="js/detail.js?v=31"></script>
+  <script src="js/tier.js?v=31"></script>
+  <script src="js/deck.js?v=31"></script>
+  <script src="js/support.js?v=31"></script>
+  <script src="js/grade.js?v=31"></script>
+  <script src="js/traits.js?v=31"></script>
+  <script src="js/tiermaker.js?v=31"></script>
+  <script src="js/music.js?v=31"></script>
 </body>
 </html>
 

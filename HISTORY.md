@@ -1174,3 +1174,24 @@
   - **รูป:** อัญมณีลอยของเกมติดมาในรูปการ์ด 3 ใบ (Claw Boss Psychic, Fairy King Spear, Flashy Sound Pillar) อยู่ในส่วนภาพ/ข้อความของการ์ด ไม่ใช่ตัวเลข จึงไม่ลบ · ข้อความของ Flashy Sound Pillar ถูกอัญมณีบังฝั่งขวา อ่านจากข้อความบนการ์ด (ชัด)
   - **ผลเช็ก:** JSON ทุกไฟล์ parse ได้ · id ไม่ซ้ำ · เปิดหน้า Cards / Support / `#card/<id>` ใน Chromium ไม่มี error
   - **ไฟล์:** `data/cards.json`, `data/support.json`, `data/pool.json` → `data/` · `images/cards/*` + `thumb/`, `images/support/*` + `thumb/` · `inbox/progress.json` + ลบรูป 30 รูปที่ทำแล้วออกจาก `inbox/` · `PROGRESS.md`, `HISTORY.md` → root
+- 2026-10-28: **Support เหมือนการ์ด** (`?v=31` · Claude Code · เจ้าของสั่ง 5 ข้อ · สเปก PROGRESS §3.3 `support.js` / `detail.js` ข้อ "Support" · §3.5.5 · §5.4 `effect.pos` · §7 C)
+  - **ย้าย Support เข้าหน้า Cards:** สวิตช์ `.seg` **Cards | Support** ใต้หัวหน้า (`#cards` / `#support` · `state.kind` · สลับ = `replaceState` ไม่เพิ่มประวัติ · หัวหน้าเปลี่ยน The Archive / The Apothecary) · เอาปุ่ม Support ออกจากเมนู (`--n:5` · วัดชื่อปุ่มไม่ล้นที่ 320 / 390 / 1280) · ลิงก์เก่า `#support` = ฝั่ง Support · `#support/<id>` = ฝั่ง Support + เปิดหน้าดูการ์ดของใบนั้น (Back → วงล้อ → Back → ฝั่ง Support) · reload ตอนอยู่ฝั่ง Support กลับมาฝั่งเดิม (`cbi:lastPage` = `support`) · section `#page-support` + หน้ารายละเอียด Support แบบเดิม (`#support/<id>` ในแท็บ) ลบออก
+  - **ตาราง Support แบบเกม:** `C.renderCard` วาด Support ได้ (`.gc--sup`: กรอบระดับ + ป้าย 1 IN X + ป้ายระดับ · ไม่มี HP/ATK) · ค้นหา (ชื่อ + ความสามารถ + obtain) · ปุ่มระดับ · ชิป Tier · Sort: Rarest / Value / Effect value · **ทั้ง 2 ฝั่งเรียงเริ่มต้นหายากสุดก่อน** (Cards: Atomic Shadow Lord 1 in 9.5B ขึ้นก่อน · Support: Blue Healer Cat Knight 1 in 737K) · Sort เดิมยังเปลี่ยนได้
+  - **หน้าดูการ์ด Support:** ใช้ฉาก Black Sun เดียวกันทุกอย่าง (intro · ปัด · วงล้อ (Support ล้วน) · จุดระดับ · Low/High) · ป้าย 4 อัน = Tier (Value) / Effect (ค่าตามระดับ) / Avoid with / Best with · วง = VALUE · Details 4 แท็บ (Overview = Values นับเลข + Pull odds + ข้อความตามระดับ + การ์ดที่เข้ากัน/ไม่เข้ากัน · Score = Value + 4 คะแนน + Rank · Team = Best decks + Notes + Modes · My card = เคส PSA ของ Support (ไม่มีเกรด · ป้ายเคสมีชื่อท่า + ค่าตามระดับ + Value))
+  - **เลข % บนรูป Support 61 ใบ:** `tools/support_nums.py` (ใหม่) · tesseract อ่านคำในส่วนคำอธิบาย (ขยาย 4 เท่า, mask ตัวขาว) → จับคู่คำกับ `effect.desc` (difflib) หาเลขที่ตรงกับ `{n}%` → ตัดวงเล็บ/จุดออกด้วยคอลัมน์พิกเซล → กล่องเลข + % + ช่องว่างซ้ายขวา → `cv2.xphoto.inpaint` FSR_FAST (ขยาย 4–6px) → webp q86 + thumb q82 · **เจอครบ 61/61 ใบ (70 ตำแหน่ง)** เช็กด้วยตาทุกใบจากภาพ sheet (ก่อน/หลัง + กรอบ) · เลขที่ไม่โตตามระดับ (เช่น Pacifier Prince "20% of the HP", Senzu Bean "30% HP", Gem Mage "50% more damage") อยู่ในรูปเหมือนเดิม
+  - **เว็บเขียนค่าทับ:** Oswald 600 ขาว (`--gc-sv`) ขอบดำ (`--gc-sv-line` .15em) · ขนาด = ความสูงตัวเลข ÷ 0.82 · วัดเทียบกับรูปต้นฉบับใน Chromium (ซ้อนทับเลขเดิม) ตรงทั้งขนาด เส้นฐาน และกึ่งกลาง · ค่า Normal กว้างเท่าเลขเดิม · เลขยาวขึ้น (เช่น 5% → 15%, 0.9% → 2.7%) บีบแนวนอนให้พอดีที่เดิม + 70% ของช่องว่างข้างๆ · เปลี่ยนระดับ = แฟลช + นับ 650ms · ไทล์กรอบทอง (Tier List, Tier Maker) เขียนค่าตามระดับทั้งเว็บ · ใน Deck ตามระดับของ deck (Normal 5/23/3/50% → Godly 15/69/9/150% ✓) · รูปที่บันทึก (Save image) เขียนค่าด้วย `drawSupNums()`
+  - **งาน C / batch:** ขั้นใหม่ = รัน `tools/support_nums.py` หลังใส่ Support ทุกใบ + เช็ก sheet (PROGRESS §7 C + โหมด batch ข้อ 4, 6) · script ข้ามใบที่มี `effect.pos` แล้ว (กันลบซ้ำ)
+  - **ผลทดสอบ (Chromium):** ทุก route (`#tier` `#cards` `#support` `#deck` `#grade` `#traits` `#tier/my` `#support/<id>`) ไม่มี error ใน console (นอกจาก 404 ของ bgm.mp3 ที่ตั้งใจ) · ไม่มี scroll แนวนอนที่ 320 / 390 / 1280 · ปุ่มสวิตช์สูง 40px · reduced motion (390) ไม่มี error · ปัด / Back / วงล้อ / Details / เคส ของ Support ทำงาน
+  - **ผลวัด §11.3** (390×844 · CPU ×6 · มัธยฐาน 3 รอบ · เลื่อนจริงทุกรอบ · ก่อน = main `?v=30` / หลัง = `?v=31` · ข้อมูลจริง การ์ด 153 + Support 61):
+
+    | กรณี | ก่อน | หลัง |
+    |---|---|---|
+    | `#cards` Normal | 60.0 fps · ช้าสุด 17ms | 60.0 · 17ms |
+    | `#cards` Ascended | 31.8 · 183ms | 37.4 · 167ms |
+    | `#support` Normal (ก่อน = รายการแถว) | 56.7 · 50ms | 60.0 · 17ms |
+    | `#support` Ascended | — | 45.3 · 83ms (การ์ดแบบเกมมีกรอบหมุนเหมือนหน้า Cards · ต่ำกว่า 55 แบบเดียวกับ Cards Ascended ที่เจ้าของยอมรับแล้ว W4) |
+    | `#tier` Normal | — | 58.7 · 50ms |
+    | หน้าดูการ์ด นิ่ง Normal: การ์ด / Support | — | 57.3 / 57.3 |
+    | หน้าดูการ์ด นิ่ง Ascended: การ์ด / Support | — | 56.0 / 55.7 |
+
+  - **ไฟล์:** `index.html` (`?v=31` ทุกบรรทัด · Oswald 600) · `js/app.js`, `js/cards.js`, `js/support.js` (เขียนใหม่), `js/detail.js`, `js/grade.js`, `js/deck.js`, `js/share.js` · `css/tokens.css`, `css/fx.css`, `css/support.css`, `css/grade.css` · `data/support.json` (`effect.pos`) · `images/support/*.webp` + `thumb/` (61 + 61) · `tools/support_nums.py` (ใหม่) · `PROGRESS.md`, `HISTORY.md`

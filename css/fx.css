@@ -116,6 +116,17 @@
 .gc__hp .gc__num { font-size: 12.4cqw; color: var(--gc-hp); --sw: 1.5cqw; --line: var(--gc-hp-line); text-shadow: 0 .5cqw 0 var(--gc-hp-line); }
 .gc__atk .gc__num { font-size: 14.2cqw; color: var(--gc-atk); --sw: .9cqw; --line: var(--gc-atk-line); text-shadow: 0 .35cqw 0 var(--gc-num-shade); }
 
+/* Support (2026-10-28): the level values written where the picture's numbers were (js/app.js supNumsHTML · effect.pos)
+   same font (Oswald), white with a dark outline, same size · centred on the old number · --sx squeezes a longer one */
+.gc__sv { position: absolute; z-index: 4; display: block; height: 1em; line-height: 1; white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+.gc__svn {
+  display: inline-block; font-family: var(--gc-font-text); font-weight: 600; line-height: 1; letter-spacing: 0;
+  color: var(--gc-sv); paint-order: stroke fill; -webkit-text-stroke: .15em var(--gc-sv-line);
+  text-shadow: 0 0 .06em var(--gc-sv-line);
+  transform: scaleX(var(--sx, 1)); transform-origin: 50% 50%;
+}
+.gc--noart .gc__sv { display: none; }
+
 /* 1 IN X pill + the rarity pill under it */
 .gc__odds, .gc__rar {
   position: absolute; right: 1.2cqw; z-index: 4; pointer-events: none;

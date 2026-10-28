@@ -191,10 +191,59 @@
     if (pop && !FX.reduced && before !== num().textContent) num().classList.add("is-pop");
   }
 
+  /* Support in a case (2026-10-28, owner: "the same PSA case"): supports aren't graded in the game, so the case shows the
+     support as it is · the label has its ability values at the level (instead of ATK / HP) + its Value score */
+  function supLabelHTML(sp, r) {
+    const cert = certOf(sp.id), e = C.support.effect(sp, r), vals = C.support.values(sp, r);
+    const ranked = C.isRanked(sp), odds = Number(sp.odds) > 0 ? C.fmtOdds(Number(sp.odds)) : "";
+    const v = ranked ? String(Number(Number(sp.scores.value).toFixed(1))) : "–";
+    return `<div class="lab__l">
+        <span class="lab__brand">CBI GRADED · SUPPORT</span>
+        <span class="lab__name">${esc(sp.name)}</span>
+        <span class="lab__line"><b>${esc(r)}</b> · ${ranked ? "Tier " + esc(sp.tier) : "Unranked"}</span>
+        ${odds ? `<span class="lab__line">${esc(odds)}</span>` : ""}
+      </div>
+      <div class="lab__r"><span class="lab__word">${ranked ? "Value" : "Support"}</span><span class="lab__grade${v.length > 2 ? " lab__grade--long" : ""}">${esc(v)}</span></div>
+      <div class="lab__row lab__row--stats"><span class="lab__stats">${e.name ? `<span class="a">${esc(e.name)}</span>` : ""}${vals.length ? `${e.name ? " · " : ""}<span class="h">${esc(vals.join(" · "))}</span>` : ""}</span></div>
+      <div class="lab__row"><span class="lab__subs">${esc(String((sp.effect && sp.effect.type) || "support").replace(/-/g, " ").toUpperCase())}</span><span class="lab__code" aria-hidden="true"></span><span class="lab__cert">${cert.slice(0, 4)} ${cert.slice(4)}</span></div>`;
+  }
+  function makeSupSlab(sp, r) {
+    const s = document.createElement("div");
+    s.className = "slab slab--sup";
+    s.innerHTML = `<div class="slab__label"></div><div class="slab__well"></div><span class="slab__ridges" aria-hidden="true"></span><span class="slab__glare" aria-hidden="true"></span>`;
+    const c = C.renderCard(sp, r, { tilt: false });
+    c.removeAttribute("role"); c.removeAttribute("tabindex"); c.setAttribute("aria-hidden", "true");
+    c.classList.remove("card");   // a picture only in the Details (no tap, no tilt)
+    $(".slab__well", s).appendChild(c);
+    paintSupSlab(s, sp, r);
+    if (sheenIO) sheenIO.observe(s); else s.classList.add("is-shown");
+    return s;
+  }
+  function paintSupSlab(s, sp, r) {
+    s.dataset.band = C.isRanked(sp) ? "gold" : "none";
+    s.setAttribute("aria-label", `${sp.name} in a case, support, ${r}`);
+    $(".slab__label", s).innerHTML = supLabelHTML(sp, r);
+  }
+  function supPanelHTML(sp) {
+    return `
+      <section class="dpanel" aria-labelledby="d-t-grade">
+        <h3 class="dpanel__title" id="d-t-grade">Case</h3>
+        <p class="dpanel__sub">This support in a graded case, with its effect at the level you picked. Supports have no grades.</p>
+        <div class="gsum__slab" data-sslab="${esc(sp.id)}"></div>
+      </section>`;
+  }
+
   // Details sheet of the card detail (js/detail.js puts panelHTML in, then calls this): fill the case placeholders
   const sheetSlabs = new Set();
   function mountSlabs(root) {
     sheetSlabs.forEach((x) => { if (!x.s.isConnected) sheetSlabs.delete(x); });
+    root.querySelectorAll("[data-sslab]").forEach((box) => {
+      const sp = (state.support || []).find((x) => x && x.id === box.dataset.sslab);
+      if (!sp) return;
+      const s = makeSupSlab(sp, state.rarity);
+      box.replaceChildren(s);
+      sheetSlabs.add({ s, card: sp, sup: true });
+    });
     root.querySelectorAll("[data-slab]").forEach((box) => {
       const card = byId.get(box.dataset.slab), a = card && get(card.id);
       if (!card || !a) return;
@@ -516,6 +565,13 @@
     tiles.forEach((el, id) => C.setCardRarity(el, byId.get(id), name, { animate: false }));
     sheetSlabs.forEach((x) => {
       if (!x.s.isConnected) { sheetSlabs.delete(x); return; }
+      if (x.sup) {
+        const c = $(".gc", x.s);
+        C.setCardRarity(c, x.card, name, { animate: !!x.s.getBoundingClientRect().height });
+        paintSupSlab(x.s, x.card, name);
+        if (x.s.getBoundingClientRect().height) sheen(x.s);
+        return;
+      }
       swapRarity($(".gc", x.s), x.card, name);
       paintSlab(x.s, x.card, name, get(x.card.id) || ZERO());
       if (x.s.getBoundingClientRect().height) sheen(x.s);
@@ -639,5 +695,5 @@
     });
   }
 
-  C.grade = { init, show, panelHTML, mountSlabs, overall, band, get };
+  C.grade = { init, show, panelHTML, supPanelHTML, mountSlabs, overall, band, get };
 })();

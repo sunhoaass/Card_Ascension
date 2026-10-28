@@ -278,7 +278,7 @@
     try {
       await Promise.race([Promise.all([
         document.fonts.load('700 20px "Cinzel"'), document.fonts.load('600 14px "Cinzel"'),
-        document.fonts.load('500 14px Inter'), document.fonts.load('700 20px "Oswald"'), document.fonts.load('20px "Bangers"'), document.fonts.ready,
+        document.fonts.load('500 14px Inter'), document.fonts.load('700 20px "Oswald"'), document.fonts.load('600 20px "Oswald"'), document.fonts.load('20px "Bangers"'), document.fonts.ready,
       ]), wait]);
     } catch {}
   }
@@ -338,6 +338,30 @@
     if (ir > br) { sh = img.naturalHeight; sw = sh * br; sx = (img.naturalWidth - sw) / 2; sy = 0; }
     else { sw = img.naturalWidth; sh = sw / br; sx = 0; sy = (img.naturalHeight - sh) / 2; }
     ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+  }
+
+  /* Support (2026-10-28): the level values where the picture's numbers were erased (same spots as js/app.js supNumsHTML ·
+     effect.pos in % of the picture width) · white Oswald with a dark outline, squeezed to the old number's room */
+  function drawSupNums(ctx, item, img, x, y, w, h, rarity) {
+    const pos = item && item.effect && Array.isArray(item.effect.pos) ? item.effect.pos : [];
+    if (!pos.length || !C.supVals) return;
+    const ir = img.naturalWidth / img.naturalHeight, br = w / h;
+    const pw = ir > br ? h * ir : w, ox = x - (pw - w) / 2, oy = y - (pw / ir - h) / 2, u = pw / 100;   // the cover crop
+    const font = getComputedStyle(document.documentElement).getPropertyValue("--gc-font-text").trim() || "sans-serif";
+    ctx.save();
+    ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
+    pos.forEach((p) => {
+      const b = C.supVals(item)[p.i]; if (b == null) return;
+      const t = C.supAt(b, rarity) + "%", fs = (p.h / 0.82) * u;
+      ctx.font = `600 ${fs}px ${font}`;
+      const room = (p.w + 1.4 * Math.min(p.gl || 0, p.gr || 0)) * u, tw = ctx.measureText(t).width, sx = tw > room ? room / tw : 1;
+      ctx.save();
+      ctx.translate(ox + (p.x + p.w / 2) * u, oy + (p.y + p.h) * u); ctx.scale(sx, 1);
+      ctx.lineWidth = fs * 0.15; ctx.strokeStyle = "#050505"; ctx.strokeText(t, 0, 0);
+      ctx.fillStyle = "#f4f2ee"; ctx.fillText(t, 0, 0);
+      ctx.restore();
+    });
+    ctx.restore();
   }
 
   /* ==========================================================
@@ -493,7 +517,7 @@
     roundRect(ctx, bx, by, bw, bh, 4);
     ctx.clip();
     ctx.fillStyle = spec.body || "#0d1020"; ctx.fillRect(bx, by, bw, bh);
-    if (art) drawCoverImage(ctx, art, bx, by, bw, bh);
+    if (art) { drawCoverImage(ctx, art, bx, by, bw, bh); drawSupNums(ctx, item, art, bx, by, bw, bh, spec.supRarity || state.rarity); }
     else drawPlaceholder(ctx, bx, by, bw, bh, item, pal);
     // name strip
     const infoH = Math.round(bh * 0.3);
@@ -708,7 +732,7 @@
     while (sups.length < 5) sups.push(null);
     const nC = cards.filter(Boolean).length, nS = sups.filter(Boolean).length;
     const rarity = spec.rarity || "Normal";
-    const frame = frameSpec(rarity, "card"), sframe = frameSpec(null, "support");
+    const frame = frameSpec(rarity, "card"), sframe = { ...frameSpec(null, "support"), supRarity: rarity };
 
     const P1 = 14 + 22 + 24 + B.CH + 18, P2 = 14 + 22 + B.SH + 18;
     const H = B.HEAD + P1 + B.PANEL_GAP + P2 + 20 + B.FOOT;

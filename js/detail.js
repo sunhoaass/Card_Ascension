@@ -29,6 +29,9 @@
    · W9 (owner's picks): a big card in the middle of the room under the sun (PC ≈ 55 % of the screen height, phones ≈ 72 %
      of the width) · big PC label boxes that add items while there is room · bigger level dots on a PC · tall portrait
      screens use the owner's portrait frames (images/silver/*-p.webp) stacked: sky on top, the city / palace below
+   · Support cards (owner 2026-10-28) open here too, same scene / labels / Details / case / swipe: the card shows its
+     ability values (they grow with the level) instead of ATK / HP · labels Tier / Effect / Avoid / Best with ·
+     ring = Value · Details: Overview (effect + values) / Score (Value) / Team (cards, decks) / My card (the case)
    Rules (PROGRESS §4.1, §11): rAF only while something moves (intro ~2.6 s, card physics, parallax) ·
    per-frame changes = paused Web Animations, never style.transform · auras only on screen (.is-live).
    ========================================================== */
@@ -44,6 +47,7 @@
   const arr = (a) => (Array.isArray(a) ? a.filter(Boolean) : []);
   const pretty = (id) => String(id).replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const pct = (v) => Math.max(0, Math.min(100, Number(v) || 0));
+  const isSup = (x) => C.isSupport(x);
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
   const idle = (f, t = 1200) => (window.requestIdleCallback ? requestIdleCallback(f, { timeout: t }) : setTimeout(f, 120));
   const settle = (a) => (a && a.finished ? a.finished.catch(() => {}) : Promise.resolve());
@@ -475,7 +479,7 @@
   }
   // paint ahead while idle so the first open is instant · lite devices (≤ 4 GB / ≤ 4 cores / slow probe) paint on
   // the first open instead (a stand-in sky shows meanwhile), so no long painting task lands while they scroll
-  function prewarm() { if (!G && state.cards.length && !FX.lite) calm(() => { if (!G && !FX.lite) buildScene(); }, 3000); }
+  function prewarm() { if (!G && byId.size && !FX.lite) calm(() => { if (!G && !FX.lite) buildScene(); }, 3000); }
 
   /* ==========================================================
      2. Parallax: paused Web Animations driven by finger / mouse
@@ -567,8 +571,9 @@
     const fc = faces(card);
     el.faceF.replaceChildren(fc.f);
     el.faceB.replaceChildren(fc.b);
-    el.wrap.setAttribute("aria-label", `${card.name}, ${C.isRanked(card) ? "tier " + card.tier : "unranked"}, ${state.rarity}. Tap to spin`);
+    el.wrap.setAttribute("aria-label", wrapLabel(card));
   }
+  const wrapLabel = (card) => `${card.name}${isSup(card) ? ", support" : ""}, ${C.isRanked(card) ? "tier " + card.tier : "unranked"}, ${state.rarity}. Tap to spin`;
 
   /* ==========================================================
      4. Labels (Tier / Passive / Skill / Strongest / Weakness) from the real data
@@ -606,7 +611,20 @@
   // W6 fix: the line under each title = the card's "short" text for that label (cards.json · ≤ 30 characters, written in
   // task B) · a card without it shows the title only (never a cut sentence)
   const shortOf = (card, key) => String((card.short && card.short[key]) || "").trim();
+  // support labels (2026-10-28): Tier (Value) / Effect (the values at this level) / Avoid / Best with
+  const SUP_T = { ability: "Effect", strong: "Best with", weak: "Avoid with" };
+  const supShort = (s, key) => {
+    if (key === "tier") return C.isRanked(s) ? `Value ${f1(pct(s.scores.value))}` : "";
+    if (key === "ability") { const v = C.support.values(s); return v.length ? v.join(" · ") : ""; }
+    const ids = key === "strong" ? s.bestWith : s.avoidWith;
+    return joinShort(names(s, ids), 2);
+  };
   function coData(card, key) {
+    if (isSup(card)) {
+      const d = supShort(card, key);
+      if (key === "tier") return { t: C.isRanked(card) ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>` : "Unranked", d, o: obtainOf(card) };
+      return { t: SUP_T[key], d: d || (key === "ability" ? "" : "Not analyzed yet") };
+    }
     const d = shortOf(card, key);
     if (key === "tier") {
       const ranked = C.isRanked(card);
@@ -618,6 +636,15 @@
      in layout: never a cut sentence, ≤ 4 items, a box never taller than half the card) · phones stay title + short line */
   function extrasOf(card, key) {
     const li = (t, cls = "") => `<span class="bs-co__li ${cls}">${t}</span>`;
+    if (isSup(card)) {
+      if (key === "tier") return [card.notes ? li(esc(String(card.notes))) : "", C.isRanked(card) ? li(`Rank #${C.support.rank(card.id)} of ${C.support.rankedCount()}`, "is-meta") : ""].filter(Boolean);
+      if (key === "ability") { const e = C.support.effect(card); return [e.name ? li(`<b>${esc(e.name)}</b>`, e.desc ? "is-name" : "") : "", e.desc ? li(esc(e.desc)) : ""].filter(Boolean); }
+      if (key === "strong") {
+        const decks = arr(card.bestDeck).map((id) => arr(state.teams).find((t) => t && t.id === id)).filter(Boolean).map((t) => t.name || pretty(t.id));
+        return decks.length ? [li(`Best decks: ${esc(decks.join(", "))}`, "is-meta")] : [];
+      }
+      return [];
+    }
     if (key === "tier") {
       const note = String(card.tierNote || "").trim(), out = [];
       if (note) out.push(li(esc(note)));
@@ -812,9 +839,9 @@
   /* ---------- Overall ring ---------- */
   let ovrVal = 0, ovrRaf = 0;
   function setOverall(card, anim) {
-    const ranked = C.isRanked(card), v = ranked ? Math.round(pct(card.scores.overall)) : 0;
+    const ranked = C.isRanked(card), v = ranked ? Math.round(pct(isSup(card) ? card.scores.value : card.scores.overall)) : 0;
     el.ovr.classList.toggle("is-unranked", !ranked);
-    el.ovrLbl.textContent = ranked ? "OVERALL" : "UNRANKED";
+    el.ovrLbl.textContent = ranked ? (isSup(card) ? "VALUE" : "OVERALL") : "UNRANKED";
     cancelAnimationFrame(ovrRaf); ovrRaf = 0;
     if (!ranked) { el.ovrArc.setAttribute("stroke-dasharray", "0 100"); el.ovrNum.textContent = "—"; ovrVal = 0; return; }
     if (!anim || rm()) { el.ovrArc.setAttribute("stroke-dasharray", `${v} 100`); el.ovrNum.textContent = v; ovrVal = v; return; }
@@ -1112,7 +1139,62 @@
           <span class="score__num" data-value="${Math.round(pct(v))}">${Math.round(pct(v))}</span>
           <span class="score__track"><i></i></span>
         </div>`;
+  // support (2026-10-28): the same four tabs · Overview = effect + its values at this level · Score = Value · Team = cards / decks
+  const SUP_ROWS = [["effect", "Effect power", 40], ["reliability", "Reliability", 20], ["flexibility", "Flexibility", 20], ["synergy", "Peak synergy", 20]];
+  function supSheetHTML(sp) {
+    const ranked = C.isRanked(sp), sc = sp.scores || {}, e = C.support.effect(sp);
+    const pane = (id, html) => `<div class="bs-pane" id="bs-pane-${id}" role="tabpanel" aria-labelledby="bs-tab-${id}" tabindex="-1" data-pane="${id}" hidden>${html}</div>`;
+    const row = (id, ids) => arr(ids).some((x) => byId.has(x)) ? `<div class="mini-row" id="${id}" data-card-list></div>` : `<p class="muted">Not analyzed yet</p>`;
+    const vals = C.supVals(sp);
+    const decks = arr(sp.bestDeck).map((id) => arr(state.teams).find((t) => t && t.id === id)).filter(Boolean);
+    const modes = modesOf(sp);
+    const overview = `
+        <section class="dpanel" aria-labelledby="d-t-stats">
+          <h3 class="dpanel__title" id="d-t-stats">Values <span class="bs-stats__lv" data-d="lv">${esc(state.rarity)}</span></h3>
+          <dl class="bs-stats">
+            ${vals.map((v, i) => `<div class="bs-stat bs-stat--sv"><dt>${vals.length > 1 ? "Effect " + (i + 1) : "Effect"}</dt><dd data-d="sv${i}" data-value="0">0</dd></div>`).join("")}
+            <div class="bs-stat bs-stat--odds"><dt>Pull odds</dt><dd data-d="odds"></dd></div>
+          </dl>
+          ${vals.length ? `<p class="dpanel__sub">Every rarity adds 25% of the Normal value (Godly = 3×).</p>` : ""}
+        </section>
+        <section class="dpanel" aria-labelledby="d-t-abilities">
+          <h3 class="dpanel__title" id="d-t-abilities">Effect</h3>
+          ${e.name || e.desc ? `<div class="ability">${e.name ? `<b class="ability__name">${esc(e.name)}</b>` : ""}${e.desc ? `<p class="ability__desc" data-d="eff">${esc(e.desc)}</p>` : ""}</div>` : `<p class="muted">None</p>`}
+        </section>
+        <section class="dpanel" aria-labelledby="d-t-pc">
+          <h3 class="dpanel__title" id="d-t-pc">Where to run it</h3>
+          <div class="group"><h4 class="group__title group__title--good">Best on these cards</h4>${row("d-with", sp.bestWith)}</div>
+          <div class="group"><h4 class="group__title group__title--bad">Don't pair with</h4>${row("d-avoid", sp.avoidWith)}</div>
+        </section>
+        ${sp.updated ? `<p class="detail__foot">Updated ${esc(sp.updated)}</p>` : ""}`;
+    const score = ranked ? `
+        <section class="dpanel" aria-labelledby="d-t-overall">
+          <h3 class="dpanel__title" id="d-t-overall">Value score</h3>
+          <div class="overall">
+            <div class="overall__score"><span class="overall__num" data-d="overall" data-value="0">0</span><span class="overall__max">/ 100</span></div>
+            <div class="overall__tier"><span class="badge badge--tier">${esc(sp.tier)}</span><small>Tier</small></div>
+          </div>
+          <p class="dpanel__sub">Rank #${C.support.rank(sp.id)} of ${C.support.rankedCount()} · weighted sum of four scores, each out of 100, judged at Godly.</p>
+          <div class="scores">${SUP_ROWS.map(([k, label, w], i) => bar(label, pct(sc[k]), i, `<span class="score__weight">${w}%</span>`).replace('class="score__num"', `class="score__num" data-d="s-${k}"`)).join("")}</div>
+        </section>`
+      : `<section class="dpanel" aria-labelledby="d-t-overall">
+          <h3 class="dpanel__title" id="d-t-overall">Value score</h3>
+          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>Only the top ${C.rankTop()} support cards get a Value score and a tier. Decks still count this one, from its effect at the deck's rarity.</span></div>
+        </section>`;
+    const teamHTML = `
+        <section class="dpanel" aria-labelledby="d-t-team">
+          <h3 class="dpanel__title" id="d-t-team">Decks</h3>
+          <div class="group"><h4 class="group__title">Best decks</h4>${decks.length ? `<div class="chips">${decks.map((t) => `<span class="supchip">${esc(t.name || pretty(t.id))}</span>`).join("")}</div>` : `<p class="muted">Not analyzed yet</p>`}</div>
+          ${sp.notes ? `<div class="group"><h4 class="group__title">Notes</h4><p class="dpanel__note">${esc(sp.notes)}</p></div>` : ""}
+        </section>
+        <section class="dpanel" aria-labelledby="d-t-modes">
+          <h3 class="dpanel__title" id="d-t-modes">Modes</h3>
+          ${modes.length ? `<div class="scores">${modes.map(([id, v], i) => bar(esc(modeName(id)), v, i)).join("")}</div>` : `<p class="muted">Not analyzed yet</p>`}
+        </section>`;
+    return pane("overview", overview) + pane("score", score) + pane("team", teamHTML) + pane("mine", C.grade.supPanelHTML(sp));
+  }
   function sheetHTML(card) {
+    if (isSup(card)) return supSheetHTML(card);
     const ranked = C.isRanked(card);
     const s = card.scores || {}, team = card.team || {};
     const strengths = arr(card.strengths), weaknesses = arr(card.weaknesses);
@@ -1191,6 +1273,14 @@
   // W6: no "Normal … × 93" / "… × rarer" lines any more · just the numbers at the chosen level
   function fillStats(card, anim) {
     const r = state.rarity;
+    if (isSup(card)) {
+      const dec = (v) => (x) => (x === v ? v + "%" : (String(v).includes(".") ? x.toFixed(1) : Math.round(x)) + "%");
+      C.supVals(card).forEach((b, i) => { const v = C.supAt(b, r); setNum(q("sv" + i), v, dec(v), anim); });
+      q("odds").textContent = Number(card.odds) > 0 ? C.fmtOdds(Number(card.odds)) : "–";
+      q("lv").textContent = r;
+      const d = q("eff"); if (d) { const t = C.support.effect(card, r).desc; if (d.textContent !== t) { d.textContent = t; if (anim) FX.fade(d, 1, { duration: 250 }); } }
+      return;
+    }
     setNum(q("atk"), C.statAt(card, "atk", r), C.fmtStat, anim);
     setNum(q("hp"), C.statAt(card, "hp", r), C.fmtStat, anim);
     q("odds").textContent = C.fmtOdds(C.oddsAt(card, r));
@@ -1200,13 +1290,14 @@
   function fillScores(card, anim) {
     if (!C.isRanked(card)) return;
     const s = card.scores, fmt = (n) => String(Math.round(n));
+    if (isSup(card)) { setNum(q("overall"), pct(s.value), (n) => f1(n).replace(/\.0$/, ""), anim); SUP_ROWS.forEach(([k]) => setNum(q("s-" + k), pct(s[k]), fmt, anim)); return; }
     setNum(q("overall"), pct(s.overall), fmt, anim);
     SCORE_ROWS.forEach(([k]) => setNum(q("s-" + k), scoreOf(s, k), fmt, anim));
   }
   function sheetSub(card) {
     const ranked = C.isRanked(card), ob = obtainOf(card);
     return `${ranked ? `<span class="badge badge--tier">Tier ${esc(card.tier)}</span>` : `<span class="badge badge--muted">Unranked</span>`}` +
-      `<span class="bs-sheet__meta">${esc(state.rarity)}${card.series ? " · " + esc(card.series) : ""}</span>` +
+      `<span class="bs-sheet__meta">${esc(state.rarity)}${isSup(card) ? " · Support" : card.series ? " · " + esc(card.series) : ""}</span>` +
       (ob ? `<span class="bs-sheet__obtain">${esc(ob)}</span>` : "");
   }
   let sheetOpen = false, shAnims = [], SD = null, sheetKey = "", tab = "overview";
@@ -1223,7 +1314,8 @@
     el.sheetBody.innerHTML = sheetHTML(card);
     C.grade.mountSlabs(el.sheetBody);   // step 13: the graded case in the Grade panel (only when this card has grades)
     C.traits.mountPanel(el.sheetBody, card);   // Trait panel: recommended trait + the user's trait + boosted stats
-    [["#d-beats", card.beats], ["#d-loses", card.losesTo], ["#d-with", card.team && card.team.bestWith]].forEach(([sel, ids]) => {
+    const rows = isSup(card) ? [["#d-with", card.bestWith], ["#d-avoid", card.avoidWith]] : [["#d-beats", card.beats], ["#d-loses", card.losesTo], ["#d-with", card.team && card.team.bestWith]];
+    rows.forEach(([sel, ids]) => {
       const rowEl = $(sel, el.sheetBody);
       if (!rowEl) return;
       arr(ids).map((id) => byId.get(id)).filter((c) => c && c.id !== card.id)
@@ -1434,7 +1526,8 @@
     showCorona(state.rarity, false);
     if (hit) wave();
     if (cur) {
-      el.wrap.setAttribute("aria-label", `${cur.name}, ${C.isRanked(cur) ? "tier " + cur.tier : "unranked"}, ${state.rarity}. Tap to spin`);
+      el.wrap.setAttribute("aria-label", wrapLabel(cur));
+      if (isSup(cur)) { fillCallouts(cur); if (!wheelOn) { layout(); if (ready) for (const o of coEls) o.el.style.opacity = 1; } }   // its Effect line shows the new values
       if (sheetKey === cur.id) {
         el.shSub.innerHTML = sheetSub(cur);
         fillStats(cur, sheetOpen);
@@ -1621,12 +1714,14 @@
     else C.closeCard();
   }
   // the whole library in the Cards page order (cards its filters hide come after)
+  // a support's wheel = every support (the Support side's order) · cards never mix with supports on one wheel
   function wOrder() {
-    const o = C.cards.order().filter((id) => byId.has(id)), seen = new Set(o);
-    state.cards.forEach((c) => { if (!seen.has(c.id)) o.push(c.id); });
+    const sup = isSup(cur), all = sup ? state.support : state.cards;
+    const o = (sup ? C.support.order() : C.cards.order()).filter((id) => byId.has(id)), seen = new Set(o);
+    all.forEach((c) => { if (c && c.id && !seen.has(c.id)) o.push(c.id); });
     return o;
   }
-  const wMatch = (c) => { const q = wQ.trim().toLowerCase(); return !q || String(c.name || "").toLowerCase().includes(q) || String(c.series || "").toLowerCase().includes(q); };
+  const wMatch = (c) => { const q = wQ.trim().toLowerCase(); return !q || String(c.name || "").toLowerCase().includes(q) || String(c.series || "").toLowerCase().includes(q) || (isSup(c) && String((c.effect && c.effect.name) || "").toLowerCase().includes(q)); };
 
   function wheelGeom() {
     const rw = el.root.clientWidth, rh = el.root.clientHeight, z = FX.zoom();
@@ -1735,7 +1830,7 @@
     const card = wN ? byId.get(wl[wCenterIdx()]) : null;
     const b = el.cwName.firstElementChild, sp = el.cwName.lastElementChild;
     b.textContent = card ? card.name : "";
-    sp.textContent = card ? [C.isRanked(card) ? "Tier " + card.tier : "Unranked", card.series || ""].filter(Boolean).join(" · ") : "";
+    sp.textContent = card ? [C.isRanked(card) ? "Tier " + card.tier : "Unranked", isSup(card) ? "Support" : card.series || ""].filter(Boolean).join(" · ") : "";
     if (animate && card && !rm()) el.cwName.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 150, easing: E });
   }
 
@@ -1982,13 +2077,13 @@
   function listFromHistory(id) {
     const st = history.state;
     let l = st && Array.isArray(st.cl) ? st.cl.filter((x) => typeof x === "string" && byId.has(x)) : null;
-    if (!l || !l.length) l = C.cards.order();
+    if (!l || !l.length) l = isSup(byId.get(id)) ? C.support.order() : C.cards.order();
     if (!l.includes(id)) l = [id, ...l];
     return l;
   }
   function returnTarget(id) {
     if (scopeEl && scopeEl.isConnected) { const t = scopeEl.querySelector(cardSel(id)); if (t && t.getClientRects().length) return t; }
-    if (originEl && originEl.isConnected && (originEl.dataset.id === id || originEl.dataset.openCard === id)) return originEl;
+    if (originEl && originEl.isConnected && (originEl.dataset.id === id || originEl.dataset.openCard === id || originEl.dataset.sid === id)) return originEl;
     const page = $("#page-" + (state.page || "cards"));
     const t = page ? page.querySelector(`.card[data-id="${CSS.escape(id)}"]`) : null;
     return t && t.getClientRects().length ? t : null;
@@ -2129,6 +2224,7 @@
   /* ---------- init ---------- */
   function init() {
     state.cards.forEach((c) => byId.set(c.id, c));
+    (Array.isArray(state.support) ? state.support : []).forEach((x) => { if (x && x.id && !byId.has(x.id)) byId.set(x.id, x); });   // support cards open here too
     const g = (id) => document.getElementById(id);
     Object.assign(el, {
       root: g("detail"), stage: g("bs-stage"), sky: g("bs-sky"), bg: g("bs-bg"), pulse: g("bs-pulse"), sparks: g("bs-sparks"), fog: g("bs-fog"), dust: g("bs-dust"),
@@ -2166,7 +2262,7 @@
     addEventListener("popstate", () => { const m = location.hash.match(/^#\/?card\/([^/?#]+)/); if (isOpen && m) open(decodeURIComponent(m[1])); });
     document.addEventListener("cbi:rarity", onRarity);
     document.addEventListener("visibilitychange", () => { if (isOpen) hush(document.hidden || sheetOpen); });   // W7: tab hidden = loops stop
-    if (!state.cards.length) return;
+    if (!byId.size) return;
 
     buildLv(el.lv); buildLv(el.shLv); buildCallouts();
     setupCard(); setupSwipe(); setupSheet(); setupParallax(); setupGfx(); setupWheel();
