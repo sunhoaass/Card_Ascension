@@ -396,6 +396,353 @@
       "hp": 2310,
       "src": "RobloxScreenShot20261028_114711061.png",
       "round": 1
+    },
+    {
+      "id": "weapon-rain-kunoichi",
+      "kind": "card",
+      "name": "Weapon Rain Kunoichi",
+      "series": "",
+      "odds": 21,
+      "atk": 289,
+      "hp": 1926,
+      "src": "RobloxScreenShot20261028_114718760.png",
+      "round": 2
+    },
+    {
+      "id": "wolf-fang-fighter",
+      "kind": "card",
+      "name": "Wolf Fang Fighter",
+      "series": "",
+      "odds": 11,
+      "atk": 236,
+      "hp": 1576,
+      "src": "RobloxScreenShot20261028_114723641.png",
+      "round": 2
+    },
+    {
+      "id": "world-champ",
+      "kind": "card",
+      "name": "World Champ",
+      "series": "",
+      "odds": 14,
+      "atk": 253,
+      "hp": 1686,
+      "src": "RobloxScreenShot20261028_114728332.png",
+      "round": 2
+    },
+    {
+      "id": "acrobat-silky-girl",
+      "kind": "card",
+      "name": "Acrobat Silky Girl",
+      "series": "",
+      "odds": 2030,
+      "atk": 1247,
+      "hp": 8310,
+      "src": "RobloxScreenShot20261028_114732266.png",
+      "round": 2
+    },
+    {
+      "id": "baboon-blade-lieutenant",
+      "kind": "card",
+      "name": "Baboon Blade Lieutenant",
+      "series": "",
+      "odds": 825,
+      "atk": 896,
+      "hp": 5976,
+      "src": "RobloxScreenShot20261028_114753604.png",
+      "round": 2
+    },
+    {
+      "id": "bald-saiyan-brute",
+      "kind": "card",
+      "name": "Bald Saiyan Brute",
+      "series": "",
+      "odds": 431,
+      "atk": 841,
+      "hp": 5606,
+      "src": "RobloxScreenShot20261028_114757989.png",
+      "round": 2
+    },
+    {
+      "id": "cafe-owner-owl",
+      "kind": "support",
+      "name": "Cafe Owner Owl",
+      "series": "",
+      "odds": 4992,
+      "vals": [
+        9
+      ],
+      "type": "lifesteal",
+      "src": "RobloxScreenShot20261028_114808061.png",
+      "round": 2
+    },
+    {
+      "id": "caged-bird-prodigy",
+      "kind": "card",
+      "name": "Caged Bird Prodigy",
+      "series": "",
+      "odds": 582,
+      "atk": 891,
+      "hp": 5942,
+      "src": "RobloxScreenShot20261028_114811905.png",
+      "round": 2
+    },
+    {
+      "id": "chip-crunch-ninja",
+      "kind": "card",
+      "name": "Chip Crunch Ninja",
+      "series": "",
+      "odds": 643,
+      "atk": 892,
+      "hp": 5944,
+      "src": "RobloxScreenShot20261028_114816863.png",
+      "round": 2
+    },
+    {
+      "id": "cola-cyborg",
+      "kind": "card",
+      "name": "Cola Cyborg",
+      "series": "",
+      "odds": 476,
+      "atk": 762,
+      "hp": 5082,
+      "src": "RobloxScreenShot20261028_114821070.png",
+      "round": 2
+    },
+    {
+      "id": "creation-heroine",
+      "kind": "card",
+      "name": "Creation Heroine",
+      "series": "",
+      "odds": 1008,
+      "atk": 965,
+      "hp": 6430,
+      "src": "RobloxScreenShot20261028_114825123.png",
+      "round": 2
+    },
+    {
+      "id": "crow-banker",
+      "kind": "support",
+      "name": "Crow Banker",
+      "series": "",
+      "odds": 6097,
+      "vals": [
+        4
+      ],
+      "type": "mark",
+      "src": "RobloxScreenShot20261028_114829001.png",
+      "round": 2
+    },
+    {
+      "id": "cursed-corpse-panda",
+      "kind": "card",
+      "name": "Cursed Corpse Panda",
+      "series": "",
+      "odds": 676,
+      "atk": 833,
+      "hp": 5554,
+      "src": "RobloxScreenShot20261028_114902036.png",
+      "round": 2
+    },
+    {
+      "id": "cursed-speech-boy",
+      "kind": "card",
+      "name": "Cursed Speech Boy",
+      "series": "",
+      "odds": 710,
+      "atk": 993,
+      "hp": 6620,
+      "src": "RobloxScreenShot20261028_114910489.png",
+      "round": 2
+    },
+    {
+      "id": "desert-princess",
+      "kind": "support",
+      "name": "Desert Princess",
+      "series": "",
+      "odds": 3183,
+      "vals": [
+        5
+      ],
+      "type": "double-attack",
+      "src": "RobloxScreenShot20261028_114926245.png",
+      "round": 2
+    },
+    {
+      "id": "destructo-monk",
+      "kind": "card",
+      "name": "Destructo Monk",
+      "series": "",
+      "odds": 390,
+      "atk": 722,
+      "hp": 4814,
+      "src": "RobloxScreenShot20261028_114944856.png",
+      "round": 2
+    },
+    {
+      "id": "doctor-hunter",
+      "kind": "support",
+      "name": "Doctor Hunter",
+      "series": "",
+      "odds": 2740,
+      "vals": [
+        5
+      ],
+      "type": "max-hp-hit",
+      "src": "RobloxScreenShot20261028_115000347.png",
+      "round": 2
+    },
+    {
+      "id": "engine-hero",
+      "kind": "card",
+      "name": "Engine Hero",
+      "series": "",
+      "odds": 1060,
+      "atk": 983,
+      "hp": 6550,
+      "src": "RobloxScreenShot20261028_115016071.png",
+      "round": 2
+    },
+    {
+      "id": "esper-brother",
+      "kind": "card",
+      "name": "Esper Brother",
+      "series": "",
+      "odds": 1837,
+      "atk": 1286,
+      "hp": 8572,
+      "src": "RobloxScreenShot20261028_115026841.png",
+      "round": 2
+    },
+    {
+      "id": "fang-pup-ninja",
+      "kind": "card",
+      "name": "Fang Pup Ninja",
+      "series": "",
+      "odds": 611,
+      "atk": 851,
+      "hp": 5676,
+      "src": "RobloxScreenShot20261028_115033838.png",
+      "round": 2
+    },
+    {
+      "id": "food-mage",
+      "kind": "support",
+      "name": "Food Mage",
+      "series": "",
+      "odds": 4517,
+      "vals": [
+        11
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_115039536.png",
+      "round": 2
+    },
+    {
+      "id": "foundation-gentleman",
+      "kind": "support",
+      "name": "Foundation Gentleman",
+      "series": "",
+      "odds": 4749,
+      "vals": [
+        3,
+        3
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_115043778.png",
+      "round": 2
+    },
+    {
+      "id": "fox-mask-mentor",
+      "kind": "support",
+      "name": "Fox Mask Mentor",
+      "series": "",
+      "odds": 2479,
+      "vals": [
+        1
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_115046981.png",
+      "round": 2
+    },
+    {
+      "id": "giant-arm-friend",
+      "kind": "card",
+      "name": "Giant Arm Friend",
+      "series": "",
+      "odds": 912,
+      "atk": 930,
+      "hp": 6200,
+      "src": "RobloxScreenShot20261028_115052783.png",
+      "round": 2
+    },
+    {
+      "id": "green-beast-kid",
+      "kind": "card",
+      "name": "Green Beast Kid",
+      "series": "",
+      "odds": 553,
+      "atk": 774,
+      "hp": 5162,
+      "src": "RobloxScreenShot20261028_115113043.png",
+      "round": 2
+    },
+    {
+      "id": "hardening-hero",
+      "kind": "card",
+      "name": "Hardening Hero",
+      "series": "",
+      "odds": 959,
+      "atk": 947,
+      "hp": 6314,
+      "src": "RobloxScreenShot20261028_115120530.png",
+      "round": 2
+    },
+    {
+      "id": "haunted-armor-brother",
+      "kind": "card",
+      "name": "Haunted Armor Brother",
+      "series": "",
+      "odds": 2134,
+      "atk": 1333,
+      "hp": 8886,
+      "src": "RobloxScreenShot20261028_115124422.png",
+      "round": 2
+    },
+    {
+      "id": "horse-face-captain",
+      "kind": "card",
+      "name": "Horse Face Captain",
+      "series": "",
+      "odds": 1171,
+      "atk": 1091,
+      "hp": 7270,
+      "src": "RobloxScreenShot20261028_115128022.png",
+      "round": 2
+    },
+    {
+      "id": "ice-sniper",
+      "kind": "card",
+      "name": "Ice Sniper",
+      "series": "",
+      "odds": 2243,
+      "atk": 1384,
+      "hp": 9224,
+      "src": "RobloxScreenShot20261028_115131846.png",
+      "round": 2
+    },
+    {
+      "id": "lonely-crimson-mage",
+      "kind": "support",
+      "name": "Lonely Crimson Mage",
+      "series": "",
+      "odds": 4087,
+      "vals": [
+        12
+      ],
+      "type": "paralyze",
+      "src": "RobloxScreenShot20261028_115135906.png",
+      "round": 2
     }
   ]
 }
