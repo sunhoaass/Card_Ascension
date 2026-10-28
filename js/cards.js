@@ -5,6 +5,8 @@
    · the card detail lives in js/detail.js (step 12)
    · Cards | Support switch at the top (owner 2026-10-28 · #cards / #support, state.kind): the Support side is js/support.js
    · both sides start sorted rarest first (pull odds, high to low) · the Sort menu still changes it
+   · 30 cards a page (owner 2026-10-28 · C.pager): a card is made the first time its page shows · search / filters / sort
+     = page 1 · the detail's swipe and wheel still walk the whole filtered list (order())
    Needs js/fx.js and js/app.js (window.FX, window.CBI) loaded first.
    ========================================================== */
 (function () {
@@ -14,10 +16,12 @@
   const ROLE_ORDER = ["DPS", "Tank", "Support", "Hybrid"];
   const filters = { q: "", tier: "", role: "", series: "", sort: "odds", dir: "desc" };   // rarest first (owner 2026-10-28)
   const cardById = new Map();     // id -> card data
-  const cardEls = new Map();      // id -> card element in the grid (kept even while filtered out)
+  const cardEls = new Map();      // id -> card element (made the first time its page shows, kept after)
   const searchText = new Map();   // id -> lowercase text used by the search box
   const ui = {};
-  let shown = [];                 // ids currently in the grid, in order
+  let shown = [];                 // ids that pass the filters, in order (every page)
+  let onPage = [];                // ids in the grid now (this page)
+  let page = 0;
   let built = false;              // grid cards exist (made on the first visit to the Cards side, step 9.5)
   let shownKind = null;           // the side on screen: "cards" | "support"
   const HEAD = {
@@ -34,7 +38,7 @@
     Object.assign(ui, {
       kind: $("#cards-kind"), cardsView: $("#cards-view"), supView: $("#support-view"),
       eyebrow: $("#cards-eyebrow"), title: $("#cards-title"), lead: $("#cards-lead"),
-      tools: $("#cards-tools"), grid: $("#card-grid"), none: $("#cards-none"), empty: $("#cards-empty"),
+      tools: $("#cards-tools"), pager: $("#cards-pager"), grid: $("#card-grid"), none: $("#cards-none"), empty: $("#cards-empty"),
       rarity: $("#rarity-picker"), filters: $("#card-filters"), search: $("#card-search"),
       sort: $("#card-sort"), dir: $("#card-dir"), series: $("#card-series"), seriesField: $("#series-field"),
       count: $("#card-count"), reset: $("#card-reset"),
@@ -66,7 +70,6 @@
   }
   function build() {
     if (built || !state.cards.length) return;
-    state.cards.forEach((c) => cardEls.set(c.id, C.renderCard(c, state.rarity)));
     built = true;
     apply({ animate: true });
   }
@@ -153,6 +156,7 @@
     };
     ui.reset.addEventListener("click", reset);
     $("#cards-none-reset").addEventListener("click", reset);
+    ui.pager.addEventListener("click", (e) => { const b = e.target.closest(".pager__btn[data-page]"); if (b && !b.disabled) goPage(+b.dataset.page); });
 
   }
 
@@ -175,8 +179,9 @@
     return a.name.localeCompare(b.name);
   }
 
-  function apply({ animate = false } = {}) {
-    if (!built) return;   // the Cards tab hasn't been opened yet: its cards don't exist yet
+  // keepPage: the same list in a new order (a rarity change with exact values) stays on its page
+  function apply({ animate = false, keepPage = false } = {}) {
+    if (!built) return;   // the Cards side hasn't been opened yet: its cards don't exist yet
     const words = filters.q.toLowerCase().split(/\s+/).filter(Boolean);
     const out = state.cards.filter((c) => {
       if (filters.tier && !(C.isRanked(c) && c.tier === filters.tier)) return false;
@@ -187,19 +192,38 @@
     }).sort(compare);
 
     const ids = out.map((c) => c.id);
-    if (ids.length !== shown.length || ids.some((id, i) => id !== shown[i])) {
-      const frag = document.createDocumentFragment();
-      ids.forEach((id) => frag.appendChild(cardEls.get(id)));
-      ui.grid.replaceChildren(frag);
-      shown = ids;
-      if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
-    }
+    if (ids.length !== shown.length || ids.some((id, i) => id !== shown[i])) { shown = ids; if (!keepPage) page = 0; }
+    paint({ animate });
 
     ui.filters.querySelectorAll(".chip[data-f]").forEach((b) => b.setAttribute("aria-pressed", String(filters[b.dataset.f] === b.dataset.v)));
-    const total = state.cards.length;
-    ui.count.textContent = out.length === total ? `${total} ${total === 1 ? "card" : "cards"}` : `${out.length} of ${total} cards`;
     ui.reset.hidden = !(words.length || filters.tier || filters.role || filters.series);
     ui.none.hidden = out.length > 0;
+  }
+  // the grid shows one page of `shown` · a card is made the first time it is needed
+  const elOf = (id) => { let el = cardEls.get(id); if (!el) { el = C.renderCard(cardById.get(id), state.rarity); cardEls.set(id, el); } return el; };
+  function paint({ animate = false } = {}) {
+    const pages = Math.max(1, Math.ceil(shown.length / C.PAGE_SIZE));
+    page = Math.max(0, Math.min(page, pages - 1));
+    const ids = shown.slice(page * C.PAGE_SIZE, (page + 1) * C.PAGE_SIZE);
+    if (ids.length !== onPage.length || ids.some((id, i) => id !== onPage[i])) {
+      const frag = document.createDocumentFragment();
+      ids.forEach((id) => frag.appendChild(elOf(id)));
+      ui.grid.replaceChildren(frag);
+      onPage = ids;
+      if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
+    }
+    C.pager(ui.pager, page, pages);
+    const total = state.cards.length, n = shown.length;
+    ui.count.textContent = (n === total ? `${total} ${total === 1 ? "card" : "cards"}` : `${n} of ${total} cards`) + (pages > 1 ? ` · page ${page + 1} of ${pages}` : "");
+  }
+  // a page button: the new page's cards come in one by one, the screen goes back up to the grid
+  function goPage(i) {
+    if (i === page || i < 0 || i * C.PAGE_SIZE >= shown.length) return;
+    page = i;
+    paint({ animate: true });
+    C.pageTop(ui.grid);
+    const cur = ui.pager.querySelector('[aria-current="page"]');
+    if (cur && document.activeElement && ui.pager.contains(document.activeElement)) cur.focus({ preventScroll: true });
   }
 
   /* Change rarity everywhere (page chips, grid cards; the open detail listens to "cbi:rarity") */
@@ -213,7 +237,7 @@
     cardEls.forEach((el, id) => onScreen.set(id, el.isConnected && rectVisible(el.getBoundingClientRect())));
     cardEls.forEach((el, id) => C.setCardRarity(el, cardById.get(id), name, { animate: onScreen.get(id) }));
     document.dispatchEvent(new CustomEvent("cbi:rarity", { detail: name }));   // js/tier.js, js/detail.js … listen
-    if (filters.sort !== "overall") apply();   // exact game values can change the order; no-op when it doesn't
+    if (filters.sort !== "overall") apply({ keepPage: true });   // exact game values can change the order; no-op when it doesn't
   }
 
   /* Cards in the order the Cards page shows them (filters + sort). Used by the detail when it was opened

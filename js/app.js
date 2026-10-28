@@ -451,6 +451,31 @@
     });
   }
 
+  /* ---------- Pages of a card grid (owner 2026-10-28: 30 cards a page, page numbers under the grid) ----------
+     pager(box, page, pages): ‹ 1 … 4 5 6 … 14 › into box (hidden with one page) · the click is the page's own
+     (data-page = the page to go to, 0-based) · pageTop(grid): scroll back up to the grid's tools after a page change */
+  const PAGE_SIZE = 30;
+  function pager(box, page, pages) {
+    if (!box) return;
+    box.hidden = pages < 2;
+    if (pages < 2) { box.innerHTML = ""; return; }
+    const set = new Set([0, pages - 1, page - 1, page, page + 1].filter((i) => i >= 0 && i < pages));
+    const nums = [...set].sort((a, b) => a - b);
+    const btn = (i, label, aria, cls = "") => `<button type="button" class="pager__btn fx-press ${cls}" data-page="${i}" aria-label="${aria}"${i === page && !cls ? ' aria-current="page"' : ""}${(cls && (i < 0 || i >= pages)) ? " disabled" : ""}>${label}</button>`;
+    let html = btn(page - 1, "‹", "Previous page", "pager__btn--step");
+    nums.forEach((i, k) => {
+      if (k && i - nums[k - 1] > 1) html += `<span class="pager__gap" aria-hidden="true">…</span>`;
+      html += btn(i, String(i + 1), `Page ${i + 1} of ${pages}`);
+    });
+    html += btn(page + 1, "›", "Next page", "pager__btn--step");
+    box.innerHTML = html;
+  }
+  function pageTop(el) {
+    const bar = $(".topbar"), top = bar && bar.getBoundingClientRect().height && getComputedStyle(bar).display !== "none" ? bar.getBoundingClientRect().height : 0;
+    const y = el.getBoundingClientRect().top / FX.zoom() + scrollY - top - 12;
+    if (y < scrollY) window.scrollTo({ top: Math.max(0, y), behavior: FX.reduced ? "auto" : "smooth" });
+  }
+
   function showSkeletons() {
     $("#card-grid").innerHTML = '<div class="skeleton"></div>'.repeat(4);
   }
@@ -661,6 +686,7 @@
     isSupport, supAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
+    PAGE_SIZE, pager, pageTop,   // pages of the Cards / Support grids (2026-10-28)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js

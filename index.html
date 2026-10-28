@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=31">
-  <link rel="stylesheet" href="css/base.css?v=31">
-  <link rel="stylesheet" href="css/fx.css?v=31">
-  <link rel="stylesheet" href="css/cards.css?v=31">
-  <link rel="stylesheet" href="css/tier.css?v=31">
-  <link rel="stylesheet" href="css/deck.css?v=31">
-  <link rel="stylesheet" href="css/support.css?v=31">
-  <link rel="stylesheet" href="css/grade.css?v=31">
-  <link rel="stylesheet" href="css/tiermaker.css?v=31">
-  <link rel="stylesheet" href="css/detail.css?v=31">
-  <link rel="stylesheet" href="css/traits.css?v=31">
+  <link rel="stylesheet" href="css/tokens.css?v=32">
+  <link rel="stylesheet" href="css/base.css?v=32">
+  <link rel="stylesheet" href="css/fx.css?v=32">
+  <link rel="stylesheet" href="css/cards.css?v=32">
+  <link rel="stylesheet" href="css/tier.css?v=32">
+  <link rel="stylesheet" href="css/deck.css?v=32">
+  <link rel="stylesheet" href="css/support.css?v=32">
+  <link rel="stylesheet" href="css/grade.css?v=32">
+  <link rel="stylesheet" href="css/tiermaker.css?v=32">
+  <link rel="stylesheet" href="css/detail.css?v=32">
+  <link rel="stylesheet" href="css/traits.css?v=32">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -517,7 +517,8 @@
         <p class="tools__count"><span id="card-count" aria-live="polite"></span><button id="card-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
       </div>
 
-      <div id="card-grid" class="card-grid"></div>
+      <div id="card-grid" class="card-grid" data-card-list="cards"></div>
+      <nav id="cards-pager" class="pager" aria-label="Card pages" hidden></nav>
 
       <div id="cards-none" class="panel glass empty" hidden>
         <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -561,7 +562,8 @@
           <p class="tools__count"><span id="support-count" aria-live="polite"></span><button id="support-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
         </div>
 
-        <div id="support-grid" class="card-grid" data-card-list></div>
+        <div id="support-grid" class="card-grid" data-card-list="support"></div>
+        <nav id="support-pager" class="pager" aria-label="Support card pages" hidden></nav>
         <p id="support-note" class="support-note" hidden></p>
 
         <div id="support-none" class="panel glass empty" hidden>
@@ -795,19 +797,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=31"></script>
-  <script src="js/app.js?v=31"></script>
-  <script src="js/teamscore.js?v=31"></script>
-  <script src="js/share.js?v=31"></script>
-  <script src="js/cards.js?v=31"></script>
-  <script src="js/detail.js?v=31"></script>
-  <script src="js/tier.js?v=31"></script>
-  <script src="js/deck.js?v=31"></script>
-  <script src="js/support.js?v=31"></script>
-  <script src="js/grade.js?v=31"></script>
-  <script src="js/traits.js?v=31"></script>
-  <script src="js/tiermaker.js?v=31"></script>
-  <script src="js/music.js?v=31"></script>
+  <script src="js/fx.js?v=32"></script>
+  <script src="js/app.js?v=32"></script>
+  <script src="js/teamscore.js?v=32"></script>
+  <script src="js/share.js?v=32"></script>
+  <script src="js/cards.js?v=32"></script>
+  <script src="js/detail.js?v=32"></script>
+  <script src="js/tier.js?v=32"></script>
+  <script src="js/deck.js?v=32"></script>
+  <script src="js/support.js?v=32"></script>
+  <script src="js/grade.js?v=32"></script>
+  <script src="js/traits.js?v=32"></script>
+  <script src="js/tiermaker.js?v=32"></script>
+  <script src="js/music.js?v=32"></script>
 </body>
 </html>
 

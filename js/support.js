@@ -2,7 +2,7 @@
    Card Battle Infinity — Support cards (step 4 · reworked 2026-10-28, owner: "like the cards")
    · The Support side of the Cards page (#support): a grid of game-style support cards (C.renderCard draws them,
      js/app.js) with search, the rarity chips (the numbers on the cards grow with the level), tier filter and sort
-     (rarest first by default, the Sort menu changes it)
+     (rarest first by default, the Sort menu changes it) · 30 a page like the Cards side (C.pager)
    · Tapping one opens the same card detail as a card (js/detail.js, #card/<id>); there is no support detail view any more
    · card(s): the gilded support tile still used by the Tier List, Deck and Tier Maker, now with the values written on
      the picture (the numbers were erased from the pictures, tools/support_nums.py) at the site-wide rarity
@@ -16,11 +16,12 @@
   const filters = { q: "", tier: "", sort: "odds", dir: "desc" };   // rarest first (owner 2026-10-28)
   const ui = {};
   const byId = new Map();        // support id -> support
-  const cardEls = new Map();     // support id -> game card in the grid (kept while filtered out)
+  const cardEls = new Map();     // support id -> game card (made the first time its page shows, kept after)
   const searchText = new Map();  // support id -> lowercase text used by the search box
   const rankOf = new Map();      // support id -> rank by Value (ties share a rank)
   let items = [];
-  let shown = [];                // ids currently in the grid, in order
+  let shown = [];                // ids that pass the filters, in order (every page)
+  let onPage = [], page = 0;     // ids in the grid now · the page
   let rankedCount = 0;
   let built = false;             // grid cards exist (made the first time the Support side shows)
 
@@ -105,7 +106,7 @@
     return a.name.localeCompare(b.name);
   }
 
-  function apply({ animate = false } = {}) {
+  function apply({ animate = false, keepPage = false } = {}) {
     if (!built) return;   // the Support side hasn't been opened yet: its cards don't exist yet
     const words = filters.q.toLowerCase().split(/\s+/).filter(Boolean);
     const out = items.filter((s) => {
@@ -115,23 +116,42 @@
     }).sort(compare);
 
     const ids = out.map((s) => s.id);
-    if (ids.length !== shown.length || ids.some((id, i) => id !== shown[i])) {
-      const frag = document.createDocumentFragment();
-      ids.forEach((id) => frag.appendChild(cardEls.get(id)));
-      ui.grid.replaceChildren(frag);
-      shown = ids;
-      if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
-    }
+    if (ids.length !== shown.length || ids.some((id, i) => id !== shown[i])) { shown = ids; if (!keepPage) page = 0; }
+    paint({ animate });
 
     ui.filters.querySelectorAll(".chip[data-f]").forEach((b) => b.setAttribute("aria-pressed", String(filters[b.dataset.f] === b.dataset.v)));
     const total = items.length;
-    const word = (n) => (n === 1 ? "support card" : "support cards");
-    ui.count.textContent = out.length === total ? `${total} ${word(total)}` : `${out.length} of ${total} ${word(total)}`;
     ui.reset.hidden = !(words.length || filters.tier);
     ui.none.hidden = out.length > 0;
     const unranked = total - rankedCount;
     ui.note.hidden = !(unranked && rankedCount);
     ui.note.textContent = unranked ? `Only the top ${C.rankTop()} support cards get a rank. The other ${unranked} still work in any deck.` : "";
+  }
+
+  // one page of `shown` in the grid · a card is made the first time it is needed
+  const elOf = (id) => { let el = cardEls.get(id); if (!el) { el = C.renderCard(byId.get(id), state.rarity); cardEls.set(id, el); } return el; };
+  function paint({ animate = false } = {}) {
+    const pages = Math.max(1, Math.ceil(shown.length / C.PAGE_SIZE));
+    page = Math.max(0, Math.min(page, pages - 1));
+    const ids = shown.slice(page * C.PAGE_SIZE, (page + 1) * C.PAGE_SIZE);
+    if (ids.length !== onPage.length || ids.some((id, i) => id !== onPage[i])) {
+      const frag = document.createDocumentFragment();
+      ids.forEach((id) => frag.appendChild(elOf(id)));
+      ui.grid.replaceChildren(frag);
+      onPage = ids;
+      if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
+    }
+    C.pager(ui.pager, page, pages);
+    const total = items.length, n = shown.length, word = (k) => (k === 1 ? "support card" : "support cards");
+    ui.count.textContent = (n === total ? `${total} ${word(total)}` : `${n} of ${total} ${word(total)}`) + (pages > 1 ? ` · page ${page + 1} of ${pages}` : "");
+  }
+  function goPage(i) {
+    if (i === page || i < 0 || i * C.PAGE_SIZE >= shown.length) return;
+    page = i;
+    paint({ animate: true });
+    C.pageTop(ui.grid);
+    const cur = ui.pager.querySelector('[aria-current="page"]');
+    if (cur && document.activeElement && ui.pager.contains(document.activeElement)) cur.focus({ preventScroll: true });
   }
 
   function bindGrid() {
@@ -153,12 +173,12 @@
     const reset = () => { filters.q = filters.tier = ""; ui.search.value = ""; apply({ animate: true }); };
     ui.reset.addEventListener("click", reset);
     $("#support-none-reset").addEventListener("click", reset);
+    ui.pager.addEventListener("click", (e) => { const b = e.target.closest(".pager__btn[data-page]"); if (b && !b.disabled) goPage(+b.dataset.page); });
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
   }
 
   function build() {
     if (built || !items.length) return;
-    items.forEach((s) => cardEls.set(s.id, C.renderCard(s, state.rarity)));
     built = true;
     apply({ animate: true });
   }
@@ -169,7 +189,7 @@
       const seen = new Map();
       cardEls.forEach((el, id) => seen.set(id, el.isConnected && rectVisible(el.getBoundingClientRect())));
       cardEls.forEach((el, id) => C.setCardRarity(el, byId.get(id), name, { animate: seen.get(id) }));
-      if (filters.sort === "effect") apply();
+      if (filters.sort === "effect") apply({ keepPage: true });
     }
     for (const ref of tiles) {
       const el = ref.deref();
@@ -198,7 +218,7 @@
   /* ---------- Boot ---------- */
   function init() {
     Object.assign(ui, {
-      tools: $("#support-tools"), grid: $("#support-grid"), none: $("#support-none"), empty: $("#support-empty"), note: $("#support-note"),
+      tools: $("#support-tools"), grid: $("#support-grid"), pager: $("#support-pager"), none: $("#support-none"), empty: $("#support-empty"), note: $("#support-note"),
       search: $("#support-search"), rarity: $("#support-rarity"), sort: $("#support-sort"), dir: $("#support-dir"), filters: $("#support-filters"),
       count: $("#support-count"), reset: $("#support-reset"),
     });

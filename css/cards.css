@@ -48,6 +48,21 @@
   display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
   min-height: 24px; font-size: var(--fs-sm); color: var(--ink-dim);
 }
+/* pages of a grid (2026-10-28 · 30 a page · C.pager in app.js): ‹ 1 … 4 5 6 … 14 › under the grid */
+.pager { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin-top: var(--s-6); }
+.pager[hidden] { display: none; }
+.pager__btn {
+  min-width: 40px; height: 40px; padding: 0 10px; border-radius: var(--r-chip);
+  border: 1px solid var(--glass-line); background-color: var(--glass-under); background-image: linear-gradient(var(--glass), var(--glass));
+  color: var(--ink-dim); font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); font-variant-numeric: tabular-nums;
+  transition: color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+.pager__btn:hover:not(:disabled), .pager__btn:focus-visible { color: var(--ink); border-color: var(--gold); }
+.pager__btn[aria-current="page"] { background-image: var(--brass-gold); border-color: var(--gold-hi); color: var(--on-gold); }
+.pager__btn--step { font-size: var(--fs-lg); line-height: 1; }
+.pager__btn:disabled { opacity: .35; cursor: default; }
+.pager__gap { min-width: 16px; text-align: center; color: var(--ink-faint); }
+
 .linkbtn { min-height: 40px; margin: -8px -4px; padding: 0 4px; color: var(--rift); font-size: var(--fs-sm); font-weight: 600; }
 .linkbtn[hidden], .empty[hidden] { display: none; }
 .empty__btn { margin: var(--s-5) auto 0; }

@@ -1195,3 +1195,18 @@
     | หน้าดูการ์ด นิ่ง Ascended: การ์ด / Support | — | 56.0 / 55.7 |
 
   - **ไฟล์:** `index.html` (`?v=31` ทุกบรรทัด · Oswald 600) · `js/app.js`, `js/cards.js`, `js/support.js` (เขียนใหม่), `js/detail.js`, `js/grade.js`, `js/deck.js`, `js/share.js` · `css/tokens.css`, `css/fx.css`, `css/support.css`, `css/grade.css` · `data/support.json` (`effect.pos`) · `images/support/*.webp` + `thumb/` (61 + 61) · `tools/support_nums.py` (ใหม่) · `PROGRESS.md`, `HISTORY.md`
+- 2026-10-28: **Deck: Support เท่าการ์ด + คลังการ์ด/Support แบ่งหน้า 30 ใบ** (`?v=32` · Claude Code · เจ้าของถามความเห็น → Claude เสนอตัวเลือก → เจ้าของเลือก "การ์ดแบบเกม ขนาดเท่าการ์ด" + "หน้าละ 30 ใบ มีเลขหน้า" + "ทำในแชทนี้")
+  - **Deck:** Support ในช่อง deck, กล่องเลือก Support, Fill the gaps, deck ที่แชร์ = การ์ดแบบเกม (`renderCard` mini) ขนาดเท่าการ์ด · ค่าบนรูปตามระดับของ deck (Normal 5/23/3% → Secret 8.8/40.2/5.2% ✓ ปัดแบบเกม) · Details ของ Support ใน deck = หน้าดูการ์ด · ลบ CSS `.scard` ใน deck.css
+  - **รูป Save image ของ deck:** Support วาดด้วย `drawGameCard` ขนาดเท่าการ์ด (190 × 266 จากเดิม 150 × 210) + ป้าย 1 IN X + ป้ายระดับ + ค่าบนรูป · รูปสูงขึ้น 1776 → 1888px (scale 2)
+  - **แบ่งหน้า:** แท็บ Cards + Support หน้าละ 30 ใบ · ปุ่ม `‹ 1 … 4 5 6 … 14 ›` ใต้ตาราง (40px · หน้าปัจจุบันแผ่นทอง) · บรรทัดนับ "153 cards · page 2 of 6" · ค้นหา/กรอง/เรียงที่เปลี่ยนรายการ = หน้า 1 · การ์ดสร้างตอนหน้าของมันแสดงครั้งแรก · กดการ์ด → Back = หน้าเดิมตำแหน่งเดิม · ปัด/วงล้อในหน้าดูการ์ดยังไปได้ทุกใบ (รายการ 153 ใบ)
+  - **ผลทดสอบ (Chromium):** ทุก route ไม่มี error · ไม่มี scroll แนวนอนที่ 320 / 390 / 1280 · หน้า 2 → กดการ์ดใบที่ 30 → ปัดไปใบถัดไป (อยู่หน้า 3) → Back 2 ครั้ง = ตารางยังหน้า 2 ใบแรกเดิม ✓ · Support 61 ใบ = 3 หน้า ✓
+  - **ผลวัด §11.3** (390×844 · CPU ×6 · มัธยฐาน 3 รอบ · ก่อน = main `?v=31` / หลัง `?v=32`):
+
+    | กรณี | ก่อน | หลัง |
+    |---|---|---|
+    | `#cards` Normal เลื่อน | 60.0 fps · ช้าสุด 17ms | 60.0 · 17ms |
+    | `#cards` Ascended เลื่อน | 36.6 · 183ms | **48.7 · 67ms** |
+    | เปิด `#cards` จนตารางขึ้น (การ์ดที่สร้าง) | 3.2 วิ (153 ใบ) | **1.9 วิ (30 ใบ)** |
+    | เปิด `#support` จนตารางขึ้น | 2.4 วิ (61 ใบ) | 1.8 วิ (30 ใบ) |
+
+  - **ไฟล์:** `index.html` (`?v=32` ทุกบรรทัด · `#cards-pager` `#support-pager`) · `js/app.js` (`PAGE_SIZE` `pager` `pageTop`), `js/cards.js`, `js/support.js`, `js/detail.js` (`listFor` ตารางแบ่งหน้า), `js/deck.js`, `js/share.js` · `css/cards.css` (`.pager`), `css/deck.css` · `PROGRESS.md`, `HISTORY.md`

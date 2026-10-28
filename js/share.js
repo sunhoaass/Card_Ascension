@@ -438,9 +438,11 @@
     roundRect(ctx, x, y, w, h, R); ctx.stroke();
     ctx.restore();
 
-    if (item.missing || !item.base) return;
+    // support (2026-10-28): its level values on the picture + the 1 IN X (Normal odds) and rarity pills · no HP / ATK
+    const sup = C.isSupport && C.isSupport(item);
+    if (item.missing || (!item.base && !sup)) return;
     const r = rarity || "Normal";
-    const atk = C.fmtStat(C.statAt(item, "atk", r)), hp = C.fmtStat(C.statAt(item, "hp", r));
+    if (sup && art) drawSupNums(ctx, item, art, x - w * 0.006, y - h * 0.006, w * 1.012, h * 1.012, r);
     ctx.save();
     ctx.lineJoin = "round"; ctx.textBaseline = "middle";
     const numText = (text, cx, cy, align, size, room, fill, line, sw, drop, dropColor) => {
@@ -453,8 +455,8 @@
       return s;
     };
     // HP: right-aligned, left of the heart · ATK: centred between the swords
-    numText(hp, x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2, cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
-    numText(atk, x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5, cssVar("--gc-atk"), cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
+    if (!sup) numText(C.fmtStat(C.statAt(item, "hp", r)), x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2, cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
+    if (!sup) numText(C.fmtStat(C.statAt(item, "atk", r)), x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5, cssVar("--gc-atk"), cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
     // pills (right edge 1.2u in from the card's right side)
     const pill = (text, top, hgt, size, min, bg, line, ink, inner, flat) => {
       const fs = fitFont(ctx, text, size * u, 36.8 * u, `italic 400 {s}px ${pop}`);
@@ -469,7 +471,8 @@
       ctx.fillStyle = ink; ctx.fillText(text, px + pw / 2, py + hgt * u / 2 + 0.2 * u);
       return fs;
     };
-    pill(C.fmtOdds(C.oddsAt(item, r)).toUpperCase(), 19.1, 9, 5.8, 23, cssVar("--gc-pill"), cssVar("--gc-pill-line"), cssVar("--gc-pill-ink"), cssVar("--gc-pill-inner"));
+    const odds = sup ? (Number(item.odds) > 0 ? C.fmtOdds(Number(item.odds)) : "") : C.fmtOdds(C.oddsAt(item, r));
+    if (odds) pill(odds.toUpperCase(), 19.1, 9, 5.8, 23, cssVar("--gc-pill"), cssVar("--gc-pill-line"), cssVar("--gc-pill-ink"), cssVar("--gc-pill-inner"));
     if (!sp.normal) {
       const st = gradStops(sp.pill), across = /90deg/.test(sp.pill);
       const top = y + 30.4 * u, gr = across ? ctx.createLinearGradient(x + 58 * u, 0, x + 99 * u, 0) : ctx.createLinearGradient(0, top, 0, top + 7 * u);
@@ -710,7 +713,7 @@
      Image: a deck (step 10). Five card slots over five support slots, drawn with the same card / frame / backdrop code.
      spec = { id, title, mode: "Ascended Tower", rarity: name, cards: [id|null x5], support: [id|null x5] }
      ========================================================== */
-  const DECKIMG = { W: 1200, PAD: 28, HEAD: 150, FOOT: 96, GAP: 24, CW: 190, CH: 266, SW: 150, SH: 210, PANEL_GAP: 14, R: 16 };
+  const DECKIMG = { W: 1200, PAD: 28, HEAD: 150, FOOT: 96, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16 };
 
   function drawEmptySlot(ctx, x, y, w, h, pal) {
     roundRect(ctx, x + 1, y + 1, w - 2, h - 2, 8);
@@ -732,9 +735,9 @@
     while (sups.length < 5) sups.push(null);
     const nC = cards.filter(Boolean).length, nS = sups.filter(Boolean).length;
     const rarity = spec.rarity || "Normal";
-    const frame = frameSpec(rarity, "card"), sframe = { ...frameSpec(null, "support"), supRarity: rarity };
+    const frame = frameSpec(rarity, "card");   // support too (2026-10-28): the game card, as big as the cards, at the deck's rarity
 
-    const P1 = 14 + 22 + 24 + B.CH + 18, P2 = 14 + 22 + B.SH + 18;
+    const P1 = 14 + 22 + 24 + B.CH + 18, P2 = 14 + 22 + B.CH + 18;
     const H = B.HEAD + P1 + B.PANEL_GAP + P2 + 20 + B.FOOT;
     let k = Math.min(want, Math.sqrt(MAX_PIXELS / (B.W * H)), MAX_SIDE / H, MAX_SIDE / B.W);
     k = Math.floor(k * 100) / 100;
@@ -802,9 +805,9 @@
     y += P1 + B.PANEL_GAP;
     panel(y, P2, "Support", `${nS} / 5`);
     sups.forEach((it, i) => {
-      const x = colX(i) - B.SW / 2, cy = y + 14 + 22;
-      if (it) drawCard(ctx, x, cy, B.SW, B.SH, it, sframe, it.image ? arts.get(it.image) : null, k, pal);
-      else drawEmptySlot(ctx, x, cy, B.SW, B.SH, pal);
+      const x = colX(i) - B.CW / 2, cy = y + 14 + 22;
+      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal);
+      else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
     });
     paintFooter(ctx, B.W, H, B.FOOT, B.PAD, pal, spec.title || "Deck");
 
