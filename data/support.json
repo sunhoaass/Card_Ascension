@@ -770,5 +770,126 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "toad-boss",
+    "name": "Toad Boss",
+    "image": "images/support/toad-boss.webp",
+    "effect": {
+      "name": "Toad Oil Flame Bullet",
+      "desc": "Gamabunta lands with a splash: every time the supported card comes in, the oil-fire hits the enemy for {0}% of its max HP.",
+      "vals": [
+        6
+      ],
+      "type": "max-hp-hit"
+    },
+    "odds": 5800,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "true-queen",
+    "name": "True Queen",
+    "image": "images/support/true-queen.webp",
+    "effect": {
+      "name": "Queen's Command",
+      "desc": "Queen Historia rallies her soldiers: every OTHER card in your deck deals {0}% more damage.",
+      "vals": [
+        6
+      ],
+      "type": "dmg"
+    },
+    "odds": 6739,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "boomerang-demon-slayer",
+    "name": "Boomerang Demon Slayer",
+    "image": "images/support/boomerang-demon-slayer.webp",
+    "effect": {
+      "name": "Hiraikotsu",
+      "desc": "Sango's giant boomerang comes back around: every other attack, the supported card hits again for {0}% of the damage.",
+      "vals": [
+        19
+      ],
+      "type": "echo"
+    },
+    "odds": 61000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "corps-master",
+    "name": "Corps Master",
+    "image": "images/support/corps-master.webp",
+    "effect": {
+      "name": "Master's Calm Voice",
+      "desc": "Kagaya's calm voice steadies the whole Corps: EVERY card in your deck gets {0}% more damage and max HP.",
+      "vals": [
+        2.7
+      ],
+      "type": "dmg"
+    },
+    "odds": 54000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crusader-tank",
+    "name": "Crusader Tank",
+    "image": "images/support/crusader-tank.webp",
+    "effect": {
+      "name": "Unbreakable Crusader",
+      "desc": "Darkness takes every hit with joy: the supported card gets {0}% more max HP and {1}% more damage every time it is hit.",
+      "vals": [
+        4.5,
+        1.1
+      ],
+      "type": "max-hp"
+    },
+    "odds": 56000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

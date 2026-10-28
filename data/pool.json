@@ -1103,6 +1103,370 @@
       "hp": 5042,
       "src": "RobloxScreenShot20261028_115429248.png",
       "round": 3
+    },
+    {
+      "id": "toad-boss",
+      "kind": "support",
+      "name": "Toad Boss",
+      "series": "",
+      "odds": 5800,
+      "vals": [
+        6
+      ],
+      "type": "max-hp-hit",
+      "src": "RobloxScreenShot20261028_115438837.png",
+      "round": 4
+    },
+    {
+      "id": "true-queen",
+      "kind": "support",
+      "name": "True Queen",
+      "series": "",
+      "odds": 6739,
+      "vals": [
+        6
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_115442551.png",
+      "round": 4
+    },
+    {
+      "id": "white-smoke-hunter",
+      "kind": "card",
+      "name": "White Smoke Hunter",
+      "series": "",
+      "odds": 453,
+      "atk": 777,
+      "hp": 5182,
+      "src": "RobloxScreenShot20261028_115445854.png",
+      "round": 4
+    },
+    {
+      "id": "armored-titan",
+      "kind": "card",
+      "name": "Armored Titan",
+      "series": "",
+      "odds": 16000,
+      "atk": 3229,
+      "hp": 21524,
+      "src": "RobloxScreenShot20261028_115450828.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "asaemon-swordswoman",
+      "kind": "card",
+      "name": "Asaemon Swordswoman",
+      "series": "",
+      "odds": 34000,
+      "atk": 4781,
+      "hp": 31872,
+      "src": "RobloxScreenShot20261028_115524282.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "axe-prodigy",
+      "kind": "card",
+      "name": "Axe Prodigy",
+      "series": "",
+      "odds": 35000,
+      "atk": 4907,
+      "hp": 32712,
+      "src": "RobloxScreenShot20261028_115535190.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "axe-warrior-kid",
+      "kind": "card",
+      "name": "Axe Warrior Kid",
+      "series": "",
+      "odds": 31000,
+      "atk": 4298,
+      "hp": 28656,
+      "src": "RobloxScreenShot20261028_115539779.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "bamboo-box-sister",
+      "kind": "card",
+      "name": "Bamboo Box Sister",
+      "series": "",
+      "odds": 11000,
+      "atk": 2421,
+      "hp": 16142,
+      "src": "RobloxScreenShot20261028_115543576.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "battle-maniac",
+      "kind": "card",
+      "name": "Battle Maniac",
+      "series": "",
+      "odds": 26000,
+      "atk": 3616,
+      "hp": 24108,
+      "src": "RobloxScreenShot20261028_115547783.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "bird-queen",
+      "kind": "card",
+      "name": "Bird Queen",
+      "series": "",
+      "odds": 23000,
+      "atk": 3402,
+      "hp": 22680,
+      "src": "RobloxScreenShot20261028_115551795.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "blood-copy-girl",
+      "kind": "card",
+      "name": "Blood Copy Girl",
+      "series": "",
+      "odds": 15000,
+      "atk": 2808,
+      "hp": 18722,
+      "src": "RobloxScreenShot20261028_115556028.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "blue-flame-villain",
+      "kind": "card",
+      "name": "Blue Flame Villain",
+      "series": "",
+      "odds": 15000,
+      "atk": 2925,
+      "hp": 19502,
+      "src": "RobloxScreenShot20261028_115559470.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "boar-head-brawler",
+      "kind": "card",
+      "name": "Boar Head Brawler",
+      "series": "",
+      "odds": 12000,
+      "atk": 2486,
+      "hp": 16570,
+      "src": "RobloxScreenShot20261028_115604317.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "boogie-woogie-brother",
+      "kind": "card",
+      "name": "Boogie Woogie Brother",
+      "series": "",
+      "odds": 9772,
+      "atk": 3007,
+      "hp": 20046,
+      "src": "RobloxScreenShot20261028_115608633.png",
+      "round": 4
+    },
+    {
+      "id": "boomerang-demon-slayer",
+      "kind": "support",
+      "name": "Boomerang Demon Slayer",
+      "series": "",
+      "odds": 61000,
+      "vals": [
+        19
+      ],
+      "type": "echo",
+      "src": "RobloxScreenShot20261028_115613336.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "bowel-hunter",
+      "kind": "card",
+      "name": "Bowel Hunter",
+      "series": "",
+      "odds": 20000,
+      "atk": 3229,
+      "hp": 21524,
+      "src": "RobloxScreenShot20261028_115616783.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "butterfly-coin-girl",
+      "kind": "card",
+      "name": "Butterfly Coin Girl",
+      "series": "",
+      "odds": 12000,
+      "atk": 2582,
+      "hp": 17216,
+      "src": "RobloxScreenShot20261028_115620072.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "candy-majin",
+      "kind": "card",
+      "name": "Candy Majin",
+      "series": "",
+      "odds": 8140,
+      "atk": 2171,
+      "hp": 14476,
+      "src": "RobloxScreenShot20261028_115624081.png",
+      "round": 4
+    },
+    {
+      "id": "cannon-captain",
+      "kind": "card",
+      "name": "Cannon Captain",
+      "series": "",
+      "odds": 34000,
+      "atk": 4282,
+      "hp": 28548,
+      "src": "RobloxScreenShot20261028_115632273.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "cart-titan-girl",
+      "kind": "card",
+      "name": "Cart Titan Girl",
+      "series": "",
+      "odds": 17000,
+      "atk": 3051,
+      "hp": 20338,
+      "src": "RobloxScreenShot20261028_115636532.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "clay-art-bomber",
+      "kind": "card",
+      "name": "Clay Art Bomber",
+      "series": "",
+      "odds": 9595,
+      "atk": 2258,
+      "hp": 15054,
+      "src": "RobloxScreenShot20261028_115640256.png",
+      "round": 4
+    },
+    {
+      "id": "colossal-titan-boy",
+      "kind": "card",
+      "name": "Colossal Titan Boy",
+      "series": "",
+      "odds": 16000,
+      "atk": 2858,
+      "hp": 19050,
+      "src": "RobloxScreenShot20261028_115644489.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "corps-master",
+      "kind": "support",
+      "name": "Corps Master",
+      "series": "",
+      "odds": 54000,
+      "vals": [
+        2.7
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_115648111.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "crazy-slots-hunter",
+      "kind": "card",
+      "name": "Crazy Slots Hunter",
+      "series": "",
+      "odds": 14000,
+      "atk": 2850,
+      "hp": 18998,
+      "src": "RobloxScreenShot20261028_115651930.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "crimson-eldest-brother",
+      "kind": "card",
+      "name": "Crimson Eldest Brother",
+      "series": "",
+      "odds": 10000,
+      "atk": 2318,
+      "hp": 15454,
+      "src": "RobloxScreenShot20261028_115656557.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "crossbow-fiend-hunter",
+      "kind": "card",
+      "name": "Crossbow Fiend Hunter",
+      "series": "",
+      "odds": 17000,
+      "atk": 3048,
+      "hp": 20318,
+      "src": "RobloxScreenShot20261028_115659808.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "crusader-tank",
+      "kind": "support",
+      "name": "Crusader Tank",
+      "series": "",
+      "odds": 56000,
+      "vals": [
+        4.5,
+        1.1
+      ],
+      "type": "max-hp",
+      "src": "RobloxScreenShot20261028_115703099.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "crystal-titan",
+      "kind": "card",
+      "name": "Crystal Titan",
+      "series": "",
+      "odds": 16000,
+      "atk": 2908,
+      "hp": 19386,
+      "src": "RobloxScreenShot20261028_115706867.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "cyborg-disciple",
+      "kind": "card",
+      "name": "Cyborg Disciple",
+      "series": "",
+      "odds": 19000,
+      "atk": 3145,
+      "hp": 20968,
+      "src": "RobloxScreenShot20261028_115714728.png",
+      "round": 4,
+      "oddsShort": true
+    },
+    {
+      "id": "cyborg-sister",
+      "kind": "card",
+      "name": "Cyborg Sister",
+      "series": "",
+      "odds": 8443,
+      "atk": 2358,
+      "hp": 15722,
+      "src": "RobloxScreenShot20261028_115717419.png",
+      "round": 4
     }
   ]
 }
