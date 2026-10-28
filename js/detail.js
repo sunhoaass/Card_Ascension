@@ -2065,6 +2065,9 @@
     if (!scope && origin.matches("[data-open-card]")) scope = origin.parentElement;
     if (!scope) return null;
     pendingScope = scope;
+    // a paged grid (Cards / Support, 30 a page): swipe the whole filtered list, not only this page
+    const whole = scope.dataset.cardList === "cards" ? C.cards.order() : scope.dataset.cardList === "support" ? C.support.order() : null;
+    if (whole && whole.length) return whole.includes(id) ? whole : [id, ...whole];
     const ids = [], seen = new Set();
     scope.querySelectorAll(".card[data-id], [data-open-card]").forEach((n) => {
       const cid = n.dataset.openCard || n.dataset.id;

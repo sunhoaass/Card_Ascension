@@ -22,7 +22,7 @@
    · Traits (js/traits.js): a trait button under each card slot of the editor. In the game every copy of a card has the same
      trait, so a slot's trait IS that card's trait (cbi:traits, shared with the Details sheet). The user's own decks are scored
      with their traits (mine()); shared decks and Meta Decks are scored without. The share link and backup are unchanged.
-   Needs js/fx.js, js/app.js, js/teamscore.js, js/share.js, js/cards.js loaded first (C.dialog / C.support.card are made by later
+   Needs js/fx.js, js/app.js, js/teamscore.js, js/share.js, js/cards.js loaded first (C.dialog is made by later
    scripts and only used when something is tapped).
    ========================================================== */
 (function () {
@@ -309,15 +309,10 @@
       return el;
     }
     el.dataset.name = x.name;
-    let art;
-    if (kind === "cards") {
-      art = C.renderCard(x, rarity, { mini: true });
-      art.tabIndex = -1;
-      art.removeAttribute("role");
-    } else {
-      art = C.support.card(x, { rarity });   // its values at the deck's rarity
-      FX.tilt(art);
-    }
+    // support too (2026-10-28, owner): the game card, as big as the cards, its values at the deck's rarity
+    const art = C.renderCard(x, rarity, { mini: true });
+    art.tabIndex = -1;
+    art.removeAttribute("role");
     art.setAttribute("aria-hidden", "true");
     el.appendChild(art);
     return el;
@@ -601,7 +596,7 @@
       el.className = "dk-sug__item fx-press";
       el.dataset.sugKind = kind;
       el.dataset.id = s.id;
-      const art = kind === "cards" ? C.renderCard(x, cur.rarity, { mini: true }) : C.support.card(x, { rarity: cur.rarity });
+      const art = C.renderCard(x, cur.rarity, { mini: true });
       art.tabIndex = -1;
       art.removeAttribute("role");
       art.setAttribute("aria-hidden", "true");
@@ -611,8 +606,7 @@
       if (sugCache.size > 60) sugCache.clear();
       sugCache.set(k, el);
     }
-    if (kind === "cards" && el._rarity !== cur.rarity) { const card = $(".card", el); if (card) C.setCardRarity(card, x, cur.rarity, { animate: false }); el._rarity = cur.rarity; }
-    if (kind === "support" && el._rarity !== cur.rarity) { C.support.setTile($(".scard", el), x, cur.rarity); el._rarity = cur.rarity; }
+    if (el._rarity !== cur.rarity) { const card = $(".card", el); if (card) C.setCardRarity(card, x, cur.rarity, { animate: false }); el._rarity = cur.rarity; }
     const d = (s.after || 0) - (s.before || 0);
     const gain = d >= 1 ? `+${d}` : "+<1";
     el.dataset.slot = s.slot;
@@ -754,11 +748,10 @@
     cur.rarity = name;
     touch();
     chrome();
-    const els = ed.shown.cards.filter(Boolean).map((o) => o.el);
-    const seen = els.map((el) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
-    els.forEach((el, i) => { const c = cardById.get(el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
-    // support tiles: their values count to the deck's new rarity
-    ed.shown.support.filter(Boolean).forEach((o) => { const sp = supById.get(o.el.dataset.id); if (sp) C.support.setTile($(".scard", o.el), sp, name, { animate: o.el.isConnected && rectVisible(o.el.getBoundingClientRect()) }); });
+    // cards and support (their values count to the new level)
+    const els = KINDS.flatMap((k) => ed.shown[k].filter(Boolean).map((o) => [o.el, lookup(k, o.el.dataset.id)]));
+    const seen = els.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
+    els.forEach(([el, c], i) => { const card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
     refresh();                                     // card scores don't depend on rarity; unranked support does (its effect at this level, §10.5)
   }
 
@@ -859,10 +852,7 @@
   function details(el, kind) {
     const id = el.dataset.id;
     if (!lookup(kind, id)) return;
-    if (kind === "cards") { C.openCard(id, $(".card", el)); return; }
-    // support detail lives in the Support tab; keep our scroll position so Back lands exactly here (app.js reads tierY)
-    try { history.replaceState({ ...(history.state || {}), tierY: window.scrollY }, ""); } catch {}
-    C.support.open(id, $(".scard", el));
+    C.openCard(id, $(".card", el));   // a support opens the same card detail (2026-10-28)
   }
 
   /* ==========================================================
@@ -917,8 +907,8 @@
           el.tabIndex = 0;
           el.setAttribute("role", "listitem");
           el.dataset.id = x.id;
-          const art = isCard ? C.renderCard(x, rarity, { mini: true }) : C.support.card(x, { rarity });
-          if (isCard) { art.tabIndex = -1; art.removeAttribute("role"); } else FX.tilt(art);
+          const art = C.renderCard(x, rarity, { mini: true });
+          art.tabIndex = -1; art.removeAttribute("role");
           art.setAttribute("aria-hidden", "true");
           el.appendChild(art);
           const at = usedAt.get(x.id);

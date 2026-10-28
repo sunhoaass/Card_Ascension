@@ -187,9 +187,8 @@
   touch-action: manipulation; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; cursor: pointer;
   transition: scale var(--t-fast) var(--ease), translate var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
 }
-.dk-item .card, .dk-item .scard { width: 100%; touch-action: manipulation; }   /* .card is pan-y: a drag must not scroll */
-.dk-item .gc__rar, .dk-item .scard__tag, .dk-tile .gc__rar, .dk-tile .scard__tag { display: none; }   /* too small to read here (the deck's rarity is in its chips) */
-.dk-item .scard__tier { display: none; }   /* the × sits on that corner */
+.dk-item .card { width: 100%; touch-action: manipulation; }   /* .card is pan-y: a drag must not scroll */
+.dk-item .gc__rar, .dk-tile .gc__rar { display: none; }   /* too small to read here (the deck's rarity is in its chips) */
 .dk-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
 .dk-item.is-pressing { scale: 0.95; }
 .dk-item.is-source { opacity: 0.35; }
@@ -203,9 +202,6 @@
 .dk-item--missing { display: block; }
 .dk-item--missing .tm-missing { height: 100%; aspect-ratio: auto; }
 .dk-shared .dk-item { cursor: pointer; }
-.dk-item .scard { --orn-s: 14px; }
-.dk-item .scard__name, .dk-tile .scard__name { font-size: 9.5px; letter-spacing: 0; }
-.dk-item .scard__info, .dk-tile .scard__info { padding: 20px 5px 6px; }
 
 /* while something is lifted / selected: slots of that kind show where it can go */
 .dk-editor[data-target="cards"] .dk-row[data-kind="cards"] .dk-slot__box,
@@ -243,7 +239,7 @@
   touch-action: manipulation; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none;
   transition: scale var(--t-fast) var(--ease), opacity var(--t-med) var(--ease);
 }
-.dk-tile .card, .dk-tile .scard { width: 100%; }
+.dk-tile .card { width: 100%; }
 .dk-tile:active:not(.is-used) { scale: 0.96; }
 .dk-tile:focus-visible { outline-offset: 3px; }
 .dk-tile.is-used { opacity: 0.38; cursor: not-allowed; }
@@ -336,11 +332,8 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 }
 .dk-sug__item:active { scale: .96; }
 .dk-sug__item:focus-visible { outline-offset: 3px; }
-.dk-sug__item .card, .dk-sug__item .scard { width: 100%; pointer-events: none; }
-.dk-sug__item .gc__rar, .dk-sug__item .scard__tag { display: none; }
-.dk-sug__item .scard { --orn-s: 14px; }
-.dk-sug__item .scard__name { font-size: 9.5px; letter-spacing: 0; }
-.dk-sug__item .scard__info { padding: 20px 5px 6px; }
+.dk-sug__item .card { width: 100%; pointer-events: none; }
+.dk-sug__item .gc__rar { display: none; }
 .dk-sug__gain {
   position: absolute; z-index: 4; top: -6px; left: -4px; padding: 1px 7px;   /* top-left: the tier seal sits top-right */ border-radius: var(--r-pill);
   font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xs);
