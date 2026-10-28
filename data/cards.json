@@ -346,5 +346,685 @@
     "notes": "Anchor at the back: damage reduction and the 1 HP save make it the last card to fall. Dropped from S after the update: no more +6% per hit.",
     "updated": "2026-10-25",
     "obtain": "Rolls anywhere"
+  },
+  {
+    "id": "bald-cadet",
+    "name": "Bald Cadet",
+    "series": "",
+    "image": "images/cards/bald-cadet.webp",
+    "base": {
+      "atk": 390,
+      "hp": 2598,
+      "def": 0,
+      "status": 0,
+      "odds": 59
+    },
+    "exact": {},
+    "passive": {
+      "name": "ODM Gear",
+      "desc": "Connie zips around on his ODM gear. 15% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bicycle-justice",
+    "name": "Bicycle Justice",
+    "series": "",
+    "image": "images/cards/bicycle-justice.webp",
+    "base": {
+      "atk": 425,
+      "hp": 2832,
+      "def": 0,
+      "status": 0,
+      "odds": 74
+    },
+    "exact": {},
+    "passive": {
+      "name": "Justice Crash",
+      "desc": "Mumen Rider never gives up. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "big-top-clown",
+    "name": "Big Top Clown",
+    "series": "",
+    "image": "images/cards/big-top-clown.webp",
+    "base": {
+      "atk": 261,
+      "hp": 1742,
+      "def": 0,
+      "status": 0,
+      "odds": 15
+    },
+    "exact": {},
+    "passive": {
+      "name": "Chop-Chop Split",
+      "desc": "Buggy's body splits apart. 15% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bug-swarm-ninja",
+    "name": "Bug Swarm Ninja",
+    "series": "",
+    "image": "images/cards/bug-swarm-ninja.webp",
+    "base": {
+      "atk": 279,
+      "hp": 1862,
+      "def": 0,
+      "status": 0,
+      "odds": 19
+    },
+    "exact": {},
+    "passive": {
+      "name": "Parasitic Insects",
+      "desc": "Shino's bugs drain chakra. Each hit adds 1 Poison stack (2% of the enemy's max HP per turn each, up to 3, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "electric-hero",
+    "name": "Electric Hero",
+    "series": "",
+    "image": "images/cards/electric-hero.webp",
+    "base": {
+      "atk": 441,
+      "hp": 2942,
+      "def": 0,
+      "status": 0,
+      "odds": 47
+    },
+    "exact": {},
+    "passive": {
+      "name": "Indiscriminate Shock",
+      "desc": "Kaminari: 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Loses 3% of its max HP every attack."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fly-head-curse",
+    "name": "Fly Head Curse",
+    "series": "",
+    "image": "images/cards/fly-head-curse.webp",
+    "base": {
+      "atk": 309,
+      "hp": 2058,
+      "def": 0,
+      "status": 0,
+      "odds": 27
+    },
+    "exact": {},
+    "passive": {
+      "name": "Swarm",
+      "desc": "Fly Heads come in swarms. 20% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "goblin",
+    "name": "Goblin",
+    "series": "",
+    "image": "images/cards/goblin.webp",
+    "base": {
+      "atk": 423,
+      "hp": 2820,
+      "def": 0,
+      "status": 0,
+      "odds": 66
+    },
+    "exact": {},
+    "passive": {
+      "name": "Goblin Ambush",
+      "desc": "Goblins strike from the shadows. Its first hit on each new enemy does 1.5x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "goblin-rider",
+    "name": "Goblin Rider",
+    "series": "",
+    "image": "images/cards/goblin-rider.webp",
+    "base": {
+      "atk": 463,
+      "hp": 3086,
+      "def": 0,
+      "status": 0,
+      "odds": 93
+    },
+    "exact": {},
+    "passive": {
+      "name": "Gobta's Luck",
+      "desc": "Gobta somehow survives. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "grandson-ninja",
+    "name": "Grandson Ninja",
+    "series": "",
+    "image": "images/cards/grandson-ninja.webp",
+    "base": {
+      "atk": 305,
+      "hp": 2030,
+      "def": 0,
+      "status": 0,
+      "odds": 24
+    },
+    "exact": {},
+    "passive": {
+      "name": "Surprise Rasengan",
+      "desc": "Konohamaru: Its first attack of the fight does 2x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "grape-hero",
+    "name": "Grape Hero",
+    "series": "",
+    "image": "images/cards/grape-hero.webp",
+    "base": {
+      "atk": 377,
+      "hp": 2514,
+      "def": 0,
+      "status": 0,
+      "odds": 53
+    },
+    "exact": {},
+    "passive": {
+      "name": "Pop Off",
+      "desc": "Mineta's sticky balls. 25% chance per hit to Stun the enemy for 1 turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hand-demon",
+    "name": "Hand Demon",
+    "series": "",
+    "image": "images/cards/hand-demon.webp",
+    "base": {
+      "atk": 319,
+      "hp": 2128,
+      "def": 0,
+      "status": 0,
+      "odds": 30
+    },
+    "exact": {},
+    "passive": {
+      "name": "Hand Demon's Grip",
+      "desc": "The Hand Demon regenerates like every demon. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "long-hair-invader",
+    "name": "Long Hair Invader",
+    "series": "",
+    "image": "images/cards/long-hair-invader.webp",
+    "base": {
+      "atk": 233,
+      "hp": 1556,
+      "def": 0,
+      "status": 0,
+      "odds": 10
+    },
+    "exact": {},
+    "passive": {
+      "name": "Saiyan Pride",
+      "desc": "Raditz hits harder when hurt. Under 50% HP: +30% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "marine-recruit",
+    "name": "Marine Recruit",
+    "series": "",
+    "image": "images/cards/marine-recruit.webp",
+    "base": {
+      "atk": 276,
+      "hp": 1838,
+      "def": 0,
+      "status": 0,
+      "odds": 17
+    },
+    "exact": {},
+    "passive": {
+      "name": "Never Give Up",
+      "desc": "Coby refuses to fall. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "plush-soul",
+    "name": "Plush Soul",
+    "series": "",
+    "image": "images/cards/plush-soul.webp",
+    "base": {
+      "atk": 341,
+      "hp": 2274,
+      "def": 0,
+      "status": 0,
+      "odds": 38
+    },
+    "exact": {},
+    "passive": {
+      "name": "Mod Soul",
+      "desc": "Kon jumps between bodies. Comes back once with 30% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "return-by-death-boy",
+    "name": "Return by Death Boy",
+    "series": "",
+    "image": "images/cards/return-by-death-boy.webp",
+    "base": {
+      "atk": 460,
+      "hp": 3068,
+      "def": 0,
+      "status": 0,
+      "odds": 104
+    },
+    "exact": {},
+    "passive": {
+      "name": "Return by Death",
+      "desc": "Subaru dies and goes back in time. Comes back once with 40% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rookie-crusher",
+    "name": "Rookie Crusher",
+    "series": "",
+    "image": "images/cards/rookie-crusher.webp",
+    "base": {
+      "atk": 370,
+      "hp": 2468,
+      "def": 0,
+      "status": 0,
+      "odds": 42
+    },
+    "exact": {},
+    "passive": {
+      "name": "Laxative Juice",
+      "desc": "Tonpa: 20% chance per hit to Weaken the enemy (15% less damage for the fight)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sprout-soldier",
+    "name": "Sprout Soldier",
+    "series": "",
+    "image": "images/cards/sprout-soldier.webp",
+    "base": {
+      "atk": 249,
+      "hp": 1662,
+      "def": 0,
+      "status": 0,
+      "odds": 12
+    },
+    "exact": {},
+    "passive": {
+      "name": "Acid Splash",
+      "desc": "Saibaman: When knocked out, it explodes for 40% of its max HP on the enemy in front."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "steal-skill-adventurer",
+    "name": "Steal Skill Adventurer",
+    "series": "",
+    "image": "images/cards/steal-skill-adventurer.webp",
+    "base": {
+      "atk": 485,
+      "hp": 3236,
+      "def": 0,
+      "status": 0,
+      "odds": 116
+    },
+    "exact": {},
+    "passive": {
+      "name": "Steal",
+      "desc": "Kazuma's Steal takes something from every enemy. 30% chance per hit to Weaken the enemy (20% less damage for the fight)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "strongest-man-fake",
+    "name": "Strongest Man (Fake)",
+    "series": "",
+    "image": "images/cards/strongest-man-fake.webp",
+    "base": {
+      "atk": 431,
+      "hp": 2870,
+      "def": 0,
+      "status": 0,
+      "odds": 83
+    },
+    "exact": {},
+    "passive": {
+      "name": "King Engine",
+      "desc": "King: Every enemy card starts with 10% less damage. 15% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "swamp-demon",
+    "name": "Swamp Demon",
+    "series": "",
+    "image": "images/cards/swamp-demon.webp",
+    "base": {
+      "atk": 347,
+      "hp": 2310,
+      "def": 0,
+      "status": 0,
+      "odds": 34
+    },
+    "exact": {},
+    "passive": {
+      "name": "Swamp Ambush",
+      "desc": "The Swamp Demon pops out of the ground. Its first hit on each new enemy does 1.6x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "obtain": "Rolls anywhere",
+    "updated": "2026-10-28"
   }
 ]
