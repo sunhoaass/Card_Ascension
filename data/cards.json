@@ -7044,5 +7044,821 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "wind-scar-pillar",
+    "name": "Wind Scar Pillar",
+    "series": "",
+    "image": "images/cards/wind-scar-pillar.webp",
+    "base": {
+      "atk": 14238,
+      "hp": 94918,
+      "def": 0,
+      "status": 0,
+      "odds": 115000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Marechi Blood",
+      "desc": "Sanemi's rare blood makes demons drunk. Demon cards that hit it have a 50% chance to be Confused. Every 2nd attack also hits the card behind for 35%. +30% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "wing-hero",
+    "name": "Wing Hero",
+    "series": "",
+    "image": "images/cards/wing-hero.webp",
+    "base": {
+      "atk": 9692,
+      "hp": 64610,
+      "def": 0,
+      "status": 0,
+      "odds": 166000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Fierce Wings",
+      "desc": "Hawks is the fastest hero. 38% chance to attack twice. Every 2nd attack also hits the card behind for 35%. 19% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "anti-magic-devil-knight",
+    "name": "Anti-Magic Devil Knight",
+    "series": "",
+    "image": "images/cards/anti-magic-devil-knight.webp",
+    "base": {
+      "atk": 65681,
+      "hp": 437874,
+      "def": 0,
+      "status": 0,
+      "odds": 5500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Devil Union",
+      "desc": "Asta: 40% chance per hit to Seal the enemy's ability for 2 turns. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. With Yuno in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bell-hair-berserker",
+    "name": "Bell Hair Berserker",
+    "series": "",
+    "image": "images/cards/bell-hair-berserker.webp",
+    "base": {
+      "atk": 26578,
+      "hp": 177186,
+      "def": 0,
+      "status": 0,
+      "odds": 1700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Nozarashi",
+      "desc": "Kenpachi lives for the fight. +12% damage every turn. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "chainsaw-hero",
+    "name": "Chainsaw Hero",
+    "series": "",
+    "image": "images/cards/chainsaw-hero.webp",
+    "base": {
+      "atk": 26600,
+      "hp": 177330,
+      "def": 0,
+      "status": 0,
+      "odds": 2500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Chainsaw Man",
+      "desc": "Denji: Each hit adds 2 Bleed stacks (1.9% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 16% of the damage it deals. Comes back once with 36% HP. +4.8% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crash-magic-ace",
+    "name": "Crash Magic Ace",
+    "series": "",
+    "image": "images/cards/crash-magic-ace.webp",
+    "base": {
+      "atk": 77885,
+      "hp": 519236,
+      "def": 0,
+      "status": 0,
+      "odds": 6200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Crash",
+      "desc": "Gildarts breaks everything he touches. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 35%. Each hit lowers the enemy's damage by 6.1% (up to 5 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crow-genjutsu-brother",
+    "name": "Crow Genjutsu Brother",
+    "series": "",
+    "image": "images/cards/crow-genjutsu-brother.webp",
+    "base": {
+      "atk": 21689,
+      "hp": 144596,
+      "def": 0,
+      "status": 0,
+      "odds": 1300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Tsukuyomi & Susanoo",
+      "desc": "Itachi: 35% chance per hit to Confuse the enemy (it hits itself instead). Hits set black flames on the enemy: 3% of its max HP every turn, forever. Blocks the first 2 hits completely. Once, takes the killing blow for Sasuke."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "curse-manipulator",
+    "name": "Curse Manipulator",
+    "series": "",
+    "image": "images/cards/curse-manipulator.webp",
+    "base": {
+      "atk": 32500,
+      "hp": 216666,
+      "def": 0,
+      "status": 0,
+      "odds": 1400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Cursed Spirit Manipulation",
+      "desc": "Geto: Each kill gives it 16% of the defeated card's damage and HP. Every hit also hits the whole enemy bench for 20%. Every enemy card starts with 9.5% less damage. Takes 7.9% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "demon-lord-brother",
+    "name": "Demon Lord Brother",
+    "series": "",
+    "image": "images/cards/demon-lord-brother.webp",
+    "base": {
+      "atk": 32947,
+      "hp": 219648,
+      "def": 0,
+      "status": 0,
+      "odds": 4800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bakusaiga",
+      "desc": "Sesshomaru: Each hit crushes the enemy for 4.5% of its max HP per turn for 2 turns. Every 2nd attack also hits the card behind for 35%. Each hit adds 2 Poison stacks (1.4% of the enemy's max HP per turn each, up to 4, 3 turns). 14% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "dragon-slayer-swordsman",
+    "name": "Dragon Slayer Swordsman",
+    "series": "",
+    "image": "images/cards/dragon-slayer-swordsman.webp",
+    "base": {
+      "atk": 51539,
+      "hp": 343594,
+      "def": 0,
+      "status": 0,
+      "odds": 10600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Berserker Armor",
+      "desc": "Guts swings the Dragon Slayer. Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. +9.1% damage every time it is hit. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "eight-gates-beast",
+    "name": "Eight Gates Beast",
+    "series": "",
+    "image": "images/cards/eight-gates-beast.webp",
+    "base": {
+      "atk": 24981,
+      "hp": 166540,
+      "def": 0,
+      "status": 0,
+      "odds": 1200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Night Guy",
+      "desc": "Might Guy opens the Eighth Gate. +80% damage. Its first hit on each new enemy does 2x damage. Loses 6% of its max HP every attack. Under 30% HP: +60% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fire-dragon-slayer",
+    "name": "Fire Dragon Slayer",
+    "series": "",
+    "image": "images/cards/fire-dragon-slayer.webp",
+    "base": {
+      "atk": 39275,
+      "hp": 261836,
+      "def": 0,
+      "status": 0,
+      "odds": 6000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Etherious Natsu Dragneel",
+      "desc": "Natsu eats fire and gets stronger. Can't be burned. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 40% HP: +80% damage. +40% damage against Dragon cards. With Zeref in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flame-pillar",
+    "name": "Flame Pillar",
+    "series": "",
+    "image": "images/cards/flame-pillar.webp",
+    "base": {
+      "atk": 24798,
+      "hp": 165318,
+      "def": 0,
+      "status": 0,
+      "odds": 1700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ninth Form: Rengoku",
+      "desc": "Rengoku sets his heart ablaze. Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). +40% damage against Demon cards. Survives its first killing blow with 1 HP. When knocked out, the next card in the deck gets +35% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flower-wind-captain",
+    "name": "Flower Wind Captain",
+    "series": "",
+    "image": "images/cards/flower-wind-captain.webp",
+    "base": {
+      "atk": 34663,
+      "hp": 231084,
+      "def": 0,
+      "status": 0,
+      "odds": 1800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Katen Kyokotsu",
+      "desc": "Kyoraku forces children's games. Each hit: 55% chance to do 2.5x damage, otherwise it misses. After an unlucky hit, its next hit does 1.6x damage. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "frost-insect-general",
+    "name": "Frost Insect General",
+    "series": "",
+    "image": "images/cards/frost-insect-general.webp",
+    "base": {
+      "atk": 33393,
+      "hp": 222622,
+      "def": 0,
+      "status": 0,
+      "odds": 3500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Four-Armed Warrior",
+      "desc": "Cocytus fights with four weapons. Always attacks twice (each hit does 0.8x damage). 25% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Takes 20% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "giant-bodyguard",
+    "name": "Giant Bodyguard",
+    "series": "",
+    "image": "images/cards/giant-bodyguard.webp",
+    "base": {
+      "atk": 38285,
+      "hp": 255232,
+      "def": 0,
+      "status": 0,
+      "odds": 2400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Endurance",
+      "desc": "Gigantomachia never stops. Takes 27% less damage. Heals 4.6% of its max HP every turn. Every hit also hits the whole enemy bench for 20%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "giant-viking",
+    "name": "Giant Viking",
+    "series": "",
+    "image": "images/cards/giant-viking.webp",
+    "base": {
+      "atk": 61351,
+      "hp": 409006,
+      "def": 0,
+      "status": 0,
+      "odds": 12100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Berserker Joy",
+      "desc": "Thorkell loves a good fight. +8.2% damage every time it is hit. Takes 16% less damage. Every 2nd attack also hits the card behind for 35%. +16% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "grace-archangel",
+    "name": "Grace Archangel",
+    "series": "",
+    "image": "images/cards/grace-archangel.webp",
+    "base": {
+      "atk": 37864,
+      "hp": 252426,
+      "def": 0,
+      "status": 0,
+      "odds": 6500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sunshine",
+      "desc": "Mael's Sunshine burns brighter than anything. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). +50% damage against Demon cards. Takes 25% less damage. +8% damage every turn (up to 6 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "gravity-corruption",
+    "name": "Gravity Corruption",
+    "series": "",
+    "image": "images/cards/gravity-corruption.webp",
+    "base": {
+      "atk": 73778,
+      "hp": 491854,
+      "def": 0,
+      "status": 0,
+      "odds": 13800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Corruption",
+      "desc": "Chuuya's Corruption bends gravity. +47% damage. Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. Loses 5% of its max HP every attack."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hawk-eye-swordsman",
+    "name": "Hawk Eye Swordsman",
+    "series": "",
+    "image": "images/cards/hawk-eye-swordsman.webp",
+    "base": {
+      "atk": 27779,
+      "hp": 185196,
+      "def": 0,
+      "status": 0,
+      "odds": 891000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Black Blade Yoru",
+      "desc": "The world's strongest swordsman. Every 2nd attack also hits the card behind for 50%. Its first hit on each new enemy does 2x damage. 25% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "heavenly-restricted-spear",
+    "name": "Heavenly Restricted Spear",
+    "series": "",
+    "image": "images/cards/heavenly-restricted-spear.webp",
+    "base": {
+      "atk": 28420,
+      "hp": 189466,
+      "def": 0,
+      "status": 0,
+      "odds": 1500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Heavenly Restriction",
+      "desc": "Maki: 30% chance to dodge each hit. Ignores shields, dodges and barriers. +10% damage every turn (up to 5 times). +30% damage against Curse cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hell-butler",
+    "name": "Hell Butler",
+    "series": "",
+    "image": "images/cards/hell-butler.webp",
+    "base": {
+      "atk": 55017,
+      "hp": 366780,
+      "def": 0,
+      "status": 0,
+      "odds": 12600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "One Hell of a Butler",
+      "desc": "Sebastian is simply one hell of a butler. 40% chance to dodge each hit. Its attacks can't be dodged. 30% chance to crit for 2x damage. Takes 20% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hundred-percent-brother",
+    "name": "Hundred Percent Brother",
+    "series": "",
+    "image": "images/cards/hundred-percent-brother.webp",
+    "base": {
+      "atk": 54919,
+      "hp": 366128,
+      "def": 0,
+      "status": 0,
+      "odds": 5200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "100% Muscle",
+      "desc": "Toguro: +37% damage. Takes 16% less damage. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ice-admiral",
+    "name": "Ice Admiral",
+    "series": "",
+    "image": "images/cards/ice-admiral.webp",
+    "base": {
+      "atk": 66841,
+      "hp": 445608,
+      "def": 0,
+      "status": 0,
+      "odds": 306000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Snowstorm",
+    "passive": {
+      "name": "Ice Age",
+      "desc": "Aokiji freezes the sea. 44% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2.25x damage against frozen enemies. Every enemy card starts with 13% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

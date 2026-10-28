@@ -3339,6 +3339,378 @@
       "src": "RobloxScreenShot20261028_122055447.png",
       "round": 9,
       "oddsShort": true
+    },
+    {
+      "id": "wind-scar-pillar",
+      "kind": "card",
+      "name": "Wind Scar Pillar",
+      "series": "",
+      "odds": 115000,
+      "atk": 14238,
+      "hp": 94918,
+      "src": "RobloxScreenShot20261028_122102461.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "wing-hero",
+      "kind": "card",
+      "name": "Wing Hero",
+      "series": "",
+      "odds": 166000,
+      "atk": 9692,
+      "hp": 64610,
+      "src": "RobloxScreenShot20261028_122105550.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "anti-magic-devil-knight",
+      "kind": "card",
+      "name": "Anti-Magic Devil Knight",
+      "series": "",
+      "odds": 5500000,
+      "atk": 65681,
+      "hp": 437874,
+      "src": "RobloxScreenShot20261028_122113288.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "bell-hair-berserker",
+      "kind": "card",
+      "name": "Bell Hair Berserker",
+      "series": "",
+      "odds": 1700000,
+      "atk": 26578,
+      "hp": 177186,
+      "src": "RobloxScreenShot20261028_122118462.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "chainsaw-hero",
+      "kind": "card",
+      "name": "Chainsaw Hero",
+      "series": "",
+      "odds": 2500000,
+      "atk": 26600,
+      "hp": 177330,
+      "src": "RobloxScreenShot20261028_122146408.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "crash-magic-ace",
+      "kind": "card",
+      "name": "Crash Magic Ace",
+      "series": "",
+      "odds": 6200000,
+      "atk": 77885,
+      "hp": 519236,
+      "src": "RobloxScreenShot20261028_122158976.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "crow-genjutsu-brother",
+      "kind": "card",
+      "name": "Crow Genjutsu Brother",
+      "series": "",
+      "odds": 1300000,
+      "atk": 21689,
+      "hp": 144596,
+      "src": "RobloxScreenShot20261028_122205259.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "curse-manipulator",
+      "kind": "card",
+      "name": "Curse Manipulator",
+      "series": "",
+      "odds": 1400000,
+      "atk": 32500,
+      "hp": 216666,
+      "src": "RobloxScreenShot20261028_122209039.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "demon-lord-brother",
+      "kind": "card",
+      "name": "Demon Lord Brother",
+      "series": "",
+      "odds": 4800000,
+      "atk": 32947,
+      "hp": 219648,
+      "src": "RobloxScreenShot20261028_122217010.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "dragon-slayer-swordsman",
+      "kind": "card",
+      "name": "Dragon Slayer Swordsman",
+      "series": "",
+      "odds": 10600000,
+      "atk": 51539,
+      "hp": 343594,
+      "src": "RobloxScreenShot20261028_122224008.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "eight-gates-beast",
+      "kind": "card",
+      "name": "Eight Gates Beast",
+      "series": "",
+      "odds": 1200000,
+      "atk": 24981,
+      "hp": 166540,
+      "src": "RobloxScreenShot20261028_122227662.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "fire-dragon-slayer",
+      "kind": "card",
+      "name": "Fire Dragon Slayer",
+      "series": "",
+      "odds": 6000000,
+      "atk": 39275,
+      "hp": 261836,
+      "src": "RobloxScreenShot20261028_122232226.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "flame-pillar",
+      "kind": "card",
+      "name": "Flame Pillar",
+      "series": "",
+      "odds": 1700000,
+      "atk": 24798,
+      "hp": 165318,
+      "src": "RobloxScreenShot20261028_122250680.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "flower-wind-captain",
+      "kind": "card",
+      "name": "Flower Wind Captain",
+      "series": "",
+      "odds": 1800000,
+      "atk": 34663,
+      "hp": 231084,
+      "src": "RobloxScreenShot20261028_122257254.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "frost-insect-general",
+      "kind": "card",
+      "name": "Frost Insect General",
+      "series": "",
+      "odds": 3500000,
+      "atk": 33393,
+      "hp": 222622,
+      "src": "RobloxScreenShot20261028_122303097.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "giant-bodyguard",
+      "kind": "card",
+      "name": "Giant Bodyguard",
+      "series": "",
+      "odds": 2400000,
+      "atk": 38285,
+      "hp": 255232,
+      "src": "RobloxScreenShot20261028_122337385.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "giant-viking",
+      "kind": "card",
+      "name": "Giant Viking",
+      "series": "",
+      "odds": 12100000,
+      "atk": 61351,
+      "hp": 409006,
+      "src": "RobloxScreenShot20261028_122342220.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "grace-archangel",
+      "kind": "card",
+      "name": "Grace Archangel",
+      "series": "",
+      "odds": 6500000,
+      "atk": 37864,
+      "hp": 252426,
+      "src": "RobloxScreenShot20261028_122347467.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "gravity-corruption",
+      "kind": "card",
+      "name": "Gravity Corruption",
+      "series": "",
+      "odds": 13800000,
+      "atk": 73778,
+      "hp": 491854,
+      "src": "RobloxScreenShot20261028_122352385.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "hawk-eye-swordsman",
+      "kind": "card",
+      "name": "Hawk Eye Swordsman",
+      "series": "",
+      "odds": 891000,
+      "atk": 27779,
+      "hp": 185196,
+      "src": "RobloxScreenShot20261028_122408245.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "heavenly-restricted-spear",
+      "kind": "card",
+      "name": "Heavenly Restricted Spear",
+      "series": "",
+      "odds": 1500000,
+      "atk": 28420,
+      "hp": 189466,
+      "src": "RobloxScreenShot20261028_122411068.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "hell-butler",
+      "kind": "card",
+      "name": "Hell Butler",
+      "series": "",
+      "odds": 12600000,
+      "atk": 55017,
+      "hp": 366780,
+      "src": "RobloxScreenShot20261028_122415297.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "hundred-percent-brother",
+      "kind": "card",
+      "name": "Hundred Percent Brother",
+      "series": "",
+      "odds": 5200000,
+      "atk": 54919,
+      "hp": 366128,
+      "src": "RobloxScreenShot20261028_122418653.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "ice-admiral",
+      "kind": "card",
+      "name": "Ice Admiral",
+      "series": "",
+      "odds": 306000,
+      "atk": 66841,
+      "hp": 445608,
+      "src": "RobloxScreenShot20261028_122427797.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "ancient-archmage",
+      "kind": "support",
+      "name": "Ancient Archmage",
+      "series": "",
+      "odds": 21400000,
+      "vals": [
+        2.5
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_122109913.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "dark-king-coach",
+      "kind": "support",
+      "name": "Dark King Coach",
+      "series": "",
+      "odds": 22400000,
+      "vals": [
+        10
+      ],
+      "type": "counter",
+      "src": "RobloxScreenShot20261028_122214412.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "geass-strategist",
+      "kind": "support",
+      "name": "Geass Strategist",
+      "series": "",
+      "odds": 17200000,
+      "vals": [
+        16
+      ],
+      "type": "confuse",
+      "src": "RobloxScreenShot20261028_122331499.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "great-spirit-cat",
+      "kind": "support",
+      "name": "Great Spirit Cat",
+      "series": "",
+      "odds": 18800000,
+      "vals": [
+        20
+      ],
+      "type": "freeze",
+      "src": "RobloxScreenShot20261028_122356079.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "guild-master-giant",
+      "kind": "support",
+      "name": "Guild Master Giant",
+      "series": "",
+      "odds": 20500000,
+      "vals": [
+        5.8
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_122359628.png",
+      "round": 10,
+      "oddsShort": true
+    },
+    {
+      "id": "hat-and-clogs-shopkeeper",
+      "kind": "support",
+      "name": "Hat and Clogs Shopkeeper",
+      "series": "",
+      "odds": 15700000,
+      "vals": [
+        48
+      ],
+      "type": "dodge",
+      "src": "RobloxScreenShot20261028_122404275.png",
+      "round": 10,
+      "oddsShort": true
     }
   ]
 }
