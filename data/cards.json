@@ -7860,5 +7860,957 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "last-avenger",
+    "name": "Last Avenger",
+    "series": "",
+    "image": "images/cards/last-avenger.webp",
+    "base": {
+      "atk": 23661,
+      "hp": 157740,
+      "def": 0,
+      "status": 0,
+      "odds": 1100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Indra's Arrow",
+      "desc": "Sasuke: Each hit swaps the enemy's front card with a random one (not bosses). Hits set black flames on the enemy: 2.8% of its max HP every turn, forever. Blocks the first 2 hits completely. 21% chance to crit for 2x damage. With Naruto in the deck, both get +14% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "light-speed-admiral",
+    "name": "Light Speed Admiral",
+    "series": "",
+    "image": "images/cards/light-speed-admiral.webp",
+    "base": {
+      "atk": 25824,
+      "hp": 172158,
+      "def": 0,
+      "status": 0,
+      "odds": 973000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Yasakani no Magatama",
+      "desc": "Kizaru moves at the speed of light. Always attacks twice (each hit does 0.65x damage). Its attacks can't be dodged. 25% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "lightning-sorcerer",
+    "name": "Lightning Sorcerer",
+    "series": "",
+    "image": "images/cards/lightning-sorcerer.webp",
+    "base": {
+      "atk": 66841,
+      "hp": 445608,
+      "def": 0,
+      "status": 0,
+      "odds": 306000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Rain Storm",
+    "passive": {
+      "name": "Mythical Beast Amber",
+      "desc": "Kashimo burns his body out for one fight. +100% damage. 50% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Its attacks can't be dodged. Ignores shields, dodges and barriers. Loses 3% of its max HP every attack."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "little-devil-firefoot",
+    "name": "Little Devil Firefoot",
+    "series": "",
+    "image": "images/cards/little-devil-firefoot.webp",
+    "base": {
+      "atk": 41438,
+      "hp": 276256,
+      "def": 0,
+      "status": 0,
+      "odds": 8900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Adolla Burst",
+      "desc": "Shinra's devil feet. 28% chance to dodge each hit. 35% chance to attack twice. Each hit adds 2 Burn stacks (2.1% of the enemy's max HP per turn each, up to 4, 3 turns). Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "magma-admiral",
+    "name": "Magma Admiral",
+    "series": "",
+    "image": "images/cards/magma-admiral.webp",
+    "base": {
+      "atk": 23320,
+      "hp": 155468,
+      "def": 0,
+      "status": 0,
+      "odds": 931000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Great Eruption",
+      "desc": "Akainu's magma melts everything. Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). +60% damage against Fire cards. Takes 20% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "murasame-assassin",
+    "name": "Murasame Assassin",
+    "series": "",
+    "image": "images/cards/murasame-assassin.webp",
+    "base": {
+      "atk": 32020,
+      "hp": 213468,
+      "def": 0,
+      "status": 0,
+      "odds": 4400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "One-Cut Killer: Murasame",
+      "desc": "Akame's cursed blade kills with a single cut. 27% chance per hit to instantly kill an enemy under 15% HP (not bosses). Each hit adds 2 Poison stacks (3.1% of the enemy's max HP per turn each, up to 4, 4 turns). 23% chance to dodge each hit. Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "muscle-magic-boy",
+    "name": "Muscle Magic Boy",
+    "series": "",
+    "image": "images/cards/muscle-magic-boy.webp",
+    "base": {
+      "atk": 49421,
+      "hp": 329476,
+      "def": 0,
+      "status": 0,
+      "odds": 14400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Muscle Magic",
+      "desc": "Mash has no magic, just muscles. Ignores shields, dodges and barriers. +50% damage. Can't be stunned, frozen or paralyzed. +8% damage every turn (up to 6 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "number-one-hero",
+    "name": "Number One Hero",
+    "series": "",
+    "image": "images/cards/number-one-hero.webp",
+    "base": {
+      "atk": 27014,
+      "hp": 180094,
+      "def": 0,
+      "status": 0,
+      "odds": 2200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "United States of Smash",
+      "desc": "All Might: Every 3rd attack does 2.5x damage. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. When knocked out, Deku gets +40% damage and HP. +30% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "one-for-all-heir",
+    "name": "One For All Heir",
+    "series": "",
+    "image": "images/cards/one-for-all-heir.webp",
+    "base": {
+      "atk": 33089,
+      "hp": 220596,
+      "def": 0,
+      "status": 0,
+      "odds": 2300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "One For All: 100%",
+      "desc": "Deku draws on every past user. +8% damage every turn (up to 8 times). Every 2nd attack also hits the card behind for 50%. 25% chance to dodge each hit. With All Might in the deck: +25% damage and HP. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "one-eyed-owl",
+    "name": "One-Eyed Owl",
+    "series": "",
+    "image": "images/cards/one-eyed-owl.webp",
+    "base": {
+      "atk": 68612,
+      "hp": 457410,
+      "def": 0,
+      "status": 0,
+      "odds": 7800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kakuja: One-Eyed Owl",
+      "desc": "Eto: Every 2nd attack also hits the card behind for 35%. Heals 5.1% of its max HP every turn. +5.7% damage every time it is hit. Heals 8.7% of the damage it deals."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "order-hunter-x",
+    "name": "Order Hunter X",
+    "series": "",
+    "image": "images/cards/order-hunter-x.webp",
+    "base": {
+      "atk": 49969,
+      "hp": 333128,
+      "def": 0,
+      "status": 0,
+      "odds": 10100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Slur",
+      "desc": "X's split personality fights twice. Always attacks twice (each hit does 0.8x damage). Its first hit on each new enemy does 2x damage. Takes 15% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "phantom-joker-magician",
+    "name": "Phantom Joker Magician",
+    "series": "",
+    "image": "images/cards/phantom-joker-magician.webp",
+    "base": {
+      "atk": 34922,
+      "hp": 232814,
+      "def": 0,
+      "status": 0,
+      "odds": 2100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bungee Gum",
+      "desc": "Hisoka: Each hit swaps the enemy's front card with a random one (not bosses). 30% chance to dodge each hit. Survives its first killing blow with 1 HP. +10% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "phoenix-commander",
+    "name": "Phoenix Commander",
+    "series": "",
+    "image": "images/cards/phoenix-commander.webp",
+    "base": {
+      "atk": 24340,
+      "hp": 162268,
+      "def": 0,
+      "status": 0,
+      "odds": 1100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Blue Flames of Resurrection",
+      "desc": "Marco: Heals 6% of its max HP every turn. Comes back once with 60% HP. With Whitebeard in the deck: +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "pride-trooper-titan",
+    "name": "Pride Trooper Titan",
+    "series": "",
+    "image": "images/cards/pride-trooper-titan.webp",
+    "base": {
+      "atk": 22761,
+      "hp": 151738,
+      "def": 0,
+      "status": 0,
+      "odds": 780000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Full Power Jiren",
+      "desc": "Jiren's power never wavers. +6% damage every turn (up to 8 times). Takes 25% less damage. 35% chance to counter-attack when hit (0.8x damage)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "psychic-hundred-esper",
+    "name": "Psychic Hundred Esper",
+    "series": "",
+    "image": "images/cards/psychic-hundred-esper.webp",
+    "base": {
+      "atk": 51164,
+      "hp": 341090,
+      "def": 0,
+      "status": 0,
+      "odds": 8500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "???%",
+      "desc": "Mob: From its 3rd attack on: +44% damage. Every hit also hits the whole enemy bench for 20%. Blocks the first 3 hits completely. Takes 5.6% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "purple-ogre-secretary",
+    "name": "Purple Ogre Secretary",
+    "series": "",
+    "image": "images/cards/purple-ogre-secretary.webp",
+    "base": {
+      "atk": 28566,
+      "hp": 190442,
+      "def": 0,
+      "status": 0,
+      "odds": 3100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Result Alteration",
+      "desc": "Shion's unique skill rewrites the outcome. Survives its first killing blow with 1 HP. Under 40% HP: +70% damage. Takes 20% less damage. Each hit adds 1 Poison stack (3% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "quagmire-mage",
+    "name": "Quagmire Mage",
+    "series": "",
+    "image": "images/cards/quagmire-mage.webp",
+    "base": {
+      "atk": 34176,
+      "hp": 227838,
+      "def": 0,
+      "status": 0,
+      "odds": 3700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Magic Armor Version One",
+      "desc": "Rudeus: Takes 30% less damage. 25% chance per hit to Stun the enemy for 1 turn. Every 3rd attack does 2.5x damage. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "regeneration-priest",
+    "name": "Regeneration Priest",
+    "series": "",
+    "image": "images/cards/regeneration-priest.webp",
+    "base": {
+      "atk": 34429,
+      "hp": 229528,
+      "def": 0,
+      "status": 0,
+      "odds": 4600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Regeneration",
+      "desc": "Anderson: Heals 11% of its max HP every turn. Each hit adds 2 Bleed stacks (1.9% of the enemy's max HP per turn each, up to 4, 3 turns). +56% damage against Vampire cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rose-saiyan-impostor",
+    "name": "Rose Saiyan Impostor",
+    "series": "",
+    "image": "images/cards/rose-saiyan-impostor.webp",
+    "base": {
+      "atk": 25695,
+      "hp": 171298,
+      "def": 0,
+      "status": 0,
+      "odds": 816000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Zero Mortal Plan",
+      "desc": "Goku Black: Heals 6.5% of its max HP every turn. Every 2nd attack also hits the card behind for 35%. +6.5% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "shadow-garden-alpha",
+    "name": "Shadow Garden Alpha",
+    "series": "",
+    "image": "images/cards/shadow-garden-alpha.webp",
+    "base": {
+      "atk": 33133,
+      "hp": 220886,
+      "def": 0,
+      "status": 0,
+      "odds": 3800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Shadow Garden Command",
+      "desc": "Alpha leads the Shadow Garden. Shadow Garden cards in your deck get +15% damage and HP. Every 2nd attack also hits the card behind for 35%. 23% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "shapeshift-kaiju",
+    "name": "Shapeshift Kaiju",
+    "series": "",
+    "image": "images/cards/shapeshift-kaiju.webp",
+    "base": {
+      "atk": 41396,
+      "hp": 275974,
+      "def": 0,
+      "status": 0,
+      "odds": 9700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Assimilation",
+      "desc": "Kaiju No. 9: Copies the ability of every enemy card it faces. Each kill gives it 20% of the defeated card's damage and HP. Comes back once with 32% HP. Takes 8% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sixfold-prophet",
+    "name": "Sixfold Prophet",
+    "series": "",
+    "image": "images/cards/sixfold-prophet.webp",
+    "base": {
+      "atk": 28754,
+      "hp": 191692,
+      "def": 0,
+      "status": 0,
+      "odds": 1300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Six Paths of Pain",
+      "desc": "Pain's six bodies. Every hit also hits the whole enemy bench for 20%. Heals 19% of the damage it deals. Comes back once with 31% HP. Takes 7.6% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "immortal-apostle",
+    "name": "Immortal Apostle",
+    "series": "",
+    "image": "images/cards/immortal-apostle.webp",
+    "base": {
+      "atk": 46231,
+      "hp": 308206,
+      "def": 0,
+      "status": 0,
+      "odds": 11100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Nosferatu Zodd",
+      "desc": "Zodd the Immortal. Heals 8% of its max HP every turn. Takes 20% less damage. +10% damage every time it is hit. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "jajanken-kid",
+    "name": "Jajanken Kid",
+    "series": "",
+    "image": "images/cards/jajanken-kid.webp",
+    "base": {
+      "atk": 32719,
+      "hp": 218126,
+      "def": 0,
+      "status": 0,
+      "odds": 1900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Jajanken: Rock",
+      "desc": "Adult Gon gives up everything for one moment. Its first attack of the fight does 4x damage. Under 50% HP: +80% damage. Loses 6% of its max HP every attack. With Killua in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "jewel-eye-demon",
+    "name": "Jewel Eye Demon",
+    "series": "",
+    "image": "images/cards/jewel-eye-demon.webp",
+    "base": {
+      "atk": 31745,
+      "hp": 211630,
+      "def": 0,
+      "status": 0,
+      "odds": 3400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Commanding Voice",
+      "desc": "Demiurge's Commanding Voice. 40% chance per hit to Confuse the enemy (it hits itself instead). Every hit sets the whole enemy deck on fire for 2 turns. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "kaiju-number-eight",
+    "name": "Kaiju Number Eight",
+    "series": "",
+    "image": "images/cards/kaiju-number-eight.webp",
+    "base": {
+      "atk": 57542,
+      "hp": 383610,
+      "def": 0,
+      "status": 0,
+      "odds": 9300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Full Release",
+      "desc": "Kafka: Heals 6.9% of its max HP every turn. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 35%. +6.9% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "killer-queen-salaryman",
+    "name": "Killer Queen Salaryman",
+    "series": "",
+    "image": "images/cards/killer-queen-salaryman.webp",
+    "base": {
+      "atk": 38960,
+      "hp": 259732,
+      "def": 0,
+      "status": 0,
+      "odds": 7100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bites the Dust",
+      "desc": "Kira: 41% chance per hit to plant a bomb that explodes next turn for 1.54x the hit. Every 2nd attack also hits the card behind for 35%. Comes back once with 33% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "king-of-conquerors",
+    "name": "King of Conquerors",
+    "series": "",
+    "image": "images/cards/king-of-conquerors.webp",
+    "base": {
+      "atk": 33298,
+      "hp": 221986,
+      "def": 0,
+      "status": 0,
+      "odds": 4000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ionioi Hetairoi",
+      "desc": "Iskandar summons his army. Every other card in your deck gets +15% damage. Every hit also hits the whole enemy bench for 20%. Takes 11% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
