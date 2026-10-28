@@ -202,8 +202,8 @@
       "team": 68,
       "overall": 59.3
     },
-    "tier": "C",
-    "tierNote": "A 2.3x opener on every new enemy and a bench hit, but below-average stats and no 1-on-1 wins drag it to C.",
+    "tier": "B",
+    "tierNote": "A 2.3x opener on every new enemy and a bench hit, but below-average stats and no 1-on-1 wins drag it to B.",
     "short": {
       "tier": "2.3x opener · weak stats",
       "ability": "2.3x first hit · Bench 26%",
@@ -290,7 +290,7 @@
       "team": 72,
       "overall": 57.1
     },
-    "tier": "C",
+    "tier": "B",
     "tierNote": "Takes 30% less damage and survives a killing blow, but the lowest ATK and HP now lose to Monarch and Ghost.",
     "short": {
       "tier": "Tanky but lowest stats",

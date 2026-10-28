@@ -756,7 +756,7 @@
     const els = ed.shown.cards.filter(Boolean).map((o) => o.el);
     const seen = els.map((el) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
     els.forEach((el, i) => { const c = cardById.get(el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
-    refresh();                                     // the score doesn't depend on rarity; this keeps the ring and the picks in step
+    refresh();                                     // card scores don't depend on rarity; unranked support does (its effect at this level, §10.5)
   }
 
   /* ==========================================================

@@ -5,8 +5,8 @@
    · My Lists (the Tier Maker, step 8) lives in js/tiermaker.js: this file calls C.tm.init() once and
      C.tm.show(listId|null, sharedData|null) every time My Lists is showing
    · Global is view-only and has a Cards | Support switch (they never share a list)
-     - Cards: rows GOD–D by Overall, rarity picker shared with the Cards page
-     - Support: rows GOD–D by Value (data/support.json), no rarity
+     - Cards: rows Meta–B by Overall (only the top meta.rankTop cards are ranked), rarity picker shared with the Cards page
+     - Support: rows Meta–B by Value (data/support.json · ranked at Godly), no rarity
    Meta Decks moved to the Deck page (js/deck.js).
    Needs js/fx.js, js/app.js, js/cards.js loaded first (support.js is only needed when a support tile is tapped).
    The rarity chips here are handled by js/cards.js (one shared rarity for the whole site);
@@ -19,8 +19,8 @@
   const KIND_KEY = "cbi:tierKind";      // "cards" | "support" (last Global view)
   const TITLES = { global: null, my: "My Tier Lists — Card Battle Infinity" };   // null = the page's normal title
   const LEADS = {
-    cards: "Every ranked card by Overall score, from GOD at the top to D at the bottom. GOD and SS are the Meta cards. Pick a rarity to see its stats. Tap a card for the full breakdown.",
-    support: "Every ranked support card by Value, from GOD at the top to D at the bottom. Tap one for the full breakdown.",
+    cards: "The strongest cards by Overall score, from Meta at the top to B at the bottom. Meta and SS are the Meta cards. Pick a rarity to see its stats. Tap a card for the full breakdown.",
+    support: "The strongest support cards by Value at Godly, from Meta at the top to B at the bottom. Tap one for the full breakdown.",
     my: "Your own tier lists, saved on this device.",
     shared: "A tier list someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
@@ -41,6 +41,7 @@
   const isRankedSupport = (s) => !!(s.scores && s.scores.value > 0 && s.tier);
   const fmtScore = (n) => String(Number(Number(n).toFixed(1)));
   const tierVar = (t) => `var(${C.TIER_COLOR[t] || "--t-d"})`;
+  const topN = C.rankTop;   // data/meta.json rankTop (50)
 
   function track(card, el) {
     if (!tiles.has(card.id)) tiles.set(card.id, []);
@@ -75,12 +76,12 @@
     if (!ranked.length) {
       $("#tier-none-title").textContent = state.cards.length ? "Rankings coming soon" : "No cards yet";
       $("#tier-none-text").textContent = state.cards.length
-        ? "The cards are in, but none of them have been scored yet. Tiers will show up here once they are."
+        ? `The cards are in, but none of them have been scored yet. The top ${topN()} will show up here once they are.`
         : "The card library is being filled in. Check back soon.";
     }
     ui.note.hidden = !(ranked.length && unranked);
     ui.note.textContent = unranked
-      ? `${plural(unranked, "card is", "cards are")} not ranked yet. ${unranked === 1 ? "It" : "They"} will join the list once scored.`
+      ? `Only the top ${topN()} cards are ranked. The other ${plural(unranked, "card is", "cards are")} still in Cards and can go in any deck.`
       : "";
 
     ui.list.replaceChildren(buildRows(ranked, byOverall, (c) => {
@@ -113,12 +114,12 @@
     if (!ranked.length) {
       $("#tier-snone-title").textContent = supportItems.length ? "Rankings coming soon" : "No support cards yet";
       $("#tier-snone-text").textContent = supportItems.length
-        ? "The support cards are in, but none of them have been scored yet. Tiers will show up here once they are."
+        ? `The support cards are in, but none of them have been scored yet. The top ${topN()} will show up here once they are.`
         : "Support rankings will show here once the first support cards are added.";
     }
     ui.snote.hidden = !(ranked.length && unranked);
     ui.snote.textContent = unranked
-      ? `${plural(unranked, "support card is", "support cards are")} not ranked yet. ${unranked === 1 ? "It" : "They"} will join the list once scored.`
+      ? `Only the top ${topN()} support cards are ranked. The other ${plural(unranked, "support card is", "support cards are")} still in Support and can go in any deck.`
       : "";
 
     ui.slist.replaceChildren(buildRows(ranked, byValue, supportTile, ["support card", "support cards"]));

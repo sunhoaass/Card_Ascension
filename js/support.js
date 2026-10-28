@@ -4,7 +4,8 @@
    · Detail: lives inside the Support page (#support/<id>), not an overlay, so tapping a
      card in it opens the normal card detail on top and Back returns here
    Needs js/fx.js, js/app.js and js/cards.js loaded first.
-   Data: data/support.json (see PROGRESS.md §5.4). No rarity levels: support has no ATK / HP.
+   Data: data/support.json (see PROGRESS.md §5.4). No ATK / HP. Effect values grow with the rarity (Normal × (1 + 0.25 × level),
+   C.supText in js/app.js): the list and the detail show them at the site-wide rarity (chips handled by js/cards.js).
    ========================================================== */
 (function () {
   const C = window.CBI;
@@ -37,12 +38,14 @@
   const isRanked = (s) => !!(s.scores && s.scores.value > 0 && s.tier);
   const tierVar = (t) => `var(${C.TIER_COLOR[t] || "--t-d"})`;
 
-  function effectParts(s) {
+  // effect at a rarity ({0} {1} … in desc = effect.vals at that level)
+  function effectParts(s, rarity = state.rarity) {
     const e = s.effect;
-    if (e && typeof e === "object") return { name: e.name ? String(e.name) : "", desc: e.desc ? String(e.desc) : "" };
+    if (e && typeof e === "object") return { name: e.name ? String(e.name) : "", desc: e.desc ? C.supText(s, e.desc, rarity) : "" };
     return { name: "", desc: e ? String(e) : "" };
   }
-  const effectLine = (s) => { const e = effectParts(s); return e.name && e.desc ? `${e.name}: ${e.desc}` : e.name || e.desc; };
+  const effectLine = (s, rarity) => { const e = effectParts(s, rarity); return e.name && e.desc ? `${e.name}: ${e.desc}` : e.name || e.desc; };
+  const levels = (s) => C.supValue(s, "Normal") > 0;     // has values that change with the rarity
 
   function computeRanks() {
     const ranked = items.filter(isRanked).sort((a, b) => b.scores.value - a.scores.value);
@@ -83,7 +86,7 @@
     btn.dataset.sid = s.id;
     btn.setAttribute("aria-label", ranked
       ? `${s.name}, rank ${rankOf.get(s.id)}, tier ${s.tier}, value ${fmtScore(v)}`
-      : `${s.name}, not ranked yet`);
+      : `${s.name}, unranked`);
     if (ranked) btn.style.setProperty("--tc", tierVar(s.tier));
     const line = effectLine(s);
     btn.innerHTML = `
@@ -104,6 +107,8 @@
   }
 
   function buildFilters() {
+    ui.rarity.hidden = !items.some(levels);
+    ui.rarity.innerHTML = C.rarityChipsHTML();
     ui.filters.innerHTML = state.meta.tiers.map((t) =>
       `<button type="button" class="chip glass fx-press" data-f="tier" data-v="${esc(t.name)}" aria-pressed="false" style="--sw:${tierVar(t.name)};--sw-line:${tierVar(t.name)}"><span class="chip__swatch"></span>${esc(t.name)}</button>`
     ).join("");
@@ -149,7 +154,7 @@
     ui.none.hidden = out.length > 0;
     const unranked = total - rankedCount;
     ui.note.hidden = !(unranked && rankedCount);
-    ui.note.textContent = unranked ? `${unranked} ${unranked === 1 ? "support card is" : "support cards are"} not ranked yet. ${unranked === 1 ? "It" : "They"} will get a rank once scored.` : "";
+    ui.note.textContent = unranked ? `Only the top ${C.rankTop()} support cards get a rank. The other ${unranked} still work in any deck.` : "";
   }
 
   function bindList() {
@@ -264,7 +269,7 @@
           <span class="score__num" data-d="s-${k}" data-value="0">0</span>
           <span class="score__track"><i></i></span>
         </div>`).join("")}</div>`
-      : `<div class="unranked"><span class="badge badge--muted">Unranked</span><span>This support card hasn't been scored yet. Its Value score and tier will show up here once it is.</span></div>`;
+      : `<div class="unranked"><span class="badge badge--muted">Unranked</span><span>Only the top ${C.rankTop()} support cards get a Value score and a tier. Decks still count this one, from its effect at the deck's rarity.</span></div>`;
 
     return `
       <div class="sdetail__bar">
@@ -286,19 +291,21 @@
           </header>
 
           <div class="dstats">
-            <div class="dstat dstat--hp"><div class="dstat__label">Value</div><div class="dstat__value">${ranked ? fmtScore(sc.value) : "–"}</div><div class="dstat__sub">${ranked ? "Out of 100" : "Not ranked yet"}</div></div>
-            <div class="dstat"><div class="dstat__label">Rank</div><div class="dstat__value">${ranked ? "#" + rank : "–"}</div><div class="dstat__sub">${ranked ? `of ${rankedCount} ranked` : "Not ranked yet"}</div></div>
+            <div class="dstat dstat--hp"><div class="dstat__label">Value</div><div class="dstat__value">${ranked ? fmtScore(sc.value) : "–"}</div><div class="dstat__sub">${ranked ? "Out of 100" : `Top ${C.rankTop()} only`}</div></div>
+            <div class="dstat"><div class="dstat__label">Rank</div><div class="dstat__value">${ranked ? "#" + rank : "–"}</div><div class="dstat__sub">${ranked ? `of ${rankedCount} ranked` : `Top ${C.rankTop()} only`}</div></div>
             <div class="dstat dstat--odds"><div class="dstat__label">Pull odds</div><div class="dstat__value">${odds ? esc(C.fmtOdds(odds)) : "–"}</div>${odds ? "" : `<div class="dstat__sub">Not listed</div>`}</div>
           </div>
 
           <section class="dpanel" aria-labelledby="sd-t-effect">
-            <h3 class="dpanel__title" id="sd-t-effect">Effect</h3>
+            <h3 class="dpanel__title" id="sd-t-effect">Effect${levels(s) ? ` <span class="sd-lv" data-sd-lv>at ${esc(state.rarity)}</span>` : ""}</h3>
+            ${levels(s) ? `<div class="rarity-picker sd-rarity" role="group" aria-label="Rarity">${C.rarityChipsHTML()}</div>` : ""}
             <div class="ability">${effect}</div>
+            ${levels(s) ? `<p class="dpanel__sub sd-lv-note">Every rarity adds 25% of the Normal value (Godly = 3×).</p>` : ""}
           </section>
 
           <section class="dpanel" aria-labelledby="sd-t-value">
             <h3 class="dpanel__title" id="sd-t-value">Value score</h3>
-            ${ranked ? `<p class="dpanel__sub">Weighted sum of four scores, each out of 100.</p>` : ""}
+            ${ranked ? `<p class="dpanel__sub">Weighted sum of four scores, each out of 100, judged at Godly.</p>` : ""}
             ${value}
           </section>
 
@@ -364,6 +371,7 @@
     }
     const backBtn = $(".sdetail__back", ui.detail);
     if (backBtn) backBtn.focus({ preventScroll: true });
+    requestAnimationFrame(() => C.revealChip(ui.detail));
   }
 
   function closeDetail(restore) {
@@ -401,8 +409,18 @@
     else { history.replaceState(null, "", "#support"); C.route(); }   // opened from a direct link: no entry to go back to
   }
 
-  /* Rarity changed somewhere else (cards.js): keep the mini cards here in step */
+  /* Rarity changed (chips here or anywhere else · cards.js): effect values + the mini cards here follow it */
+  function relevel(name) {
+    if (built) rowEls.forEach((li, id) => { const s = byId.get(id), el = $(".srow__effect", li); if (s && el && levels(s)) el.textContent = effectLine(s, name); });
+    const s = current && byId.get(current);
+    if (!s || !levels(s)) return;
+    const d = $(".ability__desc", ui.detail), lv = $("[data-sd-lv]", ui.detail);
+    if (d) { d.textContent = effectParts(s, name).desc; FX.fade(d, 1, { duration: 250 }); }
+    if (lv) lv.textContent = "at " + name;
+    C.revealChip(ui.detail);
+  }
   function recolor(name) {
+    relevel(name);
     const all = [];
     tiles.forEach((els, id) => els.forEach((el) => all.push([el, cardById.get(id)])));
     const seen = all.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));
@@ -414,7 +432,7 @@
     Object.assign(ui, {
       root: $("#page-support"), listView: $("#support-list-view"), detail: $("#support-detail-view"),
       tools: $("#support-tools"), list: $("#support-list"), none: $("#support-none"), empty: $("#support-empty"), note: $("#support-note"),
-      search: $("#support-search"), sort: $("#support-sort"), dir: $("#support-dir"), filters: $("#support-filters"),
+      search: $("#support-search"), rarity: $("#support-rarity"), sort: $("#support-sort"), dir: $("#support-dir"), filters: $("#support-filters"),
       count: $("#support-count"), reset: $("#support-reset"),
     });
     cardById = new Map(state.cards.map((c) => [c.id, c]));
@@ -423,7 +441,7 @@
       .map((s) => ({ ...s, name: s.name || pretty(s.id) }));
     items.forEach((s) => {
       byId.set(s.id, s);
-      searchText.set(s.id, [s.name, effectLine(s)].filter(Boolean).join(" ").toLowerCase());
+      searchText.set(s.id, [s.name, effectLine(s, "Normal")].filter(Boolean).join(" ").toLowerCase());
     });
 
     ui.list.innerHTML = "";

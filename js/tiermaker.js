@@ -317,8 +317,9 @@
     const cmp = prefs.compare && cur.type === "card";
     const names = tierNames();
     cur.rows.forEach((r, ri) => {
-      // a row labelled like a Global tier is that tier; any other label counts by its position (row 1 = GOD, row 2 = SS, ...)
-      const t = r.label.trim().toUpperCase();
+      // a row labelled like a Global tier is that tier; any other label counts by its position (row 1 = Meta, row 2 = SS, ...)
+      // (lists saved before 2026-10-28 may still say GOD: that is Meta now)
+      const t = r.label.trim().toUpperCase() === "GOD" ? "META" : r.label.trim().toUpperCase();
       let level = names.findIndex((n) => n.toUpperCase() === t);
       if (level < 0) level = Math.min(ri, names.length - 1);
       const rowText = r.label.trim() || "with no label";
@@ -982,7 +983,9 @@
      Lists: create / open / rename / duplicate / delete
      ========================================================== */
   function defaultRows() {
-    return tierNames().map((t) => ({ id: newId("r"), label: t, color: C.TIER_COLOR[t] || "--t-d", items: [] }));
+    // a row keeps only colours from COLORS (saved lists + links store them): Meta's own red (--t-meta) becomes the row red
+    const rowColor = (t) => { const c = C.TIER_COLOR[t] || "--t-d"; return COLORS.includes(c) ? c : c === "--t-meta" ? "--t-x-red" : "--t-d"; };
+    return tierNames().map((t) => ({ id: newId("r"), label: t, color: rowColor(t), items: [] }));
   }
   function globalRows(type) {
     const ranked = type === "card" ? rankedCards : rankedSup;
@@ -1012,7 +1015,7 @@
           const type = pickOf(d, "type"), start = pickOf(d, "start");
           const n = (type === "card" ? rankedCards : rankedSup).length;
           note.textContent = start === "blank"
-            ? "Rows GOD to D, all empty. Fill them from the pool."
+            ? `Rows ${tierNames()[0]} to ${tierNames()[tierNames().length - 1]}, all empty. Fill them from the pool.`
             : n ? `Copies the Global ${type === "card" ? "card" : "support"} ranking (${nounOf(type, n)}) so you can move things around.`
               : `Global has no ranked ${type === "card" ? "cards" : "support cards"} yet, so the rows will start empty.`;
         };

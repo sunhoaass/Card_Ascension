@@ -9,13 +9,14 @@
      suggest(deck, kind, n = 3) -> [{ id, slot, gain, before, after }]   kind = "cards" | "support"
      band(score), modeConfig(id), PARTS
    }
-   deck = { mode, cards: [5 ids | null], support: [5 ids | null], traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks;
+   deck = { mode, rarity?, cards: [5 ids | null], support: [5 ids | null], traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks;
           traits = the user's trait per card from js/traits.js, added by js/deck.js for the user's own decks only)
 
    The 5 parts (weights per mode from data/meta.json -> modes[].weights; default 30 / 25 / 20 / 15 / 10):
-     power     card Overall (unranked = 50) + its trait bonus vs the best 5 cards in the library (no traits) · support Value vs the best support
+     power     card Overall (unranked = from ATK × HP) + its trait bonus vs the best 5 cards in the library (no traits)
+               · support Value (unranked = from its effect value at the deck's rarity) vs the best support
      synergy   cards with a partner from team.bestWith · support that fits the card above it · minus avoidWith clashes
-     coverage  share of Meta cards (GOD/SS) the team beats (beats) · minus every weakTo tag shared by 3+ cards
+     coverage  share of Meta cards (Meta/SS) the team beats (beats) · minus every weakTo tag shared by 3+ cards
      roles     the roles the mode asks for (modes[].roles, default Tank 1 · DPS 2; Hybrid fills any one)
      position  each card in the slot from its team.position
    An empty slot gives 0. A part with no data in the whole library yet scores half of what is filled
@@ -26,7 +27,7 @@
 (function () {
   const C = window.CBI;
   const SLOTS = 5;
-  const UNRANKED = 50;                                   // an unranked card / support counts as 50 (§10.5)
+  const UNRANKED = 50;                                   // pads the "strongest team" when the library has fewer than 5 cards (§10.5)
   const PARTS = [
     { key: "power", name: "Card power" },
     { key: "synergy", name: "Synergy" },
@@ -53,7 +54,9 @@
     rolesNeed: 0.8, rolesAny: 0.2,        // roles: the mode's needs / every card has a role
     posNear: 0.5,                         // position: one slot away from its best slot
     traitPts: 20,                         // card power: the strongest trait (Ascendant) adds this many points to a card's value
-    threatTiers: ["GOD", "SS"],          // Meta cards (owner 2026-10-24: GOD + SS)
+    threatTiers: ["Meta", "SS"],         // Meta cards (owner 2026-10-24: tier Meta (was GOD) + SS)
+    unrMin: 10, unrMax: 60,               // an unranked card / support is worth unrMin … unrMax (2026-10-28 · PROGRESS §10.5)
+    unrSupNoData: 0.5,                    // unranked support with no effect value (or no other support of its type): this share of the level's range
   };
   const BANDS = [
     { min: 100, band: "perfect", label: "Perfect" },
@@ -119,16 +122,30 @@
       position: cards.some((c) => posRange(c)),
     };
     const ov = (c) => (C.isRanked(c) ? c.scores.overall : 0);
+    // unranked cards (outside meta.rankTop): percentile of √(ATK × HP) at Normal among every card in the library
+    const pow = (c) => { const b = c.base || {}; const a = Number(b.atk), h = Number(b.hp); return a > 0 && h > 0 ? Math.sqrt(a * h) : 0; };
+    const pows = cards.map(pow).sort((a, b) => a - b);
+    const unrCard = new Map();
+    cards.forEach((c) => {
+      if (C.isRanked(c)) return;
+      const p = pow(c);
+      let lo = 0, hi = pows.length;                        // how many cards have power ≤ this one
+      while (lo < hi) { const m = (lo + hi) >> 1; if (pows[m] <= p) lo = m + 1; else hi = m; }
+      unrCard.set(c.id, K.unrMin + (K.unrMax - K.unrMin) * (p > 0 ? lo / pows.length : 0));
+    });
+    // unranked support: the strongest Godly value of each effect type (support.effect.type), for the ratio in supUnr()
+    const supTop = new Map();
+    sups.forEach((x) => { const t = supType(x), v = C.supValue(x, "Godly"); if (t && v > 0) supTop.set(t, Math.max(supTop.get(t) || 0, v)); });
     const threats = cards.filter((c) => C.isRanked(c) && K.threatTiers.includes(c.tier)).sort((a, b) => ov(b) - ov(a) || a.name.localeCompare(b.name));
     const byTag = new Map();                               // tag -> card ids that have it
     cards.forEach((c) => list(c.tags).forEach((t) => { const k = tagKey(t); if (!byTag.has(k)) byTag.set(k, { name: t, ids: new Set() }); byTag.get(k).ids.add(c.id); }));
     L = {
       cardsSrc: s.cards, supSrc: s.support, teamsSrc: s.teams,
-      cards, sups, has, threats, byTag,
+      cards, sups, has, threats, byTag, unrCard, supTop,
       cardById: new Map(cards.map((c) => [c.id, c])),
       supById: new Map(sups.map((x) => [x.id, x])),
       teams: (Array.isArray(s.teams) ? s.teams : []).filter((t) => t && Array.isArray(t.slots)),
-      best: new Map(),                                     // mode -> { card, sup }
+      best: new Map(),                                     // "mode|rarity" -> { card, sup }
     };
     return L;
   }
@@ -145,14 +162,22 @@
     const a = +m[1], b = m[2] ? +m[2] : a;
     return [Math.min(a, b), Math.max(a, b)];
   }
-  // a card's worth in a mode: Overall (unranked = 50), averaged with modes[mode] when the card has one
+  const supType = (s) => (s && s.effect && typeof s.effect === "object" && typeof s.effect.type === "string" ? s.effect.type.trim().toLowerCase() : "");
+  // unranked support at a rarity: unrMin + range × (its value ÷ the strongest Godly value of the same effect type)
+  // (no value / no type: unrSupNoData × the level's share, level share = (1 + 0.25 L) ÷ 3, Godly = 1)
+  function supUnr(s, rarity) {
+    const l = lib(), t = supType(s), v = C.supValue(s, rarity), top = t ? l.supTop.get(t) : 0;
+    const r = v > 0 && top > 0 ? clamp01(v / top) : K.unrSupNoData * C.supLevelMult(rarity) / C.supLevelMult("Godly");
+    return K.unrMin + (K.unrMax - K.unrMin) * r;
+  }
+  // a card's worth in a mode: Overall (unranked = from ATK × HP, §10.5), averaged with modes[mode] when the card has one
   function cardVal(c, mode) {
-    const ov = C.isRanked(c) ? c.scores.overall : UNRANKED;
+    const ov = C.isRanked(c) ? c.scores.overall : (lib().unrCard.get(c.id) ?? K.unrMin);
     const mv = c.modes && typeof c.modes === "object" ? num(c.modes[mode]) : null;
     return mv == null ? ov : (ov + clamp01(mv / 100) * 100) / 2;
   }
-  function supVal(s, mode) {
-    const v = isRankedSup(s) ? s.scores.value : UNRANKED;
+  function supVal(s, mode, rarity) {
+    const v = isRankedSup(s) ? s.scores.value : supUnr(s, rarity);
     const mv = s.modes && typeof s.modes === "object" ? num(s.modes[mode]) : null;
     return mv == null ? v : (v + clamp01(mv / 100) * 100) / 2;
   }
@@ -160,18 +185,22 @@
   const traitOf = (deck, c) => (deck && deck.traits && typeof deck.traits === "object" && typeof deck.traits[c.id] === "string" ? deck.traits[c.id] : null);
   const traitBonus = (deck, c) => { const id = traitOf(deck, c); return id && C.traits && C.traits.power ? K.traitPts * C.traits.power(id) : 0; };
   const cardValT = (deck, c, mode) => Math.min(100, cardVal(c, mode) + traitBonus(deck, c));
-  // the best possible deck in this mode: the 5 best cards (fewer than 5 ranked = the rest count as unranked 50),
+  // the best possible deck in this mode at this rarity: the 5 best cards, ranked or not (fewer than 5 cards = the rest count as 50),
   // and the best support in every slot (support may repeat)
-  function bestOf(mode) {
-    const l = lib();
-    if (l.best.has(mode)) return l.best.get(mode);
-    const cv = l.cards.filter((c) => C.isRanked(c)).map((c) => cardVal(c, mode)).sort((a, b) => b - a).slice(0, SLOTS);
+  function bestOf(mode, rarity) {
+    const l = lib(), key = mode + "|" + rarity;
+    if (l.best.has(key)) return l.best.get(key);
+    const cv = l.cards.map((c) => cardVal(c, mode)).sort((a, b) => b - a).slice(0, SLOTS);
     while (cv.length < SLOTS) cv.push(UNRANKED);
-    const sv = l.sups.filter(isRankedSup).map((s) => supVal(s, mode));
+    const sv = l.sups.map((s) => supVal(s, mode, rarity));
     const b = { card: Math.max(1, cv.reduce((a, v) => a + v, 0) / SLOTS), sup: Math.max(1, sv.length ? Math.max(...sv) : 100) };
-    l.best.set(mode, b);
+    l.best.set(key, b);
     return b;
   }
+  const rarityOfDeck = (deck) => {
+    const r = (deck && deck.rarity) || C.state.rarity;
+    return C.state.meta && C.state.meta.rarities.some((x) => x.name === r) ? r : "Normal";
+  };
 
   /* ==========================================================
      score(deck, modeId)
@@ -185,6 +214,7 @@
     const l = lib();
     const mode = modeId || (deck && deck.mode) || "tower";
     const cfg = modeConfig(mode);
+    const rarity = rarityOfDeck(deck);
     const cards = slots(deck && deck.cards), sups = slots(deck && deck.support);
     const at = cards.map((id) => (id ? l.cardById.get(id) || null : null));      // card per slot (null = empty or not in the library)
     const sat = sups.map((id) => (id ? l.supById.get(id) || null : null));
@@ -197,9 +227,9 @@
 
     /* Card power */
     {
-      const b = bestOf(mode);
+      const b = bestOf(mode, rarity);
       const cAvg = at.reduce((a, c) => a + (c ? cardValT(deck, c, mode) : 0), 0) / SLOTS;
-      const sAvg = sat.reduce((a, s) => a + (s ? supVal(s, mode) : 0), 0) / SLOTS;
+      const sAvg = sat.reduce((a, s) => a + (s ? supVal(s, mode, rarity) : 0), 0) / SLOTS;
       const cr = clamp01(cAvg / b.card), sr = clamp01(sAvg / b.sup);
       const v = l.sups.length ? K.powerCards * cr + K.powerSupport * sr : cr;
       const avgOv = nCards ? members.reduce((a, c) => a + cardValT(deck, c, mode), 0) / nCards : 0;
@@ -252,7 +282,7 @@
       let v = canCover ? covered / l.threats.length : 0.5 * fill;
       const weak = weakTags(members);
       v = clamp01(v - K.weakHit * weak.length);
-      const bits = [canCover ? `Beats ${covered} of ${l.threats.length} Meta cards` : l.has.beats ? "no Meta (GOD/SS) cards in the library yet" : "who beats whom: not enough data"];
+      const bits = [canCover ? `Beats ${covered} of ${l.threats.length} Meta cards` : l.has.beats ? "no Meta (Meta/SS) cards in the library yet" : "who beats whom: not enough data"];
       if (weak.length) bits.push(`${weak[0].count} cards weak to ${weak[0].name}${weak.length > 1 ? ` (+${weak.length - 1} more)` : ""}`);
       parts.coverage = { v, noData: !canCover, note: bits.join(" · "), covered, weak };
     }
@@ -308,11 +338,11 @@
     const full = out.every((p) => p.v >= 1 - EPS);
     const sc = empty ? null : full ? 100 : Math.max(1, Math.min(99, Math.floor(raw + EPS)));
     const notes = [];
-    if (unranked) notes.push(`${unranked} unranked ${unranked === 1 ? "card counts" : "cards count"} as 50 until ${unranked === 1 ? "it's" : "they're"} analysed.`);
+    if (unranked) notes.push(`${unranked} unranked ${unranked === 1 ? "pick is" : "picks are"} scored from ${unranked === 1 ? "its" : "their"} stats (cards: ATK and HP · support: effect at ${rarity}).`);
     if (missing) notes.push(`${missing} ${missing === 1 ? "card isn't" : "cards aren't"} in the library yet, so ${missing === 1 ? "it doesn't" : "they don't"} count.`);
     if (out.some((p) => p.noData || p.partial)) notes.push("Parts marked “Not enough data yet” score half until the cards are analysed.");
     const b = band(sc);
-    return { score: sc, raw, band: b.band, label: b.label, parts: out, notes, empty, mode, nCards, nSup, unranked, missing };
+    return { score: sc, raw, band: b.band, label: b.label, parts: out, notes, empty, mode, rarity, nCards, nSup, unranked, missing };
   }
   function slots(a) {
     const out = [];
@@ -357,7 +387,7 @@
       return { id: t.id || "", name: t.name || pretty(t.id || "Deck"), count: hit, mock: !!t.mock };
     }).filter((t) => t.count >= K.strongMin).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
-    // Weak vs: tags 3+ of our cards are weak to · Meta (GOD/SS) cards nobody in the team beats
+    // Weak vs: tags 3+ of our cards are weak to · Meta (Meta/SS) cards nobody in the team beats
     const weak = weakTags(members);
     const beaten = new Set(beatCount.keys());
     const weakCards = l.has.beats && members.length
@@ -400,7 +430,7 @@
       });
       if (best && best.raw > base.raw + EPS) out.push({ ...best, gain: best.raw - base.raw, before: base.score });
     });
-    const val = (id) => (key === "cards" ? cardValT(deck, l.cardById.get(id), base.mode) : supVal(l.supById.get(id), base.mode));
+    const val = (id) => (key === "cards" ? cardValT(deck, l.cardById.get(id), base.mode) : supVal(l.supById.get(id), base.mode, base.rarity));
     return out.sort((a, b) => b.gain - a.gain || val(b.id) - val(a.id) || a.id.localeCompare(b.id)).slice(0, n);
   }
 
