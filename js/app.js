@@ -21,7 +21,7 @@
   };
   const STORE_KEY = "cbi:lastPage";
   const RARITY_KEY = "cbi:rarity";
-  const TIER_COLOR = { GOD: "--t-god", SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d" };
+  const TIER_COLOR = { Meta: "--t-meta", SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b" };   // Meta = was GOD (owner 2026-10-28) · C / D dropped
   const RARITY_SWATCH = {
     Normal: "var(--r-normal)", Shiny: "var(--r-shiny)",
     Rainbow: "linear-gradient(135deg,#e8607a,#e9a75a,#7fd39a,#69b9e0,#8a7be0)",
@@ -49,6 +49,14 @@
     return res.json();
   }
 
+  /* Only the best meta.rankTop of a list keep their tier (routine B ranks at most that many · this guards the rest) */
+  const rankTop = () => (state.meta && Number(state.meta.rankTop) > 0 ? Math.floor(state.meta.rankTop) : 50);
+  function topOnly(list, val) {
+    if (!Array.isArray(list)) return;
+    const top = rankTop();
+    list.filter((x) => x && x.tier && val(x) > 0).sort((a, b) => val(b) - val(a)).slice(top).forEach((x) => { x.tier = ""; });
+  }
+
   /* ---------- Number helpers ---------- */
   function rarityOf(name) { return state.meta.rarities.find((r) => r.name === name) || state.meta.rarities[0]; }
   function statAt(card, key, rarity) {
@@ -69,10 +77,27 @@
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
 
+  /* Support values by level (owner 2026-10-28 · PROGRESS §5.4): Normal value × (1 + 0.25 × level), level = the rarity's
+     place (Normal 0 … Godly 8). The game rounds to 1 decimal and an exact …5 goes to the even digit (6.25 → 6.2, 8.75 → 8.8).
+     effect = { name, desc: "… gets {0}% more max HP.", vals: [5], type: "max-hp" } · {0} {1} … = vals at the picked level */
+  function levelOf(rarity) { const i = state.meta ? state.meta.rarities.findIndex((r) => r.name === rarity) : -1; return i < 0 ? 0 : i; }
+  const supLevelMult = (rarity) => 1 + 0.25 * levelOf(rarity);
+  function supAt(base, rarity) {
+    const b = Math.round(Number(base) * 1000);                   // thousandths: whole numbers, no float drift
+    if (!Number.isFinite(b) || b <= 0) return 0;
+    const n = b * (4 + levelOf(rarity));                          // value × 4000 (× (1 + 0.25 L) = × (4 + L) / 4)
+    const q = Math.floor(n / 400), r = n - q * 400;               // tenths + what's left (half a tenth = 200)
+    return (r > 200 || (r === 200 && q % 2) ? q + 1 : q) / 10;
+  }
+  const supVals = (s) => (s && s.effect && typeof s.effect === "object" && Array.isArray(s.effect.vals) ? s.effect.vals : []);
+  const supValue = (s, rarity) => supAt(supVals(s)[0], rarity);  // the main value (vals[0]) at a rarity · 0 = none
+  const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => { const v = supVals(s)[+i]; return v == null ? m : String(supAt(v, rarity)); });
+
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
-     New cards added in routine A are unranked until routine B scores them. */
+     Only the strongest meta.rankTop (50) cards and 50 support are ranked (owner 2026-10-28): the rest stay unranked for good
+     (in the library, searchable, usable in decks, never in the Tier List). New cards from routine A are unranked too. */
   const isRanked = (card) => !!(card.scores && card.scores.overall > 0 && card.tier);
-  const cardLabel = (card, rarity) => `${card.name}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", not ranked yet"}`;
+  const cardLabel = (card, rarity) => `${card.name}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", unranked"}`;
 
   /* ---------- Placeholder art (until real images exist) ----------
      Step 9.6b: jewel-tone gradient + a gothic arch window + the initials in Cinzel.
@@ -460,6 +485,8 @@
         loadJSON("data/traits.json").catch(() => null),  // Trait Shop (js/traits.js); the site copes without it
       ]);
       state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits;
+      topOnly(cards, (c) => c.scores && c.scores.overall);
+      topOnly(support, (s) => s.scores && s.scores.value);
     } catch (err) {
       console.error(err);
       $("#card-grid").innerHTML = "";
@@ -506,7 +533,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rankTop, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js

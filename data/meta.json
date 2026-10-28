@@ -11,14 +11,13 @@
     { "name": "Godlike",  "stat": 183,  "odds": 250000.2500003 },
     { "name": "Godly",  "stat": 327,  "odds": 1000000 }
   ],
+  "rankTop": 50,
   "tiers": [
-    { "name": "GOD", "min": 95 },
+    { "name": "Meta", "min": 95 },
     { "name": "SS", "min": 90 },
     { "name": "S", "min": 80 },
     { "name": "A", "min": 70 },
-    { "name": "B", "min": 60 },
-    { "name": "C", "min": 50 },
-    { "name": "D", "min": 0 }
+    { "name": "B", "min": 0 }
   ],
   "modes": [
     { "id": "tower", "name": "Ascended Tower", "enabled": true, "weights": {"power": 30, "synergy": 25, "coverage": 20, "roles": 15, "position": 10}, "roles": {"Tank": 1, "DPS": 2} },

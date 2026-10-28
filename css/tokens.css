@@ -132,13 +132,13 @@
   --bad: #e57a87;
 
   /* ---- Tier palette (jewel tones: flame, ruby, amber, gold, jade, sapphire, pewter) ---- */
-  --t-god: #e2453c;         /* GOD (above SS) · GOD + SS = Meta cards */
+  --t-meta: #e2453c;        /* tier Meta (was GOD, owner 2026-10-28) · Meta + SS = the Meta cards */
   --t-ss: #d75d80;
   --t-s: #e09c4c;
   --t-a: #d9c262;
   --t-b: #6fc08f;
-  --t-c: #62a5d8;
-  --t-d: #8c8fa5;
+  --t-c: #62a5d8;           /* tiers C / D were dropped 2026-10-28: these two stay as Tier Maker row colours (saved lists use them) */
+  --t-d: #8c8fa5;           /* + the grey for anything without a tier */
   /* extra row colours for the Tier Maker (step 8) — a row stores the variable name, e.g. "--t-x-teal" */
   --t-x-red: #d8584f;
   --t-x-lime: #b5cf6a;

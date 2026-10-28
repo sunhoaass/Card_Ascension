@@ -67,6 +67,7 @@
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--tc, var(--t-d)) 60%, #000), 0 2px 6px rgba(0, 0, 0, .6);
 }
 .scard__tier::before { content: ""; position: absolute; inset: 3px; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, .35); }
+.scard__tier--long { font-size: 8.5px; letter-spacing: -.02em; }   /* 4-letter tier (Meta) fits the seal */
 .scard__info {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: block;
   padding: 30px 10px 10px; text-align: center;
@@ -146,3 +147,10 @@
   .sdetail .detail__hero .scard { width: 300px; }
 }
 @media (min-width: 1700px) { .slist { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ---------- Effect values by rarity (2026-10-28: Normal × (1 + 0.25 × level), picked with the site-wide rarity chips) ---------- */
+[hidden].rarity-picker { display: none; }
+.sd-lv { margin-left: var(--s-2); color: var(--ink-dim); font-weight: 600; letter-spacing: .06em; text-transform: none; }
+.sd-rarity { margin: var(--s-3) 0; padding: 4px 0; }
+.dpanel__title + .sd-rarity { margin-top: var(--s-3); }
+.sd-lv-note { margin-top: var(--s-2); }

@@ -1163,7 +1163,7 @@
         </section>`
       : `<section class="dpanel" aria-labelledby="d-t-overall">
           <h3 class="dpanel__title" id="d-t-overall">Overall score</h3>
-          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>This card hasn't been scored yet. Its Overall score and tier will show up here once it is.</span></div>
+          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>Only the top ${C.rankTop()} cards get an Overall score and a tier. Decks still count this one, from its ATK and HP.</span></div>
           ${note ? `<p class="dpanel__note">${esc(note)}</p>` : ""}
         </section>`;
     const teamHTML = `

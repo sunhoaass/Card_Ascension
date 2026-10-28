@@ -1,0 +1,10 @@
+{
+  "updated": "2026-10-28",
+  "note": "Every card and support in the game (PROGRESS.md §5.2). Not loaded by the site: routine B picks the top meta.rankTop (50) from here. card: atk/hp at Normal · support: vals/type = effect.vals/effect.type at Normal · src = screenshot file in inbox/ · round = batch round (0 = added before the batch).",
+  "items": [
+    {"id": "dragon-emperor-monarch", "kind": "card", "name": "Dragon Emperor Monarch", "series": "Solo Leveling", "odds": 5523945238, "atk": 1333153, "hp": 8887688, "src": "", "round": 0},
+    {"id": "moon-eye-ghost", "kind": "card", "name": "Moon Eye Ghost", "series": "Naruto", "odds": 3679415015, "atk": 1079693, "hp": 7197952, "src": "", "round": 0},
+    {"id": "atomic-shadow-lord", "kind": "card", "name": "Atomic Shadow Lord", "series": "The Eminence in Shadow", "odds": 9496060703, "atk": 969893, "hp": 6465954, "src": "", "round": 0},
+    {"id": "beast-emperor", "kind": "card", "name": "Beast Emperor", "series": "One Piece", "odds": 2806284629, "atk": 937943, "hp": 6252952, "src": "", "round": 0}
+  ]
+}
