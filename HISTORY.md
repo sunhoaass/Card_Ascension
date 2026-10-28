@@ -1137,3 +1137,4 @@
     | การ์ด 4 ใบ Normal | 59.8 / 33ms | 59.5 / 50ms |
     | การ์ดทดสอบ 60 ใบ Normal | 59.5 / 33ms | 59.6 / 33ms |
   - **ไฟล์ที่ต้องอัป:** `index.html`, `PROGRESS.md`, `HISTORY.md` → root · `data/meta.json`, `data/pool.json` → `data/` · `css/tier.css` → `css/` · `js/app.js`, `js/tier.js`, `js/detail.js`, `js/teamscore.js` → `js/` · `tools/batch.py` → `tools/` · `inbox/progress.json`, `inbox/cards/.gitkeep`, `inbox/support/.gitkeep` → `inbox/` (ใช้ Claude Code = อยู่ใน pull request แล้ว)
+  - **คำตอบเจ้าของ (กดเลือก หลังเปิด pull request):** ใบ ranked ที่รองาน B คิด 50 แบบเดิม · ใบต่ำกว่าเกณฑ์ระหว่างรอบ = `later` · รูปข้าม/มีปัญหาเก็บไว้ · **เพิ่ม `CLAUDE.md`** (3 บรรทัด: อ่าน PROGRESS ตามตาราง 📑 · "ทำรอบถัดไป" = §7 Batch) → prompt batch เหลือ `ทำรอบถัดไป` · ไฟล์เพิ่ม: `CLAUDE.md` → root
