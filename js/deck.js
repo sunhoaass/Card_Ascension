@@ -315,7 +315,7 @@
       art.tabIndex = -1;
       art.removeAttribute("role");
     } else {
-      art = C.support.card(x);
+      art = C.support.card(x, { rarity });   // its values at the deck's rarity
       FX.tilt(art);
     }
     art.setAttribute("aria-hidden", "true");
@@ -601,7 +601,7 @@
       el.className = "dk-sug__item fx-press";
       el.dataset.sugKind = kind;
       el.dataset.id = s.id;
-      const art = kind === "cards" ? C.renderCard(x, cur.rarity, { mini: true }) : C.support.card(x);
+      const art = kind === "cards" ? C.renderCard(x, cur.rarity, { mini: true }) : C.support.card(x, { rarity: cur.rarity });
       art.tabIndex = -1;
       art.removeAttribute("role");
       art.setAttribute("aria-hidden", "true");
@@ -612,6 +612,7 @@
       sugCache.set(k, el);
     }
     if (kind === "cards" && el._rarity !== cur.rarity) { const card = $(".card", el); if (card) C.setCardRarity(card, x, cur.rarity, { animate: false }); el._rarity = cur.rarity; }
+    if (kind === "support" && el._rarity !== cur.rarity) { C.support.setTile($(".scard", el), x, cur.rarity); el._rarity = cur.rarity; }
     const d = (s.after || 0) - (s.before || 0);
     const gain = d >= 1 ? `+${d}` : "+<1";
     el.dataset.slot = s.slot;
@@ -756,6 +757,8 @@
     const els = ed.shown.cards.filter(Boolean).map((o) => o.el);
     const seen = els.map((el) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
     els.forEach((el, i) => { const c = cardById.get(el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
+    // support tiles: their values count to the deck's new rarity
+    ed.shown.support.filter(Boolean).forEach((o) => { const sp = supById.get(o.el.dataset.id); if (sp) C.support.setTile($(".scard", o.el), sp, name, { animate: o.el.isConnected && rectVisible(o.el.getBoundingClientRect()) }); });
     refresh();                                     // card scores don't depend on rarity; unranked support does (its effect at this level, §10.5)
   }
 
@@ -914,7 +917,7 @@
           el.tabIndex = 0;
           el.setAttribute("role", "listitem");
           el.dataset.id = x.id;
-          const art = isCard ? C.renderCard(x, rarity, { mini: true }) : C.support.card(x);
+          const art = isCard ? C.renderCard(x, rarity, { mini: true }) : C.support.card(x, { rarity });
           if (isCard) { art.tabIndex = -1; art.removeAttribute("role"); } else FX.tilt(art);
           art.setAttribute("aria-hidden", "true");
           el.appendChild(art);

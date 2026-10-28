@@ -9,7 +9,19 @@
       "vals": [
         5
       ],
-      "type": "max-hp"
+      "type": "max-hp",
+      "pos": [
+        {
+          "i": 0,
+          "x": 58.17,
+          "y": 100.0,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.33,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 146,
     "obtain": "Rolls anywhere",
@@ -33,7 +45,19 @@
       "vals": [
         4
       ],
-      "type": "double-attack"
+      "type": "double-attack",
+      "pos": [
+        {
+          "i": 0,
+          "x": 63.0,
+          "y": 100.0,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.33,
+          "gl": 2.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 256,
     "obtain": "Rolls anywhere",
@@ -57,7 +81,19 @@
       "vals": [
         0.4
       ],
-      "type": "burn"
+      "type": "burn",
+      "pos": [
+        {
+          "i": 0,
+          "x": 44.0,
+          "y": 100.0,
+          "w": 14.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 0.67,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 204,
     "obtain": "Rolls anywhere",
@@ -81,7 +117,19 @@
       "vals": [
         0.9
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 46.17,
+          "y": 105.83,
+          "w": 12.5,
+          "h": 5.0,
+          "cap": 4.83,
+          "gl": 1.83,
+          "gr": 1.67
+        }
+      ]
     },
     "odds": 130,
     "obtain": "Rolls anywhere",
@@ -105,7 +153,19 @@
       "vals": [
         3
       ],
-      "type": "random-boost"
+      "type": "random-boost",
+      "pos": [
+        {
+          "i": 0,
+          "x": 73.17,
+          "y": 98.67,
+          "w": 8.5,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 2.0,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 359,
     "obtain": "Rolls anywhere",
@@ -129,7 +189,19 @@
       "vals": [
         2
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 25.67,
+          "y": 109.5,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.33,
+          "gl": 13.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 183,
     "obtain": "Rolls anywhere",
@@ -154,7 +226,29 @@
         23,
         3
       ],
-      "type": "revive"
+      "type": "revive",
+      "pos": [
+        {
+          "i": 0,
+          "x": 29.17,
+          "y": 97.33,
+          "w": 9.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 83.83,
+          "y": 104.17,
+          "w": 6.83,
+          "h": 4.33,
+          "cap": 4.33,
+          "gl": 2.0,
+          "gr": 9.33
+        }
+      ]
     },
     "odds": 287,
     "obtain": "Rolls anywhere",
@@ -178,7 +272,19 @@
       "vals": [
         6
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 23.5,
+          "y": 109.5,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 13.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 163,
     "obtain": "Rolls anywhere",
@@ -202,7 +308,19 @@
       "vals": [
         9
       ],
-      "type": "dodge"
+      "type": "dodge",
+      "pos": [
+        {
+          "i": 0,
+          "x": 52.0,
+          "y": 100.0,
+          "w": 9.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 229,
     "obtain": "Rolls anywhere",
@@ -226,7 +344,19 @@
       "vals": [
         1
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 64.67,
+          "y": 100.0,
+          "w": 8.83,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 321,
     "obtain": "Rolls anywhere",
@@ -250,7 +380,19 @@
       "vals": [
         9
       ],
-      "type": "lifesteal"
+      "type": "lifesteal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 64.83,
+          "y": 100.0,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 4992,
     "obtain": "Rolls anywhere",
@@ -274,7 +416,19 @@
       "vals": [
         4
       ],
-      "type": "mark"
+      "type": "mark",
+      "pos": [
+        {
+          "i": 0,
+          "x": 87.33,
+          "y": 98.67,
+          "w": 8.5,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 1.5,
+          "gr": 4.17
+        }
+      ]
     },
     "odds": 6097,
     "obtain": "Rolls anywhere",
@@ -298,7 +452,19 @@
       "vals": [
         5
       ],
-      "type": "double-attack"
+      "type": "double-attack",
+      "pos": [
+        {
+          "i": 0,
+          "x": 63.0,
+          "y": 100.0,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.33,
+          "gl": 2.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 3183,
     "obtain": "Rolls anywhere",
@@ -322,7 +488,19 @@
       "vals": [
         5
       ],
-      "type": "max-hp-hit"
+      "type": "max-hp-hit",
+      "pos": [
+        {
+          "i": 0,
+          "x": 40.33,
+          "y": 109.0,
+          "w": 8.83,
+          "h": 5.33,
+          "cap": 5.33,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 2740,
     "obtain": "Rolls anywhere",
@@ -346,7 +524,19 @@
       "vals": [
         11
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 64.67,
+          "y": 100.0,
+          "w": 11.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 4517,
     "obtain": "Rolls anywhere",
@@ -371,7 +561,29 @@
         3,
         3
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 64.33,
+          "y": 100.0,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.17,
+          "gr": 2.33
+        },
+        {
+          "i": 1,
+          "x": 43.0,
+          "y": 109.5,
+          "w": 9.67,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 4749,
     "obtain": "Rolls anywhere",
@@ -395,7 +607,19 @@
       "vals": [
         1
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 66.0,
+          "y": 100.0,
+          "w": 8.83,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 2479,
     "obtain": "Rolls anywhere",
@@ -419,7 +643,19 @@
       "vals": [
         12
       ],
-      "type": "paralyze"
+      "type": "paralyze",
+      "pos": [
+        {
+          "i": 0,
+          "x": 43.67,
+          "y": 97.83,
+          "w": 9.67,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.5,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 4087,
     "obtain": "Rolls anywhere",
@@ -443,7 +679,19 @@
       "vals": [
         10
       ],
-      "type": "crit"
+      "type": "crit",
+      "pos": [
+        {
+          "i": 0,
+          "x": 51.83,
+          "y": 98.67,
+          "w": 10.67,
+          "h": 5.5,
+          "cap": 5.5,
+          "gl": 1.67,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 2880,
     "obtain": "Rolls anywhere",
@@ -467,7 +715,19 @@
       "vals": [
         7.5
       ],
-      "type": "confuse"
+      "type": "confuse",
+      "pos": [
+        {
+          "i": 0,
+          "x": 66.33,
+          "y": 98.67,
+          "w": 12.67,
+          "h": 5.5,
+          "cap": 5.5,
+          "gl": 1.5,
+          "gr": 1.67
+        }
+      ]
     },
     "odds": 3346,
     "obtain": "Rolls anywhere",
@@ -491,7 +751,19 @@
       "vals": [
         1.5
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 35.33,
+          "y": 100.0,
+          "w": 13.83,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 2358,
     "obtain": "Rolls anywhere",
@@ -515,7 +787,19 @@
       "vals": [
         6
       ],
-      "type": "damage-reduction"
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 73.83,
+          "y": 100.17,
+          "w": 9.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 2.5,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 6410,
     "obtain": "Rolls anywhere",
@@ -539,7 +823,19 @@
       "vals": [
         25
       ],
-      "type": "first-hit"
+      "type": "first-hit",
+      "pos": [
+        {
+          "i": 0,
+          "x": 37.67,
+          "y": 109.5,
+          "w": 13.17,
+          "h": 6.33,
+          "cap": 6.33,
+          "gl": 2.17,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 7084,
     "obtain": "Rolls anywhere",
@@ -564,7 +860,29 @@
         40,
         12
       ],
-      "type": "weaken"
+      "type": "weaken",
+      "pos": [
+        {
+          "i": 0,
+          "x": 27.33,
+          "y": 97.33,
+          "w": 9.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 22.33,
+          "y": 104.17,
+          "w": 9.17,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 0.5,
+          "gr": 2.17
+        }
+      ]
     },
     "odds": 3028,
     "obtain": "Rolls anywhere",
@@ -588,7 +906,19 @@
       "vals": [
         0.8
       ],
-      "type": "max-hp-hit"
+      "type": "max-hp-hit",
+      "pos": [
+        {
+          "i": 0,
+          "x": 62.67,
+          "y": 100.0,
+          "w": 14.0,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 2.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 7447,
     "obtain": "Rolls anywhere",
@@ -612,7 +942,19 @@
       "vals": [
         6
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 38.17,
+          "y": 106.83,
+          "w": 8.33,
+          "h": 5.33,
+          "cap": 5.33,
+          "gl": 1.67,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 3518,
     "obtain": "Rolls anywhere",
@@ -636,7 +978,19 @@
       "vals": [
         7.5
       ],
-      "type": "gems"
+      "type": "gems",
+      "pos": [
+        {
+          "i": 0,
+          "x": 39.33,
+          "y": 109.5,
+          "w": 13.83,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 3888,
     "obtain": "Rolls anywhere",
@@ -660,7 +1014,19 @@
       "vals": [
         2.4
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 49.17,
+          "y": 105.83,
+          "w": 11.67,
+          "h": 5.0,
+          "cap": 4.83,
+          "gl": 1.67,
+          "gr": 1.67
+        }
+      ]
     },
     "odds": 3698,
     "obtain": "Rolls anywhere",
@@ -684,7 +1050,19 @@
       "vals": [
         3
       ],
-      "type": "shield"
+      "type": "shield",
+      "pos": [
+        {
+          "i": 0,
+          "x": 40.67,
+          "y": 106.83,
+          "w": 5.5,
+          "h": 3.5,
+          "cap": 3.5,
+          "gl": 1.5,
+          "gr": 1.5
+        }
+      ]
     },
     "odds": 5248,
     "obtain": "Rolls anywhere",
@@ -708,7 +1086,19 @@
       "vals": [
         10
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 51.83,
+          "y": 105.83,
+          "w": 10.33,
+          "h": 5.0,
+          "cap": 4.83,
+          "gl": 1.67,
+          "gr": 1.67
+        }
+      ]
     },
     "odds": 2606,
     "obtain": "Rolls anywhere",
@@ -733,7 +1123,29 @@
         15,
         1
       ],
-      "type": "revive"
+      "type": "revive",
+      "pos": [
+        {
+          "i": 0,
+          "x": 29.5,
+          "y": 97.33,
+          "w": 9.17,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 82.83,
+          "y": 104.17,
+          "w": 6.5,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 4297,
     "obtain": "Rolls anywhere",
@@ -757,7 +1169,19 @@
       "vals": [
         2
       ],
-      "type": "damage-reduction"
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 66.5,
+          "y": 112.17,
+          "w": 5.5,
+          "h": 3.67,
+          "cap": 3.67,
+          "gl": 1.5,
+          "gr": 1.67
+        }
+      ]
     },
     "odds": 5517,
     "obtain": "Rolls anywhere",
@@ -781,7 +1205,19 @@
       "vals": [
         6
       ],
-      "type": "max-hp-hit"
+      "type": "max-hp-hit",
+      "pos": [
+        {
+          "i": 0,
+          "x": 46.17,
+          "y": 105.0,
+          "w": 7.17,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.67,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 5800,
     "obtain": "Rolls anywhere",
@@ -805,7 +1241,19 @@
       "vals": [
         6
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 33.83,
+          "y": 109.5,
+          "w": 9.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 6739,
     "obtain": "Rolls anywhere",
@@ -829,7 +1277,19 @@
       "vals": [
         19
       ],
-      "type": "echo"
+      "type": "echo",
+      "pos": [
+        {
+          "i": 0,
+          "x": 48.67,
+          "y": 105.83,
+          "w": 10.33,
+          "h": 5.0,
+          "cap": 4.83,
+          "gl": 1.83,
+          "gr": 1.67
+        }
+      ]
     },
     "odds": 61000,
     "obtain": "Rolls anywhere",
@@ -853,7 +1313,19 @@
       "vals": [
         2.7
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 12.67,
+          "y": 106.83,
+          "w": 12.5,
+          "h": 5.33,
+          "cap": 5.33,
+          "gl": 12.67,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 54000,
     "obtain": "Rolls anywhere",
@@ -878,7 +1350,29 @@
         4.5,
         1.1
       ],
-      "type": "max-hp"
+      "type": "max-hp",
+      "pos": [
+        {
+          "i": 0,
+          "x": 46.83,
+          "y": 97.83,
+          "w": 11.33,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.17
+        },
+        {
+          "i": 1,
+          "x": 9.5,
+          "y": 105.0,
+          "w": 10.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 9.5,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 56000,
     "obtain": "Rolls anywhere",
@@ -902,7 +1396,19 @@
       "vals": [
         0.5
       ],
-      "type": "poison"
+      "type": "poison",
+      "pos": [
+        {
+          "i": 0,
+          "x": 64.83,
+          "y": 100.17,
+          "w": 14.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 0.5,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 45000,
     "obtain": "Rolls anywhere",
@@ -927,7 +1433,29 @@
         3.8,
         4
       ],
-      "type": "damage-reduction"
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 30.0,
+          "y": 97.33,
+          "w": 10.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 2.0,
+          "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 38.33,
+          "y": 104.17,
+          "w": 7.0,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 64000,
     "obtain": "Rolls anywhere",
@@ -951,7 +1479,19 @@
       "vals": [
         13
       ],
-      "type": "seal"
+      "type": "seal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 53.17,
+          "y": 98.67,
+          "w": 10.67,
+          "h": 5.5,
+          "cap": 5.5,
+          "gl": 1.67,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 46000,
     "obtain": "Rolls anywhere",
@@ -976,7 +1516,29 @@
         51,
         3.4
       ],
-      "type": "damage-reduction"
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 77.67,
+          "y": 97.33,
+          "w": 9.0,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 2.0,
+          "gr": 2.17
+        },
+        {
+          "i": 1,
+          "x": 59.33,
+          "y": 104.17,
+          "w": 10.5,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 2.0,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 63000,
     "obtain": "Rolls anywhere",
@@ -1000,7 +1562,19 @@
       "vals": [
         14
       ],
-      "type": "dodge"
+      "type": "dodge",
+      "pos": [
+        {
+          "i": 0,
+          "x": 75.83,
+          "y": 100.0,
+          "w": 12.33,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.17,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 70000,
     "obtain": "Rolls anywhere",
@@ -1024,7 +1598,19 @@
       "vals": [
         6.3
       ],
-      "type": "gems"
+      "type": "gems",
+      "pos": [
+        {
+          "i": 0,
+          "x": 40.33,
+          "y": 97.33,
+          "w": 10.33,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 59000,
     "obtain": "Rolls anywhere",
@@ -1048,7 +1634,19 @@
       "vals": [
         11
       ],
-      "type": "shield"
+      "type": "shield",
+      "pos": [
+        {
+          "i": 0,
+          "x": 42.83,
+          "y": 106.83,
+          "w": 9.83,
+          "h": 5.33,
+          "cap": 5.33,
+          "gl": 1.5,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 52000,
     "obtain": "Rolls anywhere",
@@ -1072,7 +1670,19 @@
       "vals": [
         0.9
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 28.33,
+          "y": 105.0,
+          "w": 11.17,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.17
+        }
+      ]
     },
     "odds": 49000,
     "obtain": "Rolls anywhere",
@@ -1096,7 +1706,19 @@
       "vals": [
         0.7
       ],
-      "type": "burn"
+      "type": "burn",
+      "pos": [
+        {
+          "i": 0,
+          "x": 67.5,
+          "y": 98.67,
+          "w": 12.33,
+          "h": 5.5,
+          "cap": 5.17,
+          "gl": 0.33,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 65000,
     "obtain": "Rolls anywhere",
@@ -1120,7 +1742,19 @@
       "vals": [
         12
       ],
-      "type": "freeze"
+      "type": "freeze",
+      "pos": [
+        {
+          "i": 0,
+          "x": 53.5,
+          "y": 100.17,
+          "w": 12.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 51000,
     "obtain": "Rolls anywhere",
@@ -1144,7 +1778,19 @@
       "vals": [
         15
       ],
-      "type": "crit"
+      "type": "crit",
+      "pos": [
+        {
+          "i": 0,
+          "x": 51.83,
+          "y": 98.67,
+          "w": 10.67,
+          "h": 5.5,
+          "cap": 5.5,
+          "gl": 1.67,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 68000,
     "obtain": "Rolls anywhere",
@@ -1168,7 +1814,19 @@
       "vals": [
         3.3
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 48.67,
+          "y": 104.17,
+          "w": 10.5,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 2.0,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 45000,
     "obtain": "Rolls anywhere",
@@ -1192,7 +1850,19 @@
       "vals": [
         56
       ],
-      "type": "damage-reduction"
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 60.83,
+          "y": 105.83,
+          "w": 10.67,
+          "h": 5.0,
+          "cap": 5.0,
+          "gl": 1.83,
+          "gr": 1.5
+        }
+      ]
     },
     "odds": 62000,
     "obtain": "Rolls anywhere",
@@ -1216,7 +1886,19 @@
       "vals": [
         7.5
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 62.33,
+          "y": 100.0,
+          "w": 13.83,
+          "h": 6.33,
+          "cap": 6.33,
+          "gl": 2.0,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 58000,
     "obtain": "Rolls anywhere",
@@ -1240,7 +1922,19 @@
       "vals": [
         13
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 49.17,
+          "y": 105.83,
+          "w": 9.83,
+          "h": 5.0,
+          "cap": 4.83,
+          "gl": 1.67,
+          "gr": 1.83
+        }
+      ]
     },
     "odds": 69000,
     "obtain": "Rolls anywhere",
@@ -1265,7 +1959,29 @@
         2,
         1.5
       ],
-      "type": "max-hp"
+      "type": "max-hp",
+      "pos": [
+        {
+          "i": 0,
+          "x": 48.67,
+          "y": 97.33,
+          "w": 6.83,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 2.0,
+          "gr": 2.17
+        },
+        {
+          "i": 1,
+          "x": 17.83,
+          "y": 104.17,
+          "w": 10.17,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 53000,
     "obtain": "Rolls anywhere",
@@ -1289,7 +2005,19 @@
       "vals": [
         15
       ],
-      "type": "paralyze"
+      "type": "paralyze",
+      "pos": [
+        {
+          "i": 0,
+          "x": 63.17,
+          "y": 97.33,
+          "w": 9.33,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.67,
+          "gr": 2.0
+        }
+      ]
     },
     "odds": 44000,
     "obtain": "Rolls anywhere",
@@ -1313,7 +2041,19 @@
       "vals": [
         10
       ],
-      "type": "lifesteal"
+      "type": "lifesteal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 20.17,
+          "y": 109.5,
+          "w": 12.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 60000,
     "obtain": "Rolls anywhere",
@@ -1337,7 +2077,19 @@
       "vals": [
         13
       ],
-      "type": "stun"
+      "type": "stun",
+      "pos": [
+        {
+          "i": 0,
+          "x": 77.17,
+          "y": 100.0,
+          "w": 12.33,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.33,
+          "gr": 10.5
+        }
+      ]
     },
     "odds": 55000,
     "obtain": "Rolls anywhere",
@@ -1361,7 +2113,19 @@
       "vals": [
         3.8
       ],
-      "type": "heal"
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 9.33,
+          "y": 109.5,
+          "w": 14.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 9.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 737000,
     "obtain": "Rolls anywhere",
@@ -1385,7 +2149,19 @@
       "vals": [
         11
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 24.67,
+          "y": 109.5,
+          "w": 11.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 13.33,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 558000,
     "obtain": "Rolls anywhere",
@@ -1409,7 +2185,19 @@
       "vals": [
         53
       ],
-      "type": "dmg"
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 24.0,
+          "y": 109.5,
+          "w": 13.17,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 13.33,
+          "gr": 2.33
+        }
+      ]
     },
     "odds": 520000,
     "obtain": "Rolls anywhere",
@@ -1434,7 +2222,29 @@
         9,
         4.5
       ],
-      "type": "splash"
+      "type": "splash",
+      "pos": [
+        {
+          "i": 0,
+          "x": 12.17,
+          "y": 104.17,
+          "w": 7.0,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.67,
+          "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 83.67,
+          "y": 104.17,
+          "w": 10.5,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.67,
+          "gr": 5.83
+        }
+      ]
     },
     "odds": 641000,
     "obtain": "Rolls anywhere",
@@ -1458,7 +2268,19 @@
       "vals": [
         50
       ],
-      "type": "damage-reduction"
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 43.5,
+          "y": 109.5,
+          "w": 13.17,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 2.33,
+          "gr": 2.5
+        }
+      ]
     },
     "odds": 612000,
     "obtain": "Rolls anywhere",

@@ -3,6 +3,8 @@
    · rarity picker, search, sort, tier / role / series filters
    · setRarity(): the one place that changes the rarity for the whole site (fires "cbi:rarity")
    · the card detail lives in js/detail.js (step 12)
+   · Cards | Support switch at the top (owner 2026-10-28 · #cards / #support, state.kind): the Support side is js/support.js
+   · both sides start sorted rarest first (pull odds, high to low) · the Sort menu still changes it
    Needs js/fx.js and js/app.js (window.FX, window.CBI) loaded first.
    ========================================================== */
 (function () {
@@ -10,13 +12,18 @@
   const { state, $, esc } = C;
 
   const ROLE_ORDER = ["DPS", "Tank", "Support", "Hybrid"];
-  const filters = { q: "", tier: "", role: "", series: "", sort: "overall", dir: "desc" };
+  const filters = { q: "", tier: "", role: "", series: "", sort: "odds", dir: "desc" };   // rarest first (owner 2026-10-28)
   const cardById = new Map();     // id -> card data
   const cardEls = new Map();      // id -> card element in the grid (kept even while filtered out)
   const searchText = new Map();   // id -> lowercase text used by the search box
   const ui = {};
   let shown = [];                 // ids currently in the grid, in order
-  let built = false;              // grid cards exist (made on the first visit to the Cards tab, step 9.5)
+  let built = false;              // grid cards exist (made on the first visit to the Cards side, step 9.5)
+  let shownKind = null;           // the side on screen: "cards" | "support"
+  const HEAD = {
+    cards: { eyebrow: "The Archive", title: "Cards", lead: "Pick a rarity to see each card's ATK, HP and pull odds at that level. Tap a card for the full breakdown." },
+    support: { eyebrow: "The Apothecary", title: "Support", lead: "Pick a rarity to see each support's effect at that level: the numbers on the card grow with it. Tap one for the full breakdown." },
+  };
 
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
 
@@ -25,6 +32,8 @@
      ========================================================== */
   function init() {
     Object.assign(ui, {
+      kind: $("#cards-kind"), cardsView: $("#cards-view"), supView: $("#support-view"),
+      eyebrow: $("#cards-eyebrow"), title: $("#cards-title"), lead: $("#cards-lead"),
       tools: $("#cards-tools"), grid: $("#card-grid"), none: $("#cards-none"), empty: $("#cards-empty"),
       rarity: $("#rarity-picker"), filters: $("#card-filters"), search: $("#card-search"),
       sort: $("#card-sort"), dir: $("#card-dir"), series: $("#card-series"), seriesField: $("#series-field"),
@@ -37,6 +46,7 @@
       searchText.set(c.id, [c.name, c.series, c.role, p.name, p.desc, s.name, s.desc].filter(Boolean).join(" ").toLowerCase());
     });
 
+    bindKind();
     ui.grid.innerHTML = "";
     ui.tools.hidden = !state.cards.length;
     ui.empty.hidden = state.cards.length > 0;
@@ -51,11 +61,51 @@
     buildFilters();
     bindTools();
     // step 9.5: the grid's cards are made the first time the Cards tab shows (not while you're on another tab)
-    C.lazy("cards", () => {
-      state.cards.forEach((c) => cardEls.set(c.id, C.renderCard(c, state.rarity)));
-      built = true;
-      apply({ animate: true });
+    // the Support side opened first: the card grid waits until the Cards side shows (view())
+    C.lazy("cards", () => { if (state.kind !== "support") build(); });
+  }
+  function build() {
+    if (built || !state.cards.length) return;
+    state.cards.forEach((c) => cardEls.set(c.id, C.renderCard(c, state.rarity)));
+    built = true;
+    apply({ animate: true });
+  }
+
+  /* ---------- Cards | Support switch (#cards / #support · no history entry, like the Tier List's Cards | Support) ---------- */
+  function bindKind() {
+    const pick = (k) => {
+      if (k === state.kind) return;
+      state.kind = k;
+      try { history.replaceState(history.state, "", "#" + k); } catch {}
+      C.route();   // app.js: showPage → view(kind, animate) + title + the remembered page
+    };
+    ui.kind.addEventListener("click", (e) => { const b = e.target.closest(".seg__btn[data-kind]"); if (b) pick(b.dataset.kind); });
+    ui.kind.addEventListener("keydown", (e) => {
+      const k = { ArrowRight: "support", ArrowLeft: "cards", Home: "cards", End: "support" }[e.key];
+      if (!k) return;
+      e.preventDefault(); pick(k);
+      ui.kind.querySelector(`[data-kind="${k}"]`).focus();
     });
+  }
+  // show one side · animate = the switch's plate slides + the new side fades in, its first cards come in one by one (§4)
+  function view(kind, { animate = false } = {}) {
+    kind = kind === "support" ? "support" : "cards";
+    state.kind = kind;
+    const changed = kind !== shownKind;
+    shownKind = kind;
+    ui.kind.style.setProperty("--i", kind === "support" ? 1 : 0);
+    ui.kind.querySelectorAll(".seg__btn").forEach((b) => { const on = b.dataset.kind === kind; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; });
+    ui.cardsView.hidden = kind !== "cards";
+    ui.supView.hidden = kind !== "support";
+    const h = HEAD[kind];
+    ui.eyebrow.textContent = h.eyebrow; ui.title.textContent = h.title; ui.lead.textContent = h.lead;
+    if (kind === "cards") build(); else C.support.build();
+    if (!changed || !animate) return;
+    const box = kind === "cards" ? ui.cardsView : ui.supView;
+    box.classList.remove("fx-page-in"); void box.offsetWidth; box.classList.add("fx-page-in");
+    const grid = kind === "cards" ? ui.grid : $("#support-grid");
+    FX.stagger(grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
+    requestAnimationFrame(() => C.revealChip(box));
   }
 
   function rarityChips(container) {
@@ -173,5 +223,5 @@
     return state.cards.slice().sort(compare).map((c) => c.id);
   }
 
-  C.cards = { init, setRarity, order };
+  C.cards = { init, setRarity, order, view, kind: () => shownKind };
 })();
