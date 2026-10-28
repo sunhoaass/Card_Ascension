@@ -6228,5 +6228,821 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "retired-hitman",
+    "name": "Retired Hitman",
+    "series": "",
+    "image": "images/cards/retired-hitman.webp",
+    "base": {
+      "atk": 13137,
+      "hp": 87580,
+      "def": 0,
+      "status": 0,
+      "odds": 384000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Legendary Hitman",
+      "desc": "Sakamoto turns anything into a weapon. 35% chance to dodge each hit. 45% chance to attack twice. 25% chance to crit for 1.8x damage. Every other card in your deck gets +8% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rose-whip-fox",
+    "name": "Rose Whip Fox",
+    "series": "",
+    "image": "images/cards/rose-whip-fox.webp",
+    "base": {
+      "atk": 22097,
+      "hp": 147310,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Sakura Love",
+    "passive": {
+      "name": "Rose Whip & Death Tree",
+      "desc": "Kurama: Every 2nd attack also hits the card behind for 37%. Each hit drains 4.1% of the enemy's max HP per turn for 3 turns, healing it. 17% chance to crit for 1.85x damage. 14% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sakura-blade-noble",
+    "name": "Sakura Blade Noble",
+    "series": "",
+    "image": "images/cards/sakura-blade-noble.webp",
+    "base": {
+      "atk": 10643,
+      "hp": 70950,
+      "def": 0,
+      "status": 0,
+      "odds": 126000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Senbonzakura Kageyoshi",
+      "desc": "A thousand blades. Every hit also hits the whole enemy bench for 20%. Each hit adds 1 Bleed stack (1.6% of the enemy's max HP per turn each, up to 4, 3 turns). Once, takes the killing blow for Rukia."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "second-hokage",
+    "name": "Second Hokage",
+    "series": "",
+    "image": "images/cards/second-hokage.webp",
+    "base": {
+      "atk": 8812,
+      "hp": 58748,
+      "def": 0,
+      "status": 0,
+      "odds": 93000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Flying Raijin Slash",
+      "desc": "Tobirama teleports in. Its first hit on each new enemy does 2x damage. Its attacks can't be dodged. With Hashirama in the deck: +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "shadow-garden-beta",
+    "name": "Shadow Garden Beta",
+    "series": "",
+    "image": "images/cards/shadow-garden-beta.webp",
+    "base": {
+      "atk": 13340,
+      "hp": 88936,
+      "def": 0,
+      "status": 0,
+      "odds": 253000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Slime Sword",
+      "desc": "Beta: 30% chance to crit for 1.8x damage. Takes 15% less damage. +10% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sickle-upper-moon",
+    "name": "Sickle Upper Moon",
+    "series": "",
+    "image": "images/cards/sickle-upper-moon.webp",
+    "base": {
+      "atk": 7982,
+      "hp": 53210,
+      "def": 0,
+      "status": 0,
+      "odds": 117000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Blood Sickles",
+      "desc": "Gyutaro: Each hit adds 2 Poison stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Every 2nd attack also hits the card behind for 35%. Once, brings Daki back with 50% HP. Heals 5% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "silver-fang",
+    "name": "Silver Fang",
+    "series": "",
+    "image": "images/cards/silver-fang.webp",
+    "base": {
+      "atk": 10435,
+      "hp": 69568,
+      "def": 0,
+      "status": 0,
+      "odds": 210000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Water Stream Rock Smashing Fist",
+      "desc": "Bang: 30% chance to dodge each hit. 40% chance to counter-attack when hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "snake-sannin",
+    "name": "Snake Sannin",
+    "series": "",
+    "image": "images/cards/snake-sannin.webp",
+    "base": {
+      "atk": 6979,
+      "hp": 46526,
+      "def": 0,
+      "status": 0,
+      "odds": 102000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Living Corpse Reincarnation",
+      "desc": "Orochimaru sheds his skin. Comes back once with 40% HP. Each hit adds 2 Poison stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spiral-bro",
+    "name": "Spiral Bro",
+    "series": "",
+    "image": "images/cards/spiral-bro.webp",
+    "base": {
+      "atk": 13347,
+      "hp": 88980,
+      "def": 0,
+      "status": 0,
+      "odds": 271000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kick Reason to the Curb",
+      "desc": "Kamina believes in the Simon who believes in him. +40% damage. Survives its first killing blow with 1 HP. When knocked out, Simon gets +50% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "steel-arm-alchemist",
+    "name": "Steel Arm Alchemist",
+    "series": "",
+    "image": "images/cards/steel-arm-alchemist.webp",
+    "base": {
+      "atk": 16480,
+      "hp": 109866,
+      "def": 0,
+      "status": 0,
+      "odds": 422000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Equivalent Exchange",
+      "desc": "Edward Elric: Blocks the first 2 hits completely. 25% chance to crit for 1.8x damage. With Alphonse Elric in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "strongest-flame-captain",
+    "name": "Strongest Flame Captain",
+    "series": "",
+    "image": "images/cards/strongest-flame-captain.webp",
+    "base": {
+      "atk": 12707,
+      "hp": 84712,
+      "def": 0,
+      "status": 0,
+      "odds": 359000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Crimson Moon",
+      "desc": "Benimaru Shinmon: Every hit sets the whole enemy deck on fire for 1 turn. Every hit also hits the whole enemy bench for 19%. Can't be burned. Each hit adds 2 Burn stacks (1.1% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "superd-spear-warrior",
+    "name": "Superd Spear Warrior",
+    "series": "",
+    "image": "images/cards/superd-spear-warrior.webp",
+    "base": {
+      "atk": 11048,
+      "hp": 73656,
+      "def": 0,
+      "status": 0,
+      "odds": 241000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Third Eye",
+      "desc": "Rujierd's third eye sees everything. 35% chance to dodge each hit. Ignores shields, dodges and barriers. Every other card in your deck gets +8% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "surgeon-of-death",
+    "name": "Surgeon of Death",
+    "series": "",
+    "image": "images/cards/surgeon-of-death.webp",
+    "base": {
+      "atk": 8782,
+      "hp": 58546,
+      "def": 0,
+      "status": 0,
+      "odds": 87000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "ROOM: Shambles",
+      "desc": "Law reshapes the battlefield. Each hit swaps the enemy's front card with a random one (not bosses). Every 3rd attack does 1.6x damage. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sword-king-girl",
+    "name": "Sword King Girl",
+    "series": "",
+    "image": "images/cards/sword-king-girl.webp",
+    "base": {
+      "atk": 11551,
+      "hp": 77006,
+      "def": 0,
+      "status": 0,
+      "odds": 236000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Light Speed Sword",
+      "desc": "Eris swings faster than light. Its first hit on each new enemy does 2.2x damage. 25% chance to crit for 1.8x damage. Under 50% HP: +40% damage. With Rudeus in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "symmetry-reaper",
+    "name": "Symmetry Reaper",
+    "series": "",
+    "image": "images/cards/symmetry-reaper.webp",
+    "base": {
+      "atk": 14679,
+      "hp": 97858,
+      "def": 0,
+      "status": 0,
+      "odds": 485000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Death Cannon",
+      "desc": "Death the Kid's Lines of Sanzu connect. Always attacks twice (each hit does 0.75x damage). Every 3rd attack does 2.5x damage. 25% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "tanuki-sword-girl",
+    "name": "Tanuki Sword Girl",
+    "series": "",
+    "image": "images/cards/tanuki-sword-girl.webp",
+    "base": {
+      "atk": 10640,
+      "hp": 70930,
+      "def": 0,
+      "status": 0,
+      "odds": 247000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Instant Blade: Mist",
+      "desc": "Raphtalia's illusion magic. 30% chance to dodge each hit. Its first hit on each new enemy does 2x damage. With Naofumi in the deck: +20% damage and HP. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ten-shadows-heir",
+    "name": "Ten Shadows Heir",
+    "series": "",
+    "image": "images/cards/ten-shadows-heir.webp",
+    "base": {
+      "atk": 8063,
+      "hp": 53754,
+      "def": 0,
+      "status": 0,
+      "odds": 107000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ten Shadows",
+      "desc": "Megumi's shikigami. 40% chance to attack twice. 20% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Once under 25% HP: 50% chance the enemy in front is destroyed (not bosses), otherwise this card falls."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "toad-sage",
+    "name": "Toad Sage",
+    "series": "",
+    "image": "images/cards/toad-sage.webp",
+    "base": {
+      "atk": 7937,
+      "hp": 52914,
+      "def": 0,
+      "status": 0,
+      "odds": 100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Toad Oil Flame Bomb",
+      "desc": "Jiraiya: Each hit puts an oil on the enemy (up to 4). +25% damage per oil on the enemy. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "true-warrior",
+    "name": "True Warrior",
+    "series": "",
+    "image": "images/cards/true-warrior.webp",
+    "base": {
+      "atk": 14042,
+      "hp": 93610,
+      "def": 0,
+      "status": 0,
+      "odds": 442000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "I Have No Enemies",
+      "desc": "Thorfinn the true warrior refuses to kill. 40% chance to dodge each hit. 40% chance to counter-attack when hit. 30% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "turbo-granny",
+    "name": "Turbo Granny",
+    "series": "",
+    "image": "images/cards/turbo-granny.webp",
+    "base": {
+      "atk": 13432,
+      "hp": 89546,
+      "def": 0,
+      "status": 0,
+      "odds": 403000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Turbo Speed",
+      "desc": "Turbo Granny is impossibly fast. Always attacks twice (each hit does 0.75x damage). 35% chance to dodge each hit. Comes back once with 40% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "undying-fox-sin",
+    "name": "Undying Fox Sin",
+    "series": "",
+    "image": "images/cards/undying-fox-sin.webp",
+    "base": {
+      "atk": 12155,
+      "hp": 81034,
+      "def": 0,
+      "status": 0,
+      "odds": 327000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Snatch & Immortality",
+      "desc": "Ban: Heals 23% of the damage it deals. Each hit lowers the enemy's damage by 5.4% (up to 5 times). Heals 8% of its max HP every turn. Comes back once with 45% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "veteran-devil-hunter",
+    "name": "Veteran Devil Hunter",
+    "series": "",
+    "image": "images/cards/veteran-devil-hunter.webp",
+    "base": {
+      "atk": 9579,
+      "hp": 63858,
+      "def": 0,
+      "status": 0,
+      "odds": 183000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Strongest Devil Hunter",
+      "desc": "Kishibe's experience. 35% chance to counter-attack when hit. 30% chance to crit for 1.8x damage. 25% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "volcano-head-curse",
+    "name": "Volcano Head Curse",
+    "series": "",
+    "image": "images/cards/volcano-head-curse.webp",
+    "base": {
+      "atk": 7215,
+      "hp": 48102,
+      "def": 0,
+      "status": 0,
+      "odds": 109000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ember Insects",
+      "desc": "Jogo: Every hit sets the whole enemy deck on fire for 2 turns. Each hit adds 2 Burn stacks (2.1% of the enemy's max HP per turn each, up to 4, 3 turns). Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "white-knight-pilot",
+    "name": "White Knight Pilot",
+    "series": "",
+    "image": "images/cards/white-knight-pilot.webp",
+    "base": {
+      "atk": 19147,
+      "hp": 127646,
+      "def": 0,
+      "status": 0,
+      "odds": 496000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Live On (Geass)",
+      "desc": "Suzaku's Geass forces him to live. Survives its first killing blow with 1 HP. 30% chance to dodge each hit. Every 2nd attack also hits the card behind for 35%. +13% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
