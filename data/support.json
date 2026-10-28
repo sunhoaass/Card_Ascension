@@ -2725,5 +2725,221 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "ancient-archmage",
+    "name": "Ancient Archmage",
+    "image": "images/support/ancient-archmage.webp",
+    "effect": {
+      "name": "Concealed Mana",
+      "desc": "Flamme hides her true mana: the supported card's hits ignore the enemy's shields, dodges and barriers, and deal {0}% more damage.",
+      "vals": [
+        2.5
+      ],
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 52.17,
+          "y": 104.17,
+          "w": 10.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 21400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "dark-king-coach",
+    "name": "Dark King Coach",
+    "image": "images/support/dark-king-coach.webp",
+    "effect": {
+      "name": "Haki Mastery",
+      "desc": "Rayleigh's Haki: the supported card counters {0}% of the hits it takes, and its attacks can't be dodged.",
+      "vals": [
+        10
+      ],
+      "type": "counter",
+      "pos": [
+        {
+          "i": 0,
+          "x": 30.0,
+          "y": 100.0,
+          "w": 12.0,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 22400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "geass-strategist",
+    "name": "Geass Strategist",
+    "image": "images/support/geass-strategist.webp",
+    "effect": {
+      "name": "Absolute Obedience",
+      "desc": "Lelouch's Geass commands the enemy: the supported card's hits have a {0}% chance to Confuse it (it hits itself).",
+      "vals": [
+        16
+      ],
+      "type": "confuse",
+      "pos": [
+        {
+          "i": 0,
+          "x": 80.17,
+          "y": 98.67,
+          "w": 10.83,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 1.67,
+          "gr": 9.0
+        }
+      ]
+    },
+    "odds": 17200000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "great-spirit-cat",
+    "name": "Great Spirit Cat",
+    "image": "images/support/great-spirit-cat.webp",
+    "effect": {
+      "name": "Great Spirit's Frost",
+      "desc": "Puck freezes the field: the supported card's hits have a {0}% chance to Freeze the enemy, and frozen enemies take 30% more damage from it.",
+      "vals": [
+        20
+      ],
+      "type": "freeze",
+      "pos": [
+        {
+          "i": 0,
+          "x": 19.83,
+          "y": 97.33,
+          "w": 9.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 18800000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "guild-master-giant",
+    "name": "Guild Master Giant",
+    "image": "images/support/guild-master-giant.webp",
+    "effect": {
+      "name": "Guild Master's Faith",
+      "desc": "Makarov believes in his guild: EVERY card in your deck gets {0}% more damage and max HP.",
+      "vals": [
+        5.8
+      ],
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 7.0,
+          "y": 109.5,
+          "w": 14.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 7.0,
+          "gr": 2.5
+        }
+      ]
+    },
+    "odds": 20500000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hat-and-clogs-shopkeeper",
+    "name": "Hat and Clogs Shopkeeper",
+    "image": "images/support/hat-and-clogs-shopkeeper.webp",
+    "effect": {
+      "name": "Blood Mist Shield",
+      "desc": "Urahara's Blood Mist: when the supported card comes in, the enemy's next 2 attacks each have a {0}% chance to miss.",
+      "vals": [
+        48
+      ],
+      "type": "dodge",
+      "pos": [
+        {
+          "i": 0,
+          "x": 40.67,
+          "y": 105.83,
+          "w": 10.83,
+          "h": 5.0,
+          "cap": 5.0,
+          "gl": 1.83,
+          "gr": 1.67
+        }
+      ]
+    },
+    "odds": 15700000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
