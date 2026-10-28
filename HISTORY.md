@@ -1134,3 +1134,5 @@
     | `#support` | 60.2 / 17ms | 60.3 / 17ms |
     · ยังไม่ได้วัดตอนการ์ด ~400 ใบ (ยังไม่มีข้อมูล · ▶️ การ์ดทั้งเกม ⑤)
   - **ไฟล์:** `index.html`, `PROGRESS.md`, `HISTORY.md`, `CLAUDE.md` → root · `data/meta.json`, `data/cards.json`, `data/pool.json` → `data/` · `css/tokens.css`, `css/tier.css`, `css/support.css` → `css/` · `js/app.js`, `js/teamscore.js`, `js/support.js`, `js/tier.js`, `js/tiermaker.js`, `js/detail.js`, `js/deck.js` → `js/` · `inbox/` (451 รูป + progress.json) · ลบ `1.zip`–`10.zip`
+- 2026-10-28: **แผนการ์ดทั้งเกม ②–⑤ ใหม่ตามเจ้าของ** (แก้แค่ PROGRESS ▶️ + §7 B · ไม่แตะโค้ด ไม่เปลี่ยน `?v=`) · ② ใส่การ์ด (~16 รอบ · รูปที่ข้ามต้องเคลียร์ก่อน ③) · ③ คัด 50 ใบ + คะแนน + Tier (การ์ด 1 แชท · Support 1 แชท) · ④ ข้อความ/field ละเอียดแชทละ 20 ใบ (ตัวนับการ์ด 0/50 · Support 0/50) · ⑤ ทีม Meta + วัดความเร็วตอนการ์ด ~400 ใบ · prompt ครบทุกขั้นใน ▶️ (แผนเดิมรวม "รูปที่ข้าม" เป็นขั้น ③ และงาน B ใหญ่เป็นขั้น ④)
+  - **ไฟล์:** `PROGRESS.md`, `HISTORY.md` → root
