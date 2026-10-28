@@ -2,9 +2,400 @@
   "updated": "2026-10-28",
   "note": "Every card and support in the game (PROGRESS.md §5.2). Not loaded by the site: routine B picks the top meta.rankTop (50) from here. card: atk/hp at Normal · support: vals/type = effect.vals/effect.type at Normal · src = screenshot file in inbox/ · round = batch round (0 = added before the batch).",
   "items": [
-    {"id": "dragon-emperor-monarch", "kind": "card", "name": "Dragon Emperor Monarch", "series": "Solo Leveling", "odds": 5523945238, "atk": 1333153, "hp": 8887688, "src": "", "round": 0},
-    {"id": "moon-eye-ghost", "kind": "card", "name": "Moon Eye Ghost", "series": "Naruto", "odds": 3679415015, "atk": 1079693, "hp": 7197952, "src": "", "round": 0},
-    {"id": "atomic-shadow-lord", "kind": "card", "name": "Atomic Shadow Lord", "series": "The Eminence in Shadow", "odds": 9496060703, "atk": 969893, "hp": 6465954, "src": "", "round": 0},
-    {"id": "beast-emperor", "kind": "card", "name": "Beast Emperor", "series": "One Piece", "odds": 2806284629, "atk": 937943, "hp": 6252952, "src": "", "round": 0}
+    {
+      "id": "dragon-emperor-monarch",
+      "kind": "card",
+      "name": "Dragon Emperor Monarch",
+      "series": "Solo Leveling",
+      "odds": 5523945238,
+      "atk": 1333153,
+      "hp": 8887688,
+      "src": "",
+      "round": 0
+    },
+    {
+      "id": "moon-eye-ghost",
+      "kind": "card",
+      "name": "Moon Eye Ghost",
+      "series": "Naruto",
+      "odds": 3679415015,
+      "atk": 1079693,
+      "hp": 7197952,
+      "src": "",
+      "round": 0
+    },
+    {
+      "id": "atomic-shadow-lord",
+      "kind": "card",
+      "name": "Atomic Shadow Lord",
+      "series": "The Eminence in Shadow",
+      "odds": 9496060703,
+      "atk": 969893,
+      "hp": 6465954,
+      "src": "",
+      "round": 0
+    },
+    {
+      "id": "beast-emperor",
+      "kind": "card",
+      "name": "Beast Emperor",
+      "series": "One Piece",
+      "odds": 2806284629,
+      "atk": 937943,
+      "hp": 6252952,
+      "src": "",
+      "round": 0
+    },
+    {
+      "id": "automail-mechanic",
+      "kind": "support",
+      "name": "Automail Mechanic",
+      "series": "",
+      "odds": 146,
+      "vals": [
+        5
+      ],
+      "type": "max-hp",
+      "src": "RobloxScreenShot20261028_113951287.png",
+      "round": 1
+    },
+    {
+      "id": "bald-cadet",
+      "kind": "card",
+      "name": "Bald Cadet",
+      "series": "",
+      "odds": 59,
+      "atk": 390,
+      "hp": 2598,
+      "src": "RobloxScreenShot20261028_114128213.png",
+      "round": 1
+    },
+    {
+      "id": "bicycle-justice",
+      "kind": "card",
+      "name": "Bicycle Justice",
+      "series": "",
+      "odds": 74,
+      "atk": 425,
+      "hp": 2832,
+      "src": "RobloxScreenShot20261028_114137513.png",
+      "round": 1
+    },
+    {
+      "id": "big-top-clown",
+      "kind": "card",
+      "name": "Big Top Clown",
+      "series": "",
+      "odds": 15,
+      "atk": 261,
+      "hp": 1742,
+      "src": "RobloxScreenShot20261028_114142292.png",
+      "round": 1
+    },
+    {
+      "id": "bug-swarm-ninja",
+      "kind": "card",
+      "name": "Bug Swarm Ninja",
+      "series": "",
+      "odds": 19,
+      "atk": 279,
+      "hp": 1862,
+      "src": "RobloxScreenShot20261028_114147569.png",
+      "round": 1
+    },
+    {
+      "id": "electric-hero",
+      "kind": "card",
+      "name": "Electric Hero",
+      "series": "",
+      "odds": 47,
+      "atk": 441,
+      "hp": 2942,
+      "src": "RobloxScreenShot20261028_114151751.png",
+      "round": 1
+    },
+    {
+      "id": "fly-head-curse",
+      "kind": "card",
+      "name": "Fly Head Curse",
+      "series": "",
+      "odds": 27,
+      "atk": 309,
+      "hp": 2058,
+      "src": "RobloxScreenShot20261028_114209029.png",
+      "round": 1
+    },
+    {
+      "id": "flying-cat-partner",
+      "kind": "support",
+      "name": "Flying Cat Partner",
+      "series": "",
+      "odds": 256,
+      "vals": [
+        4
+      ],
+      "type": "double-attack",
+      "src": "RobloxScreenShot20261028_114213809.png",
+      "round": 1
+    },
+    {
+      "id": "fox-kit-trickster",
+      "kind": "support",
+      "name": "Fox Kit Trickster",
+      "series": "",
+      "odds": 204,
+      "vals": [
+        0.4
+      ],
+      "type": "burn",
+      "src": "RobloxScreenShot20261028_114217912.png",
+      "round": 1
+    },
+    {
+      "id": "gate-healer",
+      "kind": "support",
+      "name": "Gate Healer",
+      "series": "",
+      "odds": 130,
+      "vals": [
+        0.9
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_114221717.png",
+      "round": 1
+    },
+    {
+      "id": "goblin",
+      "kind": "card",
+      "name": "Goblin",
+      "series": "",
+      "odds": 66,
+      "atk": 423,
+      "hp": 2820,
+      "src": "RobloxScreenShot20261028_114225326.png",
+      "round": 1
+    },
+    {
+      "id": "goblin-rider",
+      "kind": "card",
+      "name": "Goblin Rider",
+      "series": "",
+      "odds": 93,
+      "atk": 463,
+      "hp": 3086,
+      "src": "RobloxScreenShot20261028_114229134.png",
+      "round": 1
+    },
+    {
+      "id": "grandson-ninja",
+      "kind": "card",
+      "name": "Grandson Ninja",
+      "series": "",
+      "odds": 24,
+      "atk": 305,
+      "hp": 2030,
+      "src": "RobloxScreenShot20261028_114349532.png",
+      "round": 1
+    },
+    {
+      "id": "grape-hero",
+      "kind": "card",
+      "name": "Grape Hero",
+      "series": "",
+      "odds": 53,
+      "atk": 377,
+      "hp": 2514,
+      "src": "RobloxScreenShot20261028_114354172.png",
+      "round": 1
+    },
+    {
+      "id": "hand-demon",
+      "kind": "card",
+      "name": "Hand Demon",
+      "series": "",
+      "odds": 30,
+      "atk": 319,
+      "hp": 2128,
+      "src": "RobloxScreenShot20261028_114358367.png",
+      "round": 1
+    },
+    {
+      "id": "inventor-girl",
+      "kind": "support",
+      "name": "Inventor Girl",
+      "series": "",
+      "odds": 359,
+      "vals": [
+        3
+      ],
+      "type": "random-boost",
+      "src": "RobloxScreenShot20261028_114411985.png",
+      "round": 1
+    },
+    {
+      "id": "long-hair-invader",
+      "kind": "card",
+      "name": "Long Hair Invader",
+      "series": "",
+      "odds": 10,
+      "atk": 233,
+      "hp": 1556,
+      "src": "RobloxScreenShot20261028_114423978.png",
+      "round": 1
+    },
+    {
+      "id": "marine-recruit",
+      "kind": "card",
+      "name": "Marine Recruit",
+      "series": "",
+      "odds": 17,
+      "atk": 276,
+      "hp": 1838,
+      "src": "RobloxScreenShot20261028_114428391.png",
+      "round": 1
+    },
+    {
+      "id": "navigation-pixie",
+      "kind": "support",
+      "name": "Navigation Pixie",
+      "series": "",
+      "odds": 183,
+      "vals": [
+        2
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_114441768.png",
+      "round": 1
+    },
+    {
+      "id": "pig-captain",
+      "kind": "support",
+      "name": "Pig Captain",
+      "series": "",
+      "odds": 287,
+      "vals": [
+        23,
+        3
+      ],
+      "type": "revive",
+      "src": "RobloxScreenShot20261028_114447053.png",
+      "round": 1
+    },
+    {
+      "id": "plant-healer",
+      "kind": "support",
+      "name": "Plant Healer",
+      "series": "",
+      "odds": 163,
+      "vals": [
+        6
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_114457399.png",
+      "round": 1
+    },
+    {
+      "id": "plush-soul",
+      "kind": "card",
+      "name": "Plush Soul",
+      "series": "",
+      "odds": 38,
+      "atk": 341,
+      "hp": 2274,
+      "src": "RobloxScreenShot20261028_114503028.png",
+      "round": 1
+    },
+    {
+      "id": "portal-playboy",
+      "kind": "support",
+      "name": "Portal Playboy",
+      "series": "",
+      "odds": 229,
+      "vals": [
+        9
+      ],
+      "type": "dodge",
+      "src": "RobloxScreenShot20261028_114507682.png",
+      "round": 1
+    },
+    {
+      "id": "return-by-death-boy",
+      "kind": "card",
+      "name": "Return by Death Boy",
+      "series": "",
+      "odds": 104,
+      "atk": 460,
+      "hp": 3068,
+      "src": "RobloxScreenShot20261028_114539965.png",
+      "round": 1
+    },
+    {
+      "id": "rookie-crusher",
+      "kind": "card",
+      "name": "Rookie Crusher",
+      "series": "",
+      "odds": 42,
+      "atk": 370,
+      "hp": 2468,
+      "src": "RobloxScreenShot20261028_114612382.png",
+      "round": 1
+    },
+    {
+      "id": "spirit-sidekick",
+      "kind": "support",
+      "name": "Spirit Sidekick",
+      "series": "",
+      "odds": 321,
+      "vals": [
+        1
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_114617025.png",
+      "round": 1
+    },
+    {
+      "id": "sprout-soldier",
+      "kind": "card",
+      "name": "Sprout Soldier",
+      "series": "",
+      "odds": 12,
+      "atk": 249,
+      "hp": 1662,
+      "src": "RobloxScreenShot20261028_114645258.png",
+      "round": 1
+    },
+    {
+      "id": "steal-skill-adventurer",
+      "kind": "card",
+      "name": "Steal Skill Adventurer",
+      "series": "",
+      "odds": 116,
+      "atk": 485,
+      "hp": 3236,
+      "src": "RobloxScreenShot20261028_114658885.png",
+      "round": 1
+    },
+    {
+      "id": "strongest-man-fake",
+      "kind": "card",
+      "name": "Strongest Man (Fake)",
+      "series": "",
+      "odds": 83,
+      "atk": 431,
+      "hp": 2870,
+      "src": "RobloxScreenShot20261028_114702951.png",
+      "round": 1
+    },
+    {
+      "id": "swamp-demon",
+      "kind": "card",
+      "name": "Swamp Demon",
+      "series": "",
+      "odds": 34,
+      "atk": 347,
+      "hp": 2310,
+      "src": "RobloxScreenShot20261028_114711061.png",
+      "round": 1
+    }
   ]
 }
