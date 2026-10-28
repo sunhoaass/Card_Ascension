@@ -884,6 +884,7 @@
   }
   function markRarity() {
     ui.rarity.querySelectorAll("[data-tm-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tmRarity === cur.rarity)));
+    requestAnimationFrame(() => C.revealChip(ui.rarity.parentNode));
   }
   function setRarity(name) {
     if (!cur || cur.type !== "card" || cur.rarity === name || !state.meta.rarities.some((r) => r.name === name)) return;

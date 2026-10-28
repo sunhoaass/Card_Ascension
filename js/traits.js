@@ -414,6 +414,7 @@
     heroLabel();
     $(".trs__hero", ui.head).appendChild(hero);
     paint();
+    requestAnimationFrame(() => C.revealChip(ui.head));
     if (first) FX.stagger(ui.list, 26, { cls: "fx-up", max: 13, limit: 13, cleanup: true });
     const r = origin && origin.isConnected ? origin.getBoundingClientRect() : null;
     if (r && !wide.matches) {

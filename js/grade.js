@@ -548,6 +548,7 @@
     hero = $(".card", heroSlab);                          // not a link here (makeSlab took role / tabindex off)
     $("#gd-hero", ui.detail).appendChild(heroSlab);
     rarityChips($("#gd-rarity", ui.detail));
+    requestAnimationFrame(() => C.revealChip(ui.detail));
 
     ui.listView.hidden = true;
     ui.detail.hidden = false;

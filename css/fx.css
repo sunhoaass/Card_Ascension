@@ -181,7 +181,7 @@
 .card.is-tilting .card__glare, .card:hover .card__glare { opacity: 1; }
 
 /* ==========================================================
-   Rarity looks (data-rarity on .gc) · Normal is what the game shows · the other 6 are guesses until there are
+   Rarity looks (data-rarity on .gc) · Normal, Godlike, Godly follow the game · the other 6 are guesses until there are
    in-game pictures (§3.5.4 answer 2). Colours: --gc-* in tokens.css.
    Step 9.5: looping animations only run on cards that are on screen (.is-live, js/app.js). Keyframes animate
    transform / opacity only. If a frame changes here, change gcSpec() in js/share.js too (saved images).
@@ -214,6 +214,19 @@
 .gc[data-rarity="Ascended"] .gc__sweep { opacity: 1; }
 .gc[data-rarity="Ascended"].is-live .gc__ring > i { animation: gc-spin 3.5s linear infinite; }
 .gc[data-rarity="Ascended"].is-live .gc__sweep::before { animation: gc-sweep 2.6s var(--ease) infinite; }
+/* Godlike / Godly (2026-10-28 · from the game's cards): cream pill + black letters · white frame with a gold glow ·
+   Godly = pink-orange-gold pill + a gold → pink → gold frame. Both: dark letters, so --rar-ink is set */
+.gc[data-rarity="Godlike"] { --ring: 2.4cqw; --ring-bg: var(--gc-ring-godlike); --rar-bg: var(--gc-rar-godlike); --rar-ink: var(--gc-rar-godlike-ink); --rar-line: var(--gc-rar-godlike-line); }
+.gc[data-rarity="Godlike"] .gc__glow { opacity: 1; box-shadow: 0 0 7cqw 1.4cqw var(--gc-glow-godlike); }
+.gc[data-rarity="Godlike"] .gc__sweep { opacity: 1; }
+.gc[data-rarity="Godlike"].is-live .gc__glow { animation: gc-pulse 3s ease-in-out infinite; }
+.gc[data-rarity="Godlike"].is-live .gc__sweep::before { animation: gc-sweep 3s var(--ease) infinite; }
+.gc[data-rarity="Godly"] { --ring: 2.6cqw; --ring-bg: var(--gc-ring-godly); --rar-bg: var(--gc-rar-godly); --rar-ink: var(--gc-rar-godly-ink); --rar-line: var(--gc-rar-godly-line); }
+.gc[data-rarity="Godly"] .gc__glow { opacity: 1; box-shadow: 0 0 6cqw 1cqw var(--gc-glow-godly); }
+.gc[data-rarity="Godly"] .gc__sweep { opacity: 1; }
+.gc[data-rarity="Godly"].is-live .gc__glow { animation: gc-pulse 2.6s ease-in-out infinite; }
+.gc[data-rarity="Godly"].is-live .gc__sweep::before { animation: gc-sweep 2.6s var(--ease) infinite; }
+.gc[data-rarity="Godlike"] .gc__rar .gc__pop, .gc[data-rarity="Godly"] .gc__rar .gc__pop { -webkit-text-stroke: 0; }   /* plain black letters, like the game */
 
 @keyframes gc-spin { to { transform: rotate(360deg); } }
 @keyframes gc-sweep { 0% { transform: translateX(-140%) skewX(-18deg); } 60%, 100% { transform: translateX(420%) skewX(-18deg); } }

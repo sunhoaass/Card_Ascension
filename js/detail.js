@@ -59,6 +59,8 @@
     Divine:   { pal: ["#ffffff", "#fff4d8", "#f2d488", "#fffbe9"] },
     Cosmic:   { pal: ["#b3a6ff", "#8f7dff", "#5ac8ff", "#dcd4ff"] },
     Ascended: { pal: ["#fffaf0", "#a9eef5", "#c5a8f5", "#f5b4dc", "#f8e7a8", "#b4f0d2"], byAngle: true },
+    Godlike:  { pal: ["#ffffff", "#fffaf0", "#f6e2a8", "#e9c877"] },
+    Godly:    { pal: ["#ff7aa8", "#f06a92", "#f7a35c", "#ffd36a", "#ffe2a0"], byAngle: true },
   };
   const lvOf = (name) => LEVELS[name] || LEVELS.Normal;
 

@@ -1,13 +1,15 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-28",
   "rarities": [
     { "name": "Normal",  "stat": 1,  "odds": 1 },
-    { "name": "Shiny",  "stat": 3.5,  "odds": 20.2530358 },
-    { "name": "Rainbow",  "stat": 7,  "odds": 100.2525271 },
-    { "name": "Secret",  "stat": 13.5,  "odds": 500.2601102 },
-    { "name": "Divine",  "stat": 26.5,  "odds": 2500.3000310 },
-    { "name": "Cosmic",  "stat": 47,  "odds": 10000.2000040 },
-    { "name": "Ascended",  "stat": 93,  "odds": 50000 }
+    { "name": "Shiny",  "stat": 3.5,  "odds": 20.2531370 },
+    { "name": "Rainbow",  "stat": 7,  "odds": 100.2530284 },
+    { "name": "Secret",  "stat": 13.5,  "odds": 500.2626116 },
+    { "name": "Divine",  "stat": 26.5,  "odds": 2500.3125326 },
+    { "name": "Cosmic",  "stat": 47,  "odds": 10000.2500052 },
+    { "name": "Ascended",  "stat": 93,  "odds": 50000.2500011 },
+    { "name": "Godlike",  "stat": 183,  "odds": 250000.2500003 },
+    { "name": "Godly",  "stat": 327,  "odds": 1000000 }
   ],
   "tiers": [
     { "name": "GOD", "min": 95 },

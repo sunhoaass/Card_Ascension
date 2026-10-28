@@ -182,6 +182,8 @@
       case "Divine": return { stops: [[0, "#fffdf4"], [0.5, "#e2bd6c"], [1, "#fffdf4"]], glow: "rgba(255, 226, 160, .55)", orn: "#f2d488", line: t("--r-divine") };
       case "Cosmic": return { conic: [t("--r-cosmic"), t("--r-cosmic-2"), "#14184a", t("--r-cosmic")], glow: "rgba(120, 100, 255, .45)", orn: "#c9c0ff", line: "#a796ff" };
       case "Ascended": return { conic: stopsOf("--r-ascended"), glow: "rgba(220, 210, 255, .55)", orn: "#fffaf0", line: "#f4ecff" };
+      case "Godlike": return { stops: metal(t("--r-godlike"), t("--r-godlike-2")), glow: "rgba(255, 228, 150, .6)", orn: t("--r-godlike"), line: t("--r-godlike") };
+      case "Godly": return { stops: [[0, t("--r-godly-2")], [0.5, t("--r-godly")], [1, t("--r-godly-2")]], glow: "rgba(240, 120, 150, .5)", orn: t("--r-godly-2"), line: t("--r-godly") };
       default: return { stops: metal(t("--r-normal"), t("--r-normal-2")), glow: null, orn: t("--r-normal"), line: t("--r-normal") };
     }
   }
@@ -361,6 +363,7 @@
     const S = {
       shiny: { ring: 2.2, fill: "--gc-ring-shiny" }, rainbow: { ring: 2.4, conic: "--r-rainbow" }, secret: { ring: 2.4, fill: "--gc-ring-secret", ink: "--gc-rar-secret-ink" },
       divine: { ring: 2.4, fill: "--gc-ring-divine" }, cosmic: { ring: 2.4, conic: "--gc-ring-cosmic" }, ascended: { ring: 2.6, conic: "--r-ascended" },
+      godlike: { ring: 2.4, fill: "--gc-ring-godlike", ink: "--gc-rar-godlike-ink", flat: true }, godly: { ring: 2.6, fill: "--gc-ring-godly", ink: "--gc-rar-godly-ink", flat: true },
     }[r];
     if (!S) return { normal: true };
     return { ...S, glow: g("--gc-glow-" + r), pill: g("--gc-rar-" + r), line: g("--gc-rar-" + r + "-line") || "#111", ink: S.ink ? g(S.ink) : "#fff" };
@@ -399,6 +402,10 @@
         const cg = ctx.createConicGradient(-Math.PI / 2, x + w / 2, y + h / 2);
         evenStops(stopsOf(sp.conic)).forEach(([o, c]) => cg.addColorStop(o, c));
         ctx.strokeStyle = cg;
+      } else if (!sp.conic && /180deg/.test(cssVar(sp.fill))) {   // top → bottom (Godly) over the ring's 180%-tall box, like css/fx.css
+        const vg = ctx.createLinearGradient(0, y - 0.4 * h, 0, y + 1.4 * h);
+        gradStops(cssVar(sp.fill)).forEach(([o, c]) => vg.addColorStop(o, c));
+        ctx.strokeStyle = vg;
       } else ctx.strokeStyle = lin135(ctx, x, y, w, h, sp.conic ? evenStops(stopsOf(sp.conic)) : gradStops(cssVar(sp.fill)));
       ctx.lineWidth = t * 2; roundRect(ctx, x, y, w, h, R); ctx.stroke();
       ctx.strokeStyle = "rgba(0, 0, 0, .6)"; ctx.lineWidth = 0.4 * u; roundRect(ctx, x + t, y + t, w - 2 * t, h - 2 * t, Math.max(0, R - t)); ctx.stroke();
@@ -425,7 +432,7 @@
     numText(hp, x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2, cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
     numText(atk, x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5, cssVar("--gc-atk"), cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
     // pills (right edge 1.2u in from the card's right side)
-    const pill = (text, top, hgt, size, min, bg, line, ink, inner) => {
+    const pill = (text, top, hgt, size, min, bg, line, ink, inner, flat) => {
       const fs = fitFont(ctx, text, size * u, 36.8 * u, `italic 400 {s}px ${pop}`);
       const pw = Math.min(42 * u, Math.max(min * u, ctx.measureText(text).width + 5.2 * u));
       const px = x + w - 1.2 * u - pw, py = y + top * u;
@@ -434,7 +441,7 @@
       ctx.lineWidth = 1.1 * u; ctx.strokeStyle = line; ctx.stroke();
       if (inner) { roundRect(ctx, px + 0.55 * u, py + 0.55 * u, pw - 1.1 * u, hgt * u - 1.1 * u, (hgt * u - 1.1 * u) / 2); ctx.lineWidth = 0.55 * u; ctx.strokeStyle = inner; ctx.stroke(); }
       ctx.textAlign = "center";
-      if (!inner) { ctx.lineWidth = 0.7 * u; ctx.strokeStyle = line; ctx.strokeText(text, px + pw / 2, py + hgt * u / 2 + 0.2 * u); }
+      if (!inner && !flat) { ctx.lineWidth = 0.7 * u; ctx.strokeStyle = line; ctx.strokeText(text, px + pw / 2, py + hgt * u / 2 + 0.2 * u); }
       ctx.fillStyle = ink; ctx.fillText(text, px + pw / 2, py + hgt * u / 2 + 0.2 * u);
       return fs;
     };
@@ -443,7 +450,7 @@
       const st = gradStops(sp.pill), across = /90deg/.test(sp.pill);
       const top = y + 30.4 * u, gr = across ? ctx.createLinearGradient(x + 58 * u, 0, x + 99 * u, 0) : ctx.createLinearGradient(0, top, 0, top + 7 * u);
       st.forEach(([o, c]) => gr.addColorStop(o, c));
-      pill(r.toUpperCase(), 30.4, 7, 4.9, 17, gr, sp.line, sp.ink, null);
+      pill(r.toUpperCase(), 30.4, 7, 4.9, 17, gr, sp.line, sp.ink, null, sp.flat);
     }
     ctx.restore();
   }

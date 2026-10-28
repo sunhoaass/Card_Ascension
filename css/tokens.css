@@ -51,6 +51,8 @@
   --r-cosmic: #8f7dff;   --r-cosmic-2: #3150c4;
   --r-rainbow: conic-gradient(from 0deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0, #e8607a);
   --r-ascended: conic-gradient(from 0deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2, #fffaf0);
+  --r-godlike: #fffaf0;  --r-godlike-2: #e9c877;   /* 2026-10-28: from the game's Godlike / Godly cards */
+  --r-godly: #f06a92;    --r-godly-2: #ffcf6a;
 
   /* ---- Trait tiers (Trait Shop, js/traits.js): main colour + dark partner for the card gradient ---- */
   --tr-common: #a9afba;     --tr-common-2: #3b404b;
@@ -89,18 +91,26 @@
   --gc-ring-divine: linear-gradient(135deg, #fffdf4, #e2bd6c 45%, #fffdf4 60%, #d6ad5c);
   --gc-ring-cosmic: conic-gradient(from 0deg, #8f7dff, #3150c4, #14184a, #c06cff, #8f7dff);
   --gc-ring-cosmic-stars: radial-gradient(circle, #fff 0 .5px, transparent 1px);
+  /* Godlike / Godly: taken from the game's cards (2026-10-28) · Godly runs gold → pink → gold top to bottom; the ring's
+     <i> is 180% tall (inset -40%), so the seen part is 22–78% */
+  --gc-ring-godlike: linear-gradient(135deg, #ffffff, #fbf3dc 35%, #ffffff 55%, #f1dca2 80%, #ffffff);
+  --gc-ring-godly: linear-gradient(180deg, #ffd56e 0%, #ffd56e 24%, #f5a96c 36%, #dc5280 50%, #f19a6a 64%, #ffd06a 76%, #ffd06a 100%);
   --gc-rar-shiny: linear-gradient(180deg, #ffe58e, #e6b23e);        --gc-rar-shiny-line: #6d4a0c;
   --gc-rar-rainbow: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0);   --gc-rar-rainbow-line: #2a1840;
   --gc-rar-secret: linear-gradient(180deg, #2a060d, #0c0205);       --gc-rar-secret-line: #000;   --gc-rar-secret-ink: #ff5d73;
   --gc-rar-divine: linear-gradient(180deg, #ffffff, #f3dfaa);       --gc-rar-divine-line: #9a7330;
   --gc-rar-cosmic: linear-gradient(180deg, #5a4be0, #1d1f6e);       --gc-rar-cosmic-line: #0b0c2e;
   --gc-rar-ascended: linear-gradient(90deg, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8);   --gc-rar-ascended-line: #3a2a63;
+  --gc-rar-godlike: linear-gradient(180deg, #fffdf6, #ffeec4);      --gc-rar-godlike-line: #1a1408;   --gc-rar-godlike-ink: #120d04;
+  --gc-rar-godly: linear-gradient(90deg, #e2507f, #f19a62, #ffd56e);   --gc-rar-godly-line: #1c0a0e;   --gc-rar-godly-ink: #140608;
   --gc-glow-shiny: rgba(236, 199, 104, .45);
   --gc-glow-rainbow: rgba(200, 140, 220, .45);
   --gc-glow-secret: rgba(201, 52, 75, .6);
   --gc-glow-divine: rgba(255, 232, 170, .55);
   --gc-glow-cosmic: rgba(120, 100, 255, .55);
   --gc-glow-ascended: rgba(220, 210, 255, .6);
+  --gc-glow-godlike: rgba(255, 228, 150, .75);
+  --gc-glow-godly: rgba(240, 120, 150, .55);
 
   /* ---- Graded case (.slab, step 13 · card detail sheet + Grade page, css/grade.css) ---- */
   --slab-plastic: linear-gradient(155deg, rgba(255, 255, 255, .26), rgba(255, 255, 255, .07) 32%, rgba(255, 255, 255, .03) 60%, rgba(255, 255, 255, .14));
@@ -222,6 +232,8 @@
   --bs-mat: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(225, 230, 255, .55) 55%, transparent);
   --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
   --bs-ascended-lvl: #e6dcff;
+  --bs-godlike-lvl: #fff0c4;
+  --bs-godly-lvl: #ffa6a0;
   /* W6: label boxes, buttons and the Details head on the scene */
   --bs-glass: rgba(8, 11, 30, .74);                 /* dark glass (no blur: §4.1) */
   --bs-glass-line: color-mix(in srgb, var(--gold) 55%, transparent);
