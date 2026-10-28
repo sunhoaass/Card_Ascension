@@ -5412,5 +5412,821 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "godspeed-assassin",
+    "name": "Godspeed Assassin",
+    "series": "",
+    "image": "images/cards/godspeed-assassin.webp",
+    "base": {
+      "atk": 8335,
+      "hp": 55566,
+      "def": 0,
+      "status": 0,
+      "odds": 148000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Godspeed: Whirlwind",
+      "desc": "Killua reacts before the enemy moves. 40% chance to dodge each hit. 50% chance to attack twice. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). With Gon in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "half-demon-fang",
+    "name": "Half-Demon Fang",
+    "series": "",
+    "image": "images/cards/half-demon-fang.webp",
+    "base": {
+      "atk": 19007,
+      "hp": 126712,
+      "def": 0,
+      "status": 0,
+      "odds": 278000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Red Tessaiga: Wind Scar",
+      "desc": "Inuyasha: Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. Under 28% HP: +66% damage. With Sesshomaru in the deck, both get +14% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "half-hot-half-cold",
+    "name": "Half-Hot Half-Cold",
+    "series": "",
+    "image": "images/cards/half-hot-half-cold.webp",
+    "base": {
+      "atk": 22097,
+      "hp": 147310,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Snowstorm",
+    "passive": {
+      "name": "Phosphor",
+      "desc": "Todoroki uses both sides. 41% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Each hit adds 2 Burn stacks (2.8% of the enemy's max HP per turn each, up to 4, 3 turns). 2.38x damage against frozen enemies."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hamon-trickster",
+    "name": "Hamon Trickster",
+    "series": "",
+    "image": "images/cards/hamon-trickster.webp",
+    "base": {
+      "atk": 12414,
+      "hp": 82758,
+      "def": 0,
+      "status": 0,
+      "odds": 334000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Your Next Line Is...",
+      "desc": "Joseph always has a trick. 35% chance to dodge each hit. +50% damage against Demon cards. Survives its first killing blow with 1 HP. Each hit: 60% chance to do 1.8x damage, otherwise 0.8x."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hollow-ninja",
+    "name": "Hollow Ninja",
+    "series": "",
+    "image": "images/cards/hollow-ninja.webp",
+    "base": {
+      "atk": 12849,
+      "hp": 85658,
+      "def": 0,
+      "status": 0,
+      "odds": 367000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ninpo: Fire Dance",
+      "desc": "Gabimaru the Hollow. Each hit adds 2 Burn stacks (2.2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 4.4% of its max HP every turn. 22% chance to dodge each hit. +11% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "incursio-armor",
+    "name": "Incursio Armor",
+    "series": "",
+    "image": "images/cards/incursio-armor.webp",
+    "base": {
+      "atk": 11000,
+      "hp": 73332,
+      "def": 0,
+      "status": 0,
+      "odds": 265000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Incursio Evolved",
+      "desc": "Tatsumi: Takes 25% less damage. Takes 15% less from an attack each time it has seen it (up to 4 times). 20% chance to dodge each hit. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "invincible-gang-boss",
+    "name": "Invincible Gang Boss",
+    "series": "",
+    "image": "images/cards/invincible-gang-boss.webp",
+    "base": {
+      "atk": 14517,
+      "hp": 96778,
+      "def": 0,
+      "status": 0,
+      "odds": 474000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Invincible Mikey",
+      "desc": "Mikey's dark impulse. Its first hit on each new enemy does 3x damage. 35% chance to dodge each hit. +10% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "judge-domain-lawyer",
+    "name": "Judge Domain Lawyer",
+    "series": "",
+    "image": "images/cards/judge-domain-lawyer.webp",
+    "base": {
+      "atk": 11362,
+      "hp": 75744,
+      "def": 0,
+      "status": 0,
+      "odds": 105000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Deadly Sentencing: Confiscation",
+      "desc": "Higuruma: 40% chance per hit to Seal the enemy's ability for 2 turns. Instantly kills enemies under 15% HP (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "karma-boy",
+    "name": "Karma Boy",
+    "series": "",
+    "image": "images/cards/karma-boy.webp",
+    "base": {
+      "atk": 8253,
+      "hp": 55018,
+      "def": 0,
+      "status": 0,
+      "odds": 91000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Vanishing Rasengan + Karma",
+      "desc": "Boruto: Its attacks can't be dodged. +8% damage every time it is hit. 20% chance to crit for 1.7x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "lich-shopkeeper",
+    "name": "Lich Shopkeeper",
+    "series": "",
+    "image": "images/cards/lich-shopkeeper.webp",
+    "base": {
+      "atk": 14357,
+      "hp": 95710,
+      "def": 0,
+      "status": 0,
+      "odds": 463000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Drain Touch",
+      "desc": "Wiz is a Lich. Heals 30% of the damage it deals. 30% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Comes back once with 40% HP. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "lightning-dragon-heir",
+    "name": "Lightning Dragon Heir",
+    "series": "",
+    "image": "images/cards/lightning-dragon-heir.webp",
+    "base": {
+      "atk": 18784,
+      "hp": 125224,
+      "def": 0,
+      "status": 0,
+      "odds": 312000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dragon Force",
+      "desc": "Laxus: Every hit also hits the whole enemy bench for 20%. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Takes 15% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "lion-flame-queen",
+    "name": "Lion Flame Queen",
+    "series": "",
+    "image": "images/cards/lion-flame-queen.webp",
+    "base": {
+      "atk": 11499,
+      "hp": 76660,
+      "def": 0,
+      "status": 0,
+      "odds": 291000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Mana Zone: Flame Hand",
+      "desc": "Mereoleona: Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 50% HP: +60% damage. Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "lone-wolf-espada",
+    "name": "Lone Wolf Espada",
+    "series": "",
+    "image": "images/cards/lone-wolf-espada.webp",
+    "base": {
+      "atk": 13326,
+      "hp": 88838,
+      "def": 0,
+      "status": 0,
+      "odds": 132000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Los Lobos",
+      "desc": "Starrk's wolf pack. Always attacks twice (each hit does 0.7x damage). Every hit also hits the whole enemy bench for 20%. Sleeps its first turn, taking 50% less damage while asleep."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "mist-prodigy",
+    "name": "Mist Prodigy",
+    "series": "",
+    "image": "images/cards/mist-prodigy.webp",
+    "base": {
+      "atk": 8674,
+      "hp": 57828,
+      "def": 0,
+      "status": 0,
+      "odds": 120000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Mist Breathing: Obscuring Clouds",
+      "desc": "Muichiro vanishes into mist. 35% chance to dodge each hit. Its first hit on each new enemy does 2x damage. +30% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "mochi-commander",
+    "name": "Mochi Commander",
+    "series": "",
+    "image": "images/cards/mochi-commander.webp",
+    "base": {
+      "atk": 6808,
+      "hp": 45386,
+      "def": 0,
+      "status": 0,
+      "odds": 81000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Future Sight Mochi",
+      "desc": "Katakuri sees the future. 30% chance to dodge each hit. 30% chance to counter-attack when hit (0.8x damage). 20% chance per hit to Stun the enemy for 1 turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "notebook-shinigami",
+    "name": "Notebook Shinigami",
+    "series": "",
+    "image": "images/cards/notebook-shinigami.webp",
+    "base": {
+      "atk": 15008,
+      "hp": 100054,
+      "def": 0,
+      "status": 0,
+      "odds": 508000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Death Note",
+      "desc": "Ryuk drops his Death Note. When it comes in, the strongest enemy card dies after 4 turns unless this card falls first (bosses lose 30% HP). 30% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "number-one-captain",
+    "name": "Number One Captain",
+    "series": "",
+    "image": "images/cards/number-one-captain.webp",
+    "base": {
+      "atk": 14811,
+      "hp": 98740,
+      "def": 0,
+      "status": 0,
+      "odds": 376000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Optical Eye",
+      "desc": "Narumi's suit sees the enemy's next move. 40% chance to dodge each hit. 30% chance to crit for 1.8x damage. +30% damage against Kaiju cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ogre-sword-master",
+    "name": "Ogre Sword Master",
+    "series": "",
+    "image": "images/cards/ogre-sword-master.webp",
+    "base": {
+      "atk": 12179,
+      "hp": 81194,
+      "def": 0,
+      "status": 0,
+      "odds": 220000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Instant Slash",
+      "desc": "Hakurou cuts before you see the blade. Its first hit on each new enemy does 2.2x damage. 30% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "oni-princess",
+    "name": "Oni Princess",
+    "series": "",
+    "image": "images/cards/oni-princess.webp",
+    "base": {
+      "atk": 8147,
+      "hp": 54314,
+      "def": 0,
+      "status": 0,
+      "odds": 83000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Thunder Bagua",
+      "desc": "Yamato's club crackles with lightning. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Its first hit on each new enemy does 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "patchwork-curse",
+    "name": "Patchwork Curse",
+    "series": "",
+    "image": "images/cards/patchwork-curse.webp",
+    "base": {
+      "atk": 7296,
+      "hp": 48638,
+      "def": 0,
+      "status": 0,
+      "odds": 112000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Idle Transfiguration",
+      "desc": "Mahito reshapes souls. Each hit lowers the enemy's damage by 8% (up to 5 times); at full stacks the enemy is Sealed for 2 turns (not bosses). Takes 20% less damage. Heals 6% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "perfect-bio-android",
+    "name": "Perfect Bio-Android",
+    "series": "",
+    "image": "images/cards/perfect-bio-android.webp",
+    "base": {
+      "atk": 6486,
+      "hp": 43238,
+      "def": 0,
+      "status": 0,
+      "odds": 79000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Perfect Absorption",
+      "desc": "Cell: Each kill gives it 20% of the defeated card's damage and HP. Heals 5% of its max HP every turn. Every 3rd attack does 2.5x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "phase-through-hero",
+    "name": "Phase Through Hero",
+    "series": "",
+    "image": "images/cards/phase-through-hero.webp",
+    "base": {
+      "atk": 8713,
+      "hp": 58088,
+      "def": 0,
+      "status": 0,
+      "odds": 163000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Permeation",
+      "desc": "Mirio: 40% chance to dodge each hit. 40% chance to counter-attack when hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rage-royal-guard",
+    "name": "Rage Royal Guard",
+    "series": "",
+    "image": "images/cards/rage-royal-guard.webp",
+    "base": {
+      "atk": 8560,
+      "hp": 57064,
+      "def": 0,
+      "status": 0,
+      "odds": 141000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Rage Form",
+      "desc": "Youpi turns his anger into power. +12% damage every time it is hit. Under 40% HP: +60% damage. Takes 20% less damage. Once, takes the killing blow for Meruem."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rapping-eight-tails",
+    "name": "Rapping Eight Tails",
+    "series": "",
+    "image": "images/cards/rapping-eight-tails.webp",
+    "base": {
+      "atk": 8101,
+      "hp": 54004,
+      "def": 0,
+      "status": 0,
+      "odds": 95000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lariat & Ink",
+      "desc": "Killer Bee: 25% chance per hit to Stun the enemy for 1 turn. Takes 15% less damage. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
