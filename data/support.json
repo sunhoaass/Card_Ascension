@@ -1350,5 +1350,126 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "blue-healer-cat-knight",
+    "name": "Blue Healer Cat Knight",
+    "image": "images/support/blue-healer-cat-knight.webp",
+    "effect": {
+      "name": "Water Mana Healing",
+      "desc": "Ferris is the best healer in the kingdom: the supported card heals {0}% of its max HP every turn.",
+      "vals": [
+        3.8
+      ],
+      "type": "heal"
+    },
+    "odds": 737000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "charge-commander",
+    "name": "Charge Commander",
+    "image": "images/support/charge-commander.webp",
+    "effect": {
+      "name": "Dedicate Your Hearts!",
+      "desc": "Erwin leads the charge: every OTHER card in your deck deals {0}% more damage.",
+      "vals": [
+        11
+      ],
+      "type": "dmg"
+    },
+    "odds": 558000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cherry-blossom-medic",
+    "name": "Cherry Blossom Medic",
+    "image": "images/support/cherry-blossom-medic.webp",
+    "effect": {
+      "name": "Cherry Blossom Impact",
+      "desc": "Sakura's chakra fist: every 3rd attack of the supported card does {0}% more damage.",
+      "vals": [
+        53
+      ],
+      "type": "dmg"
+    },
+    "odds": 520000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flower-hand-scholar",
+    "name": "Flower Hand Scholar",
+    "image": "images/support/flower-hand-scholar.webp",
+    "effect": {
+      "name": "Mil Fleur",
+      "desc": "Robin's hands bloom everywhere: the supported card's hits also strike the whole enemy bench for {0}% of the damage, and Clutch has a {1}% chance to Stun for 1 turn.",
+      "vals": [
+        9,
+        4.5
+      ],
+      "type": "splash"
+    },
+    "odds": 641000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "future-sight-dog",
+    "name": "Future Sight Dog",
+    "image": "images/support/future-sight-dog.webp",
+    "effect": {
+      "name": "Future Vision",
+      "desc": "Bond sees what's coming: the FIRST 2 hits on the supported card each fight do {0}% less damage.",
+      "vals": [
+        50
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 612000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
