@@ -3168,5 +3168,617 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "destruction-alchemist",
+    "name": "Destruction Alchemist",
+    "series": "",
+    "image": "images/cards/destruction-alchemist.webp",
+    "base": {
+      "atk": 4477,
+      "hp": 29848,
+      "def": 0,
+      "status": 0,
+      "odds": 37000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Destruction Alchemy",
+      "desc": "Scar's right arm breaks things down. Ignores shields, dodges and barriers. Each hit also deals 8% of the enemy's max HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "draculina-gunner",
+    "name": "Draculina Gunner",
+    "series": "",
+    "image": "images/cards/draculina-gunner.webp",
+    "base": {
+      "atk": 5672,
+      "hp": 37810,
+      "def": 0,
+      "status": 0,
+      "odds": 24000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Harkonnen",
+      "desc": "Seras: Every 2nd attack also hits the card behind for 35%. Heals 20% of the damage it deals."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "explosion-witch",
+    "name": "Explosion Witch",
+    "series": "",
+    "image": "images/cards/explosion-witch.webp",
+    "base": {
+      "atk": 4497,
+      "hp": 29978,
+      "def": 0,
+      "status": 0,
+      "odds": 41000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "EXPLOSION!",
+      "desc": "Megumin casts one huge EXPLOSION. Its first attack of the fight does 3.64x damage. Its first attack also hits the whole enemy bench for 44%. Naps every other turn, but its hits do 1.3x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fishman-helmsman",
+    "name": "Fishman Helmsman",
+    "series": "",
+    "image": "images/cards/fishman-helmsman.webp",
+    "base": {
+      "atk": 2682,
+      "hp": 17882,
+      "def": 0,
+      "status": 0,
+      "odds": 8919
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Fish-Man Karate",
+      "desc": "Jinbe: Ignores shields, dodges and barriers. Takes 15% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flame-guild-master",
+    "name": "Flame Guild Master",
+    "series": "",
+    "image": "images/cards/flame-guild-master.webp",
+    "base": {
+      "atk": 3064,
+      "hp": 20426,
+      "def": 0,
+      "status": 0,
+      "odds": 18000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Flame Bomb",
+      "desc": "Choi Jong-In: Every hit sets the whole enemy deck on fire for 2 turns. Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "flash-lightning-swordswoman",
+    "name": "Flash Lightning Swordswoman",
+    "series": "",
+    "image": "images/cards/flash-lightning-swordswoman.webp",
+    "base": {
+      "atk": 4458,
+      "hp": 29718,
+      "def": 0,
+      "status": 0,
+      "odds": 40000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Stacia Account",
+      "desc": "Asuna: Blocks the first 2 hits completely. 40% chance to attack twice. With Kirito in the deck, both get +20% damage and HP. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fox-devil-hunter",
+    "name": "Fox Devil Hunter",
+    "series": "",
+    "image": "images/cards/fox-devil-hunter.webp",
+    "base": {
+      "atk": 4716,
+      "hp": 31442,
+      "def": 0,
+      "status": 0,
+      "odds": 17000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Future Devil + Curse Devil",
+      "desc": "Aki: 30% chance to dodge each hit. Each hit puts a nail on the enemy (up to 3). At 3 nails, an enemy under 15% HP dies instantly (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fusion-kid",
+    "name": "Fusion Kid",
+    "series": "",
+    "image": "images/cards/fusion-kid.webp",
+    "base": {
+      "atk": 2318,
+      "hp": 15456,
+      "def": 0,
+      "status": 0,
+      "odds": 7848
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Super Ghost Kamikaze Attack",
+      "desc": "Gotenks' ghosts explode on contact. Every hit also hits the whole enemy bench for 20%. 30% chance per hit to plant a bomb that explodes next turn for 1.5x the hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "future-swordsman",
+    "name": "Future Swordsman",
+    "series": "",
+    "image": "images/cards/future-swordsman.webp",
+    "base": {
+      "atk": 2422,
+      "hp": 16144,
+      "def": 0,
+      "status": 0,
+      "odds": 7993
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Super Saiyan Rage Sword",
+      "desc": "Future Trunks' rage. +8% damage every time it is hit. Ignores shields, dodges and barriers. +50% damage against Black cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "giant-earth-sin",
+    "name": "Giant Earth Sin",
+    "series": "",
+    "image": "images/cards/giant-earth-sin.webp",
+    "base": {
+      "atk": 4157,
+      "hp": 27716,
+      "def": 0,
+      "status": 0,
+      "odds": 27000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Heavy Metal",
+      "desc": "Diane: Takes 25% less damage. 25% chance per hit to Stun the enemy for 1 turn. With King in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "goat-sin-doll",
+    "name": "Goat Sin Doll",
+    "series": "",
+    "image": "images/cards/goat-sin-doll.webp",
+    "base": {
+      "atk": 3744,
+      "hp": 24962,
+      "def": 0,
+      "status": 0,
+      "odds": 28000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Invasion",
+      "desc": "Gowther rewrites memories. 40% chance per hit to Confuse the enemy (it hits itself instead). Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "golden-land-demon",
+    "name": "Golden Land Demon",
+    "series": "",
+    "image": "images/cards/golden-land-demon.webp",
+    "base": {
+      "atk": 3882,
+      "hp": 25880,
+      "def": 0,
+      "status": 0,
+      "odds": 29000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Diagolze",
+      "desc": "Macht's curse turns things to gold. 30% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2x damage against frozen enemies. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "gourmet-ghoul",
+    "name": "Gourmet Ghoul",
+    "series": "",
+    "image": "images/cards/gourmet-ghoul.webp",
+    "base": {
+      "atk": 4229,
+      "hp": 28196,
+      "def": 0,
+      "status": 0,
+      "odds": 29000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Koukaku Rapier",
+      "desc": "Tsukiyama savours his food. Heals 40% of its max HP after each kill. 25% chance to crit for 1.8x damage. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "guillotine-demon",
+    "name": "Guillotine Demon",
+    "series": "",
+    "image": "images/cards/guillotine-demon.webp",
+    "base": {
+      "atk": 6242,
+      "hp": 41616,
+      "def": 0,
+      "status": 0,
+      "odds": 30000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Scales of Obedience",
+      "desc": "Aura weighs mana. Its first hit on each new enemy Seals its ability for 2 turns. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "gun-exorcist-twin",
+    "name": "Gun Exorcist Twin",
+    "series": "",
+    "image": "images/cards/gun-exorcist-twin.webp",
+    "base": {
+      "atk": 4905,
+      "hp": 32702,
+      "def": 0,
+      "status": 0,
+      "odds": 39000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dragoon Exorcist",
+      "desc": "Yukio's twin pistols. Always attacks twice (each hit does 0.7x damage). +30% damage against Demon cards. With Rin Okumura in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hair-psychic",
+    "name": "Hair Psychic",
+    "series": "",
+    "image": "images/cards/hair-psychic.webp",
+    "base": {
+      "atk": 5019,
+      "hp": 33458,
+      "def": 0,
+      "status": 0,
+      "odds": 32000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Psychic Barrier",
+      "desc": "Teru: Blocks the first 2 hits completely. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hero-killer",
+    "name": "Hero Killer",
+    "series": "",
+    "image": "images/cards/hero-killer.webp",
+    "base": {
+      "atk": 2867,
+      "hp": 19116,
+      "def": 0,
+      "status": 0,
+      "odds": 15000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bloodcurdle",
+      "desc": "Stain licks the blood off his blade. 35% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns). +30% damage against Hero cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "horned-darling-pilot",
+    "name": "Horned Darling Pilot",
+    "series": "",
+    "image": "images/cards/horned-darling-pilot.webp",
+    "base": {
+      "atk": 4576,
+      "hp": 30506,
+      "def": 0,
+      "status": 0,
+      "odds": 42000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Strelizia",
+      "desc": "Zero Two's Strelizia. 30% chance to attack twice. Under 50% HP: +40% damage. Heals 5% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

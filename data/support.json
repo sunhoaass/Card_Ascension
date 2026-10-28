@@ -891,5 +891,295 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "doctor-demon",
+    "name": "Doctor Demon",
+    "image": "images/support/doctor-demon.webp",
+    "effect": {
+      "name": "Bewitching Blood",
+      "desc": "Tamayo's blood poisons the enemy: every hit adds Poison ({0}% of its max HP every turn, up to 3 stacks).",
+      "vals": [
+        0.5
+      ],
+      "type": "poison"
+    },
+    "odds": 45000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "dwarf-warrior-guard",
+    "name": "Dwarf Warrior Guard",
+    "image": "images/support/dwarf-warrior-guard.webp",
+    "effect": {
+      "name": "Dwarf Warrior's Body",
+      "desc": "Eisen takes the hit for everyone: the supported card takes {0}% less damage, and whoever hits it takes {1}% of that damage back.",
+      "vals": [
+        3.8,
+        4
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 64000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "erasure-teacher",
+    "name": "Erasure Teacher",
+    "image": "images/support/erasure-teacher.webp",
+    "effect": {
+      "name": "Erasure",
+      "desc": "Eraser Head stares the enemy down: the supported card has a {0}% chance on hit to Seal the enemy's abilities.",
+      "vals": [
+        13
+      ],
+      "type": "seal"
+    },
+    "odds": 46000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fate-thread-witch",
+    "name": "Fate Thread Witch",
+    "image": "images/support/fate-thread-witch.webp",
+    "effect": {
+      "name": "Red Thread of Fate",
+      "desc": "Vanessa's red thread twists fate: the FIRST hit on the supported card each fight does {0}% less damage, and it dodges {1}% of hits.",
+      "vals": [
+        51,
+        3.4
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 63000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "foresight-hero",
+    "name": "Foresight Hero",
+    "image": "images/support/foresight-hero.webp",
+    "effect": {
+      "name": "Foresight",
+      "desc": "Sir Nighteye has seen this fight: the supported card dodges {0}% of hits.",
+      "vals": [
+        14
+      ],
+      "type": "dodge"
+    },
+    "odds": 70000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "gem-mage",
+    "name": "Gem Mage",
+    "image": "images/support/gem-mage.webp",
+    "effect": {
+      "name": "Jewel Magic",
+      "desc": "Rin throws a charged jewel: the supported card's hits have a {0}% chance to plant a gem that explodes next turn for 50% more damage.",
+      "vals": [
+        6.3
+      ],
+      "type": "gems"
+    },
+    "odds": 59000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "genius-inventor",
+    "name": "Genius Inventor",
+    "image": "images/support/genius-inventor.webp",
+    "effect": {
+      "name": "Capsule Corp Shield",
+      "desc": "Bulma's Capsule Corp gadget: the supported card starts every fight with a shield worth {0}% of its max HP.",
+      "vals": [
+        11
+      ],
+      "type": "shield"
+    },
+    "odds": 52000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "goddess-princess",
+    "name": "Goddess Princess",
+    "image": "images/support/goddess-princess.webp",
+    "effect": {
+      "name": "Goddess's Blessing",
+      "desc": "Elizabeth's goddess power: the supported card can't be stunned, frozen or paralyzed, and heals {0}% of its max HP every turn.",
+      "vals": [
+        0.9
+      ],
+      "type": "heal"
+    },
+    "odds": 49000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "gun-captain",
+    "name": "Gun Captain",
+    "image": "images/support/gun-captain.webp",
+    "effect": {
+      "name": "Pyro Bullets",
+      "desc": "Hinawa's bullets are pyrokinetic: every hit sets the enemy on fire ({0}% of its max HP every turn, up to 3 stacks).",
+      "vals": [
+        0.7
+      ],
+      "type": "burn"
+    },
+    "odds": 65000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "half-elf-ice-mage",
+    "name": "Half-Elf Ice Mage",
+    "image": "images/support/half-elf-ice-mage.webp",
+    "effect": {
+      "name": "Icebrand Arts",
+      "desc": "Emilia's icicles: the supported card's hits have a {0}% chance to Freeze the enemy for 1 turn.",
+      "vals": [
+        12
+      ],
+      "type": "freeze"
+    },
+    "odds": 51000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hawks-eye-sniper",
+    "name": "Hawk's Eye Sniper",
+    "image": "images/support/hawks-eye-sniper.webp",
+    "effect": {
+      "name": "Hawk's Eye",
+      "desc": "Riza Hawkeye aims for the vitals: the supported card has a {0}% chance to land a critical hit for double damage.",
+      "vals": [
+        15
+      ],
+      "type": "crit"
+    },
+    "odds": 68000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "healing-hero",
+    "name": "Healing Hero",
+    "image": "images/support/healing-hero.webp",
+    "effect": {
+      "name": "Healing Smooch",
+      "desc": "Recovery Girl kisses everyone better: at the start of the supported card's turns, EVERY card in your deck heals {0}% of its max HP.",
+      "vals": [
+        3.3
+      ],
+      "type": "heal"
+    },
+    "odds": 45000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

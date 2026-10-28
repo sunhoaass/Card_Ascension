@@ -1467,6 +1467,389 @@
       "hp": 15722,
       "src": "RobloxScreenShot20261028_115717419.png",
       "round": 4
+    },
+    {
+      "id": "destruction-alchemist",
+      "kind": "card",
+      "name": "Destruction Alchemist",
+      "series": "",
+      "odds": 37000,
+      "atk": 4477,
+      "hp": 29848,
+      "src": "RobloxScreenShot20261028_115724904.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "doctor-demon",
+      "kind": "support",
+      "name": "Doctor Demon",
+      "series": "",
+      "odds": 45000,
+      "vals": [
+        0.5
+      ],
+      "type": "poison",
+      "src": "RobloxScreenShot20261028_115728764.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "draculina-gunner",
+      "kind": "card",
+      "name": "Draculina Gunner",
+      "series": "",
+      "odds": 24000,
+      "atk": 5672,
+      "hp": 37810,
+      "src": "RobloxScreenShot20261028_115732511.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "dwarf-warrior-guard",
+      "kind": "support",
+      "name": "Dwarf Warrior Guard",
+      "series": "",
+      "odds": 64000,
+      "vals": [
+        3.8,
+        4
+      ],
+      "type": "damage-reduction",
+      "src": "RobloxScreenShot20261028_115736438.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "erasure-teacher",
+      "kind": "support",
+      "name": "Erasure Teacher",
+      "series": "",
+      "odds": 46000,
+      "vals": [
+        13
+      ],
+      "type": "seal",
+      "src": "RobloxScreenShot20261028_115742777.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "explosion-witch",
+      "kind": "card",
+      "name": "Explosion Witch",
+      "series": "",
+      "odds": 41000,
+      "atk": 4497,
+      "hp": 29978,
+      "src": "RobloxScreenShot20261028_115746649.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "fate-thread-witch",
+      "kind": "support",
+      "name": "Fate Thread Witch",
+      "series": "",
+      "odds": 63000,
+      "vals": [
+        51,
+        3.4
+      ],
+      "type": "damage-reduction",
+      "src": "RobloxScreenShot20261028_115754000.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "fishman-helmsman",
+      "kind": "card",
+      "name": "Fishman Helmsman",
+      "series": "",
+      "odds": 8919,
+      "atk": 2682,
+      "hp": 17882,
+      "src": "RobloxScreenShot20261028_115757712.png",
+      "round": 5
+    },
+    {
+      "id": "flame-guild-master",
+      "kind": "card",
+      "name": "Flame Guild Master",
+      "series": "",
+      "odds": 18000,
+      "atk": 3064,
+      "hp": 20426,
+      "src": "RobloxScreenShot20261028_115801915.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "flash-lightning-swordswoman",
+      "kind": "card",
+      "name": "Flash Lightning Swordswoman",
+      "series": "",
+      "odds": 40000,
+      "atk": 4458,
+      "hp": 29718,
+      "src": "RobloxScreenShot20261028_115805968.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "foresight-hero",
+      "kind": "support",
+      "name": "Foresight Hero",
+      "series": "",
+      "odds": 70000,
+      "vals": [
+        14
+      ],
+      "type": "dodge",
+      "src": "RobloxScreenShot20261028_115809323.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "fox-devil-hunter",
+      "kind": "card",
+      "name": "Fox Devil Hunter",
+      "series": "",
+      "odds": 17000,
+      "atk": 4716,
+      "hp": 31442,
+      "src": "RobloxScreenShot20261028_115813605.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "fusion-kid",
+      "kind": "card",
+      "name": "Fusion Kid",
+      "series": "",
+      "odds": 7848,
+      "atk": 2318,
+      "hp": 15456,
+      "src": "RobloxScreenShot20261028_115820238.png",
+      "round": 5
+    },
+    {
+      "id": "future-swordsman",
+      "kind": "card",
+      "name": "Future Swordsman",
+      "series": "",
+      "odds": 7993,
+      "atk": 2422,
+      "hp": 16144,
+      "src": "RobloxScreenShot20261028_115824617.png",
+      "round": 5
+    },
+    {
+      "id": "gem-mage",
+      "kind": "support",
+      "name": "Gem Mage",
+      "series": "",
+      "odds": 59000,
+      "vals": [
+        6.3
+      ],
+      "type": "gems",
+      "src": "RobloxScreenShot20261028_115829127.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "genius-inventor",
+      "kind": "support",
+      "name": "Genius Inventor",
+      "series": "",
+      "odds": 52000,
+      "vals": [
+        11
+      ],
+      "type": "shield",
+      "src": "RobloxScreenShot20261028_115834078.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "giant-earth-sin",
+      "kind": "card",
+      "name": "Giant Earth Sin",
+      "series": "",
+      "odds": 27000,
+      "atk": 4157,
+      "hp": 27716,
+      "src": "RobloxScreenShot20261028_115838692.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "goat-sin-doll",
+      "kind": "card",
+      "name": "Goat Sin Doll",
+      "series": "",
+      "odds": 28000,
+      "atk": 3744,
+      "hp": 24962,
+      "src": "RobloxScreenShot20261028_115842906.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "goddess-princess",
+      "kind": "support",
+      "name": "Goddess Princess",
+      "series": "",
+      "odds": 49000,
+      "vals": [
+        0.9
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_120214931.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "golden-land-demon",
+      "kind": "card",
+      "name": "Golden Land Demon",
+      "series": "",
+      "odds": 29000,
+      "atk": 3882,
+      "hp": 25880,
+      "src": "RobloxScreenShot20261028_120223326.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "gourmet-ghoul",
+      "kind": "card",
+      "name": "Gourmet Ghoul",
+      "series": "",
+      "odds": 29000,
+      "atk": 4229,
+      "hp": 28196,
+      "src": "RobloxScreenShot20261028_120231400.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "guillotine-demon",
+      "kind": "card",
+      "name": "Guillotine Demon",
+      "series": "",
+      "odds": 30000,
+      "atk": 6242,
+      "hp": 41616,
+      "src": "RobloxScreenShot20261028_120235509.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "gun-captain",
+      "kind": "support",
+      "name": "Gun Captain",
+      "series": "",
+      "odds": 65000,
+      "vals": [
+        0.7
+      ],
+      "type": "burn",
+      "src": "RobloxScreenShot20261028_120240130.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "gun-exorcist-twin",
+      "kind": "card",
+      "name": "Gun Exorcist Twin",
+      "series": "",
+      "odds": 39000,
+      "atk": 4905,
+      "hp": 32702,
+      "src": "RobloxScreenShot20261028_120244244.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "hair-psychic",
+      "kind": "card",
+      "name": "Hair Psychic",
+      "series": "",
+      "odds": 32000,
+      "atk": 5019,
+      "hp": 33458,
+      "src": "RobloxScreenShot20261028_120248366.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "half-elf-ice-mage",
+      "kind": "support",
+      "name": "Half-Elf Ice Mage",
+      "series": "",
+      "odds": 51000,
+      "vals": [
+        12
+      ],
+      "type": "freeze",
+      "src": "RobloxScreenShot20261028_120251888.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "hawks-eye-sniper",
+      "kind": "support",
+      "name": "Hawk's Eye Sniper",
+      "series": "",
+      "odds": 68000,
+      "vals": [
+        15
+      ],
+      "type": "crit",
+      "src": "RobloxScreenShot20261028_120256067.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "healing-hero",
+      "kind": "support",
+      "name": "Healing Hero",
+      "series": "",
+      "odds": 45000,
+      "vals": [
+        3.3
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_120300553.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "hero-killer",
+      "kind": "card",
+      "name": "Hero Killer",
+      "series": "",
+      "odds": 15000,
+      "atk": 2867,
+      "hp": 19116,
+      "src": "RobloxScreenShot20261028_120307212.png",
+      "round": 5,
+      "oddsShort": true
+    },
+    {
+      "id": "horned-darling-pilot",
+      "kind": "card",
+      "name": "Horned Darling Pilot",
+      "series": "",
+      "odds": 42000,
+      "atk": 4576,
+      "hp": 30506,
+      "src": "RobloxScreenShot20261028_120310803.png",
+      "round": 5,
+      "oddsShort": true
     }
   ]
 }
