@@ -13,7 +13,7 @@
           traits = the user's trait per card from js/traits.js, added by js/deck.js for the user's own decks only)
 
    The 5 parts (weights per mode from data/meta.json -> modes[].weights; default 30 / 25 / 20 / 15 / 10):
-     power     card Overall (unranked = 50) + its trait bonus vs the best 5 cards in the library (no traits) · support Value vs the best support
+     power     card Overall (unranked = 50 · a card under the rank cut = its stat score, below) + its trait bonus vs the best 5 cards in the library (no traits) · support Value vs the best support
      synergy   cards with a partner from team.bestWith · support that fits the card above it · minus avoidWith clashes
      coverage  share of Meta cards (GOD/SS) the team beats (beats) · minus every weakTo tag shared by 3+ cards
      roles     the roles the mode asks for (modes[].roles, default Tank 1 · DPS 2; Hybrid fills any one)
@@ -54,6 +54,9 @@
     posNear: 0.5,                         // position: one slot away from its best slot
     traitPts: 20,                         // card power: the strongest trait (Ascendant) adds this many points to a card's value
     threatTiers: ["GOD", "SS"],          // Meta cards (owner 2026-10-24: GOD + SS)
+    // stat score of a card under the rank cut (PROGRESS §10.5): the Overall formula of §5.3 with its ATK / HP percentile and
+    // a stats-only 1-1 matchup against the ranked cards; passive / skill / team = the lowest of the ranked cards × min(1, matchup ÷ 50)
+    statW: { atk: 12.5, hp: 12.5, ability: 30, matchup: 25, team: 20 },
   };
   const BANDS = [
     { min: 100, band: "perfect", label: "Perfect" },
@@ -124,7 +127,7 @@
     cards.forEach((c) => list(c.tags).forEach((t) => { const k = tagKey(t); if (!byTag.has(k)) byTag.set(k, { name: t, ids: new Set() }); byTag.get(k).ids.add(c.id); }));
     L = {
       cardsSrc: s.cards, supSrc: s.support, teamsSrc: s.teams,
-      cards, sups, has, threats, byTag,
+      cards, sups, has, threats, byTag, stat: statScores(cards),
       cardById: new Map(cards.map((c) => [c.id, c])),
       supById: new Map(sups.map((x) => [x.id, x])),
       teams: (Array.isArray(s.teams) ? s.teams : []).filter((t) => t && Array.isArray(t.slots)),
@@ -145,8 +148,45 @@
     const a = +m[1], b = m[2] ? +m[2] : a;
     return [Math.min(a, b), Math.max(a, b)];
   }
-  // a card's worth in a mode: Overall (unranked = 50), averaged with modes[mode] when the card has one
+  /* Stat score (0–100) of every card under the rank cut (C.isRankClass false · PROGRESS §10.5): built like Overall (§5.3) so
+     it sits on the same scale as the ranked cards. Ranked = the scored cards above the cut (R, N cards) at Normal.
+       ATK / HP   percentile as if the card joined R: (1 + ranked cards with a value ≤ it) ÷ (N + 1) × 100
+       Matchup    stats-only 1-1 against every ranked card (hits to kill = ceil(HP ÷ ATK), both sides first once, averaged):
+                  winner 50 + half its HP % left, loser 50 − the same (task B's scoring without abilities)
+       Passive / Skill / Team   the lowest scores among R (an ability nobody analysed counts as no better than the weakest one)
+                  × min(1, Matchup ÷ 50): the stat check of §5.3, an ability only helps a card whose stats can keep up
+     No ranked card yet, or no ATK / HP = 50 (like an unranked card). */
+  function statScores(cards) {
+    const out = new Map();
+    const st = (c) => (c.base && c.base.atk > 0 && c.base.hp > 0 ? c.base : null);
+    const R = cards.filter((c) => C.isRanked(c) && st(c));
+    const low = (f) => Math.min(...R.map((c) => num(f(c.scores)) ?? 0));
+    const ability = R.length ? low((x) => ((num(x.passive) ?? 0) + (num(x.skill) ?? 0)) / 2) : 0, team = R.length ? low((x) => x.team) : 0;
+    const W = K.statW, wSum = W.atk + W.hp + W.ability + W.matchup + W.team;
+    // one side's score in a stats-only 1-1 (a = this card, b = the ranked card), a hits first or second
+    const duel = (a, b, aFirst) => {
+      const ha = Math.ceil(b.hp / a.atk), hb = Math.ceil(a.hp / b.atk);
+      const aWins = aFirst ? ha <= hb : ha < hb;
+      if (aWins) return 50 + (Math.max(0, a.hp - (aFirst ? ha - 1 : ha) * b.atk) / a.hp) * 50;
+      return 50 - (Math.max(0, b.hp - (aFirst ? hb : hb - 1) * a.atk) / b.hp) * 50;
+    };
+    cards.forEach((c) => {
+      if (C.isRankClass(c)) return;
+      const a = st(c);
+      if (!a || !R.length) { out.set(c.id, UNRANKED); return; }
+      const pctOf = (k) => ((1 + R.filter((r) => r.base[k] <= a[k]).length) / (R.length + 1)) * 100;
+      const match = R.reduce((t, r) => t + (duel(a, r.base, true) + duel(a, r.base, false)) / 2, 0) / R.length;
+      const keep = Math.min(1, match / 50);
+      const v = (W.atk * pctOf("atk") + W.hp * pctOf("hp") + (W.ability * ability + W.team * team) * keep + W.matchup * match) / wSum;
+      out.set(c.id, Math.max(1, Math.min(100, v)));
+    });
+    return out;
+  }
+  const statValue = (c) => { const v = c ? lib().stat.get(c.id) : undefined; return v === undefined ? null : v; };
+
+  // a card's worth in a mode: Overall (unranked = 50 · under the rank cut = its stat score), averaged with modes[mode] when the card has one
   function cardVal(c, mode) {
+    if (!C.isRankClass(c)) return statValue(c) ?? UNRANKED;
     const ov = C.isRanked(c) ? c.scores.overall : UNRANKED;
     const mv = c.modes && typeof c.modes === "object" ? num(c.modes[mode]) : null;
     return mv == null ? ov : (ov + clamp01(mv / 100) * 100) / 2;
@@ -160,12 +200,12 @@
   const traitOf = (deck, c) => (deck && deck.traits && typeof deck.traits === "object" && typeof deck.traits[c.id] === "string" ? deck.traits[c.id] : null);
   const traitBonus = (deck, c) => { const id = traitOf(deck, c); return id && C.traits && C.traits.power ? K.traitPts * C.traits.power(id) : 0; };
   const cardValT = (deck, c, mode) => Math.min(100, cardVal(c, mode) + traitBonus(deck, c));
-  // the best possible deck in this mode: the 5 best cards (fewer than 5 ranked = the rest count as unranked 50),
+  // the best possible deck in this mode: the 5 best cards (ranked + stat scores of the cards under the cut · fewer than 5 = the rest count as unranked 50),
   // and the best support in every slot (support may repeat)
   function bestOf(mode) {
     const l = lib();
     if (l.best.has(mode)) return l.best.get(mode);
-    const cv = l.cards.filter((c) => C.isRanked(c)).map((c) => cardVal(c, mode)).sort((a, b) => b - a).slice(0, SLOTS);
+    const cv = l.cards.filter((c) => C.isRanked(c) || !C.isRankClass(c)).map((c) => cardVal(c, mode)).sort((a, b) => b - a).slice(0, SLOTS);
     while (cv.length < SLOTS) cv.push(UNRANKED);
     const sv = l.sups.filter(isRankedSup).map((s) => supVal(s, mode));
     const b = { card: Math.max(1, cv.reduce((a, v) => a + v, 0) / SLOTS), sup: Math.max(1, sv.length ? Math.max(...sv) : 100) };
@@ -191,7 +231,8 @@
     const members = at.filter(Boolean);
     const nCards = members.length, nSup = sat.filter(Boolean).length;
     const missing = cards.filter((id, i) => id && !at[i]).length + sups.filter((id, i) => id && !sat[i]).length;
-    const unranked = members.filter((c) => !C.isRanked(c)).length + sat.filter((s) => s && !isRankedSup(s)).length;
+    const statOnly = members.filter((c) => !C.isRankClass(c)).length;
+    const unranked = members.filter((c) => C.isRankClass(c) && !C.isRanked(c)).length + sat.filter((s) => s && !isRankedSup(s)).length;
     const fill = nCards / SLOTS;
     const parts = {};
 
@@ -308,11 +349,12 @@
     const full = out.every((p) => p.v >= 1 - EPS);
     const sc = empty ? null : full ? 100 : Math.max(1, Math.min(99, Math.floor(raw + EPS)));
     const notes = [];
+    if (statOnly) notes.push(`${statOnly} ${statOnly === 1 ? "card is" : "cards are"} under the rank cut, so ${statOnly === 1 ? "it's" : "they're"} scored from ATK and HP only.`);
     if (unranked) notes.push(`${unranked} unranked ${unranked === 1 ? "card counts" : "cards count"} as 50 until ${unranked === 1 ? "it's" : "they're"} analysed.`);
     if (missing) notes.push(`${missing} ${missing === 1 ? "card isn't" : "cards aren't"} in the library yet, so ${missing === 1 ? "it doesn't" : "they don't"} count.`);
     if (out.some((p) => p.noData || p.partial)) notes.push("Parts marked “Not enough data yet” score half until the cards are analysed.");
     const b = band(sc);
-    return { score: sc, raw, band: b.band, label: b.label, parts: out, notes, empty, mode, nCards, nSup, unranked, missing };
+    return { score: sc, raw, band: b.band, label: b.label, parts: out, notes, empty, mode, nCards, nSup, unranked, statOnly, missing };
   }
   function slots(a) {
     const out = [];
@@ -404,5 +446,5 @@
     return out.sort((a, b) => b.gain - a.gain || val(b.id) - val(a.id) || a.id.localeCompare(b.id)).slice(0, n);
   }
 
-  C.teamScore = { score, analyze, suggest, band, modeConfig, modes: modeList, PARTS, K, SLOTS };
+  C.teamScore = { score, analyze, suggest, band, modeConfig, modes: modeList, statValue, PARTS, K, SLOTS };
 })();

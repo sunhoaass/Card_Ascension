@@ -1,0 +1,33 @@
+{
+  "updated": "2026-10-28",
+  "items": [
+    {
+      "name": "Beast Emperor",
+      "kind": "card",
+      "group": "",
+      "baseOdds": 2806284629,
+      "id": "beast-emperor"
+    },
+    {
+      "name": "Moon Eye Ghost",
+      "kind": "card",
+      "group": "",
+      "baseOdds": 3679415015,
+      "id": "moon-eye-ghost"
+    },
+    {
+      "name": "Dragon Emperor Monarch",
+      "kind": "card",
+      "group": "",
+      "baseOdds": 5523945238,
+      "id": "dragon-emperor-monarch"
+    },
+    {
+      "name": "Atomic Shadow Lord",
+      "kind": "card",
+      "group": "",
+      "baseOdds": 9496060703,
+      "id": "atomic-shadow-lord"
+    }
+  ]
+}

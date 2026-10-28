@@ -610,7 +610,8 @@
     const d = shortOf(card, key);
     if (key === "tier") {
       const ranked = C.isRanked(card);
-      return { t: ranked ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>` : "Unranked", d, o: obtainOf(card) };
+      // a card under the rank cut never gets task B's short line: say why it has no tier
+      return { t: ranked ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>` : "Unranked", d: d || (C.isRankClass(card) ? "" : "Common · not tier-ranked"), o: obtainOf(card) };
     }
     return { t: { ability: "Passive / Skill", strong: "Strongest", weak: "Weakness" }[key], d };
   }
@@ -1163,7 +1164,9 @@
         </section>`
       : `<section class="dpanel" aria-labelledby="d-t-overall">
           <h3 class="dpanel__title" id="d-t-overall">Overall score</h3>
-          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>This card hasn't been scored yet. Its Overall score and tier will show up here once it is.</span></div>
+          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>${C.isRankClass(card)
+            ? "This card hasn't been scored yet. Its Overall score and tier will show up here once it is."
+            : `Only cards with odds of ${esc(C.fmtOdds(C.rankCut()))} or rarer are tier-ranked. Decks score this one from its ATK and HP.`}</span></div>
           ${note ? `<p class="dpanel__note">${esc(note)}</p>` : ""}
         </section>`;
     const teamHTML = `
