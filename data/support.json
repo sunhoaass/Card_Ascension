@@ -2509,5 +2509,221 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "sacred-arrow-priestess",
+    "name": "Sacred Arrow Priestess",
+    "image": "images/support/sacred-arrow-priestess.webp",
+    "effect": {
+      "name": "Sacred Arrow",
+      "desc": "Kagome's sacred arrows purify: the supported card's first hit on every new enemy Seals its abilities for 1 turn, and it deals {0}% more damage.",
+      "vals": [
+        13
+      ],
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 70.33,
+          "y": 104.17,
+          "w": 9.17,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.83,
+          "gr": 2.17
+        }
+      ]
+    },
+    "odds": 688000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "shadow-strategist",
+    "name": "Shadow Strategist",
+    "image": "images/support/shadow-strategist.webp",
+    "effect": {
+      "name": "Shadow Possession",
+      "desc": "Shikamaru's shadow: when the supported card comes in, it has a {0}% chance to bind the enemy so it can't move on its first turn.",
+      "vals": [
+        55
+      ],
+      "type": "bind",
+      "pos": [
+        {
+          "i": 0,
+          "x": 44.33,
+          "y": 97.33,
+          "w": 9.5,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 2.0,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 656000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "teacher-alchemist",
+    "name": "Teacher Alchemist",
+    "image": "images/support/teacher-alchemist.webp",
+    "effect": {
+      "name": "Hand-Clap Alchemy",
+      "desc": "Izumi doesn't need a circle: the supported card counters {0}% of the hits it takes.",
+      "vals": [
+        17
+      ],
+      "type": "counter",
+      "pos": [
+        {
+          "i": 0,
+          "x": 73.17,
+          "y": 100.0,
+          "w": 11.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 704000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "titan-scientist",
+    "name": "Titan Scientist",
+    "image": "images/support/titan-scientist.webp",
+    "effect": {
+      "name": "Titan Research",
+      "desc": "Hange finds the weak spot: the enemy the supported card hits takes {0}% more damage from everyone.",
+      "vals": [
+        19
+      ],
+      "type": "mark",
+      "pos": [
+        {
+          "i": 0,
+          "x": 66.83,
+          "y": 98.67,
+          "w": 10.83,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 1.5,
+          "gr": 1.83
+        }
+      ]
+    },
+    "odds": 545000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "useless-goddess",
+    "name": "Useless Goddess",
+    "image": "images/support/useless-goddess.webp",
+    "effect": {
+      "name": "Resurrection",
+      "desc": "Aqua is NOT useless: when the supported card is knocked out it has a {0}% chance to be resurrected with 30% HP (once per fight).",
+      "vals": [
+        37
+      ],
+      "type": "revive",
+      "pos": [
+        {
+          "i": 0,
+          "x": 55.33,
+          "y": 97.33,
+          "w": 9.17,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 598000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "water-king-teacher",
+    "name": "Water King Teacher",
+    "image": "images/support/water-king-teacher.webp",
+    "effect": {
+      "name": "Water King Barrier",
+      "desc": "Roxy's water magic: every 3rd turn the supported card gets a shield worth {0}% of its max HP.",
+      "vals": [
+        8.8
+      ],
+      "type": "shield",
+      "pos": [
+        {
+          "i": 0,
+          "x": 32.0,
+          "y": 109.5,
+          "w": 14.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 2.33,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 755000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
