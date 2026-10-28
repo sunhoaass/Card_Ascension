@@ -1850,6 +1850,380 @@
       "src": "RobloxScreenShot20261028_120310803.png",
       "round": 5,
       "oddsShort": true
+    },
+    {
+      "id": "pacifier-prince",
+      "kind": "support",
+      "name": "Pacifier Prince",
+      "series": "",
+      "odds": 62000,
+      "vals": [
+        56
+      ],
+      "type": "damage-reduction",
+      "src": "RobloxScreenShot20261028_120544015.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "sparkle-strongarm",
+      "kind": "card",
+      "name": "Sparkle Strongarm",
+      "series": "",
+      "odds": 38000,
+      "atk": 7228,
+      "hp": 48188,
+      "src": "RobloxScreenShot20261028_120938340.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "spirit-sword-punk",
+      "kind": "card",
+      "name": "Spirit Sword Punk",
+      "series": "",
+      "odds": 25000,
+      "atk": 4051,
+      "hp": 27008,
+      "src": "RobloxScreenShot20261028_120943641.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "star-key-mage",
+      "kind": "support",
+      "name": "Star Key Mage",
+      "series": "",
+      "odds": 58000,
+      "vals": [
+        7.5
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_120947794.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "stitched-scythe-kid",
+      "kind": "card",
+      "name": "Stitched Scythe Kid",
+      "series": "",
+      "odds": 28000,
+      "atk": 3777,
+      "hp": 25182,
+      "src": "RobloxScreenShot20261028_120951992.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "straw-doll-sorceress",
+      "kind": "card",
+      "name": "Straw Doll Sorceress",
+      "series": "",
+      "odds": 10000,
+      "atk": 2338,
+      "hp": 15588,
+      "src": "RobloxScreenShot20261028_120956051.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "string-puppet-king",
+      "kind": "card",
+      "name": "String Puppet King",
+      "series": "",
+      "odds": 8599,
+      "atk": 2229,
+      "hp": 14858,
+      "src": "RobloxScreenShot20261028_121000545.png",
+      "round": 6
+    },
+    {
+      "id": "supreme-kai",
+      "kind": "support",
+      "name": "Supreme Kai",
+      "series": "",
+      "odds": 69000,
+      "vals": [
+        13
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_121005568.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "sword-saint-father",
+      "kind": "card",
+      "name": "Sword Saint Father",
+      "series": "",
+      "odds": 22000,
+      "atk": 3676,
+      "hp": 24506,
+      "src": "RobloxScreenShot20261028_121011261.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "tempest-star-wolf",
+      "kind": "card",
+      "name": "Tempest Star Wolf",
+      "series": "",
+      "odds": 20000,
+      "atk": 4769,
+      "hp": 31792,
+      "src": "RobloxScreenShot20261028_121015373.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "thorn-princess-assassin",
+      "kind": "card",
+      "name": "Thorn Princess Assassin",
+      "series": "",
+      "odds": 41000,
+      "atk": 4945,
+      "hp": 32964,
+      "src": "RobloxScreenShot20261028_121020263.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "thunder-coward",
+      "kind": "card",
+      "name": "Thunder Coward",
+      "series": "",
+      "odds": 12000,
+      "atk": 2464,
+      "hp": 16426,
+      "src": "RobloxScreenShot20261028_121031078.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "turbo-ghost-kid",
+      "kind": "card",
+      "name": "Turbo Ghost Kid",
+      "series": "",
+      "odds": 36000,
+      "atk": 4231,
+      "hp": 28204,
+      "src": "RobloxScreenShot20261028_121034090.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "turtle-hermit",
+      "kind": "support",
+      "name": "Turtle Hermit",
+      "series": "",
+      "odds": 53000,
+      "vals": [
+        2,
+        1.5
+      ],
+      "type": "max-hp",
+      "src": "RobloxScreenShot20261028_121039135.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "ultimate-shield-homunculus",
+      "kind": "card",
+      "name": "Ultimate Shield Homunculus",
+      "series": "",
+      "odds": 38000,
+      "atk": 4560,
+      "hp": 30398,
+      "src": "RobloxScreenShot20261028_121043108.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "weather-witch-navigator",
+      "kind": "support",
+      "name": "Weather Witch Navigator",
+      "series": "",
+      "odds": 44000,
+      "vals": [
+        15
+      ],
+      "type": "paralyze",
+      "src": "RobloxScreenShot20261028_121047945.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "white-tiger-master",
+      "kind": "card",
+      "name": "White Tiger Master",
+      "series": "",
+      "odds": 19000,
+      "atk": 3338,
+      "hp": 22254,
+      "src": "RobloxScreenShot20261028_121052799.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "wind-tunnel-monk",
+      "kind": "support",
+      "name": "Wind Tunnel Monk",
+      "series": "",
+      "odds": 60000,
+      "vals": [
+        10
+      ],
+      "type": "lifesteal",
+      "src": "RobloxScreenShot20261028_121057710.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "zero-gravity-hero",
+      "kind": "support",
+      "name": "Zero Gravity Hero",
+      "series": "",
+      "odds": 55000,
+      "vals": [
+        13
+      ],
+      "type": "stun",
+      "src": "RobloxScreenShot20261028_121101841.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "zoltraak-apprentice",
+      "kind": "card",
+      "name": "Zoltraak Apprentice",
+      "series": "",
+      "odds": 31000,
+      "atk": 4340,
+      "hp": 28934,
+      "src": "RobloxScreenShot20261028_121105481.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "ackerman-blade",
+      "kind": "card",
+      "name": "Ackerman Blade",
+      "series": "",
+      "odds": 170000,
+      "atk": 10601,
+      "hp": 70676,
+      "src": "RobloxScreenShot20261028_121109155.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "ant-shadow-general",
+      "kind": "card",
+      "name": "Ant Shadow General",
+      "series": "",
+      "odds": 196000,
+      "atk": 9903,
+      "hp": 66020,
+      "src": "RobloxScreenShot20261028_121113716.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "armor-queen",
+      "kind": "card",
+      "name": "Armor Queen",
+      "series": "",
+      "odds": 305000,
+      "atk": 11757,
+      "hp": 78380,
+      "src": "RobloxScreenShot20261028_121116618.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "atomic-swordsman",
+      "kind": "card",
+      "name": "Atomic Swordsman",
+      "series": "",
+      "odds": 215000,
+      "atk": 11447,
+      "hp": 76316,
+      "src": "RobloxScreenShot20261028_121133953.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "bat-wing-espada",
+      "kind": "card",
+      "name": "Bat Wing Espada",
+      "series": "",
+      "odds": 135000,
+      "atk": 7973,
+      "hp": 53154,
+      "src": "RobloxScreenShot20261028_121138656.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "beast-titan-ape",
+      "kind": "card",
+      "name": "Beast Titan Ape",
+      "series": "",
+      "odds": 174000,
+      "atk": 16215,
+      "hp": 108098,
+      "src": "RobloxScreenShot20261028_121143422.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "black-dragon-swordsman",
+      "kind": "card",
+      "name": "Black Dragon Swordsman",
+      "series": "",
+      "odds": 284000,
+      "atk": 11372,
+      "hp": 75814,
+      "src": "RobloxScreenShot20261028_121148213.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "black-leg-cook",
+      "kind": "card",
+      "name": "Black Leg Cook",
+      "series": "",
+      "odds": 89000,
+      "atk": 7052,
+      "hp": 47012,
+      "src": "RobloxScreenShot20261028_121208143.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "blade-dancer",
+      "kind": "card",
+      "name": "Blade Dancer",
+      "series": "",
+      "odds": 205000,
+      "atk": 10515,
+      "hp": 70098,
+      "src": "RobloxScreenShot20261028_121214213.png",
+      "round": 6,
+      "oddsShort": true
+    },
+    {
+      "id": "blood-fiend",
+      "kind": "card",
+      "name": "Blood Fiend",
+      "series": "",
+      "odds": 191000,
+      "atk": 10830,
+      "hp": 72198,
+      "src": "RobloxScreenShot20261028_121219001.png",
+      "round": 6,
+      "oddsShort": true
     }
   ]
 }

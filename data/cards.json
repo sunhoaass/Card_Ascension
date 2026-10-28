@@ -3780,5 +3780,787 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "sparkle-strongarm",
+    "name": "Sparkle Strongarm",
+    "series": "",
+    "image": "images/cards/sparkle-strongarm.webp",
+    "base": {
+      "atk": 7228,
+      "hp": 48188,
+      "def": 0,
+      "status": 0,
+      "odds": 38000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Strong Arm Alchemy",
+      "desc": "Armstrong: Every 2nd attack also hits the card behind for 35%. +25% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spirit-sword-punk",
+    "name": "Spirit Sword Punk",
+    "series": "",
+    "image": "images/cards/spirit-sword-punk.webp",
+    "base": {
+      "atk": 4051,
+      "hp": 27008,
+      "def": 0,
+      "status": 0,
+      "odds": 25000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Spirit Sword",
+      "desc": "Kuwabara: Every 2nd attack also hits the card behind for 40%. Survives its first killing blow with 1 HP. With Yusuke in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "stitched-scythe-kid",
+    "name": "Stitched Scythe Kid",
+    "series": "",
+    "image": "images/cards/stitched-scythe-kid.webp",
+    "base": {
+      "atk": 3777,
+      "hp": 25182,
+      "def": 0,
+      "status": 0,
+      "odds": 28000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Thirteen's Jason",
+      "desc": "Juuzou feels no pain. Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "straw-doll-sorceress",
+    "name": "Straw Doll Sorceress",
+    "series": "",
+    "image": "images/cards/straw-doll-sorceress.webp",
+    "base": {
+      "atk": 2338,
+      "hp": 15588,
+      "def": 0,
+      "status": 0,
+      "odds": 10000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Resonance",
+      "desc": "Nobara: Each hit puts a nail on the enemy (up to 4). Each hit also deals 7% of the enemy's max HP per nail on it."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "string-puppet-king",
+    "name": "String Puppet King",
+    "series": "",
+    "image": "images/cards/string-puppet-king.webp",
+    "base": {
+      "atk": 2229,
+      "hp": 14858,
+      "def": 0,
+      "status": 0,
+      "odds": 8599
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Birdcage",
+      "desc": "Doflamingo's strings cut through. Every hit also hits the whole enemy bench for 20%. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 3, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sword-saint-father",
+    "name": "Sword Saint Father",
+    "series": "",
+    "image": "images/cards/sword-saint-father.webp",
+    "base": {
+      "atk": 3676,
+      "hp": 24506,
+      "def": 0,
+      "status": 0,
+      "odds": 22000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sword God Style",
+      "desc": "Paul's three sword styles. Its first hit on each new enemy does 1.8x damage. 30% chance to counter-attack when hit (0.9x damage)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "tempest-star-wolf",
+    "name": "Tempest Star Wolf",
+    "series": "",
+    "image": "images/cards/tempest-star-wolf.webp",
+    "base": {
+      "atk": 4769,
+      "hp": 31792,
+      "def": 0,
+      "status": 0,
+      "odds": 20000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Death Storm",
+      "desc": "Ranga: Every hit also hits the whole enemy bench for 20%. 20% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "thorn-princess-assassin",
+    "name": "Thorn Princess Assassin",
+    "series": "",
+    "image": "images/cards/thorn-princess-assassin.webp",
+    "base": {
+      "atk": 4945,
+      "hp": 32964,
+      "def": 0,
+      "status": 0,
+      "odds": 41000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Thorn Princess",
+      "desc": "Yor's stiletto kills. 25% chance per hit to instantly kill an enemy under 15% HP (not bosses). Its first hit on each new enemy does 1.8x damage. 15% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "thunder-coward",
+    "name": "Thunder Coward",
+    "series": "",
+    "image": "images/cards/thunder-coward.webp",
+    "base": {
+      "atk": 2464,
+      "hp": 16426,
+      "def": 0,
+      "status": 0,
+      "odds": 12000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Thunderclap and Flash: Godspeed",
+      "desc": "Zenitsu fights asleep. Naps every other turn, but its hits do 2.5x damage. Its first attack of the fight does 2x damage. +25% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "turbo-ghost-kid",
+    "name": "Turbo Ghost Kid",
+    "series": "",
+    "image": "images/cards/turbo-ghost-kid.webp",
+    "base": {
+      "atk": 4231,
+      "hp": 28204,
+      "def": 0,
+      "status": 0,
+      "odds": 36000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Turbo Form",
+      "desc": "Okarun borrows Turbo Granny's speed. 40% chance to attack twice. 30% chance to dodge each hit. With Momo Ayase in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ultimate-shield-homunculus",
+    "name": "Ultimate Shield Homunculus",
+    "series": "",
+    "image": "images/cards/ultimate-shield-homunculus.webp",
+    "base": {
+      "atk": 4560,
+      "hp": 30398,
+      "def": 0,
+      "status": 0,
+      "odds": 38000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ultimate Shield",
+      "desc": "Greed: Takes 35% less damage. Attackers take 20% of their damage back."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "white-tiger-master",
+    "name": "White Tiger Master",
+    "series": "",
+    "image": "images/cards/white-tiger-master.webp",
+    "base": {
+      "atk": 3338,
+      "hp": 22254,
+      "def": 0,
+      "status": 0,
+      "odds": 19000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Beast Form",
+      "desc": "Baek Yoonho: +10% damage every time it is hit. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "zoltraak-apprentice",
+    "name": "Zoltraak Apprentice",
+    "series": "",
+    "image": "images/cards/zoltraak-apprentice.webp",
+    "base": {
+      "atk": 4340,
+      "hp": 28934,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Zoltraak Barrage",
+      "desc": "Fern fires Zoltraak faster than anyone. Always attacks twice (each hit does 0.7x damage). Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ackerman-blade",
+    "name": "Ackerman Blade",
+    "series": "",
+    "image": "images/cards/ackerman-blade.webp",
+    "base": {
+      "atk": 10601,
+      "hp": 70676,
+      "def": 0,
+      "status": 0,
+      "odds": 170000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ackerman Awakening",
+      "desc": "Mikasa's Ackerman power. 30% chance to dodge each hit. 30% chance to crit for 2x damage. +30% damage against Titan cards. Once, takes the killing blow for Eren."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ant-shadow-general",
+    "name": "Ant Shadow General",
+    "series": "",
+    "image": "images/cards/ant-shadow-general.webp",
+    "base": {
+      "atk": 9903,
+      "hp": 66020,
+      "def": 0,
+      "status": 0,
+      "odds": 196000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ant King's Hunger",
+      "desc": "Beru devours his prey. Heals 30% of the damage it deals. 40% chance to attack twice. Shadows raised by your deck are 20% stronger. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "armor-queen",
+    "name": "Armor Queen",
+    "series": "",
+    "image": "images/cards/armor-queen.webp",
+    "base": {
+      "atk": 11757,
+      "hp": 78380,
+      "def": 0,
+      "status": 0,
+      "odds": 305000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Requip: Nakagami Armor",
+      "desc": "Erza swaps armor for every fight. Blocks the first 2 hits completely. 40% chance to attack twice. +30% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "atomic-swordsman",
+    "name": "Atomic Swordsman",
+    "series": "",
+    "image": "images/cards/atomic-swordsman.webp",
+    "base": {
+      "atk": 11447,
+      "hp": 76316,
+      "def": 0,
+      "status": 0,
+      "odds": 215000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Atomic Slash",
+      "desc": "Atomic Samurai: Every 2nd attack also hits the card behind for 35%. Each hit adds 2 Bleed stacks (1.3% of the enemy's max HP per turn each, up to 4, 3 turns). Its first hit on each new enemy does 1.38x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bat-wing-espada",
+    "name": "Bat Wing Espada",
+    "series": "",
+    "image": "images/cards/bat-wing-espada.webp",
+    "base": {
+      "atk": 7973,
+      "hp": 53154,
+      "def": 0,
+      "status": 0,
+      "odds": 135000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lanza del Relampago",
+      "desc": "Ulquiorra: Heals 9% of its max HP every turn. Every 3rd attack does 2.5x damage. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "beast-titan-ape",
+    "name": "Beast Titan Ape",
+    "series": "",
+    "image": "images/cards/beast-titan-ape.webp",
+    "base": {
+      "atk": 16215,
+      "hp": 108098,
+      "def": 0,
+      "status": 0,
+      "odds": 174000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Rock Barrage",
+      "desc": "Zeke: Every hit also hits the whole enemy bench for 20%. 25% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "black-dragon-swordsman",
+    "name": "Black Dragon Swordsman",
+    "series": "",
+    "image": "images/cards/black-dragon-swordsman.webp",
+    "base": {
+      "atk": 11372,
+      "hp": 75814,
+      "def": 0,
+      "status": 0,
+      "odds": 284000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dragon of the Darkness Flame",
+      "desc": "Hiei: Every hit sets the whole enemy deck on fire for 1 turn. Each hit adds 3 Burn stacks (1.9% of the enemy's max HP per turn each, up to 4, 3 turns). 19% chance to dodge each hit. Spirit Detective cards in your deck get +3.2% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "black-leg-cook",
+    "name": "Black Leg Cook",
+    "series": "",
+    "image": "images/cards/black-leg-cook.webp",
+    "base": {
+      "atk": 7052,
+      "hp": 47012,
+      "def": 0,
+      "status": 0,
+      "odds": 89000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ifrit Jambe",
+      "desc": "Sanji: Each hit adds 1 Burn stack (3% of the enemy's max HP per turn each, up to 4, 3 turns). 25% chance to dodge each hit. With Zoro in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "blade-dancer",
+    "name": "Blade Dancer",
+    "series": "",
+    "image": "images/cards/blade-dancer.webp",
+    "base": {
+      "atk": 10515,
+      "hp": 70098,
+      "def": 0,
+      "status": 0,
+      "odds": 205000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sword Dance",
+      "desc": "Cha Hae-In's sword dance. 35% chance to dodge each hit. 40% chance to attack twice. With Sung Jinwoo in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "blood-fiend",
+    "name": "Blood Fiend",
+    "series": "",
+    "image": "images/cards/blood-fiend.webp",
+    "base": {
+      "atk": 10830,
+      "hp": 72198,
+      "def": 0,
+      "status": 0,
+      "odds": 191000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Blood Hammer",
+      "desc": "Power: Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 20% of the damage it deals. With Denji in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

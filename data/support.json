@@ -1181,5 +1181,174 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "pacifier-prince",
+    "name": "Pacifier Prince",
+    "image": "images/support/pacifier-prince.webp",
+    "effect": {
+      "name": "Mafuken",
+      "desc": "Koenma's pacifier seals a huge blast: once per fight, a hit bigger than 20% of the supported card's HP is {0}% weaker.",
+      "vals": [
+        56
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 62000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "star-key-mage",
+    "name": "Star Key Mage",
+    "image": "images/support/star-key-mage.webp",
+    "effect": {
+      "name": "Star Dress",
+      "desc": "Lucy puts on a Star Dress: the supported card gets {0}% more damage.",
+      "vals": [
+        7.5
+      ],
+      "type": "dmg"
+    },
+    "odds": 58000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "supreme-kai",
+    "name": "Supreme Kai",
+    "image": "images/support/supreme-kai.webp",
+    "effect": {
+      "name": "Potential Unleashed",
+      "desc": "The Supreme Kai unlocks hidden potential: from the supported card's 3rd attack on, it deals {0}% more damage.",
+      "vals": [
+        13
+      ],
+      "type": "dmg"
+    },
+    "odds": 69000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "turtle-hermit",
+    "name": "Turtle Hermit",
+    "image": "images/support/turtle-hermit.webp",
+    "effect": {
+      "name": "MAX Power",
+      "desc": "Master Roshi bulks up to MAX Power: the supported card gets {0}% more max HP and deals {1}% more damage every turn (up to 5 times).",
+      "vals": [
+        2,
+        1.5
+      ],
+      "type": "max-hp"
+    },
+    "odds": 53000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "weather-witch-navigator",
+    "name": "Weather Witch Navigator",
+    "image": "images/support/weather-witch-navigator.webp",
+    "effect": {
+      "name": "Thunderbolt Tempo",
+      "desc": "Nami's Clima-Tact calls down lightning: the supported card's hits have a {0}% chance to Paralyze the enemy (it may lose its next 2 turns).",
+      "vals": [
+        15
+      ],
+      "type": "paralyze"
+    },
+    "odds": 44000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "wind-tunnel-monk",
+    "name": "Wind Tunnel Monk",
+    "image": "images/support/wind-tunnel-monk.webp",
+    "effect": {
+      "name": "Wind Tunnel",
+      "desc": "Miroku's Wind Tunnel swallows everything: the supported card heals {0}% of the damage it deals.",
+      "vals": [
+        10
+      ],
+      "type": "lifesteal"
+    },
+    "odds": 60000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "zero-gravity-hero",
+    "name": "Zero Gravity Hero",
+    "image": "images/support/zero-gravity-hero.webp",
+    "effect": {
+      "name": "Zero Gravity",
+      "desc": "Uravity sets the enemy floating: the supported card has a {0}% chance on hit to Stun it for 1 turn.",
+      "vals": [
+        13
+      ],
+      "type": "stun"
+    },
+    "odds": 55000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
