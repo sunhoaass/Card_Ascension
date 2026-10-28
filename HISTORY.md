@@ -1118,3 +1118,22 @@
     | หน้าดูการ์ด ว่าง Godly | – | 52.4 / 50ms |
     · ก่อน/หลังเท่ากันภายในความแกว่งของเครื่อง · Godlike/Godly ไม่ช้ากว่า Ascended (ไม่มีกรอบหมุน) · เครื่องรอบนี้ช้ากว่ารอบ W9 จึงเทียบได้เฉพาะในตารางนี้ · Ascended < 55 = เหมือนเดิม (เจ้าของยอมรับแล้ว W4)
   - **ไฟล์ที่ต้องอัป:** `index.html`, `PROGRESS.md`, `HISTORY.md` → root · `data/meta.json` → `data/` · `css/tokens.css`, `css/fx.css`, `css/detail.css` → `css/` · `js/app.js`, `js/detail.js`, `js/share.js`, `js/deck.js`, `js/tiermaker.js`, `js/grade.js`, `js/traits.js` → `js/`
+
+- **2026-10-28 · ระบบเพิ่มการ์ดทั้งเกม (~500 ใบ) · `?v=30`** (Claude Code · เจ้าของสั่ง: เกณฑ์ ranked + Deck คะแนนจาก ATK/HP + ป้าย Updating data + batch งาน A/C + pool.json)
+  - **เกณฑ์ ranked:** `data/meta.json → rankMinOdds: 480000000` · `js/app.js` เพิ่ม `rankCut()` + `isRankClass(card)` (โอกาสฐาน ≥ เกณฑ์) · `isRanked()` = อยู่กลุ่ม ranked **และ**ทำงาน B แล้ว → ใบต่ำกว่าเกณฑ์ไม่ขึ้น Tier List เอง ทุกหน้าที่ใช้ `isRanked` (Cards / Grade / Tier Maker / Deck) แสดง Unranked แบบเดิม · support ไม่เปลี่ยน (ranked ทุกใบ)
+  - **Tier List (`js/tier.js`):** โน้ตใต้แถวแยก "N cards are not ranked yet…" (กลุ่ม ranked ที่ยังไม่ทำ B) กับ "N commoner cards (odds under 1 in 480M) aren't tier-ranked. Find them on the Cards page." · ป้าย "Updating data" `#tier-updating` (index.html ใน `#tier-global` เหนือสวิตช์ Cards/Support · `css/tier.css` `.tier-updating`) แสดงเมื่อ `meta.tierUpdating === true` · **ตั้ง `true` ไว้แล้ว** (เริ่ม batch)
+  - **หน้าดูการ์ด (`js/detail.js`):** ใบต่ำกว่าเกณฑ์ กล่อง Tier บรรทัดล่าง = "Common · not tier-ranked" · แผ่น Details "Only cards with odds of 1 in 480M or rarer are tier-ranked. Decks score this one from its ATK and HP." (ใบ ranked ที่ยังไม่ทำ B ข้อความเดิม)
+  - **Deck (`js/teamscore.js`):** `statScores()` คะแนนจาก ATK/HP (สูตร PROGRESS §10.5) · `cardVal` ใช้ค่านี้กับใบต่ำกว่าเกณฑ์ · "ทีมที่แข็งที่สุดในคลัง" นับใบเหล่านี้ด้วย · โน้ตใหม่ "N cards are under the rank cut, so they're scored from ATK and HP only." · `CBI.teamScore.statValue(card)` · ค่าปรับ `K.statW`
+    - รอบแรกใช้ Passive/Team ต่ำสุดของ R ตรงๆ → Bald Cadet (ATK 390 · แพ้ทุกใบ) ได้ 41 เทียบ Beast Emperor 57.1 = ใจดีเกิน → เพิ่มตัวคูณ min(1, Matchup ÷ 50) ตามกฎ stat check
+  - **Batch:** `tools/batch.py` (status / template / apply / check) · `inbox/cards/` `inbox/support/` (`.gitkeep`) · `inbox/progress.json` (ว่าง · round 0) · `data/pool.json` = 4 ใบเดิม (`group` ว่าง) · วิธีรันรอบ PROGRESS §7 Batch
+  - **ผลทดสอบ:**
+    - `batch.py` บนสำเนา repo (รูปปลอม 5 ไฟล์): support มาก่อนการ์ด ✓ · done → เพิ่ม cards/support/pool + ทำ thumb + ลบรูป ✓ · later / skipped → รูปอยู่ต่อ, รอบถัดไปเหลือแต่ later ✓ · ใบโอกาส 59 = under the cut ✓ · `check` = all good ✓
+    - คะแนนจาก ATK/HP (ข้อมูลจริง 4 ใบ + การ์ดทดสอบ): Bald Cadet (ATK 390) = 5 · stat ต่ำกว่า Beast Emperor นิดหน่อย = 42 (BE Overall 57.1) · stat ระหว่าง Atomic Shadow Lord (59.3) กับ Moon Eye Ghost (72.5) = 61 · deck ที่มีแต่ Bald Cadet = 5 / มีแต่ Beast Emperor = 11 (ช่องเดียว)
+    - การ์ดทดสอบ 500 ใบ (111 ranked / 389 ต่ำกว่าเกณฑ์): คำนวณคะแนน ATK/HP ทั้งคลัง ~11ms · Fill the gaps (การ์ด) ~24ms · โน้ต Tier List ถูก
+    - Chromium 390 / 1280: ป้ายแสดง/ซ่อนตาม meta · ไม่มี scroll แนวนอน · ไม่มี error ใน console (404 = รูปการ์ดทดสอบที่ไม่มีไฟล์ · เว็บวาดรูปแทน)
+  - **ผลวัด §11.3** (`#tier` · 390×844 DPR 2.75 · CPU ×6 · 3 วิ · มัธยฐาน 3 รอบ · `gestureSourceType: "mouse"` เลื่อนจริง · fps / เฟรมช้าสุด):
+    | กรณี | ป้ายปิด | ป้ายเปิด |
+    |---|---:|---:|
+    | การ์ด 4 ใบ Normal | 59.8 / 33ms | 59.5 / 50ms |
+    | การ์ดทดสอบ 60 ใบ Normal | 59.5 / 33ms | 59.6 / 33ms |
+  - **ไฟล์ที่ต้องอัป:** `index.html`, `PROGRESS.md`, `HISTORY.md` → root · `data/meta.json`, `data/pool.json` → `data/` · `css/tier.css` → `css/` · `js/app.js`, `js/tier.js`, `js/detail.js`, `js/teamscore.js` → `js/` · `tools/batch.py` → `tools/` · `inbox/progress.json`, `inbox/cards/.gitkeep`, `inbox/support/.gitkeep` → `inbox/` (ใช้ Claude Code = อยู่ใน pull request แล้ว)

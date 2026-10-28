@@ -69,10 +69,16 @@
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
 
-  /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
+  /* Rank cut (PROGRESS §5.3, owner 2026-10-28): only cards whose base odds are 1 in meta.rankMinOdds or rarer go on the
+     Tier List and get routine B. Commoner cards are "stat only": in the library (Cards / search / Grade / Traits) but never
+     tier-ranked, and the Deck scores them from ATK / HP alone (js/teamscore.js). Support cards are always in the ranked group.
+     A card is "ranked" once it is in the ranked group and has been analysed (scores.overall > 0 and a tier).
      New cards added in routine A are unranked until routine B scores them. */
-  const isRanked = (card) => !!(card.scores && card.scores.overall > 0 && card.tier);
-  const cardLabel = (card, rarity) => `${card.name}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", not ranked yet"}`;
+  const RANK_MIN_ODDS = 480e6;
+  const rankCut = () => { const v = state.meta && state.meta.rankMinOdds; return typeof v === "number" && v >= 0 ? v : RANK_MIN_ODDS; };
+  const isRankClass = (card) => !!(card && card.base && card.base.odds >= rankCut());
+  const isRanked = (card) => isRankClass(card) && !!(card.scores && card.scores.overall > 0 && card.tier);
+  const cardLabel = (card, rarity) => `${card.name}, ${rarity}${isRanked(card) ? ", tier " + card.tier : isRankClass(card) ? ", not ranked yet" : ", unranked"}`;
 
   /* ---------- Placeholder art (until real images exist) ----------
      Step 9.6b: jewel-tone gradient + a gothic arch window + the initials in Cinzel.
@@ -506,7 +512,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, isRankClass, rankCut, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     cards: { init() {}, setRarity() {}, order() { return []; } },   // replaced by js/cards.js

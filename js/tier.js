@@ -68,7 +68,8 @@
   /* ---------- Global: Cards ---------- */
   function renderCards() {
     const ranked = state.cards.filter(C.isRanked);       // Unranked cards never appear in a row
-    const unranked = state.cards.length - ranked.length;
+    const below = state.cards.filter((c) => !C.isRankClass(c)).length;   // under the rank cut (meta.rankMinOdds): never ranked
+    const unranked = state.cards.length - ranked.length - below;          // in the ranked group, waiting to be scored
 
     ui.none.hidden = ranked.length > 0;
     ui.list.hidden = ranked.length === 0;
@@ -78,10 +79,11 @@
         ? "The cards are in, but none of them have been scored yet. Tiers will show up here once they are."
         : "The card library is being filled in. Check back soon.";
     }
-    ui.note.hidden = !(ranked.length && unranked);
-    ui.note.textContent = unranked
-      ? `${plural(unranked, "card is", "cards are")} not ranked yet. ${unranked === 1 ? "It" : "They"} will join the list once scored.`
-      : "";
+    ui.note.hidden = !(ranked.length && (unranked || below));
+    ui.note.textContent = [
+      unranked ? `${plural(unranked, "card is", "cards are")} not ranked yet. ${unranked === 1 ? "It" : "They"} will join the list once scored.` : "",
+      below ? `${plural(below, "commoner card", "commoner cards")} (odds under ${C.fmtOdds(C.rankCut())}) ${below === 1 ? "isn't" : "aren't"} tier-ranked. Find ${below === 1 ? "it" : "them"} on the Cards page.` : "",
+    ].filter(Boolean).join(" ");
 
     ui.list.replaceChildren(buildRows(ranked, byOverall, (c) => {
       const el = C.renderCard(c, state.rarity, { mini: true });
@@ -135,6 +137,11 @@
   }
 
   /* ---------- Switches ---------- */
+  // "Updating data" pill over the Global list (data/meta.json -> tierUpdating: true / false)
+  function setUpdating() {
+    ui.updating.hidden = state.meta.tierUpdating !== true;
+  }
+
   function pageTitle() {
     if (state.page === "tier") document.title = TITLES[view] || "Card Battle Infinity — Tier List & Card Database";
   }
@@ -247,7 +254,7 @@
 
   function init() {
     Object.assign(ui, {
-      root: $("#page-tier"), lead: $("#tier-lead"),
+      root: $("#page-tier"), lead: $("#tier-lead"), updating: $("#tier-updating"),
       tabs: $("#tier-tabs"), tabBtns: [...document.querySelectorAll("#tier-tabs .seg__btn")],
       global: $("#tier-global"), my: $("#tier-my"),
       kind: $("#tier-kind"), kindBtns: [...document.querySelectorAll("#tier-kind .seg__btn")],
@@ -260,6 +267,7 @@
       .filter((s) => s && s.id)
       .map((s) => ({ ...s, name: s.name || pretty(s.id) }));
 
+    setUpdating();
     ui.rarity.hidden = !state.cards.length;
     ui.rarity.innerHTML = C.rarityChipsHTML();
     bind();

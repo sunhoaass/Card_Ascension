@@ -36,6 +36,24 @@
 .tier-row__empty { align-self: center; color: var(--ink-faint); font-size: var(--fs-sm); font-style: italic; }
 .tier-note { margin-top: var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
 
+/* "Updating data" pill (data/meta.json -> tierUpdating) · a small brass tag, the lamp dot breathes (opacity only) */
+[hidden].tier-updating { display: none; }
+.tier-updating {
+  display: flex; align-items: center; gap: var(--s-2); width: max-content; max-width: 100%;
+  margin: 0 auto var(--s-3); padding: 3px var(--s-3) 3px var(--s-2);
+  border: 1px solid var(--glass-line); border-radius: var(--r-pill); background: var(--glass-strong);
+  color: var(--ink-dim); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  animation: fx-fade var(--t-slow) var(--ease) both;
+}
+.tier-updating__dot {
+  width: 7px; height: 7px; flex: none; border-radius: 50%;
+  background: var(--lamp); box-shadow: 0 0 6px var(--lamp);
+  animation: fx-pulse 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tier-updating, .tier-updating__dot { animation: none; }
+}
+
 /* ---------- Support tiles (Global > Support rows) ---------- */
 .stile { flex: none; display: block; width: 88px; padding: 0; border-radius: var(--r-card); text-align: left; }
 .stile .scard { width: 100%; }
