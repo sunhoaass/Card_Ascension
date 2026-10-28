@@ -1026,5 +1026,753 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "weapon-rain-kunoichi",
+    "name": "Weapon Rain Kunoichi",
+    "series": "",
+    "image": "images/cards/weapon-rain-kunoichi.webp",
+    "base": {
+      "atk": 289,
+      "hp": 1926,
+      "def": 0,
+      "status": 0,
+      "odds": 21
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Twin Rising Dragons",
+      "desc": "Tenten's weapon rain. Every 3rd attack does 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "wolf-fang-fighter",
+    "name": "Wolf Fang Fighter",
+    "series": "",
+    "image": "images/cards/wolf-fang-fighter.webp",
+    "base": {
+      "atk": 236,
+      "hp": 1576,
+      "def": 0,
+      "status": 0,
+      "odds": 11
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Wolf Fang Fist",
+      "desc": "Yamcha's flurry. 25% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "world-champ",
+    "name": "World Champ",
+    "series": "",
+    "image": "images/cards/world-champ.webp",
+    "base": {
+      "atk": 253,
+      "hp": 1686,
+      "def": 0,
+      "status": 0,
+      "odds": 14
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "World Champion's Bluff",
+      "desc": "Mr. Satan's reputation scares everyone. Every enemy card starts with 8% less damage. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "acrobat-silky-girl",
+    "name": "Acrobat Silky Girl",
+    "series": "",
+    "image": "images/cards/acrobat-silky-girl.webp",
+    "base": {
+      "atk": 1247,
+      "hp": 8310,
+      "def": 0,
+      "status": 0,
+      "odds": 2030
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Acrobatic Silky",
+      "desc": "Aira's acrobatics. 25% chance to dodge each hit. Its first hit on each new enemy does 1.6x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "baboon-blade-lieutenant",
+    "name": "Baboon Blade Lieutenant",
+    "series": "",
+    "image": "images/cards/baboon-blade-lieutenant.webp",
+    "base": {
+      "atk": 896,
+      "hp": 5976,
+      "def": 0,
+      "status": 0,
+      "odds": 825
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hihio Zabimaru",
+      "desc": "Renji: Every 2nd attack also hits the card behind for 35%. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "bald-saiyan-brute",
+    "name": "Bald Saiyan Brute",
+    "series": "",
+    "image": "images/cards/bald-saiyan-brute.webp",
+    "base": {
+      "atk": 841,
+      "hp": 5606,
+      "def": 0,
+      "status": 0,
+      "odds": 431
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Giant Storm",
+      "desc": "Nappa: Every hit also hits the whole enemy bench for 20%. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "caged-bird-prodigy",
+    "name": "Caged Bird Prodigy",
+    "series": "",
+    "image": "images/cards/caged-bird-prodigy.webp",
+    "base": {
+      "atk": 891,
+      "hp": 5942,
+      "def": 0,
+      "status": 0,
+      "odds": 582
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Gentle Fist: 64 Palms",
+      "desc": "Neji closes chakra points. Ignores shields, dodges and barriers. 20% chance per hit to Seal the enemy's ability for 1 turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "chip-crunch-ninja",
+    "name": "Chip Crunch Ninja",
+    "series": "",
+    "image": "images/cards/chip-crunch-ninja.webp",
+    "base": {
+      "atk": 892,
+      "hp": 5944,
+      "def": 0,
+      "status": 0,
+      "odds": 643
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Butterfly Mode",
+      "desc": "Choji burns his calories for power. +40% damage. Loses 3% of its max HP every attack."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cola-cyborg",
+    "name": "Cola Cyborg",
+    "series": "",
+    "image": "images/cards/cola-cyborg.webp",
+    "base": {
+      "atk": 762,
+      "hp": 5082,
+      "def": 0,
+      "status": 0,
+      "odds": 476
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Radical Beam",
+      "desc": "Franky: Every 3rd attack does 2x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "creation-heroine",
+    "name": "Creation Heroine",
+    "series": "",
+    "image": "images/cards/creation-heroine.webp",
+    "base": {
+      "atk": 965,
+      "hp": 6430,
+      "def": 0,
+      "status": 0,
+      "odds": 1008
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Creation",
+      "desc": "Momo makes the right tool. Blocks the first 2 hits completely. Every 3rd attack does 2x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cursed-corpse-panda",
+    "name": "Cursed Corpse Panda",
+    "series": "",
+    "image": "images/cards/cursed-corpse-panda.webp",
+    "base": {
+      "atk": 833,
+      "hp": 5554,
+      "def": 0,
+      "status": 0,
+      "odds": 676
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Three Cores",
+      "desc": "Panda has three cores. Comes back once with 40% HP. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "cursed-speech-boy",
+    "name": "Cursed Speech Boy",
+    "series": "",
+    "image": "images/cards/cursed-speech-boy.webp",
+    "base": {
+      "atk": 993,
+      "hp": 6620,
+      "def": 0,
+      "status": 0,
+      "odds": 710
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Cursed Speech: Don't Move",
+      "desc": "Inumaki's words bind the enemy. 35% chance per hit to Stun the enemy for 1 turn. Loses 3% of its max HP every attack."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "destructo-monk",
+    "name": "Destructo Monk",
+    "series": "",
+    "image": "images/cards/destructo-monk.webp",
+    "base": {
+      "atk": 722,
+      "hp": 4814,
+      "def": 0,
+      "status": 0,
+      "odds": 390
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Destructo Disc",
+      "desc": "Krillin: Ignores shields, dodges and barriers. When it comes in, the enemy's next 2 attacks have a 50% chance to miss. With Android 18 in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "engine-hero",
+    "name": "Engine Hero",
+    "series": "",
+    "image": "images/cards/engine-hero.webp",
+    "base": {
+      "atk": 983,
+      "hp": 6550,
+      "def": 0,
+      "status": 0,
+      "odds": 1060
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Recipro Burst",
+      "desc": "Iida's engines. Its first attack of the fight does 2.5x damage. 25% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "esper-brother",
+    "name": "Esper Brother",
+    "series": "",
+    "image": "images/cards/esper-brother.webp",
+    "base": {
+      "atk": 1286,
+      "hp": 8572,
+      "def": 0,
+      "status": 0,
+      "odds": 1837
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Psychic Awakening",
+      "desc": "Ritsu's psychic powers are new. Under 50% HP: +40% damage. With Mob in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fang-pup-ninja",
+    "name": "Fang Pup Ninja",
+    "series": "",
+    "image": "images/cards/fang-pup-ninja.webp",
+    "base": {
+      "atk": 851,
+      "hp": 5676,
+      "def": 0,
+      "status": 0,
+      "odds": 611
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Fang Over Fang",
+      "desc": "Kiba and Akamaru attack together. Always attacks twice (each hit does 0.6x damage)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "giant-arm-friend",
+    "name": "Giant Arm Friend",
+    "series": "",
+    "image": "images/cards/giant-arm-friend.webp",
+    "base": {
+      "atk": 930,
+      "hp": 6200,
+      "def": 0,
+      "status": 0,
+      "odds": 912
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Brazo Derecha del Gigante",
+      "desc": "Chad: Takes 15% less damage. 30% chance to counter-attack when hit (0.8x damage)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "green-beast-kid",
+    "name": "Green Beast Kid",
+    "series": "",
+    "image": "images/cards/green-beast-kid.webp",
+    "base": {
+      "atk": 774,
+      "hp": 5162,
+      "def": 0,
+      "status": 0,
+      "odds": 553
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Eight Gates: Leaf Hurricane",
+      "desc": "Rock Lee's speed. 20% chance to dodge each hit. 30% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "hardening-hero",
+    "name": "Hardening Hero",
+    "series": "",
+    "image": "images/cards/hardening-hero.webp",
+    "base": {
+      "atk": 947,
+      "hp": 6314,
+      "def": 0,
+      "status": 0,
+      "odds": 959
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Unbreakable",
+      "desc": "Kirishima hardens. Takes 20% less damage. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "haunted-armor-brother",
+    "name": "Haunted Armor Brother",
+    "series": "",
+    "image": "images/cards/haunted-armor-brother.webp",
+    "base": {
+      "atk": 1333,
+      "hp": 8886,
+      "def": 0,
+      "status": 0,
+      "odds": 2134
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Soul Armor",
+      "desc": "Alphonse is just a soul in armor. Takes 20% less damage. With Edward Elric in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "horse-face-captain",
+    "name": "Horse Face Captain",
+    "series": "",
+    "image": "images/cards/horse-face-captain.webp",
+    "base": {
+      "atk": 1091,
+      "hp": 7270,
+      "def": 0,
+      "status": 0,
+      "odds": 1171
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Natural Leader",
+      "desc": "Jean leads from the front. Every other card in your deck gets +6% damage. +15% damage against Titan cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ice-sniper",
+    "name": "Ice Sniper",
+    "series": "",
+    "image": "images/cards/ice-sniper.webp",
+    "base": {
+      "atk": 1384,
+      "hp": 9224,
+      "def": 0,
+      "status": 0,
+      "odds": 2243
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hecate II",
+      "desc": "Sinon's anti-materiel rifle. Its first hit on each new enemy does 2x damage. Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

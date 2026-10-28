@@ -239,5 +239,198 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "cafe-owner-owl",
+    "name": "Cafe Owner Owl",
+    "image": "images/support/cafe-owner-owl.webp",
+    "effect": {
+      "name": "Owl Kagune",
+      "desc": "Yoshimura's Owl kagune feeds: the supported card heals {0}% of the damage it deals.",
+      "vals": [
+        9
+      ],
+      "type": "lifesteal"
+    },
+    "odds": 4992,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "crow-banker",
+    "name": "Crow Banker",
+    "image": "images/support/crow-banker.webp",
+    "effect": {
+      "name": "Bird Strike",
+      "desc": "Mei Mei's crows mark the target: the enemy the supported card hits takes {0}% more damage from everyone.",
+      "vals": [
+        4
+      ],
+      "type": "mark"
+    },
+    "odds": 6097,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "desert-princess",
+    "name": "Desert Princess",
+    "image": "images/support/desert-princess.webp",
+    "effect": {
+      "name": "Peacock Slashers",
+      "desc": "Vivi's Peacock String Slashers: the supported card has a {0}% chance to attack twice.",
+      "vals": [
+        5
+      ],
+      "type": "double-attack"
+    },
+    "odds": 3183,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "doctor-hunter",
+    "name": "Doctor Hunter",
+    "image": "images/support/doctor-hunter.webp",
+    "effect": {
+      "name": "Remote Punch",
+      "desc": "Leorio's warp punch: every time the supported card comes in, it hits the enemy for {0}% of its max HP.",
+      "vals": [
+        5
+      ],
+      "type": "max-hp-hit"
+    },
+    "odds": 2740,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "food-mage",
+    "name": "Food Mage",
+    "image": "images/support/food-mage.webp",
+    "effect": {
+      "name": "Cotton Candy Feast",
+      "desc": "Charmy eats everything: the supported card heals {0}% of its max HP after every knockout.",
+      "vals": [
+        11
+      ],
+      "type": "heal"
+    },
+    "odds": 4517,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "foundation-gentleman",
+    "name": "Foundation Gentleman",
+    "image": "images/support/foundation-gentleman.webp",
+    "effect": {
+      "name": "Speedwagon Foundation",
+      "desc": "Speedwagon funds the fight: the supported card gets {0}% more damage and {1}% more max HP.",
+      "vals": [
+        3,
+        3
+      ],
+      "type": "dmg"
+    },
+    "odds": 4749,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "fox-mask-mentor",
+    "name": "Fox Mask Mentor",
+    "image": "images/support/fox-mask-mentor.webp",
+    "effect": {
+      "name": "Water Breathing Drills",
+      "desc": "Urokodaki's training pays off: the supported card deals {0}% more damage every turn (up to 5 times).",
+      "vals": [
+        1
+      ],
+      "type": "dmg"
+    },
+    "odds": 2479,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "lonely-crimson-mage",
+    "name": "Lonely Crimson Mage",
+    "image": "images/support/lonely-crimson-mage.webp",
+    "effect": {
+      "name": "Lightning Strike",
+      "desc": "Yunyun's Lightning Strike: the supported card's hits have a {0}% chance to Paralyze the enemy (it may lose its next 2 turns).",
+      "vals": [
+        12
+      ],
+      "type": "paralyze"
+    },
+    "odds": 4087,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]
