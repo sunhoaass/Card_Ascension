@@ -432,5 +432,343 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "master-spy-father",
+    "name": "Master Spy Father",
+    "image": "images/support/master-spy-father.webp",
+    "effect": {
+      "name": "Agent Twilight",
+      "desc": "Twilight aims for the weak spot: the supported card has a {0}% chance to land a critical hit for double damage.",
+      "vals": [
+        10
+      ],
+      "type": "crit"
+    },
+    "odds": 2880,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "mind-transfer-kunoichi",
+    "name": "Mind Transfer Kunoichi",
+    "image": "images/support/mind-transfer-kunoichi.webp",
+    "effect": {
+      "name": "Mind Transfer Jutsu",
+      "desc": "Ino takes over the enemy's mind: the supported card's hits have a {0}% chance to Confuse it (it hits itself).",
+      "vals": [
+        7.5
+      ],
+      "type": "confuse"
+    },
+    "odds": 3346,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "namekian-healer",
+    "name": "Namekian Healer",
+    "image": "images/support/namekian-healer.webp",
+    "effect": {
+      "name": "Namekian Healing",
+      "desc": "Dende's hands glow: the supported card heals {0}% of its max HP at the start of each of its turns.",
+      "vals": [
+        1.5
+      ],
+      "type": "heal"
+    },
+    "odds": 2358,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "nen-teacher",
+    "name": "Nen Teacher",
+    "image": "images/support/nen-teacher.webp",
+    "effect": {
+      "name": "Ten",
+      "desc": "Wing teaches Ten: the supported card's aura makes it take {0}% less damage.",
+      "vals": [
+        6
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 6410,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rifle-girl",
+    "name": "Rifle Girl",
+    "image": "images/support/rifle-girl.webp",
+    "effect": {
+      "name": "Rail Shot",
+      "desc": "Yoko lines up the shot: the supported card's first attack of the fight does {0}% more damage.",
+      "vals": [
+        25
+      ],
+      "type": "first-hit"
+    },
+    "odds": 7084,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "salt-splash-mentor",
+    "name": "Salt Splash Mentor",
+    "image": "images/support/salt-splash-mentor.webp",
+    "effect": {
+      "name": "Salt Splash",
+      "desc": "Reigen throws salt in their eyes: the supported card has a {0}% chance on hit to Weaken the enemy ({1}% less damage for the rest of the fight).",
+      "vals": [
+        40,
+        12
+      ],
+      "type": "weaken"
+    },
+    "odds": 3028,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "second-princess",
+    "name": "Second Princess",
+    "image": "images/support/second-princess.webp",
+    "effect": {
+      "name": "Drifa Aqua Shot",
+      "desc": "Melty's water magic hits hard: the supported card deals {0}% of the enemy's max HP extra on every hit.",
+      "vals": [
+        0.8
+      ],
+      "type": "max-hp-hit"
+    },
+    "odds": 7447,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "senzu-bean-cat",
+    "name": "Senzu Bean Cat",
+    "image": "images/support/senzu-bean-cat.webp",
+    "effect": {
+      "name": "Senzu Bean",
+      "desc": "Korin tosses a Senzu Bean: the first time the supported card drops under 30% HP, it heals {0}% of its max HP.",
+      "vals": [
+        6
+      ],
+      "type": "heal"
+    },
+    "odds": 3518,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "shadow-garden-strategist",
+    "name": "Shadow Garden Strategist",
+    "image": "images/support/shadow-garden-strategist.webp",
+    "effect": {
+      "name": "Mitsugoshi Profits",
+      "desc": "Gamma runs the Mitsugoshi company: wins with the supported card pay {0}% more gems.",
+      "vals": [
+        7.5
+      ],
+      "type": "gems"
+    },
+    "odds": 3888,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "silent-healer-elf",
+    "name": "Silent Healer Elf",
+    "image": "images/support/silent-healer-elf.webp",
+    "effect": {
+      "name": "Silent Chant",
+      "desc": "Sylphie heals without a word: at the start of the supported card's turns, EVERY card in your deck heals {0}% of its max HP.",
+      "vals": [
+        2.4
+      ],
+      "type": "heal"
+    },
+    "odds": 3698,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sister-of-prayer",
+    "name": "Sister of Prayer",
+    "image": "images/support/sister-of-prayer.webp",
+    "effect": {
+      "name": "Prayer of the Sol",
+      "desc": "Sister Iris prays over the supported card: the first debuff that would hit it each fight (stun, freeze, burn, poison, seal, weaken ...) is blocked, and it starts every fight with a shield worth {0}% of its max HP.",
+      "vals": [
+        3
+      ],
+      "type": "shield"
+    },
+    "odds": 5248,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "song-sorceress",
+    "name": "Song Sorceress",
+    "image": "images/support/song-sorceress.webp",
+    "effect": {
+      "name": "Solo Forbidden Area",
+      "desc": "Utahime's song amplifies the next technique: every other attack of the supported card does {0}% more damage.",
+      "vals": [
+        10
+      ],
+      "type": "dmg"
+    },
+    "odds": 2606,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spirit-ferry-girl",
+    "name": "Spirit Ferry Girl",
+    "image": "images/support/spirit-ferry-girl.webp",
+    "effect": {
+      "name": "Spirit Ferry Rescue",
+      "desc": "Botan won't ferry this one yet: the supported card has a {0}% chance to survive a killing blow at 1 HP (once per fight), and heals {1}% of its max HP every turn.",
+      "vals": [
+        15,
+        1
+      ],
+      "type": "revive"
+    },
+    "odds": 4297,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spirit-medium-granny",
+    "name": "Spirit Medium Granny",
+    "image": "images/support/spirit-medium-granny.webp",
+    "effect": {
+      "name": "Exorcist's Barrier",
+      "desc": "Seiko's barrier talismans guard your WHOLE deck: with her in any support slot, attacks that hit your bench or the card behind do no damage to them (whole-bench hits, card-behind hits, Supernova, Fairy Law and Domain on the bench), and the supported card takes {0}% less damage.",
+      "vals": [
+        2
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 5517,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

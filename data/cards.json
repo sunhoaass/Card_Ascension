@@ -1774,5 +1774,549 @@
     },
     "tier": "",
     "updated": "2026-10-28"
+  },
+  {
+    "id": "mind-reader-sidekick",
+    "name": "Mind Reader Sidekick",
+    "series": "",
+    "image": "images/cards/mind-reader-sidekick.webp",
+    "base": {
+      "atk": 1224,
+      "hp": 8160,
+      "def": 0,
+      "status": 0,
+      "odds": 1931
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Mind Reading",
+      "desc": "Shin reads the enemy's mind. 30% chance to dodge each hit. +10% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "mohawk-gunner",
+    "name": "Mohawk Gunner",
+    "series": "",
+    "image": "images/cards/mohawk-gunner.webp",
+    "base": {
+      "atk": 995,
+      "hp": 6632,
+      "def": 0,
+      "status": 0,
+      "odds": 785
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Demon Eater",
+      "desc": "Genya eats demons to borrow their power. Each kill heals 30% of its max HP; killing a Demon heals 60% and gives +15% damage. +25% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "ninja-rival",
+    "name": "Ninja Rival",
+    "series": "",
+    "image": "images/cards/ninja-rival.webp",
+    "base": {
+      "atk": 1097,
+      "hp": 7310,
+      "def": 0,
+      "status": 0,
+      "odds": 1430
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Afterimage",
+      "desc": "Sonic's afterimages. 25% chance to dodge each hit. 35% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "panic-speed-girl",
+    "name": "Panic Speed Girl",
+    "series": "",
+    "image": "images/cards/panic-speed-girl.webp",
+    "base": {
+      "atk": 1057,
+      "hp": 7048,
+      "def": 0,
+      "status": 0,
+      "odds": 1294
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Survival Instinct",
+      "desc": "Kobeni panics her way out of everything. 35% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "potato-girl",
+    "name": "Potato Girl",
+    "series": "",
+    "image": "images/cards/potato-girl.webp",
+    "base": {
+      "atk": 1111,
+      "hp": 7404,
+      "def": 0,
+      "status": 0,
+      "odds": 1231
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hunter's Bow",
+      "desc": "Sasha: 25% chance to crit for 1.8x damage. +15% damage against Titan cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "quincy-archer",
+    "name": "Quincy Archer",
+    "series": "",
+    "image": "images/cards/quincy-archer.webp",
+    "base": {
+      "atk": 959,
+      "hp": 6392,
+      "def": 0,
+      "status": 0,
+      "odds": 868
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Licht Regen",
+      "desc": "Uryu: Its attacks can't be dodged. 25% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rabbit-ghoul",
+    "name": "Rabbit Ghoul",
+    "series": "",
+    "image": "images/cards/rabbit-ghoul.webp",
+    "base": {
+      "atk": 1439,
+      "hp": 9596,
+      "def": 0,
+      "status": 0,
+      "odds": 1747
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ukaku Wings",
+      "desc": "Touka's Ukaku. 30% chance to dodge each hit. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rain-frog-hero",
+    "name": "Rain Frog Hero",
+    "series": "",
+    "image": "images/cards/rain-frog-hero.webp",
+    "base": {
+      "atk": 1001,
+      "hp": 6670,
+      "def": 0,
+      "status": 0,
+      "odds": 1114
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Froppy",
+      "desc": "Tsuyu's frog agility. 25% chance to dodge each hit. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "rebel-flame-punk",
+    "name": "Rebel Flame Punk",
+    "series": "",
+    "image": "images/cards/rebel-flame-punk.webp",
+    "base": {
+      "atk": 1159,
+      "hp": 7724,
+      "def": 0,
+      "status": 0,
+      "odds": 1662
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Flame Magic: Explosive Fireball",
+      "desc": "Magna: Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "shield-heir",
+    "name": "Shield Heir",
+    "series": "",
+    "image": "images/cards/shield-heir.webp",
+    "base": {
+      "atk": 1141,
+      "hp": 7608,
+      "def": 0,
+      "status": 0,
+      "odds": 1361
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Tank Build",
+      "desc": "Yoo Jinho: Blocks the first hit completely. Takes 8% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sniper-king",
+    "name": "Sniper King",
+    "series": "",
+    "image": "images/cards/sniper-king.webp",
+    "base": {
+      "atk": 760,
+      "hp": 5068,
+      "def": 0,
+      "status": 0,
+      "odds": 526
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Observation Sniper",
+      "desc": "Usopp sees attacks coming. 20% chance to dodge each hit. 20% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "soul-king-skeleton",
+    "name": "Soul King Skeleton",
+    "series": "",
+    "image": "images/cards/soul-king-skeleton.webp",
+    "base": {
+      "atk": 746,
+      "hp": 4976,
+      "def": 0,
+      "status": 0,
+      "odds": 501
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Already Dead",
+      "desc": "Brook has already died once. Comes back once with 35% HP. 20% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spear-hero",
+    "name": "Spear Hero",
+    "series": "",
+    "image": "images/cards/spear-hero.webp",
+    "base": {
+      "atk": 1172,
+      "hp": 7810,
+      "def": 0,
+      "status": 0,
+      "odds": 1581
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Brionac",
+      "desc": "Motoyasu: Its first attack of the fight does 2.2x damage. +10% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "spider-thread-demon",
+    "name": "Spider Thread Demon",
+    "series": "",
+    "image": "images/cards/spider-thread-demon.webp",
+    "base": {
+      "atk": 925,
+      "hp": 6166,
+      "def": 0,
+      "status": 0,
+      "odds": 747
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Spider Threads",
+      "desc": "Rui: Every 2nd attack also hits the card behind for 35%. 20% chance per hit to Stun the enemy for 1 turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "sword-hero",
+    "name": "Sword Hero",
+    "series": "",
+    "image": "images/cards/sword-hero.webp",
+    "base": {
+      "atk": 1139,
+      "hp": 7594,
+      "def": 0,
+      "status": 0,
+      "odds": 1504
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hundred Swords",
+      "desc": "Ren: 25% chance to crit for 1.8x damage. +10% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
+  },
+  {
+    "id": "third-eye-warrior",
+    "name": "Third Eye Warrior",
+    "series": "",
+    "image": "images/cards/third-eye-warrior.webp",
+    "base": {
+      "atk": 756,
+      "hp": 5042,
+      "def": 0,
+      "status": 0,
+      "odds": 410
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Tri-Beam",
+      "desc": "Tien: Every 3rd attack does 2.2x damage. Loses 2% of its max HP every attack."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28"
   }
 ]

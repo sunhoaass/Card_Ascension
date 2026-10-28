@@ -743,6 +743,366 @@
       "type": "paralyze",
       "src": "RobloxScreenShot20261028_115135906.png",
       "round": 2
+    },
+    {
+      "id": "master-spy-father",
+      "kind": "support",
+      "name": "Master Spy Father",
+      "series": "",
+      "odds": 2880,
+      "vals": [
+        10
+      ],
+      "type": "crit",
+      "src": "RobloxScreenShot20261028_115139878.png",
+      "round": 3
+    },
+    {
+      "id": "mind-reader-sidekick",
+      "kind": "card",
+      "name": "Mind Reader Sidekick",
+      "series": "",
+      "odds": 1931,
+      "atk": 1224,
+      "hp": 8160,
+      "src": "RobloxScreenShot20261028_115143691.png",
+      "round": 3
+    },
+    {
+      "id": "mind-transfer-kunoichi",
+      "kind": "support",
+      "name": "Mind Transfer Kunoichi",
+      "series": "",
+      "odds": 3346,
+      "vals": [
+        7.5
+      ],
+      "type": "confuse",
+      "src": "RobloxScreenShot20261028_115148106.png",
+      "round": 3
+    },
+    {
+      "id": "mohawk-gunner",
+      "kind": "card",
+      "name": "Mohawk Gunner",
+      "series": "",
+      "odds": 785,
+      "atk": 995,
+      "hp": 6632,
+      "src": "RobloxScreenShot20261028_115151701.png",
+      "round": 3
+    },
+    {
+      "id": "namekian-healer",
+      "kind": "support",
+      "name": "Namekian Healer",
+      "series": "",
+      "odds": 2358,
+      "vals": [
+        1.5
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_115155840.png",
+      "round": 3
+    },
+    {
+      "id": "nen-teacher",
+      "kind": "support",
+      "name": "Nen Teacher",
+      "series": "",
+      "odds": 6410,
+      "vals": [
+        6
+      ],
+      "type": "damage-reduction",
+      "src": "RobloxScreenShot20261028_115159869.png",
+      "round": 3
+    },
+    {
+      "id": "ninja-rival",
+      "kind": "card",
+      "name": "Ninja Rival",
+      "series": "",
+      "odds": 1430,
+      "atk": 1097,
+      "hp": 7310,
+      "src": "RobloxScreenShot20261028_115223159.png",
+      "round": 3
+    },
+    {
+      "id": "panic-speed-girl",
+      "kind": "card",
+      "name": "Panic Speed Girl",
+      "series": "",
+      "odds": 1294,
+      "atk": 1057,
+      "hp": 7048,
+      "src": "RobloxScreenShot20261028_115230610.png",
+      "round": 3
+    },
+    {
+      "id": "potato-girl",
+      "kind": "card",
+      "name": "Potato Girl",
+      "series": "",
+      "odds": 1231,
+      "atk": 1111,
+      "hp": 7404,
+      "src": "RobloxScreenShot20261028_115234575.png",
+      "round": 3
+    },
+    {
+      "id": "quincy-archer",
+      "kind": "card",
+      "name": "Quincy Archer",
+      "series": "",
+      "odds": 868,
+      "atk": 959,
+      "hp": 6392,
+      "src": "RobloxScreenShot20261028_115238368.png",
+      "round": 3
+    },
+    {
+      "id": "rabbit-ghoul",
+      "kind": "card",
+      "name": "Rabbit Ghoul",
+      "series": "",
+      "odds": 1747,
+      "atk": 1439,
+      "hp": 9596,
+      "src": "RobloxScreenShot20261028_115242076.png",
+      "round": 3
+    },
+    {
+      "id": "rain-frog-hero",
+      "kind": "card",
+      "name": "Rain Frog Hero",
+      "series": "",
+      "odds": 1114,
+      "atk": 1001,
+      "hp": 6670,
+      "src": "RobloxScreenShot20261028_115248244.png",
+      "round": 3
+    },
+    {
+      "id": "rebel-flame-punk",
+      "kind": "card",
+      "name": "Rebel Flame Punk",
+      "series": "",
+      "odds": 1662,
+      "atk": 1159,
+      "hp": 7724,
+      "src": "RobloxScreenShot20261028_115300311.png",
+      "round": 3
+    },
+    {
+      "id": "rifle-girl",
+      "kind": "support",
+      "name": "Rifle Girl",
+      "series": "",
+      "odds": 7084,
+      "vals": [
+        25
+      ],
+      "type": "first-hit",
+      "src": "RobloxScreenShot20261028_115304924.png",
+      "round": 3
+    },
+    {
+      "id": "salt-splash-mentor",
+      "kind": "support",
+      "name": "Salt Splash Mentor",
+      "series": "",
+      "odds": 3028,
+      "vals": [
+        40,
+        12
+      ],
+      "type": "weaken",
+      "src": "RobloxScreenShot20261028_115308944.png",
+      "round": 3
+    },
+    {
+      "id": "second-princess",
+      "kind": "support",
+      "name": "Second Princess",
+      "series": "",
+      "odds": 7447,
+      "vals": [
+        0.8
+      ],
+      "type": "max-hp-hit",
+      "src": "RobloxScreenShot20261028_115312473.png",
+      "round": 3
+    },
+    {
+      "id": "senzu-bean-cat",
+      "kind": "support",
+      "name": "Senzu Bean Cat",
+      "series": "",
+      "odds": 3518,
+      "vals": [
+        6
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_115316229.png",
+      "round": 3
+    },
+    {
+      "id": "shadow-garden-strategist",
+      "kind": "support",
+      "name": "Shadow Garden Strategist",
+      "series": "",
+      "odds": 3888,
+      "vals": [
+        7.5
+      ],
+      "type": "gems",
+      "src": "RobloxScreenShot20261028_115319919.png",
+      "round": 3
+    },
+    {
+      "id": "shield-heir",
+      "kind": "card",
+      "name": "Shield Heir",
+      "series": "",
+      "odds": 1361,
+      "atk": 1141,
+      "hp": 7608,
+      "src": "RobloxScreenShot20261028_115323970.png",
+      "round": 3
+    },
+    {
+      "id": "silent-healer-elf",
+      "kind": "support",
+      "name": "Silent Healer Elf",
+      "series": "",
+      "odds": 3698,
+      "vals": [
+        2.4
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_115347040.png",
+      "round": 3
+    },
+    {
+      "id": "sister-of-prayer",
+      "kind": "support",
+      "name": "Sister of Prayer",
+      "series": "",
+      "odds": 5248,
+      "vals": [
+        3
+      ],
+      "type": "shield",
+      "src": "RobloxScreenShot20261028_115350578.png",
+      "round": 3
+    },
+    {
+      "id": "sniper-king",
+      "kind": "card",
+      "name": "Sniper King",
+      "series": "",
+      "odds": 526,
+      "atk": 760,
+      "hp": 5068,
+      "src": "RobloxScreenShot20261028_115354535.png",
+      "round": 3
+    },
+    {
+      "id": "song-sorceress",
+      "kind": "support",
+      "name": "Song Sorceress",
+      "series": "",
+      "odds": 2606,
+      "vals": [
+        10
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_115358843.png",
+      "round": 3
+    },
+    {
+      "id": "soul-king-skeleton",
+      "kind": "card",
+      "name": "Soul King Skeleton",
+      "series": "",
+      "odds": 501,
+      "atk": 746,
+      "hp": 4976,
+      "src": "RobloxScreenShot20261028_115402954.png",
+      "round": 3
+    },
+    {
+      "id": "spear-hero",
+      "kind": "card",
+      "name": "Spear Hero",
+      "series": "",
+      "odds": 1581,
+      "atk": 1172,
+      "hp": 7810,
+      "src": "RobloxScreenShot20261028_115406948.png",
+      "round": 3
+    },
+    {
+      "id": "spider-thread-demon",
+      "kind": "card",
+      "name": "Spider Thread Demon",
+      "series": "",
+      "odds": 747,
+      "atk": 925,
+      "hp": 6166,
+      "src": "RobloxScreenShot20261028_115412272.png",
+      "round": 3
+    },
+    {
+      "id": "spirit-ferry-girl",
+      "kind": "support",
+      "name": "Spirit Ferry Girl",
+      "series": "",
+      "odds": 4297,
+      "vals": [
+        15,
+        1
+      ],
+      "type": "revive",
+      "src": "RobloxScreenShot20261028_115416277.png",
+      "round": 3
+    },
+    {
+      "id": "spirit-medium-granny",
+      "kind": "support",
+      "name": "Spirit Medium Granny",
+      "series": "",
+      "odds": 5517,
+      "vals": [
+        2
+      ],
+      "type": "damage-reduction",
+      "src": "RobloxScreenShot20261028_115419836.png",
+      "round": 3
+    },
+    {
+      "id": "sword-hero",
+      "kind": "card",
+      "name": "Sword Hero",
+      "series": "",
+      "odds": 1504,
+      "atk": 1139,
+      "hp": 7594,
+      "src": "RobloxScreenShot20261028_115423811.png",
+      "round": 3
+    },
+    {
+      "id": "third-eye-warrior",
+      "kind": "card",
+      "name": "Third Eye Warrior",
+      "series": "",
+      "odds": 410,
+      "atk": 756,
+      "hp": 5042,
+      "src": "RobloxScreenShot20261028_115429248.png",
+      "round": 3
     }
   ]
 }
