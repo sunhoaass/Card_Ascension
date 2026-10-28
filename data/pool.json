@@ -2595,6 +2595,378 @@
       "src": "RobloxScreenShot20261028_121506586.png",
       "round": 7,
       "oddsShort": true
+    },
+    {
+      "id": "godspeed-assassin",
+      "kind": "card",
+      "name": "Godspeed Assassin",
+      "series": "",
+      "odds": 148000,
+      "atk": 8335,
+      "hp": 55566,
+      "src": "RobloxScreenShot20261028_121522861.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "half-demon-fang",
+      "kind": "card",
+      "name": "Half-Demon Fang",
+      "series": "",
+      "odds": 278000,
+      "atk": 19007,
+      "hp": 126712,
+      "src": "RobloxScreenShot20261028_121531247.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "half-hot-half-cold",
+      "kind": "card",
+      "name": "Half-Hot Half-Cold",
+      "series": "",
+      "odds": 31000,
+      "atk": 22097,
+      "hp": 147310,
+      "src": "RobloxScreenShot20261028_121536104.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "hamon-trickster",
+      "kind": "card",
+      "name": "Hamon Trickster",
+      "series": "",
+      "odds": 334000,
+      "atk": 12414,
+      "hp": 82758,
+      "src": "RobloxScreenShot20261028_121541640.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "hollow-ninja",
+      "kind": "card",
+      "name": "Hollow Ninja",
+      "series": "",
+      "odds": 367000,
+      "atk": 12849,
+      "hp": 85658,
+      "src": "RobloxScreenShot20261028_121556397.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "incursio-armor",
+      "kind": "card",
+      "name": "Incursio Armor",
+      "series": "",
+      "odds": 265000,
+      "atk": 11000,
+      "hp": 73332,
+      "src": "RobloxScreenShot20261028_121601534.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "invincible-gang-boss",
+      "kind": "card",
+      "name": "Invincible Gang Boss",
+      "series": "",
+      "odds": 474000,
+      "atk": 14517,
+      "hp": 96778,
+      "src": "RobloxScreenShot20261028_121620632.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "judge-domain-lawyer",
+      "kind": "card",
+      "name": "Judge Domain Lawyer",
+      "series": "",
+      "odds": 105000,
+      "atk": 11362,
+      "hp": 75744,
+      "src": "RobloxScreenShot20261028_121625791.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "karma-boy",
+      "kind": "card",
+      "name": "Karma Boy",
+      "series": "",
+      "odds": 91000,
+      "atk": 8253,
+      "hp": 55018,
+      "src": "RobloxScreenShot20261028_121628971.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "lich-shopkeeper",
+      "kind": "card",
+      "name": "Lich Shopkeeper",
+      "series": "",
+      "odds": 463000,
+      "atk": 14357,
+      "hp": 95710,
+      "src": "RobloxScreenShot20261028_121632379.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "lightning-dragon-heir",
+      "kind": "card",
+      "name": "Lightning Dragon Heir",
+      "series": "",
+      "odds": 312000,
+      "atk": 18784,
+      "hp": 125224,
+      "src": "RobloxScreenShot20261028_121636247.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "lion-flame-queen",
+      "kind": "card",
+      "name": "Lion Flame Queen",
+      "series": "",
+      "odds": 291000,
+      "atk": 11499,
+      "hp": 76660,
+      "src": "RobloxScreenShot20261028_121640496.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "lone-wolf-espada",
+      "kind": "card",
+      "name": "Lone Wolf Espada",
+      "series": "",
+      "odds": 132000,
+      "atk": 13326,
+      "hp": 88838,
+      "src": "RobloxScreenShot20261028_121646622.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "mist-prodigy",
+      "kind": "card",
+      "name": "Mist Prodigy",
+      "series": "",
+      "odds": 120000,
+      "atk": 8674,
+      "hp": 57828,
+      "src": "RobloxScreenShot20261028_121651057.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "mochi-commander",
+      "kind": "card",
+      "name": "Mochi Commander",
+      "series": "",
+      "odds": 81000,
+      "atk": 6808,
+      "hp": 45386,
+      "src": "RobloxScreenShot20261028_121655848.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "notebook-shinigami",
+      "kind": "card",
+      "name": "Notebook Shinigami",
+      "series": "",
+      "odds": 508000,
+      "atk": 15008,
+      "hp": 100054,
+      "src": "RobloxScreenShot20261028_121700240.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "number-one-captain",
+      "kind": "card",
+      "name": "Number One Captain",
+      "series": "",
+      "odds": 376000,
+      "atk": 14811,
+      "hp": 98740,
+      "src": "RobloxScreenShot20261028_121705369.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "ogre-sword-master",
+      "kind": "card",
+      "name": "Ogre Sword Master",
+      "series": "",
+      "odds": 220000,
+      "atk": 12179,
+      "hp": 81194,
+      "src": "RobloxScreenShot20261028_121709936.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "oni-princess",
+      "kind": "card",
+      "name": "Oni Princess",
+      "series": "",
+      "odds": 83000,
+      "atk": 8147,
+      "hp": 54314,
+      "src": "RobloxScreenShot20261028_121714081.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "patchwork-curse",
+      "kind": "card",
+      "name": "Patchwork Curse",
+      "series": "",
+      "odds": 112000,
+      "atk": 7296,
+      "hp": 48638,
+      "src": "RobloxScreenShot20261028_121719588.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "perfect-bio-android",
+      "kind": "card",
+      "name": "Perfect Bio-Android",
+      "series": "",
+      "odds": 79000,
+      "atk": 6486,
+      "hp": 43238,
+      "src": "RobloxScreenShot20261028_121737084.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "phase-through-hero",
+      "kind": "card",
+      "name": "Phase Through Hero",
+      "series": "",
+      "odds": 163000,
+      "atk": 8713,
+      "hp": 58088,
+      "src": "RobloxScreenShot20261028_121742182.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "rage-royal-guard",
+      "kind": "card",
+      "name": "Rage Royal Guard",
+      "series": "",
+      "odds": 141000,
+      "atk": 8560,
+      "hp": 57064,
+      "src": "RobloxScreenShot20261028_121747251.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "rapping-eight-tails",
+      "kind": "card",
+      "name": "Rapping Eight Tails",
+      "series": "",
+      "odds": 95000,
+      "atk": 8101,
+      "hp": 54004,
+      "src": "RobloxScreenShot20261028_121753071.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "gentle-palm-heiress",
+      "kind": "support",
+      "name": "Gentle Palm Heiress",
+      "series": "",
+      "odds": 672000,
+      "vals": [
+        6
+      ],
+      "type": "weaken",
+      "src": "RobloxScreenShot20261028_121512500.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "gentle-priest",
+      "kind": "support",
+      "name": "Gentle Priest",
+      "series": "",
+      "odds": 571000,
+      "vals": [
+        5.6
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_121516432.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "golden-shield-healer",
+      "kind": "support",
+      "name": "Golden Shield Healer",
+      "series": "",
+      "odds": 532000,
+      "vals": [
+        14
+      ],
+      "type": "shield",
+      "src": "RobloxScreenShot20261028_121527860.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "hellsing-commander",
+      "kind": "support",
+      "name": "Hellsing Commander",
+      "series": "",
+      "odds": 720000,
+      "vals": [
+        67
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_121547309.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "hero-of-legend",
+      "kind": "support",
+      "name": "Hero of Legend",
+      "series": "",
+      "odds": 584000,
+      "vals": [
+        56
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_121552050.png",
+      "round": 8,
+      "oddsShort": true
+    },
+    {
+      "id": "reindeer-doctor",
+      "kind": "support",
+      "name": "Reindeer Doctor",
+      "series": "",
+      "odds": 626000,
+      "vals": [
+        15
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_121758251.png",
+      "round": 8,
+      "oddsShort": true
     }
   ]
 }
