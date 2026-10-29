@@ -57,6 +57,7 @@
 .tri--md { --ts: 44px; }
 .tri--lg { --ts: 56px; }
 .tri--none { --tc: var(--tr-none); --tc2: var(--void-2); color: var(--ink-faint); }
+.tri--add { --tc: var(--gold); --tc2: var(--gold-lo); color: var(--gold-hi); }   /* the + of "Your trait" before one is set */
 /* the three rarest tiers glow a little (still, no animation) */
 [data-tier="Mythic"] > .tri, [data-tier="Divine"] > .tri, [data-tier="Secret"] > .tri {
   box-shadow: inset 0 0 0 1px var(--tc), inset 0 1px 0 color-mix(in srgb, var(--ink) 30%, transparent), 0 0 0 1px var(--gold-lo), 0 0 14px color-mix(in srgb, var(--tc) 40%, transparent);
@@ -77,6 +78,11 @@
 .trw__shop { display: grid; gap: var(--s-4); align-content: start; container-type: inline-size; }
 .trw__grid .card.is-picked { outline: 2px solid var(--rift); outline-offset: 3px; }
 #trw-tools .chip-row { margin-bottom: 0; }
+/* phone: the grid or the shop (.is-shop), with a Back button over the shop · wide screens show both (below) */
+.trs__backbar { margin: calc(var(--s-2) * -1) 0 calc(var(--s-2) * -1) -8px; }
+@media (max-width: 899px) {
+  .trw:not(.is-shop) .trw__shop, .trw.is-shop .trw__pick { display: none; }
+}
 
 /* ---------- chosen card ---------- */
 .trs { padding: var(--s-4); display: grid; gap: var(--s-4); min-width: 0; }
@@ -110,7 +116,13 @@
   padding: var(--s-2) var(--s-3) var(--s-2) var(--s-2);
   border: 1px solid color-mix(in srgb, var(--tc, var(--gold)) 45%, transparent); border-radius: var(--r-panel);
   background: linear-gradient(100deg, color-mix(in srgb, var(--tc2, var(--void-2)) 55%, var(--void)), var(--void) 75%);
+  transition: border-color var(--t-med) var(--ease);
 }
+.trs__equip:has(.trs__eqbtn:hover, .trs__eqbtn:focus-visible) { border-color: var(--tc, var(--gold)); }
+/* the badge + text is one button (opens the Trait Shop window) · Remove sits next to it */
+.trs__eqbtn { flex: 1; min-width: 0; min-height: 56px; display: flex; align-items: center; gap: var(--s-3); text-align: left; color: inherit; border-radius: var(--r-chip); }
+.trs__eqbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.trs__eqgo { width: 20px; height: 20px; flex: none; color: var(--tc, var(--gold)); }
 .trs__eqtext { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .trs__eqtext b { font-family: var(--font-display); font-size: var(--fs-md); line-height: 1.2; color: var(--ink); overflow-wrap: break-word; }
 .trs__eqtier { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tc, var(--ink-faint)); }
@@ -140,12 +152,11 @@
 .trs__note { font-size: 11px; color: var(--ink-faint); }
 
 /* ---------- the 13 traits ---------- */
-.trs__listhead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-1) var(--s-3); margin-top: var(--s-2); }
-.trs__listtitle { font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-hi); }
 .trs__listsub { font-size: var(--fs-xs); color: var(--ink-faint); }
 .trs__list { display: grid; gap: var(--s-2); }
-.trs__rowskel { height: 68px; }
-@container (min-width: 640px) { .trs__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* in the Trait Shop window: one column that scrolls inside the window */
+.tm-dlg__sheet.trs-dlg-sheet { max-width: 560px; }
+.trs__list--dlg { grid-auto-rows: max-content; max-height: min(60vh, 560px); overflow-y: auto; overscroll-behavior: contain; margin: var(--s-2) -4px 0; padding: 2px 4px; }
 .trrow {
   position: relative; min-width: 0; min-height: 68px;
   display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-3);
@@ -182,7 +193,6 @@
   font-family: var(--gc-font-num); font-size: 13px; letter-spacing: .02em; color: var(--void); background: var(--tc);
 }
 .trrow__odds small { font-size: 10.5px; color: var(--ink-faint); }
-.trs__list.is-idle .trrow { cursor: default; }
 
 /* ---------- wide screens: grid on the left (scrolls on its own, stays in view), shop on the right ---------- */
 @media (min-width: 900px) {
@@ -194,6 +204,7 @@
     margin: calc(var(--s-1) * -1); padding: var(--s-1) var(--s-2) var(--s-4) var(--s-1);
   }
   .trw__grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+  .trs__backbar { display: none; }
   .trs { padding: var(--s-5); }
   .trs__top { grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "hero info" "hero eq"; gap: var(--s-4) var(--s-5); }
   .trs__top--empty { grid-template-rows: auto; grid-template-areas: "hero info"; }

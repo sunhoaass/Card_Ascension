@@ -1380,3 +1380,9 @@
   - **ทดสอบ (Chromium 390×844):** ไม่มี error · Hat Godlike / Godly = 100% · Chainsaw Pup Devil Cosmic = 100% / 90% HP · Eternal Wish Dragon Godly = 100% / 22.5% / 150% HP · Portal Playboy Godly 27% · ค่าที่ไม่ใช่โอกาสเกิน 100 ได้เหมือนเดิม (Cherry Blossom Medic 159%)
   - **ไม่ตรงเกม (ถามเจ้าของ):** Chainsaw Pup Devil Cosmic ในเกม 95.7% แต่ 53% × 2.25 = 119% → 100% · Hat Godlike ในเกม 9?.8% (ดาวบังเลข) แต่ 48% × 2.75 = 132% → 100%
   - **ไฟล์:** `js/app.js` · `js/detail.js` · `js/share.js` · `js/support.js` · `data/support.json` · `images/support/` + `thumb/` (chainsaw-pup-devil, useless-goddess, eternal-wish-dragon, immortal-witch) · `index.html` · `PROGRESS.md` · `HISTORY.md`
+- 2026-10-29: **หน้า Traits: เอารายการ Trait Shop ออกจากหน้า + ปุ่ม + + มือถือมีปุ่ม Back** (`?v=35`) · เจ้าของส่งแคปมือถือ: รายการ Trait 13 แถวใต้ shop ยาว · ตารางการ์ดอยู่เหนือ shop
+  - กล่อง Your trait เป็นปุ่ม (ยังไม่มี = + · มีแล้ว = ไอคอน Trait + ›) → หน้าต่าง "Trait Shop · ชื่อการ์ด" (`shopDialog()` · แถว `.trrow` เดิมครบ: %, 1 in X, Pity, Recommended, Equipped) · แตะ = ใส่ + toast Undo เหมือนเดิม · ลบ `#trs-list` / หัวรายการ ออกจาก `index.html`
+  - มือถือ < 900px: แตะการ์ด = ตารางหาย เหลือ shop + ปุ่ม Back "All cards" (แบบหน้า Grade) → ตารางกลับตำแหน่งเดิม · คอม ≥ 900px ยังเป็นตารางซ้าย + shop ขวา (ไม่มี Back)
+  - แก้: แถวในหน้าต่างถูกบีบเหลือ 68px (ข้อความทับกัน) → `grid-auto-rows: max-content`
+  - **ทดสอบ (Chromium 390×844 + 1280×800):** แตะการ์ด → ตารางซ่อน shop โชว์ · + → หน้าต่าง 13 แถว · แตะ Sage Mode → บันทึก + หน้าต่างปิด · Back → ตาราง + focus การ์ดเดิม · ไม่มี error · ไม่มี scroll แนวนอน
+  - **ไฟล์:** `js/traits.js` · `css/traits.css` · `index.html` · `PROGRESS.md` · `HISTORY.md`

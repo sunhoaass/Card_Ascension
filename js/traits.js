@@ -7,7 +7,8 @@
      all read and write it through here. Every change fires the "cbi:trait" event ({ id, trait }).
    · Traits never change Overall / Tier (same as grades). The team score uses power() (PROGRESS.md §10.5).
    · Traits tab (#traits, W5): search + card grid (like the Grade page) -> tap a card = its Trait Shop
-     (the card · its trait + final ATK / HP with your grades · the 13 traits with their own icons, tap = set it · Recommended).
+     (the card · its trait + final ATK / HP with your grades · the + button opens the 13 traits in a window, tap = set it · Recommended).
+     Phone: the grid or the shop, never both (Back = the grid again, owner 2026-10-29).
    CBI.traits = { init, list(), byId(id), of(cardId), set(cardId, traitId|null), map(), power(id), mult(id), effects(t),
                   apply(card, rarity, grades, traitId), pillHTML(id), chipsHTML(selected), panelHTML(card), mountPanel(root, card),
                   pickDialog(cardId), colorStyle(t), iconHTML(t, cls) }
@@ -228,13 +229,15 @@
 
   /* ==========================================================
      Traits tab (W5): search + card grid like the Grade page | the chosen card's Trait Shop
-     (the card · its trait + final ATK / HP · the 13 traits, tap = set it · Recommended = bestTrait)
-     Phone: grid, then the shop under it · ≥ 900px: grid on the left (scrolls on its own), shop on the right.
+     (the card · its trait + final ATK / HP · the + button = the 13 traits in a window, tap = set it · Recommended = bestTrait)
+     Phone: the grid, tap a card = the shop in its place (.trw.is-shop) with a Back button · ≥ 900px: grid on the left
+     (scrolls on its own), shop on the right.
      ========================================================== */
   const ui = {};
   let built = false;
   let items = [];                             // cards in grid order
   let sel = null, hero = null;                // chosen card id · its card in the shop
+  let listScroll = 0;                         // phone: where the grid was when the shop opened
   const tiles = new Map();                    // id -> mini card in the grid
   const filter = { q: "", mine: false };
   const wide = window.matchMedia("(min-width: 900px)");
@@ -288,7 +291,7 @@
     return ids.length ? ids : items.map((c) => c.id);
   };
 
-  /* ---------- the shop: trait list ---------- */
+  /* ---------- the Trait Shop window (the + button): the 13 traits, rarest first ---------- */
   function rowHTML(t) {
     return `<button type="button" class="trrow fx-press" data-tr="${esc(t.id)}" data-tier="${esc(t.tier)}" style="${colorStyle(t)}" aria-pressed="false">
         <span class="tri tri--md">${iconHTML(t, "tri__ico")}</span>
@@ -305,10 +308,10 @@
     const pity = t.pity ? `pity at ${t.pity.toLocaleString("en-US")} rolls (${(t.pity * ROLL()).toLocaleString("en-US")} Shards)` : "no pity";
     return `${t.name}, ${t.tier}, ${fmtPct(t.chance)} per roll, ${pity}. ${effects(t).join(", ")}.${on ? " Equipped." : ""}${rec ? " Recommended for this card." : ""}${sel ? (on ? "" : " Tap to set it as this card's trait.") : " Choose a card first."}`;
   }
-  function paintList() {
+  function paintRows(box) {
     const card = sel && cardOf(sel), mine = card ? of(card.id) : null, rec = card ? byId(card.bestTrait) : null;
     const note = card ? String(card.bestTraitNote || "").trim() : "";
-    $$(".trrow", ui.list).forEach((b) => {
+    $$(".trrow", box).forEach((b) => {
       const t = byId(b.dataset.tr), on = !!card && t.id === mine, isRec = !!rec && t.id === rec.id;
       b.setAttribute("aria-pressed", String(on));
       b.classList.toggle("is-rec", isRec);
@@ -319,7 +322,32 @@
       n.textContent = isRec ? note : "";
       b.setAttribute("aria-label", rowLabel(t, { on, rec: isRec }));
     });
-    ui.list.classList.toggle("is-idle", !card);
+  }
+  const shopList = () => data().list.slice().sort((a, b) => tierOrder(b) - tierOrder(a) || a.chance - b.chance);
+  async function shopDialog() {
+    const card = cardOf(sel);
+    if (!C.dialog || !card) return;
+    const res = await C.dialog({
+      title: `Trait Shop · ${card.name}`,
+      html: `<p class="trs__listsub">Rarest first · chance per roll · 1 roll = ${ROLL()} Shards · tap one to set it</p>
+        <div class="trs__list trs__list--dlg" role="group" aria-label="Traits">${shopList().map(rowHTML).join("")}</div>`,
+      actions: [{ label: "Cancel", value: "cancel" }],
+      onMount(d, finish) {
+        $(".tm-dlg__sheet", d).classList.add("trs-dlg-sheet");
+        const box = $(".trs__list", d);
+        paintRows(box);
+        FX.stagger(box, 26, { cls: "fx-up", max: 13, limit: 13, cleanup: true });
+        box.addEventListener("click", (e) => {
+          const b = e.target.closest(".trrow");
+          if (b) { e.preventDefault(); finish({ action: "pick", id: b.dataset.tr }); }
+        });
+        const on = $('.trrow[aria-pressed="true"]', box);
+        if (on) on.scrollIntoView({ block: "nearest" });
+        if (window.matchMedia("(pointer: fine)").matches) (on || $(".trrow", box)).focus({ preventScroll: true });
+        else if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      },
+    });
+    if (res && res.action === "pick" && sel === card.id) equip(res.id);
   }
 
   /* ---------- the shop: the chosen card ---------- */
@@ -331,7 +359,7 @@
         <div class="trs__info">
           <p class="trs__k">Trait Shop</p>
           <h2 class="trs__name">${none ? "No cards yet" : "No card chosen"}</h2>
-          <p class="trs__hint">${none ? "Once cards are added you can set their traits here. The list below shows every trait in the shop." : "Tap a card to see its trait, its final ATK and HP, and the trait that suits it best."}</p>
+          <p class="trs__hint">${none ? "Once cards are added you can set their traits here." : "Tap a card to see its trait, its final ATK and HP, and the trait that suits it best."}</p>
           ${none ? "" : `<button type="button" class="tm-btn tm-btn--primary fx-press trs__btn" data-act="change">${CHANGE_ICON}Choose a card</button>`}
         </div>
       </div>`;
@@ -359,17 +387,23 @@
       <div class="trs__fxbox"><h3 class="trs__fxtitle" data-fxt></h3><ul class="trs__fx" data-fx></ul></div>
       <p class="trs__note">Saved on this device: every copy of a card shares one trait. Average hit and effective HP are estimates from the trait's numbers.</p>`;
   }
+  // the box is a button: + (no trait yet) or the trait's badge -> the Trait Shop window
+  const PLUS = `<svg class="tri__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>`;
   function equipHTML(t) {
     return t
-      ? `<span class="tri tri--lg" style="${colorStyle(t)}">${iconHTML(t, "tri__ico")}</span>
-         <span class="trs__eqtext"><span class="trs__nk">Your trait</span><b style="${colorStyle(t)}">${esc(t.name)}</b><span class="trs__eqtier" style="${colorStyle(t)}">${esc(t.tier)}</span></span>
+      ? `<button type="button" class="trs__eqbtn fx-press" data-act="pick" aria-label="Your trait: ${esc(t.name)}, ${esc(t.tier)}. Open the Trait Shop to change it">
+           <span class="tri tri--lg" style="${colorStyle(t)}">${iconHTML(t, "tri__ico")}</span>
+           <span class="trs__eqtext"><span class="trs__nk">Your trait</span><b style="${colorStyle(t)}">${esc(t.name)}</b><span class="trs__eqtier" style="${colorStyle(t)}">${esc(t.tier)}</span></span>
+           <svg class="trs__eqgo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+         </button>
          <button type="button" class="chip glass fx-press trs__clear" data-act="clear" aria-label="Remove ${esc(t.name)} from this card">Remove</button>`
-      : `<span class="tri tri--lg tri--none">${iconHTML(null, "tri__ico")}</span>
-         <span class="trs__eqtext"><span class="trs__nk">Your trait</span><b>None yet</b><span class="trs__eqtier">Tap a trait below</span></span>`;
+      : `<button type="button" class="trs__eqbtn fx-press" data-act="pick" aria-label="No trait yet. Open the Trait Shop to choose one">
+           <span class="tri tri--lg tri--add">${PLUS}</span>
+           <span class="trs__eqtext"><span class="trs__nk">Your trait</span><b>None yet</b><span class="trs__eqtier">Tap + to choose</span></span>
+         </button>`;
   }
 
   function paint({ animate = false } = {}) {
-    paintList();
     if (!sel) return;
     const card = cardOf(sel), id = of(sel), g = C.grade.get ? C.grade.get(sel) : null;
     const res = apply(card, state.rarity, g, id), t = res.trait;
@@ -395,18 +429,17 @@
     const ft = $("[data-fxt]", ui.head);
     ft.textContent = t ? `${t.name} · ${t.tier}` : "No trait";
     ft.style.cssText = colorStyle(t);
-    $("[data-fx]", ui.head).innerHTML = t ? (fx.length ? fx.map((e) => `<li>${esc(e)}</li>`).join("") : `<li class="muted">No special effect: stats only.</li>`) : `<li class="muted">No trait: base stats. Tap a trait below to set the one you rolled.</li>`;
+    $("[data-fx]", ui.head).innerHTML = t ? (fx.length ? fx.map((e) => `<li>${esc(e)}</li>`).join("") : `<li class="muted">No special effect: stats only.</li>`) : `<li class="muted">No trait: base stats. Tap + to set the one you rolled.</li>`;
     $(".trs__fxbox", ui.head).style.cssText = colorStyle(t);
     C.setCardNums(hero, { atk: res.atk, hp: res.hp }, { animate: animate && hero.classList.contains("is-live") });
   }
 
   const heroLabel = () => hero.setAttribute("aria-label", `${cardOf(sel).name}, ${state.rarity}. Open card details`);
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
-  // origin: the grid tile that was tapped (the card flies from it on a wide screen; a phone scrolls down to the shop)
+  // origin: the grid tile that was tapped (the card flies from it on a wide screen; a phone swaps the grid for the shop)
   function select(id, origin = null) {
     const card = cardOf(id);
     if (!card) return;
-    const first = !sel;
     sel = id;
     tiles.forEach((el, k) => { const on = k === id; el.classList.toggle("is-picked", on); if (on) el.setAttribute("aria-current", "true"); else el.removeAttribute("aria-current"); });
     ui.head.innerHTML = headHTML(card);
@@ -414,13 +447,16 @@
     heroLabel();
     $(".trs__hero", ui.head).appendChild(hero);
     paint();
-    requestAnimationFrame(() => C.revealChip(ui.head));
-    if (first) FX.stagger(ui.list, 26, { cls: "fx-up", max: 13, limit: 13, cleanup: true });
     const r = origin && origin.isConnected ? origin.getBoundingClientRect() : null;
-    if (r && !wide.matches) {
+    if (!wide.matches) {
+      // phone: the shop takes the grid's place (Back brings the grid back where it was)
+      if (!ui.wrap.classList.contains("is-shop")) listScroll = window.scrollY;
+      ui.wrap.classList.add("is-shop");
       const top = ui.shop.getBoundingClientRect().top + window.scrollY - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 58) - 8;
-      window.scrollTo({ top: Math.max(0, top), behavior: FX.reduced ? "auto" : "smooth" });
-      FX.flash(ui.head);
+      window.scrollTo(0, Math.max(0, top));
+      ui.shop.classList.remove("fx-page-in"); void ui.shop.offsetWidth; ui.shop.classList.add("fx-page-in");
+      requestAnimationFrame(() => C.revealChip(ui.head));
+      if (origin) ui.back.focus({ preventScroll: true });
     } else {
       // wide: the grid stays in view while the page scrolls; if the shop's top is above the screen, bring it back
       const top = ui.head.getBoundingClientRect().top, bar = $(".topbar"), off = (bar && bar.offsetHeight) || 0;
@@ -444,6 +480,20 @@
     if (hero.classList.contains("is-live")) C.flashCard(hero);
     const undo = { label: "Undo", fn: () => set(card.id, prev) };
     FX.toast(next ? `${byId(next).name} set as ${card.name}'s trait` : `Trait removed from ${card.name}`, { action: undo });
+  }
+
+  // phone: Back = the grid again, scrolled to where it was, the shop's card flashes in its tile
+  function back() {
+    if (!ui.wrap.classList.contains("is-shop")) return;
+    ui.wrap.classList.remove("is-shop");
+    ui.pick.classList.remove("fx-page-in"); void ui.pick.offsetWidth; ui.pick.classList.add("fx-page-in");
+    window.scrollTo(0, listScroll);
+    const t = sel && tiles.get(sel);
+    if (t && t.isConnected) {
+      if (!rectVisible(t.getBoundingClientRect())) t.scrollIntoView({ block: "center" });
+      t.focus({ preventScroll: true });
+      FX.flash(t);
+    }
   }
 
   /* ---------- Change card: a search window like the Grade picker (C.dialog, js/tiermaker.js) ---------- */
@@ -522,12 +572,11 @@
   }
 
   function build() {
-    const list = data().list.slice().sort((a, b) => tierOrder(b) - tierOrder(a) || a.chance - b.chance);
+    const list = data().list;
     ui.wrap.hidden = !list.length;
     ui.empty.hidden = list.length > 0;
     built = true;
     if (!list.length) return;
-    ui.list.innerHTML = list.map(rowHTML).join("");
     ui.tools.hidden = !items.length;
     ui.gridEmpty.hidden = items.length > 0;
     items.forEach((c) => {
@@ -538,8 +587,6 @@
     if (!items.length) ui.grid.replaceChildren();
     ui.head.innerHTML = headEmptyHTML();
     applyList({ animate: true });
-    paintList();
-    FX.stagger(ui.list, 26, { cls: "fx-up", max: 13, limit: 13, cleanup: true });
   }
 
   function bind() {
@@ -553,16 +600,12 @@
     ui.grid.addEventListener("keydown", (e) => {
       if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); select(e.target.dataset.id, e.target); }
     });
-    ui.list.addEventListener("click", (e) => {
-      const b = e.target.closest(".trrow");
-      if (!b) return;
-      if (!sel) { changeDialog(); return; }   // no card yet: pick one first
-      equip(b.dataset.tr);
-    });
+    ui.back.addEventListener("click", back);
     ui.head.addEventListener("click", (e) => {
       const a = e.target.closest("[data-act]");
       if (a) {
         if (a.dataset.act === "change") changeDialog();
+        else if (a.dataset.act === "pick") shopDialog();
         else if (a.dataset.act === "clear") equip(null);
         else if (a.dataset.act === "details" && hero) C.openCard(sel, hero, { list: shownIds() });
         return;
@@ -593,7 +636,7 @@
     Object.assign(ui, {
       wrap: $("#trw"), empty: $("#tr-empty"), tools: $("#trw-tools"), search: $("#trw-search"), mine: $("#trw-mine"),
       count: $("#trw-count"), reset: $("#trw-reset"), grid: $("#trw-grid"), none: $("#trw-none"), noneText: $("#trw-none-text"),
-      noneReset: $("#trw-none-reset"), gridEmpty: $("#trw-empty"), shop: $("#trw-shop"), head: $("#trs-head"), list: $("#trs-list"),
+      noneReset: $("#trw-none-reset"), gridEmpty: $("#trw-empty"), pick: $(".trw__pick"), shop: $("#trw-shop"), head: $("#trs-head"), back: $("#trs-back"),
     });
     load();
     if (!ui.grid) return;

@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=34">
-  <link rel="stylesheet" href="css/base.css?v=34">
-  <link rel="stylesheet" href="css/fx.css?v=34">
-  <link rel="stylesheet" href="css/cards.css?v=34">
-  <link rel="stylesheet" href="css/tier.css?v=34">
-  <link rel="stylesheet" href="css/deck.css?v=34">
-  <link rel="stylesheet" href="css/support.css?v=34">
-  <link rel="stylesheet" href="css/grade.css?v=34">
-  <link rel="stylesheet" href="css/tiermaker.css?v=34">
-  <link rel="stylesheet" href="css/detail.css?v=34">
-  <link rel="stylesheet" href="css/traits.css?v=34">
+  <link rel="stylesheet" href="css/tokens.css?v=35">
+  <link rel="stylesheet" href="css/base.css?v=35">
+  <link rel="stylesheet" href="css/fx.css?v=35">
+  <link rel="stylesheet" href="css/cards.css?v=35">
+  <link rel="stylesheet" href="css/tier.css?v=35">
+  <link rel="stylesheet" href="css/deck.css?v=35">
+  <link rel="stylesheet" href="css/support.css?v=35">
+  <link rel="stylesheet" href="css/grade.css?v=35">
+  <link rel="stylesheet" href="css/tiermaker.css?v=35">
+  <link rel="stylesheet" href="css/detail.css?v=35">
+  <link rel="stylesheet" href="css/traits.css?v=35">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -628,7 +628,7 @@
         <p class="page__eyebrow">The Bloodline</p>
         <h1 id="traits-title" class="page__title">Traits</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead">Pick a card to open its Trait Shop: set the trait you rolled and see its final ATK and HP. One roll costs 5 Shards, every copy of a card shares the same trait, and traits never change a card's Overall score or tier.</p>
+        <p class="page__lead">Pick a card, then tap + to open its Trait Shop: set the trait you rolled and see its final ATK and HP. One roll costs 5 Shards, every copy of a card shares the same trait, and traits never change a card's Overall score or tier.</p>
       </div>
 
       <div id="trw" class="trw">
@@ -662,12 +662,13 @@
         </div>
 
         <div id="trw-shop" class="trw__shop">
-          <div id="trs-head" class="panel glass trs" aria-live="polite"><div class="skeleton trs__skel"></div></div>
-          <div class="trs__listhead">
-            <h2 class="trs__listtitle">Trait Shop</h2>
-            <p class="trs__listsub">Rarest first · chance per roll · 1 roll = 5 Shards</p>
+          <div class="trs__backbar">
+            <button id="trs-back" class="detail__back fx-press" type="button" aria-label="Back to all cards">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+              <span>All cards</span>
+            </button>
           </div>
-          <div id="trs-list" class="trs__list" role="group" aria-label="Traits"><div class="skeleton trs__rowskel"></div><div class="skeleton trs__rowskel"></div><div class="skeleton trs__rowskel"></div></div>
+          <div id="trs-head" class="panel glass trs" aria-live="polite"><div class="skeleton trs__skel"></div></div>
         </div>
       </div>
 
@@ -797,19 +798,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=34"></script>
-  <script src="js/app.js?v=34"></script>
-  <script src="js/teamscore.js?v=34"></script>
-  <script src="js/share.js?v=34"></script>
-  <script src="js/cards.js?v=34"></script>
-  <script src="js/detail.js?v=34"></script>
-  <script src="js/tier.js?v=34"></script>
-  <script src="js/deck.js?v=34"></script>
-  <script src="js/support.js?v=34"></script>
-  <script src="js/grade.js?v=34"></script>
-  <script src="js/traits.js?v=34"></script>
-  <script src="js/tiermaker.js?v=34"></script>
-  <script src="js/music.js?v=34"></script>
+  <script src="js/fx.js?v=35"></script>
+  <script src="js/app.js?v=35"></script>
+  <script src="js/teamscore.js?v=35"></script>
+  <script src="js/share.js?v=35"></script>
+  <script src="js/cards.js?v=35"></script>
+  <script src="js/detail.js?v=35"></script>
+  <script src="js/tier.js?v=35"></script>
+  <script src="js/deck.js?v=35"></script>
+  <script src="js/support.js?v=35"></script>
+  <script src="js/grade.js?v=35"></script>
+  <script src="js/traits.js?v=35"></script>
+  <script src="js/tiermaker.js?v=35"></script>
+  <script src="js/music.js?v=35"></script>
 </body>
 </html>
 
