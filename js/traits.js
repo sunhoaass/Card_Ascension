@@ -167,14 +167,14 @@
     pressChips($(".trpick", root), id);
     const box = $("[data-trres]", root);
     const t = res.trait;
-    const line = (k, label, from, to) => `<div class="trres__row trres__row--${k}"><span class="trres__k">${label}</span><b class="trres__v" data-trv="${k}" data-value="${to}">${C.fmtStat(to)}</b><small>${to !== from ? `${C.fmtStat(from)} ${t ? xN(k === "atk" ? t.dmg : t.hp) : ""}` : t ? "no change" : state.rarity}</small></div>`;
+    const line = (k, label, from, to) => `<div class="trres__row trres__row--${k}"><span class="trres__k">${label}</span><b class="trres__v" data-trv="${k}" data-value="${to}">${C.fmtKey(k)(to)}</b><small>${to !== from ? `${C.fmtKey(k)(from)} ${t ? xN(k === "atk" ? t.dmg : t.hp) : ""}` : t ? "no change" : state.rarity}</small></div>`;
     const was = (k) => { const n = $(`[data-trv="${k}"]`, box); return n ? Number(n.dataset.value) || 0 : 0; };
     const prev = { atk: was("atk"), hp: was("hp") };
     box.innerHTML = `
       <div class="trres__nums">${line("atk", "ATK", res.gAtk, res.atk)}${line("hp", "HP", res.gHp, res.hp)}</div>
       <p class="trres__cap">${esc(state.rarity)}${g && (g[0] || g[3]) ? " · with your grades" : ""}${t ? ` · ${esc(t.name)}` : " · no trait"}</p>
       ${t && effects(t, { special: true }).length ? `<ul class="trres__fx">${effects(t, { special: true }).map((e) => `<li>${esc(e)}</li>`).join("")}</ul>` : ""}`;
-    if (animate && !FX.reduced) ["atk", "hp"].forEach((k) => { const n = $(`[data-trv="${k}"]`, box); if (prev[k]) { const to = Number(n.dataset.value); n.dataset.value = prev[k]; n.textContent = C.fmtStat(prev[k]); FX.countTo(n, to, { format: C.fmtStat, duration: 450 }); } });
+    if (animate && !FX.reduced) ["atk", "hp"].forEach((k) => { const n = $(`[data-trv="${k}"]`, box); if (prev[k]) { const to = Number(n.dataset.value); n.dataset.value = prev[k]; n.textContent = C.fmtKey(k)(prev[k]); FX.countTo(n, to, { format: C.fmtKey(k), duration: 450 }); } });
   }
   function mountPanel(root, card) {
     panels.forEach((p) => { if (!p.root.isConnected) panels.delete(p); });
@@ -379,15 +379,15 @@
     eq.style.cssText = t ? colorStyle(t) : "";
     eq.dataset.trait = id || "";
     if (animate && was !== (id || "") && !FX.reduced) { const b = $(".tri", eq); b.classList.remove("is-pop"); void b.offsetWidth; b.classList.add("is-pop"); }
-    const num = (k, v) => { const n = $(`[data-cv="${k}"]`, ui.head); if (animate) FX.countTo(n, v, { format: C.fmtStat, duration: 450 }); else { n.dataset.value = v; n.textContent = C.fmtStat(v); } };
+    const num = (k, v) => { const n = $(`[data-cv="${k}"]`, ui.head); if (animate) FX.countTo(n, v, { format: C.fmtKey(k), duration: 450 }); else { n.dataset.value = v; n.textContent = C.fmtKey(k)(v); } };
     num("atk", res.atk); num("hp", res.hp);
     const gp = (i) => (g && g[i] ? ` · +${Number((g[i] * STEP * 100).toFixed(1))}% grade` : "");
     $('[data-cs="atk"]', ui.head).textContent = `${C.fmtStat(res.baseAtk)}${gp(0)}${t && t.dmg !== 1 ? ` · ${xN(t.dmg)} trait` : ""}`;
-    $('[data-cs="hp"]', ui.head).textContent = `${C.fmtStat(res.baseHp)}${gp(3)}${t && t.hp !== 1 ? ` · ${xN(t.hp)} trait` : ""}`;
+    $('[data-cs="hp"]', ui.head).textContent = `${C.fmtHp(res.baseHp)}${gp(3)}${t && t.hp !== 1 ? ` · ${xN(t.hp)} trait` : ""}`;
     $("[data-cap]", ui.head).textContent = `${state.rarity}${g && (g[0] || g[3]) ? ` · with your grades (ATK ${g[0] || "–"} · HP ${g[3] || "–"})` : " · no grades"}${t ? ` · ${t.name}` : " · no trait"}`;
     const extra = [];
     if (t && t.crit) extra.push(`<li><span>Average hit with crits</span><b>${C.fmtStat(res.avgHit)}</b></li>`);
-    if (res.effHp !== res.hp) extra.push(`<li><span>Effective HP (dodge, damage cut, shield, revive)</span><b>${C.fmtStat(res.effHp)}</b></li>`);
+    if (res.effHp !== res.hp) extra.push(`<li><span>Effective HP (dodge, damage cut, shield, revive)</span><b>${C.fmtHp(res.effHp)}</b></li>`);
     const ex = $("[data-extra]", ui.head);
     ex.innerHTML = extra.join("");
     ex.hidden = !extra.length;

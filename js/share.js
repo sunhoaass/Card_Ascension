@@ -455,7 +455,7 @@
       return s;
     };
     // HP: right-aligned, left of the heart · ATK: centred between the swords
-    if (!sup) numText(C.fmtStat(C.statAt(item, "hp", r)), x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2, cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
+    if (!sup) numText(C.fmtHp(C.statAt(item, "hp", r)), x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2, cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
     if (!sup) numText(C.fmtStat(C.statAt(item, "atk", r)), x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5, cssVar("--gc-atk"), cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
     // pills (right edge 1.2u in from the card's right side)
     const pill = (text, top, hgt, size, min, bg, line, ink, inner, flat) => {
