@@ -1386,3 +1386,11 @@
   - แก้: แถวในหน้าต่างถูกบีบเหลือ 68px (ข้อความทับกัน) → `grid-auto-rows: max-content`
   - **ทดสอบ (Chromium 390×844 + 1280×800):** แตะการ์ด → ตารางซ่อน shop โชว์ · + → หน้าต่าง 13 แถว · แตะ Sage Mode → บันทึก + หน้าต่างปิด · Back → ตาราง + focus การ์ดเดิม · ไม่มี error · ไม่มี scroll แนวนอน
   - **ไฟล์:** `js/traits.js` · `css/traits.css` · `index.html` · `PROGRESS.md` · `HISTORY.md`
+- 2026-10-29: **Support: เลขบนรูปตรงบรรทัด + สีทอง · HP คืนชีพตันที่ 100% · แก้ค่า Normal 2 ใบจากแคปเกม** (`?v=36`)
+  - เลขลอยสูงกว่าตัวหนังสือ: รูปการ์ด `.gc__art img` ขยาย 1.012 จากกลาง แต่ตำแหน่งเลขไม่ได้ขยายตาม (บรรทัดล่างเพี้ยน ~2–3px ที่การ์ดกว้าง 600) → `supNumsHTML(s, rarity, zoom)` + `ART_ZOOM` (share.js ทำถูกอยู่แล้ว) · วัดหลังแก้: "40%" 628–654 · "HP" ข้างๆ 627–653 (ต่าง 1px)
+  - สีเลข `--gc-sv` ขาว → ทอง `#ffd45c` (เจ้าของขอให้แนะนำสีที่เห็นว่าค่าไหนเปลี่ยน) · รูปแชร์อ่านสีจาก token แทนค่าตายตัว
+  - `supCapped`: เพิ่ม `{n}% HP` (HP ตอนคืนชีพ) → Eternal Wish Dragon Godly 150% → 100% · Chainsaw Pup Devil Godly 120% → 100%
+  - Hellsing Commander: เกม Godly 187% แต่เว็บ 201% (Normal 67 × 3) → Normal = 187 ÷ 3 = 62.33 · Chainsaw Pup Devil: เกม Cosmic 95.7% → Normal 42.53 (เดิม 53) · ตรวจแล้ว: Pochita Cosmic = 95.7% / 90% ตรงแคปเกม · Hellsing Godly = 187%
+  - ข้อความ Hellsing ในเกมเปลี่ยนเป็น "Hellsing Commander's order: the supported card does X% more damage with its first hit on each new enemy." (รูปเรายังเป็นข้อความเก่า → ทำในรอบแคปใหม่)
+  - **ทดสอบ:** Chromium ไม่มี error · `node --check` ผ่าน
+  - **ไฟล์:** `js/app.js` · `js/share.js` · `css/tokens.css` · `data/support.json` · `index.html` · `PROGRESS.md` · `HISTORY.md`

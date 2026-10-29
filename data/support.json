@@ -2410,7 +2410,7 @@
       "name": "Search and Destroy",
       "desc": "Integra's order: Search and Destroy! The supported card's first hit on every new enemy does {0}% more damage.",
       "vals": [
-        67
+        62.33
       ],
       "type": "dmg",
       "pos": [
@@ -3105,7 +3105,7 @@
       "name": "Chainsaw Heart",
       "desc": "Pochita gives his heart: when the supported card is knocked out it has a {0}% chance to rev back up with {1}% HP (once per fight).",
       "vals": [
-        53,
+        42.53,
         40
       ],
       "type": "revive",

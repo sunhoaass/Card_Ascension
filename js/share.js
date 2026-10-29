@@ -341,7 +341,7 @@
   }
 
   /* Support (2026-10-28): the level values where the picture's numbers were erased (same spots as js/app.js supNumsHTML ·
-     effect.pos in % of the picture width) · white Oswald with a dark outline, squeezed to the old number's room */
+     effect.pos in % of the picture width) · gold Oswald (--gc-sv) with a dark outline, squeezed to the old number's room */
   function drawSupNums(ctx, item, img, x, y, w, h, rarity) {
     const pos = item && item.effect && Array.isArray(item.effect.pos) ? item.effect.pos : [];
     if (!pos.length || !C.supVals) return;
@@ -357,8 +357,8 @@
       const room = (p.w + 1.4 * Math.min(p.gl || 0, p.gr || 0)) * u, tw = ctx.measureText(t).width, sx = tw > room ? room / tw : 1;
       ctx.save();
       ctx.translate(ox + (p.x + p.w / 2) * u, oy + (p.y + p.h) * u); ctx.scale(sx, 1);
-      ctx.lineWidth = fs * 0.15; ctx.strokeStyle = "#050505"; ctx.strokeText(t, 0, 0);
-      ctx.fillStyle = "#f4f2ee"; ctx.fillText(t, 0, 0);
+      ctx.lineWidth = fs * 0.15; ctx.strokeStyle = cssVar("--gc-sv-line") || "#050505"; ctx.strokeText(t, 0, 0);
+      ctx.fillStyle = cssVar("--gc-sv") || "#ffd45c"; ctx.fillText(t, 0, 0);
       ctx.restore();
     });
     ctx.restore();
