@@ -105,10 +105,29 @@
     return (r > 200 || (r === 200 && q % 2) ? q + 1 : q) / 10;
   }
   const supVals = (s) => (s && s.effect && typeof s.effect === "object" && Array.isArray(s.effect.vals) ? s.effect.vals : []);
-  /* Tops out at 100% (owner 2026-10-29): a chance ("{n}% chance", "{n}% of (the) hits": dodges, counters) and the HP a card
-     comes back with ("with {n}% HP": revives · more than full HP does nothing) */
-  const supCapped = (s, i) => new RegExp(`\\{${i}\\}% (chance|of (the )?hits|HP\\b)`).test((s && s.effect && s.effect.desc) || "");
-  const supValAt = (s, i, rarity) => { const v = supAt(supVals(s)[i], rarity); return supCapped(s, i) ? Math.min(100, v) : v; };
+  /* Soft cap (the game, measured 2026-10-29 · PROGRESS §5.4): past a knee the game gives only part of the rest, closing in on
+     a ceiling: knee + room × (1 − e^(−(value − knee) / room)) on the unrounded value
+     · a chance ("{n}% chance", "{n}% of (the) hits": dodges, counters, revives): knee 75, room 25 → never 100
+       (Eternal Wish Dragon Secret 89.3 · Chainsaw Pup Devil Cosmic 95.7)
+     · the HP a card comes back with ("with {n}% HP"): straight, tops out at 100% (more than full HP does nothing)
+     · anything else: knee 150, room 75 (Hellsing Commander Ascended 166 · Godlike 177 · Godly 187)
+     effect.dp = decimals the game shows for that card (default 1 · Hellsing Commander 0: 84 / 101 / 117 …) */
+  const SOFT = { chance: [75, 25], other: [150, 75] };
+  const supKind = (s, i) => {
+    const d = (s && s.effect && s.effect.desc) || "";
+    return new RegExp(`\\{${i}\\}% (chance|of (the )?hits)`).test(d) ? "chance" : new RegExp(`\\{${i}\\}% HP\\b`).test(d) ? "hp" : "other";
+  };
+  const supValAt = (s, i, rarity) => {
+    const base = supVals(s)[i], k = supKind(s, i), dp = s && s.effect && s.effect.dp === 0 ? 0 : 1;
+    let v = Number(base) * supLevelMult(rarity);
+    if (!Number.isFinite(v) || v <= 0) return 0;
+    const plain = dp ? supAt(base, rarity) : Math.round(v);       // tenths: the game's even rounding of an exact …5
+    if (k === "hp") return Math.min(100, plain);
+    if (v <= SOFT[k][0]) return plain;
+    const [t, c] = SOFT[k];
+    v = t + c * (1 - Math.exp(-(v - t) / c));
+    return dp ? Math.round(v * 10) / 10 : Math.round(v);
+  };
   const supValue = (s, rarity) => supValAt(s, 0, rarity);  // the main value (vals[0]) at a rarity · 0 = none
   const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)

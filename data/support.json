@@ -2408,19 +2408,20 @@
     "image": "images/support/hellsing-commander.webp",
     "effect": {
       "name": "Search and Destroy",
-      "desc": "Integra's order: Search and Destroy! The supported card's first hit on every new enemy does {0}% more damage.",
+      "desc": "Hellsing Commander's order: the supported card does {0}% more damage with its first hit on each new enemy.",
       "vals": [
-        62.33
+        67
       ],
+      "dp": 0,
       "type": "dmg",
       "pos": [
         {
           "i": 0,
-          "x": 41.67,
-          "y": 106.83,
-          "w": 11.0,
-          "h": 5.33,
-          "cap": 5.33,
+          "x": 27.0,
+          "y": 98.5,
+          "w": 11.33,
+          "h": 4.5,
+          "cap": 4.33,
           "gl": 1.67,
           "gr": 1.83
         }
@@ -2436,7 +2437,7 @@
       "value": 0
     },
     "tier": "",
-    "updated": "2026-10-28"
+    "updated": "2026-10-29"
   },
   {
     "id": "hero-of-legend",
@@ -3105,7 +3106,7 @@
       "name": "Chainsaw Heart",
       "desc": "Pochita gives his heart: when the supported card is knocked out it has a {0}% chance to rev back up with {1}% HP (once per fight).",
       "vals": [
-        42.53,
+        53,
         40
       ],
       "type": "revive",
@@ -3142,7 +3143,7 @@
       "value": 0
     },
     "tier": "",
-    "updated": "2026-10-28"
+    "updated": "2026-10-29"
   },
   {
     "id": "flower-healer-captain",
@@ -3388,7 +3389,7 @@
     "image": "images/support/eternal-wish-dragon.webp",
     "effect": {
       "name": "Wish Granted",
-      "desc": "Shenron grants one wish: when the supported card is knocked out it has a {0}% chance to come back with {2}% HP (once per fight), and every OTHER card in your deck deals {1}% more damage.",
+      "desc": "Eternal Wish Dragon grants one wish: the supported card has a {0}% chance to come back once with {2}% HP and makes every OTHER card in your deck deal {1}% more damage.",
       "vals": [
         55,
         7.5,
@@ -3398,33 +3399,33 @@
       "pos": [
         {
           "i": 0,
-          "x": 36.33,
-          "y": 95.5,
-          "w": 7.67,
+          "x": 26.33,
+          "y": 96.67,
+          "w": 11.33,
           "h": 3.67,
           "cap": 3.67,
-          "gl": 1.33,
+          "gl": 1.5,
           "gr": 1.5
         },
         {
           "i": 1,
-          "x": 38.83,
-          "y": 106.83,
-          "w": 8.33,
-          "h": 3.5,
-          "cap": 3.5,
-          "gl": 1.33,
+          "x": 36.67,
+          "y": 109.17,
+          "w": 10.5,
+          "h": 3.67,
+          "cap": 3.67,
+          "gl": 1.67,
           "gr": 1.5
         },
         {
           "i": 2,
-          "x": 87.83,
-          "y": 95.5,
-          "w": 7.67,
+          "x": 4.83,
+          "y": 102.83,
+          "w": 11.33,
           "h": 3.67,
           "cap": 3.67,
-          "gl": 1.67,
-          "gr": 4.5
+          "gl": 4.83,
+          "gr": 1.5
         }
       ]
     },
