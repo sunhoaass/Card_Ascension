@@ -1282,7 +1282,7 @@
       return;
     }
     setNum(q("atk"), C.statAt(card, "atk", r), C.fmtStat, anim);
-    setNum(q("hp"), C.statAt(card, "hp", r), C.fmtStat, anim);
+    setNum(q("hp"), C.statAt(card, "hp", r), C.fmtHp, anim);
     q("odds").textContent = C.fmtOdds(C.oddsAt(card, r));
     q("lv").textContent = r;
     EXTRA_STATS.forEach(([k]) => { if (q(k)) setNum(q(k), C.statAt(card, k, r), C.fmtStat, anim); });

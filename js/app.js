@@ -78,6 +78,18 @@
   }
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
+  /* HP like the game (owner 2026-10-29 · HP only, ATK stays whole): up to 999,999,999 = the whole number with commas ·
+     1B and up = B T Qa Qi with one decimal (100 and up = whole · .0 dropped) (999,500,000 · 1B · 1.5B · 12.3B · 250B · 1.2T) */
+  function fmtHp(n) {
+    n = Math.round(n);
+    if (n < 1e9) return n.toLocaleString("en-US");
+    const units = [[1e9, "B"], [1e12, "T"], [1e15, "Qa"], [1e18, "Qi"]];
+    for (let i = 0; i < units.length; i++) {
+      const [v, s] = units[i], x = n / v, r = x >= 100 ? Math.round(x) : Number(x.toFixed(1));
+      if (r < 1000 || i === units.length - 1) return r + s;   // 999.96B -> 1T, not 1000B
+    }
+  }
+  const fmtKey = (k) => (k === "hp" ? fmtHp : fmtStat);
 
   /* Support values by level (owner 2026-10-28 · PROGRESS §5.4): Normal value × (1 + 0.25 × level), level = the rarity's
      place (Normal 0 … Godly 8). The game rounds to 1 decimal and an exact …5 goes to the even digit (6.25 → 6.2, 8.75 → 8.8).
@@ -289,7 +301,7 @@
       <span class="gc__name">${esc(card.name)}</span>
       <span class="gc__ring"><i></i></span>
       <span class="gc__sweep"></span>
-      <span class="gc__hp"><span class="gc__num" data-k="hp" data-value="${hp}">${fmtStat(hp)}</span></span>
+      <span class="gc__hp"><span class="gc__num" data-k="hp" data-value="${hp}">${fmtHp(hp)}</span></span>
       <span class="gc__odds"><span class="gc__pop" data-k="odds">${fmtOdds(oddsAt(card, rarity))}</span></span>
       <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
       <span class="gc__atk"><span class="gc__num" data-k="atk" data-value="${atk}">${fmtStat(atk)}</span></span>
@@ -307,16 +319,16 @@
   /* ATK / HP shown on a card (the Grade page shows graded values) · animate = count to them (650 ms, §3.5.1) */
   function setCardNums(el, { atk, hp }, { animate = true } = {}) {
     const atkEl = $('[data-k="atk"]', el), hpEl = $('[data-k="hp"]', el);
-    const longer = (span, v) => { const a = fmtStat(v), b = span.textContent; return a.length >= b.length ? a : b; };
+    const longer = (span, v, f) => { const a = f(v), b = span.textContent; return a.length >= b.length ? a : b; };
     clearTimeout(el._fitT);
     if (animate && !FX.reduced) {
-      fitNum(hpEl, "hp", longer(hpEl, hp)); fitNum(atkEl, "atk", longer(atkEl, atk));   // counting never spills out
+      fitNum(hpEl, "hp", longer(hpEl, hp, fmtHp)); fitNum(atkEl, "atk", longer(atkEl, atk, fmtStat));   // counting never spills out
       FX.countTo(atkEl, atk, { format: fmtStat, duration: 650 });
-      FX.countTo(hpEl, hp, { format: fmtStat, duration: 650 });
+      FX.countTo(hpEl, hp, { format: fmtHp, duration: 650 });
       el._fitT = setTimeout(() => { fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); }, 700);
     } else {
       atkEl.dataset.value = atk; atkEl.textContent = fmtStat(atk);
-      hpEl.dataset.value = hp; hpEl.textContent = fmtStat(hp);
+      hpEl.dataset.value = hp; hpEl.textContent = fmtHp(hp);
       fitNum(hpEl, "hp"); fitNum(atkEl, "atk");
     }
   }
@@ -682,7 +694,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, isRanked, rankTop, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, rankTop, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, supAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4

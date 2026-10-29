@@ -150,7 +150,7 @@
         ${traitLine(card)}
       </div>
       <div class="lab__r"><span class="lab__word">${WORD[g]}</span><span class="lab__grade">${g || "–"}</span></div>
-      <div class="lab__row lab__row--stats"><span class="lab__stats"><span class="a">ATK ${C.fmtStat(graded(card, "atk", r, a[0]))}</span> · <span class="h">HP ${C.fmtStat(graded(card, "hp", r, a[3]))}</span></span></div>
+      <div class="lab__row lab__row--stats"><span class="lab__stats"><span class="a">ATK ${C.fmtStat(graded(card, "atk", r, a[0]))}</span> · <span class="h">HP ${C.fmtHp(graded(card, "hp", r, a[3]))}</span></span></div>
       <div class="lab__row"><span class="lab__subs">ATK ${sub(a[0])} · DEF ${sub(a[1])} · STS ${sub(a[2])} · HP ${sub(a[3])}</span><span class="lab__code" aria-hidden="true"></span><span class="lab__cert">${cert.slice(0, 4)} ${cert.slice(4)}</span></div>`;
   }
   // the card's trait (js/traits.js, the user's pick) on the label · no trait = no line
@@ -421,8 +421,9 @@
     if (hasStat(card, s.k, r)) {
       row.classList.remove("is-missing");
       const v = graded(card, s.k, r, g);
-      if (animate) FX.countTo(num, v, { format: C.fmtStat }); else { num.dataset.value = v; num.textContent = C.fmtStat(v); }
-      base.textContent = g ? `Base ${C.fmtStat(C.statAt(card, s.k, r))}` : `${r} base value`;
+      const f = C.fmtKey(s.k);
+      if (animate) FX.countTo(num, v, { format: f }); else { num.dataset.value = v; num.textContent = f(v); }
+      base.textContent = g ? `Base ${f(C.statAt(card, s.k, r))}` : `${r} base value`;
     } else {
       row.classList.add("is-missing");
       num.dataset.value = 0; num.textContent = pct(g);
