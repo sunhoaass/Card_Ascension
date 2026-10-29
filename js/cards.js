@@ -156,7 +156,7 @@
     };
     ui.reset.addEventListener("click", reset);
     $("#cards-none-reset").addEventListener("click", reset);
-    ui.pager.addEventListener("click", (e) => { const b = e.target.closest(".pager__btn[data-page]"); if (b && !b.disabled) goPage(+b.dataset.page); });
+    C.bindPager(ui.pager, goPage);
 
   }
 
@@ -212,9 +212,9 @@
       onPage = ids;
       if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
     }
-    C.pager(ui.pager, page, pages);
+    C.pager(ui.pager, page, shown.length ? pages : 0);
     const total = state.cards.length, n = shown.length;
-    ui.count.textContent = (n === total ? `${total} ${total === 1 ? "card" : "cards"}` : `${n} of ${total} cards`) + (pages > 1 ? ` · page ${page + 1} of ${pages}` : "");
+    ui.count.textContent = (n === total ? `${total} ${total === 1 ? "card" : "cards"}` : `${n} of ${total} cards`);
   }
   // a page button: the new page's cards come in one by one, the screen goes back up to the grid
   function goPage(i) {
@@ -222,8 +222,6 @@
     page = i;
     paint({ animate: true });
     C.pageTop(ui.grid);
-    const cur = ui.pager.querySelector('[aria-current="page"]');
-    if (cur && document.activeElement && ui.pager.contains(document.activeElement)) cur.focus({ preventScroll: true });
   }
 
   /* Change rarity everywhere (page chips, grid cards; the open detail listens to "cbi:rarity") */

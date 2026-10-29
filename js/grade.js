@@ -28,8 +28,9 @@
 
   const ui = {};
   const byId = new Map();
-  const tiles = new Map();                // id -> mini card in the picker
-  let built = false;                      // picker cards exist (made on the first visit to the Grade tab, step 9.5)
+  const tiles = new Map();                // id -> mini card in the picker (made the first time its page shows)
+  let built = false;                      // the Grade tab has been opened (picker cards are made from then on, step 9.5)
+  let shown = [], onPage = [], page = 0;  // filtered ids · ids in the grid now · the picker's page (0-based, 30 a page like Cards)
   let saved = {};                         // id -> [atk, def, status, hp]
   let items = [];                         // cards in picker order
   let cur = null, grades = ZERO(), shared = false, hero = null, heroSlab = null;
@@ -92,7 +93,7 @@
     saved = how === "replace" ? incoming : { ...incoming, ...before };
     C.store.set(KEY, JSON.stringify(saved));
     tiles.forEach((el, id) => cardBadge(el, saved[id] ? overall(saved[id]) : 0));
-    if (items.length && ui.grid) applyList();                       // the "My graded cards" filter may have changed
+    if (items.length && ui.grid) applyList({ keepPage: true });     // the "My graded cards" filter may have changed
     return how === "replace" ? Object.keys(incoming).length : Object.keys(saved).filter((id) => !before[id]).length;
   }
   function provideBackup() {
@@ -300,7 +301,8 @@
     return a.name.localeCompare(b.name);
   }
 
-  function applyList({ animate = false } = {}) {
+  // keepPage: stay on the same page when the list changes · at: show the page with this card on it
+  function applyList({ animate = false, keepPage = false, at = null } = {}) {
     if (!built) return;   // the Grade tab hasn't been opened yet: the picker's cards don't exist yet
     const words = filter.q.toLowerCase().split(/\s+/).filter(Boolean);
     const out = items.filter((c) => {
@@ -311,10 +313,11 @@
       }
       return true;
     });
-    const frag = document.createDocumentFragment();
-    out.forEach((c) => frag.appendChild(tiles.get(c.id)));
-    ui.grid.replaceChildren(frag);
-    if (animate) FX.stagger(ui.grid, 24, { cls: "fx-grid-in", max: 12, limit: 18, cleanup: true });
+    const ids = out.map((c) => c.id);
+    if (ids.length !== shown.length || ids.some((id, i) => id !== shown[i])) { shown = ids; if (!keepPage) page = 0; }
+    const k = at ? shown.indexOf(at) : -1;
+    if (k >= 0) page = Math.floor(k / C.PAGE_SIZE);
+    paint({ animate });
 
     const n = Object.keys(saved).filter((id) => byId.has(id)).length;
     ui.gradedChip.setAttribute("aria-pressed", String(filter.graded));
@@ -323,6 +326,39 @@
     ui.reset.hidden = !(words.length || filter.graded);
     ui.none.hidden = out.length > 0;
     $("#grade-none-text").textContent = filter.graded && !n ? "You haven't graded any cards yet. Tap a card to start." : "Try a different search or clear the filters.";
+  }
+
+  // one page of `shown` in the grid · a tile is made the first time it is needed
+  function elOf(id) {
+    let el = tiles.get(id);
+    if (!el) {
+      const c = byId.get(id);
+      el = C.renderCard(c, state.rarity, { mini: true });
+      el.setAttribute("aria-label", `Grade ${c.name}`);
+      if (saved[id]) cardBadge(el, overall(saved[id]));
+      tiles.set(id, el);
+    }
+    return el;
+  }
+  function paint({ animate = false } = {}) {
+    const pages = Math.max(1, Math.ceil(shown.length / C.PAGE_SIZE));
+    page = Math.max(0, Math.min(page, pages - 1));
+    const ids = shown.slice(page * C.PAGE_SIZE, (page + 1) * C.PAGE_SIZE);
+    if (ids.length !== onPage.length || ids.some((id, i) => id !== onPage[i])) {
+      const frag = document.createDocumentFragment();
+      ids.forEach((id) => frag.appendChild(elOf(id)));
+      ui.grid.replaceChildren(frag);
+      onPage = ids;
+      if (animate) FX.stagger(ui.grid, 24, { cls: "fx-grid-in", max: 12, limit: 18, cleanup: true });
+    }
+    C.pager(ui.pager, page, shown.length ? pages : 0);
+  }
+  // ‹ › or a typed page: the new page's cards come in one by one, the screen goes back up to the picker
+  function goPage(i) {
+    if (i === page || i < 0 || i * C.PAGE_SIZE >= shown.length) return;
+    page = i;
+    paint({ animate: true });
+    C.pageTop(ui.grid);
   }
 
   function bindList() {
@@ -339,6 +375,7 @@
     ui.grid.addEventListener("keydown", (e) => {
       if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); openGrader(e.target.dataset.id, e.target); }
     });
+    C.bindPager(ui.pager, goPage);
   }
 
   /* ==========================================================
@@ -629,7 +666,7 @@
     ui.detail.hidden = true;
     ui.detail.innerHTML = "";
     ui.listView.hidden = false;
-    applyList();   // the "Graded" filter / badges may have changed
+    applyList({ keepPage: true, at: lastId });   // the "Graded" filter / badges may have changed · the page with this card
     ui.listView.classList.remove("fx-page-in"); void ui.listView.offsetWidth; ui.listView.classList.add("fx-page-in");
     if (state.page === "grade") document.title = TITLE;
     if (restore && state.page === "grade") {
@@ -669,7 +706,7 @@
   function init() {
     Object.assign(ui, {
       root: $("#page-grade"), listView: $("#grade-list-view"), detail: $("#grade-detail-view"),
-      tools: $("#grade-tools"), grid: $("#grade-grid"), none: $("#grade-none"), empty: $("#grade-empty"),
+      tools: $("#grade-tools"), grid: $("#grade-grid"), pager: $("#grade-pager"), none: $("#grade-none"), empty: $("#grade-empty"),
       search: $("#grade-search"), gradedChip: $("#grade-graded"), count: $("#grade-count"), reset: $("#grade-reset"),
     });
     saved = load();
@@ -685,14 +722,8 @@
     bindList();
     // step 9.5: the picker's cards are made the first time the Grade tab shows
     C.lazy("grade", () => {
-      items.forEach((c) => {
-        const el = C.renderCard(c, state.rarity, { mini: true });
-        el.setAttribute("aria-label", `Grade ${c.name}`);
-        if (saved[c.id]) cardBadge(el, overall(saved[c.id]));
-        tiles.set(c.id, el);
-      });
       built = true;
-      applyList({ animate: true });
+      applyList({ animate: true, at: cur });
     });
   }
 

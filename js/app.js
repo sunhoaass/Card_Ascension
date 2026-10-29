@@ -478,24 +478,56 @@
     });
   }
 
-  /* ---------- Pages of a card grid (owner 2026-10-28: 30 cards a page, page numbers under the grid) ----------
-     pager(box, page, pages): ‹ 1 … 4 5 6 … 14 › into box (hidden with one page) · the click is the page's own
-     (data-page = the page to go to, 0-based) · pageTop(grid): scroll back up to the grid's tools after a page change */
+  /* ---------- Pages of a card grid (owner 2026-10-28: 30 cards a page · 2026-10-29: ‹ [page box] › + "Page 3 / 14" under it) ----------
+     pager(box, page, pages): the pager into box, built once then updated in place (hidden when there are no cards) ·
+     pages comes from the list's length, so it grows by itself as cards are added · bindPager(box, go): ‹ › and the
+     typed page number call go(i) (0-based, already inside 0…pages-1) · pageTop(grid): scroll back up to the grid's
+     tools after a page change */
   const PAGE_SIZE = 30;
   function pager(box, page, pages) {
     if (!box) return;
-    box.hidden = pages < 2;
-    if (pages < 2) { box.innerHTML = ""; return; }
-    const set = new Set([0, pages - 1, page - 1, page, page + 1].filter((i) => i >= 0 && i < pages));
-    const nums = [...set].sort((a, b) => a - b);
-    const btn = (i, label, aria, cls = "") => `<button type="button" class="pager__btn fx-press ${cls}" data-page="${i}" aria-label="${aria}"${i === page && !cls ? ' aria-current="page"' : ""}${(cls && (i < 0 || i >= pages)) ? " disabled" : ""}>${label}</button>`;
-    let html = btn(page - 1, "‹", "Previous page", "pager__btn--step");
-    nums.forEach((i, k) => {
-      if (k && i - nums[k - 1] > 1) html += `<span class="pager__gap" aria-hidden="true">…</span>`;
-      html += btn(i, String(i + 1), `Page ${i + 1} of ${pages}`);
+    box.hidden = pages < 1;
+    if (pages < 1) return;
+    if (!box._in) {
+      box.innerHTML = `<div class="pager__row">
+          <button type="button" class="pager__btn pager__btn--step fx-press" data-step="-1" aria-label="Previous page">‹</button>
+          <label class="pager__field"><span class="sr-only">Go to page</span><input class="pager__input" type="text" inputmode="numeric" pattern="[0-9]*" enterkeyhint="go" autocomplete="off" maxlength="4"></label>
+          <button type="button" class="pager__btn pager__btn--step fx-press" data-step="1" aria-label="Next page">›</button>
+        </div>
+        <p class="pager__of" aria-live="polite"></p>`;
+      box._in = $(".pager__input", box);
+      box._of = $(".pager__of", box);
+      box._step = [...box.querySelectorAll("[data-step]")];
+    }
+    box._page = page; box._pages = pages;
+    if (document.activeElement !== box._in) box._in.value = String(page + 1);
+    box._in.setAttribute("aria-label", `Page number, 1 to ${pages}`);
+    box._of.textContent = `Page ${page + 1} / ${pages}`;
+    box._step[0].disabled = page <= 0;
+    box._step[1].disabled = page >= pages - 1;
+  }
+  function bindPager(box, go) {
+    if (!box) return;
+    box.addEventListener("click", (e) => {
+      const b = e.target.closest(".pager__btn[data-step]");
+      if (!b || b.disabled) return;
+      go(box._page + +b.dataset.step);
+      if (b.disabled) box._in.focus({ preventScroll: true });   // first / last page: keep the keyboard focus in the pager
     });
-    html += btn(page + 1, "›", "Next page", "pager__btn--step");
-    box.innerHTML = html;
+    // the page box: tap = the number is selected, type a page, Enter / leave = go there (too big = the last page)
+    const commit = () => {
+      const inp = box._in, n = parseInt(inp.value, 10);
+      if (n >= 1) go(Math.min(n, box._pages) - 1);
+      inp.value = String(box._page + 1);
+    };
+    box.addEventListener("focusin", (e) => { if (e.target === box._in) box._in.select(); });
+    box.addEventListener("input", (e) => { if (e.target === box._in) box._in.value = box._in.value.replace(/\D+/g, ""); });
+    box.addEventListener("change", (e) => { if (e.target === box._in) commit(); });
+    box.addEventListener("keydown", (e) => {
+      if (e.target !== box._in) return;
+      if (e.key === "Enter") { e.preventDefault(); commit(); box._in.blur(); }   // blur closes the phone keyboard
+      else if (e.key === "Escape") { box._in.value = String(box._page + 1); box._in.blur(); }
+    });
   }
   function pageTop(el) {
     const bar = $(".topbar"), top = bar && bar.getBoundingClientRect().height && getComputedStyle(bar).display !== "none" ? bar.getBoundingClientRect().height : 0;
@@ -713,7 +745,7 @@
     isSupport, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
-    PAGE_SIZE, pager, pageTop,   // pages of the Cards / Support grids (2026-10-28)
+    PAGE_SIZE, pager, bindPager, pageTop,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
