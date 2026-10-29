@@ -1302,3 +1302,67 @@
   - **สรุปทั้ง ②:** การ์ด 400 + Support 100 = 500 ใบ (`pool.json` 500 แถว ตรงกัน)
   - **ผลทดสอบ (Chromium 390×844):** `#cards` `#card/shadow-monarch` โหลดได้ ไม่มี error จากการ์ด (404 รายการเดียวเหมือนเดิม) · JSON parse ได้ · id ไม่ซ้ำ
   - **ไฟล์:** `data/cards.json` `data/pool.json` `inbox/progress.json` · `images/cards/shadow-monarch.webp` + `thumb/` · ลบรูปออกจาก `inbox/` · `PROGRESS.md` `HISTORY.md`
+- 2026-10-29: **การ์ดทั้งเกม ③ ส่วนการ์ด: คัด 50 ใบ + คะแนน + Tier** (Claude Code · ไม่แตะโค้ดเว็บ ไม่เปลี่ยน `?v=` = ยัง `32`)
+  - **วิธี:** เครื่องมือใหม่ `tools/matchup_sim.py` อ่านข้อความความสามารถ (`passive.desc`) เป็นผล ~60 แบบ (หลบ, ข้ามหลบ/บล็อก, ดีบัฟทั้ง deck, ฟื้น, รอด 1 HP, ฮีลต่อตา, ดูดเลือด, ลดดาเมจ, ตีซ้ำ, คริ, ทุกครั้งที่ 3, ตีแรก, โตทุกตา/ทุกครั้งที่โดนตี, สตัน/อัมพาต/แช่แข็ง, Seal, Confuse, Copy, สะท้อน, execute, ไฟ/ยาพิษ/เลือดออก/เปลวดำ/กดทับ, Mark, Black Flash, ฆ่าใบแรงสุดใน N ตา, เสียตาแรก ฯลฯ · การ์ด 72 ใบแรกอ่านได้ครบ ไม่มีประโยค `unknown`) → จำลอง 1-1 ทุกคู่ของ 72 ใบแรกตาม √(ATK×HP) · 2,000 รอบ × ตีก่อน 2 แบบ · คู่ที่มีไฟทั้ง deck เฉลี่ย 0/5/10% ATK (แบบ W2) · ใช้เวลา ~2 นาที (4 core) · รันซ้ำแบบ `--equal` (ATK/HP เท่ากันทุกใบ) เพื่อวัดความสามารถอย่างเดียว (A1) · `tools/rank_cards.py` คิด Overall ชั่วคราวใน 72 ใบ → เอา 50 ใบบน → คิดคะแนนจริงใหม่ใน 50 ใบ → เขียน `cards.json` (รันซ้ำได้ไฟล์ตรงกันทุกไบต์) · สูตร Passive / Team: PROGRESS §7 B ข้อ 8
+  - **ตรวจผลจำลองด้วยมือ:** Octopus Teacher ชนะ Founding Titan 100% (FT ตีโดน 62% × 5.37M = 3.3M/ตา − ฮีล 2.1M/ตา ≈ 24 ตา · OT ตี ~5.6M/ตา ฆ่า FT 38.8M ใน ~7 ตา) · Sword Saint ชนะ FT (FT ต้องตี ~10 ครั้งเพราะฟื้น 53% · SS ต้อง 8 ครั้ง) · Black Wizard Brother ชนะ Beast Emperor (BE ตีครั้งที่ 3 ×2.5 ฆ่า BWB → ฟื้น 40% → ครั้งที่ 4 เหลือ 70K → BE ตายตอนจบตาที่ 4 จาก Ankhseram's Curse) ตรงกับที่นับ
+  - **คัดเลือก:** เข้า 50 จากนอก 50 อันดับ stat = **Undead Overlord King** (#54 · ฆ่าใบแรงสุดใน 3 ตา ชนะการ์ด stat สูงกว่า 14 ใบ) + **Soul Queen Emperor** (#57 · 10% HP สูงสุดต่อครั้ง + ดูดเลือด 30% + ลดดาเมจ 25%) · หลุด = **King of Curses** (#47 · Overall ชั่วคราว 51.5 vs SQE 51.7 · ใบถัดไปถ้าต้องเปลี่ยน) + **Fusion Dance Warrior** (#45 · 49.7) · ใบที่ 73 ลงไป ATK ≤ 1/4 ของใบที่ 50 (ตายใน 1 ครั้ง) ไม่มีความสามารถไหนพลิกได้
+  - **ผล: S 6 · A 10 · B 34 · ไม่มี Meta / SS** (Overall สูงสุด 83.7 · ถามเจ้าของใน ▶️ ③ ว่าจะตัด Tier ใหม่ไหม) · ATK/HP percentile เท่ากันทุกใบเพราะ HP ÷ ATK = 6.667 ทุกใบ · Destroyer God / Storm Dragon / Witch of Envy stat เท่ากัน (74)
+  - **อันดับ 50 ใบ** (ลำดับนี้ = ลำดับทำ ④ · stat # = อันดับ √(ATK×HP) ในคลัง · beats/loses = จำนวนใบใน 50 ที่ชนะ/แพ้ 1-1):
+
+    | # | Card | Tier | Overall | ATK/HP pct | Passive (A1) | Matchup | Team | stat # | beats/loses |
+    |---|---|---|---:|---:|---:|---:|---:|---:|---|
+    | 1 | Octopus Teacher | S | 83.7 | 96.0 | 78 (66.9) | 94.1 | 64 | 3 | 49/0 |
+    | 2 | Quirk Thief Overlord | S | 81.8 | 90.0 | 76 (52.1) | 84.4 | 77 | 6 | 44/5 |
+    | 3 | Founding Titan | S | 80.9 | 100.0 | 62 (34.2) | 88.4 | 76 | 1 | 46/3 |
+    | 4 | Slime Demon Lord | S | 80.9 | 92.0 | 73 (51.8) | 86.4 | 72 | 5 | 45/3 |
+    | 5 | Sword Saint | S | 80.3 | 98.0 | 69 (54.8) | 89.3 | 64 | 2 | 48/1 |
+    | 6 | Ant King | S | 80.3 | 88.0 | 75 (54.7) | 85.0 | 73 | 7 | 43/6 |
+    | 7 | Shadow Monarch | A | 79.1 | 94.0 | 67 (48.6) | 87.6 | 68 | 4 | 46/2 |
+    | 8 | Witch of Envy | A | 78.0 | 74.0 | 82 (51.8) | 71.0 | 86 | 16 | 35/14 |
+    | 9 | Storm Dragon | A | 76.8 | 74.0 | 80 (48.4) | 68.3 | 86 | 15 | 34/15 |
+    | 10 | Soul King Father | A | 75.1 | 82.0 | 72 (54.0) | 76.7 | 69 | 10 | 40/8 |
+    | 11 | One Punch Caped Hero | A | 73.6 | 86.0 | 65 (53.3) | 82.5 | 60 | 8 | 42/7 |
+    | 12 | Golden Wind Boss | A | 72.8 | 76.0 | 71 (51.3) | 73.8 | 70 | 13 | 36/13 |
+    | 13 | Sun God Captain | A | 72.4 | 80.0 | 69 (55.3) | 75.7 | 64 | 11 | 40/9 |
+    | 14 | Destroyer God | A | 71.5 | 74.0 | 73 (56.1) | 70.1 | 68 | 14 | 37/12 |
+    | 15 | Sun Breath Origin | A | 71.2 | 84.0 | 63 (50.3) | 77.0 | 60 | 9 | 38/10 |
+    | 16 | No-Life King | A | 70.8 | 62.0 | 78 (49.8) | 61.1 | 83 | 20 | 30/18 |
+    | 17 | Divergent Fist Vessel | B | 69.8 | 78.0 | 64 (48.7) | 73.0 | 64 | 12 | 39/10 |
+    | 18 | Dragon King of Ruin | B | 69.0 | 68.0 | 68 (36.2) | 59.9 | 83 | 17 | 29/20 |
+    | 19 | Ultra Instinct Saiyan | B | 66.5 | 64.0 | 69 (51.5) | 65.7 | 67 | 19 | 33/16 |
+    | 20 | Full Moon Demon King | B | 64.5 | 60.0 | 70 (56.0) | 63.0 | 64 | 21 | 32/17 |
+    | 21 | Spiral Drill King | B | 63.8 | 66.0 | 61 (41.0) | 61.7 | 68 | 18 | 30/18 |
+    | 22 | Destroyer Dragonoid | B | 63.7 | 58.0 | 69 (44.1) | 53.9 | 75 | 22 | 26/23 |
+    | 23 | Primordial Butler Demon | B | 63.0 | 52.0 | 76 (64.6) | 58.5 | 63 | 25 | 28/21 |
+    | 24 | Dragon God | B | 61.6 | 56.0 | 68 (50.8) | 55.4 | 67 | 23 | 27/22 |
+    | 25 | Dragon Emperor Monarch | B | 60.4 | 54.0 | 65 (34.0) | 44.9 | 81 | 24 | 23/26 |
+    | 26 | Moon Eye Ghost | B | 57.6 | 50.0 | 65 (42.3) | 44.7 | 72 | 26 | 24/25 |
+    | 27 | Hypnosis Traitor | B | 56.2 | 46.0 | 69 (55.0) | 44.6 | 64 | 28 | 24/25 |
+    | 28 | Homunculus Father | B | 55.7 | 36.0 | 71 (40.3) | 35.1 | 83 | 33 | 15/34 |
+    | 29 | Hollow Mask Reaper | B | 55.6 | 44.0 | 67 (45.2) | 40.3 | 72 | 29 | 21/27 |
+    | 30 | Atomic Shadow Lord | B | 55.1 | 48.0 | 64 (43.6) | 40.4 | 69 | 27 | 17/32 |
+    | 31 | Moon Breath Swordsman | B | 55.0 | 34.0 | 74 (56.3) | 41.9 | 69 | 34 | 20/29 |
+    | 32 | Pirate King | B | 54.4 | 42.0 | 65 (41.1) | 39.1 | 73 | 30 | 18/31 |
+    | 33 | Rabbit Goddess | B | 53.7 | 38.0 | 68 (53.3) | 44.0 | 64 | 32 | 20/29 |
+    | 34 | Beast Emperor | B | 53.4 | 40.0 | 67 (51.7) | 42.1 | 64 | 31 | 20/28 |
+    | 35 | Golden Gate King | B | 50.0 | 28.0 | 72 (48.3) | 25.6 | 75 | 37 | 13/36 |
+    | 36 | White Hawk Godhand | B | 49.4 | 32.0 | 67 (44.7) | 26.6 | 73 | 35 | 15/34 |
+    | 37 | Black Wizard Brother | B | 48.5 | 6.0 | 85 (62.1) | 22.6 | 79 | 50 | 15/34 |
+    | 38 | Pumpkin Sun Pride | B | 47.9 | 30.0 | 66 (37.8) | 20.0 | 78 | 36 | 8/41 |
+    | 39 | Undead Overlord King | B | 47.6 | 4.0 | 90 (71.1) | 17.4 | 76 | 54 | 10/38 |
+    | 40 | Soul Magic Father | B | 47.5 | 22.0 | 73 (54.3) | 24.4 | 70 | 40 | 10/38 |
+    | 41 | Infinity Sorcerer | B | 45.9 | 26.0 | 65 (42.4) | 21.9 | 72 | 38 | 9/40 |
+    | 42 | Made in Heaven Priest | B | 45.7 | 18.0 | 74 (62.0) | 25.6 | 63 | 42 | 10/39 |
+    | 43 | Demon Progenitor | B | 44.4 | 12.0 | 73 (48.5) | 17.2 | 76 | 46 | 4/44 |
+    | 44 | Wood God Hokage | B | 44.2 | 16.0 | 70 (42.0) | 13.6 | 79 | 43 | 2/47 |
+    | 45 | Demon God of Flame | B | 43.8 | 24.0 | 63 (42.3) | 21.3 | 68 | 39 | 7/42 |
+    | 46 | Hero Number One | B | 42.6 | 20.0 | 66 (51.5) | 20.0 | 64 | 41 | 8/41 |
+    | 47 | Earthquake Emperor | B | 41.5 | 10.0 | 68 (40.2) | 11.4 | 79 | 48 | 0/49 |
+    | 48 | Soul Queen Emperor | B | 41.3 | 2.0 | 79 (68.4) | 17.2 | 64 | 57 | 2/45 |
+    | 49 | Monk of Names | B | 41.0 | 14.0 | 64 (39.2) | 14.7 | 73 | 44 | 1/47 |
+    | 50 | Control Devil | B | 41.0 | 8.0 | 70 (56.0) | 20.8 | 64 | 49 | 5/44 |
+  - **4 ใบเดิม (W2):** DEM S 82.6 → **B 60.4** (#25) · MEG A 72.5 → **B 57.6** (#26) · ASL B 59.3 → **B 55.1** (#30) · BE B 57.1 → **B 53.4** (#34) · ลบ `tierNote` `short` `strengths` `weaknesses` `notes` `bestTraitNote` (อ้างผลเทียบ 4 ใบเดิม เช่น "Highest ATK and HP" ไม่จริงแล้ว) ให้ ④ เขียนใหม่ · เก็บ `role` `tags` `weakTo` `modes` `team` `bestTrait` ไว้ (คะแนนทีมยังใช้)
+  - **field ที่เขียน (50 ใบ):** `scores` ครบ 7 ช่อง · `tier` · `beats` / `losesTo` (ใน 50 ใบ · เรียงศัตรูตาม stat) · `updated` · ใบอื่น 350 ใบคง unranked (`overall` 0 · `tier` "") · `data/meta.json → updated` 2026-10-29
+  - **คะแนนทีม Emperor Wall** (js/teamscore.js ในเบราว์เซอร์): 76 → **58** ทุกโหมด (Card power 0.53 เพราะ 4 ใบนี้เป็น B กลางตาราง · Synergy 0.48 · Coverage 0.40 ยังไม่มีการ์ด Meta/SS · Roles 0.96 · Position 0.80) · ⑤ จัดทีมใหม่
+  - **ทดสอบ (Chromium 390×844):** `#tier` แถว Meta 0 / SS 0 / S 6 (Octopus Teacher, Quirk Thief Overlord, Founding Titan, Slime Demon Lord, Sword Saint, Ant King) · `#card/octopus-teacher` ป้าย Tier S + Overall 84 · `#card/dragon-emperor-monarch` · `#cards` · `#deck` ไม่มี JS error (404 เดียว = `audio/bgm.mp3` เหมือนเดิม) · JSON parse ได้ · การ์ดที่เปลี่ยน = 50 ใบพอดี
+  - **ไฟล์:** `data/cards.json` `data/meta.json` · ใหม่ `tools/matchup_sim.py` `tools/rank_cards.py` · `PROGRESS.md` `HISTORY.md`
