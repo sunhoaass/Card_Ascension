@@ -1295,3 +1295,10 @@
   - **สรุปทั้ง ② (รอบ 1–17):** ครบทั้ง `inbox/` ยกเว้น Shadow Monarch 1 ใบ (ข้าม) · ในคลัง 499 ใบ = การ์ด 399 + Support 100 (`pool.json` 499 แถว ตรงกัน)
   - **ผลทดสอบ (Chromium 390×844):** `#cards` `#support` `#card/snow-white-reaper` `#card/sky-dragon-healer` โหลดได้ ไม่มี error จากการ์ด (404 รายการเดียวเหมือนเดิม) · JSON ทุกไฟล์ parse ได้ · id ไม่ซ้ำ · รูปครบ
   - **ไฟล์:** `data/cards.json` `data/support.json` `data/pool.json` `inbox/progress.json` · `images/cards/` + `thumb/` 17 ไฟล์ · `images/support/` + `thumb/` 3 ไฟล์ · ลบรูป 20 ไฟล์จาก `inbox/` · `PROGRESS.md` `HISTORY.md`
+- 2026-10-29: **การ์ดทั้งเกม ② รอบ 18 (ปิดใบที่ข้าม)** · การ์ด 1 · Support 0 · ไม่แตะโค้ด ไม่เปลี่ยน `?v=`
+  - **Shadow Monarch** (ท่า Arise · ATK 4,487,019 / HP 29,913,460 · 1 in 92.7B · obtain = "Rolls anywhere" ตามที่เจ้าของบอก) · รอบ 15 ข้ามเพราะแจ้งเตือนเกมบังเลข HP · เจ้าของส่งภาพหน้าจอจากมือถือ (2400×1080 · มุมมองการ์ดเต็ม) เห็น HP ครบ · ATK ตรงกับที่อ่านได้ตอนแรก · HP ÷ ATK = 6.667 ตรงกับใบอื่น
+  - **รูป:** ใช้ภาพจากมือถือ (ความละเอียดสูงกว่ารูป Index เดิมหลายเท่า) · ตัดเฉพาะการ์ด x 746–1438 y 120–958 (ในภาพ 2400×1080) → ย่อเป็น 600×840 (การ์ดในมุมมองนี้กว้างกว่า 5:7 เล็กน้อย) · ลบ HP / ATK + **ดาว ★ 3 ดวง** ที่ลอยทับในรูป ด้วย `cv2.xphoto.inpaint` FSR_FAST · ดูภาพก่อน/หลังแล้ว ไม่มีเลขเหลือ · เหลือรอยเบลอเล็กน้อยบนผมตัวละคร (HP ทับหัว) · webp q86 + thumb 300×420 q82 · ไม่มีป้าย 1 IN X ในมุมมองนี้ จึงไม่ต้องลบ
+  - **รูปซ้ำ/ข้ามทั้ง ②:** ซ้ำ 4 ใบ (Atomic Shadow Lord, Beast Emperor, Dragon Emperor Monarch, Moon Eye Ghost) ลบแล้ว + Pacifier Prince ใน `4.zip` ใหม่ไม่เอา (ซ้ำของเดิม) · **ข้าม 0**
+  - **สรุปทั้ง ②:** การ์ด 400 + Support 100 = 500 ใบ (`pool.json` 500 แถว ตรงกัน)
+  - **ผลทดสอบ (Chromium 390×844):** `#cards` `#card/shadow-monarch` โหลดได้ ไม่มี error จากการ์ด (404 รายการเดียวเหมือนเดิม) · JSON parse ได้ · id ไม่ซ้ำ
+  - **ไฟล์:** `data/cards.json` `data/pool.json` `inbox/progress.json` · `images/cards/shadow-monarch.webp` + `thumb/` · ลบรูปออกจาก `inbox/` · `PROGRESS.md` `HISTORY.md`
