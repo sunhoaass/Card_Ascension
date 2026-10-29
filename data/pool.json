@@ -5850,6 +5850,252 @@
       "src": "RobloxScreenShot20261028_120627445.png",
       "round": 16,
       "oddsShort": true
+    },
+    {
+      "id": "reverse-cursed-doctor",
+      "kind": "support",
+      "name": "Reverse Cursed Doctor",
+      "series": "",
+      "odds": 48000,
+      "vals": [
+        14
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_120634112.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "ripper-ackerman",
+      "kind": "card",
+      "name": "Ripper Ackerman",
+      "series": "",
+      "odds": 15000,
+      "atk": 3031,
+      "hp": 20208,
+      "src": "RobloxScreenShot20261028_120638459.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "sage-snake-medic",
+      "kind": "card",
+      "name": "Sage Snake Medic",
+      "series": "",
+      "odds": 9083,
+      "atk": 2200,
+      "hp": 14666,
+      "src": "RobloxScreenShot20261028_120642975.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "sand-gourd-kazekage",
+      "kind": "card",
+      "name": "Sand Gourd Kazekage",
+      "series": "",
+      "odds": 9251,
+      "atk": 2375,
+      "hp": 15830,
+      "src": "RobloxScreenShot20261028_120647704.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "satan-soul-demon",
+      "kind": "card",
+      "name": "Satan Soul Demon",
+      "series": "",
+      "odds": 26000,
+      "atk": 5326,
+      "hp": 35504,
+      "src": "RobloxScreenShot20261028_120652359.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "scissor-cut-mage",
+      "kind": "card",
+      "name": "Scissor Cut Mage",
+      "series": "",
+      "odds": 30000,
+      "atk": 3950,
+      "hp": 26336,
+      "src": "RobloxScreenShot20261028_120656085.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "sea-dragon-princess",
+      "kind": "card",
+      "name": "Sea Dragon Princess",
+      "series": "",
+      "odds": 25000,
+      "atk": 4768,
+      "hp": 31784,
+      "src": "RobloxScreenShot20261028_120725092.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "serpent-pillar",
+      "kind": "card",
+      "name": "Serpent Pillar",
+      "series": "",
+      "odds": 11000,
+      "atk": 2948,
+      "hp": 19656,
+      "src": "RobloxScreenShot20261028_120734334.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "shadow-garden-hound",
+      "kind": "card",
+      "name": "Shadow Garden Hound",
+      "series": "",
+      "odds": 23000,
+      "atk": 3809,
+      "hp": 25396,
+      "src": "RobloxScreenShot20261028_120802320.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "shadow-ogre-spy",
+      "kind": "card",
+      "name": "Shadow Ogre Spy",
+      "series": "",
+      "odds": 20000,
+      "atk": 3205,
+      "hp": 21364,
+      "src": "RobloxScreenShot20261028_120807824.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "shapeshift-actor",
+      "kind": "support",
+      "name": "Shapeshift Actor",
+      "series": "",
+      "odds": 74000,
+      "vals": [
+        10
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_120815107.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "shark-blade-rogue",
+      "kind": "card",
+      "name": "Shark Blade Rogue",
+      "series": "",
+      "odds": 9422,
+      "atk": 2440,
+      "hp": 16266,
+      "src": "RobloxScreenShot20261028_120819594.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "shield-tiger",
+      "kind": "card",
+      "name": "Shield Tiger",
+      "series": "",
+      "odds": 21000,
+      "atk": 3482,
+      "hp": 23216,
+      "src": "RobloxScreenShot20261028_120824617.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "silver-assassin-father",
+      "kind": "card",
+      "name": "Silver Assassin Father",
+      "series": "",
+      "odds": 13000,
+      "atk": 4940,
+      "hp": 32936,
+      "src": "RobloxScreenShot20261028_120830480.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "sky-dragon-healer",
+      "kind": "support",
+      "name": "Sky Dragon Healer",
+      "series": "",
+      "odds": 50000,
+      "vals": [
+        1.4
+      ],
+      "type": "heal",
+      "src": "RobloxScreenShot20261028_120834339.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "sloth-archbishop",
+      "kind": "card",
+      "name": "Sloth Archbishop",
+      "series": "",
+      "odds": 21000,
+      "atk": 3778,
+      "hp": 25186,
+      "src": "RobloxScreenShot20261028_120838863.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "smoke-card-joker",
+      "kind": "card",
+      "name": "Smoke Card Joker",
+      "series": "",
+      "odds": 33000,
+      "atk": 4050,
+      "hp": 27000,
+      "src": "RobloxScreenShot20261028_120843161.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "snake-princess-empress",
+      "kind": "card",
+      "name": "Snake Princess Empress",
+      "series": "",
+      "odds": 8758,
+      "atk": 2486,
+      "hp": 16574,
+      "src": "RobloxScreenShot20261028_120848558.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "snake-smile-captain",
+      "kind": "card",
+      "name": "Snake Smile Captain",
+      "series": "",
+      "odds": 12000,
+      "atk": 2552,
+      "hp": 17010,
+      "src": "RobloxScreenShot20261028_120855683.png",
+      "round": 17,
+      "oddsShort": true
+    },
+    {
+      "id": "snow-white-reaper",
+      "kind": "card",
+      "name": "Snow White Reaper",
+      "series": "",
+      "odds": 13000,
+      "atk": 2855,
+      "hp": 19032,
+      "src": "RobloxScreenShot20261028_120901763.png",
+      "round": 17,
+      "oddsShort": true
     }
   ]
 }
