@@ -13782,7 +13782,7 @@
     "obtain": "Weather card: only drops during a Sakura Love",
     "passive": {
       "name": "Shadow of Envy",
-      "desc": "Satella's shadows swallow everything. 26% chance per hit to Seal the enemy's ability for 2 turns. Every hit also hits the whole enemy bench for 20%. Every enemy card starts with 14% less damage. Heals 5.3% of its max HP every turn. With Subaru in the deck, Subaru gets +21% damage and HP."
+      "desc": "Witch of Envy's shadows swallow everything. 26% chance per hit to Seal the enemy's ability for 2 turns (bosses: 1 turn). Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Every enemy card starts with 14% less damage. Heals 5.3% of its max HP every turn. With Return by Death Boy in your deck, Return by Death Boy gets +21% damage and HP."
     },
     "skill": {
       "name": "",
