@@ -66,7 +66,8 @@
     if (exact) return exact;
     return Math.round(card.base[key] * rarityOf(rarity).stat);
   }
-  function oddsAt(card, rarity) { return card.base.odds * rarityOf(rarity).odds; }
+  // support keeps its Normal odds in .odds (no .base) · both use the rarity's odds multiplier (owner 2026-10-29)
+  function oddsAt(card, rarity) { return (isSupport(card) ? Number(card.odds) || 0 : card.base.odds) * rarityOf(rarity).odds; }
   /* Game style (owner's answer §3.5.4 item 3, step 13 · checked on the game's Bald Cadet 2026-10-28):
      under 10,000 = the whole number with commas · K = whole number · M B T Qa Qi = one decimal (100 and up = whole)
      (1 in 59 · 1 in 1,195 · 1 in 30K · 1 in 148K · 1 in 14.8M · 1 in 9.5B · 1 in 140T) */
@@ -361,8 +362,11 @@
      gl / gr = the free space left / right of them). The web writes the value for the chosen rarity in the same spot,
      in the same font (Oswald) and size, in gold (--gc-sv, owner 2026-10-29: shows which values the rarity changes);
      a longer number is squeezed sideways to fit its line (never reflowed).
-     The card has the 1 IN X + rarity pills and the rarity frame like a card · no HP / ATK. Odds = the Normal odds. */
-  const SV = { cap: 0.82, top: 0.10, w: 600 };   // Oswald: digit height ÷ font size · digits' top under a line-height 1 box · weight
+     The card has the 1 IN X + rarity pills and the rarity frame like a card · no HP / ATK. Odds × the rarity's multiplier (oddsAt). */
+  // Oswald: digit height ÷ font size · digits' top under a line-height 1 box · weight (measured on the cards 2026-10-29:
+  // 0.78 / 0.13 put the digits exactly where the old ones were) · GAP = share of the space beside a number a longer value
+  // may take (the rest stays empty, so it never touches the words · owner 2026-10-29)
+  const SV = { cap: 0.78, top: 0.13, w: 600, gap: 0.3 };
   const supPos = (s) => (s && s.effect && Array.isArray(s.effect.pos) ? s.effect.pos.filter((p) => p && p.h > 0 && supVals(s)[p.i] != null) : []);
   const fmtSv = (v) => v + "%";
   let svCtx = null, svFont = "";
@@ -378,9 +382,10 @@
     fitCache.set(key, w);
     return w;
   }
-  // squeeze: the Normal value is as wide as the number that was in the picture · a longer one also fits its gaps (70 %)
+  // squeeze: the Normal value is as wide as the number that was in the picture · a longer one may take SV.gap of the space
+  // on each side, then it's squeezed sideways
   function fitSv(span, s, p, sample) {
-    const fs = p.h / SV.cap, room = p.w + 1.4 * Math.min(p.gl || 0, p.gr || 0);
+    const fs = p.h / SV.cap, room = p.w + 2 * SV.gap * Math.min(p.gl || 0, p.gr || 0);
     const base = svW(fmtSv(supAt(supVals(s)[p.i], "Normal"))) * fs;
     const k = base > 0 ? Math.max(0.82, Math.min(1.12, p.w / base)) : 1;
     const need = svW(sample || span.textContent) * fs * k;
@@ -410,7 +415,7 @@
     el.tabIndex = 0;
     el.setAttribute("role", "button");
     el.setAttribute("aria-label", cardLabel(s, rarity));
-    const odds = Number(s.odds) > 0 ? Number(s.odds) : 0;
+    const odds = Number(s.odds) > 0 ? oddsAt(s, rarity) : 0;
     el.innerHTML = `
       <span class="gc__glow"></span>
       <div class="gc__art">${s.image ? artImg(s.image, mini, true) : placeholderArt(s)}</div>
@@ -447,8 +452,9 @@
   function setSupportRarity(el, s, rarity, { animate = true } = {}) {
     el.dataset.rarity = rarity;
     el.setAttribute("aria-label", cardLabel(s, rarity));
-    const rar = $('[data-k="rar"]', el);
+    const rar = $('[data-k="rar"]', el), odds = $('[data-k="odds"]', el);
     if (rar) { rar.textContent = rarity; fitNum(rar, "rar"); }
+    if (odds) { odds.textContent = fmtOdds(oddsAt(s, rarity)); fitNum(odds, "odds"); }
     if (animate) flashCard(el);
     setSupportNums(el, s, rarity, { animate });
     if (loops(el)) watchLive(el);

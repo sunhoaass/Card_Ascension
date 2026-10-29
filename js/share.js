@@ -352,9 +352,9 @@
     ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
     pos.forEach((p) => {
       const b = C.supVals(item)[p.i]; if (b == null) return;
-      const t = C.supValAt(item, p.i, rarity) + "%", fs = (p.h / 0.82) * u;
+      const t = C.supValAt(item, p.i, rarity) + "%", fs = (p.h / 0.78) * u;
       ctx.font = `600 ${fs}px ${font}`;
-      const room = (p.w + 1.4 * Math.min(p.gl || 0, p.gr || 0)) * u, tw = ctx.measureText(t).width, sx = tw > room ? room / tw : 1;
+      const room = (p.w + 0.6 * Math.min(p.gl || 0, p.gr || 0)) * u, tw = ctx.measureText(t).width, sx = tw > room ? room / tw : 1;
       ctx.save();
       ctx.translate(ox + (p.x + p.w / 2) * u, oy + (p.y + p.h) * u); ctx.scale(sx, 1);
       ctx.lineWidth = fs * 0.15; ctx.strokeStyle = cssVar("--gc-sv-line") || "#050505"; ctx.strokeText(t, 0, 0);
@@ -438,7 +438,7 @@
     roundRect(ctx, x, y, w, h, R); ctx.stroke();
     ctx.restore();
 
-    // support (2026-10-28): its level values on the picture + the 1 IN X (Normal odds) and rarity pills · no HP / ATK
+    // support (2026-10-28): its level values on the picture + the 1 IN X (× the rarity's odds multiplier) and rarity pills · no HP / ATK
     const sup = C.isSupport && C.isSupport(item);
     if (item.missing || (!item.base && !sup)) return;
     const r = rarity || "Normal";
@@ -471,7 +471,7 @@
       ctx.fillStyle = ink; ctx.fillText(text, px + pw / 2, py + hgt * u / 2 + 0.2 * u);
       return fs;
     };
-    const odds = sup ? (Number(item.odds) > 0 ? C.fmtOdds(Number(item.odds)) : "") : C.fmtOdds(C.oddsAt(item, r));
+    const odds = sup ? (Number(item.odds) > 0 ? C.fmtOdds(C.oddsAt(item, r)) : "") : C.fmtOdds(C.oddsAt(item, r));
     if (odds) pill(odds.toUpperCase(), 19.1, 9, 5.8, 23, cssVar("--gc-pill"), cssVar("--gc-pill-line"), cssVar("--gc-pill-ink"), cssVar("--gc-pill-inner"));
     if (!sp.normal) {
       const st = gradStops(sp.pill), across = /90deg/.test(sp.pill);
