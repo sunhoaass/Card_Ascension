@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-28",
   "batchSize": 30,
-  "total": 449,
+  "total": 447,
   "status": {
     "pending": "not read yet",
     "done": "in data/*.json + data/pool.json, image deleted from inbox/",
@@ -22,6 +22,16 @@
       "file": "RobloxScreenShot20261028_123905741.png",
       "sameAs": "beast-emperor",
       "card": "beast-emperor"
+    },
+    {
+      "file": "RobloxScreenShot20261028_123920200.png",
+      "sameAs": "dragon-emperor-monarch",
+      "card": "dragon-emperor-monarch"
+    },
+    {
+      "file": "RobloxScreenShot20261028_123953908.png",
+      "sameAs": "moon-eye-ghost",
+      "card": "moon-eye-ghost"
     }
   ],
   "files": [
@@ -2953,212 +2963,198 @@
     },
     {
       "file": "RobloxScreenShot20261028_123914470.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
-      "note": ""
-    },
-    {
-      "file": "RobloxScreenShot20261028_123920200.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "destroyer-god",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123923758.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "dragon-god",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123927901.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "dragon-king-of-ruin",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123930608.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "full-moon-demon-king",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123937641.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "golden-wind-boss",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123941058.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "hollow-mask-reaper",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123946371.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
-      "note": ""
-    },
-    {
-      "file": "RobloxScreenShot20261028_123953908.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "hypnosis-traitor",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123958946.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "no-life-king",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124001994.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "pirate-king",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124006493.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "primordial-butler-demon",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124027285.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "rabbit-goddess",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124034548.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "spiral-drill-king",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124040540.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "storm-dragon",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124043205.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "support",
+      "id": "wish-granter",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124047112.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "witch-of-envy",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124053830.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "ant-king",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124101163.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "divergent-fist-vessel",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124108761.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "support",
+      "id": "eternal-wish-dragon",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124113154.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "founding-titan",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124119445.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "octopus-teacher",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124124145.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "one-punch-caped-hero",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124130075.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "quirk-thief-overlord",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124134048.png",
-      "status": "pending",
+      "status": "skipped",
       "kind": "",
       "id": "",
-      "note": ""
+      "note": "HP hidden by a game popup (Shadow Monarch · ATK 4,487,019 · 1 in 92.7B · Arise): recapture"
     },
     {
       "file": "RobloxScreenShot20261028_124204489.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "slime-demon-lord",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124210930.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "soul-king-father",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124215930.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "sun-breath-origin",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124220862.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "sun-god-captain",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_124225592.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "sword-saint",
       "note": ""
     },
     {
