@@ -5478,6 +5478,378 @@
       "src": "RobloxScreenShot20261028_124225592.png",
       "round": 15,
       "oddsShort": true
+    },
+    {
+      "id": "ultra-instinct-saiyan",
+      "kind": "card",
+      "name": "Ultra Instinct Saiyan",
+      "series": "",
+      "odds": 24900000000,
+      "atk": 2011240,
+      "hp": 13408266,
+      "src": "RobloxScreenShot20261028_124232450.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "hunter-chairman",
+      "kind": "card",
+      "name": "Hunter Chairman",
+      "series": "",
+      "odds": 18000,
+      "atk": 3463,
+      "hp": 23084,
+      "src": "RobloxScreenShot20261028_120314990.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "ice-dragon-prodigy",
+      "kind": "card",
+      "name": "Ice Dragon Prodigy",
+      "series": "",
+      "odds": 13000,
+      "atk": 2574,
+      "hp": 17158,
+      "src": "RobloxScreenShot20261028_120318981.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "ice-make-mage",
+      "kind": "card",
+      "name": "Ice Make Mage",
+      "series": "",
+      "odds": 27000,
+      "atk": 4563,
+      "hp": 30418,
+      "src": "RobloxScreenShot20261028_120323317.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "immortal-witch",
+      "kind": "support",
+      "name": "Immortal Witch",
+      "series": "",
+      "odds": 73000,
+      "vals": [
+        35
+      ],
+      "type": "revive",
+      "src": "RobloxScreenShot20261028_120327533.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "knight-king",
+      "kind": "card",
+      "name": "Knight King",
+      "series": "",
+      "odds": 33000,
+      "atk": 4494,
+      "hp": 29960,
+      "src": "RobloxScreenShot20261028_120331878.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "leopard-agent",
+      "kind": "card",
+      "name": "Leopard Agent",
+      "series": "",
+      "odds": 43000,
+      "atk": 5078,
+      "hp": 33850,
+      "src": "RobloxScreenShot20261028_120336151.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "library-spirit",
+      "kind": "support",
+      "name": "Library Spirit",
+      "series": "",
+      "odds": 52000,
+      "vals": [
+        0.6
+      ],
+      "type": "leech",
+      "src": "RobloxScreenShot20261028_120339903.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "lifespan-angel",
+      "kind": "card",
+      "name": "Lifespan Angel",
+      "series": "",
+      "odds": 18000,
+      "atk": 3011,
+      "hp": 20074,
+      "src": "RobloxScreenShot20261028_120344262.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "lion-beast-fist",
+      "kind": "card",
+      "name": "Lion Beast Fist",
+      "series": "",
+      "odds": 23000,
+      "atk": 3600,
+      "hp": 24002,
+      "src": "RobloxScreenShot20261028_120347594.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "little-witch",
+      "kind": "support",
+      "name": "Little Witch",
+      "series": "",
+      "odds": 67000,
+      "vals": [
+        2
+      ],
+      "type": "damage-reduction",
+      "src": "RobloxScreenShot20261028_120351467.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "love-pillar",
+      "kind": "card",
+      "name": "Love Pillar",
+      "series": "",
+      "odds": 11000,
+      "atk": 4188,
+      "hp": 27920,
+      "src": "RobloxScreenShot20261028_120356844.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "mad-scientist-captain",
+      "kind": "card",
+      "name": "Mad Scientist Captain",
+      "series": "",
+      "odds": 12000,
+      "atk": 2529,
+      "hp": 16862,
+      "src": "RobloxScreenShot20261028_120401185.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "mind-reader-child",
+      "kind": "support",
+      "name": "Mind Reader Child",
+      "series": "",
+      "odds": 47000,
+      "vals": [
+        10
+      ],
+      "type": "dodge",
+      "src": "RobloxScreenShot20261028_120439496.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "morning-star-maid",
+      "kind": "card",
+      "name": "Morning Star Maid",
+      "series": "",
+      "odds": 22000,
+      "atk": 3677,
+      "hp": 24516,
+      "src": "RobloxScreenShot20261028_120444788.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "muscle-doll-teacher",
+      "kind": "card",
+      "name": "Muscle Doll Teacher",
+      "series": "",
+      "odds": 14000,
+      "atk": 2712,
+      "hp": 18080,
+      "src": "RobloxScreenShot20261028_120449879.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "namekian-mentor",
+      "kind": "card",
+      "name": "Namekian Mentor",
+      "series": "",
+      "odds": 8290,
+      "atk": 2148,
+      "hp": 14322,
+      "src": "RobloxScreenShot20261028_120454496.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "needle-brother",
+      "kind": "card",
+      "name": "Needle Brother",
+      "series": "",
+      "odds": 14000,
+      "atk": 2905,
+      "hp": 19366,
+      "src": "RobloxScreenShot20261028_120459108.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "notebook-genius",
+      "kind": "support",
+      "name": "Notebook Genius",
+      "series": "",
+      "odds": 72000,
+      "vals": [
+        7.5
+      ],
+      "type": "mark",
+      "src": "RobloxScreenShot20261028_120504413.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "obi-upper-moon",
+      "kind": "card",
+      "name": "Obi Upper Moon",
+      "series": "",
+      "odds": 11000,
+      "atk": 3664,
+      "hp": 24426,
+      "src": "RobloxScreenShot20261028_120509399.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "ogre-shrine-princess",
+      "kind": "support",
+      "name": "Ogre Shrine Princess",
+      "series": "",
+      "odds": 76000,
+      "vals": [
+        8.9
+      ],
+      "type": "dmg",
+      "src": "RobloxScreenShot20261028_120513151.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "one-horn-oni-maid",
+      "kind": "card",
+      "name": "One Horn Oni Maid",
+      "series": "",
+      "odds": 21000,
+      "atk": 5270,
+      "hp": 35130,
+      "src": "RobloxScreenShot20261028_120518084.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "orc-shaman-shadow",
+      "kind": "card",
+      "name": "Orc Shaman Shadow",
+      "series": "",
+      "odds": 19000,
+      "atk": 3118,
+      "hp": 20786,
+      "src": "RobloxScreenShot20261028_120522219.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "panther-king-espada",
+      "kind": "card",
+      "name": "Panther King Espada",
+      "series": "",
+      "odds": 13000,
+      "atk": 2596,
+      "hp": 17308,
+      "src": "RobloxScreenShot20261028_120602361.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "pink-pumpkin-sniper",
+      "kind": "card",
+      "name": "Pink Pumpkin Sniper",
+      "series": "",
+      "odds": 24000,
+      "atk": 3946,
+      "hp": 26308,
+      "src": "RobloxScreenShot20261028_120606919.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "plague-doctor-villain",
+      "kind": "card",
+      "name": "Plague Doctor Villain",
+      "series": "",
+      "odds": 14000,
+      "atk": 2736,
+      "hp": 18238,
+      "src": "RobloxScreenShot20261028_120610164.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "poison-butterfly-pillar",
+      "kind": "card",
+      "name": "Poison Butterfly Pillar",
+      "series": "",
+      "odds": 11000,
+      "atk": 2400,
+      "hp": 16002,
+      "src": "RobloxScreenShot20261028_120614770.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "psychic-shrine-girl",
+      "kind": "card",
+      "name": "Psychic Shrine Girl",
+      "series": "",
+      "odds": 36000,
+      "atk": 5249,
+      "hp": 34994,
+      "src": "RobloxScreenShot20261028_120619446.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "ranger-android",
+      "kind": "card",
+      "name": "Ranger Android",
+      "series": "",
+      "odds": 7706,
+      "atk": 2217,
+      "hp": 14780,
+      "src": "RobloxScreenShot20261028_120623540.png",
+      "round": 16,
+      "oddsShort": true
+    },
+    {
+      "id": "ratio-salaryman",
+      "kind": "card",
+      "name": "Ratio Salaryman",
+      "series": "",
+      "odds": 9953,
+      "atk": 2597,
+      "hp": 17310,
+      "src": "RobloxScreenShot20261028_120627445.png",
+      "round": 16,
+      "oddsShort": true
     }
   ]
 }

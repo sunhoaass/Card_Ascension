@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-28",
   "batchSize": 30,
-  "total": 447,
+  "total": 496,
   "status": {
     "pending": "not read yet",
     "done": "in data/*.json + data/pool.json, image deleted from inbox/",
@@ -3159,6 +3159,349 @@
     },
     {
       "file": "RobloxScreenShot20261028_124232450.png",
+      "status": "done",
+      "kind": "card",
+      "id": "ultra-instinct-saiyan",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120314990.png",
+      "status": "done",
+      "kind": "card",
+      "id": "hunter-chairman",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120318981.png",
+      "status": "done",
+      "kind": "card",
+      "id": "ice-dragon-prodigy",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120323317.png",
+      "status": "done",
+      "kind": "card",
+      "id": "ice-make-mage",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120327533.png",
+      "status": "done",
+      "kind": "support",
+      "id": "immortal-witch",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120331878.png",
+      "status": "done",
+      "kind": "card",
+      "id": "knight-king",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120336151.png",
+      "status": "done",
+      "kind": "card",
+      "id": "leopard-agent",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120339903.png",
+      "status": "done",
+      "kind": "support",
+      "id": "library-spirit",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120344262.png",
+      "status": "done",
+      "kind": "card",
+      "id": "lifespan-angel",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120347594.png",
+      "status": "done",
+      "kind": "card",
+      "id": "lion-beast-fist",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120351467.png",
+      "status": "done",
+      "kind": "support",
+      "id": "little-witch",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120356844.png",
+      "status": "done",
+      "kind": "card",
+      "id": "love-pillar",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120401185.png",
+      "status": "done",
+      "kind": "card",
+      "id": "mad-scientist-captain",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120439496.png",
+      "status": "done",
+      "kind": "support",
+      "id": "mind-reader-child",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120444788.png",
+      "status": "done",
+      "kind": "card",
+      "id": "morning-star-maid",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120449879.png",
+      "status": "done",
+      "kind": "card",
+      "id": "muscle-doll-teacher",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120454496.png",
+      "status": "done",
+      "kind": "card",
+      "id": "namekian-mentor",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120459108.png",
+      "status": "done",
+      "kind": "card",
+      "id": "needle-brother",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120504413.png",
+      "status": "done",
+      "kind": "support",
+      "id": "notebook-genius",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120509399.png",
+      "status": "done",
+      "kind": "card",
+      "id": "obi-upper-moon",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120513151.png",
+      "status": "done",
+      "kind": "support",
+      "id": "ogre-shrine-princess",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120518084.png",
+      "status": "done",
+      "kind": "card",
+      "id": "one-horn-oni-maid",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120522219.png",
+      "status": "done",
+      "kind": "card",
+      "id": "orc-shaman-shadow",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120602361.png",
+      "status": "done",
+      "kind": "card",
+      "id": "panther-king-espada",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120606919.png",
+      "status": "done",
+      "kind": "card",
+      "id": "pink-pumpkin-sniper",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120610164.png",
+      "status": "done",
+      "kind": "card",
+      "id": "plague-doctor-villain",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120614770.png",
+      "status": "done",
+      "kind": "card",
+      "id": "poison-butterfly-pillar",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120619446.png",
+      "status": "done",
+      "kind": "card",
+      "id": "psychic-shrine-girl",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120623540.png",
+      "status": "done",
+      "kind": "card",
+      "id": "ranger-android",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120627445.png",
+      "status": "done",
+      "kind": "card",
+      "id": "ratio-salaryman",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120634112.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120638459.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120642975.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120647704.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120652359.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120656085.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120725092.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120734334.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120802320.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120807824.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120815107.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120819594.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120824617.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120830480.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120834339.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120838863.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120843161.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120848558.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120855683.png",
+      "status": "pending",
+      "kind": "",
+      "id": "",
+      "note": ""
+    },
+    {
+      "file": "RobloxScreenShot20261028_120901763.png",
       "status": "pending",
       "kind": "",
       "id": "",
