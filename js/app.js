@@ -104,8 +104,9 @@
     return (r > 200 || (r === 200 && q % 2) ? q + 1 : q) / 10;
   }
   const supVals = (s) => (s && s.effect && typeof s.effect === "object" && Array.isArray(s.effect.vals) ? s.effect.vals : []);
-  /* A chance tops out at 100% (owner 2026-10-29): {n} followed by "% chance" or "% of (the) hits" (dodges, counters) */
-  const supCapped = (s, i) => new RegExp(`\\{${i}\\}% (chance|of (the )?hits)`).test((s && s.effect && s.effect.desc) || "");
+  /* Tops out at 100% (owner 2026-10-29): a chance ("{n}% chance", "{n}% of (the) hits": dodges, counters) and the HP a card
+     comes back with ("with {n}% HP": revives · more than full HP does nothing) */
+  const supCapped = (s, i) => new RegExp(`\\{${i}\\}% (chance|of (the )?hits|HP\\b)`).test((s && s.effect && s.effect.desc) || "");
   const supValAt = (s, i, rarity) => { const v = supAt(supVals(s)[i], rarity); return supCapped(s, i) ? Math.min(100, v) : v; };
   const supValue = (s, rarity) => supValAt(s, 0, rarity);  // the main value (vals[0]) at a rarity · 0 = none
   const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
@@ -358,7 +359,8 @@
      The picture keeps the ability text, but its level-scaling numbers ({0}% {1}% … in effect.desc) are erased by
      tools/support_nums.py, which saves where each one was (effect.pos, cqw: % of the card width · x y w h of the digits,
      gl / gr = the free space left / right of them). The web writes the value for the chosen rarity in the same spot,
-     in the same font (Oswald), colour and size; a longer number is squeezed sideways to fit its line (never reflowed).
+     in the same font (Oswald) and size, in gold (--gc-sv, owner 2026-10-29: shows which values the rarity changes);
+     a longer number is squeezed sideways to fit its line (never reflowed).
      The card has the 1 IN X + rarity pills and the rarity frame like a card · no HP / ATK. Odds = the Normal odds. */
   const SV = { cap: 0.82, top: 0.10, w: 600 };   // Oswald: digit height ÷ font size · digits' top under a line-height 1 box · weight
   const supPos = (s) => (s && s.effect && Array.isArray(s.effect.pos) ? s.effect.pos.filter((p) => p && p.h > 0 && supVals(s)[p.i] != null) : []);
@@ -385,10 +387,14 @@
     const sx = need > room ? k * room / need : k;
     span.style.setProperty("--sx", sx.toFixed(3));
   }
-  function supNumsHTML(s, rarity) {
+  // zoom: the card's picture is drawn 1.012× from its centre (.gc__art img in fx.css), so the spots move with it
+  // (without it the lower lines' numbers sat ~0.4cqw above their text) · the older .scard picture isn't zoomed (1)
+  const ART_ZOOM = 1.012;
+  function supNumsHTML(s, rarity, zoom = 1) {
     return supPos(s).map((p) => {
-      const fs = p.h / SV.cap, v = supValAt(s, p.i, rarity);
-      return `<span class="gc__sv" style="left:${(p.x + p.w / 2).toFixed(2)}cqw;top:${(p.y - SV.top * fs).toFixed(2)}cqw;font-size:${fs.toFixed(2)}cqw"><span class="gc__svn" data-sv="${p.i}" data-value="${v}">${fmtSv(v)}</span></span>`;
+      const fs = (p.h / SV.cap) * zoom, v = supValAt(s, p.i, rarity);
+      const cx = 50 + (p.x + p.w / 2 - 50) * zoom, top = 70 + (p.y - 70) * zoom - SV.top * fs;   // card = 100 × 140 cqw
+      return `<span class="gc__sv" style="left:${cx.toFixed(2)}cqw;top:${top.toFixed(2)}cqw;font-size:${fs.toFixed(2)}cqw"><span class="gc__svn" data-sv="${p.i}" data-value="${v}">${fmtSv(v)}</span></span>`;
     }).join("");
   }
   function fitSupport(el, s, samples = {}) {
@@ -413,7 +419,7 @@
       <span class="gc__sweep"></span>
       ${odds ? `<span class="gc__odds"><span class="gc__pop" data-k="odds">${fmtOdds(odds)}</span></span>` : ""}
       <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
-      ${s.image ? supNumsHTML(s, rarity) : ""}
+      ${s.image ? supNumsHTML(s, rarity, ART_ZOOM) : ""}
       ${s.mock ? `<span class="gc__mock">mock</span>` : ""}
       <span class="gc__sheen"><span class="card__glare"></span></span>
       <span class="gc__flash"></span>`;

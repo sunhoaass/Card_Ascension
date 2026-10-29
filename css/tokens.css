@@ -70,7 +70,7 @@
   --gc-font-num: "Oswald", "TeX Gyre Heros Cn", "Arial Narrow", "Roboto Condensed", sans-serif;   /* HP / ATK */
   --gc-font-pop: "Bangers", "TeX Gyre Heros Cn", "Arial Narrow", sans-serif;                      /* 1 IN X / rarity pills */
   --gc-font-text: "Oswald", "TeX Gyre Heros Cn", "Arial Narrow", "Roboto Condensed", sans-serif;  /* support ability text (the % values drawn on the picture) */
-  --gc-sv: #f4f2ee;               /* support value: white like the game's ability text */
+  --gc-sv: #ffd45c;               /* support value: gold, so the numbers the rarity changes stand out from the white text (owner 2026-10-29) */
   --gc-sv-line: #050505;        /* its dark outline */
   --gc-corner: 3.7% / 2.64%;    /* the game's 22px corner on a 600×840 card (on the card itself) */
   --gc-radius: 3.7cqw;          /* the same corner for parts inside the card (cqw only works inside .gc) */
