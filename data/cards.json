@@ -13776,5 +13776,39 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "shadow-monarch",
+    "name": "Shadow Monarch",
+    "series": "",
+    "image": "images/cards/shadow-monarch.webp",
+    "base": {
+      "atk": 4487019,
+      "hp": 29913460,
+      "def": 0,
+      "status": 0,
+      "odds": 92700000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Arise",
+      "desc": "Sung Jinwoo raises the dead. Once, raises a defeated enemy as its shadow at 54% strength. +7.2% damage every turn (up to 10 times). 36% chance to dodge each hit. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]

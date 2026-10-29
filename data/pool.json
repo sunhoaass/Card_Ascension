@@ -6096,6 +6096,18 @@
       "src": "RobloxScreenShot20261028_120901763.png",
       "round": 17,
       "oddsShort": true
+    },
+    {
+      "id": "shadow-monarch",
+      "kind": "card",
+      "name": "Shadow Monarch",
+      "series": "",
+      "odds": 92700000000,
+      "atk": 4487019,
+      "hp": 29913460,
+      "src": "RobloxScreenShot20261028_124134048.png",
+      "round": 18,
+      "oddsShort": true
     }
   ]
 }
