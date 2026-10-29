@@ -3622,5 +3622,113 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "reverse-cursed-doctor",
+    "name": "Reverse Cursed Doctor",
+    "image": "images/support/reverse-cursed-doctor.webp",
+    "effect": {
+      "name": "Reverse Cursed Technique",
+      "desc": "Shoko's Reverse Cursed Technique: every hit the supported card takes, it heals {0}% of that damage.",
+      "vals": [
+        14
+      ],
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 33.17,
+          "y": 109.0,
+          "w": 11.5,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 48000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "shapeshift-actor",
+    "name": "Shapeshift Actor",
+    "image": "images/support/shapeshift-actor.webp",
+    "effect": {
+      "name": "Doppelganger",
+      "desc": "Pandora's Actor copies the enemy: the supported card adds {0}% of the enemy's damage to every hit.",
+      "vals": [
+        10
+      ],
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 72.67,
+          "y": 100.0,
+          "w": 12.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 74000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sky-dragon-healer",
+    "name": "Sky Dragon Healer",
+    "image": "images/support/sky-dragon-healer.webp",
+    "effect": {
+      "name": "Troia",
+      "desc": "Wendy heals from the back: while the supported card waits on the bench, the card fighting in front heals {0}% of its max HP every turn.",
+      "vals": [
+        1.4
+      ],
+      "type": "heal",
+      "pos": [
+        {
+          "i": 0,
+          "x": 30.83,
+          "y": 104.17,
+          "w": 10.0,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.83,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 50000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]

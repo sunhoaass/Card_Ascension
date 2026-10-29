@@ -13198,5 +13198,583 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "ripper-ackerman",
+    "name": "Ripper Ackerman",
+    "series": "",
+    "image": "images/cards/ripper-ackerman.webp",
+    "base": {
+      "atk": 3031,
+      "hp": 20208,
+      "def": 0,
+      "status": 0,
+      "odds": 15000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ripper",
+      "desc": "Kenny's twin pistols. 40% chance to attack twice. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sage-snake-medic",
+    "name": "Sage Snake Medic",
+    "series": "",
+    "image": "images/cards/sage-snake-medic.webp",
+    "base": {
+      "atk": 2200,
+      "hp": 14666,
+      "def": 0,
+      "status": 0,
+      "odds": 9083
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sage Mode Regeneration",
+      "desc": "Kabuto: Heals 5% of its max HP every turn. Each hit adds 1 Poison stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sand-gourd-kazekage",
+    "name": "Sand Gourd Kazekage",
+    "series": "",
+    "image": "images/cards/sand-gourd-kazekage.webp",
+    "base": {
+      "atk": 2375,
+      "hp": 15830,
+      "def": 0,
+      "status": 0,
+      "odds": 9251
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Absolute Defense of Sand",
+      "desc": "Gaara: Blocks the first 2 hits completely. 25% chance per hit to Stun the enemy for 1 turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "satan-soul-demon",
+    "name": "Satan Soul Demon",
+    "series": "",
+    "image": "images/cards/satan-soul-demon.webp",
+    "base": {
+      "atk": 5326,
+      "hp": 35504,
+      "def": 0,
+      "status": 0,
+      "odds": 26000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Satan Soul",
+      "desc": "Mirajane's demon takeover. Under 50% HP: +60% damage. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "scissor-cut-mage",
+    "name": "Scissor Cut Mage",
+    "series": "",
+    "image": "images/cards/scissor-cut-mage.webp",
+    "base": {
+      "atk": 3950,
+      "hp": 26336,
+      "def": 0,
+      "status": 0,
+      "odds": 30000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Reelseiden",
+      "desc": "Ubel cuts anything she believes she can cut. Ignores shields, dodges and barriers. Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sea-dragon-princess",
+    "name": "Sea Dragon Princess",
+    "series": "",
+    "image": "images/cards/sea-dragon-princess.webp",
+    "base": {
+      "atk": 4768,
+      "hp": 31784,
+      "def": 0,
+      "status": 0,
+      "odds": 25000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sea Dragon's Cradle",
+      "desc": "Noelle: Blocks the first 2 hits completely. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "serpent-pillar",
+    "name": "Serpent Pillar",
+    "series": "",
+    "image": "images/cards/serpent-pillar.webp",
+    "base": {
+      "atk": 2948,
+      "hp": 19656,
+      "def": 0,
+      "status": 0,
+      "odds": 11000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Serpent Breathing",
+      "desc": "Obanai: Its attacks can't be dodged. +30% damage against Demon cards. 15% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "shadow-garden-hound",
+    "name": "Shadow Garden Hound",
+    "series": "",
+    "image": "images/cards/shadow-garden-hound.webp",
+    "base": {
+      "atk": 3809,
+      "hp": 25396,
+      "def": 0,
+      "status": 0,
+      "odds": 23000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hunting Instinct",
+      "desc": "Delta charges straight in. Its first hit on each new enemy does 2x damage. Under 50% HP: +40% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "shadow-ogre-spy",
+    "name": "Shadow Ogre Spy",
+    "series": "",
+    "image": "images/cards/shadow-ogre-spy.webp",
+    "base": {
+      "atk": 3205,
+      "hp": 21364,
+      "def": 0,
+      "status": 0,
+      "odds": 20000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Clone Threads",
+      "desc": "Souei's clones. 40% chance to attack twice. 25% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "shark-blade-rogue",
+    "name": "Shark Blade Rogue",
+    "series": "",
+    "image": "images/cards/shark-blade-rogue.webp",
+    "base": {
+      "atk": 2440,
+      "hp": 16266,
+      "def": 0,
+      "status": 0,
+      "odds": 9422
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Samehada",
+      "desc": "Kisame's sword eats chakra. Heals 30% of the damage it deals. Each hit lowers the enemy's damage by 6% (up to 5 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "shield-tiger",
+    "name": "Shield Tiger",
+    "series": "",
+    "image": "images/cards/shield-tiger.webp",
+    "base": {
+      "atk": 3482,
+      "hp": 23216,
+      "def": 0,
+      "status": 0,
+      "odds": 21000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Earth Spirit Protection",
+      "desc": "Garfiel draws power from the ground. Takes 20% less damage. Heals 6% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "silver-assassin-father",
+    "name": "Silver Assassin Father",
+    "series": "",
+    "image": "images/cards/silver-assassin-father.webp",
+    "base": {
+      "atk": 4940,
+      "hp": 32936,
+      "def": 0,
+      "status": 0,
+      "odds": 13000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Zoldyck Training",
+      "desc": "Silva: Takes 20% less damage. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sloth-archbishop",
+    "name": "Sloth Archbishop",
+    "series": "",
+    "image": "images/cards/sloth-archbishop.webp",
+    "base": {
+      "atk": 3778,
+      "hp": 25186,
+      "def": 0,
+      "status": 0,
+      "odds": 21000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Unseen Hands",
+      "desc": "Petelgeuse: Every 2nd attack also hits the card behind for 35%. Comes back once with 40% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "smoke-card-joker",
+    "name": "Smoke Card Joker",
+    "series": "",
+    "image": "images/cards/smoke-card-joker.webp",
+    "base": {
+      "atk": 4050,
+      "hp": 27000,
+      "def": 0,
+      "status": 0,
+      "odds": 33000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Smoke Cards",
+      "desc": "Joker's smoke cards. 30% chance to dodge each hit. 25% chance per hit to Confuse the enemy (it hits itself instead)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "snake-princess-empress",
+    "name": "Snake Princess Empress",
+    "series": "",
+    "image": "images/cards/snake-princess-empress.webp",
+    "base": {
+      "atk": 2486,
+      "hp": 16574,
+      "def": 0,
+      "status": 0,
+      "odds": 8758
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Love-Love Beam",
+      "desc": "Boa Hancock turns foes to stone. 25% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2x damage against frozen enemies."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "snake-smile-captain",
+    "name": "Snake Smile Captain",
+    "series": "",
+    "image": "images/cards/snake-smile-captain.webp",
+    "base": {
+      "atk": 2552,
+      "hp": 17010,
+      "def": 0,
+      "status": 0,
+      "odds": 12000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kamishini no Yari",
+      "desc": "Gin: Every 2nd attack also hits the card behind for 41%. Each hit drains 4.9% of the enemy's max HP per turn for 3 turns, healing it. 12% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "snow-white-reaper",
+    "name": "Snow White Reaper",
+    "series": "",
+    "image": "images/cards/snow-white-reaper.webp",
+    "base": {
+      "atk": 2855,
+      "hp": 19032,
+      "def": 0,
+      "status": 0,
+      "odds": 13000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hakka no Togame",
+      "desc": "Rukia's absolute-zero Bankai. 40% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2x damage against frozen enemies. With Ichigo in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]
