@@ -1,17 +1,29 @@
 {
   "updated": "2026-10-28",
   "batchSize": 30,
-  "total": 451,
+  "total": 449,
   "status": {
     "pending": "not read yet",
     "done": "in data/*.json + data/pool.json, image deleted from inbox/",
     "skipped": "value unreadable: kept in inbox/, see note"
   },
-  "removedDuplicate": {
-    "file": "RobloxScreenShot20261028_122003975.png",
-    "sameAs": "RobloxScreenShot20261028_122000037.png",
-    "card": "Toad Sage"
-  },
+  "removedDuplicate": [
+    {
+      "file": "RobloxScreenShot20261028_122003975.png",
+      "sameAs": "RobloxScreenShot20261028_122000037.png",
+      "card": "Toad Sage"
+    },
+    {
+      "file": "RobloxScreenShot20261028_123902929.png",
+      "sameAs": "atomic-shadow-lord",
+      "card": "atomic-shadow-lord"
+    },
+    {
+      "file": "RobloxScreenShot20261028_123905741.png",
+      "sameAs": "beast-emperor",
+      "card": "beast-emperor"
+    }
+  ],
   "files": [
     {
       "file": "RobloxScreenShot20261028_113951287.png",
@@ -2745,212 +2757,198 @@
     },
     {
       "file": "RobloxScreenShot20261028_123614188.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "demon-god-of-flame",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123621523.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "demon-progenitor",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123624724.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "earthquake-emperor",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123645068.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "support",
+      "id": "first-master-fairy",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123650847.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "fist-hero-vice-admiral",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123655301.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "fusion-dance-warrior",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123700204.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "galactic-tyrant",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123703599.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "golden-gate-king",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123719322.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "hero-number-one",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123726194.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "homunculus-father",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123731310.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "infinity-sorcerer",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123738626.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "king-of-curses",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123743437.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "legendary-berserker",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123746850.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "made-in-heaven-priest",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123751422.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "monk-of-names",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123756324.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "moon-breath-swordsman",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123801859.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "support",
+      "id": "nine-tails-fox",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123807716.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "otsutsuki-vessel",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123816364.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "potara-fusion-warrior",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123826118.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "pumpkin-sun-pride",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123831520.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "six-paths-fox-sage",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123835838.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "soul-magic-father",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123840684.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "soul-queen-emperor",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123845102.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "ultra-ego-prince",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123848795.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "undead-overlord-king",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123857181.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "white-hawk-godhand",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123900295.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
-      "note": ""
-    },
-    {
-      "file": "RobloxScreenShot20261028_123902929.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
-      "note": ""
-    },
-    {
-      "file": "RobloxScreenShot20261028_123905741.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "wood-god-hokage",
       "note": ""
     },
     {
       "file": "RobloxScreenShot20261028_123910199.png",
-      "status": "pending",
-      "kind": "",
-      "id": "",
+      "status": "done",
+      "kind": "card",
+      "id": "destroyer-dragonoid",
       "note": ""
     },
     {
