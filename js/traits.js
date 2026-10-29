@@ -238,7 +238,8 @@
   let items = [];                             // cards in grid order
   let sel = null, hero = null;                // chosen card id · its card in the shop
   let listScroll = 0;                         // phone: where the grid was when the shop opened
-  const tiles = new Map();                    // id -> mini card in the grid
+  const tiles = new Map();                    // id -> mini card in the grid (made the first time its page shows)
+  let shown = [], onPage = [], page = 0;      // filtered ids · ids in the grid now · the grid's page (0-based, 30 a page like Cards)
   const filter = { q: "", mine: false };
   const wide = window.matchMedia("(min-width: 900px)");
   const $$ = (s, r) => [...r.querySelectorAll(s)];
@@ -271,14 +272,53 @@
     $("[data-n]", ui.mine).textContent = n;
     return n;
   }
+  // one page of `shown` in the grid · a tile is made the first time it is needed (picked / trait badge set then)
+  function elOf(id) {
+    let el = tiles.get(id);
+    if (!el) {
+      el = C.renderCard(cardOf(id), state.rarity, { mini: true });
+      tileBadge(el, id);
+      tiles.set(id, el);
+    }
+    el.classList.toggle("is-picked", id === sel);
+    if (id === sel) el.setAttribute("aria-current", "true"); else el.removeAttribute("aria-current");
+    return el;
+  }
+  function paintPage({ animate = false } = {}) {
+    const pages = Math.max(1, Math.ceil(shown.length / C.PAGE_SIZE));
+    page = Math.max(0, Math.min(page, pages - 1));
+    const ids = shown.slice(page * C.PAGE_SIZE, (page + 1) * C.PAGE_SIZE);
+    if (ids.length !== onPage.length || ids.some((id, i) => id !== onPage[i])) {
+      const frag = document.createDocumentFragment();
+      ids.forEach((id) => frag.appendChild(elOf(id)));
+      ui.grid.replaceChildren(frag);
+      onPage = ids;
+      if (animate) FX.stagger(ui.grid, 24, { cls: "fx-grid-in", max: 12, limit: 18, cleanup: true });
+    }
+    C.pager(ui.pager, page, shown.length ? pages : 0);
+  }
+  // ‹ › or a typed page: the new page's cards come in one by one, back up to the grid (wide: the grid's own scroll)
+  function goPage(i) {
+    if (i === page || i < 0 || i * C.PAGE_SIZE >= shown.length) return;
+    page = i;
+    paintPage({ animate: true });
+    if (wide.matches) ui.pick.scrollTo({ top: 0, behavior: FX.reduced ? "auto" : "smooth" });
+    else C.pageTop(ui.grid);
+  }
+  // the grid shows the page with this card on it (Change card, Back on a phone)
+  function pageOf(id) {
+    const k = shown.indexOf(id);
+    if (k < 0 || Math.floor(k / C.PAGE_SIZE) === page) return;
+    page = Math.floor(k / C.PAGE_SIZE);
+    paintPage();
+  }
   function applyList({ animate = false } = {}) {
     if (!built) return;
     const w = words(filter.q);
     const out = items.filter((c) => (!filter.mine || of(c.id)) && matches(c, w));
-    const frag = document.createDocumentFragment();
-    out.forEach((c) => frag.appendChild(tiles.get(c.id)));
-    ui.grid.replaceChildren(frag);
-    if (animate) FX.stagger(ui.grid, 24, { cls: "fx-grid-in", max: 12, limit: 18, cleanup: true });
+    const ids = out.map((c) => c.id);
+    if (ids.length !== shown.length || ids.some((id, i) => id !== shown[i])) { shown = ids; page = 0; }
+    paintPage({ animate });
     const n = paintCounts();
     ui.mine.setAttribute("aria-pressed", String(filter.mine));
     ui.count.textContent = out.length === items.length ? `${items.length} ${items.length === 1 ? "card" : "cards"}` : `${out.length} of ${items.length} cards`;
@@ -286,10 +326,8 @@
     ui.none.hidden = out.length > 0;
     ui.noneText.textContent = filter.mine && !n ? "You haven't set a trait on any card yet. Tap a card to start." : "Try a different search or clear the filters.";
   }
-  const shownIds = () => {
-    const ids = $$(".card[data-id]", ui.grid).map((el) => el.dataset.id);
-    return ids.length ? ids : items.map((c) => c.id);
-  };
+  // the detail's swipe walks the whole filtered list (every page), like the Cards page
+  const shownIds = () => (shown.length ? shown.slice() : items.map((c) => c.id));
 
   /* ---------- the Trait Shop window (the + button): the 13 traits, rarest first ---------- */
   function rowHTML(t) {
@@ -487,6 +525,7 @@
     if (!ui.wrap.classList.contains("is-shop")) return;
     ui.wrap.classList.remove("is-shop");
     ui.pick.classList.remove("fx-page-in"); void ui.pick.offsetWidth; ui.pick.classList.add("fx-page-in");
+    if (sel) pageOf(sel);
     window.scrollTo(0, listScroll);
     const t = sel && tiles.get(sel);
     if (t && t.isConnected) {
@@ -567,6 +606,7 @@
     if (!res || res.action !== "pick") return;
     if (res.id === sel) return;
     select(res.id);
+    pageOf(res.id);
     const tile = tiles.get(res.id);
     if (wide.matches && tile && tile.isConnected && !rectVisible(tile.getBoundingClientRect())) tile.scrollIntoView({ block: "nearest", behavior: FX.reduced ? "auto" : "smooth" });
   }
@@ -579,11 +619,6 @@
     if (!list.length) return;
     ui.tools.hidden = !items.length;
     ui.gridEmpty.hidden = items.length > 0;
-    items.forEach((c) => {
-      const el = C.renderCard(c, state.rarity, { mini: true });
-      tileBadge(el, c.id);
-      tiles.set(c.id, el);
-    });
     if (!items.length) ui.grid.replaceChildren();
     ui.head.innerHTML = headEmptyHTML();
     applyList({ animate: true });
@@ -600,6 +635,7 @@
     ui.grid.addEventListener("keydown", (e) => {
       if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); select(e.target.dataset.id, e.target); }
     });
+    C.bindPager(ui.pager, goPage);
     ui.back.addEventListener("click", back);
     ui.head.addEventListener("click", (e) => {
       const a = e.target.closest("[data-act]");
@@ -635,7 +671,7 @@
   function init() {
     Object.assign(ui, {
       wrap: $("#trw"), empty: $("#tr-empty"), tools: $("#trw-tools"), search: $("#trw-search"), mine: $("#trw-mine"),
-      count: $("#trw-count"), reset: $("#trw-reset"), grid: $("#trw-grid"), none: $("#trw-none"), noneText: $("#trw-none-text"),
+      count: $("#trw-count"), reset: $("#trw-reset"), grid: $("#trw-grid"), pager: $("#trw-pager"), none: $("#trw-none"), noneText: $("#trw-none-text"),
       noneReset: $("#trw-none-reset"), gridEmpty: $("#trw-empty"), pick: $(".trw__pick"), shop: $("#trw-shop"), head: $("#trs-head"), back: $("#trs-back"),
     });
     load();

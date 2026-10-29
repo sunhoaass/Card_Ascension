@@ -141,17 +141,15 @@
       onPage = ids;
       if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
     }
-    C.pager(ui.pager, page, pages);
+    C.pager(ui.pager, page, shown.length ? pages : 0);
     const total = items.length, n = shown.length, word = (k) => (k === 1 ? "support card" : "support cards");
-    ui.count.textContent = (n === total ? `${total} ${word(total)}` : `${n} of ${total} ${word(total)}`) + (pages > 1 ? ` · page ${page + 1} of ${pages}` : "");
+    ui.count.textContent = (n === total ? `${total} ${word(total)}` : `${n} of ${total} ${word(total)}`);
   }
   function goPage(i) {
     if (i === page || i < 0 || i * C.PAGE_SIZE >= shown.length) return;
     page = i;
     paint({ animate: true });
     C.pageTop(ui.grid);
-    const cur = ui.pager.querySelector('[aria-current="page"]');
-    if (cur && document.activeElement && ui.pager.contains(document.activeElement)) cur.focus({ preventScroll: true });
   }
 
   function bindGrid() {
@@ -173,7 +171,7 @@
     const reset = () => { filters.q = filters.tier = ""; ui.search.value = ""; apply({ animate: true }); };
     ui.reset.addEventListener("click", reset);
     $("#support-none-reset").addEventListener("click", reset);
-    ui.pager.addEventListener("click", (e) => { const b = e.target.closest(".pager__btn[data-page]"); if (b && !b.disabled) goPage(+b.dataset.page); });
+    C.bindPager(ui.pager, goPage);
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
   }
 
