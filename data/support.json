@@ -3312,5 +3312,99 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "wish-granter",
+    "name": "Wish Granter",
+    "image": "images/support/wish-granter.webp",
+    "effect": {
+      "name": "Nanika's Wish",
+      "desc": "Nanika grants a wish: the supported card gets {0}% more damage and {1}% more max HP.",
+      "vals": [
+        14,
+        14
+      ],
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 62.83,
+          "y": 100.0,
+          "w": 12.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        },
+        {
+          "i": 1,
+          "x": 41.5,
+          "y": 109.5,
+          "w": 12.5,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 21400000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "eternal-wish-dragon",
+    "name": "Eternal Wish Dragon",
+    "image": "images/support/eternal-wish-dragon.webp",
+    "effect": {
+      "name": "Wish Granted",
+      "desc": "Shenron grants one wish: when the supported card is knocked out it has a {0}% chance to come back with 50% HP (once per fight), and every OTHER card in your deck deals {1}% more damage.",
+      "vals": [
+        55,
+        7.5
+      ],
+      "type": "revive",
+      "pos": [
+        {
+          "i": 0,
+          "x": 36.33,
+          "y": 95.5,
+          "w": 7.67,
+          "h": 3.67,
+          "cap": 3.67,
+          "gl": 1.33,
+          "gr": 1.5
+        },
+        {
+          "i": 1,
+          "x": 38.83,
+          "y": 106.83,
+          "w": 8.33,
+          "h": 3.5,
+          "cap": 3.5,
+          "gl": 1.33,
+          "gr": 1.5
+        }
+      ]
+    },
+    "odds": 211000000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]

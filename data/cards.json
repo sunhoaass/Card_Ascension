@@ -11532,5 +11532,855 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "destroyer-god",
+    "name": "Destroyer God",
+    "series": "",
+    "image": "images/cards/destroyer-god.webp",
+    "base": {
+      "atk": 2267115,
+      "hp": 15114100,
+      "def": 0,
+      "status": 0,
+      "odds": 917500000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Starfall Night",
+    "passive": {
+      "name": "Hakai",
+      "desc": "Beerus erases anything. 21% chance per hit to instantly kill an enemy under 60% HP (not bosses). Ignores shields, dodges and barriers. 30% chance to dodge each hit. Every enemy card starts with 17% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "dragon-god",
+    "name": "Dragon God",
+    "series": "",
+    "image": "images/cards/dragon-god.webp",
+    "base": {
+      "atk": 1472899,
+      "hp": 9819326,
+      "def": 0,
+      "status": 0,
+      "odds": 8300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dragon God Style",
+      "desc": "Orsted, the strongest in the world. Every enemy card starts with 14% less damage. 28% chance to counter-attack when hit. Ignores shields, dodges and barriers. Every 3rd attack does 1.85x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "dragon-king-of-ruin",
+    "name": "Dragon King of Ruin",
+    "series": "",
+    "image": "images/cards/dragon-king-of-ruin.webp",
+    "base": {
+      "atk": 2107535,
+      "hp": 14050232,
+      "def": 0,
+      "status": 0,
+      "odds": 14300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Acnologia",
+      "desc": "The Dragon King devours magic. Each kill gives it 13% of the defeated card's damage and HP. Every hit also hits the whole enemy bench for 20%. Ignores shields, dodges and barriers. Every enemy card starts with 8.8% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "full-moon-demon-king",
+    "name": "Full Moon Demon King",
+    "series": "",
+    "image": "images/cards/full-moon-demon-king.webp",
+    "base": {
+      "atk": 1745832,
+      "hp": 11638880,
+      "def": 0,
+      "status": 0,
+      "odds": 16300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Full Counter",
+      "desc": "Meliodas' Full Counter sends attacks back. Attackers take 20% of their damage back. 20% chance to counter-attack when hit. +3.9% damage every time it is hit. Comes back once with 39% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "golden-wind-boss",
+    "name": "Golden Wind Boss",
+    "series": "",
+    "image": "images/cards/golden-wind-boss.webp",
+    "base": {
+      "atk": 2465309,
+      "hp": 16435396,
+      "def": 0,
+      "status": 0,
+      "odds": 18700000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Gold Experience Requiem",
+      "desc": "Requiem returns every attack to zero. Attackers take 31% of their damage back. Takes 44% less damage until it has been hit 3 times. Heals 19% of the damage it deals. Each kill gives it 12% of the defeated card's damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "hollow-mask-reaper",
+    "name": "Hollow Mask Reaper",
+    "series": "",
+    "image": "images/cards/hollow-mask-reaper.webp",
+    "base": {
+      "atk": 967488,
+      "hp": 6449918,
+      "def": 0,
+      "status": 0,
+      "odds": 4200000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Getsuga Tensho",
+      "desc": "Ichigo: Every 2nd attack also hits the card behind for 50%. Under 38% HP: +66% damage. +9.4% damage every time it is hit. Survives its first killing blow with 1 HP. With Rukia in the deck, both get +14% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "hypnosis-traitor",
+    "name": "Hypnosis Traitor",
+    "series": "",
+    "image": "images/cards/hypnosis-traitor.webp",
+    "base": {
+      "atk": 968887,
+      "hp": 6459246,
+      "def": 0,
+      "status": 0,
+      "odds": 4800000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kyoka Suigetsu",
+      "desc": "Aizen's perfect hypnosis. 18% chance to dodge each hit. 12% chance per hit to Confuse the enemy (it hits itself instead). Comes back once with 31% HP. Every 3rd attack does 1.91x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "no-life-king",
+    "name": "No-Life King",
+    "series": "",
+    "image": "images/cards/no-life-king.webp",
+    "base": {
+      "atk": 1810622,
+      "hp": 12070814,
+      "def": 0,
+      "status": 0,
+      "odds": 10900000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Release Restriction: Level Zero",
+      "desc": "Alucard releases every soul he has consumed. Each kill gives it 13% of the defeated card's damage and HP. Comes back once with 43% HP. Heals 4.3% of its max HP every turn. Every hit also hits the whole enemy bench for 20%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "pirate-king",
+    "name": "Pirate King",
+    "series": "",
+    "image": "images/cards/pirate-king.webp",
+    "base": {
+      "atk": 945317,
+      "hp": 6302110,
+      "def": 0,
+      "status": 0,
+      "odds": 2500000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kamusari",
+      "desc": "Roger: When it comes in, every weaker enemy card loses its first turn (not bosses). Every 2nd attack also hits the card behind for 50%. Ignores shields, dodges and barriers. 30% chance to crit for 2x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "primordial-butler-demon",
+    "name": "Primordial Butler Demon",
+    "series": "",
+    "image": "images/cards/primordial-butler-demon.webp",
+    "base": {
+      "atk": 1133558,
+      "hp": 7557050,
+      "def": 0,
+      "status": 0,
+      "odds": 7200000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Temptation World",
+      "desc": "Diablo's world of temptation. 40% chance per hit to Confuse the enemy (it hits itself instead). Its first hit on each new enemy Seals its ability for 2 turns. 35% chance to dodge each hit. Can't be stunned, frozen or paralyzed. With Rimuru in the deck: +30% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "rabbit-goddess",
+    "name": "Rabbit Goddess",
+    "series": "",
+    "image": "images/cards/rabbit-goddess.webp",
+    "base": {
+      "atk": 936939,
+      "hp": 6246258,
+      "def": 0,
+      "status": 0,
+      "odds": 3200000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Expansive Truth-Seeking Ball",
+      "desc": "Kaguya is the origin of chakra. Ignores shields, dodges and barriers. Each hit also deals 8.4% of the enemy's max HP. Each hit swaps the enemy's front card with a random one (not bosses). Heals 17% of the damage it deals."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "spiral-drill-king",
+    "name": "Spiral Drill King",
+    "series": "",
+    "image": "images/cards/spiral-drill-king.webp",
+    "base": {
+      "atk": 2086016,
+      "hp": 13906770,
+      "def": 0,
+      "status": 0,
+      "odds": 12500000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Giga Drill Break",
+      "desc": "Simon's spiral power has no limit. +8.2% damage every turn. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 42%. Can't be stunned, frozen or paralyzed. With Kamina in the deck: +21% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "storm-dragon",
+    "name": "Storm Dragon",
+    "series": "",
+    "image": "images/cards/storm-dragon.webp",
+    "base": {
+      "atk": 2267115,
+      "hp": 15114100,
+      "def": 0,
+      "status": 0,
+      "odds": 917500000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Rain Storm",
+    "passive": {
+      "name": "Storm Dragon",
+      "desc": "Veldora: Every hit also hits the whole enemy bench for 20%. 28% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Every enemy card starts with 15% less damage. Takes 26% less damage. With Rimuru in the deck, both get +11% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "witch-of-envy",
+    "name": "Witch of Envy",
+    "series": "",
+    "image": "images/cards/witch-of-envy.webp",
+    "base": {
+      "atk": 2267115,
+      "hp": 15114100,
+      "def": 0,
+      "status": 0,
+      "odds": 917500000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Sakura Love",
+    "passive": {
+      "name": "Shadow of Envy",
+      "desc": "Satella's shadows swallow everything. 26% chance per hit to Seal the enemy's ability for 2 turns. Every hit also hits the whole enemy bench for 20%. Every enemy card starts with 14% less damage. Heals 5.3% of its max HP every turn. With Subaru in the deck, Subaru gets +21% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "ant-king",
+    "name": "Ant King",
+    "series": "",
+    "image": "images/cards/ant-king.webp",
+    "base": {
+      "atk": 3636746,
+      "hp": 24244976,
+      "def": 0,
+      "status": 0,
+      "odds": 56600000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "King of the Chimera Ants",
+      "desc": "Meruem evolves through battle. Each kill gives it 25% of the defeated card's damage and HP. Takes 12% less from an attack each time it has seen it (up to 3 times). Heals 4.1% of its max HP every turn. +4.9% damage every turn (up to 10 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "divergent-fist-vessel",
+    "name": "Divergent Fist Vessel",
+    "series": "",
+    "image": "images/cards/divergent-fist-vessel.webp",
+    "base": {
+      "atk": 2658364,
+      "hp": 17722428,
+      "def": 0,
+      "status": 0,
+      "odds": 34600000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Black Flash",
+      "desc": "Yuji enters the zone. Black Flash: 15% chance (+10% per Zone, up to 3) to hit for 2.5x damage, guaranteed at full Zone. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. +8% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "founding-titan",
+    "name": "Founding Titan",
+    "series": "",
+    "image": "images/cards/founding-titan.webp",
+    "base": {
+      "atk": 5823678,
+      "hp": 38824518,
+      "def": 0,
+      "status": 0,
+      "odds": 78600000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "The Rumbling",
+      "desc": "Eren unleashes the Wall Titans. Every hit also hits the whole enemy bench for 20%. Every enemy card starts with 7.7% less damage. Takes 9.1% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "octopus-teacher",
+    "name": "Octopus Teacher",
+    "series": "",
+    "image": "images/cards/octopus-teacher.webp",
+    "base": {
+      "atk": 4527428,
+      "hp": 30182850,
+      "def": 0,
+      "status": 0,
+      "odds": 179000000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Mach 20",
+      "desc": "Koro-sensei: 38% chance to dodge each hit. 69% chance to attack twice (each hit does 0.8x damage). Heals 6.9% of its max HP every turn. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "one-punch-caped-hero",
+    "name": "One Punch Caped Hero",
+    "series": "",
+    "image": "images/cards/one-punch-caped-hero.webp",
+    "base": {
+      "atk": 3111096,
+      "hp": 20740640,
+      "def": 0,
+      "status": 0,
+      "odds": 109300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Serious Punch",
+      "desc": "Saitama ends fights in one punch. Its first hit on each new enemy does 3.68x damage. Ignores shields, dodges and barriers. Can't be stunned, frozen or paralyzed. +15% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "quirk-thief-overlord",
+    "name": "Quirk Thief Overlord",
+    "series": "",
+    "image": "images/cards/quirk-thief-overlord.webp",
+    "base": {
+      "atk": 3761530,
+      "hp": 25076868,
+      "def": 0,
+      "status": 0,
+      "odds": 66700000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "All For One",
+      "desc": "All For One steals quirks. Copies the ability of every enemy card it faces. Each kill gives it 11% of the defeated card's damage and HP. Every enemy card starts with 7.4% less damage. With Shigaraki in the deck, both get +9.7% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "slime-demon-lord",
+    "name": "Slime Demon Lord",
+    "series": "",
+    "image": "images/cards/slime-demon-lord.webp",
+    "base": {
+      "atk": 4340934,
+      "hp": 28939562,
+      "def": 0,
+      "status": 0,
+      "odds": 128800000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Beelzebuth",
+      "desc": "Rimuru's Predator eats anything. Copies the ability of every enemy card it faces. Each kill gives it 11% of the defeated card's damage and HP. 14% chance to dodge each hit. Every other card in your deck gets +3.6% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "soul-king-father",
+    "name": "Soul King Father",
+    "series": "",
+    "image": "images/cards/soul-king-father.webp",
+    "base": {
+      "atk": 2815904,
+      "hp": 18772690,
+      "def": 0,
+      "status": 0,
+      "odds": 48000000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "The Almighty",
+      "desc": "Yhwach sees and rewrites every future. 14% chance to dodge each hit. Copies the ability of every enemy card it faces. Each kill gives it 7.2% of the defeated card's damage and HP. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sun-breath-origin",
+    "name": "Sun Breath Origin",
+    "series": "",
+    "image": "images/cards/sun-breath-origin.webp",
+    "base": {
+      "atk": 2894804,
+      "hp": 19298692,
+      "def": 0,
+      "status": 0,
+      "odds": 40700000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "The Original Breathing",
+      "desc": "Yoriichi is the reason demons fear the sun. +79% damage against Demon cards. Ignores shields, dodges and barriers. 35% chance to dodge each hit. Its first hit on each new enemy does 2.18x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sun-god-captain",
+    "name": "Sun God Captain",
+    "series": "",
+    "image": "images/cards/sun-god-captain.webp",
+    "base": {
+      "atk": 2706826,
+      "hp": 18045504,
+      "def": 0,
+      "status": 0,
+      "odds": 29300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Gear 5: Sun God Nika",
+      "desc": "Luffy fights with total freedom. 30% chance to dodge each hit. 30% chance per hit to Stun the enemy for 1 turn. +10% damage every turn (up to 10 times). Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "sword-saint",
+    "name": "Sword Saint",
+    "series": "",
+    "image": "images/cards/sword-saint.webp",
+    "base": {
+      "atk": 5095674,
+      "hp": 33971158,
+      "def": 0,
+      "status": 0,
+      "odds": 151800000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Divine Protections",
+      "desc": "Reinhard holds every blessing. Comes back once with 53% HP. Ignores shields, dodges and barriers. Its first hit on each new enemy does 1.8x damage. Can't be stunned, frozen or paralyzed."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]
