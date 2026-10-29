@@ -3240,5 +3240,77 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "first-master-fairy",
+    "name": "First Master Fairy",
+    "image": "images/support/first-master-fairy.webp",
+    "effect": {
+      "name": "Fairy Law",
+      "desc": "Mavis casts Fairy Law: once per fight, the supported card's first hit strikes EVERY enemy card for {0}% of its max HP.",
+      "vals": [
+        8
+      ],
+      "type": "splash",
+      "pos": [
+        {
+          "i": 0,
+          "x": 47.83,
+          "y": 105.83,
+          "w": 8.17,
+          "h": 5.0,
+          "cap": 5.0,
+          "gl": 2.0,
+          "gr": 1.67
+        }
+      ]
+    },
+    "odds": 2200000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "nine-tails-fox",
+    "name": "Nine Tails Fox",
+    "image": "images/support/nine-tails-fox.webp",
+    "effect": {
+      "name": "Nine-Tails Chakra Mode",
+      "desc": "Kurama lends his chakra: the supported card deals {0}% more damage.",
+      "vals": [
+        30
+      ],
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 63.83,
+          "y": 100.0,
+          "w": 13.33,
+          "h": 6.33,
+          "cap": 6.17,
+          "gl": 2.0,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 2000000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]

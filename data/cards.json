@@ -10648,5 +10648,889 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "demon-god-of-flame",
+    "name": "Demon God of Flame",
+    "series": "",
+    "image": "images/cards/demon-god-of-flame.webp",
+    "base": {
+      "atk": 577501,
+      "hp": 3850004,
+      "def": 0,
+      "status": 0,
+      "odds": 1700000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "God of Demons",
+      "desc": "Satan's blue flames consume everything. Every hit sets the whole enemy deck on fire for 2 turns. Each hit adds 3 Burn stacks (0.9% of the enemy's max HP per turn each, up to 4, 3 turns). Every enemy card starts with 4.6% less damage. 6.8% chance per hit to Confuse the enemy (it hits itself instead). Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "demon-progenitor",
+    "name": "Demon Progenitor",
+    "series": "",
+    "image": "images/cards/demon-progenitor.webp",
+    "base": {
+      "atk": 448603,
+      "hp": 2990686,
+      "def": 0,
+      "status": 0,
+      "odds": 669000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Progenitor of All Demons",
+      "desc": "Muzan: Every hit also hits the whole enemy bench for 20%. Each hit adds 3 Poison stacks (0.8% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 4.7% of its max HP every turn. Comes back once with 16% HP. Takes 2x damage from Sun cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "earthquake-emperor",
+    "name": "Earthquake Emperor",
+    "series": "",
+    "image": "images/cards/earthquake-emperor.webp",
+    "base": {
+      "atk": 404044,
+      "hp": 2693626,
+      "def": 0,
+      "status": 0,
+      "odds": 354400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Gura Gura no Mi",
+      "desc": "Whitebeard cracks the air. Every hit also hits the whole enemy bench for 20%. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. Under 21% HP: +40% damage. When Ace falls: +34% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "fist-hero-vice-admiral",
+    "name": "Fist Hero Vice Admiral",
+    "series": "",
+    "image": "images/cards/fist-hero-vice-admiral.webp",
+    "base": {
+      "atk": 357394,
+      "hp": 2382628,
+      "def": 0,
+      "status": 0,
+      "odds": 415400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Galaxy Impact",
+      "desc": "Garp: Ignores shields, dodges and barriers. Every 3rd attack does 3x damage. Every hit also hits the whole enemy bench for 20%. With Roger in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "fusion-dance-warrior",
+    "name": "Fusion Dance Warrior",
+    "series": "",
+    "image": "images/cards/fusion-dance-warrior.webp",
+    "base": {
+      "atk": 450797,
+      "hp": 3005314,
+      "def": 0,
+      "status": 0,
+      "odds": 279300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Stardust Breaker",
+      "desc": "Gogeta: 62% chance per hit to Seal the enemy's ability for 2 turns. Ignores shields, dodges and barriers. Its first hit on each new enemy does 1.31x damage. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "galactic-tyrant",
+    "name": "Galactic Tyrant",
+    "series": "",
+    "image": "images/cards/galactic-tyrant.webp",
+    "base": {
+      "atk": 250742,
+      "hp": 1671616,
+      "def": 0,
+      "status": 0,
+      "odds": 238300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Black Frieza",
+      "desc": "Frieza: Ignores shields, dodges and barriers. Every hit also hits the whole enemy bench for 20%. Every enemy card starts with 9.7% less damage. Instantly kills enemies under 15% HP (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "golden-gate-king",
+    "name": "Golden Gate King",
+    "series": "",
+    "image": "images/cards/golden-gate-king.webp",
+    "base": {
+      "atk": 614885,
+      "hp": 4099230,
+      "def": 0,
+      "status": 0,
+      "odds": 995000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Enuma Elish",
+      "desc": "Gilgamesh fires the Gate of Babylon. 42% chance to attack twice (each hit does 0.8x damage). Every hit also hits the whole enemy bench for 20%. Every 3rd attack does 1.83x damage. Ignores shields, dodges and barriers. Every enemy card starts with 6.3% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "hero-number-one",
+    "name": "Hero Number One",
+    "series": "",
+    "image": "images/cards/hero-number-one.webp",
+    "base": {
+      "atk": 493403,
+      "hp": 3289350,
+      "def": 0,
+      "status": 0,
+      "odds": 848900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Blast",
+      "desc": "Blast's cubes warp space. Each hit swaps the enemy's front card with a random one (not bosses). Ignores shields, dodges and barriers. 40% chance to dodge each hit. +10% damage every turn (up to 10 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "homunculus-father",
+    "name": "Homunculus Father",
+    "series": "",
+    "image": "images/cards/homunculus-father.webp",
+    "base": {
+      "atk": 867245,
+      "hp": 5781630,
+      "def": 0,
+      "status": 0,
+      "odds": 1600000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "God Within",
+      "desc": "Father holds God inside him. Each kill gives it 13% of the defeated card's damage and HP. Its first hit on each new enemy Seals its ability for 2 turns. Every hit also hits the whole enemy bench for 20%. Heals 4.5% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "infinity-sorcerer",
+    "name": "Infinity Sorcerer",
+    "series": "",
+    "image": "images/cards/infinity-sorcerer.webp",
+    "base": {
+      "atk": 587315,
+      "hp": 3915430,
+      "def": 0,
+      "status": 0,
+      "odds": 617900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Limitless: Infinity",
+      "desc": "Nothing touches Gojo. Takes 36% less damage until it has been hit 4 times. 15% chance to dodge each hit. Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. With Geto in the deck, both get +7.6% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "king-of-curses",
+    "name": "King of Curses",
+    "series": "",
+    "image": "images/cards/king-of-curses.webp",
+    "base": {
+      "atk": 433620,
+      "hp": 2890800,
+      "def": 0,
+      "status": 0,
+      "odds": 570800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Malevolent Shrine",
+      "desc": "Sukuna's Dismantle and Cleave shred everything. Every hit also hits the whole enemy bench for 20%. Each hit adds 2 Bleed stacks (1.3% of the enemy's max HP per turn each, up to 4, 3 turns). Ignores shields, dodges and barriers. Instantly kills enemies under 9% HP (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "legendary-berserker",
+    "name": "Legendary Berserker",
+    "series": "",
+    "image": "images/cards/legendary-berserker.webp",
+    "base": {
+      "atk": 311219,
+      "hp": 2074794,
+      "def": 0,
+      "status": 0,
+      "odds": 327400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Wrath of the Legendary Super Saiyan",
+      "desc": "Broly's power has no ceiling. +8.4% damage every turn. +6.9% damage every time it is hit. Every hit also hits the whole enemy bench for 20%. Can't be stunned, frozen or paralyzed."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "made-in-heaven-priest",
+    "name": "Made in Heaven Priest",
+    "series": "",
+    "image": "images/cards/made-in-heaven-priest.webp",
+    "base": {
+      "atk": 492380,
+      "hp": 3282532,
+      "def": 0,
+      "status": 0,
+      "odds": 1400000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Made in Heaven",
+      "desc": "Pucci accelerates time. 76% chance to attack twice (each hit does 0.8x damage). 38% chance to dodge each hit. Its first hit on each new enemy Seals its ability for 3 turns. With Dio in the deck: +23% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "monk-of-names",
+    "name": "Monk of Names",
+    "series": "",
+    "image": "images/cards/monk-of-names.webp",
+    "base": {
+      "atk": 474446,
+      "hp": 3162976,
+      "def": 0,
+      "status": 0,
+      "odds": 724300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Futen Taisatsuryo",
+      "desc": "Ichibe takes away the enemy's name. Its first hit on each new enemy Seals its ability for 2 turns. Every 2nd attack also hits the card behind for 35%. Every enemy card starts with 8.4% less damage. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "moon-breath-swordsman",
+    "name": "Moon Breath Swordsman",
+    "series": "",
+    "image": "images/cards/moon-breath-swordsman.webp",
+    "base": {
+      "atk": 867240,
+      "hp": 5781602,
+      "def": 0,
+      "status": 0,
+      "odds": 91700000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Solar Eclipse",
+    "passive": {
+      "name": "Moon Breathing",
+      "desc": "Kokushibo's moon blades fill the air. Every 2nd attack also hits the card behind for 50%. Heals 8% of its max HP every turn. 40% chance to crit for 2.5x damage. Takes 2x damage from Sun cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "otsutsuki-vessel",
+    "name": "Otsutsuki Vessel",
+    "series": "",
+    "image": "images/cards/otsutsuki-vessel.webp",
+    "base": {
+      "atk": 315002,
+      "hp": 2100012,
+      "def": 0,
+      "status": 0,
+      "odds": 486900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sukunahikona",
+      "desc": "Isshiki shrinks and expands anything. 34% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Each hit crushes the enemy for 8.5% of its max HP per turn for 2 turns. Takes 17% less damage. Heals 21% of the damage it deals."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "potara-fusion-warrior",
+    "name": "Potara Fusion Warrior",
+    "series": "",
+    "image": "images/cards/potara-fusion-warrior.webp",
+    "base": {
+      "atk": 335233,
+      "hp": 2234886,
+      "def": 0,
+      "status": 0,
+      "odds": 302400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Final Kamehameha",
+      "desc": "Vegito: Every 2nd attack also hits the card behind for 40%. 24% chance to dodge each hit. 20% chance to crit for 2x damage. Every 3rd attack does 2.01x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "pumpkin-sun-pride",
+    "name": "Pumpkin Sun Pride",
+    "series": "",
+    "image": "images/cards/pumpkin-sun-pride.webp",
+    "base": {
+      "atk": 622225,
+      "hp": 4148164,
+      "def": 0,
+      "status": 0,
+      "odds": 1300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "The One",
+      "desc": "At noon, Escanor is the strongest. +5.2% damage every turn. Every hit sets the whole enemy deck on fire for 1 turn. Every hit also hits the whole enemy bench for 20%. Can't be stunned, frozen or paralyzed."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "six-paths-fox-sage",
+    "name": "Six Paths Fox Sage",
+    "series": "",
+    "image": "images/cards/six-paths-fox-sage.webp",
+    "base": {
+      "atk": 325926,
+      "hp": 2172838,
+      "def": 0,
+      "status": 0,
+      "odds": 449800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Baryon Mode",
+      "desc": "Naruto burns his own life force into raw power. Hits set black flames on the enemy: 1.5% of its max HP every turn, forever. +39% damage. Every other card in your deck gets +9.7% damage. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "soul-magic-father",
+    "name": "Soul Magic Father",
+    "series": "",
+    "image": "images/cards/soul-magic-father.webp",
+    "base": {
+      "atk": 542488,
+      "hp": 3616586,
+      "def": 0,
+      "status": 0,
+      "odds": 1100000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Soul Magic",
+      "desc": "Lucius rewrites souls. Copies the ability of every enemy card it faces. Each kill gives it 8.4% of the defeated card's damage and HP. Its first hit on each new enemy Seals its ability for 2 turns."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "soul-queen-emperor",
+    "name": "Soul Queen Emperor",
+    "series": "",
+    "image": "images/cards/soul-queen-emperor.webp",
+    "base": {
+      "atk": 300046,
+      "hp": 2000304,
+      "def": 0,
+      "status": 0,
+      "odds": 383700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Soul Pocus",
+      "desc": "Big Mom steals lifespans. Each hit also deals 10% of the enemy's max HP. Heals 30% of the damage it deals. Takes 25% less damage. Can't be stunned, frozen or paralyzed."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "ultra-ego-prince",
+    "name": "Ultra Ego Prince",
+    "series": "",
+    "image": "images/cards/ultra-ego-prince.webp",
+    "base": {
+      "atk": 251743,
+      "hp": 1678284,
+      "def": 0,
+      "status": 0,
+      "odds": 258000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ultra Ego",
+      "desc": "Vegeta: +15% damage every time it is hit. Under 40% HP: +100% damage. Survives its first killing blow with 1 HP. With Goku in the deck, both get +25% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "undead-overlord-king",
+    "name": "Undead Overlord King",
+    "series": "",
+    "image": "images/cards/undead-overlord-king.webp",
+    "base": {
+      "atk": 318294,
+      "hp": 2121958,
+      "def": 0,
+      "status": 0,
+      "odds": 919100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "The Goal of All Life is Death",
+      "desc": "Ainz's super-tier magic. When it comes in, the strongest enemy card dies after 3 turns unless this card falls first (bosses lose 30% HP). Every enemy card starts with 6.8% less damage. Instantly kills enemies under 10% HP (not bosses). Nazarick cards in your deck get +6.8% damage and HP. Takes 6.8% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "white-hawk-godhand",
+    "name": "White Hawk Godhand",
+    "series": "",
+    "image": "images/cards/white-hawk-godhand.webp",
+    "base": {
+      "atk": 711153,
+      "hp": 4741018,
+      "def": 0,
+      "status": 0,
+      "odds": 1500000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Eclipse",
+      "desc": "Griffith: 36% chance per hit to Mark the enemy (it takes 9.1% more damage from everyone). Every enemy card starts with 7.1% less damage. Every 2nd attack also hits the card behind for 35%. Comes back once with 36% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "wood-god-hokage",
+    "name": "Wood God Hokage",
+    "series": "",
+    "image": "images/cards/wood-god-hokage.webp",
+    "base": {
+      "atk": 476097,
+      "hp": 3173980,
+      "def": 0,
+      "status": 0,
+      "odds": 527200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Wood Release: True Several Thousand Hands",
+      "desc": "Hashirama: Every hit also hits the whole enemy bench for 20%. Heals 4.8% of its max HP every turn. 18% chance per hit to Stun the enemy for 1 turn. With Madara in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "destroyer-dragonoid",
+    "name": "Destroyer Dragonoid",
+    "series": "",
+    "image": "images/cards/destroyer-dragonoid.webp",
+    "base": {
+      "atk": 1541996,
+      "hp": 10279974,
+      "def": 0,
+      "status": 0,
+      "odds": 6300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Drago Nova",
+      "desc": "Milim's Drago Nova destroys everything. +32% damage. Every hit also hits the whole enemy bench for 20%. Ignores shields, dodges and barriers. +4% damage every time it is hit. With Rimuru in the deck, both get +6% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]
