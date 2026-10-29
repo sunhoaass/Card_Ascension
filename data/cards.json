@@ -12382,5 +12382,821 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "ultra-instinct-saiyan",
+    "name": "Ultra Instinct Saiyan",
+    "series": "",
+    "image": "images/cards/ultra-instinct-saiyan.webp",
+    "base": {
+      "atk": 2011240,
+      "hp": 13408266,
+      "def": 0,
+      "status": 0,
+      "odds": 24900000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Mastered Ultra Instinct",
+      "desc": "Goku's body moves on its own. 38% chance to dodge each hit. Its attacks can't be dodged. 38% chance to counter-attack when hit. Survives its first killing blow with 1 HP. With Vegeta in the deck, both get +19% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "hunter-chairman",
+    "name": "Hunter Chairman",
+    "series": "",
+    "image": "images/cards/hunter-chairman.webp",
+    "base": {
+      "atk": 3463,
+      "hp": 23084,
+      "def": 0,
+      "status": 0,
+      "odds": 18000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Chairman's Will",
+      "desc": "Go Gun-Hee's iron will. Takes 15% less damage. Under 40% HP: +60% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "ice-dragon-prodigy",
+    "name": "Ice Dragon Prodigy",
+    "series": "",
+    "image": "images/cards/ice-dragon-prodigy.webp",
+    "base": {
+      "atk": 2574,
+      "hp": 17158,
+      "def": 0,
+      "status": 0,
+      "odds": 13000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Daiguren Hyorinmaru",
+      "desc": "Hitsugaya's ice dragons. 35% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2x damage against frozen enemies. Blocks the first hit completely."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "ice-make-mage",
+    "name": "Ice Make Mage",
+    "series": "",
+    "image": "images/cards/ice-make-mage.webp",
+    "base": {
+      "atk": 4563,
+      "hp": 30418,
+      "def": 0,
+      "status": 0,
+      "odds": 27000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ice Devil Slayer",
+      "desc": "Gray's Devil Slayer magic. +50% damage against Demon cards. 25% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). With Natsu in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "knight-king",
+    "name": "Knight King",
+    "series": "",
+    "image": "images/cards/knight-king.webp",
+    "base": {
+      "atk": 4494,
+      "hp": 29960,
+      "def": 0,
+      "status": 0,
+      "odds": 33000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Excalibur Plasma",
+      "desc": "Arthur believes he's a knight king, so he is. +40% damage. Ignores shields, dodges and barriers. With Shinra in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "leopard-agent",
+    "name": "Leopard Agent",
+    "series": "",
+    "image": "images/cards/leopard-agent.webp",
+    "base": {
+      "atk": 5078,
+      "hp": 33850,
+      "def": 0,
+      "status": 0,
+      "odds": 43000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Six Powers",
+      "desc": "Lucci's Shigan strikes twice. 35% chance to attack twice. Takes 12% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "lifespan-angel",
+    "name": "Lifespan Angel",
+    "series": "",
+    "image": "images/cards/lifespan-angel.webp",
+    "base": {
+      "atk": 3011,
+      "hp": 20074,
+      "def": 0,
+      "status": 0,
+      "odds": 18000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lifespan Drain",
+      "desc": "Angel Devil's touch drains life. Each hit drains 5.3% of the enemy's max HP per turn for 3 turns, healing it. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "lion-beast-fist",
+    "name": "Lion Beast Fist",
+    "series": "",
+    "image": "images/cards/lion-beast-fist.webp",
+    "base": {
+      "atk": 3600,
+      "hp": 24002,
+      "def": 0,
+      "status": 0,
+      "odds": 23000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lionel",
+      "desc": "Leone: Heals 6% of its max HP every turn. +25% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "love-pillar",
+    "name": "Love Pillar",
+    "series": "",
+    "image": "images/cards/love-pillar.webp",
+    "base": {
+      "atk": 4188,
+      "hp": 27920,
+      "def": 0,
+      "status": 0,
+      "odds": 11000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Love Breathing",
+      "desc": "Mitsuri: Every 2nd attack also hits the card behind for 35%. 20% chance to dodge each hit. +25% damage against Demon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "mad-scientist-captain",
+    "name": "Mad Scientist Captain",
+    "series": "",
+    "image": "images/cards/mad-scientist-captain.webp",
+    "base": {
+      "atk": 2529,
+      "hp": 16862,
+      "def": 0,
+      "status": 0,
+      "odds": 12000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Konjiki Ashisogi Jizo",
+      "desc": "Mayuri: Each hit adds 2 Poison stacks (2.8% of the enemy's max HP per turn each, up to 4, 3 turns). Comes back once with 37% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "morning-star-maid",
+    "name": "Morning Star Maid",
+    "series": "",
+    "image": "images/cards/morning-star-maid.webp",
+    "base": {
+      "atk": 3677,
+      "hp": 24516,
+      "def": 0,
+      "status": 0,
+      "odds": 22000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Oni Mode",
+      "desc": "Rem: 30% chance per hit to Stun the enemy for 1 turn. Under 50% HP: +50% damage. Once, takes the killing blow for Subaru."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "muscle-doll-teacher",
+    "name": "Muscle Doll Teacher",
+    "series": "",
+    "image": "images/cards/muscle-doll-teacher.webp",
+    "base": {
+      "atk": 2712,
+      "hp": 18080,
+      "def": 0,
+      "status": 0,
+      "odds": 14000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "True Form",
+      "desc": "Biscuit's real body. Takes 20% less damage. Heals 5% of its max HP every turn. +30% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "namekian-mentor",
+    "name": "Namekian Mentor",
+    "series": "",
+    "image": "images/cards/namekian-mentor.webp",
+    "base": {
+      "atk": 2148,
+      "hp": 14322,
+      "def": 0,
+      "status": 0,
+      "odds": 8290
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Special Beam Cannon",
+      "desc": "Piccolo: Every 2nd attack also hits the card behind for 50%. Ignores shields, dodges and barriers. Heals 5% of its max HP every turn. Once, takes the killing blow for Gohan."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "needle-brother",
+    "name": "Needle Brother",
+    "series": "",
+    "image": "images/cards/needle-brother.webp",
+    "base": {
+      "atk": 2905,
+      "hp": 19366,
+      "def": 0,
+      "status": 0,
+      "odds": 14000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Needle Puppets",
+      "desc": "Illumi's needles take control. 35% chance per hit to Confuse the enemy (it hits itself instead). Instantly kills enemies under 15% HP (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "obi-upper-moon",
+    "name": "Obi Upper Moon",
+    "series": "",
+    "image": "images/cards/obi-upper-moon.webp",
+    "base": {
+      "atk": 3664,
+      "hp": 24426,
+      "def": 0,
+      "status": 0,
+      "odds": 11000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Obi Sash",
+      "desc": "Daki: Every 2nd attack also hits the card behind for 35%. Heals 6% of its max HP every turn. Once, brings Gyutaro back with 50% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "one-horn-oni-maid",
+    "name": "One Horn Oni Maid",
+    "series": "",
+    "image": "images/cards/one-horn-oni-maid.webp",
+    "base": {
+      "atk": 5270,
+      "hp": 35130,
+      "def": 0,
+      "status": 0,
+      "odds": 21000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "El Fura",
+      "desc": "Ram: Every 2nd attack also hits the card behind for 35%. With Rem in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "orc-shaman-shadow",
+    "name": "Orc Shaman Shadow",
+    "series": "",
+    "image": "images/cards/orc-shaman-shadow.webp",
+    "base": {
+      "atk": 3118,
+      "hp": 20786,
+      "def": 0,
+      "status": 0,
+      "odds": 19000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Shaman's Fire",
+      "desc": "Tusk: Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). While on the bench, heals the card in front 4% of its max HP every turn. Shadows raised by your deck are 10% stronger."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "panther-king-espada",
+    "name": "Panther King Espada",
+    "series": "",
+    "image": "images/cards/panther-king-espada.webp",
+    "base": {
+      "atk": 2596,
+      "hp": 17308,
+      "def": 0,
+      "status": 0,
+      "odds": 13000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Desgarron",
+      "desc": "Grimmjow: Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). +10% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "pink-pumpkin-sniper",
+    "name": "Pink Pumpkin Sniper",
+    "series": "",
+    "image": "images/cards/pink-pumpkin-sniper.webp",
+    "base": {
+      "atk": 3946,
+      "hp": 26308,
+      "def": 0,
+      "status": 0,
+      "odds": 24000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Roman Artillery: Pumpkin",
+      "desc": "Mine's Pumpkin gets stronger in a pinch. Under 50% HP: +80% damage. Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "plague-doctor-villain",
+    "name": "Plague Doctor Villain",
+    "series": "",
+    "image": "images/cards/plague-doctor-villain.webp",
+    "base": {
+      "atk": 2736,
+      "hp": 18238,
+      "def": 0,
+      "status": 0,
+      "odds": 14000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Overhaul",
+      "desc": "Overhaul takes apart and rebuilds. Comes back once with 44% HP. Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "poison-butterfly-pillar",
+    "name": "Poison Butterfly Pillar",
+    "series": "",
+    "image": "images/cards/poison-butterfly-pillar.webp",
+    "base": {
+      "atk": 2400,
+      "hp": 16002,
+      "def": 0,
+      "status": 0,
+      "odds": 11000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Wisteria Poison",
+      "desc": "Shinobu: Each hit adds 2 Poison stacks (2% of the enemy's max HP per turn each, up to 4, 4 turns). 2x against Demon cards. 20% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "psychic-shrine-girl",
+    "name": "Psychic Shrine Girl",
+    "series": "",
+    "image": "images/cards/psychic-shrine-girl.webp",
+    "base": {
+      "atk": 5249,
+      "hp": 34994,
+      "def": 0,
+      "status": 0,
+      "odds": 36000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Psychic Hands",
+      "desc": "Momo Ayase: 25% chance per hit to Stun the enemy for 1 turn. Every 2nd attack also hits the card behind for 35%. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "ranger-android",
+    "name": "Ranger Android",
+    "series": "",
+    "image": "images/cards/ranger-android.webp",
+    "base": {
+      "atk": 2217,
+      "hp": 14780,
+      "def": 0,
+      "status": 0,
+      "odds": 7706
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Barrier & Infinite Energy",
+      "desc": "Android 17: Blocks the first 2 hits completely. Heals 4% of its max HP every turn. With Android 18 in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "ratio-salaryman",
+    "name": "Ratio Salaryman",
+    "series": "",
+    "image": "images/cards/ratio-salaryman.webp",
+    "base": {
+      "atk": 2597,
+      "hp": 17310,
+      "def": 0,
+      "status": 0,
+      "odds": 9953
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ratio Technique: Overtime",
+      "desc": "Nanami: Up to +35% damage against healthy enemies (the more HP they have, the more). From its 3rd attack on: +40% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]

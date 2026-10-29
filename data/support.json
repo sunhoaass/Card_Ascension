@@ -3406,5 +3406,221 @@
     },
     "tier": "",
     "updated": "2026-10-29"
+  },
+  {
+    "id": "immortal-witch",
+    "name": "Immortal Witch",
+    "image": "images/support/immortal-witch.webp",
+    "effect": {
+      "name": "Code of Immortality",
+      "desc": "C.C. can't die: when the supported card is knocked out it has a {0}% chance to come back with 20% HP (once per fight).",
+      "vals": [
+        35
+      ],
+      "type": "revive",
+      "pos": [
+        {
+          "i": 0,
+          "x": 50.0,
+          "y": 97.83,
+          "w": 10.0,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.67,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 73000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "library-spirit",
+    "name": "Library Spirit",
+    "image": "images/support/library-spirit.webp",
+    "effect": {
+      "name": "Minya",
+      "desc": "Beatrice's Yin magic drains the enemy: the supported card's hits leech {0}% of the enemy's HP every turn for 3 turns, back to it.",
+      "vals": [
+        0.6
+      ],
+      "type": "leech",
+      "pos": [
+        {
+          "i": 0,
+          "x": 65.17,
+          "y": 97.33,
+          "w": 10.33,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.67,
+          "gr": 2.0
+        }
+      ]
+    },
+    "odds": 52000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "little-witch",
+    "name": "Little Witch",
+    "image": "images/support/little-witch.webp",
+    "effect": {
+      "name": "Elemental Ward",
+      "desc": "Schierke's elemental spirits ward the supported card: the first 2 debuffs that would hit it each fight (stun, freeze, burn, poison, seal, weaken ...) are blocked, and it takes {0}% less damage.",
+      "vals": [
+        2
+      ],
+      "type": "damage-reduction",
+      "pos": [
+        {
+          "i": 0,
+          "x": 58.5,
+          "y": 109.0,
+          "w": 6.33,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.67,
+          "gr": 1.67
+        }
+      ]
+    },
+    "odds": 67000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "mind-reader-child",
+    "name": "Mind Reader Child",
+    "image": "images/support/mind-reader-child.webp",
+    "effect": {
+      "name": "Mind Reading",
+      "desc": "Anya reads the enemy's mind: its normal attacks have a {0}% chance to miss the supported card.",
+      "vals": [
+        10
+      ],
+      "type": "dodge",
+      "pos": [
+        {
+          "i": 0,
+          "x": 63.83,
+          "y": 100.0,
+          "w": 12.0,
+          "h": 5.5,
+          "cap": 5.33,
+          "gl": 2.5,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 47000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "notebook-genius",
+    "name": "Notebook Genius",
+    "image": "images/support/notebook-genius.webp",
+    "effect": {
+      "name": "Kira's Judgment",
+      "desc": "Light writes the enemy's name: the enemy the supported card hits takes {0}% more damage from everyone, and the supported card instantly finishes an enemy under 6% HP (not bosses).",
+      "vals": [
+        7.5
+      ],
+      "type": "mark",
+      "pos": [
+        {
+          "i": 0,
+          "x": 56.5,
+          "y": 96.5,
+          "w": 9.33,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 1.33,
+          "gr": 1.5
+        }
+      ]
+    },
+    "odds": 72000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
+  },
+  {
+    "id": "ogre-shrine-princess",
+    "name": "Ogre Shrine Princess",
+    "image": "images/support/ogre-shrine-princess.webp",
+    "effect": {
+      "name": "Shrine Maiden's Blessing",
+      "desc": "Shuna's cooking and blessing: the supported card deals {0}% more damage.",
+      "vals": [
+        8.9
+      ],
+      "type": "dmg",
+      "pos": [
+        {
+          "i": 0,
+          "x": 63.5,
+          "y": 100.17,
+          "w": 14.5,
+          "h": 6.17,
+          "cap": 6.17,
+          "gl": 2.17,
+          "gr": 2.33
+        }
+      ]
+    },
+    "odds": 76000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 0,
+      "reliability": 0,
+      "flexibility": 0,
+      "synergy": 0,
+      "value": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29"
   }
 ]
