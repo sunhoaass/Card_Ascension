@@ -38,7 +38,7 @@
   }
   const effectLine = (s, rarity) => { const e = effect(s, rarity); return e.name && e.desc ? `${e.name}: ${e.desc}` : e.name || e.desc; };
   // the values at a rarity, as written on the card ("6.2%" …)
-  const values = (s, rarity = state.rarity) => C.supVals(s).map((v) => C.supAt(v, rarity) + "%");
+  const values = (s, rarity = state.rarity) => C.supVals(s).map((v, i) => C.supValAt(s, i, rarity) + "%");
 
   function computeRanks() {
     const ranked = items.filter(isRanked).sort((a, b) => b.scores.value - a.scores.value);

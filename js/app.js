@@ -104,8 +104,11 @@
     return (r > 200 || (r === 200 && q % 2) ? q + 1 : q) / 10;
   }
   const supVals = (s) => (s && s.effect && typeof s.effect === "object" && Array.isArray(s.effect.vals) ? s.effect.vals : []);
-  const supValue = (s, rarity) => supAt(supVals(s)[0], rarity);  // the main value (vals[0]) at a rarity · 0 = none
-  const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => { const v = supVals(s)[+i]; return v == null ? m : String(supAt(v, rarity)); });
+  /* A chance tops out at 100% (owner 2026-10-29): {n} followed by "% chance" or "% of (the) hits" (dodges, counters) */
+  const supCapped = (s, i) => new RegExp(`\\{${i}\\}% (chance|of (the )?hits)`).test((s && s.effect && s.effect.desc) || "");
+  const supValAt = (s, i, rarity) => { const v = supAt(supVals(s)[i], rarity); return supCapped(s, i) ? Math.min(100, v) : v; };
+  const supValue = (s, rarity) => supValAt(s, 0, rarity);  // the main value (vals[0]) at a rarity · 0 = none
+  const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
@@ -384,7 +387,7 @@
   }
   function supNumsHTML(s, rarity) {
     return supPos(s).map((p) => {
-      const fs = p.h / SV.cap, v = supAt(supVals(s)[p.i], rarity);
+      const fs = p.h / SV.cap, v = supValAt(s, p.i, rarity);
       return `<span class="gc__sv" style="left:${(p.x + p.w / 2).toFixed(2)}cqw;top:${(p.y - SV.top * fs).toFixed(2)}cqw;font-size:${fs.toFixed(2)}cqw"><span class="gc__svn" data-sv="${p.i}" data-value="${v}">${fmtSv(v)}</span></span>`;
     }).join("");
   }
@@ -426,7 +429,7 @@
     const pos = supPos(s);
     el.querySelectorAll(".gc__svn").forEach((n) => {
       const p = pos.find((x) => x.i === +n.dataset.sv); if (!p) return;
-      const v = supAt(supVals(s)[p.i], rarity), a = fmtSv(v), b = n.textContent;
+      const v = supValAt(s, p.i, rarity), a = fmtSv(v), b = n.textContent;
       const dec = String(v).includes(".") || b.includes(".");
       if (animate && !FX.reduced) {
         fitSv(n, s, p, a.length >= b.length ? a : b);
@@ -695,7 +698,7 @@
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, rankTop, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
-    isSupport, supAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
+    isSupport, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     PAGE_SIZE, pager, pageTop,   // pages of the Cards / Support grids (2026-10-28)

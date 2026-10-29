@@ -352,7 +352,7 @@
     ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
     pos.forEach((p) => {
       const b = C.supVals(item)[p.i]; if (b == null) return;
-      const t = C.supAt(b, rarity) + "%", fs = (p.h / 0.82) * u;
+      const t = C.supValAt(item, p.i, rarity) + "%", fs = (p.h / 0.82) * u;
       ctx.font = `600 ${fs}px ${font}`;
       const room = (p.w + 1.4 * Math.min(p.gl || 0, p.gr || 0)) * u, tw = ctx.measureText(t).width, sx = tw > room ? room / tw : 1;
       ctx.save();

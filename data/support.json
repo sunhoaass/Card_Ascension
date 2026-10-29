@@ -2660,9 +2660,10 @@
     "image": "images/support/useless-goddess.webp",
     "effect": {
       "name": "Resurrection",
-      "desc": "Aqua is NOT useless: when the supported card is knocked out it has a {0}% chance to be resurrected with 30% HP (once per fight).",
+      "desc": "Aqua is NOT useless: when the supported card is knocked out it has a {0}% chance to be resurrected with {1}% HP (once per fight).",
       "vals": [
-        37
+        37,
+        30
       ],
       "type": "revive",
       "pos": [
@@ -2675,6 +2676,16 @@
           "cap": 4.5,
           "gl": 1.83,
           "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 42.5,
+          "y": 104.17,
+          "w": 9.5,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.67,
+          "gr": 2.17
         }
       ]
     },
@@ -3092,9 +3103,10 @@
     "image": "images/support/chainsaw-pup-devil.webp",
     "effect": {
       "name": "Chainsaw Heart",
-      "desc": "Pochita gives his heart: when the supported card is knocked out it has a {0}% chance to rev back up with 40% HP (once per fight).",
+      "desc": "Pochita gives his heart: when the supported card is knocked out it has a {0}% chance to rev back up with {1}% HP (once per fight).",
       "vals": [
-        53
+        53,
+        40
       ],
       "type": "revive",
       "pos": [
@@ -3107,6 +3119,16 @@
           "cap": 4.5,
           "gl": 2.0,
           "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 42.33,
+          "y": 104.17,
+          "w": 9.67,
+          "h": 4.5,
+          "cap": 4.33,
+          "gl": 1.5,
+          "gr": 2.17
         }
       ]
     },
@@ -3366,10 +3388,11 @@
     "image": "images/support/eternal-wish-dragon.webp",
     "effect": {
       "name": "Wish Granted",
-      "desc": "Shenron grants one wish: when the supported card is knocked out it has a {0}% chance to come back with 50% HP (once per fight), and every OTHER card in your deck deals {1}% more damage.",
+      "desc": "Shenron grants one wish: when the supported card is knocked out it has a {0}% chance to come back with {2}% HP (once per fight), and every OTHER card in your deck deals {1}% more damage.",
       "vals": [
         55,
-        7.5
+        7.5,
+        50
       ],
       "type": "revive",
       "pos": [
@@ -3392,6 +3415,16 @@
           "cap": 3.5,
           "gl": 1.33,
           "gr": 1.5
+        },
+        {
+          "i": 2,
+          "x": 87.83,
+          "y": 95.5,
+          "w": 7.67,
+          "h": 3.67,
+          "cap": 3.67,
+          "gl": 1.67,
+          "gr": 4.5
         }
       ]
     },
@@ -3413,9 +3446,10 @@
     "image": "images/support/immortal-witch.webp",
     "effect": {
       "name": "Code of Immortality",
-      "desc": "C.C. can't die: when the supported card is knocked out it has a {0}% chance to come back with 20% HP (once per fight).",
+      "desc": "C.C. can't die: when the supported card is knocked out it has a {0}% chance to come back with {1}% HP (once per fight).",
       "vals": [
-        35
+        35,
+        20
       ],
       "type": "revive",
       "pos": [
@@ -3428,6 +3462,16 @@
           "cap": 4.5,
           "gl": 1.67,
           "gr": 2.0
+        },
+        {
+          "i": 1,
+          "x": 34.5,
+          "y": 105.0,
+          "w": 9.83,
+          "h": 4.5,
+          "cap": 4.5,
+          "gl": 2.0,
+          "gr": 2.33
         }
       ]
     },

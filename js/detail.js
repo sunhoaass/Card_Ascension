@@ -1275,7 +1275,7 @@
     const r = state.rarity;
     if (isSup(card)) {
       const dec = (v) => (x) => (x === v ? v + "%" : (String(v).includes(".") ? x.toFixed(1) : Math.round(x)) + "%");
-      C.supVals(card).forEach((b, i) => { const v = C.supAt(b, r); setNum(q("sv" + i), v, dec(v), anim); });
+      C.supVals(card).forEach((b, i) => { const v = C.supValAt(card, i, r); setNum(q("sv" + i), v, dec(v), anim); });
       q("odds").textContent = Number(card.odds) > 0 ? C.fmtOdds(Number(card.odds)) : "–";
       q("lv").textContent = r;
       const d = q("eff"); if (d) { const t = C.support.effect(card, r).desc; if (d.textContent !== t) { d.textContent = t; if (anim) FX.fade(d, 1, { duration: 250 }); } }
