@@ -1394,3 +1394,7 @@
   - ข้อความ Hellsing ในเกมเปลี่ยนเป็น "Hellsing Commander's order: the supported card does X% more damage with its first hit on each new enemy." (รูปเรายังเป็นข้อความเก่า → ทำในรอบแคปใหม่)
   - **ทดสอบ:** Chromium ไม่มี error · `node --check` ผ่าน
   - **ไฟล์:** `js/app.js` · `js/share.js` · `css/tokens.css` · `data/support.json` · `index.html` · `PROGRESS.md` · `HISTORY.md`
+- 2026-10-29: **Support: โอกาส 1 IN X คูณตามระดับ + เลขบนรูปตรงบรรทัด มีช่องไฟ** (`?v=37`)
+  - `oddsAt()` รับ Support ด้วย (`odds` Normal × ตัวคูณโอกาสของระดับ เหมือนการ์ด) → ป้ายบนการ์ด (เปลี่ยนตอนกดระดับ · `setSupportRarity`), หน้าดูการ์ด, เคสเกรด, รูปแชร์ · ทดสอบ: Hellsing Commander Normal 1 in 720K → Godly 1 in 720B · การเรียงหน้า Support ยังใช้ค่า Normal (ลำดับเหมือนเดิม)
+  - เลขบนรูป: วัดการ์ด 100 ใบ (115 ตำแหน่ง · ระดับ Godly · การ์ดกว้าง 600): เดิมตัวเลขเตี้ยกว่าเลขเดิม ~1.3px และเลขยาวกินช่องว่างข้างๆ 70% (เหลือช่องไฟ 2–4px) → `SV` cap 0.82 → 0.78 · top 0.10 → 0.13 · ให้กินช่องว่างได้แค่ 30% ต่อข้าง แล้วบีบแนวนอนแทน (share.js ตาม) · หลังแก้: ขอบบน/ล่างต่างจากเลขเดิม median −0.2 / +0.2px · ช่องไฟ median 10 / 12px (เดิมในรูป 12 / 13) · ช่องไฟน้อยสุด 4px เฉพาะที่ในรูปเดิมก็ชิดวงเล็บ
+  - **ไฟล์:** `js/app.js` · `js/detail.js` · `js/grade.js` · `js/share.js` · `index.html` · `PROGRESS.md` · `HISTORY.md`

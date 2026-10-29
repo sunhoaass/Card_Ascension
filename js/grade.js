@@ -195,7 +195,7 @@
      support as it is · the label has its ability values at the level (instead of ATK / HP) + its Value score */
   function supLabelHTML(sp, r) {
     const cert = certOf(sp.id), e = C.support.effect(sp, r), vals = C.support.values(sp, r);
-    const ranked = C.isRanked(sp), odds = Number(sp.odds) > 0 ? C.fmtOdds(Number(sp.odds)) : "";
+    const ranked = C.isRanked(sp), odds = Number(sp.odds) > 0 ? C.fmtOdds(C.oddsAt(sp, r)) : "";
     const v = ranked ? String(Number(Number(sp.scores.value).toFixed(1))) : "–";
     return `<div class="lab__l">
         <span class="lab__brand">CBI GRADED · SUPPORT</span>
