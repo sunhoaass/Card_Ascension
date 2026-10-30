@@ -6,7 +6,9 @@
      C.tm.show(listId|null, sharedData|null) every time My Lists is showing
    · Global is view-only and has a Cards | Support switch (they never share a list)
      - Cards: rows Meta–D by Overall (only the top meta.rankTop cards are ranked) + the Utility row (by utilGain), rarity picker shared with the Cards page
-     - Support: rows Meta–B by Value (data/support.json · ranked at Godly), no rarity
+     - Support: rows Meta–D by Value (data/support.json · ranked at Godly), no rarity
+     - rows wrap (never scroll sideways) · ▲▼ on a card whose tier moved since prevTier (C.tierMoveHTML)
+     - Save image: the list on screen (Cards or Support) as one picture with every name written under its card (C.share.imageDialog)
    Meta Decks moved to the Deck page (js/deck.js).
    Needs js/fx.js, js/app.js, js/cards.js loaded first (support.js is only needed when a support tile is tapped).
    The rarity chips here are handled by js/cards.js (one shared rarity for the whole site);
@@ -49,12 +51,29 @@
     tiles.get(card.id).push(el);
   }
 
-  /* ---------- One row per tier (shared by Cards and Support) ---------- */
+  /* ---------- One row per tier (shared by Cards and Support, the page and the saved image) ---------- */
   // cards: true = also the cardsOnly rows (Utility, last)
+  const groupsOf = (items, order, cards) => state.meta.tiers.filter((t) => cards || !t.cardsOnly)
+    .map((t) => ({ t, group: items.filter((x) => x.tier === t.name).sort(t.cardsOnly ? byGain : order) }));
+  const rankedCards = () => state.cards.filter(C.isRanked);       // Unranked cards never appear in a row
+  const rankedSupport = () => supportItems.filter(isRankedSupport);
+
+  // ▲▼ in the tile's top-left corner + the same words at the end of its label (the label wins over the text inside)
+  function addMove(el, x) {
+    const html = C.tierMoveHTML(x, "tmove--tile");
+    if (!html) return el;
+    el.insertAdjacentHTML("beforeend", html);
+    labelMove(el, x);
+    return el;
+  }
+  function labelMove(el, x) {
+    const t = C.tierMoveText(x), l = el.getAttribute("aria-label") || "";
+    if (t && !l.endsWith(t)) el.setAttribute("aria-label", `${l}, ${t}`);
+  }
+
   function buildRows(items, order, makeTile, noun, cards = false) {
     const frag = document.createDocumentFragment();
-    state.meta.tiers.filter((t) => cards || !t.cardsOnly).forEach((t) => {
-      const group = items.filter((x) => x.tier === t.name).sort(t.cardsOnly ? byGain : order);
+    groupsOf(items, order, cards).forEach(({ t, group }) => {
       const row = document.createElement("section");
       row.className = "tier-row glass";
       row.style.setProperty("--tc", tierVar(t.name));
@@ -71,7 +90,7 @@
 
   /* ---------- Global: Cards ---------- */
   function renderCards() {
-    const ranked = state.cards.filter(C.isRanked);       // Unranked cards never appear in a row
+    const ranked = rankedCards();
     const unranked = state.cards.length - ranked.length;
 
     ui.none.hidden = ranked.length > 0;
@@ -91,7 +110,7 @@
     ui.list.replaceChildren(buildRows(ranked, byOverall, (c) => {
       const el = C.renderCard(c, state.rarity, { mini: true });
       track(c, el);
-      return el;
+      return addMove(el, c);
     }, ["card", "cards"], true));
   }
 
@@ -106,11 +125,11 @@
     $(".scard__info", art).insertAdjacentHTML("beforeend", `<span class="stile__val">${esc(fmtScore(s.scores.value))}</span>`);
     FX.tilt(art);
     b.appendChild(art);
-    return b;
+    return addMove(b, s);
   }
 
   function renderSupport() {
-    const ranked = supportItems.filter(isRankedSupport);
+    const ranked = rankedSupport();
     const unranked = supportItems.length - ranked.length;
 
     ui.snone.hidden = ranked.length > 0;
@@ -129,6 +148,23 @@
     ui.slist.replaceChildren(buildRows(ranked, byValue, supportTile, ["support card", "support cards"]));
   }
 
+  /* ---------- Save image (plan 2026-10-30 item 3): two pictures, never one · Cards (ranked + Utility) | Support ----------
+     Drawn by js/share.js (tierImage with captions: bigger cards, the full name under each one, ▲▼ like the page) */
+  function saveImage() {
+    const sup = kind === "support";
+    const rows = groupsOf(sup ? rankedSupport() : rankedCards(), sup ? byValue : byOverall, !sup)
+      .map(({ t, group }) => ({ label: t.name, color: C.TIER_COLOR[t.name] || "--t-d", items: group.map((x) => x.id) }));
+    C.share.imageDialog({
+      id: "global-" + kind, title: sup ? "Support Tier List" : "Card Tier List",
+      type: sup ? "support" : "card", rarity: sup ? null : state.rarity, rows, captions: true,
+    }, { flashEl: sup ? ui.slist : ui.list });
+  }
+  function saveState() {
+    const n = kind === "support" ? rankedSupport().length : rankedCards().length;
+    ui.save.hidden = !globalBuilt || !n;
+    ui.save.setAttribute("aria-label", `Save the ${kind === "support" ? "support" : "card"} tier list as an image`);
+  }
+
   /* step 9.5: Global's rows (cards + support tiles) are made the first time Global is actually on screen,
      not while another tab or My Lists is showing */
   function buildGlobal() {
@@ -136,6 +172,7 @@
     globalBuilt = true;
     renderCards();
     renderSupport();
+    saveState();
     FX.stagger(kind === "support" ? ui.slist : ui.list);
   }
 
@@ -191,6 +228,7 @@
     ui.cardsView.hidden = kind !== "cards";
     ui.supView.hidden = kind !== "support";
     setLead();
+    saveState();
     if (animate) FX.stagger(kind === "support" ? ui.slist : ui.list);
   }
 
@@ -212,6 +250,7 @@
       const b = e.target.closest(".seg__btn[data-kind]");
       if (b && b.dataset.kind !== kind) setKind(b.dataset.kind);
     });
+    ui.save.addEventListener("click", saveImage);
 
     // A support tile opens the Support detail. The Tier List keeps its scroll position in this history entry,
     // so Back (phone button or the page's Back) returns here exactly where you were (app.js reads tierY).
@@ -230,7 +269,7 @@
     tiles.forEach((els, id) => els.forEach((el) => all.push([el, cardById.get(id)])));
     // read every position first, then write: mixing them forces a re-layout per card
     const seen = all.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));
-    all.forEach(([el, card], i) => card && C.setCardRarity(el, card, name, { animate: seen[i] }));
+    all.forEach(([el, card], i) => { if (card) { C.setCardRarity(el, card, name, { animate: seen[i] }); labelMove(el, card); } });   // setCardRarity rewrites the label
   }
 
   /* Called by the router when the Tier List tab becomes the current page.
@@ -259,7 +298,9 @@
       cardsView: $("#tier-cards-view"), supView: $("#tier-support-view"),
       rarity: $("#tier-rarity"), list: $("#tier-list"), none: $("#tier-none"), note: $("#tier-note"),
       slist: $("#tier-slist"), snone: $("#tier-snone"), snote: $("#tier-snote"),
+      save: $("#tier-save"),
     });
+    ui.save.insertAdjacentHTML("afterbegin", C.share.icons.image);
     cardById = new Map(state.cards.map((c) => [c.id, c]));
     supportItems = (Array.isArray(state.support) ? state.support : [])
       .filter((s) => s && s.id)

@@ -140,6 +140,20 @@
      Only the strongest meta.rankTop (48: every card at 1 in 500M+ · owner 2026-10-30) cards + the Utility row and the top meta.rankTopSupport (100: all) support are ranked: the rest stay unranked for good
      (in the library, searchable, usable in decks, never in the Tier List). New cards from routine A are unranked too. */
   const isRanked = (card) => !!(card.scores && (isSupport(card) ? card.scores.value : card.scores.overall) > 0 && card.tier);
+  /* ▲▼ (plan 2026-10-30 item 3): which way a card moved since the last ranking (prevTier, kept by routine B before it writes tier)
+     1 = up · -1 = down · 0 = same tier, new to the ranking (prevTier ""), or a row off the Meta…D ladder (Utility) */
+  function tierMove(x) {
+    if (!x || !x.prevTier || !isRanked(x) || x.prevTier === x.tier) return 0;
+    const ladder = state.meta.tiers.filter((t) => !t.cardsOnly).map((t) => t.name);
+    const a = ladder.indexOf(x.prevTier), b = ladder.indexOf(x.tier);
+    return a < 0 || b < 0 ? 0 : a > b ? 1 : -1;
+  }
+  const tierMoveText = (x) => { const d = tierMove(x); return d ? `${d > 0 ? "up" : "down"} from ${x.prevTier}` : ""; };
+  // the badge: green ▲ / red ▼ (css/cards.css .tmove) · the words are for screen readers
+  const tierMoveHTML = (x, cls = "") => {
+    const d = tierMove(x);
+    return d ? `<span class="tmove${cls ? " " + cls : ""}" data-d="${d > 0 ? "up" : "down"}"><span aria-hidden="true">${d > 0 ? "▲" : "▼"}</span><span class="sr-only">, ${esc(tierMoveText(x))}</span></span>` : "";
+  };
   const cardLabel = (card, rarity) => `${card.name}${isSupport(card) ? ", support" : ""}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", unranked"}`;
 
   /* ---------- Placeholder art (until real images exist) ----------
@@ -764,7 +778,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
