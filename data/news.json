@@ -1,7 +1,26 @@
 {
   "updated": "2026-10-30",
   "note": "Home page news (PROGRESS.md §5.2 · routine E). updates: game patches, newest first, kind major|minor · codes: redeem codes (expires optional) · systems: new features in the game. All text in English.",
-  "updates": [],
+  "updates": [
+    {
+      "date": "2026-10-30",
+      "kind": "minor",
+      "title": "Mini Update",
+      "items": [
+        "Tower: lower rolls that still grow as you climb; floors past 1,000 are harder; Hard mode gives ~1.5x Normal rewards",
+        "Battles: buffs now show live on card stats; Slime Demon Lord deck damage +8% (was 3.6%); fixed wrong card picture sometimes showing",
+        "Supports: equip multiple copies + drag & drop, same as attack cards",
+        "Boss drops: world end bosses 10% card drop; timed world bosses 3-5% card drop",
+        "Guild Planets: FIGHT runs through every guard team back to back with no healing; losing = 30 min wait; only 1 member can attack at a time; progress resets after 5h",
+        "Guild Planets: each guild sees its own DEFEATED teams; 5 min shield after a capture; leaders + officers can abandon planets; new planet map, VIEW TEAM button, full guild names",
+        "Guilds: new glow look on every screen, icons/tiles/chips for power, gems, boss rewards and planet buffs, instant donating with a coin sound, new rank medals, bigger menu for phones + iPads",
+        "Guilds fixes: overlapping text/buttons, crown covering LEADER, jumping button icons, typed text not showing, member count after leaving, flash when switching systems",
+        "iPad / Tablet: proper tablet sizes; bigger side/top buttons, leaderboard, VIP + DASH; roll bar, auto-roll preview, Card Grader, Titles + Guild menus sized for tablets; SHOW BATTLE no longer flashes during hidden auto-climb",
+        "Climb bars: sit in the top bar on phone + PC and move aside for the leaderboard; fixed STOP button not clickable; Shard Tower bar hides when a menu opens",
+        "Less lag in menus, card lists, pickups and bosses"
+      ]
+    }
+  ],
   "codes": [],
   "systems": []
 }
