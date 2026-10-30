@@ -588,9 +588,11 @@
   const names = (card, ids) => arr(ids).map((i) => byId.get(i)).filter((c) => c && c.id !== card.id).map((c) => c.name);
   const joinShort = (a, n) => a.slice(0, n).join(", ") + (a.length > n ? ` +${a.length - n}` : "");
   const modeName = (id) => { const m = arr(state.meta && state.meta.modes).find((x) => x.id === id); return m ? m.name : pretty(id); };
+  // modes hidden from the site (Story / Boss since plan 2026-10-30 #6) are left out of a card's mode scores
+  const liveMode = (id) => { const m = arr(state.meta && state.meta.modes).find((x) => x && x.id === id); return !(m && (m.hidden || m.enabled === false)); };
   function bestModes(card, top) {
     if (!card.modes || typeof card.modes !== "object") return [];
-    const ent = Object.entries(card.modes).filter(([, v]) => Number.isFinite(Number(v)));
+    const ent = Object.entries(card.modes).filter(([id, v]) => liveMode(id) && Number.isFinite(Number(v)));
     ent.sort((a, b) => (top ? b[1] - a[1] : a[1] - b[1]));
     return ent.length > 1 ? [modeName(ent[0][0])] : [];
   }
@@ -1132,7 +1134,7 @@
   };
   const TABS = ["overview", "score", "team", "mine"];
   const modesOf = (card) => (card.modes && typeof card.modes === "object" ? Object.entries(card.modes) : [])
-    .map(([id, v]) => [id, Number(v)]).filter(([, v]) => Number.isFinite(v)).sort((a, b) => b[1] - a[1]);
+    .map(([id, v]) => [id, Number(v)]).filter(([id, v]) => liveMode(id) && Number.isFinite(v)).sort((a, b) => b[1] - a[1]);
   const bar = (label, v, i, extra = "") => `
         <div class="score" style="--v:${pct(v) / 100};--d:${150 + i * 60}ms">
           <span class="score__name">${label}</span>${extra}

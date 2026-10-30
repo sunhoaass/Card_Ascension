@@ -765,7 +765,7 @@
 
   /* ==========================================================
      Image: a deck (step 10). Five card slots over five support slots, drawn with the same card / frame / backdrop code.
-     spec = { id, title, mode: "Ascended Tower", rarity: name, cards: [id|null x5], support: [id|null x5] }
+     spec = { id, title, mode: "Tower Infinity", rarity: name, cards: [id|null x5], support: [id|null x5] }
      ========================================================== */
   const DECKIMG = { W: 1200, PAD: 28, HEAD: 150, FOOT: 96, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16 };
 
