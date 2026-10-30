@@ -6,8 +6,10 @@
        #deck/meta         = Meta Decks (each has "Copy to My Decks")
        #deck/my/<id>      = the editor for one deck (each open adds a history entry, so phone Back returns to the list)
        #deck/s/<data>     = a deck someone shared (packed in the link by js/share.js), view only, with "Save a copy"
-   · 1 deck = 5 card slots (Slot 1–5) + 5 support slots (the support under a card sits in the same column).
-     A card can't be in the same deck twice. Mode: PvP · Tower Infinity · Overall (plan 2026-10-30 #6 · Story / Boss are hidden:
+   · 1 deck = 4 card slots (Slot 1–4) + 4 support slots (the support under a card sits in the same column) since the game
+     update of 2026-10-30 (was 5). The same card or support may fill several slots (their buffs add up in the game).
+     A deck saved or shared with 5: a 5th card / support moves into an empty slot of its row; one that doesn't fit is kept in
+     deck.extra (never shown or scored, so nothing is thrown away). Mode: PvP · Tower Infinity · Overall (plan 2026-10-30 #6 · Story / Boss are hidden:
      a deck saved or shared in one of them keeps it, and shows / scores as Overall until another mode is picked).
    · Decks live in localStorage "cbi:decks" (PROGRESS.md §10.4) and save on every change. No Save button.
    · Putting cards in: tap an empty slot -> picker (search + filters). Moving: drag (mouse moves right away, touch = hold
@@ -30,7 +32,7 @@
   const { state, $, esc } = C;
 
   const KEY = "cbi:decks";
-  const SLOTS = 5, NAME_MAX = 40, DECK_MAX = 200, HISTORY_MAX = 50, CHUNK = 40;
+  const SLOTS = 4, OLD_SLOTS = 5, NAME_MAX = 40, DECK_MAX = 200, HISTORY_MAX = 50, CHUNK = 40;
   const HOLD_MS = 260;                             // touch: hold this long before a card lifts
   const SLOP = 10;                                 // touch: moving further than this before the lift = scrolling
   const EASE = "cubic-bezier(.2,.8,.2,1)";
@@ -56,8 +58,8 @@
     easy: "Only cards and support that are easier to pull",
   };
   const LEADS = {
-    my: "Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. The team score updates as you build. Decks are saved on this device.",
-    meta: "Meta decks: five-card teams that work well together, with the slot each card plays in and the support to run. Pick a rarity to see the stats. Tap a card for the full breakdown, or copy a deck to My Decks to make it yours.",
+    my: "Build your own four-card decks, with a support under each card. A card or support can fill more than one slot. Pick a mode and a rarity, then tap a slot to add a card. The team score updates as you build. Decks are saved on this device.",
+    meta: "Meta decks: four-card teams for PvP, Tower Infinity and both, with the support under each card. Picked from simulated battles. Pick a rarity to see the stats. Tap a card for the full breakdown, or copy a deck to My Decks to make it yours.",
     shared: "A deck someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
 
@@ -131,16 +133,27 @@
   /* ==========================================================
      Saving (localStorage, never crashes when blocked)
      ========================================================== */
-  function slotsOf(arr, unique) {
-    const out = [], seen = new Set();
-    for (let i = 0; i < SLOTS; i++) {
-      let id = Array.isArray(arr) ? arr[i] : null;
-      id = typeof id === "string" && id && id.length <= 80 ? id : null;
-      if (id && unique && seen.has(id)) id = null;            // a card can't be in the same deck twice
-      if (id) seen.add(id);
-      out.push(id);
-    }
+  const idOf = (v) => (typeof v === "string" && v && v.length <= 80 ? v : null);
+  function slotsOf(arr) {
+    const out = [];
+    for (let i = 0; i < SLOTS; i++) out.push(idOf(Array.isArray(arr) ? arr[i] : null));
     return out;
+  }
+  // 5-slot decks (before 2026-10-30): what sat past slot 4 goes into an empty slot of the same row, else into extra
+  function fitOld(d) {
+    const cards = slotsOf(d.cards), support = slotsOf(d.support);
+    const ex = d.extra && typeof d.extra === "object" ? d.extra : {};
+    const extra = { cards: (Array.isArray(ex.cards) ? ex.cards : []).map(idOf).filter(Boolean), support: (Array.isArray(ex.support) ? ex.support : []).map(idOf).filter(Boolean) };
+    for (let i = SLOTS; i < OLD_SLOTS; i++) {
+      const c = idOf(Array.isArray(d.cards) ? d.cards[i] : null), s = idOf(Array.isArray(d.support) ? d.support[i] : null);
+      const at = c ? cards.indexOf(null) : -1;
+      if (c && at >= 0) {                                     // the card and its support stay together when its column is free
+        cards[at] = c;
+        if (s && !support[at]) { support[at] = s; continue; }
+      } else if (c) extra.cards.push(c);
+      if (s) { const j = support.indexOf(null); if (j >= 0) support[j] = s; else extra.support.push(s); }
+    }
+    return { cards, support, extra: extra.cards.length || extra.support.length ? extra : null };
   }
   // Anything odd in storage (old format, hand edits, a backup or a link made by someone else) is repaired, not thrown away
   function clean(d) {
@@ -150,7 +163,7 @@
       name: str(d.name).trim().slice(0, NAME_MAX) || "Untitled deck",
       mode: MODES.some((m) => m.id === d.mode) ? d.mode : DEFAULT_MODE,
       rarity: state.meta.rarities.some((r) => r.name === d.rarity) ? d.rarity : "Normal",
-      cards: slotsOf(d.cards, true), support: slotsOf(d.support, false),
+      ...(() => { const f = fitOld(d); return f.extra ? { cards: f.cards, support: f.support, extra: f.extra } : { cards: f.cards, support: f.support }; })(),
       created: str(d.created) || now(), updated: str(d.updated) || now(),
     };
   }
@@ -656,7 +669,7 @@
     if (!cur || mode !== "editor" || !lookup(kind, id)) return;
     let i = Number(slot);
     if (!(i >= 0 && i < SLOTS) || cur[kind][i]) i = cur[kind].indexOf(null);
-    if (i < 0 || (kind === "cards" && cur.cards.includes(id))) return;
+    if (i < 0) return;
     const name = lookup(kind, id).name;
     if (commit((d) => { d[kind][i] = id; })) undoToast(`Added ${name} to ${kind === "cards" ? "slot" : "support"} ${i + 1}`);
   }
@@ -929,11 +942,10 @@
           el.appendChild(art);
           const at = usedAt.get(x.id);
           let label = x.name;
-          if (isCard && at != null && x.id !== here) {
-            el.classList.add("is-used");
-            el.setAttribute("aria-disabled", "true");
+          if (isCard && at != null && x.id !== here) {   // can still be picked: a card may fill several slots (2026-10-30)
+            el.classList.add("is-in");
             el.insertAdjacentHTML("beforeend", `<span class="dk-tile__tag">Slot ${at + 1}</span>`);
-            label += `, already in slot ${at + 1}`;
+            label += `, also in slot ${at + 1}`;
           } else if (x.id === here) {
             el.classList.add("is-here");
             el.insertAdjacentHTML("beforeend", `<span class="dk-tile__tag dk-tile__tag--here">Here</span>`);
@@ -1006,7 +1018,6 @@
     });
     if (!res || res.action !== "pick" || !cur || mode !== "editor") return;
     if (res.id === here) return;
-    if (isCard && cur.cards.includes(res.id)) return;      // can't be in the same deck twice
     commit((d) => { d[kind][i] = res.id; });
   }
 
@@ -1302,7 +1313,7 @@
   }
   // ...and back, checking everything (a link is typed by strangers). Returns a clean deck or null.
   function fromPayload(p) {
-    if (!p || p.v !== 1 || typeof p.n !== "string" || !Array.isArray(p.c) || !Array.isArray(p.s) || p.c.length > SLOTS || p.s.length > SLOTS) return null;
+    if (!p || p.v !== 1 || typeof p.n !== "string" || !Array.isArray(p.c) || !Array.isArray(p.s) || p.c.length > OLD_SLOTS || p.s.length > OLD_SLOTS) return null;   // 5-slot links still open
     const ids = (a) => a.map((x) => (typeof x === "string" && x && x.length <= 80 ? x : null));
     return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s), created: now(), updated: now() });
   }
@@ -1539,7 +1550,7 @@
       track2(card, el);
       wrap.appendChild(el);
     } else {
-      // card id not in cards.json (yet): keep the slot so the deck still reads as 5 cards
+      // card id not in cards.json (yet): keep the slot so the deck still reads as 4 cards
       const ghost = document.createElement("div");
       ghost.className = "deck__ghost";
       ghost.setAttribute("role", "img");

@@ -7,25 +7,29 @@
     python3 tools/team_sim.py --report <scratch>/teams.json     # table of the 9 teams (re-scored with more battles)
     python3 tools/team_sim.py --write <scratch>/teams.json <scratch>/hosts.json   # data/teams.json · cards team.bestSupport · support bestDeck
 
-Battles = tools/deck_sim.py (5 v 5 with supports, abilities from matchup_sim.parse) at Godly.
+Battles = tools/deck_sim.py (4 v 4 since the game update the owner reported 2026-10-30 · supports, abilities from matchup_sim.parse) at Godly.
 Pool: the meta.rankTop ranked cards (48) + the Utility row (11) · the 100 support cards (gems-only Shadow Garden Strategist left out).
-A deck = 5 cards (no repeats) with a support under each (no repeated support either: valid whether or not the game allows repeats, §8).
+A deck = SIZE (4) cards with a support under each · the same card and the same support may sit in several slots and their
+buffs add up (owner 2026-10-30: Charge Commander +33% twice = +66%).
 
 - TIMEOUT: a fight still going after MAX_TURNS turns (two healing decks never finish) goes to the side with more HP left (% of its deck)
 - HP left counts at most 100% of the deck's starting HP (cards that grow on a kill would score past 100)
 - PvP   = the mean deck score (0–100, 50 = even, §deck_sim) against a gauntlet of player decks, both sides first:
-          GAUNTLET random strong decks (5 of the Meta…A cards in a random order, each with a different Meta…S support)
+          GAUNTLET random strong decks (4 Meta…A cards drawn with repeats, each with a Meta…S support drawn with repeats)
           + the best and second decks found in round 1 + the reference deck (round 2 searches again against them: players copy what wins)
-- Tower = Tower Infinity: floor after floor of 5 enemy cards (5 of the 48 ranked cards, no supports) that get TOWER_G × stronger
+- Tower = Tower Infinity: floor after floor of 4 enemy cards (4 of the 48 ranked cards, no supports) that get TOWER_G × stronger
           every floor (floor 1 = TOWER_K0 × their stats) · the deck keeps its HP between floors (fallen cards stay down, no heal)
           · a lost or timed-out floor ends the run · score = floors cleared + share of the last floor's enemy HP taken
           · TOWER_SEQ fixed enemy sequences (the same for every deck) · T = 50 × floors ÷ the reference deck's floors
 - Overall = (PvP + T) ÷ 2 (a deck that has to do both)
-- 3 teams a mode: best · second (shares ≤ SECOND_SHARE cards with the best) · easy (cards odds ≤ 1 in EASY_CARD, support ≤ 1 in EASY_SUP)
+- 3 teams a mode: best · second (shares ≤ SECOND_SHARE cards with the best, counting copies) · easy (cards odds ≤ 1 in EASY_CARD,
+  support ≤ 1 in EASY_SUP) · --report re-scores every deck the searches found and picks each mode's 3 from all of them
+  (hill climbing stops on local bests: a deck searched for one mode can be the best of another · a deck may lead 2 modes)
 - search = hill climbing from the best cards by Overall: every pass tries each card swap (any pool card in any slot), each order swap
   and each support swap (shortlist: the SUP_SHORT best by Value + every support a host card ranks top 3) and keeps the best move
 """
 import argparse, json, os, random, sys, time
+from collections import Counter
 from multiprocessing import Pool
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck_sim
@@ -34,6 +38,7 @@ from deck_sim import Battle
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TODAY = "2026-10-30"
 RARITY = "Godly"
+SIZE = 4                   # cards (and support) per deck since the game update (owner 2026-10-30 · was 5)
 MAX_TURNS = 200            # timeout for PvP / tower fights (deck_sim keeps 3000 for the support ranking)
 SEED = 20261031
 GAUNTLET = 24              # random strong decks in the PvP gauntlet
@@ -80,7 +85,7 @@ def make_gauntlet(ranked, sups, n, seed):
     rng = random.Random(seed)
     strong = [c["id"] for c in ranked if c["tier"] in ("Meta", "SS", "S", "A")]
     good = [s["id"] for s in sups if s["tier"] in ("Meta", "SS", "S")]
-    return [tuple(zip(rng.sample(strong, 5), rng.sample(good, 5))) for _ in range(n)]
+    return [tuple(zip(rng.choices(strong, k=SIZE), rng.choices(good, k=SIZE))) for _ in range(n)]
 
 
 def deck_of(t):
@@ -117,7 +122,7 @@ def floor_deck(seq, fl):
         rng = random.Random(SEED * 31 + seq * 1000 + fl)
         m = TOWER_K0 * TOWER_G ** (fl - 1)
         out = []
-        for c in rng.sample(D["ranked"], 5):
+        for c in rng.sample(D["ranked"], SIZE):
             b = dict(c["base"]); b["atk"] = b["atk"] * m; b["hp"] = b["hp"] * m
             out.append(({**c, "base": b}, None, RARITY))
         D["floors"][k] = out
@@ -181,16 +186,15 @@ class Search:
         for p in range(PASSES):
             t0 = time.time()
             nb = set()
-            ids = [c for c, _ in cur]; used_s = {x for _, x in cur}
-            for i in range(5):
+            for i in range(SIZE):
                 for c in cards:
-                    if c not in ids: nb.add(cur[:i] + ((c, cur[i][1]),) + cur[i + 1:])
+                    if c != cur[i][0]: nb.add(cur[:i] + ((c, cur[i][1]),) + cur[i + 1:])
                 for x in sups:
-                    if x not in used_s: nb.add(cur[:i] + ((cur[i][0], x),) + cur[i + 1:])
-                for j in range(i + 1, 5):
+                    if x != cur[i][1]: nb.add(cur[:i] + ((cur[i][0], x),) + cur[i + 1:])
+                for j in range(i + 1, SIZE):
                     l = list(cur); l[i], l[j] = l[j], l[i]; nb.add(tuple(l))                       # card + its support move
                     l = list(cur); l[i], l[j] = (l[j][0], l[i][1]), (l[i][0], l[j][1]); nb.add(tuple(l))   # cards only
-            nb = [t for t in nb if ok(t)]
+            nb = [t for t in nb if t != cur and ok(t)]
             sc = s.scores(nb, mode)
             k = max(range(len(nb)), key=lambda k: sc[k])
             log(f"  {label} pass {p + 1}: {len(nb)} decks {time.time() - t0:.0f}s best {sc[k]:.2f} (was {best:.2f})")
@@ -200,20 +204,25 @@ class Search:
         return cur, best
 
 
+def overlap(a, b):
+    """cards two decks share, counting copies."""
+    return sum((Counter(c for c, _ in a) & Counter(c for c, _ in b)).values())
+
+
 def log(m):
     print(m, file=sys.stderr, flush=True)
 
 
 def reference(ranked, sups):
-    top = sorted(ranked, key=lambda c: -c["scores"]["overall"])[:5]
-    ts = sorted(sups, key=lambda x: -x["scores"]["value"])[:5]
+    top = sorted(ranked, key=lambda c: -c["scores"]["overall"])[:SIZE]
+    ts = sorted(sups, key=lambda x: -x["scores"]["value"])[:SIZE]
     return tuple((c["id"], x["id"]) for c, x in zip(top, ts))
 
 
 def start_deck(cards, sups, card_by, sup_by, avoid=()):
-    cs = [c for c in sorted(cards, key=lambda i: -card_by[i]["scores"]["overall"]) if c not in avoid][:5]
-    if len(cs) < 5: cs = (cs + [c for c in sorted(cards, key=lambda i: -card_by[i]["scores"]["overall"]) if c not in cs])[:5]
-    ss = sorted(sups, key=lambda i: -sup_by[i]["scores"]["value"])[:5]
+    cs = [c for c in sorted(cards, key=lambda i: -card_by[i]["scores"]["overall"]) if c not in avoid][:SIZE]
+    if len(cs) < SIZE: cs = (cs + [c for c in sorted(cards, key=lambda i: -card_by[i]["scores"]["overall"]) if c not in cs])[:SIZE]
+    ss = sorted(sups, key=lambda i: -sup_by[i]["scores"]["value"])[:SIZE]
     return tuple(zip(cs, ss))
 
 
@@ -249,10 +258,9 @@ def search(out):
             for mode in ("pvp", "tower", "overall"):
                 prev = res.get("teams", {}).get(mode, {}) if rnd_ == 2 else {}
                 best, bs = run(mode, "best", prev.get("best", {}).get("deck") or start_deck(all_cards, short, card_by, sup_by), all_cards, short, lambda t: True)
-                bset = {c for c, _ in best}
-                ok2 = lambda t, bset=bset: len({c for c, _ in t} & bset) <= SECOND_SHARE
+                ok2 = lambda t, best=best: overlap(t, best) <= SECOND_SHARE
                 s0 = tt(prev.get("second", {}).get("deck"))
-                if not s0 or not ok2(s0): s0 = start_deck(all_cards, short, card_by, sup_by, avoid=bset)
+                if not s0 or not ok2(s0): s0 = start_deck(all_cards, short, card_by, sup_by, avoid={c for c, _ in best})
                 second, ss = run(mode, "second", s0, all_cards, short, ok2)
                 easy, es = run(mode, "easy", prev.get("easy", {}).get("deck") or start_deck(easy_cards, easy_sups, card_by, sup_by), easy_cards, easy_sups, lambda t: True)
                 teams[mode] = {"best": {"deck": best, "score": bs}, "second": {"deck": second, "score": ss}, "easy": {"deck": easy, "score": es}}
@@ -264,25 +272,42 @@ def search(out):
     json.dump(res, open(out, "w"), indent=1)
 
 
+METRIC = {"pvp": "pvp", "tower": "T", "overall": "overall"}
+
+
 def report(path):
+    """re-score every deck the searches found (bigger gauntlet, more tower runs) → each mode's best / second / easy."""
     r = json.load(open(path))
     ranked, util, sups, meta = load()
-    gauntlet = make_gauntlet(ranked, sups, FINAL_GAUNTLET, SEED + 1) + [tuple(map(tuple, t)) for t in r.get("found", [])]
-    decks = [("reference", "", tuple(map(tuple, r["ref"])))] + [(m, k, tuple(map(tuple, v["deck"]))) for m, ks in r["teams"].items() for k, v in ks.items()]
-    with Pool(initializer=init) as pool:
-        sc = pool.map(final_eval, [(t, gauntlet) for _, _, t in decks], chunksize=1)
-    tref = sc[0]["tower"]
     card_by = {c["id"]: c for c in ranked + util}; sup_by = {s["id"]: s for s in sups}
-    print(f"gauntlet {len(gauntlet)} decks × 2 sides × {FINAL_RUNS} · tower {FINAL_SEQ} sequences · reference floors {tref:.2f}")
-    print("| mode | team | PvP | Tower floors | T | Overall | cards (support) |")
-    print("|---|---|---:|---:|---:|---:|---|")
-    out = {}
-    for (m, k, t), s in zip(decks, sc):
+    gauntlet = make_gauntlet(ranked, sups, FINAL_GAUNTLET, SEED + 1) + [tuple(map(tuple, t)) for t in r.get("found", [])]
+    found = {}
+    for k, v in r["done"].items(): found.setdefault(tuple(map(tuple, v["deck"])), []).append(k)
+    decks = [tuple(map(tuple, r["ref"]))] + [t for t in found if t != tuple(map(tuple, r["ref"]))]
+    with Pool(initializer=init) as pool:
+        sc = pool.map(final_eval, [(t, gauntlet) for t in decks], chunksize=1)
+    tref = sc[0]["tower"]
+    rows = []
+    for t, s in zip(decks, sc):
         T = 50 * s["tower"] / tref
-        out[f"{m}|{k}"] = {"pvp": round(s["pvp"], 1), "tower": round(s["tower"], 2), "T": round(T, 1), "overall": round((s["pvp"] + T) / 2, 1)}
-        print(f"| {m} | {k} | {s['pvp']:.1f} | {s['tower']:.2f} | {T:.1f} | {(s['pvp'] + T) / 2:.1f} | "
-              + " · ".join(f"{card_by[c]['name']} ({sup_by[x]['name']})" for c, x in t) + " |")
-    r["final"] = out
+        rows.append({"deck": t, "from": found.get(t, ["reference"]), "pvp": round(s["pvp"], 1), "tower": round(s["tower"], 2),
+                     "T": round(T, 1), "overall": round((s["pvp"] + T) / 2, 1),
+                     "easy": all(card_by[c]["base"]["odds"] <= EASY_CARD and sup_by[x]["odds"] <= EASY_SUP for c, x in t)})
+    picked = {}
+    for m, key in METRIC.items():
+        order = sorted(rows[1:], key=lambda x: -x[key])
+        best = order[0]
+        second = next(x for x in order[1:] if overlap(x["deck"], best["deck"]) <= SECOND_SHARE)
+        easy = next(x for x in order if x["easy"] and x is not best and x is not second)
+        picked[m] = {"best": best, "second": second, "easy": easy}
+    name = lambda t: " · ".join(f"{card_by[c]['name']} ({sup_by[x]['name']})" for c, x in t)
+    print(f"gauntlet {len(gauntlet)} decks × 2 sides × {FINAL_RUNS} · tower {FINAL_SEQ} sequences · reference floors {tref:.2f}")
+    print("\n| picked | PvP | Tower floors | T | Overall | cards (support) |\n|---|---:|---:|---:|---:|---|")
+    for m, ks in picked.items():
+        for k, x in ks.items(): print(f"| {m} {k} | {x['pvp']} | {x['tower']} | {x['T']} | {x['overall']} | {name(x['deck'])} |")
+    print("\n| every deck found | PvP | Tower floors | T | Overall | easy | cards (support) |\n|---|---:|---:|---:|---:|---|---|")
+    for x in rows: print(f"| {', '.join(x['from'])} | {x['pvp']} | {x['tower']} | {x['T']} | {x['overall']} | {'yes' if x['easy'] else ''} | {name(x['deck'])} |")
+    r["final"] = {"tref": tref, "rows": rows, "picked": picked}
     json.dump(r, open(path, "w"), indent=1)
 
 
@@ -290,18 +315,17 @@ def report(path):
 HOST_TRIALS = 40
 
 
-def host_trials(ranked, util):
-    from rank_support import trials, SEED as RS
-    out = [(h, slot, own, foe, seed) for h, slot, own, foe, seed in trials(ranked)]   # = the support ranking's trials
-    rng = random.Random(RS + 1)
-    n = len(ranked)
-    for u in range(len(util)):
-        h = n + u
+def host_trials(n_ranked, n_all):
+    """every host card (48 ranked + Utility) HOST_TRIALS times: host + 3 random ranked cards, host in slot 1–4 in turn,
+    vs the same 4 cards in another order (mirror, as the support ranking) · same seeds with and without the support."""
+    rng = random.Random(SEED + 7)
+    out = []
+    for h in range(n_all):
         for k in range(HOST_TRIALS):
-            others = rng.sample(range(n), 4)
-            slot = k % 5
+            others = rng.sample([i for i in range(n_ranked) if i != h], SIZE - 1)
+            slot = k % SIZE
             own = others[:slot] + [h] + others[slot:]
-            out.append((h, slot, own, rng.sample(own, 5), rng.randrange(1 << 30)))
+            out.append((h, slot, own, rng.sample(own, SIZE), rng.randrange(1 << 30)))
     return out
 
 
@@ -309,7 +333,7 @@ def hosts(out):
     from rank_support import play
     ranked, util, sups, _ = load()
     allc = ranked + util
-    ts = host_trials(ranked, util)
+    ts = host_trials(len(ranked), len(allc))
     with Pool() as pool:   # deck_sim.MAX_TURNS stays 3000 here: the same battles as the support ranking
         gains = pool.map(play, [(t, allc, sups) for t in ts], chunksize=2)
     by = {}
@@ -331,13 +355,14 @@ def write(tpath, hpath, names):
     craw, sraw = open(cpath).read(), open(spath).read()
     cards, sups = json.loads(craw), json.loads(sraw)
     teams = []
+    picked = r["final"]["picked"]
     for m in ("pvp", "tower", "overall"):
         for k in ("best", "second", "easy"):
-            t = r["teams"][m][k]["deck"]
+            x = picked[m][k]
             nm = names[f"{m}|{k}"]
             teams.append({"id": nm["id"], "name": nm["name"], "mode": m, "kind": k,
-                          "slots": [{"card": c, "support": x} for c, x in t],
-                          "sim": r.get("final", {}).get(f"{m}|{k}", {}),
+                          "slots": [{"card": c, "support": sp} for c, sp in x["deck"]],
+                          "sim": {q: x[q] for q in ("pvp", "tower", "T", "overall")},
                           "notes": nm["notes"], "updated": TODAY})
     open(os.path.join(ROOT, "data/teams.json"), "w").write(json.dumps(teams, ensure_ascii=False, indent=2) + "\n")
     used = {}
@@ -360,9 +385,9 @@ def calibrate():
     init()
     ranked, util, sups, _ = load()
     ref = reference(ranked, sups)
-    weak = tuple((c["id"], None) for c in sorted(ranked, key=lambda c: c["scores"]["overall"])[:5])
+    weak = tuple((c["id"], None) for c in sorted(ranked, key=lambda c: c["scores"]["overall"])[:SIZE])
     nosup = tuple((c, None) for c, _ in ref)
-    for name, t in (("reference", ref), ("reference no support", nosup), ("weakest 5", weak)):
+    for name, t in (("reference", ref), ("reference no support", nosup), ("weakest 4", weak)):
         t0 = time.time()
         print(name, [round(tower_run(t, q), 2) for q in range(TOWER_SEQ)], f"{time.time() - t0:.1f}s", f"pvp {pvp(t):.1f}")
 

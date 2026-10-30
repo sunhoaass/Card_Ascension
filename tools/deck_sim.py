@@ -12,6 +12,7 @@ Battle rules (same assumptions as matchup_sim · §7 B ข้อ 2 · extended t
 - at the start of a side's turn every card on that side takes its damage over time (burn / poison / fire on the bench too),
   then the front card heals (regen, "EVERY card in your deck heals" heals the whole side) and the bench healers heal it
 - "Every other card in your deck …", "EVERY card in your deck …", "Every enemy card starts with …" are set once at the start
+  · the same buff from 2 cards / support adds up (+33% and +33% damage = +66% · owner 2026-10-30) · "less damage" multiplies
 - whole-bench hits, card-behind hits and Fairy Law hit the bench (Spirit Medium Granny in any slot of that side = no damage)
 - "When it comes in" effects fire when the card enters (also at the start for slot 1)
 - the strongest enemy card's doom counts that card's side turns (it may sit on the bench)
@@ -226,10 +227,12 @@ class Battle:
                     for o in mine:
                         if o is not u: o.flat += u.e["team_others"]
                 if "team_all" in u.e:
-                    for o in mine:
-                        o.flat += u.e["team_all"][0]; o.max *= 1 + u.e["team_all"][1]; o.hp = o.max
+                    for o in mine: o.flat += u.e["team_all"][0]
                 if "enemy_less" in u.a:
                     for o in foe: o.out_mult *= 1 - u.a["enemy_less"]
+            hp_all = sum(u.e["team_all"][1] for u in mine if "team_all" in u.e)   # 2 "max HP" support add up (owner 2026-10-30: no overwrite)
+            if hp_all:
+                for o in mine: o.max *= 1 + hp_all; o.hp = o.max
         for us in s.sides:
             for u in us:
                 if "shield" in u.e: u.shield = u.max * u.e["shield"]

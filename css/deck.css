@@ -77,7 +77,7 @@
 .dkl__open { align-items: stretch; }
 .dkl .tml__text { width: 100%; gap: 3px; }
 .dkl .tml__meta { white-space: normal; }
-.dkl__strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 260px; margin: 3px 0 2px; }
+.dkl__strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; max-width: 210px; margin: 3px 0 2px; }
 .dkl__col { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
 .dkl__c {
   position: relative; width: 100%; aspect-ratio: var(--card-ratio); overflow: hidden;
@@ -169,7 +169,7 @@
 .dk-group__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-2); }
 .dk-group__title { font-size: var(--fs-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
 .dk-group__count { font-size: var(--fs-xs); color: var(--ink-dim); }
-.dk-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.dk-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .dk-slot { position: relative; min-width: 0; display: flex; flex-direction: column; align-items: stretch; --plate-h: 0px; }
 .dk-slot[data-kind="cards"] { --plate-h: 22px; }
 .dk-slot .deck__pos { height: 16px; line-height: 16px; padding: 0 6px; margin-bottom: 6px; font-size: 9px; white-space: nowrap; }
@@ -261,6 +261,7 @@
 .dk-tile:active:not(.is-used) { scale: 0.96; }
 .dk-tile:focus-visible { outline-offset: 3px; }
 .dk-tile.is-used { opacity: 0.38; cursor: not-allowed; }
+.dk-tile.is-in { opacity: 0.8; }   /* already in another slot: still pickable (a card may fill several slots since 2026-10-30) */
 .dk-tile.is-here { box-shadow: 0 0 0 2px var(--rift); }
 .dk-tile__tag {
   position: absolute; left: 50%; bottom: 6px; z-index: 2; transform: translateX(-50%);
@@ -393,7 +394,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 @media (min-width: 900px) {
   .dk-top { grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); align-items: stretch; }
   .dk-top__main { align-content: center; }
-  .dk-board { max-width: 760px; }
+  .dk-board { max-width: 620px; }
   .dk-row { gap: 14px; }
 }
 /* W3 wide PC: the board on the left, the analysis beside it (dense packing pulls the analysis up next to the board) */
