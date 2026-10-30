@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Meta Decks: 3 teams per mode, found by battle simulation (PROGRESS ▶️ แผน 2026-10-30 ข้อ 6 · HISTORY §9).
 
-    python3 tools/team_sim.py --search <scratch>/teams.json        # local search, 9 teams (≈ 1 h on 4 cores)
-    python3 tools/team_sim.py --check <scratch>/teams.json         # fresh seeds, more runs: final scores + baselines
+    python3 tools/team_sim.py --search <scratch>/teams-r1.json     # round 1: local search, 9 teams (≈ 1.5 h on 4 cores)
+    python3 tools/team_sim.py --search <scratch>/teams-r2.json --meta <scratch>/teams-r1.json   # round 2 (pvp + overall vs round 1's decks, ≈ 2 h)
+    python3 tools/team_sim.py --check <scratch>/teams-r2.json      # fresh seeds, more runs: final scores + round robin
     python3 tools/team_sim.py --hosts <scratch>/hosts.json         # gain of every support on every card (≈ 12 min)
-    python3 tools/team_sim.py --write <scratch>/teams.json <scratch>/hosts.json   # data/teams.json + team.bestSupport + bestDeck
+    python3 tools/team_sim.py --write <scratch>/teams-r2.json <scratch>/hosts.json <scratch>/names.json   # site data
 
 Battles are tools/deck_sim.py (5 v 5, card abilities from matchup_sim.parse, supports from deck_sim.SUP) at RARITY.
 Cards = the meta.rankTop ranked cards + the Utility row · supports = every support with a battle effect.
@@ -377,15 +378,45 @@ def _rr(a):
     return x, y, tot / 40
 
 
+# ---------- write the site data ----------
+def write(path, hosts_path, names_path):
+    """data/teams.json = the 9 teams (names / notes from names_path: { key: { name, notes } }) · team.bestSupport of every
+    ranked + Utility card = its 3 supports with the biggest gain (hosts) · support.bestDeck = the teams it is in."""
+    res = json.load(open(path)); hg = json.load(open(hosts_path))["gain"]; names = json.load(open(names_path))
+    chk = json.load(open(path.replace(".json", "-check.json"))) if os.path.exists(path.replace(".json", "-check.json")) else {}
+    teams = []
+    for k in KEYS:
+        mode, kind = k.split("-")
+        t = {"id": k, "name": names[k]["name"], "mode": mode, "kind": kind,
+             "slots": [{"card": c, "support": x} for c, x in res[k]["deck"]], "support": [], "notes": names[k]["notes"]}
+        if k in chk: t["sim"] = {m: chk[k][m] for m in ("pvp", "tower", "rr") if m in chk[k]}
+        t["updated"] = TODAY
+        teams.append(t)
+    json.dump(teams, open(os.path.join(ROOT, "data/teams.json"), "w"), ensure_ascii=False, indent=2)
+    open(os.path.join(ROOT, "data/teams.json"), "a").write("\n")
+    for f, fn in (("data/cards.json", "cards"), ("data/support.json", "sups")):
+        p = os.path.join(ROOT, f); raw = open(p).read(); items = json.loads(raw)
+        for it in items:
+            if fn == "cards" and it["id"] in hg:
+                g = hg[it["id"]]
+                top = [x for x in sorted(g, key=lambda x: -g[x]) if g[x] > 0][:3]
+                team = it.get("team") or {}
+                it["team"] = {"position": team.get("position", ""), "bestWith": team.get("bestWith", []), "bestSupport": top}
+            if fn == "sups":
+                it["bestDeck"] = [t["id"] for t in teams if any(sl["support"] == it["id"] for sl in t["slots"])]
+        open(p, "w").write(json.dumps(items, ensure_ascii=False, indent=2) + ("\n" if raw.endswith("\n") else ""))
+
+
 # ---------- timing ----------
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--search"); ap.add_argument("--meta"); ap.add_argument("--time", action="store_true")
-    ap.add_argument("--hosts"); ap.add_argument("--check")
+    ap.add_argument("--hosts"); ap.add_argument("--check"); ap.add_argument("--write", nargs=3, metavar=("TEAMS", "HOSTS", "NAMES"))
     o = ap.parse_args()
     if o.search: search(o.search, o.meta)
     if o.hosts: hosts(o.hosts)
     if o.check: check(o.check)
+    if o.write: write(*o.write)
     if o.time: timing()
 
 
