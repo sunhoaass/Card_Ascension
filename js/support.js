@@ -151,6 +151,8 @@
     paint({ animate: true });
     C.pageTop(ui.grid);
   }
+  // the screen changed size (rows × columns per page): keep the first card in view on the new page
+  document.addEventListener("cbi:pagesize", () => { if (!built) return; page = C.pageKeep(shown, onPage, page); paint(); });
 
   function bindGrid() {
     ui.search.addEventListener("input", () => { filters.q = ui.search.value; apply(); });

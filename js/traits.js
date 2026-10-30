@@ -305,6 +305,8 @@
     if (wide.matches) ui.pick.scrollTo({ top: 0, behavior: FX.reduced ? "auto" : "smooth" });
     else C.pageTop(ui.grid);
   }
+  // the screen changed size (rows × columns per page): keep the first card in view on the new page
+  document.addEventListener("cbi:pagesize", () => { if (!built) return; page = C.pageKeep(shown, onPage, page); paintPage(); });
   // the grid shows the page with this card on it (Change card, Back on a phone)
   function pageOf(id) {
     const k = shown.indexOf(id);

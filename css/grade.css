@@ -53,10 +53,7 @@
 .card__grade { position: absolute; left: 2.4cqw; top: 15cqw; z-index: 5; --gs: max(20px, 17cqw); }
 
 /* ---------- Picker ---------- */
-.grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
-@media (min-width: 600px) { .grade-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-@media (min-width: 1000px) { .grade-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
-@media (min-width: 1100px) { .grade-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); } }   /* W3: 7 a row on a laptop, more on wide screens */
+.grade-grid { gap: var(--s-3); }   /* columns: --grid-cols (base.css) */
 #grade-tools .chip-row { margin-bottom: 0; }
 .chip__n {
   min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--r-pill);

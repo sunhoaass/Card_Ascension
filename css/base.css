@@ -319,10 +319,9 @@ html.is-detail .nav > * { opacity: .5; }   /* the menu is inert while a card det
 /* ---------- Card grid ---------- */
 .card-grid {
   display: grid; gap: var(--s-4) var(--s-3);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--grid-cols, 3), minmax(0, 1fr));   /* --grid-cols: 3 / 4 / 6 / 8 by screen width, set by app.js with the page size */
 }
-@media (min-width: 600px) { .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1000px) { .card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6) var(--s-5); } }
+@media (min-width: 1000px) { .card-grid { gap: var(--s-6) var(--s-5); } }
 
 /* ==========================================================
    Gilded panel: thin gold line + cut corners + Victorian corner ornaments.
@@ -398,7 +397,6 @@ html.is-detail .nav > * { opacity: .5; }   /* the menu is inert while a card det
   .nav__foot .music__label { display: block; font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .08em; }
   .nav__foot .music__eq { right: 14px; bottom: 18px; }
   .nav__foot .brand__date { text-align: center; }
-  .card-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }   /* .grade-grid keeps its own columns (grade.css) */
   .main {
     max-width: none; margin: 0 0 0 var(--side-w);
     padding: var(--s-10) var(--gutter) var(--s-12);   /* W3: full width, no cap */

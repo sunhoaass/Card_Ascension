@@ -1475,3 +1475,9 @@
     ไม่ช้ากว่าเดิม (Support ต่าง 1.4 fps อยู่ในช่วงแกว่ง ±5 ของเครื่องทดสอบ) · Ascended ต่ำกว่า 55 ทั้งก่อนและหลัง (เครื่องทดสอบไม่มี GPU · ดีขึ้นจากเดิม)
   - **Claude ตัดสินใจเอง (ค้านได้):** (1) ปุ่มเดียวบันทึกฝั่งที่เปิดอยู่ (2) JPEG แทน PNG เฉพาะรูป Global (3) เข้า/ออก Utility = ไม่มีลูกศร (4) รูปแถวละ 5 ใบ + ▲▼
   - **ไฟล์:** `index.html` (`?v=42` + ปุ่ม `#tier-save`) · `js/app.js` · `js/tier.js` · `js/share.js` · `js/detail.js` · `css/tier.css` · `css/cards.css` · `css/detail.css` · `PROGRESS.md` · `HISTORY.md`
+
+- **2026-10-30 · แผน 2026-10-30 ข้อ 4 แถว/หลักเท่ากัน (`?v=43`)**
+  - **ที่เปลี่ยน:** `PAGE_SIZE` ใน `js/app.js` ไม่ใช่ 30 ตายตัวแล้ว = หลัก × แถวตามความกว้างจอ: < 600 → 3 × 10 = 30 · < 1000 → 4 × 8 = 32 · < 1600 → 6 × 6 = 36 · ≥ 1600 → 8 × 5 = 40 · `app.js` ตั้ง `--grid-cols` บน `<html>` + ยิง event `cbi:pagesize` ตอนขอบเขตเปลี่ยน (หมุนจอ / ย่อ-ขยายหน้าต่าง) · `C.pageKeep()` หาหน้าที่ใบแรกของหน้าปัจจุบันอยู่ → Cards / Support / Grade / Traits วาดหน้าใหม่ (ใบแรกยังอยู่ในหน้า) · `.card-grid` / `.grade-grid` / `.trw__grid` ใช้ `repeat(var(--grid-cols), …)` แทนคอลัมน์เดิมที่ต่างกันต่อหน้า · Traits จอ ≥ 900: ตารางซ้ายกับ Trait Shop แบ่งเท่ากัน (ช่อง Shop ≥ 460px กันข้อความถูกตัด)
+  - **ผลทดสอบ (Chromium · ทุกหน้าได้จำนวนใบ/หลักตรงกัน · ไม่มี error ใน console):** 390 → 3 หลัก 30 ใบ · 768 → 4 หลัก 32 · 1366 → 6 หลัก 36 · 1920 → 8 หลัก 40 · ทั้ง Cards / Support / Grade / Traits · 1366 กดหน้า 2 แล้วย่อเป็น 390 → ใบแรกเดิมยังอยู่ในหน้า (Page 2 / 14) · ขนาดการ์ดที่ 1366: Cards/Support 158px · Grade 165px · Traits 91px (อยู่ข้าง Shop) · ไม่ได้วัด fps (ไม่แตะการ์ด/ฉาก · แค่จำนวนหลัก/ใบต่อหน้า 30 → 30–40)
+  - **Claude ตัดสินใจเอง (ค้านได้):** ดู PROGRESS ▶️ แผนข้อ 4
+  - **ไฟล์:** `index.html` (`?v=43`) · `js/app.js` · `js/cards.js` · `js/support.js` · `js/grade.js` · `js/traits.js` · `css/base.css` · `css/grade.css` · `css/traits.css` · `PROGRESS.md` · `HISTORY.md`
