@@ -331,13 +331,20 @@ def write(tpath, hpath, names):
     craw, sraw = open(cpath).read(), open(spath).read()
     cards, sups = json.loads(craw), json.loads(sraw)
     teams = []
+    fin = r.get("final", {})
+    key = {"pvp": "pvp", "tower": "T", "overall": "overall"}
+    for m in ("pvp", "tower", "overall"):   # hill climbing can leave "second" above "best" (they share ≤ 2 cards): swap them
+        b_, s_ = fin.get(f"{m}|best"), fin.get(f"{m}|second")
+        if b_ and s_ and s_[key[m]] > b_[key[m]]:
+            r["teams"][m]["best"], r["teams"][m]["second"] = r["teams"][m]["second"], r["teams"][m]["best"]
+            fin[f"{m}|best"], fin[f"{m}|second"] = s_, b_
     for m in ("pvp", "tower", "overall"):
         for k in ("best", "second", "easy"):
             t = r["teams"][m][k]["deck"]
             nm = names[f"{m}|{k}"]
             teams.append({"id": nm["id"], "name": nm["name"], "mode": m, "kind": k,
                           "slots": [{"card": c, "support": x} for c, x in t],
-                          "sim": r.get("final", {}).get(f"{m}|{k}", {}),
+                          "sim": fin.get(f"{m}|{k}", {}),
                           "notes": nm["notes"], "updated": TODAY})
     open(os.path.join(ROOT, "data/teams.json"), "w").write(json.dumps(teams, ensure_ascii=False, indent=2) + "\n")
     used = {}
