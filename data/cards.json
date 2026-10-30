@@ -105,7 +105,11 @@
         "moon-eye-ghost",
         "atomic-shadow-lord"
       ],
-      "bestSupport": []
+      "bestSupport": [
+        "gentle-priest",
+        "guild-master-giant",
+        "flower-healer-captain"
+      ]
     },
     "updated": "2026-10-30",
     "obtain": "Rolls anywhere",
@@ -217,7 +221,11 @@
         "dragon-emperor-monarch",
         "beast-emperor"
       ],
-      "bestSupport": []
+      "bestSupport": [
+        "flower-healer-captain",
+        "guild-master-giant",
+        "gentle-priest"
+      ]
     },
     "updated": "2026-10-30",
     "obtain": "Rolls anywhere",
@@ -331,7 +339,11 @@
         "dragon-emperor-monarch",
         "moon-eye-ghost"
       ],
-      "bestSupport": []
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ]
     },
     "updated": "2026-10-30",
     "obtain": "Rolls anywhere",
@@ -442,7 +454,11 @@
         "moon-eye-ghost",
         "dragon-emperor-monarch"
       ],
-      "bestSupport": []
+      "bestSupport": [
+        "flower-healer-captain",
+        "guild-master-giant",
+        "charge-commander"
+      ]
     },
     "updated": "2026-10-30",
     "obtain": "Rolls anywhere",
@@ -1145,7 +1161,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 11.1
+    "utilGain": 11.1,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "swamp-demon",
@@ -5040,7 +5065,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 11.0
+    "utilGain": 11.0,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "colossal-strategist",
@@ -5127,7 +5161,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 10.0
+    "utilGain": 10.0,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "copy-eye-sensei",
@@ -5248,7 +5291,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 66.7
+    "utilGain": 66.7,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "crimson-spear-hound",
@@ -7681,7 +7733,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 10.5
+    "utilGain": 10.5,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "corps-master"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "demon-lord-brother",
@@ -8278,7 +8339,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 14.9
+    "utilGain": 14.9,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "last-avenger",
@@ -9283,7 +9353,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 15.0
+    "utilGain": 15.0,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "space-pirate-overlord",
@@ -9710,7 +9789,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 17.6
+    "utilGain": 17.6,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "three-sword-hunter",
@@ -11190,7 +11278,16 @@
       "white-hawk-godhand",
       "soul-magic-father"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "eternal-wish-dragon",
+        "charge-commander"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "control-devil",
@@ -11276,7 +11373,16 @@
       "demon-progenitor",
       "black-wizard-brother"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "demon-god-of-flame",
@@ -11362,7 +11468,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "sky-dragon-healer",
+        "charge-commander"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "demon-progenitor",
@@ -11448,7 +11563,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "sky-dragon-healer"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "earthquake-emperor",
@@ -11638,7 +11762,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 10.8
+    "utilGain": 10.8,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "golden-gate-king",
@@ -11724,7 +11857,16 @@
       "white-hawk-godhand",
       "black-wizard-brother"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "hero-number-one",
@@ -11810,7 +11952,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "homunculus-father",
@@ -11896,7 +12047,16 @@
       "rabbit-goddess",
       "black-wizard-brother"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "sky-dragon-healer"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "infinity-sorcerer",
@@ -11982,7 +12142,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "king-of-curses",
@@ -12066,7 +12235,16 @@
       "control-devil",
       "black-wizard-brother",
       "undead-overlord-king"
-    ]
+    ],
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "legendary-berserker",
@@ -12186,7 +12364,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "monk-of-names",
@@ -12270,7 +12457,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "sky-dragon-healer",
+        "charge-commander"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "moon-breath-swordsman",
@@ -12459,7 +12655,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "six-paths-fox-sage",
@@ -12546,7 +12751,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 9.8
+    "utilGain": 9.8,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "soul-magic-father",
@@ -12631,7 +12845,16 @@
       "golden-gate-king",
       "infinity-sorcerer"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "soul-queen-emperor",
@@ -12785,7 +13008,16 @@
       "control-devil",
       "black-wizard-brother"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "eternal-wish-dragon",
+        "charge-commander"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "white-hawk-godhand",
@@ -12871,7 +13103,16 @@
       "rabbit-goddess",
       "homunculus-father"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "sky-dragon-healer"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "wood-god-hokage",
@@ -12957,7 +13198,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "destroyer-dragonoid",
@@ -13043,7 +13293,16 @@
       "dragon-god",
       "primordial-butler-demon"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "destroyer-god",
@@ -13129,7 +13388,16 @@
       "sun-god-captain",
       "divergent-fist-vessel"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "healing-hero"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "dragon-god",
@@ -13215,7 +13483,16 @@
       "full-moon-demon-king",
       "primordial-butler-demon"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "dragon-king-of-ruin",
@@ -13301,7 +13578,16 @@
       "no-life-king",
       "full-moon-demon-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "flower-healer-captain",
+        "healing-hero"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "full-moon-demon-king",
@@ -13387,7 +13673,16 @@
       "witch-of-envy",
       "ultra-instinct-saiyan"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "golden-wind-boss",
@@ -13473,7 +13768,16 @@
       "divergent-fist-vessel",
       "destroyer-god"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "healing-hero"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "hollow-mask-reaper",
@@ -13558,7 +13862,16 @@
       "moon-eye-ghost",
       "hypnosis-traitor"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "flower-healer-captain",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "hypnosis-traitor",
@@ -13644,7 +13957,16 @@
       "primordial-butler-demon",
       "moon-eye-ghost"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "guild-master-giant",
+        "gentle-priest"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "no-life-king",
@@ -13729,7 +14051,16 @@
       "ultra-instinct-saiyan",
       "full-moon-demon-king"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "angel-attendant"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "pirate-king",
@@ -13815,7 +14146,16 @@
       "beast-emperor",
       "rabbit-goddess"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "sky-dragon-healer",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "primordial-butler-demon",
@@ -13901,7 +14241,16 @@
       "no-life-king",
       "full-moon-demon-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "healing-hero"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "rabbit-goddess",
@@ -13987,7 +14336,16 @@
       "hollow-mask-reaper",
       "beast-emperor"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "spiral-drill-king",
@@ -14072,7 +14430,16 @@
       "ultra-instinct-saiyan",
       "full-moon-demon-king"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "storm-dragon",
@@ -14158,7 +14525,16 @@
       "destroyer-god",
       "witch-of-envy"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "flower-healer-captain",
+        "healing-hero"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "witch-of-envy",
@@ -14244,7 +14620,16 @@
       "golden-wind-boss",
       "destroyer-god"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "angel-attendant",
+        "gentle-priest"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "ant-king",
@@ -14330,7 +14715,16 @@
       "slime-demon-lord",
       "quirk-thief-overlord"
     ],
-    "prevTier": "S"
+    "prevTier": "S",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "flower-healer-captain",
+        "healing-hero"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "divergent-fist-vessel",
@@ -14416,7 +14810,16 @@
       "soul-king-father",
       "sun-god-captain"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "founding-titan",
@@ -14502,7 +14905,16 @@
       "octopus-teacher",
       "shadow-monarch"
     ],
-    "prevTier": "S"
+    "prevTier": "S",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "healing-hero",
+        "flower-healer-captain"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "octopus-teacher",
@@ -14587,7 +14999,16 @@
       "undead-overlord-king"
     ],
     "losesTo": [],
-    "prevTier": "S"
+    "prevTier": "S",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "healing-hero",
+        "flower-healer-captain"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "one-punch-caped-hero",
@@ -14673,7 +15094,16 @@
       "quirk-thief-overlord",
       "ant-king"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "quirk-thief-overlord",
@@ -14759,7 +15189,16 @@
       "shadow-monarch",
       "slime-demon-lord"
     ],
-    "prevTier": "S"
+    "prevTier": "S",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "flower-healer-captain",
+        "blue-healer-cat-knight"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "slime-demon-lord",
@@ -14844,7 +15283,16 @@
       "sword-saint",
       "octopus-teacher"
     ],
-    "prevTier": "S"
+    "prevTier": "S",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "flower-healer-captain",
+        "blue-healer-cat-knight"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "soul-king-father",
@@ -14929,7 +15377,16 @@
       "ant-king",
       "one-punch-caped-hero"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "flower-healer-captain",
+        "healing-hero"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "sun-breath-origin",
@@ -15014,7 +15471,16 @@
       "sun-god-captain",
       "divergent-fist-vessel"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "blue-healer-cat-knight"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "sun-god-captain",
@@ -15100,7 +15566,16 @@
       "one-punch-caped-hero",
       "soul-king-father"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "angel-attendant"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "sword-saint",
@@ -15186,7 +15661,16 @@
     "losesTo": [
       "octopus-teacher"
     ],
-    "prevTier": "S"
+    "prevTier": "S",
+    "team": {
+      "bestSupport": [
+        "gentle-priest",
+        "flower-healer-captain",
+        "blue-healer-cat-knight"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "ultra-instinct-saiyan",
@@ -15272,7 +15756,16 @@
       "storm-dragon",
       "witch-of-envy"
     ],
-    "prevTier": "B"
+    "prevTier": "B",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "hunter-chairman",
@@ -15869,7 +16362,16 @@
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "utilGain": 36.4
+    "utilGain": 36.4,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   },
   {
     "id": "panther-king-espada",
@@ -16770,6 +17272,15 @@
       "sword-saint",
       "octopus-teacher"
     ],
-    "prevTier": "A"
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "blue-healer-cat-knight"
+      ],
+      "position": "",
+      "bestWith": []
+    }
   }
 ]
