@@ -1492,3 +1492,38 @@
 - **2026-10-30 · ป้าย NEW เริ่มจากการ์ดใหม่ (`?v=46`)** · เจ้าของตอบคำถาม (ก) ของแผนข้อ 5: เอาป้าย NEW ออกจาก 500 ใบที่นำเข้าทั้งเกม รอการ์ดใบใหม่ · `data/pool.json` เพิ่ม `newAfter: "2026-10-29"` (`added` จริงของทุกใบเก็บไว้เหมือนเดิม) · `C.isNew` ใน `js/app.js` = ภายใน 14 วัน **และ** `added` หลัง `newAfter` · Home → New cards ยังโชว์การ์ด 29 ต.ค. (ไม่มีป้าย) · **ทดสอบ (Chromium):** ป้าย NEW บน Home / Cards / Tier List = 0 · `isNew` 10-28 / 10-29 = false · 10-30 (วันนี้) = true · ไม่มี error · **ไฟล์:** `index.html` (`?v=46`) · `js/app.js` · `data/pool.json` · `PROGRESS.md` · `HISTORY.md`
 
 - **2026-10-30 · อัปเดตข่าว:** `data/news.json` เพิ่มข่าวอัปเดตเกม 1 รายการ (Mini Update · minor · 11 ข้อ) · โค้ด 0 · ระบบใหม่ 0 · ไม่แตะโค้ด/`?v=`
+
+- 2026-10-30: **แผน 2026-10-30 ข้อ 6 — ทีม 3 โหมด + deck 4 ใบ** (`?v=47` / `?v=48` merge แล้ว · `?v=49` · Claude Code Opus 5.5 / high · PR #74 #75 #78 + PR นี้)
+  - **โหมด (`?v=47`):** `meta.json → modes` = PvP · Tower Infinity (id `tower` เดิมของ Ascended Tower) · Overall · Story / Boss `hidden` · น้ำหนัก PvP 30/20/30/10/10 · Tower 35/30/10/15/10 (Tank 2 DPS 1) · Overall 33/25/20/12/10 · deck ที่บันทึก/แชร์ในโหมดซ่อนเปิดได้ เก็บค่าเดิม แสดง/คิดคะแนนเป็น Overall (`CBI.teamScore.resolveMode`) · deck ใหม่เริ่ม Overall · หน้า Meta Decks แบ่งกลุ่มตามโหมด + ป้าย Best / Runner-up / Easy to get · Copy to My Decks ได้โหมดของทีม · หน้าดูการ์ดไม่แสดงคะแนนโหมดที่ซ่อน
+  - **เกมอัปเดต (เจ้าของ 2026-10-30 · `?v=48`):** deck = การ์ด 4 + Support 4 · ใบเดียวกันใส่ซ้ำได้ทั้งการ์ดและ Support · บัฟบวกกัน (Charge Commander +33% × 2 = +66%) → `deck.js` 4 ช่อง (`SLOTS 4` · `OLD_SLOTS 5`) · เลือกการ์ดที่อยู่ช่องอื่นได้ (ไทล์ขึ้น "Slot N" ไม่เทา) · deck เก่า 5 ใบ: ใบที่ 5 + Support ย้ายลงช่องว่างของแถว ไม่มีที่ = `extra` (ไม่แสดง/ไม่นับ) · ลิงก์ 5 ใบยังเปิดได้ · `share.js` รูป deck 4 คอลัมน์ · `teamscore.js` 4 ช่อง · Card power เทียบกับการ์ดดีสุดใบเดียว × 4 · Fill the gaps แนะนำการ์ดซ้ำได้ · position "4-5" = ช่อง 4 · `deck_sim.py` HP ทั้ง deck จากหลายใบบวกกัน
+  - **วิธีจัดทีม (`tools/team_sim.py` · §7 B ข้อ 10):** จำลอง 4 ต่อ 4 ที่ Godly (`deck_sim.py`) · การ์ด 48 + Utility 11 · Support 99 ใบ (ไม่นับ Shadow Garden Strategist) · **PvP** = คะแนน deck เฉลี่ยกับ deck ผู้เล่น 24 ทีมสุ่ม (การ์ด Meta…A + Support Meta…S ซ้ำได้) + รอบ 2 เพิ่มทีมที่เจอรอบแรก 7 ทีม · **Tower** = ไต่ชั้น ศัตรู 4 ใบจาก 48 ใบ ชั้นแรก 0.25 × stat โตชั้นละ 12% ไม่ฟื้น HP ใบที่ตายไม่กลับ 10 ลำดับศัตรู · T = 50 × ชั้น ÷ ชั้นของทีมอ้างอิง · **Overall** = (PvP + T) ÷ 2 · สู้เกิน 200 ตา = HP เหลือมากกว่าชนะ · HP เหลือนับไม่เกิน 100% (การ์ดที่โตตอนฆ่าเคยทำคะแนนเกิน 100) · ค้นแบบ hill climbing (เปลี่ยนการ์ดทุกใบทุกช่อง / Support 40 ใบแรกทุกช่อง / สลับช่อง) 2 รอบ × 9 = 18 การค้น (~2.5 ชม. 4 core) → `--report` ทดสอบทุกทีมที่เจอใหม่ (deck ผู้เล่น 47 ทีม × 2 ฝั่ง × 3 + Tower 16 ลำดับ) แล้วเลือก Best / Runner-up (การ์ดซ้ำกับ Best ≤ 2 ใบ) / Easy (การ์ด ≤ 1 ใน 1B · Support ≤ 1 ใน 1M) ของแต่ละโหมดจากทุกทีม · ผลรอบแรก (deck 5 ใบ) ทิ้งไปเพราะเกมเปลี่ยนเป็น 4 ใบ
+  - **ผล 9 ทีม** (PvP / ชั้น Tower / Overall · ทีมอ้างอิง = การ์ด 4 อันดับแรก + Support 4 อันดับแรก: 79.8 / 22.3 / 64.9):
+    - **PvP Best — Doom Opener** 93.0 / 20.8 / 69.8: Black Wizard Brother (Angel Attendant) · Founding Titan (Gentle Priest) · Sword Saint (Charge Commander) · Founding Titan (Guild Master Giant)
+    - **PvP Runner-up — Titan Wall** 90.1 / 21.1 / 68.8: Six Paths Fox Sage (Charge Commander) · Founding Titan × 3 (Gentle Priest · Guild Master Giant · Charge Commander)
+    - **PvP Easy — Beerus Squad** 74.5 / 17.5 / 56.9: Storm Dragon (Gentle Priest) · Destroyer God × 3 (Charge Commander · Charge Commander · Sky Dragon Healer)
+    - **Tower Best = Overall Best — Predator Court** 89.1 / 25.4 / 73.0: Slime Demon Lord (Flower Healer Captain) · Quirk Thief Overlord (Spirit Medium Granny) · Founding Titan (Guild Master Giant) · Witch of Envy (Eternal Wish Dragon)
+    - **Tower Runner-up = Overall Runner-up — Blessed Blades** 88.9 / 25.0 / 72.5: Founding Titan (Gentle Priest) · Sword Saint (Flower Healer Captain) · Destroyer God (Charge Commander) · Destroyer God (Eternal Wish Dragon)
+    - **Tower Easy — Storm Front** 70.9 / 17.5 / 55.1: Storm Dragon (Gentle Priest) · Destroyer God (Gentle Priest) · Destroyer God × 2 (Charge Commander × 2)
+    - **Overall Easy = PvP Easy — Beerus Squad**
+    - ข้อสังเกต: ซ้ำการ์ดแรงสุดที่หาง่าย (Destroyer God / Founding Titan) + Charge Commander / Gentle Priest ซ้ำ ชนะทีมการ์ดหายากกว่าหลายใบ · ทีมที่ทน (ฮีลทั้ง deck + ลดดาเมจศัตรูซ้อนกัน) ดีทั้ง PvP และ Tower จึงเป็น Best ของ Overall ด้วย · Black Wizard Brother (B) ใช้ "ใบแรงสุดของศัตรูตายใน 4 ตา" เปิดเกม PvP
+  - **`team.bestSupport`** ครบ 59 ใบ (48 + Utility 11) = 3 ใบที่เพิ่มคะแนน deck มากสุดเมื่อใส่ใต้การ์ดนั้น (การ์ดนั้น + 3 ใบสุ่ม 40 ครั้ง สู้ mirror · deck 4 ใบ) · อันดับ 1 บ่อยสุด: Guild Master Giant 31 ใบ · Flower Healer Captain 18 · Gentle Priest 10 · **Support `bestDeck`** ครบ 100 ใบ (ใช้ในทีม 8 ใบ · หน้าดูการ์ด Support แสดงชื่อทีมไม่ซ้ำ)
+  - **หน้า Meta Decks:** การ์ด 4 ใบเต็มแถวบนมือถือ (grid 4 ช่อง ไม่เลื่อนข้าง · 360 / 390 / 1366 เช็กแล้ว)
+  - **ทดสอบ (Chromium 390×844 + 1366×768):** Meta Decks 3 กลุ่ม × 3 ทีม × 4 ช่อง + Support 4 · Copy Predator Court → deck โหมด tower · deck เก่า 5 ใบมีช่องว่าง → Shadow Monarch + Charge Commander ย้ายลงช่อง 2 · deck โหมด story → ปุ่ม Overall · ใส่ Octopus Teacher + Charge Commander ซ้ำ 2 ช่องผ่าน picker ได้ · คะแนนทีม/Fill the gaps ทำงาน · หน้า Gentle Priest → "Best decks: …" · ไม่มี JS error (404 เดียว = `audio/bgm.mp3`)
+  - **ความเร็ว §11.3** (390×844 DPR 2.75 · CPU ×6 · การ์ด 400 + Support 100 จริง · มัธยฐาน 3 รอบ · ก่อน = commit `fce896f` ก่อนข้อ 6 · วัดเครื่องเดียวกันรอบเดียวกัน · วงล้อ = ลากหมุน):
+
+    | กรณี | ก่อน fps / ช้าสุด | หลัง fps / ช้าสุด |
+    |---|---|---|
+    | Cards Normal | 59.7 / 33ms | 59.4 / 33ms |
+    | Cards Ascended | 29.2 / 117ms | 26.7 / 233ms |
+    | Tier List Normal | 56.3 / 100ms | 54.9 / 150ms |
+    | Tier List Ascended | 40.8 / 100ms | 39.1 / 183ms |
+    | Deck picker Normal | 49.2 / 450ms | 50.0 / 383ms |
+    | Deck picker Ascended | 32.0 / 650ms | 38.8 / 433ms |
+    | วงล้อ Normal | 46.9 / 67ms | 51.7 / 67ms |
+    | วงล้อ Ascended | 37.6 / 67ms | 41.5 / 50ms |
+    | Meta Decks Normal | 59.7 / 33ms (1 ทีม) | 59.1 / 67ms (9 ทีม) |
+
+    งานนี้ไม่ได้แตะหน้า Cards / Tier List / วงล้อ: ต่างกันอยู่ในช่วงแกว่ง ±5 fps ของเครื่องทดสอบ · **ตอนการ์ด ~400 ใบ ไม่ถึง 55 fps:** Cards / Tier List Ascended · Deck picker · วงล้อ (ก่อนงานนี้ก็ไม่ถึง · เครื่องทดสอบไม่มี GPU) → **ตามกฎถามเจ้าของก่อนแก้** (ยังไม่ได้แก้)
+  - **Claude ตัดสินใจเอง (ค้านได้):** ทีมเดียวกันอยู่ได้หลายโหมด · กติกา Tower / timeout / "less damage" คูณกัน / เกณฑ์ทีมหาง่าย / ทีมรองซ้ำ ≤ 2 ใบ (ดู ▶️ ข้อ 6) · deck เก่า: ใบที่ 5 ที่ไม่มีที่ลงเก็บใน `extra` (ยังไม่มีปุ่มดึงกลับ)
+  - **ค้าง:** Support 100 ใบจัดอันดับด้วย deck 5 ใบ ไม่ซ้ำ (ข้อ 2) · `utilGain` (ข้อ 1) คิดจาก deck 5 ใบ · คะแนนทีมในหน้า Deck ของทีม Meta ~45–50 จนกว่าข้อ 7 ใส่ role / bestWith / beats / position
+  - **ไฟล์:** `data/meta.json` · `data/teams.json` · `data/cards.json` (`team.bestSupport`) · `data/support.json` (`bestDeck`) · `js/deck.js` · `js/teamscore.js` · `js/detail.js` · `js/share.js` · `css/deck.css` · `index.html` (`?v=49`) · `tools/team_sim.py` (ใหม่) · `tools/deck_sim.py` · `PROGRESS.md` · `HISTORY.md`
