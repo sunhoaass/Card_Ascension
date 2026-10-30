@@ -41,6 +41,11 @@
 .deck__support { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-3); }
 .deck__label { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
 .deck__notes { margin-top: var(--s-3); color: var(--ink-dim); font-size: var(--fs-sm); max-width: var(--measure, none); }
+/* plan 2026-10-30 item 6: PvP | Tower | Overall above the list · a badge per deck (best / runner-up / easy to get) */
+.deck-modes.seg { max-width: 420px; margin-bottom: var(--s-3); }
+.deck__kind { color: var(--on-gold); background: var(--brass-gold); border-color: transparent; }
+.deck__kind--alt { color: var(--ink); background: transparent; border-color: var(--gold-lo); }
+.deck__kind--easy { color: var(--ink); background: transparent; border-color: var(--t-x-teal); }
 
 /* ---------- Desktop ---------- */
 @media (min-width: 900px) {
@@ -81,6 +86,7 @@
 }
 .dk-mode .seg__btn small, .dk-seg .seg__btn small { font-size: 9px; font-weight: 600; letter-spacing: .04em; color: var(--ink-faint); }
 .dk-mode .seg__btn:disabled, .dk-seg .seg__btn:disabled { cursor: not-allowed; opacity: .6; }
+.seg.is-none .seg__ind { opacity: 0; }   /* a deck still in a hidden mode (Story / Boss): no button is on */
 .dk-seg { margin-bottom: 0; }
 .dk-rarity { margin-bottom: var(--s-2); }
 

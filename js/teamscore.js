@@ -37,11 +37,13 @@
   ];
   const DEFAULT_WEIGHTS = { power: 30, synergy: 25, coverage: 20, roles: 15, position: 10 };
   const DEFAULT_ROLES = { Tank: 1, DPS: 2 };
+  // plan 2026-10-30 item 6: PvP · Tower Infinity · Overall · Story / Boss hidden (old decks in them still score, not in Fits modes)
   const DEFAULT_MODES = [
-    { id: "tower", name: "Ascended Tower", enabled: true },
     { id: "pvp", name: "PvP", enabled: true },
-    { id: "story", name: "Story", enabled: true },
-    { id: "boss", name: "Boss", enabled: false },
+    { id: "tower", name: "Tower Infinity", enabled: true },
+    { id: "overall", name: "Overall", enabled: true },
+    { id: "story", name: "Story", enabled: true, hidden: true },
+    { id: "boss", name: "Boss", enabled: false, hidden: true },
   ];
   // the knobs (PROGRESS.md §10.5 lists them; change here and there together)
   const K = {
@@ -75,12 +77,13 @@
   const isRankedSup = (s) => !!(s && s.scores && s.scores.value > 0 && s.tier);
   const tagKey = (t) => String(t).trim().toLowerCase();
 
-  /* ---------- modes (data/meta.json -> modes, else the defaults; every mode uses the same weights until §8 is answered) ---------- */
+  /* ---------- modes (data/meta.json -> modes, else the defaults · weights per mode since plan 2026-10-30 item 6) ---------- */
   function modeList() {
     const m = C.state.meta && Array.isArray(C.state.meta.modes) ? C.state.meta.modes : [];
     return DEFAULT_MODES.map((d) => {
       const x = m.find((y) => y && y.id === d.id);
-      return x ? { ...d, name: typeof x.name === "string" && x.name ? x.name : d.name, enabled: typeof x.enabled === "boolean" ? x.enabled : d.enabled } : d;
+      return x ? { ...d, name: typeof x.name === "string" && x.name ? x.name : d.name, enabled: typeof x.enabled === "boolean" ? x.enabled : d.enabled,
+        hidden: typeof x.hidden === "boolean" ? x.hidden : !!d.hidden } : d;
     });
   }
   function modeConfig(id) {
@@ -136,12 +139,26 @@
     // unranked support: the strongest Godly value of each effect type (support.effect.type), for the ratio in supUnr()
     const supTop = new Map();
     sups.forEach((x) => { const t = supType(x), v = C.supValue(x, "Godly"); if (t && v > 0) supTop.set(t, Math.max(supTop.get(t) || 0, v)); });
+    // Utility row (plan 2026-10-30 item 6, proposed in item 1): its Overall (30–38) says nothing about the boost it gives the
+    // deck · worth = the Overall of the strongest ranked card that adds no more deck power than its utilGain (% of deck power,
+    // measured on the 4 best ranked cards: a ranked card adds ATK × HP ÷ Σ ATK × HP of those 4) · never below its own Overall
+    const extra = C.extraTiers();
+    const main = cards.filter((c) => C.isRanked(c) && !extra.has(c.tier)).sort((a, b) => b.scores.overall - a.scores.overall);
+    const ah = (c) => { const b = c.base || {}; const a = Number(b.atk), h = Number(b.hp); return a > 0 && h > 0 ? a * h : 0; };
+    const ref = main.slice(0, 4).reduce((a, c) => a + ah(c), 0);
+    const utilVal = new Map();
+    cards.forEach((c) => {
+      const g = num(c.utilGain);
+      if (!extra.has(c.tier) || !C.isRanked(c) || g == null || !(ref > 0)) return;
+      const peer = main.find((m) => (ah(m) / ref) * 100 <= g + EPS);
+      if (peer) utilVal.set(c.id, Math.max(c.scores.overall, peer.scores.overall));
+    });
     const threats = cards.filter((c) => C.isRanked(c) && K.threatTiers.includes(c.tier)).sort((a, b) => ov(b) - ov(a) || a.name.localeCompare(b.name));
     const byTag = new Map();                               // tag -> card ids that have it
     cards.forEach((c) => list(c.tags).forEach((t) => { const k = tagKey(t); if (!byTag.has(k)) byTag.set(k, { name: t, ids: new Set() }); byTag.get(k).ids.add(c.id); }));
     L = {
       cardsSrc: s.cards, supSrc: s.support, teamsSrc: s.teams,
-      cards, sups, has, threats, byTag, unrCard, supTop,
+      cards, sups, has, threats, byTag, unrCard, supTop, utilVal,
       cardById: new Map(cards.map((c) => [c.id, c])),
       supById: new Map(sups.map((x) => [x.id, x])),
       teams: (Array.isArray(s.teams) ? s.teams : []).filter((t) => t && Array.isArray(t.slots)),
@@ -170,9 +187,10 @@
     const r = v > 0 && top > 0 ? clamp01(v / top) : K.unrSupNoData * C.supLevelMult(rarity) / C.supLevelMult("Godly");
     return K.unrMin + (K.unrMax - K.unrMin) * r;
   }
-  // a card's worth in a mode: Overall (unranked = from ATK × HP, §10.5), averaged with modes[mode] when the card has one
+  // a card's worth in a mode: Overall (unranked = from ATK × HP · Utility = from utilGain, §10.5), averaged with modes[mode] when the card has one
   function cardVal(c, mode) {
-    const ov = C.isRanked(c) ? c.scores.overall : (lib().unrCard.get(c.id) ?? K.unrMin);
+    const l = lib();
+    const ov = C.isRanked(c) ? (l.utilVal.get(c.id) ?? c.scores.overall) : (l.unrCard.get(c.id) ?? K.unrMin);
     const mv = c.modes && typeof c.modes === "object" ? num(c.modes[mode]) : null;
     return mv == null ? ov : (ov + clamp01(mv / 100) * 100) / 2;
   }
@@ -212,7 +230,7 @@
 
   function score(deck, modeId) {
     const l = lib();
-    const mode = modeId || (deck && deck.mode) || "tower";
+    const mode = modeId || (deck && deck.mode) || "overall";
     const cfg = modeConfig(mode);
     const rarity = rarityOfDeck(deck);
     const cards = slots(deck && deck.cards), sups = slots(deck && deck.support);
@@ -395,7 +413,7 @@
       : [];
 
     // Fits modes: this deck scored in every mode that can be played, best first
-    const modes = modeList().filter((m) => m.enabled).map((m) => { const r = score(deck, m.id); return { id: m.id, name: m.name, score: r.score, raw: r.raw, band: r.band }; })
+    const modes = modeList().filter((m) => m.enabled && !m.hidden).map((m) => { const r = score(deck, m.id); return { id: m.id, name: m.name, score: r.score, raw: r.raw, band: r.band }; })
       .sort((a, b) => (b.raw - a.raw) || a.name.localeCompare(b.name));
 
     return {

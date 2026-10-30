@@ -1,14 +1,15 @@
 /* ==========================================================
    Card Battle Infinity — Deck page
-   · Step 7:  Meta Decks (data/teams.json), moved here from the Tier List
+   · Step 7:  Meta Decks (data/teams.json), moved here from the Tier List · plan 2026-10-30 item 6: a PvP | Tower | Overall
+     switch above them (3 decks per mode: best · runner-up · easy to get, teams.json -> mode / kind)
    · Step 10: the deck builder. Tabs  My Decks | Meta Decks
        #deck              = My Decks (all of the user's decks)
        #deck/meta         = Meta Decks (each has "Copy to My Decks")
        #deck/my/<id>      = the editor for one deck (each open adds a history entry, so phone Back returns to the list)
        #deck/s/<data>     = a deck someone shared (packed in the link by js/share.js), view only, with "Save a copy"
    · 1 deck = 5 card slots (Slot 1–5) + 5 support slots (the support under a card sits in the same column).
-     A card can't be in the same deck twice. Mode: Ascended Tower · PvP · Story · Boss (Boss is "Soon": can't be picked yet,
-     but the data already supports it).
+     A card can't be in the same deck twice. Mode: PvP · Tower Infinity · Overall (plan 2026-10-30 item 6 · new decks start on
+     Overall). Story / Boss are hidden: a saved or shared deck in one of them still opens and scores, but can't be switched back.
    · Decks live in localStorage "cbi:decks" (PROGRESS.md §10.4) and save on every change. No Save button.
    · Putting cards in: tap an empty slot -> picker (search + filters). Moving: drag (mouse moves right away, touch = hold
      ~0.26s) or tap a card, then tap the slot it should go to (swaps when that slot has a card). × clears a slot.
@@ -35,16 +36,20 @@
   const SLOP = 10;                                 // touch: moving further than this before the lift = scrolling
   const EASE = "cubic-bezier(.2,.8,.2,1)";
   const KINDS = ["cards", "support"];
-  // Modes. data/meta.json may later carry { modes: [{ id, name, enabled }] } (step 11); these are the fallback
+  // Modes. data/meta.json -> modes: [{ id, name, enabled, hidden }] wins; these are the fallback · hidden = not offered anywhere
+  // (old decks keep it) · the tower id stays "tower" so decks made for Ascended Tower are Tower Infinity decks now
   const MODES = [
-    { id: "tower", name: "Ascended Tower", short: "Tower", enabled: true },
     { id: "pvp", name: "PvP", short: "PvP", enabled: true },
-    { id: "story", name: "Story", short: "Story", enabled: true },
-    { id: "boss", name: "Boss", short: "Boss", enabled: false },
+    { id: "tower", name: "Tower Infinity", short: "Tower", enabled: true },
+    { id: "overall", name: "Overall", short: "Overall", enabled: true },
+    { id: "story", name: "Story", short: "Story", enabled: true, hidden: true },
+    { id: "boss", name: "Boss", short: "Boss", enabled: false, hidden: true },
   ];
+  const DEFAULT_MODE = "overall";
+  const KIND_LABEL = { best: "Best", alt: "Runner-up", easy: "Easy to get" };   // teams.json -> kind
   const LEADS = {
     my: "Build your own five-card decks, with a support under each card. Pick a mode and a rarity, then tap a slot to add a card. The team score updates as you build. Decks are saved on this device.",
-    meta: "Meta decks: five-card teams that work well together, with the slot each card plays in and the support to run. Pick a rarity to see the stats. Tap a card for the full breakdown, or copy a deck to My Decks to make it yours.",
+    meta: "Meta decks for each mode: the best team, a runner-up and one that's easier to pull, found by simulating thousands of battles. Each card shows its slot and the support to run under it. Tap a card for the full breakdown, or copy a deck to My Decks to make it yours.",
     shared: "A deck someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
 
@@ -78,6 +83,7 @@
   let sel = null;                              // { kind, i }: the card picked up by a tap
   let indexY = 0;
   let metaTeams = [];
+  let metaMode = DEFAULT_MODE;                 // the mode picked above Meta Decks (kept while the page is open)
   const hist = new Map();                      // deck id -> { undo: [], redo: [] } (JSON snapshots of cards / support / mode)
   const metaTiles = new Map();                 // card id -> elements in the Meta Decks list (rarity changes)
   const ed = { root: null, slots: { cards: [], support: [] }, shown: { cards: [], support: [] } };   // editor board
@@ -104,9 +110,10 @@
   };
   const modes = () => MODES.map((d) => {
     const m = state.meta && Array.isArray(state.meta.modes) ? state.meta.modes.find((x) => x && x.id === d.id) : null;
-    return m ? { ...d, name: str(m.name) || d.name, enabled: typeof m.enabled === "boolean" ? m.enabled : d.enabled } : d;
+    return m ? { ...d, name: str(m.name) || d.name, enabled: typeof m.enabled === "boolean" ? m.enabled : d.enabled, hidden: typeof m.hidden === "boolean" ? m.hidden : !!d.hidden } : d;
   });
-  const modeOf = (id) => modes().find((m) => m.id === id) || modes()[0];
+  const shownModes = () => modes().filter((m) => !m.hidden);   // the buttons (a hidden mode is never offered)
+  const modeOf = (id) => modes().find((m) => m.id === id) || modes().find((m) => m.id === DEFAULT_MODE);
   const deckSpec = (d) => ({ id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice() });
   const anyCards = (d) => countOf(d.cards) + countOf(d.support) > 0;
   // the user's own deck as the team score sees it: with the user's trait per card (js/traits.js)
@@ -132,7 +139,7 @@
     return {
       id: str(d.id).slice(0, 60) || newId("dk_"),
       name: str(d.name).trim().slice(0, NAME_MAX) || "Untitled deck",
-      mode: MODES.some((m) => m.id === d.mode) ? d.mode : "tower",
+      mode: MODES.some((m) => m.id === d.mode) ? d.mode : DEFAULT_MODE,
       rarity: state.meta.rarities.some((r) => r.name === d.rarity) ? d.rarity : "Normal",
       cards: slotsOf(d.cards, true), support: slotsOf(d.support, false),
       created: str(d.created) || now(), updated: str(d.updated) || now(),
@@ -730,9 +737,10 @@
     ui.nameText.textContent = cur.name;
     ui.name.setAttribute("aria-label", `Deck name: ${cur.name}. Tap to rename.`);
     ui.metaLine.textContent = `${m.name} · ${cur.rarity} · ${countOf(cur.cards)}/${SLOTS} cards · ${countOf(cur.support)}/${SLOTS} support`;
-    const all = modes();
+    const at = shownModes().findIndex((x) => x.id === cur.mode);
     ui.modeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkMode === cur.mode)));
-    ui.mode.style.setProperty("--i", Math.max(0, all.findIndex((x) => x.id === cur.mode)));
+    ui.mode.style.setProperty("--i", Math.max(0, at));
+    ui.mode.classList.toggle("is-none", at < 0);   // a deck still in a hidden mode (Story / Boss): no plate until one is picked
     ui.rarity.querySelectorAll("[data-dk-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkRarity === cur.rarity)));
     requestAnimationFrame(() => C.revealChip(ui.rarity.parentNode));
     ui.hint.textContent = fine.matches
@@ -740,7 +748,7 @@
       : "Tap an empty slot to add a card. Hold a card to drag it, or tap it and then tap where it should go.";
   }
   function setMode(id) {
-    if (!cur || mode !== "editor" || cur.mode === id || !modes().some((m) => m.id === id && m.enabled)) return;
+    if (!cur || mode !== "editor" || cur.mode === id || !shownModes().some((m) => m.id === id && m.enabled)) return;
     commit((d) => { d.mode = id; }, { animate: false });
   }
   function setRarity(name) {
@@ -1169,13 +1177,13 @@
      ========================================================== */
   async function newDeck() {
     const auto = suggestName();
-    const all = modes();
+    const all = shownModes(), at = Math.max(0, all.findIndex((m) => m.id === DEFAULT_MODE));
     const res = await dialog({
       title: "New deck",
       html: `${nameInput(auto)}
         <div class="tm-field"><span class="tm-field__label" id="dk-l-mode">Mode</span>
-          <div class="seg glass tm-pick dk-seg" data-pick="mode" role="group" aria-labelledby="dk-l-mode" style="--n:${all.length};--i:0"><span class="seg__ind" aria-hidden="true"></span>
-            ${all.map((m, k) => `<button type="button" class="seg__btn fx-press" data-v="${esc(m.id)}" aria-pressed="${k === 0}"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`).join("")}</div>
+          <div class="seg glass tm-pick dk-seg" data-pick="mode" role="group" aria-labelledby="dk-l-mode" style="--n:${all.length};--i:${at}"><span class="seg__ind" aria-hidden="true"></span>
+            ${all.map((m, k) => `<button type="button" class="seg__btn fx-press" data-v="${esc(m.id)}" aria-pressed="${k === at}"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`).join("")}</div>
           <p class="tm-field__note">You can change the mode later.</p></div>`,
       actions: [{ label: "Cancel", value: "cancel" }, { label: "Create", value: "ok", submit: true, cls: "tm-btn--primary" }],
       onMount(d) {
@@ -1186,7 +1194,7 @@
     if (!res || res.action !== "ok") return;
     const name = res.form.elements.name.value.trim().slice(0, NAME_MAX) || suggestName();
     const t = now();
-    const d = clean({ id: newId("dk_"), name, mode: pickOf(res.form, "mode") || "tower", rarity: state.rarity, cards: [], support: [], created: t, updated: t });
+    const d = clean({ id: newId("dk_"), name, mode: pickOf(res.form, "mode") || DEFAULT_MODE, rarity: state.rarity, cards: [], support: [], created: t, updated: t });
     decks.unshift(d);
     save();
     openDeck(d.id);
@@ -1538,12 +1546,14 @@
     const el = document.createElement("article");
     el.className = "deck glass";
     const name = team.name || pretty(team.id || "Deck");
-    el.setAttribute("aria-label", `Deck: ${name}`);
+    const kind = KIND_LABEL[team.kind] || "";
+    el.setAttribute("aria-label", `${kind ? kind + " deck" : "Deck"}: ${name}`);
     el.dataset.ti = index;
     const sup = Array.isArray(team.support) ? team.support : team.support ? [team.support] : [];
     el.innerHTML = `
       <div class="deck__head">
         <h3 class="deck__name">${esc(name)}</h3>
+        ${kind ? `<span class="badge deck__kind deck__kind--${esc(team.kind)}">${esc(kind)}</span>` : ""}
         ${team.mock ? `<span class="badge badge--muted" title="Example data, not a real recommendation">Sample</span>` : ""}
         <button type="button" class="tm-btn fx-press deck__copy" data-copy aria-label="Copy ${esc(name)} to My Decks">${ICON.copy}Copy to My Decks</button>
       </div>
@@ -1554,8 +1564,23 @@
     list(team.slots).slice(0, SLOTS).forEach((s, i) => row.appendChild(slotEl(s, i + 1)));
     return el;
   }
+  // Meta Decks by mode (teams.json -> mode · none / a hidden mode = Overall) · best, runner-up, easy to get
+  const teamMode = (t) => (shownModes().some((m) => m.id === t.mode) ? t.mode : DEFAULT_MODE);
+  const KIND_ORDER = ["best", "alt", "easy"];
+  const kindAt = (t) => { const i = KIND_ORDER.indexOf(t.kind); return i < 0 ? KIND_ORDER.length : i; };
   function renderMeta() {
-    metaTeams = (Array.isArray(state.teams) ? state.teams : []).filter((t) => t && list(t.slots).length);
+    const all = (Array.isArray(state.teams) ? state.teams : []).filter((t) => t && list(t.slots).length);
+    const has = shownModes().filter((m) => all.some((t) => teamMode(t) === m.id));
+    if (has.length && !has.some((m) => m.id === metaMode)) metaMode = has[0].id;
+    metaTeams = all.filter((t) => teamMode(t) === metaMode).map((t, i) => [t, i]).sort((a, b) => kindAt(a[0]) - kindAt(b[0]) || a[1] - b[1]).map((x) => x[0]);
+    const at = shownModes().findIndex((m) => m.id === metaMode);
+    ui.metaModes.hidden = !all.length;
+    ui.metaModes.style.setProperty("--i", Math.max(0, at));
+    ui.metaModeBtns.forEach((b) => {
+      const on = b.dataset.metaMode === metaMode, empty = !has.some((m) => m.id === b.dataset.metaMode);
+      b.setAttribute("aria-pressed", String(on));
+      b.disabled = empty && !on;
+    });
     ui.metaList.hidden = !metaTeams.length;
     ui.metaNone.hidden = metaTeams.length > 0;
     ui.metaRarity.hidden = !metaTeams.length;       // nothing to restyle when there are no decks
@@ -1574,7 +1599,16 @@
     const taken = new Set(decks.map((x) => x.name));
     const base = (team.name || pretty(team.id || "Deck")).slice(0, NAME_MAX);
     const t = now();
-    return clean({ id: newId("dk_"), name: taken.has(base) ? copyName(base) : base, mode: "tower", rarity: state.rarity, cards, support, created: t, updated: t });
+    return clean({ id: newId("dk_"), name: taken.has(base) ? copyName(base) : base, mode: teamMode(team), rarity: state.rarity, cards, support, created: t, updated: t });
+  }
+  function setMetaMode(id) {
+    if (id === metaMode || !shownModes().some((m) => m.id === id)) return;
+    metaMode = id;
+    renderMeta();
+    const r = state.rarity;
+    if (r !== "Normal") recolor(r);               // new tiles start at the site rarity already (renderCard) · keeps the counters quiet
+    animateIn(ui.metaList);
+    FX.stagger(ui.metaList, 70);
   }
   function copyMeta(btn) {
     const art = btn.closest(".deck");
@@ -1757,7 +1791,7 @@
     ).join("");   // data-dk-rarity, not data-rarity: these must not change the site-wide rarity (cards.js listens to data-rarity)
   }
   function modeButtons() {
-    return modes().map((m) =>
+    return shownModes().map((m) =>
       `<button type="button" class="seg__btn fx-press" data-dk-mode="${esc(m.id)}" aria-pressed="false"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`
     ).join("");
   }
@@ -1789,6 +1823,7 @@
       if (to) { to.focus(); to.click(); }
     });
     ui.metaList.addEventListener("click", (e) => { const b = e.target.closest("[data-copy]"); if (b) copyMeta(b); });
+    ui.metaModes.addEventListener("click", (e) => { const b = e.target.closest("[data-meta-mode]"); if (b && !b.disabled) setMetaMode(b.dataset.metaMode); });
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
     document.addEventListener("cbi:trait", onTrait);
   }
@@ -1802,7 +1837,7 @@
     ui.rarity.innerHTML = rarityChips();
     ui.mode.insertAdjacentHTML("beforeend", modeButtons());
     ui.modeBtns = [...ui.mode.querySelectorAll("[data-dk-mode]")];
-    ui.mode.style.setProperty("--n", modes().length);
+    ui.mode.style.setProperty("--n", shownModes().length);
     ui.score.innerHTML = scoreHTML();
     ui.score = $(".dk-score", ui.score);
     C.watchLive(ui.score);                          // the rainbow ring of a 100 only turns while it's on screen
@@ -1829,7 +1864,7 @@
       act: $("#dk-act"), actName: $("#dk-act-name"), actHint: $("#dk-act-hint"), actDetails: $("#dk-act-details"),
       shLoad: $("#dk-sh-load"), shBad: $("#dk-sh-bad"), shBadTitle: $("#dk-sh-bad-title"), shBadText: $("#dk-sh-bad-text"),
       shared: $("#dk-shared"), shName: $("#dk-sh-name"), shMeta: $("#dk-sh-meta"), shCopyText: $("#dk-sh-copy-text"), shNote: $("#dk-sh-note"),
-      metaList: $("#deck-list"), metaNone: $("#decks-none"), metaRarity: $("#deck-rarity"),
+      metaList: $("#deck-list"), metaNone: $("#decks-none"), metaRarity: $("#deck-rarity"), metaModes: $("#deck-modes"),
       ana: $("#dk-analysis"), shAna: $("#dk-sh-analysis"), shScore: $("#dk-sh-score"), cmpBtn: $("#dk-compare"),
     });
     if (!ui.root) return;
@@ -1865,6 +1900,11 @@
       apply: importDecks,
     });
     ui.metaRarity.innerHTML = C.rarityChipsHTML();
+    const sm = shownModes();
+    ui.metaModes.style.setProperty("--n", sm.length);
+    ui.metaModes.insertAdjacentHTML("beforeend", sm.map((m) =>
+      `<button type="button" class="seg__btn fx-press" data-meta-mode="${esc(m.id)}" aria-pressed="false" aria-label="${esc(m.name)} decks">${esc(m.short)}</button>`).join(""));
+    ui.metaModeBtns = [...ui.metaModes.querySelectorAll("[data-meta-mode]")];
     bind();
     C.lazy("deck", build);
   }
