@@ -41,6 +41,24 @@
 .deck__support { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-3); }
 .deck__label { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
 .deck__notes { margin-top: var(--s-3); color: var(--ink-dim); font-size: var(--fs-sm); max-width: var(--measure, none); }
+/* plan 2026-10-30 #6: a group per mode (PvP · Tower Infinity · Overall) · Best / Runner-up / Easy to get on each deck */
+#deck-list { gap: var(--s-8); }
+.deck-mode__head { margin-bottom: var(--s-3); }
+.deck-mode__title {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--gold-hi); display: flex; align-items: center; gap: var(--s-3);
+}
+.deck-mode__title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold-lo), transparent); }
+.deck-mode__lead { margin-top: var(--s-1); color: var(--ink-dim); font-size: var(--fs-sm); max-width: var(--measure, none); }
+.deck__kind {
+  display: inline-flex; align-items: center; min-height: 24px; padding: 0 9px; border-radius: 999px;
+  font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--kind, var(--gold)); border: 1px solid color-mix(in srgb, var(--kind, var(--gold)) 60%, transparent);
+  background: color-mix(in srgb, var(--kind, var(--gold)) 12%, transparent);
+}
+.deck__kind--best { --kind: var(--gold-hi); }
+.deck__kind--second { --kind: var(--ink-dim); }
+.deck__kind--easy { --kind: var(--good); }
 
 /* ---------- Desktop ---------- */
 @media (min-width: 900px) {

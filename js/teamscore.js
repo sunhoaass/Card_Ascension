@@ -7,7 +7,7 @@
      score(deck, modeId?)       -> { score 1–100 | null, raw, band, label, parts[5], notes[], members, mode }
      analyze(deck)              -> { strong{tags,cards,teams}, weak{tags,cards}, modes[], data{} }
      suggest(deck, kind, n = 3) -> [{ id, slot, gain, before, after }]   kind = "cards" | "support"
-     band(score), modeConfig(id), PARTS
+     band(score), modeConfig(id), modes(), resolveMode(id), PARTS
    }
    deck = { mode, rarity?, cards: [5 ids | null], support: [5 ids | null], traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks;
           traits = the user's trait per card from js/traits.js, added by js/deck.js for the user's own decks only)
@@ -37,12 +37,15 @@
   ];
   const DEFAULT_WEIGHTS = { power: 30, synergy: 25, coverage: 20, roles: 15, position: 10 };
   const DEFAULT_ROLES = { Tank: 1, DPS: 2 };
+  // plan 2026-10-30 #6: PvP · Tower Infinity (was Ascended Tower, same id) · Overall · Story / Boss hidden (decks that still say so score as Overall)
   const DEFAULT_MODES = [
-    { id: "tower", name: "Ascended Tower", enabled: true },
     { id: "pvp", name: "PvP", enabled: true },
-    { id: "story", name: "Story", enabled: true },
-    { id: "boss", name: "Boss", enabled: false },
+    { id: "tower", name: "Tower Infinity", enabled: true },
+    { id: "overall", name: "Overall", enabled: true },
+    { id: "story", name: "Story", enabled: false, hidden: true },
+    { id: "boss", name: "Boss", enabled: false, hidden: true },
   ];
+  const FALLBACK_MODE = "overall";
   // the knobs (PROGRESS.md §10.5 lists them; change here and there together)
   const K = {
     powerCards: 0.8, powerSupport: 0.2,   // card power: the 5 cards / the 5 support
@@ -75,13 +78,19 @@
   const isRankedSup = (s) => !!(s && s.scores && s.scores.value > 0 && s.tier);
   const tagKey = (t) => String(t).trim().toLowerCase();
 
-  /* ---------- modes (data/meta.json -> modes, else the defaults; every mode uses the same weights until §8 is answered) ---------- */
+  /* ---------- modes (data/meta.json -> modes, else the defaults · weights per mode: PROGRESS §10.5) ---------- */
   function modeList() {
     const m = C.state.meta && Array.isArray(C.state.meta.modes) ? C.state.meta.modes : [];
     return DEFAULT_MODES.map((d) => {
       const x = m.find((y) => y && y.id === d.id);
-      return x ? { ...d, name: typeof x.name === "string" && x.name ? x.name : d.name, enabled: typeof x.enabled === "boolean" ? x.enabled : d.enabled } : d;
+      return x ? { ...d, name: typeof x.name === "string" && x.name ? x.name : d.name, enabled: typeof x.enabled === "boolean" ? x.enabled : d.enabled,
+        hidden: typeof x.hidden === "boolean" ? x.hidden : !!d.hidden } : d;
     });
+  }
+  // the mode a deck is scored in: its own when that can be picked, else Overall (a hidden Story / Boss deck, an old shared link)
+  function resolveMode(id) {
+    const live = modeList().filter((m) => m.enabled && !m.hidden);
+    return (live.find((m) => m.id === id) || live.find((m) => m.id === FALLBACK_MODE) || live[0] || DEFAULT_MODES[0]).id;
   }
   function modeConfig(id) {
     const m = C.state.meta && Array.isArray(C.state.meta.modes) ? C.state.meta.modes.find((y) => y && y.id === id) : null;
@@ -212,7 +221,7 @@
 
   function score(deck, modeId) {
     const l = lib();
-    const mode = modeId || (deck && deck.mode) || "tower";
+    const mode = resolveMode(modeId || (deck && deck.mode));
     const cfg = modeConfig(mode);
     const rarity = rarityOfDeck(deck);
     const cards = slots(deck && deck.cards), sups = slots(deck && deck.support);
@@ -395,7 +404,7 @@
       : [];
 
     // Fits modes: this deck scored in every mode that can be played, best first
-    const modes = modeList().filter((m) => m.enabled).map((m) => { const r = score(deck, m.id); return { id: m.id, name: m.name, score: r.score, raw: r.raw, band: r.band }; })
+    const modes = modeList().filter((m) => m.enabled && !m.hidden).map((m) => { const r = score(deck, m.id); return { id: m.id, name: m.name, score: r.score, raw: r.raw, band: r.band }; })
       .sort((a, b) => (b.raw - a.raw) || a.name.localeCompare(b.name));
 
     return {
@@ -434,5 +443,5 @@
     return out.sort((a, b) => b.gain - a.gain || val(b.id) - val(a.id) || a.id.localeCompare(b.id)).slice(0, n);
   }
 
-  C.teamScore = { score, analyze, suggest, band, modeConfig, modes: modeList, PARTS, K, SLOTS };
+  C.teamScore = { score, analyze, suggest, band, modeConfig, modes: modeList, resolveMode, PARTS, K, SLOTS };
 })();
