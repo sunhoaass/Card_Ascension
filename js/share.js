@@ -764,9 +764,11 @@
   }
 
   /* ==========================================================
-     Image: a deck (step 10). Five card slots over five support slots, drawn with the same card / frame / backdrop code.
-     spec = { id, title, mode: "Tower Infinity", rarity: name, cards: [id|null x5], support: [id|null x5] }
+     Image: a deck (step 10). Four card slots over four support slots (the game's decks since 2026-10-30, was five),
+     drawn with the same card / frame / backdrop code.
+     spec = { id, title, mode: "Tower Infinity", rarity: name, cards: [id|null x4], support: [id|null x4] }
      ========================================================== */
+  const DECK_SLOTS = 4;
   const DECKIMG = { W: 1200, PAD: 28, HEAD: 150, FOOT: 96, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16 };
 
   function drawEmptySlot(ctx, x, y, w, h, pal) {
@@ -783,10 +785,10 @@
     const B = DECKIMG;
     await fontsReady();
     const cardLib = libFor("card"), supLib = libFor("support");
-    const cards = (spec.cards || []).slice(0, 5).map((id) => (id ? cardLib.get(id) || { missing: true, id } : null));
-    const sups = (spec.support || []).slice(0, 5).map((id) => (id ? supLib.get(id) || { missing: true, id } : null));
-    while (cards.length < 5) cards.push(null);
-    while (sups.length < 5) sups.push(null);
+    const cards = (spec.cards || []).slice(0, DECK_SLOTS).map((id) => (id ? cardLib.get(id) || { missing: true, id } : null));
+    const sups = (spec.support || []).slice(0, DECK_SLOTS).map((id) => (id ? supLib.get(id) || { missing: true, id } : null));
+    while (cards.length < DECK_SLOTS) cards.push(null);
+    while (sups.length < DECK_SLOTS) sups.push(null);
     const nC = cards.filter(Boolean).length, nS = sups.filter(Boolean).length;
     const rarity = spec.rarity || "Normal";
     const frame = frameSpec(rarity, "card");   // support too (2026-10-28): the game card, as big as the cards, at the deck's rarity
@@ -823,13 +825,13 @@
     ctx.fillStyle = pal.ink; ctx.font = `700 46px ${pal.display}`;
     ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2 - pillW - 20), B.PAD, 98);
     ctx.fillStyle = pal.dim; ctx.font = `500 18px ${pal.body}`;
-    const sub = ["Deck", spec.mode || null, rarity, `${nC}/5 cards`, `${nS}/5 support`].filter(Boolean).join("  ·  ");
+    const sub = ["Deck", spec.mode || null, rarity, `${nC}/${DECK_SLOTS} cards`, `${nS}/${DECK_SLOTS} support`].filter(Boolean).join("  ·  ");
     ctx.fillText(fitText(ctx, sub, B.W - B.PAD * 2), B.PAD, 128);
     paintRibbon(ctx, String(rarity).toUpperCase(), pillW, B.W, B.PAD, frame, pal);
 
     // one panel per kind. Columns line up, so the support under a card sits in the same column.
     const pw = B.W - B.PAD * 2;
-    const colW = (pw - 2 * 24) / 5;
+    const colW = (pw - 2 * 24) / DECK_SLOTS;
     const colX = (i) => B.PAD + 24 + i * colW + colW / 2;
     const panel = (y, h, label, count) => {
       ctx.save();
@@ -847,7 +849,7 @@
       ctx.textAlign = "left";
     };
     let y = B.HEAD;
-    panel(y, P1, "Cards", `${nC} / 5`);
+    panel(y, P1, "Cards", `${nC} / ${DECK_SLOTS}`);
     cards.forEach((it, i) => {
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + 24;
       ctx.fillStyle = pal.dim; ctx.font = `700 12px ${pal.display}`; ctx.textAlign = "center"; setSpacing(ctx, 1.5);
@@ -857,7 +859,7 @@
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
     });
     y += P1 + B.PANEL_GAP;
-    panel(y, P2, "Support", `${nS} / 5`);
+    panel(y, P2, "Support", `${nS} / ${DECK_SLOTS}`);
     sups.forEach((it, i) => {
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22;
       if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal);

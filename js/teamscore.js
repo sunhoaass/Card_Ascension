@@ -5,15 +5,16 @@
 
    CBI.teamScore = {
      score(deck, modeId?)       -> { score 1–100 | null, raw, band, label, parts[5], notes[], members, mode }
+   Since the game update of 2026-10-30 a deck is 4 cards + 4 support, and the same card or support may fill several slots.
      analyze(deck)              -> { strong{tags,cards,teams}, weak{tags,cards}, modes[], data{} }
      suggest(deck, kind, n = 3) -> [{ id, slot, gain, before, after }]   kind = "cards" | "support"
      band(score), modeConfig(id), modes(), resolveMode(id), PARTS
    }
-   deck = { mode, rarity?, cards: [5 ids | null], support: [5 ids | null], traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks;
+   deck = { mode, rarity?, cards: [4 ids | null], support: [4 ids | null], traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks;
           traits = the user's trait per card from js/traits.js, added by js/deck.js for the user's own decks only)
 
    The 5 parts (weights per mode from data/meta.json -> modes[].weights; default 30 / 25 / 20 / 15 / 10):
-     power     card Overall (unranked = from ATK × HP) + its trait bonus vs the best 5 cards in the library (no traits)
+     power     card Overall (unranked = from ATK × HP) + its trait bonus vs the best card in the library 4 times (no traits)
                · support Value (unranked = from its effect value at the deck's rarity) vs the best support
      synergy   cards with a partner from team.bestWith · support that fits the card above it · minus avoidWith clashes
      coverage  share of Meta cards (Meta/SS) the team beats (beats) · minus every weakTo tag shared by 3+ cards
@@ -26,8 +27,8 @@
    ========================================================== */
 (function () {
   const C = window.CBI;
-  const SLOTS = 5;
-  const UNRANKED = 50;                                   // pads the "strongest team" when the library has fewer than 5 cards (§10.5)
+  const SLOTS = 4;                                       // was 5 until the game update of 2026-10-30
+  const UNRANKED = 50;                                   // pads the "strongest team" when the library has no cards (§10.5)
   const PARTS = [
     { key: "power", name: "Card power" },
     { key: "synergy", name: "Synergy" },
@@ -48,7 +49,7 @@
   const FALLBACK_MODE = "overall";
   // the knobs (PROGRESS.md §10.5 lists them; change here and there together)
   const K = {
-    powerCards: 0.8, powerSupport: 0.2,   // card power: the 5 cards / the 5 support
+    powerCards: 0.8, powerSupport: 0.2,   // card power: the 4 cards / the 4 support
     synPairs: 0.6, synSupport: 0.4,       // synergy: card pairs / support fit
     avoid: 0.2,                           // synergy lost per support + card pair in avoidWith
     supOther: 0.5,                        // a support that fits another card in the deck (not the one above it)
@@ -165,11 +166,11 @@
   }
   function posRange(c) {
     const p = teamOf(c).position;
-    if (typeof p === "number" && p >= 1 && p <= SLOTS) return [p, p];
+    const fit = (a, b) => { const lo = Math.min(SLOTS, Math.min(a, b)), hi = Math.min(SLOTS, Math.max(a, b)); return [lo, hi]; };   // "4-5" from the 5-slot days = slot 4
+    if (typeof p === "number" && p >= 1 && p <= 5) return fit(p, p);
     const m = typeof p === "string" ? p.match(/^\s*([1-5])\s*(?:[-–—]\s*([1-5]))?\s*$/) : null;
     if (!m) return null;
-    const a = +m[1], b = m[2] ? +m[2] : a;
-    return [Math.min(a, b), Math.max(a, b)];
+    return fit(+m[1], m[2] ? +m[2] : +m[1]);
   }
   const supType = (s) => (s && s.effect && typeof s.effect === "object" && typeof s.effect.type === "string" ? s.effect.type.trim().toLowerCase() : "");
   // unranked support at a rarity: unrMin + range × (its value ÷ the strongest Godly value of the same effect type)
@@ -194,13 +195,13 @@
   const traitOf = (deck, c) => (deck && deck.traits && typeof deck.traits === "object" && typeof deck.traits[c.id] === "string" ? deck.traits[c.id] : null);
   const traitBonus = (deck, c) => { const id = traitOf(deck, c); return id && C.traits && C.traits.power ? K.traitPts * C.traits.power(id) : 0; };
   const cardValT = (deck, c, mode) => Math.min(100, cardVal(c, mode) + traitBonus(deck, c));
-  // the best possible deck in this mode at this rarity: the 5 best cards, ranked or not (fewer than 5 cards = the rest count as 50),
-  // and the best support in every slot (support may repeat)
+  // the best possible deck in this mode at this rarity: the best card in every slot (cards may repeat since 2026-10-30;
+  // an empty library = 50) and the best support in every slot (support may repeat)
   function bestOf(mode, rarity) {
     const l = lib(), key = mode + "|" + rarity;
     if (l.best.has(key)) return l.best.get(key);
-    const cv = l.cards.map((c) => cardVal(c, mode)).sort((a, b) => b - a).slice(0, SLOTS);
-    while (cv.length < SLOTS) cv.push(UNRANKED);
+    const top = l.cards.reduce((m, c) => Math.max(m, cardVal(c, mode)), -Infinity);
+    const cv = new Array(SLOTS).fill(Number.isFinite(top) ? top : UNRANKED);
     const sv = l.sups.map((s) => supVal(s, mode, rarity));
     const b = { card: Math.max(1, cv.reduce((a, v) => a + v, 0) / SLOTS), sup: Math.max(1, sv.length ? Math.max(...sv) : 100) };
     l.best.set(key, b);
@@ -417,7 +418,7 @@
   }
 
   /* ==========================================================
-     suggest(deck, kind): try every card not in the deck in every empty slot; the n that raise the score most
+     suggest(deck, kind): try every card (one already in the deck too) in every empty slot; the n that raise the score most
      ========================================================== */
   function suggest(deck, kind, n = 3) {
     const l = lib();
@@ -426,8 +427,7 @@
     const empties = arr.map((id, i) => (id ? -1 : i)).filter((i) => i >= 0);
     if (!empties.length) return [];
     const base = score(deck);
-    const used = new Set(slots(deck && deck.cards).filter(Boolean));
-    const pool = key === "cards" ? l.cards.filter((c) => !used.has(c.id)) : l.sups;
+    const pool = key === "cards" ? l.cards : l.sups;   // a card already in the deck may go in again (2026-10-30)
     const out = [];
     pool.forEach((x) => {
       let best = null;
