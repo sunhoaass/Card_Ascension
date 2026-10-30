@@ -34,7 +34,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "flying-cat-partner",
@@ -71,7 +72,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "fox-kit-trickster",
@@ -108,7 +110,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "gate-healer",
@@ -145,7 +148,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "inventor-girl",
@@ -182,7 +186,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "navigation-pixie",
@@ -219,7 +224,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "pig-captain",
@@ -267,7 +273,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "plant-healer",
@@ -304,7 +311,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "portal-playboy",
@@ -341,7 +349,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "spirit-sidekick",
@@ -378,7 +387,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "cafe-owner-owl",
@@ -415,7 +425,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "crow-banker",
@@ -452,7 +463,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "desert-princess",
@@ -489,7 +501,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "doctor-hunter",
@@ -526,7 +539,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "food-mage",
@@ -563,7 +577,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "foundation-gentleman",
@@ -611,7 +626,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "fox-mask-mentor",
@@ -648,7 +664,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "lonely-crimson-mage",
@@ -685,7 +702,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "master-spy-father",
@@ -722,7 +740,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "mind-transfer-kunoichi",
@@ -759,7 +778,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "namekian-healer",
@@ -796,7 +816,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "nen-teacher",
@@ -833,7 +854,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "rifle-girl",
@@ -870,7 +892,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "salt-splash-mentor",
@@ -918,7 +941,8 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "second-princess",
@@ -955,7 +979,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "senzu-bean-cat",
@@ -992,7 +1017,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "shadow-garden-strategist",
@@ -1029,7 +1055,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "silent-healer-elf",
@@ -1066,7 +1093,8 @@
     },
     "tier": "SS",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "sister-of-prayer",
@@ -1103,7 +1131,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "song-sorceress",
@@ -1140,7 +1169,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "spirit-ferry-girl",
@@ -1188,7 +1218,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "spirit-medium-granny",
@@ -1225,7 +1256,12 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-best",
+      "pvp-easy",
+      "overall-easy"
+    ]
   },
   {
     "id": "toad-boss",
@@ -1262,7 +1298,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "true-queen",
@@ -1299,7 +1336,13 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "tower-best",
+      "tower-alt",
+      "overall-best",
+      "overall-alt"
+    ]
   },
   {
     "id": "boomerang-demon-slayer",
@@ -1336,7 +1379,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "corps-master",
@@ -1373,7 +1417,12 @@
     },
     "tier": "SS",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-easy",
+      "tower-easy",
+      "overall-easy"
+    ]
   },
   {
     "id": "crusader-tank",
@@ -1421,7 +1470,11 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-easy",
+      "overall-easy"
+    ]
   },
   {
     "id": "doctor-demon",
@@ -1458,7 +1511,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "dwarf-warrior-guard",
@@ -1506,7 +1560,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "erasure-teacher",
@@ -1543,7 +1598,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "fate-thread-witch",
@@ -1591,7 +1647,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "foresight-hero",
@@ -1628,7 +1685,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "gem-mage",
@@ -1665,7 +1723,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "genius-inventor",
@@ -1702,7 +1761,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "goddess-princess",
@@ -1739,7 +1799,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "gun-captain",
@@ -1776,7 +1837,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "half-elf-ice-mage",
@@ -1813,7 +1875,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "hawks-eye-sniper",
@@ -1850,7 +1913,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "healing-hero",
@@ -1887,7 +1951,10 @@
     },
     "tier": "Meta",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "tower-easy"
+    ]
   },
   {
     "id": "pacifier-prince",
@@ -1924,7 +1991,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "star-key-mage",
@@ -1961,7 +2029,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "supreme-kai",
@@ -1998,7 +2067,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "turtle-hermit",
@@ -2046,7 +2116,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "weather-witch-navigator",
@@ -2083,7 +2154,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "wind-tunnel-monk",
@@ -2120,7 +2192,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "zero-gravity-hero",
@@ -2157,7 +2230,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "blue-healer-cat-knight",
@@ -2194,7 +2268,8 @@
     },
     "tier": "SS",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "charge-commander",
@@ -2231,7 +2306,16 @@
     },
     "tier": "SS",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-best",
+      "pvp-alt",
+      "tower-best",
+      "tower-alt",
+      "tower-easy",
+      "overall-best",
+      "overall-alt"
+    ]
   },
   {
     "id": "cherry-blossom-medic",
@@ -2268,7 +2352,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "flower-hand-scholar",
@@ -2316,7 +2401,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "future-sight-dog",
@@ -2353,7 +2439,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "gentle-palm-heiress",
@@ -2390,7 +2477,11 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-easy",
+      "overall-easy"
+    ]
   },
   {
     "id": "gentle-priest",
@@ -2427,7 +2518,11 @@
     },
     "tier": "Meta",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-alt",
+      "tower-easy"
+    ]
   },
   {
     "id": "golden-shield-healer",
@@ -2464,7 +2559,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "hellsing-commander",
@@ -2502,7 +2598,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "hero-of-legend",
@@ -2539,7 +2636,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "reindeer-doctor",
@@ -2576,7 +2674,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "sacred-arrow-priestess",
@@ -2613,7 +2712,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "shadow-strategist",
@@ -2650,7 +2750,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "teacher-alchemist",
@@ -2687,7 +2788,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "titan-scientist",
@@ -2724,7 +2826,11 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "overall-best",
+      "overall-alt"
+    ]
   },
   {
     "id": "useless-goddess",
@@ -2772,7 +2878,8 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "water-king-teacher",
@@ -2809,7 +2916,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "ancient-archmage",
@@ -2846,7 +2954,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "dark-king-coach",
@@ -2883,7 +2992,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "geass-strategist",
@@ -2920,7 +3030,8 @@
     },
     "tier": "SS",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "great-spirit-cat",
@@ -2957,7 +3068,8 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "guild-master-giant",
@@ -2994,7 +3106,14 @@
     },
     "tier": "Meta",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-best",
+      "pvp-alt",
+      "tower-best",
+      "tower-alt",
+      "overall-alt"
+    ]
   },
   {
     "id": "hat-and-clogs-shopkeeper",
@@ -3031,7 +3150,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "serpent-sin-mage",
@@ -3068,7 +3188,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "slug-princess-hokage",
@@ -3105,7 +3226,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "spirit-wave-master",
@@ -3142,7 +3264,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "sweet-tooth-detective",
@@ -3179,7 +3302,8 @@
     },
     "tier": "SS",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "chainsaw-pup-devil",
@@ -3227,7 +3351,8 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "flower-healer-captain",
@@ -3275,7 +3400,12 @@
     },
     "tier": "Meta",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-best",
+      "overall-best",
+      "overall-alt"
+    ]
   },
   {
     "id": "rewind-girl",
@@ -3312,7 +3442,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "angel-attendant",
@@ -3349,7 +3480,11 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "tower-best",
+      "tower-alt"
+    ]
   },
   {
     "id": "first-master-fairy",
@@ -3386,7 +3521,8 @@
     },
     "tier": "SS",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "nine-tails-fox",
@@ -3423,7 +3559,8 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "wish-granter",
@@ -3471,7 +3608,8 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "eternal-wish-dragon",
@@ -3530,7 +3668,14 @@
     },
     "tier": "Meta",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-best",
+      "pvp-alt",
+      "tower-best",
+      "tower-alt",
+      "overall-best"
+    ]
   },
   {
     "id": "immortal-witch",
@@ -3578,7 +3723,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "library-spirit",
@@ -3615,7 +3761,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "little-witch",
@@ -3652,7 +3799,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "mind-reader-child",
@@ -3689,7 +3837,8 @@
     },
     "tier": "D",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "notebook-genius",
@@ -3726,7 +3875,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "ogre-shrine-princess",
@@ -3763,7 +3913,8 @@
     },
     "tier": "C",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "reverse-cursed-doctor",
@@ -3800,7 +3951,8 @@
     },
     "tier": "A",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "shapeshift-actor",
@@ -3837,7 +3989,8 @@
     },
     "tier": "B",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": []
   },
   {
     "id": "sky-dragon-healer",
@@ -3874,6 +4027,12 @@
     },
     "tier": "S",
     "updated": "2026-10-30",
-    "prevTier": ""
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-alt",
+      "pvp-easy",
+      "tower-easy",
+      "overall-easy"
+    ]
   }
 ]

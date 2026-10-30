@@ -1,23 +1,326 @@
 [
   {
-    "id": "emperor-wall",
-    "name": "Emperor Wall",
+    "id": "pvp-best",
+    "name": "Shadow Army",
+    "mode": "pvp",
+    "kind": "best",
     "slots": [
       {
-        "card": "dragon-emperor-monarch"
+        "card": "shadow-monarch",
+        "support": "flower-healer-captain"
       },
       {
-        "card": "moon-eye-ghost"
+        "card": "crazy-diamond-pompadour",
+        "support": "spirit-medium-granny"
       },
       {
-        "card": "atomic-shadow-lord"
+        "card": "founding-titan",
+        "support": "guild-master-giant"
       },
       {
-        "card": "beast-emperor"
+        "card": "slime-demon-lord",
+        "support": "charge-commander"
+      },
+      {
+        "card": "king-of-conquerors",
+        "support": "eternal-wish-dragon"
       }
     ],
     "support": [],
-    "notes": "All 4 current cards. Monarch opens: every hit burns and splashes the whole enemy bench. Ghost's 3 blocks and revive soak hits and stack a second debuff (enemies deal about 88%). Shadow Lord's 2.3x first hits finish hurt cards, Beast Emperor anchors at the back. Slot 5 is open until more cards are added.",
-    "updated": "2026-10-25"
+    "notes": "Shadow Monarch opens with Flower Healer Captain healing it almost every turn, while Crazy Diamond heals it from the bench and Spirit Medium Granny guards the whole bench. Founding Titan and King of Conquerors splash every enemy, and King of Conquerors gives the rest +15% damage. Simulation: 86/100 against strong player decks, the best of the 9 decks head to head (it only loses to Conqueror's Army).",
+    "sim": {
+      "pvp": 86.1,
+      "tower": 43.2,
+      "rr": 76.2
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "pvp-alt",
+    "name": "Death Sentence",
+    "mode": "pvp",
+    "kind": "alt",
+    "slots": [
+      {
+        "card": "undead-overlord-king",
+        "support": "eternal-wish-dragon"
+      },
+      {
+        "card": "ice-admiral",
+        "support": "charge-commander"
+      },
+      {
+        "card": "slime-demon-lord",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "sky-dragon-healer"
+      },
+      {
+        "card": "sword-saint",
+        "support": "guild-master-giant"
+      }
+    ],
+    "support": [],
+    "notes": "Undead Overlord King comes in first and dooms the strongest enemy card in 3 turns, while Ice Admiral cuts enemy damage by 13% for the whole fight. Slime Demon Lord, Destroyer God and Sword Saint finish the job, with Gentle Priest healing the whole deck. Simulation: 81/100 against strong player decks.",
+    "sim": {
+      "pvp": 81.3,
+      "tower": 103.3,
+      "rr": 69.4
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "pvp-easy",
+    "name": "Storm Front",
+    "mode": "pvp",
+    "kind": "easy",
+    "slots": [
+      {
+        "card": "storm-dragon",
+        "support": "crusader-tank"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "gentle-palm-heiress"
+      },
+      {
+        "card": "witch-of-envy",
+        "support": "spirit-medium-granny"
+      },
+      {
+        "card": "crazy-diamond-pompadour",
+        "support": "sky-dragon-healer"
+      },
+      {
+        "card": "orc-shaman-shadow",
+        "support": "corps-master"
+      }
+    ],
+    "support": [],
+    "notes": "Every card is 1 in 1B or easier and every support 1 in 1M or easier. Storm Dragon (15%) and Destroyer God (17%) cut every enemy's damage from the start, and Witch of Envy seals abilities. Crazy Diamond and Orc Shaman heal the front card from the bench. Simulation: 79/100 against strong player decks.",
+    "sim": {
+      "pvp": 78.6,
+      "tower": 16.7,
+      "rr": 62.5
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "tower-best",
+    "name": "Ant King's Feast",
+    "mode": "tower",
+    "kind": "best",
+    "slots": [
+      {
+        "card": "ant-king",
+        "support": "angel-attendant"
+      },
+      {
+        "card": "six-paths-fox-sage",
+        "support": "true-queen"
+      },
+      {
+        "card": "king-of-conquerors",
+        "support": "guild-master-giant"
+      },
+      {
+        "card": "pumpkin-sun-pride",
+        "support": "eternal-wish-dragon"
+      },
+      {
+        "card": "colossal-strategist",
+        "support": "charge-commander"
+      }
+    ],
+    "support": [],
+    "notes": "Built around Ant King: every kill gives it 25% of the defeated card's damage and HP, so in a long climb it grows as fast as the floors. Six Paths Fox Sage, King of Conquerors and Colossal Strategist stay on the bench and add +35% damage to it between them. Simulation: about 410 enemy cards knocked out in 1,500 turns (the strongest 5 cards with the best supports: about 98).",
+    "sim": {
+      "pvp": 49.8,
+      "tower": 409.8,
+      "rr": 19.3
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "tower-alt",
+    "name": "Royal Hunt",
+    "mode": "tower",
+    "kind": "alt",
+    "slots": [
+      {
+        "card": "ant-king",
+        "support": "angel-attendant"
+      },
+      {
+        "card": "king-of-conquerors",
+        "support": "true-queen"
+      },
+      {
+        "card": "golden-gate-king",
+        "support": "guild-master-giant"
+      },
+      {
+        "card": "undead-overlord-king",
+        "support": "charge-commander"
+      },
+      {
+        "card": "orc-shaman-shadow",
+        "support": "eternal-wish-dragon"
+      }
+    ],
+    "support": [],
+    "notes": "The same Ant King plan with Golden Gate King and Undead Overlord King behind it, so it also holds up better against player decks. King of Conquerors adds +15% damage and Orc Shaman heals Ant King from the bench. Simulation: about 409 enemy cards knocked out in 1,500 turns.",
+    "sim": {
+      "pvp": 66.7,
+      "tower": 409.0,
+      "rr": 46.2
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "tower-easy",
+    "name": "Healing Climb",
+    "mode": "tower",
+    "kind": "easy",
+    "slots": [
+      {
+        "card": "witch-of-envy",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "storm-dragon",
+        "support": "healing-hero"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "sky-dragon-healer"
+      },
+      {
+        "card": "monk-of-names",
+        "support": "corps-master"
+      },
+      {
+        "card": "undead-overlord-king",
+        "support": "charge-commander"
+      }
+    ],
+    "support": [],
+    "notes": "Every card is 1 in 1B or easier and every support 1 in 1M or easier. Without Ant King nothing grows with the floors, so this deck climbs on healing: Gentle Priest, Healing Hero and Sky Dragon Healer keep the front card standing while Witch of Envy, Storm Dragon and Destroyer God hit hard. Simulation: about 22 enemy cards knocked out in 1,500 turns.",
+    "sim": {
+      "pvp": 33.6,
+      "tower": 21.6,
+      "rr": 0.0
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "overall-best",
+    "name": "Death Clock",
+    "mode": "overall",
+    "kind": "best",
+    "slots": [
+      {
+        "card": "black-wizard-brother",
+        "support": "titan-scientist"
+      },
+      {
+        "card": "six-paths-fox-sage",
+        "support": "charge-commander"
+      },
+      {
+        "card": "ant-king",
+        "support": "flower-healer-captain"
+      },
+      {
+        "card": "orc-shaman-shadow",
+        "support": "eternal-wish-dragon"
+      },
+      {
+        "card": "control-devil",
+        "support": "true-queen"
+      }
+    ],
+    "support": [],
+    "notes": "Black Wizard Brother dooms the strongest enemy card in 4 turns, then Six Paths Fox Sage and Ant King (with Flower Healer Captain) take over. Strong in both modes: about 380 tower cards knocked out in 1,500 turns, and 75/100 against strong player decks. Head to head it beats Conqueror's Army 93–7.",
+    "sim": {
+      "pvp": 74.7,
+      "tower": 381.6,
+      "rr": 59.2
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "overall-alt",
+    "name": "Conqueror's Army",
+    "mode": "overall",
+    "kind": "alt",
+    "slots": [
+      {
+        "card": "galactic-tyrant",
+        "support": "charge-commander"
+      },
+      {
+        "card": "colossal-strategist",
+        "support": "true-queen"
+      },
+      {
+        "card": "king-of-conquerors",
+        "support": "guild-master-giant"
+      },
+      {
+        "card": "golden-gate-king",
+        "support": "titan-scientist"
+      },
+      {
+        "card": "ant-king",
+        "support": "flower-healer-captain"
+      }
+    ],
+    "support": [],
+    "notes": "Galactic Tyrant, Colossal Strategist and King of Conquerors buff the deck and splash the enemy bench, Golden Gate King hits twice, and Ant King waits at the back to grow from every kill. Simulation: about 370 tower cards knocked out in 1,500 turns, and 76/100 against strong player decks.",
+    "sim": {
+      "pvp": 76.0,
+      "tower": 368.8,
+      "rr": 57.3
+    },
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "overall-easy",
+    "name": "Storm Front (any mode)",
+    "mode": "overall",
+    "kind": "easy",
+    "slots": [
+      {
+        "card": "storm-dragon",
+        "support": "crusader-tank"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "gentle-palm-heiress"
+      },
+      {
+        "card": "witch-of-envy",
+        "support": "spirit-medium-granny"
+      },
+      {
+        "card": "orc-shaman-shadow",
+        "support": "corps-master"
+      },
+      {
+        "card": "crazy-diamond-pompadour",
+        "support": "sky-dragon-healer"
+      }
+    ],
+    "support": [],
+    "notes": "Every card is 1 in 1B or easier and every support 1 in 1M or easier. The same five cards as the PvP easy deck: Storm Dragon, Destroyer God and Witch of Envy cut enemy damage, two Utility healers keep the front card alive. Simulation: 79/100 against strong player decks, about 16 tower cards knocked out in 1,500 turns.",
+    "sim": {
+      "pvp": 78.6,
+      "tower": 16.3,
+      "rr": 62.5
+    },
+    "updated": "2026-10-30"
   }
 ]
