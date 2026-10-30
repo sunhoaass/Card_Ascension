@@ -872,7 +872,7 @@
     const text = new Map(all.map((x) => [x.id, [x.name, x.series, x.role].filter(Boolean).join(" ").toLowerCase()]));
     const rarity = cur.rarity;
     const noun = isCard ? "cards" : "support cards";
-    const tierNames = state.meta.tiers.map((t) => t.name);
+    const tierNames = state.meta.tiers.filter((t) => isCard || !t.cardsOnly).map((t) => t.name);   // Utility = cards only
     let filters = `<div class="tm-chips" role="group" aria-label="Filter by tier">${tierNames.map((t) => chipHTML("tier", t, t, `--sw:var(${C.TIER_COLOR[t] || "--t-d"});--sw-line:var(${C.TIER_COLOR[t] || "--t-d"})`)).join("")}${chipHTML("tier", "-", "Unranked")}</div>`;
     if (isCard) {
       const roles = [...new Set(state.cards.map((c) => c.role).filter(Boolean))].sort();

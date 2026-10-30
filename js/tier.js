@@ -5,7 +5,7 @@
    · My Lists (the Tier Maker, step 8) lives in js/tiermaker.js: this file calls C.tm.init() once and
      C.tm.show(listId|null, sharedData|null) every time My Lists is showing
    · Global is view-only and has a Cards | Support switch (they never share a list)
-     - Cards: rows Meta–B by Overall (only the top meta.rankTop cards are ranked), rarity picker shared with the Cards page
+     - Cards: rows Meta–D by Overall (only the top meta.rankTop cards are ranked) + the Utility row (by utilGain), rarity picker shared with the Cards page
      - Support: rows Meta–B by Value (data/support.json · ranked at Godly), no rarity
    Meta Decks moved to the Deck page (js/deck.js).
    Needs js/fx.js, js/app.js, js/cards.js loaded first (support.js is only needed when a support tile is tapped).
@@ -37,11 +37,12 @@
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const byOverall = (a, b) => b.scores.overall - a.scores.overall || a.name.localeCompare(b.name);
+  const byGain = (a, b) => (b.utilGain || 0) - (a.utilGain || 0) || byOverall(a, b);   // Utility row: biggest deck boost first
   const byValue = (a, b) => b.scores.value - a.scores.value || a.name.localeCompare(b.name);
   const isRankedSupport = (s) => !!(s.scores && s.scores.value > 0 && s.tier);
   const fmtScore = (n) => String(Number(Number(n).toFixed(1)));
   const tierVar = (t) => `var(${C.TIER_COLOR[t] || "--t-d"})`;
-  const topN = C.rankTop;   // data/meta.json rankTop (50)
+  const topN = C.rankTop;   // data/meta.json rankTop (48)
 
   function track(card, el) {
     if (!tiles.has(card.id)) tiles.set(card.id, []);
@@ -49,15 +50,17 @@
   }
 
   /* ---------- One row per tier (shared by Cards and Support) ---------- */
-  function buildRows(items, order, makeTile, noun) {
+  // cards: true = also the cardsOnly rows (Utility, last)
+  function buildRows(items, order, makeTile, noun, cards = false) {
     const frag = document.createDocumentFragment();
-    state.meta.tiers.forEach((t) => {
-      const group = items.filter((x) => x.tier === t.name).sort(order);
+    state.meta.tiers.filter((t) => cards || !t.cardsOnly).forEach((t) => {
+      const group = items.filter((x) => x.tier === t.name).sort(t.cardsOnly ? byGain : order);
       const row = document.createElement("section");
       row.className = "tier-row glass";
       row.style.setProperty("--tc", tierVar(t.name));
-      row.setAttribute("aria-label", `Tier ${t.name}, ${plural(group.length, noun[0], noun[1])}`);
-      row.innerHTML = `<div class="tier-row__label"><span${t.name.length > 2 ? ' class="tier-row__name--long"' : ""}>${esc(t.name)}</span><small class="tier-row__count">${group.length}</small></div><div class="tier-row__cards"></div>`;
+      row.setAttribute("aria-label", `${t.cardsOnly ? t.name + " row" : "Tier " + t.name}, ${plural(group.length, noun[0], noun[1])}`);
+      const long = t.name.length > 4 ? ' class="tier-row__name--xl"' : t.name.length > 2 ? ' class="tier-row__name--long"' : "";
+      row.innerHTML = `<div class="tier-row__label"><span${long}>${esc(t.name)}</span><small class="tier-row__count">${group.length}</small></div><div class="tier-row__cards"></div>`;
       const wrap = $(".tier-row__cards", row);
       if (group.length) group.forEach((x) => wrap.appendChild(makeTile(x)));
       else wrap.innerHTML = `<p class="tier-row__empty">No ${esc(noun[1])} in this tier yet</p>`;
@@ -79,16 +82,17 @@
         ? `The cards are in, but none of them have been scored yet. The top ${topN()} will show up here once they are.`
         : "The card library is being filled in. Check back soon.";
     }
+    const extra = C.extraTiers(), util = ranked.filter((c) => extra.has(c.tier)).length;
     ui.note.hidden = !(ranked.length && unranked);
     ui.note.textContent = unranked
-      ? `Only the top ${topN()} cards are ranked. The other ${plural(unranked, "card is", "cards are")} still in Cards and can go in any deck.`
+      ? `Only the top ${topN()} cards are ranked${util ? `, plus ${plural(util, "Utility card", "Utility cards")} that boost the whole deck` : ""}. The other ${plural(unranked, "card is", "cards are")} still in Cards and can go in any deck.`
       : "";
 
     ui.list.replaceChildren(buildRows(ranked, byOverall, (c) => {
       const el = C.renderCard(c, state.rarity, { mini: true });
       track(c, el);
       return el;
-    }, ["card", "cards"]));
+    }, ["card", "cards"], true));
   }
 
   /* ---------- Global: Support ---------- */

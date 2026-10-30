@@ -71,7 +71,8 @@
   const pretty = (id) => String(id).replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
-  const tierNames = () => state.meta.tiers.map((t) => t.name);
+  // the ranked tiers Meta…D · type "card" adds the cards-only rows (Utility) after them (Global copies + pool filter)
+  const tierNames = (type) => state.meta.tiers.filter((t) => !t.cardsOnly || type === "card").map((t) => t.name);
   const isRankedSup = (s) => !!(s && s.scores && s.scores.value > 0 && s.tier);
   const isRankedOf = (type, x) => !!x && (type === "card" ? C.isRanked(x) : isRankedSup(x));
   const lookup = (type, id) => (type === "card" ? cardById : supById).get(id);
@@ -328,7 +329,7 @@
         if (!el) return;
         const x = lookup(cur.type, it.id);
         let extra = "";
-        if (cmp && x && C.isRanked(x)) {
+        if (cmp && x && C.isRanked(x) && names.includes(x.tier)) {   // Utility has no place on the Meta…D ladder: no badge
           const d = names.indexOf(x.tier) - level;     // > 0: placed higher than Global
           const badge = d > 0 ? `↑${d}` : d < 0 ? `↓${-d}` : "=";
           extra = d > 0 ? `, ${plural(d, "tier", "tiers")} higher than Global ${x.tier}` : d < 0 ? `, ${plural(-d, "tier", "tiers")} lower than Global ${x.tier}` : `, same as Global ${x.tier}`;
@@ -802,7 +803,7 @@
     return `<button type="button" class="chip glass fx-press" data-pf="${key}" data-v="${esc(value)}" aria-pressed="false"${style ? ` style="${style}"` : ""}>${style ? '<span class="chip__swatch"></span>' : ""}${esc(label)}</button>`;
   }
   function buildFilters() {
-    let html = `<div class="tm-chips" role="group" aria-label="Filter by tier">${tierNames().map((t) => chipHTML("tier", t, t, `--sw:var(${C.TIER_COLOR[t] || "--t-d"});--sw-line:var(${C.TIER_COLOR[t] || "--t-d"})`)).join("")}${chipHTML("tier", "-", "Unranked")}</div>`;
+    let html = `<div class="tm-chips" role="group" aria-label="Filter by tier">${tierNames(poolType).map((t) => chipHTML("tier", t, t, `--sw:var(${C.TIER_COLOR[t] || "--t-d"});--sw-line:var(${C.TIER_COLOR[t] || "--t-d"})`)).join("")}${chipHTML("tier", "-", "Unranked")}</div>`;
     if (poolType === "card") {
       const roles = [...new Set(state.cards.map((c) => c.role).filter(Boolean))].sort();
       if (roles.length) html += `<div class="tm-chips" role="group" aria-label="Filter by role">${roles.map((r) => chipHTML("role", r, r)).join("")}</div>`;
@@ -982,14 +983,14 @@
   /* ==========================================================
      Lists: create / open / rename / duplicate / delete
      ========================================================== */
-  function defaultRows() {
+  function defaultRows(type) {
     // a row keeps only colours from COLORS (saved lists + links store them): Meta's own red (--t-meta) becomes the row red
     const rowColor = (t) => { const c = C.TIER_COLOR[t] || "--t-d"; return COLORS.includes(c) ? c : c === "--t-meta" ? "--t-x-red" : "--t-d"; };
-    return tierNames().map((t) => ({ id: newId("r"), label: t, color: rowColor(t), items: [] }));
+    return tierNames(type).map((t) => ({ id: newId("r"), label: t, color: rowColor(t), items: [] }));
   }
   function globalRows(type) {
     const ranked = type === "card" ? rankedCards : rankedSup;
-    const rows = defaultRows();
+    const rows = defaultRows(type);
     rows.forEach((r) => { r.items = ranked.filter((x) => x.tier === r.label).map((x) => ({ uid: newId("i"), id: x.id })); });
     return rows;
   }
