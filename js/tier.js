@@ -19,8 +19,8 @@
   const KIND_KEY = "cbi:tierKind";      // "cards" | "support" (last Global view)
   const TITLES = { global: null, my: "My Tier Lists — Card Battle Infinity" };   // null = the page's normal title
   const LEADS = {
-    cards: "The strongest cards by Overall score, from Meta at the top to B at the bottom. Meta and SS are the Meta cards. Pick a rarity to see its stats. Tap a card for the full breakdown.",
-    support: "The strongest support cards by Value at Godly, from Meta at the top to B at the bottom. Tap one for the full breakdown.",
+    cards: "The strongest cards by Overall score, from Meta at the top to D, then the Utility row (cards that boost the whole deck). Meta and SS are the Meta cards. Pick a rarity to see its stats. Tap a card for the full breakdown.",
+    support: "The strongest support cards by Value at Godly, from Meta at the top to D at the bottom. Tap one for the full breakdown.",
     my: "Your own tier lists, saved on this device.",
     shared: "A tier list someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
@@ -42,7 +42,7 @@
   const isRankedSupport = (s) => !!(s.scores && s.scores.value > 0 && s.tier);
   const fmtScore = (n) => String(Number(Number(n).toFixed(1)));
   const tierVar = (t) => `var(${C.TIER_COLOR[t] || "--t-d"})`;
-  const topN = C.rankTop;   // data/meta.json rankTop (48)
+  const topN = C.rankTop, topS = C.rankTopSupport;   // data/meta.json rankTop (48) · rankTopSupport (100)
 
   function track(card, el) {
     if (!tiles.has(card.id)) tiles.set(card.id, []);
@@ -118,12 +118,12 @@
     if (!ranked.length) {
       $("#tier-snone-title").textContent = supportItems.length ? "Rankings coming soon" : "No support cards yet";
       $("#tier-snone-text").textContent = supportItems.length
-        ? `The support cards are in, but none of them have been scored yet. The top ${topN()} will show up here once they are.`
+        ? `The support cards are in, but none of them have been scored yet. The top ${topS()} will show up here once they are.`
         : "Support rankings will show here once the first support cards are added.";
     }
     ui.snote.hidden = !(ranked.length && unranked);
     ui.snote.textContent = unranked
-      ? `Only the top ${topN()} support cards are ranked. The other ${plural(unranked, "support card is", "support cards are")} still in Support and can go in any deck.`
+      ? `Only the top ${topS()} support cards are ranked. The other ${plural(unranked, "support card is", "support cards are")} still in Support and can go in any deck.`
       : "";
 
     ui.slist.replaceChildren(buildRows(ranked, byValue, supportTile, ["support card", "support cards"]));

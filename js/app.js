@@ -52,13 +52,14 @@
     return res.json();
   }
 
-  /* Only the best meta.rankTop of a list keep their tier (routine B ranks at most that many · this guards the rest)
-     · rows marked cardsOnly in meta.tiers (Utility) sit outside the count: their cards keep their tier */
+  /* Only the best meta.rankTop cards / meta.rankTopSupport support cards keep their tier (routine B ranks at most that many
+     · this guards the rest) · rows marked cardsOnly in meta.tiers (Utility) sit outside the count: their cards keep their tier */
   const rankTop = () => (state.meta && Number(state.meta.rankTop) > 0 ? Math.floor(state.meta.rankTop) : 48);
+  const rankTopSupport = () => (state.meta && Number(state.meta.rankTopSupport) > 0 ? Math.floor(state.meta.rankTopSupport) : rankTop());
   const extraTiers = () => new Set(state.meta.tiers.filter((t) => t.cardsOnly).map((t) => t.name));
-  function topOnly(list, val) {
+  function topOnly(list, val, top) {
     if (!Array.isArray(list)) return;
-    const top = rankTop(), extra = extraTiers();
+    const extra = extraTiers();
     list.filter((x) => x && x.tier && !extra.has(x.tier) && val(x) > 0).sort((a, b) => val(b) - val(a)).slice(top).forEach((x) => { x.tier = ""; });
   }
 
@@ -136,7 +137,7 @@
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
-     Only the strongest meta.rankTop (48: every card at 1 in 500M+ · owner 2026-10-30) cards + the Utility row and the top support are ranked: the rest stay unranked for good
+     Only the strongest meta.rankTop (48: every card at 1 in 500M+ · owner 2026-10-30) cards + the Utility row and the top meta.rankTopSupport (100: all) support are ranked: the rest stay unranked for good
      (in the library, searchable, usable in decks, never in the Tier List). New cards from routine A are unranked too. */
   const isRanked = (card) => !!(card.scores && (isSupport(card) ? card.scores.value : card.scores.overall) > 0 && card.tier);
   const cardLabel = (card, rarity) => `${card.name}${isSupport(card) ? ", support" : ""}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", unranked"}`;
@@ -715,8 +716,8 @@
       ]);
       state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits;
       if (Array.isArray(support)) support.forEach((x) => { if (x && x.id) { x.kind = "support"; if (!x.name) x.name = x.id.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); } });
-      topOnly(cards, (c) => c.scores && c.scores.overall);
-      topOnly(support, (s) => s.scores && s.scores.value);
+      topOnly(cards, (c) => c.scores && c.scores.overall, rankTop());
+      topOnly(support, (s) => s.scores && s.scores.value, rankTopSupport());
     } catch (err) {
       console.error(err);
       $("#card-grid").innerHTML = "";
@@ -763,7 +764,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, rankTop, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4

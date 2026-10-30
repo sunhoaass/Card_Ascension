@@ -125,7 +125,7 @@
     ui.none.hidden = out.length > 0;
     const unranked = total - rankedCount;
     ui.note.hidden = !(unranked && rankedCount);
-    ui.note.textContent = unranked ? `Only the top ${C.rankTop()} support cards get a rank. The other ${unranked} still work in any deck.` : "";
+    ui.note.textContent = unranked ? `Only the top ${C.rankTopSupport()} support cards get a rank. The other ${unranked} still work in any deck.` : "";
   }
 
   // one page of `shown` in the grid · a card is made the first time it is needed
