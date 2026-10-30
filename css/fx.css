@@ -164,8 +164,8 @@
   background: var(--wine); box-shadow: 0 0 0 1px var(--gold-hi), 0 2px 4px rgba(0, 0, 0, .55);
 }
 #card-grid .gc__new, #support-grid .gc__new, #tier-list .gc__new, #tier-slist .gc__new, #page-home .gc__new { display: block; }
-#tier-list .gc:has(> .tmove--tile) > .gc__new, #tier-slist .stile:has(> .tmove--tile) > .gc__new { top: 17px; }   /* under the ▲▼ badge */
-@media (min-width: 900px) { .gc__new { font-size: 11px; } #tier-list .gc:has(> .tmove--tile) > .gc__new, #tier-slist .stile:has(> .tmove--tile) > .gc__new { top: 20px; } }
+.tier-list .gc:has(> .tmove--tile) > .gc__new { top: 17px; }   /* under the ▲▼ badge */
+@media (min-width: 900px) { .gc__new { font-size: 11px; } .tier-list .gc:has(> .tmove--tile) > .gc__new { top: 20px; } }
 
 /* frame ring: drawn over the picture's edge (the art never shrinks, so the numbers stay on the same spots) */
 .gc__ring {

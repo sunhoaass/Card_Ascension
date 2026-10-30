@@ -8,7 +8,7 @@
    · Undo / Redo: 50 steps per list (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
    · Step 9 (js/share.js): list menu has Save as image / Share link · #tier/s/<data> opens a shared list view only
      (with "Save a copy") · Backup button (export / import everything) · registers its lists with the backup file
-   Loaded after every other page script (needs C.renderCard from app.js and C.support.card from support.js).
+   Loaded after every other page script (needs C.renderCard from app.js).
    tier.js calls C.tm.init() once and C.tm.show(listId|null) whenever the My Lists tab is showing.
    ========================================================== */
 (function () {
@@ -217,7 +217,7 @@
   }
 
   /* ==========================================================
-     Cards (one .tm-item wraps a mini game card or a support card)
+     Cards (one .tm-item wraps a mini game card · support too, 2026-10-30)
      ========================================================== */
   function makeItem(id, type, rarity) {
     const el = document.createElement("div");
@@ -233,15 +233,9 @@
       return el;
     }
     el.dataset.name = x.name;
-    let art;
-    if (type === "card") {
-      art = C.renderCard(x, rarity, { mini: true });
-      art.tabIndex = -1;
-      art.removeAttribute("role");
-    } else {
-      art = C.support.card(x);
-      FX.tilt(art);
-    }
+    const art = C.renderCard(x, rarity, { mini: true });
+    art.tabIndex = -1;
+    art.removeAttribute("role");
     art.setAttribute("aria-hidden", "true");
     el.appendChild(art);
     return el;
@@ -488,10 +482,7 @@
   function details(el, type = cur.type) {
     const id = el.dataset.id;
     if (!lookup(type, id)) return;
-    if (type === "card") { C.openCard(id, $(".card", el)); return; }
-    // support detail lives in the Support tab; keep our scroll position so Back lands exactly here (app.js reads tierY)
-    try { history.replaceState({ ...(history.state || {}), tierY: window.scrollY }, ""); } catch {}
-    C.support.open(id, $(".scard", el));
+    C.openCard(id, $(".card", el));
   }
 
   /* ==========================================================
@@ -829,8 +820,8 @@
       ui.pool.replaceChildren(frag);
       poolRarity = cur.rarity;
       buildFilters();
-    } else if (type === "card" && poolRarity !== cur.rarity) {
-      poolEls.forEach((el) => { const c = cardById.get(el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, cur.rarity, { animate: false }); });
+    } else if (poolRarity !== cur.rarity) {
+      poolEls.forEach((el) => { const c = lookup(type, el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, cur.rarity, { animate: false }); });
       poolRarity = cur.rarity;
     }
     ui.q.placeholder = `Search ${nounOf(type, poolEls.size)}`;
@@ -889,14 +880,14 @@
     requestAnimationFrame(() => C.revealChip(ui.rarity.parentNode));
   }
   function setRarity(name) {
-    if (!cur || cur.type !== "card" || cur.rarity === name || !state.meta.rarities.some((r) => r.name === name)) return;
+    if (!cur || cur.rarity === name || !state.meta.rarities.some((r) => r.name === name)) return;
     cur.rarity = name;
     touch();
     markRarity();
-    const all = [...itemEls.values(), ...(poolType === "card" ? poolEls.values() : [])];
+    const all = [...itemEls.values(), ...(poolType === cur.type ? poolEls.values() : [])];
     const seen = all.map((el) => el.isConnected && !el.hidden && rectVisible(el.getBoundingClientRect()));   // read all, then write
-    all.forEach((el, i) => { const c = cardById.get(el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
-    if (poolType === "card") poolRarity = name;
+    all.forEach((el, i) => { const c = lookup(cur.type, el.dataset.id), card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
+    if (poolType === cur.type) poolRarity = name;
   }
   function setCompare(on) {
     prefs.compare = on;
@@ -1110,12 +1101,12 @@
      Share (step 9): save as image · share link · open a shared list · backup
      ========================================================== */
   // what the image needs to know about a list (js/share.js draws it)
-  const boardSpec = (l) => ({ id: l.id, title: l.name, type: l.type, rarity: l.type === "card" ? l.rarity : null, rows: l.rows.map((r) => ({ label: r.label, color: r.color, items: r.items.map((it) => it.id) })) });
+  const boardSpec = (l) => ({ id: l.id, title: l.name, type: l.type, rarity: l.rarity, rows: l.rows.map((r) => ({ label: r.label, color: r.color, items: r.items.map((it) => it.id) })) });
 
   // a list packed for a link: palette colours by position in COLORS (never reorder that list), ids as they are
   function toPayload(l) {
     const p = { v: 1, t: l.type, n: l.name, rows: l.rows.map((r) => [r.label, Math.max(0, COLORS.indexOf(r.color)), r.items.map((it) => it.id)]) };
-    if (l.type === "card") p.r = l.rarity;
+    p.r = l.rarity;   // support too (2026-10-30): its values on the cards grow with the rarity
     return p;
   }
   // ...and back, checking everything (a link is typed by strangers). Returns a clean list or null.
@@ -1180,7 +1171,7 @@
   function paintSharedMeta() {
     const l = shared.list, card = l.type === "card";
     ui.shName.textContent = l.name;
-    ui.shMeta.textContent = `${card ? "Cards" : "Support"}${card ? " · " + l.rarity : ""} · ${plural(l.rows.length, "row", "rows")} · ${nounOf(l.type, countItems(l))}`;
+    ui.shMeta.textContent = `${card ? "Cards" : "Support"} · ${l.rarity} · ${plural(l.rows.length, "row", "rows")} · ${nounOf(l.type, countItems(l))}`;
     const mine = shared.copyId && lists.some((x) => x.id === shared.copyId);
     ui.shCopyText.textContent = mine ? "Open my copy" : "Save a copy";
   }
@@ -1362,7 +1353,7 @@
         <span class="tml__stack" aria-hidden="true">${stack}</span>
         <span class="tml__text">
           <span class="tml__name">${esc(l.name)}</span>
-          <span class="tml__meta"><b>${l.type === "support" ? "Support" : "Cards"}</b>${l.type === "card" ? ` · ${esc(l.rarity)}` : ""} · ${plural(l.rows.length, "row", "rows")} · ${nounOf(l.type, n)}</span>
+          <span class="tml__meta"><b>${l.type === "support" ? "Support" : "Cards"}</b> · ${esc(l.rarity)} · ${plural(l.rows.length, "row", "rows")} · ${nounOf(l.type, n)}</span>
           <span class="tml__date">Edited ${esc(fmtDate(l.updated))}</span>
         </span>
       </button>
@@ -1399,10 +1390,9 @@
     ui.nameText.textContent = cur.name;
     ui.name.setAttribute("aria-label", `List name: ${cur.name}. Tap to rename.`);
     const card = cur.type === "card";
-    ui.rarity.hidden = !card;
     ui.compare.hidden = !card;
     ui.compare.setAttribute("aria-checked", String(prefs.compare));
-    if (card) markRarity();
+    markRarity();
     ui.hint.textContent = fine.matches
       ? "Drag cards into rows, or click a card then a row. Drag back to the pool to remove."
       : "Hold a card to drag it, or tap a card then a row. Drag back to the pool to remove.";

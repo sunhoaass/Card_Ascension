@@ -447,7 +447,7 @@
     span.style.setProperty("--sx", sx.toFixed(3));
   }
   // zoom: the card's picture is drawn 1.012× from its centre (.gc__art img in fx.css), so the spots move with it
-  // (without it the lower lines' numbers sat ~0.4cqw above their text) · the older .scard picture isn't zoomed (1)
+  // (without it the lower lines' numbers sat ~0.4cqw above their text) · zoom 1 = the picture as it is
   const ART_ZOOM = 1.012;
   function supNumsHTML(s, rarity, zoom = 1) {
     return supPos(s).map((p) => {

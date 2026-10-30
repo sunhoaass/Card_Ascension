@@ -6,11 +6,12 @@
      C.tm.show(listId|null, sharedData|null) every time My Lists is showing
    · Global is view-only and has a Cards | Support switch (they never share a list)
      - Cards: rows Meta–D by Overall (only the top meta.rankTop cards are ranked) + the Utility row (by utilGain), rarity picker shared with the Cards page
-     - Support: rows Meta–D by Value (data/support.json · ranked at Godly), no rarity
+     - Support: rows Meta–D by Value (data/support.json · ranked at Godly) · the same mini game cards as the Cards side
+       (2026-10-30, owner: "support like the battle cards"), their values at the same site-wide rarity
      - rows wrap (never scroll sideways) · ▲▼ on a card whose tier moved since prevTier (C.tierMoveHTML) · NEW badge (C.newHTML)
      - Save image: the list on screen (Cards or Support) as one picture with every name written under its card (C.share.imageDialog)
    Meta Decks moved to the Deck page (js/deck.js).
-   Needs js/fx.js, js/app.js, js/cards.js loaded first (support.js is only needed when a support tile is tapped).
+   Needs js/fx.js, js/app.js, js/cards.js loaded first.
    The rarity chips here are handled by js/cards.js (one shared rarity for the whole site);
    it announces every change with the "cbi:rarity" event, which this file listens to.
    ========================================================== */
@@ -28,8 +29,7 @@
   };
 
   const ui = {};
-  const tiles = new Map();      // card id -> card elements on this page
-  let cardById = new Map();
+  const tiles = [];             // [element, card or support] for every card on this page (they follow the rarity)
   let supportItems = [];
   let view = null;              // "global" | "my" (null until the router calls show())
   let kind = "cards";           // which Global list is showing
@@ -42,13 +42,14 @@
   const byGain = (a, b) => (b.utilGain || 0) - (a.utilGain || 0) || byOverall(a, b);   // Utility row: biggest deck boost first
   const byValue = (a, b) => b.scores.value - a.scores.value || a.name.localeCompare(b.name);
   const isRankedSupport = (s) => !!(s.scores && s.scores.value > 0 && s.tier);
-  const fmtScore = (n) => String(Number(Number(n).toFixed(1)));
   const tierVar = (t) => `var(${C.TIER_COLOR[t] || "--t-d"})`;
   const topN = C.rankTop, topS = C.rankTopSupport;   // data/meta.json rankTop (48) · rankTopSupport (100)
 
-  function track(card, el) {
-    if (!tiles.has(card.id)) tiles.set(card.id, []);
-    tiles.get(card.id).push(el);
+  // a mini game card (support too) in a row, following the site-wide rarity, with ▲▼
+  function tile(x) {
+    const el = C.renderCard(x, state.rarity, { mini: true });
+    tiles.push([el, x]);
+    return addMove(el, x);
   }
 
   /* ---------- One row per tier (shared by Cards and Support, the page and the saved image) ---------- */
@@ -107,28 +108,10 @@
       ? `Only the top ${topN()} cards are ranked${util ? `, plus ${plural(util, "Utility card", "Utility cards")} that boost the whole deck` : ""}. The other ${plural(unranked, "card is", "cards are")} still in Cards and can go in any deck.`
       : "";
 
-    ui.list.replaceChildren(buildRows(ranked, byOverall, (c) => {
-      const el = C.renderCard(c, state.rarity, { mini: true });
-      track(c, el);
-      return addMove(el, c);
-    }, ["card", "cards"], true));
+    ui.list.replaceChildren(buildRows(ranked, byOverall, tile, ["card", "cards"], true));
   }
 
   /* ---------- Global: Support ---------- */
-  function supportTile(s) {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "stile";
-    b.dataset.sid = s.id;
-    b.setAttribute("aria-label", `${s.name}, support card, tier ${s.tier}, value ${fmtScore(s.scores.value)}`);
-    const art = C.support.card(s);
-    $(".scard__info", art).insertAdjacentHTML("beforeend", `<span class="stile__val">${esc(fmtScore(s.scores.value))}</span>`);
-    FX.tilt(art);
-    b.appendChild(art);
-    b.insertAdjacentHTML("beforeend", C.newHTML(s));   // NEW badge (plan 2026-10-30 item 5 · game cards get it from C.renderCard)
-    return addMove(b, s);
-  }
-
   function renderSupport() {
     const ranked = rankedSupport();
     const unranked = supportItems.length - ranked.length;
@@ -146,7 +129,7 @@
       ? `Only the top ${topS()} support cards are ranked. The other ${plural(unranked, "support card is", "support cards are")} still in Support and can go in any deck.`
       : "";
 
-    ui.slist.replaceChildren(buildRows(ranked, byValue, supportTile, ["support card", "support cards"]));
+    ui.slist.replaceChildren(buildRows(ranked, byValue, tile, ["support card", "support cards"]));
   }
 
   /* ---------- Save image (plan 2026-10-30 item 3): two pictures, never one · Cards (ranked + Utility) | Support ----------
@@ -157,7 +140,7 @@
       .map(({ t, group }) => ({ label: t.name, color: C.TIER_COLOR[t.name] || "--t-d", items: group.map((x) => x.id) }));
     C.share.imageDialog({
       id: "global-" + kind, title: sup ? "Support Tier List" : "Card Tier List",
-      type: sup ? "support" : "card", rarity: sup ? null : state.rarity, rows, captions: true,
+      type: sup ? "support" : "card", rarity: state.rarity, rows, captions: true,
     }, { flashEl: sup ? ui.slist : ui.list });
   }
   function saveState() {
@@ -166,7 +149,7 @@
     ui.save.setAttribute("aria-label", `Save the ${kind === "support" ? "support" : "card"} tier list as an image`);
   }
 
-  /* step 9.5: Global's rows (cards + support tiles) are made the first time Global is actually on screen,
+  /* step 9.5: Global's rows (cards + support) are made the first time Global is actually on screen,
      not while another tab or My Lists is showing */
   function buildGlobal() {
     if (globalBuilt) return;
@@ -253,21 +236,12 @@
     });
     ui.save.addEventListener("click", saveImage);
 
-    // A support tile opens the Support detail. The Tier List keeps its scroll position in this history entry,
-    // so Back (phone button or the page's Back) returns here exactly where you were (app.js reads tierY).
-    ui.slist.addEventListener("click", (e) => {
-      const b = e.target.closest(".stile[data-sid]");
-      if (!b) return;
-      try { history.replaceState({ ...(history.state || {}), tierY: window.scrollY }, ""); } catch {}
-      C.support.open(b.dataset.sid, $(".scard", b));
-    });
     document.addEventListener("cbi:rarity", (e) => recolor(e.detail));
   }
 
   /* ---------- Rarity change (from the chips here or anywhere else) ---------- */
   function recolor(name) {
-    const all = [];
-    tiles.forEach((els, id) => els.forEach((el) => all.push([el, cardById.get(id)])));
+    const all = tiles;
     // read every position first, then write: mixing them forces a re-layout per card
     const seen = all.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));
     all.forEach(([el, card], i) => { if (card) { C.setCardRarity(el, card, name, { animate: seen[i] }); labelMove(el, card); } });   // setCardRarity rewrites the label
@@ -302,12 +276,11 @@
       save: $("#tier-save"),
     });
     ui.save.insertAdjacentHTML("afterbegin", C.share.icons.image);
-    cardById = new Map(state.cards.map((c) => [c.id, c]));
     supportItems = (Array.isArray(state.support) ? state.support : [])
       .filter((s) => s && s.id)
       .map((s) => ({ ...s, name: s.name || pretty(s.id) }));
 
-    ui.rarity.hidden = !state.cards.length;
+    ui.rarity.hidden = !state.cards.length && !supportItems.length;
     ui.rarity.innerHTML = C.rarityChipsHTML();
     bind();
     setKind(C.store.get(KIND_KEY), { animate: false });   // rows are built later by buildGlobal()

@@ -38,25 +38,14 @@
   gap: var(--s-3) var(--s-2); padding: var(--s-3) var(--s-3) var(--s-3) 10px;
   min-width: 0; min-height: 118px;
 }
-.tier-row__cards .card, .tier-row__cards .stile { width: auto; min-width: 0; }
+.tier-row__cards .card { width: auto; min-width: 0; }
 .tier-row__cards:has(.tier-row__empty) { min-height: 64px; }   /* empty tiers stay compact */
 .tier-row__empty { grid-column: 1 / -1; align-self: center; color: var(--ink-faint); font-size: var(--fs-sm); font-style: italic; }
 
 /* ▲▼ in the tile's top-left corner (the badge itself: css/cards.css .tmove) */
 .tmove--tile { position: absolute; left: -5px; top: -5px; z-index: 8; }
-.stile { position: relative; }
 .tier-note { margin-top: var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
 
-/* ---------- Support tiles (Global > Support rows) ---------- */
-.stile { display: block; padding: 0; border-radius: var(--r-card); text-align: left; }
-.stile .scard { width: 100%; }
-.stile .scard__tag { display: none; }               /* the page already says "Support"; keeps the 92px tile uncluttered */
-.stile .scard { --orn-s: 14px; }
-.stile .scard__tier { width: 22px; height: 22px; font-size: 9.5px; right: 5px; top: 5px; }
-.stile .scard__tier--long { font-size: 6.5px; }
-.stile .scard__name { font-size: 9.5px; letter-spacing: 0; }
-.stile .scard__info { padding: 20px 5px 6px; }
-.stile__val { display: block; margin-top: 1px; font-size: 11px; font-weight: 600; color: var(--ink-dim); font-variant-numeric: tabular-nums; }
 
 /* ---------- Desktop ---------- */
 @media (min-width: 900px) {
