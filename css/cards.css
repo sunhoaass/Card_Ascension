@@ -90,6 +90,20 @@
   color: var(--ink); background: var(--glass-strong); border: 1px solid var(--glass-line);
 }
 /* tier badge = wax seal colour (cards themselves have no tier seal since step 13) */
+/* ▲▼ (plan 2026-10-30 item 3): the tier went up (green) / down (red) since the last ranking · C.tierMoveHTML (js/app.js)
+   Tier List tiles (css/tier.css .tmove--tile), the detail page's Tier label + Details head · comes in with what it sits on (fade) */
+.tmove {
+  display: inline-grid; place-items: center; flex: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  font-family: var(--font-body); font-size: 10px; line-height: 1; font-style: normal; text-shadow: none;
+  background: var(--void-2); border: 1px solid currentColor;
+  box-shadow: 0 0 8px color-mix(in srgb, currentColor 45%, transparent), 0 2px 4px rgba(0, 0, 0, .5);
+  pointer-events: none; animation: fx-fade var(--t-med) var(--ease) both;
+}
+.tmove[data-d="up"] { color: var(--good); padding-bottom: 1px; }
+.tmove[data-d="down"] { color: var(--bad); padding-top: 1px; }
+@media (min-width: 900px) { .tmove { width: 24px; height: 24px; font-size: 12px; } }
+
 .badge--tier {
   position: relative; color: #fff6e6; text-shadow: 0 1px 0 rgba(0, 0, 0, .45); border-color: transparent; border-radius: var(--r-pill);
   background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tc) 70%, #fff), var(--tc) 45%, color-mix(in srgb, var(--tc) 55%, #000));

@@ -622,13 +622,13 @@
   function coData(card, key) {
     if (isSup(card)) {
       const d = supShort(card, key);
-      if (key === "tier") return { t: C.isRanked(card) ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>` : "Unranked", d, o: obtainOf(card) };
+      if (key === "tier") return { t: C.isRanked(card) ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>${C.tierMoveHTML(card, "tmove--co")}` : "Unranked", d, o: obtainOf(card) };
       return { t: SUP_T[key], d: d || (key === "ability" ? "" : "Not analyzed yet") };
     }
     const d = shortOf(card, key);
     if (key === "tier") {
       const ranked = C.isRanked(card);
-      return { t: ranked ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>` : "Unranked", d, o: obtainOf(card) };
+      return { t: ranked ? `Tier <span class="bs-co__tier">${esc(card.tier)}</span>${C.tierMoveHTML(card, "tmove--co")}` : "Unranked", d, o: obtainOf(card) };   // ▲▼ since prevTier
     }
     return { t: { ability: "Passive / Skill", strong: "Strongest", weak: "Weakness" }[key], d };
   }
@@ -688,7 +688,7 @@
       o.el.querySelector(".bs-co__n").innerHTML = x.t;      // our own markup, the tier letter escaped (esc) above
       const sd = o.el.querySelector(".bs-co__d"); sd.textContent = x.d; sd.hidden = !x.d;
       const ob = o.el.querySelector(".bs-co__o"); ob.textContent = x.o || ""; ob.hidden = !x.o;
-      const title = o.el.querySelector(".bs-co__n").textContent;
+      const title = o.el.querySelector(".bs-co__n").textContent.replace(/[▲▼]/g, "");   // the ▲▼ glyph is drawn · its words stay
       o.el.setAttribute("aria-label", `${title}${x.d ? ": " + x.d : ""}${x.o ? ". " + x.o : ""}. Open details`);
       if (o.d.key === "tier") { if (C.isRanked(card)) o.el.style.setProperty("--tc", `var(${C.TIER_COLOR[card.tier] || "--t-d"})`); else o.el.style.removeProperty("--tc"); }
     }
@@ -1296,7 +1296,7 @@
   }
   function sheetSub(card) {
     const ranked = C.isRanked(card), ob = obtainOf(card);
-    return `${ranked ? `<span class="badge badge--tier">Tier ${esc(card.tier)}</span>` : `<span class="badge badge--muted">Unranked</span>`}` +
+    return `${ranked ? `<span class="badge badge--tier">Tier ${esc(card.tier)}</span>${C.tierMoveHTML(card)}` : `<span class="badge badge--muted">Unranked</span>`}` +
       `<span class="bs-sheet__meta">${esc(state.rarity)}${isSup(card) ? " · Support" : card.series ? " · " + esc(card.series) : ""}</span>` +
       (ob ? `<span class="bs-sheet__obtain">${esc(ob)}</span>` : "");
   }

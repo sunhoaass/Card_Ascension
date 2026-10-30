@@ -8,7 +8,7 @@
    Loaded after app.js and before the page scripts. The dialogs use C.dialog (made in js/tiermaker.js).
 
    API (window.CBI.share)
-     imageDialog(spec, { flashEl })     preview + save a tier list board as PNG     (spec: see tierImage)
+     imageDialog(spec, { flashEl })     preview + save a tier list board as PNG (JPEG with captions)    (spec: see tierImage)
      deckImageDialog(spec, { flashEl }) same for a deck (step 10)                   (spec: see deckImage)
      previewDialog({ title, render, flashEl })   same dialog for any renderer returning { blob, width, height, filename }
      makeLink(route, payload)           -> Promise<url>        route = "tier" | "deck"  (url hash: #<route>/s/<data>)
@@ -157,12 +157,16 @@
 
   /* ==========================================================
      Image: the tier list board, drawn with Canvas
-     spec = { id, title, type: "card"|"support", rarity: name|null, rows: [{ label, color: "--t-ss", items: [id, ...] }] }
+     spec = { id, title, type: "card"|"support", rarity: name|null, rows: [{ label, color: "--t-ss", items: [id, ...] }], captions }
+     captions: true = the Global Tier List's picture (plan 2026-10-30 item 3): narrower (1080), 5 bigger cards a line, the full
+     name written under each card (wrapped, never cut) so it reads on a phone, and ▲▼ where the tier moved (C.tierMove)
      ========================================================== */
   const BOARD = {
     W: 1200, PAD: 28, LABEL: 132, GAP: 10, ROW_PAD: 12, ROW_GAP: 10, R: 16,
     CARD_W: 114, CARD_H: 160, HEAD: 150, FOOT: 96, MIN_ROW: 100,
   };
+  // captions (Global): W 1080 · 5 a line · names 26px (2 lines; 3 at 22px for a long one) under the card
+  const CAPS = { W: 1080, LABEL: 112, GAP: 14, PER_LINE: 5, CAP_GAP: 8, CAP: 26, CAP_MIN: 22, CAP_LINES: 3 };
 
   // Rarity colours for the parts around the cards (rarity ribbon of the image) and the support frame (gilded, css/support.css).
   // Game cards themselves are drawn by drawGameCard() from gcSpec() (step 13). Tokens are read from tokens.css.
@@ -522,7 +526,8 @@
     ctx.fillStyle = spec.body || "#0d1020"; ctx.fillRect(bx, by, bw, bh);
     if (art) { drawCoverImage(ctx, art, bx, by, bw, bh); drawSupNums(ctx, item, art, bx, by, bw, bh, spec.supRarity || state.rarity); }
     else drawPlaceholder(ctx, bx, by, bw, bh, item, pal);
-    // name strip
+    // name strip (not when the name is written under the card: captions)
+    if (!spec.noName) {
     const infoH = Math.round(bh * 0.3);
     const gr = ctx.createLinearGradient(0, by + bh - infoH, 0, by + bh);
     gr.addColorStop(0, "rgba(8, 10, 22, 0)"); gr.addColorStop(0.42, "rgba(8, 10, 22, .9)"); gr.addColorStop(1, "rgba(8, 10, 22, .9)");
@@ -531,6 +536,7 @@
     ctx.font = `700 12px ${pal.display}`;
     ctx.fillText(fitText(ctx, item.name, bw - 14), bx + bw / 2, by + bh - 9);
     ctx.textAlign = "left";
+    }
     // the thin inner line of the picture frame + corner ornaments (css .card__body::after, .card__orn)
     ctx.globalAlpha = 0.55; ctx.strokeStyle = spec.line || pal.rift; ctx.lineWidth = 1;
     ctx.strokeRect(bx + 3.5, by + 3.5, bw - 7, bh - 7);
@@ -603,22 +609,60 @@
     ctx.textAlign = "left";
   }
 
-  async function tierImage(spec, { scale: want = 2 } = {}) {
-    const B = BOARD;
+  // a name under its card: as many words a line as fit, 2 lines at CAP px, else smaller (3 lines) · a word is never split
+  // unless it is wider than the card even at the smallest size
+  const CAP_STEPS = [[CAPS.CAP, 2], [CAPS.CAP - 2, 2], [CAPS.CAP_MIN, CAPS.CAP_LINES], [CAPS.CAP_MIN - 2, CAPS.CAP_LINES], [CAPS.CAP_MIN - 4, CAPS.CAP_LINES]];
+  function captionOf(ctx, name, maxW, font) {
+    const words = String(name).split(/\s+/).filter(Boolean);
+    let size = 0, lines = [];
+    for (const [sz, max] of CAP_STEPS) {
+      size = sz; ctx.font = `600 ${size}px ${font}`;
+      lines = wrapText(ctx, name, maxW);
+      if (lines.length <= max && words.every((w) => ctx.measureText(w).width <= maxW)) break;
+    }
+    const out = lines.slice(0, CAPS.CAP_LINES);
+    if (lines.length > CAPS.CAP_LINES) out[CAPS.CAP_LINES - 1] = fitText(ctx, lines.slice(CAPS.CAP_LINES - 1).join(" "), maxW);   // never seen: a 4-line name
+    return { size, lines: out, h: out.length * Math.round(size * 1.18) };
+  }
+  // ▲▼ badge on a card's top-left corner (like css/cards.css .tmove)
+  function drawMove(ctx, x, y, d, pal) {
+    const r = 15, cx = x + 6, cy = y + 6, col = d > 0 ? cssVar("--good") : cssVar("--bad");
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.shadowColor = "rgba(0, 0, 0, .5)"; ctx.shadowBlur = 6; ctx.fillStyle = pal.void2; ctx.fill();
+    ctx.shadowBlur = 0; ctx.lineWidth = 2; ctx.strokeStyle = col; ctx.stroke();
+    ctx.beginPath();
+    if (d > 0) { ctx.moveTo(cx, cy - 7); ctx.lineTo(cx + 7.5, cy + 5.5); ctx.lineTo(cx - 7.5, cy + 5.5); }
+    else { ctx.moveTo(cx, cy + 7); ctx.lineTo(cx + 7.5, cy - 5.5); ctx.lineTo(cx - 7.5, cy - 5.5); }
+    ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+    ctx.restore();
+  }
+
+  async function tierImage(spec, { scale } = {}) {
+    const caps = !!spec.captions;
+    const want = scale || (caps ? 1.5 : 2);   // captions: 1620 px wide is sharp on any phone, and keeps the file small
+    const B = caps ? { ...BOARD, W: CAPS.W, LABEL: CAPS.LABEL, GAP: CAPS.GAP } : BOARD;
     await fontsReady();
     const lib = libFor(spec.type);
     const kind = spec.type === "support" ? "support" : "card";
-    const frame = frameSpec(kind === "card" ? spec.rarity || "Normal" : null, kind);
+    const frame = { ...frameSpec(kind === "card" ? spec.rarity || "Normal" : null, kind), noName: caps };
     const rows = spec.rows.map((r) => ({ label: String(r.label || ""), color: r.color, items: r.items.map((id) => lib.get(id) || { missing: true, id }) }));
     const total = rows.reduce((s, r) => s + r.items.length, 0);
 
     // layout (logical pixels)
     const innerW = B.W - B.PAD * 2 - B.LABEL - B.ROW_PAD * 2;
-    const perLine = Math.max(1, Math.floor((innerW + B.GAP) / (B.CARD_W + B.GAP)));
+    const perLine = caps ? CAPS.PER_LINE : Math.max(1, Math.floor((innerW + B.GAP) / (B.CARD_W + B.GAP)));
+    const cw = caps ? Math.floor((innerW - (perLine - 1) * B.GAP) / perLine) : B.CARD_W;   // captions: the cards fill the line
+    const ch = caps ? Math.round(cw * B.CARD_H / B.CARD_W) : B.CARD_H;
+    const mctx = caps ? document.createElement("canvas").getContext("2d") : null;            // measures the names before the real canvas exists
+    const bodyFont = cssVar("--font-body");
     rows.forEach((r) => {
       const lines = Math.ceil(r.items.length / perLine);
       r.lines = lines;
-      r.h = lines ? B.ROW_PAD * 2 + lines * B.CARD_H + (lines - 1) * B.GAP : B.MIN_ROW;
+      // each line of cards is as tall as its card + its longest name
+      if (caps) r.items.forEach((it) => { it._cap = captionOf(mctx, it.missing ? pretty(it.id) : String(it.name || pretty(it.id)), cw + B.GAP - 4, bodyFont); });
+      r.lineH = Array.from({ length: lines }, (_, l) => ch + (caps ? CAPS.CAP_GAP + Math.max(...r.items.slice(l * perLine, (l + 1) * perLine).map((it) => it._cap.h)) : 0));
+      r.h = lines ? B.ROW_PAD * 2 + r.lineH.reduce((s, h) => s + h, 0) + (lines - 1) * B.GAP : B.MIN_ROW;
     });
     const H = B.HEAD + rows.reduce((s, r) => s + r.h, 0) + Math.max(0, rows.length - 1) * B.ROW_GAP + 20 + B.FOOT;
     let k = Math.min(want, Math.sqrt(MAX_PIXELS / (B.W * H)), MAX_SIDE / H, MAX_SIDE / B.W);
@@ -639,7 +683,7 @@
     const pal = {
       display: cssVar("--font-display"), body: cssVar("--font-body"),
       ink: cssVar("--ink"), dim: cssVar("--ink-dim"), faint: cssVar("--ink-faint"), void: cssVar("--void"),
-      rift: cssVar("--rift"), glass: cssVar("--glass"), line: cssVar("--glass-line"),
+      rift: cssVar("--rift"), glass: cssVar("--glass"), line: cssVar("--glass-line"), void2: cssVar("--void-2"),
     };
     const spacing = (px) => { if ("letterSpacing" in ctx) ctx.letterSpacing = px + "px"; };
 
@@ -685,7 +729,8 @@
       for (; size >= 12; size -= 2) {
         ctx.font = `700 ${size}px ${pal.display}`;
         lines = wrapText(ctx, text, maxW);
-        if (lines.length * size * 1.12 <= maxH && lines.every((l) => ctx.measureText(l).width <= maxW)) break;
+        const whole = text.split(/\s+/).every((w) => ctx.measureText(w).width <= maxW);   // shrink before splitting a word (META, not MET A)
+        if (whole && lines.length * size * 1.12 <= maxH && lines.every((l) => ctx.measureText(l).width <= maxW)) break;
       }
       ctx.fillStyle = mix(color, "#fff6e0", 0.55); ctx.textAlign = "center";
       ctx.shadowColor = color; ctx.shadowBlur = 14;
@@ -696,17 +741,26 @@
 
       r.items.forEach((it, i) => {
         const col = i % perLine, line = Math.floor(i / perLine);
-        const cx = x + B.LABEL + B.ROW_PAD + col * (B.CARD_W + B.GAP);
-        const cy = y + B.ROW_PAD + line * (B.CARD_H + B.GAP);
-        drawCard(ctx, cx, cy, B.CARD_W, B.CARD_H, it, frame, it.image ? arts.get(it.image) : null, k, pal);
+        const cx = x + B.LABEL + B.ROW_PAD + col * (cw + B.GAP);
+        const cy = y + B.ROW_PAD + r.lineH.slice(0, line).reduce((s, h) => s + h + B.GAP, 0);
+        drawCard(ctx, cx, cy, cw, ch, it, frame, it.image ? arts.get(it.image) : null, k, pal);
+        if (!caps) return;
+        const d = it.missing ? 0 : C.tierMove(it);
+        if (d) drawMove(ctx, cx, cy, d, pal);
+        const cap = it._cap, lh = Math.round(cap.size * 1.18);
+        ctx.font = `600 ${cap.size}px ${bodyFont}`; ctx.fillStyle = pal.ink; ctx.textAlign = "center"; ctx.textBaseline = "top";
+        cap.lines.forEach((l, j) => ctx.fillText(l, cx + cw / 2, cy + ch + CAPS.CAP_GAP + j * lh));
+        ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
       });
       y += r.h + B.ROW_GAP;
     });
 
     paintFooter(ctx, B.W, H, B.FOOT, B.PAD, pal, spec.title || "Tier list");
 
-    const blob = await new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Couldn't encode the image"))), "image/png"));
-    return { blob, width: canvas.width, height: canvas.height, filename: `${slug(spec.title)}.png` };
+    // captions: JPEG (a 100-card picture is ~20 MB as PNG, too big to share from a phone) · the Tier Maker's lists stay PNG
+    const type = caps ? "image/jpeg" : "image/png";
+    const blob = await new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Couldn't encode the image"))), type, 0.9));
+    return { blob, width: canvas.width, height: canvas.height, filename: `${slug(spec.title)}.${caps ? "jpg" : "png"}` };
   }
 
   /* ==========================================================
@@ -838,7 +892,7 @@
           prev.classList.add("is-ready");
           FX.fade(img, 1, { duration: 300 });
           info.hidden = false;
-          info.textContent = `${o.width} × ${o.height} px · PNG · ${(o.blob.size / 1048576).toFixed(1)} MB`;
+          info.textContent = `${o.width} × ${o.height} px · ${o.blob.type === "image/jpeg" ? "JPEG" : "PNG"} · ${(o.blob.size / 1048576).toFixed(1)} MB`;
           save.disabled = false;
         }).catch((err) => {
           if (dead) return;

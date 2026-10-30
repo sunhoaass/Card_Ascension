@@ -2,7 +2,10 @@
    Tier List page (step 3, Global / My Lists + support rows in step 7)
    Colors, spacing, type and motion all come from tokens.css.
    ========================================================== */
-[hidden].rarity-picker, [hidden].tier-list, [hidden].tier-note { display: none; }
+[hidden].rarity-picker, [hidden].tier-list, [hidden].tier-note, #tier-save[hidden] { display: none; }
+
+/* Save image (plan 2026-10-30 item 3) · one button, it saves the list showing (Cards or Support) */
+.tier-tools { display: flex; justify-content: flex-end; margin: 0 0 var(--s-3); }
 
 /* ---------- Tier rows ---------- */
 .tier-list { display: flex; flex-direction: column; gap: var(--s-3); }
@@ -27,18 +30,25 @@
 .tier-row__name--xl { font-size: .38em; letter-spacing: 0; }           /* the Utility row */
 .tier-row__label::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--tc); box-shadow: 0 0 12px var(--tc); }
 .tier-row__count { font-family: var(--font-body); font-size: 10.5px; font-weight: 500; letter-spacing: .06em; color: var(--ink-dim); text-shadow: none; }
+/* plan 2026-10-30 item 3: the cards wrap onto more lines, never a sideways scroll (every screen size) ·
+   as many columns as fit at --tile or wider, stretched to fill the line (the cards scale: sizes inside are cqw) */
 .tier-row__cards {
-  display: flex; gap: var(--s-3); padding: var(--s-3);
-  overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--gold-lo) transparent;
-  min-height: 118px;
+  --tile: 78px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--tile), 1fr)); align-content: center; align-items: start;
+  gap: var(--s-3) var(--s-2); padding: var(--s-3) var(--s-3) var(--s-3) 10px;
+  min-width: 0; min-height: 118px;
 }
-.tier-row__cards .card { width: 88px; flex: none; }
+.tier-row__cards .card, .tier-row__cards .stile { width: auto; min-width: 0; }
 .tier-row__cards:has(.tier-row__empty) { min-height: 64px; }   /* empty tiers stay compact */
-.tier-row__empty { align-self: center; color: var(--ink-faint); font-size: var(--fs-sm); font-style: italic; }
+.tier-row__empty { grid-column: 1 / -1; align-self: center; color: var(--ink-faint); font-size: var(--fs-sm); font-style: italic; }
+
+/* ▲▼ in the tile's top-left corner (the badge itself: css/cards.css .tmove) */
+.tmove--tile { position: absolute; left: -5px; top: -5px; z-index: 8; }
+.stile { position: relative; }
 .tier-note { margin-top: var(--s-4); color: var(--ink-faint); font-size: var(--fs-sm); text-align: center; }
 
 /* ---------- Support tiles (Global > Support rows) ---------- */
-.stile { flex: none; display: block; width: 88px; padding: 0; border-radius: var(--r-card); text-align: left; }
+.stile { display: block; padding: 0; border-radius: var(--r-card); text-align: left; }
 .stile .scard { width: 100%; }
 .stile .scard__tag { display: none; }               /* the page already says "Support"; keeps the 92px tile uncluttered */
 .stile .scard { --orn-s: 14px; }
@@ -52,8 +62,6 @@
 @media (min-width: 900px) {
   .tier-row { grid-template-columns: 92px 1fr; }
   .tier-row__label { font-size: 40px; }
-  .tier-row__cards { gap: 14px; padding: 14px; }
-  .tier-row__cards .card { width: 120px; }
-  .tier-row__cards { min-height: 196px; }
-  .stile { width: 120px; }
+  .tier-row__cards { --tile: 112px; gap: 14px; padding: 14px; min-height: 196px; }
+  .tmove--tile { left: -7px; top: -7px; }
 }
