@@ -1,6 +1,6 @@
 /* ==========================================================
    Card Battle Infinity — app core
-   Router (5 tabs + card detail hash) · data loading · shared card renderer
+   Router (6 tabs + card detail hash) · data loading · shared card renderer
    The Cards page (search / filters / sort) lives in js/cards.js · the card detail ("Black Sun" scene) in js/detail.js
    The Tier List page (Global cards / support + My Lists) lives in js/tier.js
    The Deck page (Meta Decks, later the deck builder) lives in js/deck.js
@@ -8,12 +8,14 @@
    js/support.js · a support opens the same card detail as a card (#card/<id>) · renderCard() draws both kinds
    The Grade page (card picker + #grade/<id>/<grades> grader) lives in js/grade.js
    The Traits page (13 traits + calculator, the user's trait per card) lives in js/traits.js
+   The Home page (game updates, codes, new cards, new systems from data/news.json + data/pool.json) lives in js/home.js
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
-  const PAGES = ["tier", "cards", "deck", "grade", "traits"];   // #support = the Cards page, Support side (no menu button since 2026-10-28)
+  const PAGES = ["home", "tier", "cards", "deck", "grade", "traits"];   // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
   const PAGE_TITLES = {
-    tier: "Card Battle Infinity — Tier List & Card Database",
+    home: "Card Battle Infinity — Tier List & Card Database",
+    tier: "Tier List — Card Battle Infinity",
     cards: "Cards — Card Battle Infinity",
     support: "Support — Card Battle Infinity",
     deck: "Deck — Card Battle Infinity",
@@ -35,7 +37,8 @@
 
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
   // kind: the Cards page's side ("cards" | "support", #cards / #support)
-  const state = { meta: null, cards: [], support: [], teams: [], traits: null, rarity: "Normal", page: null, kind: "cards", loaded: false, origin: null };
+  // pool: data/pool.json (every card + support with its round and the date it was added · NEW badge, Home's new cards)
+  const state = { meta: null, cards: [], support: [], teams: [], traits: null, pool: null, rarity: "Normal", page: null, kind: "cards", loaded: false, origin: null };
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -135,6 +138,15 @@
   const supValue = (s, rarity) => supValAt(s, 0, rarity);  // the main value (vals[0]) at a rarity · 0 = none
   const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
+
+  /* NEW badge (plan 2026-10-30 item 5): a card / support added to the site in the last NEW_DAYS days (x.added from
+     data/pool.json, set at boot) · counted from today on the viewer's clock, so it drops off by itself · shown on the
+     Cards page, the Tier List (Global) and Home only (css/fx.css .gc__new scopes it) */
+  const NEW_DAYS = 14;
+  const dayOf = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) / 864e5 : NaN; };
+  const today = () => { const d = new Date(); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5; };
+  const isNew = (x) => { const age = today() - dayOf(x && x.added); return age >= 0 && age < NEW_DAYS; };
+  const newHTML = (x, cls = "") => (isNew(x) ? `<span class="gc__new${cls ? " " + cls : ""}" aria-hidden="true">New</span>` : "");
 
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
      Only the strongest meta.rankTop (48: every card at 1 in 500M+ · owner 2026-10-30) cards + the Utility row and the top meta.rankTopSupport (100: all) support are ranked: the rest stay unranked for good
@@ -348,6 +360,7 @@
       <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
       <span class="gc__atk"><span class="gc__num" data-k="atk" data-value="${atk}">${fmtStat(atk)}</span></span>
       ${card.mock ? `<span class="gc__mock">mock</span>` : ""}
+      ${newHTML(card)}
       <span class="gc__sheen"><span class="card__glare"></span></span>
       <span class="gc__flash"></span>`;
     fitCard(el);
@@ -463,6 +476,7 @@
       <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
       ${s.image ? supNumsHTML(s, rarity, ART_ZOOM) : ""}
       ${s.mock ? `<span class="gc__mock">mock</span>` : ""}
+      ${newHTML(s)}
       <span class="gc__sheen"><span class="card__glare"></span></span>
       <span class="gc__flash"></span>`;
     fitCard(el);
@@ -597,12 +611,12 @@
   }
 
   /* ---------- Router ----------
-     #tier #cards #deck #grade #traits -> tabs · #support = the Cards tab, Support side
+     #home #tier #cards #deck #grade #traits -> tabs (no hash on a first visit = Home · later = the page shown last, cbi:lastPage) · #support = the Cards tab, Support side
      #card/<id>                    -> card (or support) detail, laid over whichever tab is underneath
      #support/<id> (old links)     -> the Support side + that support's detail
      #grade/<id>/<grades>          -> the grader inside the Grade tab */
   function showPage(page, { scroll = false } = {}) {
-    if (!PAGES.includes(page)) page = "tier";
+    if (!PAGES.includes(page)) page = "home";
     const changed = state.page !== page;
     // Back from a support detail opened on the Tier List or a deck: put that page back where it was (js/tier.js, js/deck.js saved the position)
     const keep = !scroll && (page === "tier" || page === "deck") && !!(history.state && typeof history.state.tierY === "number");
@@ -661,7 +675,7 @@
       return;
     }
     if (state.loaded) CBI.detail.close();
-    let first = state.page === null ? store.get(STORE_KEY) || "tier" : "tier";
+    let first = state.page === null ? store.get(STORE_KEY) || "home" : "home";
     if (first === "support") { first = "cards"; if (!location.hash) { try { history.replaceState(null, "", "#support"); } catch {} } }   // reopened on the Support side
     const k = kindFromHash();
     if (k) state.kind = k;
@@ -741,15 +755,21 @@
     route();
 
     try {
-      const [meta, cards, support, teams, traits] = await Promise.all([
+      const [meta, cards, support, teams, traits, pool] = await Promise.all([
         loadJSON("data/meta.json"),
         loadJSON("data/cards.json"),
         loadJSON("data/support.json").catch(() => []),   // support cards (step 4); the page copes without it
         loadJSON("data/teams.json").catch(() => []),     // Meta Decks; the page copes without it
         loadJSON("data/traits.json").catch(() => null),  // Trait Shop (js/traits.js); the site copes without it
+        loadJSON("data/pool.json").catch(() => null),    // dates added (NEW badge, Home); the site copes without it
       ]);
       state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits;
+      state.pool = pool && Array.isArray(pool.items) ? pool : null;
       if (Array.isArray(support)) support.forEach((x) => { if (x && x.id) { x.kind = "support"; if (!x.name) x.name = x.id.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); } });
+      if (state.pool) {   // the date each card / support was added (pool.json "added") rides on the object: C.isNew(x)
+        const added = new Map(state.pool.items.filter((i) => i && i.id && i.added).map((i) => [i.id, i.added]));
+        [cards, support].forEach((list) => Array.isArray(list) && list.forEach((x) => { if (x && added.has(x.id)) x.added = added.get(x.id); }));
+      }
       topOnly(cards, (c) => c.scores && c.scores.overall, rankTop());
       topOnly(support, (s) => s.scores && s.scores.value, rankTopSupport());
     } catch (err) {
@@ -777,6 +797,7 @@
     CBI.detail.init();
     CBI.support.init();
     CBI.grade.init();
+    CBI.home.init();
     route();   // opens a #card/<id>, #support/<id> or #grade/<id> deep link now that the data is here
     hideBoot();
     setTimeout(FX.probe, 800);   // lite mode check: 2 s of frames once the first page has settled (step 9.5)
@@ -799,7 +820,7 @@
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
-    isSupport, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
+    isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)
@@ -809,6 +830,7 @@
     deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
     support: { init() {}, order() { return []; }, open() {} },   // replaced by js/support.js
     grade: { init() {}, show() {}, panelHTML() { return ""; }, supPanelHTML() { return ""; }, mountSlabs() {} },   // replaced by js/grade.js
+    home: { init() {} },   // replaced by js/home.js
     traits: { init() {}, of() { return null; }, map() { return {}; }, power() { return 0; }, panelHTML() { return ""; }, mountPanel() {} },   // replaced by js/traits.js
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

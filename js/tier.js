@@ -7,7 +7,7 @@
    · Global is view-only and has a Cards | Support switch (they never share a list)
      - Cards: rows Meta–D by Overall (only the top meta.rankTop cards are ranked) + the Utility row (by utilGain), rarity picker shared with the Cards page
      - Support: rows Meta–D by Value (data/support.json · ranked at Godly), no rarity
-     - rows wrap (never scroll sideways) · ▲▼ on a card whose tier moved since prevTier (C.tierMoveHTML)
+     - rows wrap (never scroll sideways) · ▲▼ on a card whose tier moved since prevTier (C.tierMoveHTML) · NEW badge (C.newHTML)
      - Save image: the list on screen (Cards or Support) as one picture with every name written under its card (C.share.imageDialog)
    Meta Decks moved to the Deck page (js/deck.js).
    Needs js/fx.js, js/app.js, js/cards.js loaded first (support.js is only needed when a support tile is tapped).
@@ -125,6 +125,7 @@
     $(".scard__info", art).insertAdjacentHTML("beforeend", `<span class="stile__val">${esc(fmtScore(s.scores.value))}</span>`);
     FX.tilt(art);
     b.appendChild(art);
+    b.insertAdjacentHTML("beforeend", C.newHTML(s));   // NEW badge (plan 2026-10-30 item 5 · game cards get it from C.renderCard)
     return addMove(b, s);
   }
 

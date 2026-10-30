@@ -74,22 +74,25 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=43">
-  <link rel="stylesheet" href="css/base.css?v=43">
-  <link rel="stylesheet" href="css/fx.css?v=43">
-  <link rel="stylesheet" href="css/cards.css?v=43">
-  <link rel="stylesheet" href="css/tier.css?v=43">
-  <link rel="stylesheet" href="css/deck.css?v=43">
-  <link rel="stylesheet" href="css/support.css?v=43">
-  <link rel="stylesheet" href="css/grade.css?v=43">
-  <link rel="stylesheet" href="css/tiermaker.css?v=43">
-  <link rel="stylesheet" href="css/detail.css?v=43">
-  <link rel="stylesheet" href="css/traits.css?v=43">
+  <link rel="stylesheet" href="css/tokens.css?v=44">
+  <link rel="stylesheet" href="css/base.css?v=44">
+  <link rel="stylesheet" href="css/fx.css?v=44">
+  <link rel="stylesheet" href="css/cards.css?v=44">
+  <link rel="stylesheet" href="css/tier.css?v=44">
+  <link rel="stylesheet" href="css/deck.css?v=44">
+  <link rel="stylesheet" href="css/support.css?v=44">
+  <link rel="stylesheet" href="css/grade.css?v=44">
+  <link rel="stylesheet" href="css/tiermaker.css?v=44">
+  <link rel="stylesheet" href="css/detail.css?v=44">
+  <link rel="stylesheet" href="css/traits.css?v=44">
+  <link rel="stylesheet" href="css/home.css?v=44">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
     <defs>
+      <!-- Home (plan 2026-10-30 item 5): a gabled townhouse with a chimney and an arched door -->
+      <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M2.8 11.6 12 3.8l9.2 7.8"/><path d="M5.4 9.6V20.2h13.2V9.6"/><path d="M10 20.2v-4.4a2 2 0 0 1 4 0v4.4"/><path d="M16.2 7V3.8h2.2v5"/><circle cx="12" cy="10.6" r="1.4" stroke-width="1.1"/><path d="M3.6 20.2h16.8"/></g></symbol>
       <symbol id="i-crown" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M3.5 8.5 7.5 12 12 5l4.5 7 4-3.5-1.8 9.5H5.3z"/><path d="M5.3 20h13.4"/><circle cx="12" cy="4.2" r=".9" fill="currentColor"/><circle cx="3.4" cy="7.8" r=".8" fill="currentColor"/><circle cx="20.6" cy="7.8" r=".8" fill="currentColor"/></g></symbol>
       <symbol id="i-fan" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="#0f1428"><rect x="5" y="5" width="9" height="13" rx="1.2" transform="rotate(-20 12 20)"/><rect x="7.5" y="4" width="9" height="13" rx="1.2" transform="rotate(20 12 20)"/><rect x="7.5" y="4.5" width="9" height="13.5" rx="1.2"/><path d="M12 8.6l2 2.6-2 2.6-2-2.6z" fill="currentColor" stroke="none"/></g></symbol>
       <symbol id="i-potion" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M9.5 3h5M10.2 3v4.6L5.8 14a6.6 6.6 0 1 0 12.4 0l-4.4-6.4V3"/><path d="M6.6 14.5h10.8"/><circle cx="10.5" cy="17" r=".9" fill="currentColor"/><circle cx="13.7" cy="18.3" r=".6" fill="currentColor"/></g></symbol>
@@ -156,7 +159,7 @@
   </div>
 
   <header class="topbar glass">
-    <a class="brand" href="#tier" aria-label="Card Battle Infinity home">
+    <a class="brand" href="#home" aria-label="Card Battle Infinity home">
       <svg class="brand__crest" aria-hidden="true"><use href="#i-crest"/></svg>
       <span class="brand__text">
         <span class="brand__name">Card Battle Infinity</span>
@@ -170,12 +173,13 @@
   </header>
 
   <nav class="nav glass" aria-label="Main">
-    <a class="nav__brand" href="#tier" aria-label="Card Battle Infinity home">
+    <a class="nav__brand" href="#home" aria-label="Card Battle Infinity home">
       <svg class="brand__crest" aria-hidden="true"><use href="#i-crest"/></svg>
       <span class="brand__name">Card Battle Infinity</span>
     </a>
-    <ul class="nav__list" style="--n:5">
+    <ul class="nav__list" style="--n:6">
       <li aria-hidden="true" class="nav__indicator"></li>
+      <li><button class="nav__btn fx-press" data-page="home" type="button"><svg aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></button></li>
       <li><button class="nav__btn fx-press" data-page="tier" type="button"><svg aria-hidden="true"><use href="#i-crown"/></svg><span>Tier List</span></button></li>
       <li><button class="nav__btn fx-press" data-page="cards" type="button"><svg aria-hidden="true"><use href="#i-fan"/></svg><span>Cards</span></button></li>
       <li><button class="nav__btn fx-press" data-page="deck" type="button"><svg aria-hidden="true"><use href="#i-book"/></svg><span>Deck</span></button></li>
@@ -193,6 +197,50 @@
 
   <main class="main">
     <p id="data-error" class="panel glass" hidden>Card data didn't load. Check your connection and refresh the page.</p>
+
+    <!-- Home (plan 2026-10-30 item 5): game updates · codes · new cards · new systems, in js/home.js (data/news.json + data/pool.json) -->
+    <section id="page-home" class="page" hidden aria-labelledby="home-title">
+      <div class="page__head">
+        <p class="page__eyebrow">The Gazette</p>
+        <h1 id="home-title" class="page__title">Home</h1>
+        <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
+        <p class="page__lead">The latest from the game: updates, codes to redeem, cards just added to the site and new systems.</p>
+      </div>
+
+      <div class="home">
+        <section class="home__sec home__sec--updates" aria-labelledby="home-updates-t">
+          <h2 id="home-updates-t" class="home__h">Game updates</h2>
+          <div id="home-updates" class="home__list" aria-live="polite"><div class="skeleton home__skel"></div><div class="skeleton home__skel"></div></div>
+          <button id="home-older" class="tm-btn home__more fx-press" type="button" hidden>Show older updates</button>
+        </section>
+
+        <section class="home__sec home__sec--codes" aria-labelledby="home-codes-t">
+          <h2 id="home-codes-t" class="home__h">Latest codes</h2>
+          <div id="home-codes" aria-live="polite"><div class="skeleton home__skel home__skel--sm"></div></div>
+        </section>
+
+        <section class="home__sec home__sec--new" aria-labelledby="home-new-t">
+          <h2 id="home-new-t" class="home__h">New cards</h2>
+          <p id="home-new-sub" class="home__sub"></p>
+          <p id="home-new-none" class="home__empty" hidden>No new cards yet.</p>
+          <div id="home-new-cards-wrap" class="home__grp" hidden>
+            <h3 class="home__h3">Cards</h3>
+            <div id="home-new-cards" class="card-grid" data-card-list="home-cards"></div>
+            <button id="home-more-cards" class="tm-btn home__more fx-press" type="button" hidden>Show more cards</button>
+          </div>
+          <div id="home-new-sup-wrap" class="home__grp" hidden>
+            <h3 class="home__h3">Support</h3>
+            <div id="home-new-sup" class="card-grid" data-card-list="home-support"></div>
+            <button id="home-more-sup" class="tm-btn home__more fx-press" type="button" hidden>Show more support</button>
+          </div>
+        </section>
+
+        <section class="home__sec home__sec--systems" aria-labelledby="home-systems-t">
+          <h2 id="home-systems-t" class="home__h">New systems</h2>
+          <div id="home-systems" class="home__list" aria-live="polite"><div class="skeleton home__skel"></div></div>
+        </section>
+      </div>
+    </section>
 
     <!-- Tier List: Global (Cards | Support) + My Lists, in js/tier.js -->
     <section id="page-tier" class="page" hidden aria-labelledby="tier-title">
@@ -802,19 +850,20 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=43"></script>
-  <script src="js/app.js?v=43"></script>
-  <script src="js/teamscore.js?v=43"></script>
-  <script src="js/share.js?v=43"></script>
-  <script src="js/cards.js?v=43"></script>
-  <script src="js/detail.js?v=43"></script>
-  <script src="js/tier.js?v=43"></script>
-  <script src="js/deck.js?v=43"></script>
-  <script src="js/support.js?v=43"></script>
-  <script src="js/grade.js?v=43"></script>
-  <script src="js/traits.js?v=43"></script>
-  <script src="js/tiermaker.js?v=43"></script>
-  <script src="js/music.js?v=43"></script>
+  <script src="js/fx.js?v=44"></script>
+  <script src="js/app.js?v=44"></script>
+  <script src="js/teamscore.js?v=44"></script>
+  <script src="js/share.js?v=44"></script>
+  <script src="js/cards.js?v=44"></script>
+  <script src="js/detail.js?v=44"></script>
+  <script src="js/tier.js?v=44"></script>
+  <script src="js/deck.js?v=44"></script>
+  <script src="js/support.js?v=44"></script>
+  <script src="js/grade.js?v=44"></script>
+  <script src="js/traits.js?v=44"></script>
+  <script src="js/home.js?v=44"></script>
+  <script src="js/tiermaker.js?v=44"></script>
+  <script src="js/music.js?v=44"></script>
 </body>
 </html>
 
