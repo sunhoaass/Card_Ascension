@@ -155,6 +155,18 @@
   font: 600 max(8px, 4.4cqw)/1.2 var(--font-body); color: var(--gold-hi); background: var(--gc-num-shade); border: 1px dashed var(--gold-lo);
 }
 
+/* NEW (plan 2026-10-30 item 5): added in the last 14 days (C.isNew, js/app.js) · top-left corner, px sizes so it reads on
+   a 78px tile · only on the Cards page, the Tier List (Global) and Home: hidden everywhere else (deck, grade, detail…) */
+.gc__new {
+  position: absolute; z-index: 6; left: 3px; top: 3px; pointer-events: none; display: none;
+  padding: 2px 5px 1px; border-radius: var(--r-pill);
+  font: 400 10px/1 var(--gc-font-pop); letter-spacing: .06em; text-transform: uppercase; color: var(--ink);
+  background: var(--wine); box-shadow: 0 0 0 1px var(--gold-hi), 0 2px 4px rgba(0, 0, 0, .55);
+}
+#card-grid .gc__new, #support-grid .gc__new, #tier-list .gc__new, #tier-slist .gc__new, #page-home .gc__new { display: block; }
+#tier-list .gc:has(> .tmove--tile) > .gc__new, #tier-slist .stile:has(> .tmove--tile) > .gc__new { top: 17px; }   /* under the ▲▼ badge */
+@media (min-width: 900px) { .gc__new { font-size: 11px; } #tier-list .gc:has(> .tmove--tile) > .gc__new, #tier-slist .stile:has(> .tmove--tile) > .gc__new { top: 20px; } }
+
 /* frame ring: drawn over the picture's edge (the art never shrinks, so the numbers stay on the same spots) */
 .gc__ring {
   position: absolute; inset: 0; z-index: 3; border-radius: inherit; overflow: hidden; pointer-events: none;

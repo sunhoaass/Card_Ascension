@@ -1,0 +1,70 @@
+/* ==========================================================
+   Card Battle Infinity — Home (plan 2026-10-30 item 5 · js/home.js)
+   Phone: one column (updates → codes → new cards → systems) · PC (≥ 1100): updates | codes + systems, new cards below
+   Shared bits: .panel (gold box), .tm-btn, .card-grid, .skeleton, the NEW badge .gc__new (css/fx.css)
+   ========================================================== */
+.home { display: grid; gap: var(--s-8); }
+.home__sec { min-width: 0; }
+.home__h {
+  display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4);
+  font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; letter-spacing: .06em; color: var(--gold-hi);
+}
+.home__h::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold-lo), transparent); }
+.home__h3 { margin: var(--s-4) 0 var(--s-3); font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; letter-spacing: .06em; color: var(--ink-dim); }
+.home__grp:first-of-type .home__h3 { margin-top: 0; }
+.home__sub { margin: calc(-1 * var(--s-2)) 0 var(--s-4); color: var(--ink-dim); font-size: var(--fs-sm); }
+.home__sub:empty { display: none; }
+.home__list { display: grid; gap: var(--s-3); }
+.home__batch { display: contents; }
+.home__empty { padding: var(--s-4) 0; color: var(--ink-faint); font-size: var(--fs-sm); font-style: italic; }
+.home__empty[hidden], .home__grp[hidden], .home__more[hidden] { display: none; }
+.home__more { display: flex; margin: var(--s-4) auto 0; }
+.home__skel { aspect-ratio: auto; height: 96px; border-radius: var(--r-chip); }
+.home__skel--sm { height: 64px; }
+
+/* ---------- Game updates ---------- */
+.hnews { padding: var(--s-4) var(--s-5) var(--s-5); --orn-s: 18px; }
+.hnews__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
+.hnews__kind {
+  display: inline-flex; align-items: center; min-height: 24px; padding: 0 10px; border-radius: var(--r-pill);
+  font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+}
+.hnews[data-kind="major"] .hnews__kind { background: var(--brass-gold); color: var(--on-gold); box-shadow: var(--rift-glow); }
+.hnews[data-kind="minor"] .hnews__kind { color: var(--silver); border: 1px solid color-mix(in srgb, var(--silver) 55%, transparent); }
+.hnews__date, .hcode__date, .hsys__date { color: var(--ink-faint); font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.hnews__title, .hsys__title { margin-top: var(--s-2); font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; color: var(--ink); }
+.hnews__items { margin: var(--s-2) 0 0; padding-left: 1.2em; color: var(--ink-dim); font-size: var(--fs-sm); display: grid; gap: 4px; max-width: var(--measure, none); }
+.hnews__items li::marker { color: var(--gold); }
+
+/* ---------- Codes ---------- */
+.hcodes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
+.hcode {
+  display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+  border: 1px dashed var(--gold-lo); border-radius: var(--r-panel);
+  background-color: var(--glass-under); background-image: linear-gradient(var(--glass), var(--glass));
+}
+.hcode__main { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.hcode__code {
+  font-family: var(--font-body); font-size: var(--fs-lg); font-weight: 600; letter-spacing: .06em; color: var(--gold-hi);   /* Inter: codes are case-sensitive (Cinzel has no lowercase) */
+  overflow-wrap: anywhere; user-select: all; -webkit-user-select: all;
+}
+.hcode__reward { color: var(--ink-dim); font-size: var(--fs-sm); }
+.hcode__copy { flex: none; padding: 0 14px; }
+.hcode__copy svg { width: 18px; height: 18px; }
+
+/* ---------- New systems ---------- */
+.hsys { padding: var(--s-4) var(--s-5) var(--s-5); --orn-s: 18px; }
+.hsys__title { margin-top: 4px; }
+.hsys__desc { margin-top: var(--s-2); color: var(--ink-dim); font-size: var(--fs-sm); max-width: var(--measure, none); }
+
+/* ---------- PC: two columns, the new cards across the bottom ---------- */
+@media (min-width: 1100px) {
+  .home {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start;
+    grid-template-areas: "updates codes" "updates systems" "new new";
+  }
+  .home__sec--updates { grid-area: updates; }
+  .home__sec--codes { grid-area: codes; }
+  .home__sec--systems { grid-area: systems; }
+  .home__sec--new { grid-area: new; }
+}

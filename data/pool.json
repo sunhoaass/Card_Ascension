@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-29",
-  "note": "Every card and support in the game (PROGRESS.md §5.2). Not loaded by the site: routine B picks the top meta.rankTop (50) from here. card: atk/hp at Normal · support: vals/type = effect.vals/effect.type at Normal · src = screenshot file in inbox/ · round = batch round (0 = added before the batch).",
+  "updated": "2026-10-30",
+  "note": "Every card and support in the game (PROGRESS.md §5.2). The site loads it for the dates (NEW badge, Home > New cards); routine B picks the top meta.rankTop from here. card: atk/hp at Normal · support: vals/type = effect.vals/effect.type at Normal · src = screenshot file in inbox/ · round = batch round (0 = added before the batch) · added = the date that round went in (YYYY-MM-DD, NEW badge for 14 days).",
   "items": [
     {
       "id": "dragon-emperor-monarch",
@@ -11,7 +11,8 @@
       "atk": 1333153,
       "hp": 8887688,
       "src": "",
-      "round": 0
+      "round": 0,
+      "added": "2026-10-24"
     },
     {
       "id": "moon-eye-ghost",
@@ -22,7 +23,8 @@
       "atk": 1079693,
       "hp": 7197952,
       "src": "",
-      "round": 0
+      "round": 0,
+      "added": "2026-10-24"
     },
     {
       "id": "atomic-shadow-lord",
@@ -33,7 +35,8 @@
       "atk": 969893,
       "hp": 6465954,
       "src": "",
-      "round": 0
+      "round": 0,
+      "added": "2026-10-24"
     },
     {
       "id": "beast-emperor",
@@ -44,7 +47,8 @@
       "atk": 937943,
       "hp": 6252952,
       "src": "",
-      "round": 0
+      "round": 0,
+      "added": "2026-10-24"
     },
     {
       "id": "automail-mechanic",
@@ -57,7 +61,8 @@
       ],
       "type": "max-hp",
       "src": "RobloxScreenShot20261028_113951287.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "bald-cadet",
@@ -68,7 +73,8 @@
       "atk": 390,
       "hp": 2598,
       "src": "RobloxScreenShot20261028_114128213.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "bicycle-justice",
@@ -79,7 +85,8 @@
       "atk": 425,
       "hp": 2832,
       "src": "RobloxScreenShot20261028_114137513.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "big-top-clown",
@@ -90,7 +97,8 @@
       "atk": 261,
       "hp": 1742,
       "src": "RobloxScreenShot20261028_114142292.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "bug-swarm-ninja",
@@ -101,7 +109,8 @@
       "atk": 279,
       "hp": 1862,
       "src": "RobloxScreenShot20261028_114147569.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "electric-hero",
@@ -112,7 +121,8 @@
       "atk": 441,
       "hp": 2942,
       "src": "RobloxScreenShot20261028_114151751.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "fly-head-curse",
@@ -123,7 +133,8 @@
       "atk": 309,
       "hp": 2058,
       "src": "RobloxScreenShot20261028_114209029.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "flying-cat-partner",
@@ -136,7 +147,8 @@
       ],
       "type": "double-attack",
       "src": "RobloxScreenShot20261028_114213809.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "fox-kit-trickster",
@@ -149,7 +161,8 @@
       ],
       "type": "burn",
       "src": "RobloxScreenShot20261028_114217912.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "gate-healer",
@@ -162,7 +175,8 @@
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_114221717.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "goblin",
@@ -173,7 +187,8 @@
       "atk": 423,
       "hp": 2820,
       "src": "RobloxScreenShot20261028_114225326.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "goblin-rider",
@@ -184,7 +199,8 @@
       "atk": 463,
       "hp": 3086,
       "src": "RobloxScreenShot20261028_114229134.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "grandson-ninja",
@@ -195,7 +211,8 @@
       "atk": 305,
       "hp": 2030,
       "src": "RobloxScreenShot20261028_114349532.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "grape-hero",
@@ -206,7 +223,8 @@
       "atk": 377,
       "hp": 2514,
       "src": "RobloxScreenShot20261028_114354172.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "hand-demon",
@@ -217,7 +235,8 @@
       "atk": 319,
       "hp": 2128,
       "src": "RobloxScreenShot20261028_114358367.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "inventor-girl",
@@ -230,7 +249,8 @@
       ],
       "type": "random-boost",
       "src": "RobloxScreenShot20261028_114411985.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "long-hair-invader",
@@ -241,7 +261,8 @@
       "atk": 233,
       "hp": 1556,
       "src": "RobloxScreenShot20261028_114423978.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "marine-recruit",
@@ -252,7 +273,8 @@
       "atk": 276,
       "hp": 1838,
       "src": "RobloxScreenShot20261028_114428391.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "navigation-pixie",
@@ -265,7 +287,8 @@
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_114441768.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "pig-captain",
@@ -279,7 +302,8 @@
       ],
       "type": "revive",
       "src": "RobloxScreenShot20261028_114447053.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "plant-healer",
@@ -292,7 +316,8 @@
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_114457399.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "plush-soul",
@@ -303,7 +328,8 @@
       "atk": 341,
       "hp": 2274,
       "src": "RobloxScreenShot20261028_114503028.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "portal-playboy",
@@ -316,7 +342,8 @@
       ],
       "type": "dodge",
       "src": "RobloxScreenShot20261028_114507682.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "return-by-death-boy",
@@ -327,7 +354,8 @@
       "atk": 460,
       "hp": 3068,
       "src": "RobloxScreenShot20261028_114539965.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "rookie-crusher",
@@ -338,7 +366,8 @@
       "atk": 370,
       "hp": 2468,
       "src": "RobloxScreenShot20261028_114612382.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "spirit-sidekick",
@@ -351,7 +380,8 @@
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_114617025.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "sprout-soldier",
@@ -362,7 +392,8 @@
       "atk": 249,
       "hp": 1662,
       "src": "RobloxScreenShot20261028_114645258.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "steal-skill-adventurer",
@@ -373,7 +404,8 @@
       "atk": 485,
       "hp": 3236,
       "src": "RobloxScreenShot20261028_114658885.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "strongest-man-fake",
@@ -384,7 +416,8 @@
       "atk": 431,
       "hp": 2870,
       "src": "RobloxScreenShot20261028_114702951.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "swamp-demon",
@@ -395,7 +428,8 @@
       "atk": 347,
       "hp": 2310,
       "src": "RobloxScreenShot20261028_114711061.png",
-      "round": 1
+      "round": 1,
+      "added": "2026-10-28"
     },
     {
       "id": "weapon-rain-kunoichi",
@@ -406,7 +440,8 @@
       "atk": 289,
       "hp": 1926,
       "src": "RobloxScreenShot20261028_114718760.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "wolf-fang-fighter",
@@ -417,7 +452,8 @@
       "atk": 236,
       "hp": 1576,
       "src": "RobloxScreenShot20261028_114723641.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "world-champ",
@@ -428,7 +464,8 @@
       "atk": 253,
       "hp": 1686,
       "src": "RobloxScreenShot20261028_114728332.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "acrobat-silky-girl",
@@ -439,7 +476,8 @@
       "atk": 1247,
       "hp": 8310,
       "src": "RobloxScreenShot20261028_114732266.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "baboon-blade-lieutenant",
@@ -450,7 +488,8 @@
       "atk": 896,
       "hp": 5976,
       "src": "RobloxScreenShot20261028_114753604.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "bald-saiyan-brute",
@@ -461,7 +500,8 @@
       "atk": 841,
       "hp": 5606,
       "src": "RobloxScreenShot20261028_114757989.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "cafe-owner-owl",
@@ -474,7 +514,8 @@
       ],
       "type": "lifesteal",
       "src": "RobloxScreenShot20261028_114808061.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "caged-bird-prodigy",
@@ -485,7 +526,8 @@
       "atk": 891,
       "hp": 5942,
       "src": "RobloxScreenShot20261028_114811905.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "chip-crunch-ninja",
@@ -496,7 +538,8 @@
       "atk": 892,
       "hp": 5944,
       "src": "RobloxScreenShot20261028_114816863.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "cola-cyborg",
@@ -507,7 +550,8 @@
       "atk": 762,
       "hp": 5082,
       "src": "RobloxScreenShot20261028_114821070.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "creation-heroine",
@@ -518,7 +562,8 @@
       "atk": 965,
       "hp": 6430,
       "src": "RobloxScreenShot20261028_114825123.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "crow-banker",
@@ -531,7 +576,8 @@
       ],
       "type": "mark",
       "src": "RobloxScreenShot20261028_114829001.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "cursed-corpse-panda",
@@ -542,7 +588,8 @@
       "atk": 833,
       "hp": 5554,
       "src": "RobloxScreenShot20261028_114902036.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "cursed-speech-boy",
@@ -553,7 +600,8 @@
       "atk": 993,
       "hp": 6620,
       "src": "RobloxScreenShot20261028_114910489.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "desert-princess",
@@ -566,7 +614,8 @@
       ],
       "type": "double-attack",
       "src": "RobloxScreenShot20261028_114926245.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "destructo-monk",
@@ -577,7 +626,8 @@
       "atk": 722,
       "hp": 4814,
       "src": "RobloxScreenShot20261028_114944856.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "doctor-hunter",
@@ -590,7 +640,8 @@
       ],
       "type": "max-hp-hit",
       "src": "RobloxScreenShot20261028_115000347.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "engine-hero",
@@ -601,7 +652,8 @@
       "atk": 983,
       "hp": 6550,
       "src": "RobloxScreenShot20261028_115016071.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "esper-brother",
@@ -612,7 +664,8 @@
       "atk": 1286,
       "hp": 8572,
       "src": "RobloxScreenShot20261028_115026841.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "fang-pup-ninja",
@@ -623,7 +676,8 @@
       "atk": 851,
       "hp": 5676,
       "src": "RobloxScreenShot20261028_115033838.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "food-mage",
@@ -636,7 +690,8 @@
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_115039536.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "foundation-gentleman",
@@ -650,7 +705,8 @@
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_115043778.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "fox-mask-mentor",
@@ -663,7 +719,8 @@
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_115046981.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "giant-arm-friend",
@@ -674,7 +731,8 @@
       "atk": 930,
       "hp": 6200,
       "src": "RobloxScreenShot20261028_115052783.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "green-beast-kid",
@@ -685,7 +743,8 @@
       "atk": 774,
       "hp": 5162,
       "src": "RobloxScreenShot20261028_115113043.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "hardening-hero",
@@ -696,7 +755,8 @@
       "atk": 947,
       "hp": 6314,
       "src": "RobloxScreenShot20261028_115120530.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "haunted-armor-brother",
@@ -707,7 +767,8 @@
       "atk": 1333,
       "hp": 8886,
       "src": "RobloxScreenShot20261028_115124422.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "horse-face-captain",
@@ -718,7 +779,8 @@
       "atk": 1091,
       "hp": 7270,
       "src": "RobloxScreenShot20261028_115128022.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "ice-sniper",
@@ -729,7 +791,8 @@
       "atk": 1384,
       "hp": 9224,
       "src": "RobloxScreenShot20261028_115131846.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "lonely-crimson-mage",
@@ -742,7 +805,8 @@
       ],
       "type": "paralyze",
       "src": "RobloxScreenShot20261028_115135906.png",
-      "round": 2
+      "round": 2,
+      "added": "2026-10-28"
     },
     {
       "id": "master-spy-father",
@@ -755,7 +819,8 @@
       ],
       "type": "crit",
       "src": "RobloxScreenShot20261028_115139878.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "mind-reader-sidekick",
@@ -766,7 +831,8 @@
       "atk": 1224,
       "hp": 8160,
       "src": "RobloxScreenShot20261028_115143691.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "mind-transfer-kunoichi",
@@ -779,7 +845,8 @@
       ],
       "type": "confuse",
       "src": "RobloxScreenShot20261028_115148106.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "mohawk-gunner",
@@ -790,7 +857,8 @@
       "atk": 995,
       "hp": 6632,
       "src": "RobloxScreenShot20261028_115151701.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "namekian-healer",
@@ -803,7 +871,8 @@
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_115155840.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "nen-teacher",
@@ -816,7 +885,8 @@
       ],
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_115159869.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "ninja-rival",
@@ -827,7 +897,8 @@
       "atk": 1097,
       "hp": 7310,
       "src": "RobloxScreenShot20261028_115223159.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "panic-speed-girl",
@@ -838,7 +909,8 @@
       "atk": 1057,
       "hp": 7048,
       "src": "RobloxScreenShot20261028_115230610.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "potato-girl",
@@ -849,7 +921,8 @@
       "atk": 1111,
       "hp": 7404,
       "src": "RobloxScreenShot20261028_115234575.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "quincy-archer",
@@ -860,7 +933,8 @@
       "atk": 959,
       "hp": 6392,
       "src": "RobloxScreenShot20261028_115238368.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "rabbit-ghoul",
@@ -871,7 +945,8 @@
       "atk": 1439,
       "hp": 9596,
       "src": "RobloxScreenShot20261028_115242076.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "rain-frog-hero",
@@ -882,7 +957,8 @@
       "atk": 1001,
       "hp": 6670,
       "src": "RobloxScreenShot20261028_115248244.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "rebel-flame-punk",
@@ -893,7 +969,8 @@
       "atk": 1159,
       "hp": 7724,
       "src": "RobloxScreenShot20261028_115300311.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "rifle-girl",
@@ -906,7 +983,8 @@
       ],
       "type": "first-hit",
       "src": "RobloxScreenShot20261028_115304924.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "salt-splash-mentor",
@@ -920,7 +998,8 @@
       ],
       "type": "weaken",
       "src": "RobloxScreenShot20261028_115308944.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "second-princess",
@@ -933,7 +1012,8 @@
       ],
       "type": "max-hp-hit",
       "src": "RobloxScreenShot20261028_115312473.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "senzu-bean-cat",
@@ -946,7 +1026,8 @@
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_115316229.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "shadow-garden-strategist",
@@ -959,7 +1040,8 @@
       ],
       "type": "gems",
       "src": "RobloxScreenShot20261028_115319919.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "shield-heir",
@@ -970,7 +1052,8 @@
       "atk": 1141,
       "hp": 7608,
       "src": "RobloxScreenShot20261028_115323970.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "silent-healer-elf",
@@ -983,7 +1066,8 @@
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_115347040.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "sister-of-prayer",
@@ -996,7 +1080,8 @@
       ],
       "type": "shield",
       "src": "RobloxScreenShot20261028_115350578.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "sniper-king",
@@ -1007,7 +1092,8 @@
       "atk": 760,
       "hp": 5068,
       "src": "RobloxScreenShot20261028_115354535.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "song-sorceress",
@@ -1020,7 +1106,8 @@
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_115358843.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "soul-king-skeleton",
@@ -1031,7 +1118,8 @@
       "atk": 746,
       "hp": 4976,
       "src": "RobloxScreenShot20261028_115402954.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "spear-hero",
@@ -1042,7 +1130,8 @@
       "atk": 1172,
       "hp": 7810,
       "src": "RobloxScreenShot20261028_115406948.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "spider-thread-demon",
@@ -1053,7 +1142,8 @@
       "atk": 925,
       "hp": 6166,
       "src": "RobloxScreenShot20261028_115412272.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "spirit-ferry-girl",
@@ -1067,7 +1157,8 @@
       ],
       "type": "revive",
       "src": "RobloxScreenShot20261028_115416277.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "spirit-medium-granny",
@@ -1080,7 +1171,8 @@
       ],
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_115419836.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "sword-hero",
@@ -1091,7 +1183,8 @@
       "atk": 1139,
       "hp": 7594,
       "src": "RobloxScreenShot20261028_115423811.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "third-eye-warrior",
@@ -1102,7 +1195,8 @@
       "atk": 756,
       "hp": 5042,
       "src": "RobloxScreenShot20261028_115429248.png",
-      "round": 3
+      "round": 3,
+      "added": "2026-10-28"
     },
     {
       "id": "toad-boss",
@@ -1115,7 +1209,8 @@
       ],
       "type": "max-hp-hit",
       "src": "RobloxScreenShot20261028_115438837.png",
-      "round": 4
+      "round": 4,
+      "added": "2026-10-28"
     },
     {
       "id": "true-queen",
@@ -1128,7 +1223,8 @@
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_115442551.png",
-      "round": 4
+      "round": 4,
+      "added": "2026-10-28"
     },
     {
       "id": "white-smoke-hunter",
@@ -1139,7 +1235,8 @@
       "atk": 777,
       "hp": 5182,
       "src": "RobloxScreenShot20261028_115445854.png",
-      "round": 4
+      "round": 4,
+      "added": "2026-10-28"
     },
     {
       "id": "armored-titan",
@@ -1151,7 +1248,8 @@
       "hp": 21524,
       "src": "RobloxScreenShot20261028_115450828.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "asaemon-swordswoman",
@@ -1163,7 +1261,8 @@
       "hp": 31872,
       "src": "RobloxScreenShot20261028_115524282.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "axe-prodigy",
@@ -1175,7 +1274,8 @@
       "hp": 32712,
       "src": "RobloxScreenShot20261028_115535190.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "axe-warrior-kid",
@@ -1187,7 +1287,8 @@
       "hp": 28656,
       "src": "RobloxScreenShot20261028_115539779.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "bamboo-box-sister",
@@ -1199,7 +1300,8 @@
       "hp": 16142,
       "src": "RobloxScreenShot20261028_115543576.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "battle-maniac",
@@ -1211,7 +1313,8 @@
       "hp": 24108,
       "src": "RobloxScreenShot20261028_115547783.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "bird-queen",
@@ -1223,7 +1326,8 @@
       "hp": 22680,
       "src": "RobloxScreenShot20261028_115551795.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "blood-copy-girl",
@@ -1235,7 +1339,8 @@
       "hp": 18722,
       "src": "RobloxScreenShot20261028_115556028.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "blue-flame-villain",
@@ -1247,7 +1352,8 @@
       "hp": 19502,
       "src": "RobloxScreenShot20261028_115559470.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "boar-head-brawler",
@@ -1259,7 +1365,8 @@
       "hp": 16570,
       "src": "RobloxScreenShot20261028_115604317.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "boogie-woogie-brother",
@@ -1270,7 +1377,8 @@
       "atk": 3007,
       "hp": 20046,
       "src": "RobloxScreenShot20261028_115608633.png",
-      "round": 4
+      "round": 4,
+      "added": "2026-10-28"
     },
     {
       "id": "boomerang-demon-slayer",
@@ -1284,7 +1392,8 @@
       "type": "echo",
       "src": "RobloxScreenShot20261028_115613336.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "bowel-hunter",
@@ -1296,7 +1405,8 @@
       "hp": 21524,
       "src": "RobloxScreenShot20261028_115616783.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "butterfly-coin-girl",
@@ -1308,7 +1418,8 @@
       "hp": 17216,
       "src": "RobloxScreenShot20261028_115620072.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "candy-majin",
@@ -1319,7 +1430,8 @@
       "atk": 2171,
       "hp": 14476,
       "src": "RobloxScreenShot20261028_115624081.png",
-      "round": 4
+      "round": 4,
+      "added": "2026-10-28"
     },
     {
       "id": "cannon-captain",
@@ -1331,7 +1443,8 @@
       "hp": 28548,
       "src": "RobloxScreenShot20261028_115632273.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "cart-titan-girl",
@@ -1343,7 +1456,8 @@
       "hp": 20338,
       "src": "RobloxScreenShot20261028_115636532.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "clay-art-bomber",
@@ -1354,7 +1468,8 @@
       "atk": 2258,
       "hp": 15054,
       "src": "RobloxScreenShot20261028_115640256.png",
-      "round": 4
+      "round": 4,
+      "added": "2026-10-28"
     },
     {
       "id": "colossal-titan-boy",
@@ -1366,7 +1481,8 @@
       "hp": 19050,
       "src": "RobloxScreenShot20261028_115644489.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "corps-master",
@@ -1380,7 +1496,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_115648111.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crazy-slots-hunter",
@@ -1392,7 +1509,8 @@
       "hp": 18998,
       "src": "RobloxScreenShot20261028_115651930.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crimson-eldest-brother",
@@ -1404,7 +1522,8 @@
       "hp": 15454,
       "src": "RobloxScreenShot20261028_115656557.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crossbow-fiend-hunter",
@@ -1416,7 +1535,8 @@
       "hp": 20318,
       "src": "RobloxScreenShot20261028_115659808.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crusader-tank",
@@ -1431,7 +1551,8 @@
       "type": "max-hp",
       "src": "RobloxScreenShot20261028_115703099.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crystal-titan",
@@ -1443,7 +1564,8 @@
       "hp": 19386,
       "src": "RobloxScreenShot20261028_115706867.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "cyborg-disciple",
@@ -1455,7 +1577,8 @@
       "hp": 20968,
       "src": "RobloxScreenShot20261028_115714728.png",
       "round": 4,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "cyborg-sister",
@@ -1466,7 +1589,8 @@
       "atk": 2358,
       "hp": 15722,
       "src": "RobloxScreenShot20261028_115717419.png",
-      "round": 4
+      "round": 4,
+      "added": "2026-10-28"
     },
     {
       "id": "destruction-alchemist",
@@ -1478,7 +1602,8 @@
       "hp": 29848,
       "src": "RobloxScreenShot20261028_115724904.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "doctor-demon",
@@ -1492,7 +1617,8 @@
       "type": "poison",
       "src": "RobloxScreenShot20261028_115728764.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "draculina-gunner",
@@ -1504,7 +1630,8 @@
       "hp": 37810,
       "src": "RobloxScreenShot20261028_115732511.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "dwarf-warrior-guard",
@@ -1519,7 +1646,8 @@
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_115736438.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "erasure-teacher",
@@ -1533,7 +1661,8 @@
       "type": "seal",
       "src": "RobloxScreenShot20261028_115742777.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "explosion-witch",
@@ -1545,7 +1674,8 @@
       "hp": 29978,
       "src": "RobloxScreenShot20261028_115746649.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "fate-thread-witch",
@@ -1560,7 +1690,8 @@
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_115754000.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "fishman-helmsman",
@@ -1571,7 +1702,8 @@
       "atk": 2682,
       "hp": 17882,
       "src": "RobloxScreenShot20261028_115757712.png",
-      "round": 5
+      "round": 5,
+      "added": "2026-10-28"
     },
     {
       "id": "flame-guild-master",
@@ -1583,7 +1715,8 @@
       "hp": 20426,
       "src": "RobloxScreenShot20261028_115801915.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flash-lightning-swordswoman",
@@ -1595,7 +1728,8 @@
       "hp": 29718,
       "src": "RobloxScreenShot20261028_115805968.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "foresight-hero",
@@ -1609,7 +1743,8 @@
       "type": "dodge",
       "src": "RobloxScreenShot20261028_115809323.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "fox-devil-hunter",
@@ -1621,7 +1756,8 @@
       "hp": 31442,
       "src": "RobloxScreenShot20261028_115813605.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "fusion-kid",
@@ -1632,7 +1768,8 @@
       "atk": 2318,
       "hp": 15456,
       "src": "RobloxScreenShot20261028_115820238.png",
-      "round": 5
+      "round": 5,
+      "added": "2026-10-28"
     },
     {
       "id": "future-swordsman",
@@ -1643,7 +1780,8 @@
       "atk": 2422,
       "hp": 16144,
       "src": "RobloxScreenShot20261028_115824617.png",
-      "round": 5
+      "round": 5,
+      "added": "2026-10-28"
     },
     {
       "id": "gem-mage",
@@ -1657,7 +1795,8 @@
       "type": "gems",
       "src": "RobloxScreenShot20261028_115829127.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "genius-inventor",
@@ -1671,7 +1810,8 @@
       "type": "shield",
       "src": "RobloxScreenShot20261028_115834078.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "giant-earth-sin",
@@ -1683,7 +1823,8 @@
       "hp": 27716,
       "src": "RobloxScreenShot20261028_115838692.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "goat-sin-doll",
@@ -1695,7 +1836,8 @@
       "hp": 24962,
       "src": "RobloxScreenShot20261028_115842906.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "goddess-princess",
@@ -1709,7 +1851,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_120214931.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "golden-land-demon",
@@ -1721,7 +1864,8 @@
       "hp": 25880,
       "src": "RobloxScreenShot20261028_120223326.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "gourmet-ghoul",
@@ -1733,7 +1877,8 @@
       "hp": 28196,
       "src": "RobloxScreenShot20261028_120231400.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "guillotine-demon",
@@ -1745,7 +1890,8 @@
       "hp": 41616,
       "src": "RobloxScreenShot20261028_120235509.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "gun-captain",
@@ -1759,7 +1905,8 @@
       "type": "burn",
       "src": "RobloxScreenShot20261028_120240130.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "gun-exorcist-twin",
@@ -1771,7 +1918,8 @@
       "hp": 32702,
       "src": "RobloxScreenShot20261028_120244244.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hair-psychic",
@@ -1783,7 +1931,8 @@
       "hp": 33458,
       "src": "RobloxScreenShot20261028_120248366.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "half-elf-ice-mage",
@@ -1797,7 +1946,8 @@
       "type": "freeze",
       "src": "RobloxScreenShot20261028_120251888.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hawks-eye-sniper",
@@ -1811,7 +1961,8 @@
       "type": "crit",
       "src": "RobloxScreenShot20261028_120256067.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "healing-hero",
@@ -1825,7 +1976,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_120300553.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hero-killer",
@@ -1837,7 +1989,8 @@
       "hp": 19116,
       "src": "RobloxScreenShot20261028_120307212.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "horned-darling-pilot",
@@ -1849,7 +2002,8 @@
       "hp": 30506,
       "src": "RobloxScreenShot20261028_120310803.png",
       "round": 5,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "pacifier-prince",
@@ -1863,7 +2017,8 @@
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_120544015.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sparkle-strongarm",
@@ -1875,7 +2030,8 @@
       "hp": 48188,
       "src": "RobloxScreenShot20261028_120938340.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "spirit-sword-punk",
@@ -1887,7 +2043,8 @@
       "hp": 27008,
       "src": "RobloxScreenShot20261028_120943641.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "star-key-mage",
@@ -1901,7 +2058,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_120947794.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "stitched-scythe-kid",
@@ -1913,7 +2071,8 @@
       "hp": 25182,
       "src": "RobloxScreenShot20261028_120951992.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "straw-doll-sorceress",
@@ -1925,7 +2084,8 @@
       "hp": 15588,
       "src": "RobloxScreenShot20261028_120956051.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "string-puppet-king",
@@ -1936,7 +2096,8 @@
       "atk": 2229,
       "hp": 14858,
       "src": "RobloxScreenShot20261028_121000545.png",
-      "round": 6
+      "round": 6,
+      "added": "2026-10-28"
     },
     {
       "id": "supreme-kai",
@@ -1950,7 +2111,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_121005568.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sword-saint-father",
@@ -1962,7 +2124,8 @@
       "hp": 24506,
       "src": "RobloxScreenShot20261028_121011261.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "tempest-star-wolf",
@@ -1974,7 +2137,8 @@
       "hp": 31792,
       "src": "RobloxScreenShot20261028_121015373.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "thorn-princess-assassin",
@@ -1986,7 +2150,8 @@
       "hp": 32964,
       "src": "RobloxScreenShot20261028_121020263.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "thunder-coward",
@@ -1998,7 +2163,8 @@
       "hp": 16426,
       "src": "RobloxScreenShot20261028_121031078.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "turbo-ghost-kid",
@@ -2010,7 +2176,8 @@
       "hp": 28204,
       "src": "RobloxScreenShot20261028_121034090.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "turtle-hermit",
@@ -2025,7 +2192,8 @@
       "type": "max-hp",
       "src": "RobloxScreenShot20261028_121039135.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ultimate-shield-homunculus",
@@ -2037,7 +2205,8 @@
       "hp": 30398,
       "src": "RobloxScreenShot20261028_121043108.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "weather-witch-navigator",
@@ -2051,7 +2220,8 @@
       "type": "paralyze",
       "src": "RobloxScreenShot20261028_121047945.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "white-tiger-master",
@@ -2063,7 +2233,8 @@
       "hp": 22254,
       "src": "RobloxScreenShot20261028_121052799.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "wind-tunnel-monk",
@@ -2077,7 +2248,8 @@
       "type": "lifesteal",
       "src": "RobloxScreenShot20261028_121057710.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "zero-gravity-hero",
@@ -2091,7 +2263,8 @@
       "type": "stun",
       "src": "RobloxScreenShot20261028_121101841.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "zoltraak-apprentice",
@@ -2103,7 +2276,8 @@
       "hp": 28934,
       "src": "RobloxScreenShot20261028_121105481.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ackerman-blade",
@@ -2115,7 +2289,8 @@
       "hp": 70676,
       "src": "RobloxScreenShot20261028_121109155.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ant-shadow-general",
@@ -2127,7 +2302,8 @@
       "hp": 66020,
       "src": "RobloxScreenShot20261028_121113716.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "armor-queen",
@@ -2139,7 +2315,8 @@
       "hp": 78380,
       "src": "RobloxScreenShot20261028_121116618.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "atomic-swordsman",
@@ -2151,7 +2328,8 @@
       "hp": 76316,
       "src": "RobloxScreenShot20261028_121133953.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "bat-wing-espada",
@@ -2163,7 +2341,8 @@
       "hp": 53154,
       "src": "RobloxScreenShot20261028_121138656.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "beast-titan-ape",
@@ -2175,7 +2354,8 @@
       "hp": 108098,
       "src": "RobloxScreenShot20261028_121143422.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "black-dragon-swordsman",
@@ -2187,7 +2367,8 @@
       "hp": 75814,
       "src": "RobloxScreenShot20261028_121148213.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "black-leg-cook",
@@ -2199,7 +2380,8 @@
       "hp": 47012,
       "src": "RobloxScreenShot20261028_121208143.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "blade-dancer",
@@ -2211,7 +2393,8 @@
       "hp": 70098,
       "src": "RobloxScreenShot20261028_121214213.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "blood-fiend",
@@ -2223,7 +2406,8 @@
       "hp": 72198,
       "src": "RobloxScreenShot20261028_121219001.png",
       "round": 6,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "blood-red-knight",
@@ -2235,7 +2419,8 @@
       "hp": 83446,
       "src": "RobloxScreenShot20261028_121222566.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "blue-flame-son",
@@ -2247,7 +2432,8 @@
       "hp": 92576,
       "src": "RobloxScreenShot20261028_121233451.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "blue-healer-cat-knight",
@@ -2261,7 +2447,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_121238697.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "bomb-girl",
@@ -2273,7 +2460,8 @@
       "hp": 62088,
       "src": "RobloxScreenShot20261028_121243372.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "calm-water-pillar",
@@ -2285,7 +2473,8 @@
       "hp": 147310,
       "src": "RobloxScreenShot20261028_121247887.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "candy-beam-majin",
@@ -2297,7 +2486,8 @@
       "hp": 44390,
       "src": "RobloxScreenShot20261028_121252500.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "cat-guard-royal",
@@ -2309,7 +2499,8 @@
       "hp": 57508,
       "src": "RobloxScreenShot20261028_121257054.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "chain-scarlet-eye",
@@ -2321,7 +2512,8 @@
       "hp": 68546,
       "src": "RobloxScreenShot20261028_121301235.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "charge-commander",
@@ -2335,7 +2527,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_121304782.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "cherry-blossom-medic",
@@ -2349,7 +2542,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_121308070.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "claw-boss-psychic",
@@ -2361,7 +2555,8 @@
       "hp": 90480,
       "src": "RobloxScreenShot20261028_121310539.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "colossal-strategist",
@@ -2373,7 +2568,8 @@
       "hp": 64368,
       "src": "RobloxScreenShot20261028_121320568.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "copy-eye-sensei",
@@ -2385,7 +2581,8 @@
       "hp": 45504,
       "src": "RobloxScreenShot20261028_121324837.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crazy-diamond-pompadour",
@@ -2397,7 +2594,8 @@
       "hp": 82852,
       "src": "RobloxScreenShot20261028_121330322.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crimson-spear-hound",
@@ -2409,7 +2607,8 @@
       "hp": 95004,
       "src": "RobloxScreenShot20261028_121334055.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "dark-captain",
@@ -2421,7 +2620,8 @@
       "hp": 118600,
       "src": "RobloxScreenShot20261028_121338322.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "disguise-assassin",
@@ -2433,7 +2633,8 @@
       "hp": 88558,
       "src": "RobloxScreenShot20261028_121342640.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "dragon-butler",
@@ -2445,7 +2646,8 @@
       "hp": 68608,
       "src": "RobloxScreenShot20261028_121348279.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "dragon-grandpa-assassin",
@@ -2457,7 +2659,8 @@
       "hp": 114302,
       "src": "RobloxScreenShot20261028_121353827.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "dual-blade-gamer",
@@ -2469,7 +2672,8 @@
       "hp": 94654,
       "src": "RobloxScreenShot20261028_121356926.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "explosion-rival",
@@ -2481,7 +2685,8 @@
       "hp": 77554,
       "src": "RobloxScreenShot20261028_121400834.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "fairy-king-spear",
@@ -2493,7 +2698,8 @@
       "hp": 93764,
       "src": "RobloxScreenShot20261028_121406227.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "finest-knight",
@@ -2505,7 +2711,8 @@
       "hp": 76672,
       "src": "RobloxScreenShot20261028_121430373.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "fire-fist-brother",
@@ -2517,7 +2724,8 @@
       "hp": 52792,
       "src": "RobloxScreenShot20261028_121433951.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flame-colonel",
@@ -2529,7 +2737,8 @@
       "hp": 90544,
       "src": "RobloxScreenShot20261028_121438856.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flame-hero",
@@ -2541,7 +2750,8 @@
       "hp": 56812,
       "src": "RobloxScreenShot20261028_121443553.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flash-goddess",
@@ -2553,7 +2763,8 @@
       "hp": 51986,
       "src": "RobloxScreenShot20261028_121447355.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flashy-sound-pillar",
@@ -2565,7 +2776,8 @@
       "hp": 53388,
       "src": "RobloxScreenShot20261028_121450375.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flower-hand-scholar",
@@ -2580,7 +2792,8 @@
       "type": "splash",
       "src": "RobloxScreenShot20261028_121456540.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "future-sight-dog",
@@ -2594,7 +2807,8 @@
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_121506586.png",
       "round": 7,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "godspeed-assassin",
@@ -2606,7 +2820,8 @@
       "hp": 55566,
       "src": "RobloxScreenShot20261028_121522861.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "half-demon-fang",
@@ -2618,7 +2833,8 @@
       "hp": 126712,
       "src": "RobloxScreenShot20261028_121531247.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "half-hot-half-cold",
@@ -2630,7 +2846,8 @@
       "hp": 147310,
       "src": "RobloxScreenShot20261028_121536104.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hamon-trickster",
@@ -2642,7 +2859,8 @@
       "hp": 82758,
       "src": "RobloxScreenShot20261028_121541640.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hollow-ninja",
@@ -2654,7 +2872,8 @@
       "hp": 85658,
       "src": "RobloxScreenShot20261028_121556397.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "incursio-armor",
@@ -2666,7 +2885,8 @@
       "hp": 73332,
       "src": "RobloxScreenShot20261028_121601534.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "invincible-gang-boss",
@@ -2678,7 +2898,8 @@
       "hp": 96778,
       "src": "RobloxScreenShot20261028_121620632.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "judge-domain-lawyer",
@@ -2690,7 +2911,8 @@
       "hp": 75744,
       "src": "RobloxScreenShot20261028_121625791.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "karma-boy",
@@ -2702,7 +2924,8 @@
       "hp": 55018,
       "src": "RobloxScreenShot20261028_121628971.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "lich-shopkeeper",
@@ -2714,7 +2937,8 @@
       "hp": 95710,
       "src": "RobloxScreenShot20261028_121632379.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "lightning-dragon-heir",
@@ -2726,7 +2950,8 @@
       "hp": 125224,
       "src": "RobloxScreenShot20261028_121636247.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "lion-flame-queen",
@@ -2738,7 +2963,8 @@
       "hp": 76660,
       "src": "RobloxScreenShot20261028_121640496.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "lone-wolf-espada",
@@ -2750,7 +2976,8 @@
       "hp": 88838,
       "src": "RobloxScreenShot20261028_121646622.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "mist-prodigy",
@@ -2762,7 +2989,8 @@
       "hp": 57828,
       "src": "RobloxScreenShot20261028_121651057.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "mochi-commander",
@@ -2774,7 +3002,8 @@
       "hp": 45386,
       "src": "RobloxScreenShot20261028_121655848.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "notebook-shinigami",
@@ -2786,7 +3015,8 @@
       "hp": 100054,
       "src": "RobloxScreenShot20261028_121700240.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "number-one-captain",
@@ -2798,7 +3028,8 @@
       "hp": 98740,
       "src": "RobloxScreenShot20261028_121705369.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ogre-sword-master",
@@ -2810,7 +3041,8 @@
       "hp": 81194,
       "src": "RobloxScreenShot20261028_121709936.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "oni-princess",
@@ -2822,7 +3054,8 @@
       "hp": 54314,
       "src": "RobloxScreenShot20261028_121714081.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "patchwork-curse",
@@ -2834,7 +3067,8 @@
       "hp": 48638,
       "src": "RobloxScreenShot20261028_121719588.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "perfect-bio-android",
@@ -2846,7 +3080,8 @@
       "hp": 43238,
       "src": "RobloxScreenShot20261028_121737084.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "phase-through-hero",
@@ -2858,7 +3093,8 @@
       "hp": 58088,
       "src": "RobloxScreenShot20261028_121742182.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "rage-royal-guard",
@@ -2870,7 +3106,8 @@
       "hp": 57064,
       "src": "RobloxScreenShot20261028_121747251.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "rapping-eight-tails",
@@ -2882,7 +3119,8 @@
       "hp": 54004,
       "src": "RobloxScreenShot20261028_121753071.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "gentle-palm-heiress",
@@ -2896,7 +3134,8 @@
       "type": "weaken",
       "src": "RobloxScreenShot20261028_121512500.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "gentle-priest",
@@ -2910,7 +3149,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_121516432.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "golden-shield-healer",
@@ -2924,7 +3164,8 @@
       "type": "shield",
       "src": "RobloxScreenShot20261028_121527860.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hellsing-commander",
@@ -2938,7 +3179,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_121547309.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hero-of-legend",
@@ -2952,7 +3194,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_121552050.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "reindeer-doctor",
@@ -2966,7 +3209,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_121758251.png",
       "round": 8,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "retired-hitman",
@@ -2978,7 +3222,8 @@
       "hp": 87580,
       "src": "RobloxScreenShot20261028_121804125.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "rose-whip-fox",
@@ -2990,7 +3235,8 @@
       "hp": 147310,
       "src": "RobloxScreenShot20261028_121809287.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sakura-blade-noble",
@@ -3002,7 +3248,8 @@
       "hp": 70950,
       "src": "RobloxScreenShot20261028_121819253.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "second-hokage",
@@ -3014,7 +3261,8 @@
       "hp": 58748,
       "src": "RobloxScreenShot20261028_121824391.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "shadow-garden-beta",
@@ -3026,7 +3274,8 @@
       "hp": 88936,
       "src": "RobloxScreenShot20261028_121834255.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sickle-upper-moon",
@@ -3038,7 +3287,8 @@
       "hp": 53210,
       "src": "RobloxScreenShot20261028_121842938.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "silver-fang",
@@ -3050,7 +3300,8 @@
       "hp": 69568,
       "src": "RobloxScreenShot20261028_121845838.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "snake-sannin",
@@ -3062,7 +3313,8 @@
       "hp": 46526,
       "src": "RobloxScreenShot20261028_121848929.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "spiral-bro",
@@ -3074,7 +3326,8 @@
       "hp": 88980,
       "src": "RobloxScreenShot20261028_121853448.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "steel-arm-alchemist",
@@ -3086,7 +3339,8 @@
       "hp": 109866,
       "src": "RobloxScreenShot20261028_121900057.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "strongest-flame-captain",
@@ -3098,7 +3352,8 @@
       "hp": 84712,
       "src": "RobloxScreenShot20261028_121924419.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "superd-spear-warrior",
@@ -3110,7 +3365,8 @@
       "hp": 73656,
       "src": "RobloxScreenShot20261028_121930007.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "surgeon-of-death",
@@ -3122,7 +3378,8 @@
       "hp": 58546,
       "src": "RobloxScreenShot20261028_121934648.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sword-king-girl",
@@ -3134,7 +3391,8 @@
       "hp": 77006,
       "src": "RobloxScreenShot20261028_121938460.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "symmetry-reaper",
@@ -3146,7 +3404,8 @@
       "hp": 97858,
       "src": "RobloxScreenShot20261028_121941231.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "tanuki-sword-girl",
@@ -3158,7 +3417,8 @@
       "hp": 70930,
       "src": "RobloxScreenShot20261028_121944659.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ten-shadows-heir",
@@ -3170,7 +3430,8 @@
       "hp": 53754,
       "src": "RobloxScreenShot20261028_121951102.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "toad-sage",
@@ -3182,7 +3443,8 @@
       "hp": 52914,
       "src": "RobloxScreenShot20261028_122000037.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "true-warrior",
@@ -3194,7 +3456,8 @@
       "hp": 93610,
       "src": "RobloxScreenShot20261028_122007940.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "turbo-granny",
@@ -3206,7 +3469,8 @@
       "hp": 89546,
       "src": "RobloxScreenShot20261028_122035242.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "undying-fox-sin",
@@ -3218,7 +3482,8 @@
       "hp": 81034,
       "src": "RobloxScreenShot20261028_122038260.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "veteran-devil-hunter",
@@ -3230,7 +3495,8 @@
       "hp": 63858,
       "src": "RobloxScreenShot20261028_122047245.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "volcano-head-curse",
@@ -3242,7 +3508,8 @@
       "hp": 48102,
       "src": "RobloxScreenShot20261028_122052225.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "white-knight-pilot",
@@ -3254,7 +3521,8 @@
       "hp": 127646,
       "src": "RobloxScreenShot20261028_122058575.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sacred-arrow-priestess",
@@ -3268,7 +3536,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_121814989.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "shadow-strategist",
@@ -3282,7 +3551,8 @@
       "type": "bind",
       "src": "RobloxScreenShot20261028_121838769.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "teacher-alchemist",
@@ -3296,7 +3566,8 @@
       "type": "counter",
       "src": "RobloxScreenShot20261028_121948599.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "titan-scientist",
@@ -3310,7 +3581,8 @@
       "type": "mark",
       "src": "RobloxScreenShot20261028_121954656.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "useless-goddess",
@@ -3324,7 +3596,8 @@
       "type": "revive",
       "src": "RobloxScreenShot20261028_122043546.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "water-king-teacher",
@@ -3338,7 +3611,8 @@
       "type": "shield",
       "src": "RobloxScreenShot20261028_122055447.png",
       "round": 9,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "wind-scar-pillar",
@@ -3350,7 +3624,8 @@
       "hp": 94918,
       "src": "RobloxScreenShot20261028_122102461.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "wing-hero",
@@ -3362,7 +3637,8 @@
       "hp": 64610,
       "src": "RobloxScreenShot20261028_122105550.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "anti-magic-devil-knight",
@@ -3374,7 +3650,8 @@
       "hp": 437874,
       "src": "RobloxScreenShot20261028_122113288.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "bell-hair-berserker",
@@ -3386,7 +3663,8 @@
       "hp": 177186,
       "src": "RobloxScreenShot20261028_122118462.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "chainsaw-hero",
@@ -3398,7 +3676,8 @@
       "hp": 177330,
       "src": "RobloxScreenShot20261028_122146408.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crash-magic-ace",
@@ -3410,7 +3689,8 @@
       "hp": 519236,
       "src": "RobloxScreenShot20261028_122158976.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crow-genjutsu-brother",
@@ -3422,7 +3702,8 @@
       "hp": 144596,
       "src": "RobloxScreenShot20261028_122205259.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "curse-manipulator",
@@ -3434,7 +3715,8 @@
       "hp": 216666,
       "src": "RobloxScreenShot20261028_122209039.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "demon-lord-brother",
@@ -3446,7 +3728,8 @@
       "hp": 219648,
       "src": "RobloxScreenShot20261028_122217010.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "dragon-slayer-swordsman",
@@ -3458,7 +3741,8 @@
       "hp": 343594,
       "src": "RobloxScreenShot20261028_122224008.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "eight-gates-beast",
@@ -3470,7 +3754,8 @@
       "hp": 166540,
       "src": "RobloxScreenShot20261028_122227662.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "fire-dragon-slayer",
@@ -3482,7 +3767,8 @@
       "hp": 261836,
       "src": "RobloxScreenShot20261028_122232226.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flame-pillar",
@@ -3494,7 +3780,8 @@
       "hp": 165318,
       "src": "RobloxScreenShot20261028_122250680.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "flower-wind-captain",
@@ -3506,7 +3793,8 @@
       "hp": 231084,
       "src": "RobloxScreenShot20261028_122257254.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "frost-insect-general",
@@ -3518,7 +3806,8 @@
       "hp": 222622,
       "src": "RobloxScreenShot20261028_122303097.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "giant-bodyguard",
@@ -3530,7 +3819,8 @@
       "hp": 255232,
       "src": "RobloxScreenShot20261028_122337385.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "giant-viking",
@@ -3542,7 +3832,8 @@
       "hp": 409006,
       "src": "RobloxScreenShot20261028_122342220.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "grace-archangel",
@@ -3554,7 +3845,8 @@
       "hp": 252426,
       "src": "RobloxScreenShot20261028_122347467.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "gravity-corruption",
@@ -3566,7 +3858,8 @@
       "hp": 491854,
       "src": "RobloxScreenShot20261028_122352385.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hawk-eye-swordsman",
@@ -3578,7 +3871,8 @@
       "hp": 185196,
       "src": "RobloxScreenShot20261028_122408245.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "heavenly-restricted-spear",
@@ -3590,7 +3884,8 @@
       "hp": 189466,
       "src": "RobloxScreenShot20261028_122411068.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hell-butler",
@@ -3602,7 +3897,8 @@
       "hp": 366780,
       "src": "RobloxScreenShot20261028_122415297.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hundred-percent-brother",
@@ -3614,7 +3910,8 @@
       "hp": 366128,
       "src": "RobloxScreenShot20261028_122418653.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ice-admiral",
@@ -3626,7 +3923,8 @@
       "hp": 445608,
       "src": "RobloxScreenShot20261028_122427797.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ancient-archmage",
@@ -3640,7 +3938,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_122109913.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "dark-king-coach",
@@ -3654,7 +3953,8 @@
       "type": "counter",
       "src": "RobloxScreenShot20261028_122214412.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "geass-strategist",
@@ -3668,7 +3968,8 @@
       "type": "confuse",
       "src": "RobloxScreenShot20261028_122331499.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "great-spirit-cat",
@@ -3682,7 +3983,8 @@
       "type": "freeze",
       "src": "RobloxScreenShot20261028_122356079.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "guild-master-giant",
@@ -3696,7 +3998,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_122359628.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "hat-and-clogs-shopkeeper",
@@ -3710,7 +4013,8 @@
       "type": "dodge",
       "src": "RobloxScreenShot20261028_122404275.png",
       "round": 10,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "last-avenger",
@@ -3722,7 +4026,8 @@
       "hp": 157740,
       "src": "RobloxScreenShot20261028_122540829.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "light-speed-admiral",
@@ -3734,7 +4039,8 @@
       "hp": 172158,
       "src": "RobloxScreenShot20261028_122546239.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "lightning-sorcerer",
@@ -3746,7 +4052,8 @@
       "hp": 445608,
       "src": "RobloxScreenShot20261028_122552852.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "little-devil-firefoot",
@@ -3758,7 +4065,8 @@
       "hp": 276256,
       "src": "RobloxScreenShot20261028_122558497.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "magma-admiral",
@@ -3770,7 +4078,8 @@
       "hp": 155468,
       "src": "RobloxScreenShot20261028_122603126.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "murasame-assassin",
@@ -3782,7 +4091,8 @@
       "hp": 213468,
       "src": "RobloxScreenShot20261028_122609859.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "muscle-magic-boy",
@@ -3794,7 +4104,8 @@
       "hp": 329476,
       "src": "RobloxScreenShot20261028_122646901.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "number-one-hero",
@@ -3806,7 +4117,8 @@
       "hp": 180094,
       "src": "RobloxScreenShot20261028_122656090.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "one-for-all-heir",
@@ -3818,7 +4130,8 @@
       "hp": 220596,
       "src": "RobloxScreenShot20261028_122706429.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "one-eyed-owl",
@@ -3830,7 +4143,8 @@
       "hp": 457410,
       "src": "RobloxScreenShot20261028_122850024.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "order-hunter-x",
@@ -3842,7 +4156,8 @@
       "hp": 333128,
       "src": "RobloxScreenShot20261028_122903912.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "phantom-joker-magician",
@@ -3854,7 +4169,8 @@
       "hp": 232814,
       "src": "RobloxScreenShot20261028_122908592.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "phoenix-commander",
@@ -3866,7 +4182,8 @@
       "hp": 162268,
       "src": "RobloxScreenShot20261028_122913598.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "pride-trooper-titan",
@@ -3878,7 +4195,8 @@
       "hp": 151738,
       "src": "RobloxScreenShot20261028_122916963.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "psychic-hundred-esper",
@@ -3890,7 +4208,8 @@
       "hp": 341090,
       "src": "RobloxScreenShot20261028_122922367.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "purple-ogre-secretary",
@@ -3902,7 +4221,8 @@
       "hp": 190442,
       "src": "RobloxScreenShot20261028_122926282.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "quagmire-mage",
@@ -3914,7 +4234,8 @@
       "hp": 227838,
       "src": "RobloxScreenShot20261028_122930080.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "regeneration-priest",
@@ -3926,7 +4247,8 @@
       "hp": 229528,
       "src": "RobloxScreenShot20261028_122942833.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "rose-saiyan-impostor",
@@ -3938,7 +4260,8 @@
       "hp": 171298,
       "src": "RobloxScreenShot20261028_122946650.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "shadow-garden-alpha",
@@ -3950,7 +4273,8 @@
       "hp": 220886,
       "src": "RobloxScreenShot20261028_122955704.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "shapeshift-kaiju",
@@ -3962,7 +4286,8 @@
       "hp": 275974,
       "src": "RobloxScreenShot20261028_122958842.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sixfold-prophet",
@@ -3974,7 +4299,8 @@
       "hp": 191692,
       "src": "RobloxScreenShot20261028_123004240.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "immortal-apostle",
@@ -3986,7 +4312,8 @@
       "hp": 308206,
       "src": "RobloxScreenShot20261028_122432137.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "jajanken-kid",
@@ -3998,7 +4325,8 @@
       "hp": 218126,
       "src": "RobloxScreenShot20261028_122434645.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "jewel-eye-demon",
@@ -4010,7 +4338,8 @@
       "hp": 211630,
       "src": "RobloxScreenShot20261028_122438921.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "kaiju-number-eight",
@@ -4022,7 +4351,8 @@
       "hp": 383610,
       "src": "RobloxScreenShot20261028_122442178.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "killer-queen-salaryman",
@@ -4034,7 +4364,8 @@
       "hp": 259732,
       "src": "RobloxScreenShot20261028_122446565.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "king-of-conquerors",
@@ -4046,7 +4377,8 @@
       "hp": 221986,
       "src": "RobloxScreenShot20261028_122518386.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "serpent-sin-mage",
@@ -4060,7 +4392,8 @@
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_122951963.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "slug-princess-hokage",
@@ -4074,7 +4407,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_123017035.png",
       "round": 11,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "space-pirate-overlord",
@@ -4086,7 +4420,8 @@
       "hp": 187744,
       "src": "RobloxScreenShot20261028_123021003.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "special-grade-student",
@@ -4098,7 +4433,8 @@
       "hp": 184136,
       "src": "RobloxScreenShot20261028_123024631.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "spider-half-demon",
@@ -4110,7 +4446,8 @@
       "hp": 222804,
       "src": "RobloxScreenShot20261028_123029091.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "spider-head",
@@ -4122,7 +4459,8 @@
       "hp": 165120,
       "src": "RobloxScreenShot20261028_123032337.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "stampede-gunman",
@@ -4134,7 +4472,8 @@
       "hp": 521482,
       "src": "RobloxScreenShot20261028_123042052.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "star-rage-sorcerer",
@@ -4146,7 +4485,8 @@
       "hp": 445608,
       "src": "RobloxScreenShot20261028_123047734.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "stone-prayer-pillar",
@@ -4158,7 +4498,8 @@
       "hp": 175276,
       "src": "RobloxScreenShot20261028_123050832.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sword-demon",
@@ -4170,7 +4511,8 @@
       "hp": 243404,
       "src": "RobloxScreenShot20261028_123101325.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "tensen-lord",
@@ -4182,7 +4524,8 @@
       "hp": 445608,
       "src": "RobloxScreenShot20261028_123107537.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "the-goliath",
@@ -4194,7 +4537,8 @@
       "hp": 211656,
       "src": "RobloxScreenShot20261028_123111625.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "thousand-year-witch",
@@ -4206,7 +4550,8 @@
       "hp": 260664,
       "src": "RobloxScreenShot20261028_123114724.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "three-sword-hunter",
@@ -4218,7 +4563,8 @@
       "hp": 255950,
       "src": "RobloxScreenShot20261028_123122951.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "time-skip-assassin",
@@ -4230,7 +4576,8 @@
       "hp": 149836,
       "src": "RobloxScreenShot20261028_123127501.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "tornado-esper",
@@ -4242,7 +4589,8 @@
       "hp": 212846,
       "src": "RobloxScreenShot20261028_123130583.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "ultimate-life-form",
@@ -4254,7 +4602,8 @@
       "hp": 248668,
       "src": "RobloxScreenShot20261028_123137386.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "undefeated-reaper",
@@ -4266,7 +4615,8 @@
       "hp": 281198,
       "src": "RobloxScreenShot20261028_123142715.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "unlimited-blade-archer",
@@ -4278,7 +4628,8 @@
       "hp": 239906,
       "src": "RobloxScreenShot20261028_123148454.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "war-devil-girl",
@@ -4290,7 +4641,8 @@
       "hp": 370548,
       "src": "RobloxScreenShot20261028_123151315.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "wind-spirit-rival",
@@ -4302,7 +4654,8 @@
       "hp": 379052,
       "src": "RobloxScreenShot20261028_123154705.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "wrath-fuhrer",
@@ -4314,7 +4667,8 @@
       "hp": 318478,
       "src": "RobloxScreenShot20261028_123158444.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "yellow-flash-hokage",
@@ -4326,7 +4680,8 @@
       "hp": 171138,
       "src": "RobloxScreenShot20261028_123202311.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "beast-mode-scholar",
@@ -4338,7 +4693,8 @@
       "hp": 545716,
       "src": "RobloxScreenShot20261028_123207337.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "bloody-valkyrie",
@@ -4350,7 +4706,8 @@
       "hp": 666982,
       "src": "RobloxScreenShot20261028_123211794.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "captain-commander-flame",
@@ -4362,7 +4719,8 @@
       "hp": 604434,
       "src": "RobloxScreenShot20261028_123214320.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "clown-court-mage",
@@ -4374,7 +4732,8 @@
       "hp": 917420,
       "src": "RobloxScreenShot20261028_123219896.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "crimson-ogre-general",
@@ -4386,7 +4745,8 @@
       "hp": 783496,
       "src": "RobloxScreenShot20261028_123228699.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sun-dance-slayer",
@@ -4398,7 +4758,8 @@
       "hp": 445608,
       "src": "RobloxScreenShot20261028_123054778.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "spirit-wave-master",
@@ -4412,7 +4773,8 @@
       "type": "echo",
       "src": "RobloxScreenShot20261028_123037173.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "sweet-tooth-detective",
@@ -4426,7 +4788,8 @@
       "type": "weaken",
       "src": "RobloxScreenShot20261028_123058467.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "chainsaw-pup-devil",
@@ -4440,7 +4803,8 @@
       "type": "revive",
       "src": "RobloxScreenShot20261028_123217241.png",
       "round": 12,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-28"
     },
     {
       "id": "darkness-emperor",
@@ -4452,7 +4816,8 @@
       "hp": 926714,
       "src": "RobloxScreenShot20261028_123307936.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "decay-villain",
@@ -4464,7 +4829,8 @@
       "hp": 572940,
       "src": "RobloxScreenShot20261028_123313512.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "demon-kings-executioner",
@@ -4476,7 +4842,8 @@
       "hp": 1013674,
       "src": "RobloxScreenShot20261028_123317820.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "divine-general",
@@ -4488,7 +4855,8 @@
       "hp": 468210,
       "src": "RobloxScreenShot20261028_123320918.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "excalibur-king",
@@ -4500,7 +4868,8 @@
       "hp": 1518646,
       "src": "RobloxScreenShot20261028_123324374.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "flower-healer-captain",
@@ -4515,7 +4884,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_123328022.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "great-mage-founder",
@@ -4527,7 +4897,8 @@
       "hp": 927364,
       "src": "RobloxScreenShot20261028_123330972.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "greed-archbishop",
@@ -4539,7 +4910,8 @@
       "hp": 824672,
       "src": "RobloxScreenShot20261028_123333764.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "guardian-overseer",
@@ -4551,7 +4923,8 @@
       "hp": 958068,
       "src": "RobloxScreenShot20261028_123351000.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "human-monster",
@@ -4563,7 +4936,8 @@
       "hp": 627584,
       "src": "RobloxScreenShot20261028_123353833.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "hundred-hand-chairman",
@@ -4575,7 +4949,8 @@
       "hp": 681714,
       "src": "RobloxScreenShot20261028_123357362.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ice-empress-general",
@@ -4587,7 +4962,8 @@
       "hp": 1435332,
       "src": "RobloxScreenShot20261028_123402175.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ice-fan-upper-moon",
@@ -4599,7 +4975,8 @@
       "hp": 494872,
       "src": "RobloxScreenShot20261028_123405521.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "masked-moon-plotter",
@@ -4611,7 +4988,8 @@
       "hp": 1435332,
       "src": "RobloxScreenShot20261028_123424004.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "one-eyed-ghoul",
@@ -4623,7 +5001,8 @@
       "hp": 1466190,
       "src": "RobloxScreenShot20261028_123431031.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "red-hair-emperor",
@@ -4635,7 +5014,8 @@
       "hp": 489054,
       "src": "RobloxScreenShot20261028_123446231.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "rewind-girl",
@@ -4649,7 +5029,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_123448917.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "skull-knight",
@@ -4661,7 +5042,8 @@
       "hp": 1712280,
       "src": "RobloxScreenShot20261028_123452335.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sorcerer-killer",
@@ -4673,7 +5055,8 @@
       "hp": 455588,
       "src": "RobloxScreenShot20261028_123455916.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "spirit-gun-delinquent",
@@ -4685,7 +5068,8 @@
       "hp": 872588,
       "src": "RobloxScreenShot20261028_123459799.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "star-fist-delinquent",
@@ -4697,7 +5081,8 @@
       "hp": 1435332,
       "src": "RobloxScreenShot20261028_123506941.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "strongest-soldier",
@@ -4709,7 +5094,8 @@
       "hp": 551476,
       "src": "RobloxScreenShot20261028_123510531.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "time-stop-vampire",
@@ -4721,7 +5107,8 @@
       "hp": 956678,
       "src": "RobloxScreenShot20261028_123522607.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "time-wizard-king",
@@ -4733,7 +5120,8 @@
       "hp": 841054,
       "src": "RobloxScreenShot20261028_123538552.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "twelve-labors-giant",
@@ -4745,7 +5133,8 @@
       "hp": 717666,
       "src": "RobloxScreenShot20261028_123541742.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "upper-moon-fist",
@@ -4757,7 +5146,8 @@
       "hp": 462460,
       "src": "RobloxScreenShot20261028_123551352.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "wrath-shield-hero",
@@ -4769,7 +5159,8 @@
       "hp": 691860,
       "src": "RobloxScreenShot20261028_123556299.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "angel-attendant",
@@ -4783,7 +5174,8 @@
       "type": "dodge",
       "src": "RobloxScreenShot20261028_123600958.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "black-wizard-brother",
@@ -4795,7 +5187,8 @@
       "hp": 2519996,
       "src": "RobloxScreenShot20261028_123604950.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "control-devil",
@@ -4807,7 +5200,8 @@
       "hp": 2576934,
       "src": "RobloxScreenShot20261028_123609410.png",
       "round": 13,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "demon-god-of-flame",
@@ -4819,7 +5213,8 @@
       "hp": 3850004,
       "src": "RobloxScreenShot20261028_123614188.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "demon-progenitor",
@@ -4831,7 +5226,8 @@
       "hp": 2990686,
       "src": "RobloxScreenShot20261028_123621523.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "earthquake-emperor",
@@ -4843,7 +5239,8 @@
       "hp": 2693626,
       "src": "RobloxScreenShot20261028_123624724.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "first-master-fairy",
@@ -4857,7 +5254,8 @@
       "type": "splash",
       "src": "RobloxScreenShot20261028_123645068.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "fist-hero-vice-admiral",
@@ -4869,7 +5267,8 @@
       "hp": 2382628,
       "src": "RobloxScreenShot20261028_123650847.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "fusion-dance-warrior",
@@ -4881,7 +5280,8 @@
       "hp": 3005314,
       "src": "RobloxScreenShot20261028_123655301.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "galactic-tyrant",
@@ -4893,7 +5293,8 @@
       "hp": 1671616,
       "src": "RobloxScreenShot20261028_123700204.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "golden-gate-king",
@@ -4905,7 +5306,8 @@
       "hp": 4099230,
       "src": "RobloxScreenShot20261028_123703599.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "hero-number-one",
@@ -4917,7 +5319,8 @@
       "hp": 3289350,
       "src": "RobloxScreenShot20261028_123719322.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "homunculus-father",
@@ -4929,7 +5332,8 @@
       "hp": 5781630,
       "src": "RobloxScreenShot20261028_123726194.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "infinity-sorcerer",
@@ -4941,7 +5345,8 @@
       "hp": 3915430,
       "src": "RobloxScreenShot20261028_123731310.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "king-of-curses",
@@ -4953,7 +5358,8 @@
       "hp": 2890800,
       "src": "RobloxScreenShot20261028_123738626.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "legendary-berserker",
@@ -4965,7 +5371,8 @@
       "hp": 2074794,
       "src": "RobloxScreenShot20261028_123743437.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "made-in-heaven-priest",
@@ -4977,7 +5384,8 @@
       "hp": 3282532,
       "src": "RobloxScreenShot20261028_123746850.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "monk-of-names",
@@ -4989,7 +5397,8 @@
       "hp": 3162976,
       "src": "RobloxScreenShot20261028_123751422.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "moon-breath-swordsman",
@@ -5001,7 +5410,8 @@
       "hp": 5781602,
       "src": "RobloxScreenShot20261028_123756324.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "nine-tails-fox",
@@ -5015,7 +5425,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_123801859.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "otsutsuki-vessel",
@@ -5027,7 +5438,8 @@
       "hp": 2100012,
       "src": "RobloxScreenShot20261028_123807716.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "potara-fusion-warrior",
@@ -5039,7 +5451,8 @@
       "hp": 2234886,
       "src": "RobloxScreenShot20261028_123816364.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "pumpkin-sun-pride",
@@ -5051,7 +5464,8 @@
       "hp": 4148164,
       "src": "RobloxScreenShot20261028_123826118.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "six-paths-fox-sage",
@@ -5063,7 +5477,8 @@
       "hp": 2172838,
       "src": "RobloxScreenShot20261028_123831520.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "soul-magic-father",
@@ -5075,7 +5490,8 @@
       "hp": 3616586,
       "src": "RobloxScreenShot20261028_123835838.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "soul-queen-emperor",
@@ -5087,7 +5503,8 @@
       "hp": 2000304,
       "src": "RobloxScreenShot20261028_123840684.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ultra-ego-prince",
@@ -5099,7 +5516,8 @@
       "hp": 1678284,
       "src": "RobloxScreenShot20261028_123845102.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "undead-overlord-king",
@@ -5111,7 +5529,8 @@
       "hp": 2121958,
       "src": "RobloxScreenShot20261028_123848795.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "white-hawk-godhand",
@@ -5123,7 +5542,8 @@
       "hp": 4741018,
       "src": "RobloxScreenShot20261028_123857181.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "wood-god-hokage",
@@ -5135,7 +5555,8 @@
       "hp": 3173980,
       "src": "RobloxScreenShot20261028_123900295.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "destroyer-dragonoid",
@@ -5147,7 +5568,8 @@
       "hp": 10279974,
       "src": "RobloxScreenShot20261028_123910199.png",
       "round": 14,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "destroyer-god",
@@ -5159,7 +5581,8 @@
       "hp": 15114100,
       "src": "RobloxScreenShot20261028_123914470.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "dragon-god",
@@ -5171,7 +5594,8 @@
       "hp": 9819326,
       "src": "RobloxScreenShot20261028_123923758.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "dragon-king-of-ruin",
@@ -5183,7 +5607,8 @@
       "hp": 14050232,
       "src": "RobloxScreenShot20261028_123927901.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "full-moon-demon-king",
@@ -5195,7 +5620,8 @@
       "hp": 11638880,
       "src": "RobloxScreenShot20261028_123930608.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "golden-wind-boss",
@@ -5207,7 +5633,8 @@
       "hp": 16435396,
       "src": "RobloxScreenShot20261028_123937641.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "hollow-mask-reaper",
@@ -5219,7 +5646,8 @@
       "hp": 6449918,
       "src": "RobloxScreenShot20261028_123941058.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "hypnosis-traitor",
@@ -5231,7 +5659,8 @@
       "hp": 6459246,
       "src": "RobloxScreenShot20261028_123946371.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "no-life-king",
@@ -5243,7 +5672,8 @@
       "hp": 12070814,
       "src": "RobloxScreenShot20261028_123958946.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "pirate-king",
@@ -5255,7 +5685,8 @@
       "hp": 6302110,
       "src": "RobloxScreenShot20261028_124001994.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "primordial-butler-demon",
@@ -5267,7 +5698,8 @@
       "hp": 7557050,
       "src": "RobloxScreenShot20261028_124006493.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "rabbit-goddess",
@@ -5279,7 +5711,8 @@
       "hp": 6246258,
       "src": "RobloxScreenShot20261028_124027285.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "spiral-drill-king",
@@ -5291,7 +5724,8 @@
       "hp": 13906770,
       "src": "RobloxScreenShot20261028_124034548.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "storm-dragon",
@@ -5303,7 +5737,8 @@
       "hp": 15114100,
       "src": "RobloxScreenShot20261028_124040540.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "wish-granter",
@@ -5318,7 +5753,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_124043205.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "witch-of-envy",
@@ -5330,7 +5766,8 @@
       "hp": 15114100,
       "src": "RobloxScreenShot20261028_124047112.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ant-king",
@@ -5342,7 +5779,8 @@
       "hp": 24244976,
       "src": "RobloxScreenShot20261028_124053830.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "divergent-fist-vessel",
@@ -5354,7 +5792,8 @@
       "hp": 17722428,
       "src": "RobloxScreenShot20261028_124101163.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "eternal-wish-dragon",
@@ -5369,7 +5808,8 @@
       "type": "revive",
       "src": "RobloxScreenShot20261028_124108761.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "founding-titan",
@@ -5381,7 +5821,8 @@
       "hp": 38824518,
       "src": "RobloxScreenShot20261028_124113154.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "octopus-teacher",
@@ -5393,7 +5834,8 @@
       "hp": 30182850,
       "src": "RobloxScreenShot20261028_124119445.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "one-punch-caped-hero",
@@ -5405,7 +5847,8 @@
       "hp": 20740640,
       "src": "RobloxScreenShot20261028_124124145.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "quirk-thief-overlord",
@@ -5417,7 +5860,8 @@
       "hp": 25076868,
       "src": "RobloxScreenShot20261028_124130075.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "slime-demon-lord",
@@ -5429,7 +5873,8 @@
       "hp": 28939562,
       "src": "RobloxScreenShot20261028_124204489.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "soul-king-father",
@@ -5441,7 +5886,8 @@
       "hp": 18772690,
       "src": "RobloxScreenShot20261028_124210930.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sun-breath-origin",
@@ -5453,7 +5899,8 @@
       "hp": 19298692,
       "src": "RobloxScreenShot20261028_124215930.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sun-god-captain",
@@ -5465,7 +5912,8 @@
       "hp": 18045504,
       "src": "RobloxScreenShot20261028_124220862.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sword-saint",
@@ -5477,7 +5925,8 @@
       "hp": 33971158,
       "src": "RobloxScreenShot20261028_124225592.png",
       "round": 15,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ultra-instinct-saiyan",
@@ -5489,7 +5938,8 @@
       "hp": 13408266,
       "src": "RobloxScreenShot20261028_124232450.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "hunter-chairman",
@@ -5501,7 +5951,8 @@
       "hp": 23084,
       "src": "RobloxScreenShot20261028_120314990.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ice-dragon-prodigy",
@@ -5513,7 +5964,8 @@
       "hp": 17158,
       "src": "RobloxScreenShot20261028_120318981.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ice-make-mage",
@@ -5525,7 +5977,8 @@
       "hp": 30418,
       "src": "RobloxScreenShot20261028_120323317.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "immortal-witch",
@@ -5539,7 +5992,8 @@
       "type": "revive",
       "src": "RobloxScreenShot20261028_120327533.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "knight-king",
@@ -5551,7 +6005,8 @@
       "hp": 29960,
       "src": "RobloxScreenShot20261028_120331878.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "leopard-agent",
@@ -5563,7 +6018,8 @@
       "hp": 33850,
       "src": "RobloxScreenShot20261028_120336151.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "library-spirit",
@@ -5577,7 +6033,8 @@
       "type": "leech",
       "src": "RobloxScreenShot20261028_120339903.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "lifespan-angel",
@@ -5589,7 +6046,8 @@
       "hp": 20074,
       "src": "RobloxScreenShot20261028_120344262.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "lion-beast-fist",
@@ -5601,7 +6059,8 @@
       "hp": 24002,
       "src": "RobloxScreenShot20261028_120347594.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "little-witch",
@@ -5615,7 +6074,8 @@
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_120351467.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "love-pillar",
@@ -5627,7 +6087,8 @@
       "hp": 27920,
       "src": "RobloxScreenShot20261028_120356844.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "mad-scientist-captain",
@@ -5639,7 +6100,8 @@
       "hp": 16862,
       "src": "RobloxScreenShot20261028_120401185.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "mind-reader-child",
@@ -5653,7 +6115,8 @@
       "type": "dodge",
       "src": "RobloxScreenShot20261028_120439496.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "morning-star-maid",
@@ -5665,7 +6128,8 @@
       "hp": 24516,
       "src": "RobloxScreenShot20261028_120444788.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "muscle-doll-teacher",
@@ -5677,7 +6141,8 @@
       "hp": 18080,
       "src": "RobloxScreenShot20261028_120449879.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "namekian-mentor",
@@ -5689,7 +6154,8 @@
       "hp": 14322,
       "src": "RobloxScreenShot20261028_120454496.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "needle-brother",
@@ -5701,7 +6167,8 @@
       "hp": 19366,
       "src": "RobloxScreenShot20261028_120459108.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "notebook-genius",
@@ -5715,7 +6182,8 @@
       "type": "mark",
       "src": "RobloxScreenShot20261028_120504413.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "obi-upper-moon",
@@ -5727,7 +6195,8 @@
       "hp": 24426,
       "src": "RobloxScreenShot20261028_120509399.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ogre-shrine-princess",
@@ -5741,7 +6210,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_120513151.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "one-horn-oni-maid",
@@ -5753,7 +6223,8 @@
       "hp": 35130,
       "src": "RobloxScreenShot20261028_120518084.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "orc-shaman-shadow",
@@ -5765,7 +6236,8 @@
       "hp": 20786,
       "src": "RobloxScreenShot20261028_120522219.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "panther-king-espada",
@@ -5777,7 +6249,8 @@
       "hp": 17308,
       "src": "RobloxScreenShot20261028_120602361.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "pink-pumpkin-sniper",
@@ -5789,7 +6262,8 @@
       "hp": 26308,
       "src": "RobloxScreenShot20261028_120606919.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "plague-doctor-villain",
@@ -5801,7 +6275,8 @@
       "hp": 18238,
       "src": "RobloxScreenShot20261028_120610164.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "poison-butterfly-pillar",
@@ -5813,7 +6288,8 @@
       "hp": 16002,
       "src": "RobloxScreenShot20261028_120614770.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "psychic-shrine-girl",
@@ -5825,7 +6301,8 @@
       "hp": 34994,
       "src": "RobloxScreenShot20261028_120619446.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ranger-android",
@@ -5837,7 +6314,8 @@
       "hp": 14780,
       "src": "RobloxScreenShot20261028_120623540.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ratio-salaryman",
@@ -5849,7 +6327,8 @@
       "hp": 17310,
       "src": "RobloxScreenShot20261028_120627445.png",
       "round": 16,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "reverse-cursed-doctor",
@@ -5863,7 +6342,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_120634112.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "ripper-ackerman",
@@ -5875,7 +6355,8 @@
       "hp": 20208,
       "src": "RobloxScreenShot20261028_120638459.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sage-snake-medic",
@@ -5887,7 +6368,8 @@
       "hp": 14666,
       "src": "RobloxScreenShot20261028_120642975.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sand-gourd-kazekage",
@@ -5899,7 +6381,8 @@
       "hp": 15830,
       "src": "RobloxScreenShot20261028_120647704.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "satan-soul-demon",
@@ -5911,7 +6394,8 @@
       "hp": 35504,
       "src": "RobloxScreenShot20261028_120652359.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "scissor-cut-mage",
@@ -5923,7 +6407,8 @@
       "hp": 26336,
       "src": "RobloxScreenShot20261028_120656085.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sea-dragon-princess",
@@ -5935,7 +6420,8 @@
       "hp": 31784,
       "src": "RobloxScreenShot20261028_120725092.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "serpent-pillar",
@@ -5947,7 +6433,8 @@
       "hp": 19656,
       "src": "RobloxScreenShot20261028_120734334.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "shadow-garden-hound",
@@ -5959,7 +6446,8 @@
       "hp": 25396,
       "src": "RobloxScreenShot20261028_120802320.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "shadow-ogre-spy",
@@ -5971,7 +6459,8 @@
       "hp": 21364,
       "src": "RobloxScreenShot20261028_120807824.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "shapeshift-actor",
@@ -5985,7 +6474,8 @@
       "type": "dmg",
       "src": "RobloxScreenShot20261028_120815107.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "shark-blade-rogue",
@@ -5997,7 +6487,8 @@
       "hp": 16266,
       "src": "RobloxScreenShot20261028_120819594.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "shield-tiger",
@@ -6009,7 +6500,8 @@
       "hp": 23216,
       "src": "RobloxScreenShot20261028_120824617.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "silver-assassin-father",
@@ -6021,7 +6513,8 @@
       "hp": 32936,
       "src": "RobloxScreenShot20261028_120830480.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sky-dragon-healer",
@@ -6035,7 +6528,8 @@
       "type": "heal",
       "src": "RobloxScreenShot20261028_120834339.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "sloth-archbishop",
@@ -6047,7 +6541,8 @@
       "hp": 25186,
       "src": "RobloxScreenShot20261028_120838863.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "smoke-card-joker",
@@ -6059,7 +6554,8 @@
       "hp": 27000,
       "src": "RobloxScreenShot20261028_120843161.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "snake-princess-empress",
@@ -6071,7 +6567,8 @@
       "hp": 16574,
       "src": "RobloxScreenShot20261028_120848558.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "snake-smile-captain",
@@ -6083,7 +6580,8 @@
       "hp": 17010,
       "src": "RobloxScreenShot20261028_120855683.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "snow-white-reaper",
@@ -6095,7 +6593,8 @@
       "hp": 19032,
       "src": "RobloxScreenShot20261028_120901763.png",
       "round": 17,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     },
     {
       "id": "shadow-monarch",
@@ -6107,7 +6606,8 @@
       "hp": 29913460,
       "src": "RobloxScreenShot20261028_124134048.png",
       "round": 18,
-      "oddsShort": true
+      "oddsShort": true,
+      "added": "2026-10-29"
     }
   ]
 }
