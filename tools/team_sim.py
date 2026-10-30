@@ -237,9 +237,6 @@ def search(out, meta=None):
     rng = random.Random(SEED)
     log = lambda m: print(m, flush=True)
     res = json.load(open(out)) if os.path.exists(out) else {}
-    if r1:
-        for k in KEYS:
-            if k.startswith("tower"): res[k] = r1[k]
 
     def starts(P, S, n_random):
         pc = [c for c in P if c in {x["id"] for x in ranked}][:5]
@@ -252,7 +249,16 @@ def search(out, meta=None):
     def run(key, mode, P, S, ok, n_random):
         if key in res: log(f"{key}: done {res[key]['score']:.2f}"); return
         best = None
-        for k, st in enumerate(([r1[key]["deck"]] if r1 else []) + starts(P, S, 0 if r1 else n_random)):
+        sts = starts(P, S, n_random)
+        if r1:   # round 2: this key's round-1 deck + the round-1 deck that scores best in this mode under this key's rules
+            own = r1[key]["deck"]
+            cand = [r1[k]["deck"] for k in KEYS if ok(r1[k]["deck"])]
+            sc = pool.map(_job, [(mode, c, dict(REF)) for c in cand])
+            top = cand[max(range(len(cand)), key=lambda i: sc[i])]
+            if mode == "tower" and top == own:   # no field in the tower: round 1's answer stands
+                res[key] = r1[key]; json.dump(res, open(out, "w"), indent=1); log(f"{key}: kept {r1[key]['score']:.2f}"); return
+            sts = [own] + ([top] if top != own else [])
+        for k, st in enumerate(sts):
             if not ok(st): continue
             t = time.time()
             deck, sc, ev = local_search(pool, mode, st, P, S, ok, rng, log=log)
