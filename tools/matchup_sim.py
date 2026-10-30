@@ -9,7 +9,7 @@ into effects, and plays every pair of the given cards against each other.
     python3 tools/matchup_sim.py --parse --top 70        # show what was understood per card
 
 Battle rules (same assumptions as W2 · §7 B ข้อ 2):
-- turns alternate, one card each side (1-on-1: bench / "card behind" / deck buffs / kill gains do nothing)
+- turns alternate, one card each side (1-on-1: bench / "card behind" / deck buffs / bench heals / shadow boosts / kill gains do nothing)
 - every pair is played twice (each side attacks first), N random runs each, then averaged
 - pair score: winner 50 + half of its HP% left, loser 50 − the same · Matchup = mean over opponents
 - "sets the whole enemy deck on fire" has no number in game → played with 0% / 5% / 10% of the
@@ -23,6 +23,7 @@ from multiprocessing import Pool
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIRE_VARIANTS = (0.0, 0.05, 0.10)
+THORN_TURNS = 3  # "Whoever hits it gets N Burn stacks" has no duration in game → same 3 turns as the other stacks
 MAX_TURNS = 400
 
 # card groups used by "+X% damage against <Group> cards" / "Takes 2x damage from <Group> cards"
@@ -48,7 +49,7 @@ F = r"([\d.]+)"
 def parse(desc):
     """ability text → dict of effects (unknown sentences are listed under 'unknown')."""
     a = {"unknown": []}
-    sents = re.split(r"(?<=\.)\s+", desc.strip())
+    sents = re.split(r"(?<!\bMr\.)(?<!\bDr\.)(?<=\.)\s+", desc.strip())  # "Mr. Satan" is one sentence
     for i, s0 in enumerate(sents):
         prefixed = not re.match(r"When \w+ falls", s0)  # "When Ace falls: +34%" is a deck link, not a flat buff
         if not one(a, s0) and not (prefixed and one(a, re.sub(r"^[A-Z][\w' .-]*: ", "", s0))):  # "Madara: Every enemy…"
@@ -70,7 +71,7 @@ def one(a, s):
         if g(F + r"% chance to dodge each hit"): a["dodge"] = float(m[1]) / 100
         elif g(r"Ignores shields, dodges and barriers"): a["ignore"] = True
         elif g(r"Its attacks can't be dodged"): a["undodgeable"] = True
-        elif g(r"Every hit also hits the whole enemy bench for " + F + "%"): a["bench"] = float(m[1]) / 100
+        elif g(r"Every hit also hits the whole enemy bench for " + F + r"%( of its normal hit \(no crits or bonuses\))?"): a["bench"] = float(m[1]) / 100
         elif g(r"Its first attack also hits the whole enemy bench for " + F + "%"): a["bench_first"] = float(m[1]) / 100
         elif g(r"Every enemy card starts with " + F + "% less damage"): a["enemy_less"] = float(m[1]) / 100
         elif g(r"Every (\d)\w\w attack also hits the card behind for " + F + "%"): a["behind"] = (int(m[1]), float(m[2]) / 100)
@@ -106,7 +107,7 @@ def one(a, s):
         elif g(F + r"% chance per hit to Paralyze the enemy for (\d+) turns \(50% chance to lose each turn\)"): a["paralyze"] = (float(m[1]) / 100, int(m[2]))
         elif g(F + r"% chance per hit to Freeze the enemy for (\d+) turns? \(frozen cards take 25% more damage\)"): a["freeze"] = (float(m[1]) / 100, int(m[2]))
         elif g(F + r"x damage against frozen enemies"): a["vs_frozen"] = float(m[1])
-        elif g(F + r"% chance per hit to Seal the enemy's ability for (\d+) turns"): a["seal_chance"] = (float(m[1]) / 100, int(m[2]))
+        elif g(F + r"% chance per hit to Seal the enemy's ability for (\d+) turns( \(bosses: \d+ turns?\))?"): a["seal_chance"] = (float(m[1]) / 100, int(m[2]))
         elif g(F + r"% chance to counter-attack when hit"): a["counter"] = float(m[1]) / 100
         elif g(r"Blocks the first (\d+) hits completely"): a["block"] = int(m[1])
         elif g(F + r"% chance to crit for " + F + "x damage"): a["crit"] = (float(m[1]) / 100, float(m[2]))
@@ -124,6 +125,10 @@ def one(a, s):
         elif g(r"Once, raises a defeated enemy as its shadow at " + F + "% strength"): a["raise"] = float(m[1]) / 100
         elif g(r"Each hit swaps the enemy's front card with a random one \(not bosses\)"): a["swap"] = True
         elif g(r"Every other card in your deck gets \+" + F + "% damage"): a["team_dmg"] = float(m[1]) / 100
+        elif g(r"While on the bench, heals the card in front " + F + "% of its max HP every turn"): a["bench_heal"] = float(m[1]) / 100
+        elif g(r"Shadows raised by your deck are " + F + "% stronger"): a["shadow_boost"] = float(m[1]) / 100
+        elif g(r"Whoever hits it gets (\d+) (Burn|Poison|Bleed) stacks? \(" + F + r"% max HP per turn, up to (\d+)\)"):
+            a["thorns"] = (m[2].lower(), int(m[1]), float(m[3]) / 100, int(m[4]), THORN_TURNS)
         elif g(r"When knocked out, it explodes for " + F + "% of its max HP on the enemy in front"): a["explode"] = float(m[1]) / 100
         else: return False
     return True
@@ -199,6 +204,10 @@ def one_hit(att, d, mult, rnd, counter=False):
     d.hp -= dmg
     dealt = dmg
     d.hits += 1; d.seen += 1
+    th = d.get("thorns")
+    if th and not (th[0] == "burn" and att.has("burn_immune")):
+        st_ = att.dots.get(th[0], (0, 0, 0))[0]
+        att.dots[th[0]] = (min(th[3], st_ + th[1]), th[2], th[4])
     # reflect
     if d.has("reflect"):
         att.hp -= dealt * d.a["reflect"]

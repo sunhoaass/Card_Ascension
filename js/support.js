@@ -83,7 +83,7 @@
      ========================================================== */
   function buildFilters() {
     ui.rarity.innerHTML = C.rarityChipsHTML();
-    ui.filters.innerHTML = state.meta.tiers.map((t) =>
+    ui.filters.innerHTML = state.meta.tiers.filter((t) => !t.cardsOnly).map((t) =>
       `<button type="button" class="chip glass fx-press" data-f="tier" data-v="${esc(t.name)}" aria-pressed="false" style="--sw:${tierVar(t.name)};--sw-line:${tierVar(t.name)}"><span class="chip__swatch"></span>${esc(t.name)}</button>`
     ).join("");
   }

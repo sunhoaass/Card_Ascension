@@ -21,15 +21,15 @@
       "desc": ""
     },
     "scores": {
-      "atk": 54.0,
-      "hp": 54.0,
-      "passive": 65,
-      "skill": 65,
-      "matchup": 44.9,
+      "atk": 52.1,
+      "hp": 52.1,
+      "passive": 66,
+      "skill": 66,
+      "matchup": 43.7,
       "team": 81,
-      "overall": 60.4
+      "overall": 60.0
     },
-    "tier": "B",
+    "tier": "A",
     "bestTrait": "prodigy",
     "role": "DPS",
     "tags": [
@@ -55,7 +55,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -67,11 +66,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -109,8 +107,9 @@
       ],
       "bestSupport": []
     },
-    "updated": "2026-10-29",
-    "obtain": "Rolls anywhere"
+    "updated": "2026-10-30",
+    "obtain": "Rolls anywhere",
+    "prevTier": "B"
   },
   {
     "id": "moon-eye-ghost",
@@ -134,15 +133,15 @@
       "desc": ""
     },
     "scores": {
-      "atk": 50.0,
-      "hp": 50.0,
+      "atk": 47.9,
+      "hp": 47.9,
       "passive": 65,
       "skill": 65,
-      "matchup": 44.7,
+      "matchup": 43.3,
       "team": 72,
-      "overall": 57.6
+      "overall": 56.7
     },
-    "tier": "B",
+    "tier": "A",
     "bestTrait": "prodigy",
     "role": "Hybrid",
     "tags": [
@@ -169,7 +168,6 @@
       "pirate-king",
       "beast-emperor",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -181,11 +179,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -222,8 +219,9 @@
       ],
       "bestSupport": []
     },
-    "updated": "2026-10-29",
-    "obtain": "Rolls anywhere"
+    "updated": "2026-10-30",
+    "obtain": "Rolls anywhere",
+    "prevTier": "B"
   },
   {
     "id": "atomic-shadow-lord",
@@ -247,13 +245,13 @@
       "desc": ""
     },
     "scores": {
-      "atk": 48.0,
-      "hp": 48.0,
+      "atk": 45.8,
+      "hp": 45.8,
       "passive": 64,
       "skill": 64,
-      "matchup": 40.4,
+      "matchup": 39.4,
       "team": 69,
-      "overall": 55.1
+      "overall": 54.3
     },
     "tier": "B",
     "bestTrait": "prodigy",
@@ -289,11 +287,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -326,8 +323,7 @@
       "hollow-mask-reaper",
       "pirate-king",
       "beast-emperor",
-      "rabbit-goddess",
-      "moon-breath-swordsman"
+      "rabbit-goddess"
     ],
     "team": {
       "position": "3",
@@ -337,8 +333,9 @@
       ],
       "bestSupport": []
     },
-    "updated": "2026-10-29",
-    "obtain": "Rolls anywhere"
+    "updated": "2026-10-30",
+    "obtain": "Rolls anywhere",
+    "prevTier": "B"
   },
   {
     "id": "beast-emperor",
@@ -362,13 +359,13 @@
       "desc": ""
     },
     "scores": {
-      "atk": 40.0,
-      "hp": 40.0,
+      "atk": 37.5,
+      "hp": 37.5,
       "passive": 67,
       "skill": 67,
-      "matchup": 42.1,
+      "matchup": 40.8,
       "team": 64,
-      "overall": 53.4
+      "overall": 52.5
     },
     "tier": "B",
     "bestTrait": "prodigy",
@@ -394,7 +391,6 @@
       "pirate-king",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -406,10 +402,9 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -449,8 +444,9 @@
       ],
       "bestSupport": []
     },
-    "updated": "2026-10-29",
-    "obtain": "Rolls anywhere"
+    "updated": "2026-10-30",
+    "obtain": "Rolls anywhere",
+    "prevTier": "B"
   },
   {
     "id": "bald-cadet",
@@ -1087,16 +1083,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 56,
+      "skill": 56,
+      "matchup": 0.0,
+      "team": 65,
+      "overall": 30.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 11.1
   },
   {
     "id": "swamp-demon",
@@ -4929,16 +4978,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 62,
+      "skill": 62,
+      "matchup": 0.0,
+      "team": 70,
+      "overall": 33.1
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 11.0
   },
   {
     "id": "colossal-strategist",
@@ -4963,16 +5065,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 55,
+      "skill": 55,
+      "matchup": 0.0,
+      "team": 66,
+      "overall": 30.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 10.0
   },
   {
     "id": "copy-eye-sensei",
@@ -5031,16 +5186,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 73,
+      "skill": 73,
+      "matchup": 0.0,
+      "team": 74,
+      "overall": 37.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 66.7
   },
   {
     "id": "crimson-spear-hound",
@@ -7411,16 +7619,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 68,
+      "skill": 68,
+      "matchup": 0.1,
+      "team": 84,
+      "overall": 37.7
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 10.5
   },
   {
     "id": "demon-lord-brother",
@@ -7955,16 +8216,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 64,
+      "skill": 64,
+      "matchup": 0.5,
+      "team": 66,
+      "overall": 33.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 14.9
   },
   {
     "id": "last-avenger",
@@ -8907,16 +9221,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 65,
+      "skill": 65,
+      "matchup": 0.1,
+      "team": 81,
+      "overall": 36.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 15.0
   },
   {
     "id": "space-pirate-overlord",
@@ -9281,16 +9648,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 75,
+      "skill": 75,
+      "matchup": 0.5,
+      "team": 74,
+      "overall": 37.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 17.6
   },
   {
     "id": "three-sword-hunter",
@@ -10709,16 +11129,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 6.0,
-      "hp": 6.0,
+      "atk": 4.2,
+      "hp": 4.2,
       "passive": 85,
       "skill": 85,
-      "matchup": 22.6,
+      "matchup": 21.9,
       "team": 79,
-      "overall": 48.5
+      "overall": 47.8
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "beast-emperor",
       "homunculus-father",
@@ -10731,10 +11151,9 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -10768,10 +11187,10 @@
       "hollow-mask-reaper",
       "pirate-king",
       "rabbit-goddess",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "soul-magic-father"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "control-devil",
@@ -10796,22 +11215,21 @@
       "desc": ""
     },
     "scores": {
-      "atk": 8.0,
-      "hp": 8.0,
+      "atk": 6.2,
+      "hp": 6.2,
       "passive": 70,
       "skill": 70,
-      "matchup": 20.8,
+      "matchup": 20.1,
       "team": 64,
-      "overall": 41.0
+      "overall": 40.4
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "D",
+    "updated": "2026-10-30",
     "beats": [
       "wood-god-hokage",
       "monk-of-names",
-      "earthquake-emperor",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "king-of-curses",
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -10847,7 +11265,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -10858,7 +11275,8 @@
       "made-in-heaven-priest",
       "demon-progenitor",
       "black-wizard-brother"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "demon-god-of-flame",
@@ -10883,107 +11301,22 @@
       "desc": ""
     },
     "scores": {
-      "atk": 24.0,
-      "hp": 24.0,
+      "atk": 22.9,
+      "hp": 22.9,
       "passive": 63,
       "skill": 63,
-      "matchup": 21.3,
+      "matchup": 20.6,
       "team": 68,
-      "overall": 43.8
+      "overall": 43.4
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "C",
+    "updated": "2026-10-30",
     "beats": [
       "pumpkin-sun-pride",
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
-      "control-devil",
-      "soul-queen-emperor"
-    ],
-    "losesTo": [
-      "founding-titan",
-      "sword-saint",
-      "octopus-teacher",
-      "shadow-monarch",
-      "slime-demon-lord",
-      "quirk-thief-overlord",
-      "ant-king",
-      "one-punch-caped-hero",
-      "sun-breath-origin",
-      "soul-king-father",
-      "sun-god-captain",
-      "divergent-fist-vessel",
-      "golden-wind-boss",
-      "destroyer-god",
-      "storm-dragon",
-      "witch-of-envy",
-      "dragon-king-of-ruin",
-      "spiral-drill-king",
-      "ultra-instinct-saiyan",
-      "no-life-king",
-      "full-moon-demon-king",
-      "destroyer-dragonoid",
-      "dragon-god",
-      "dragon-emperor-monarch",
-      "primordial-butler-demon",
-      "moon-eye-ghost",
-      "atomic-shadow-lord",
-      "hypnosis-traitor",
-      "hollow-mask-reaper",
-      "pirate-king",
-      "beast-emperor",
-      "rabbit-goddess",
-      "homunculus-father",
-      "moon-breath-swordsman",
-      "white-hawk-godhand",
-      "golden-gate-king",
-      "infinity-sorcerer",
-      "soul-magic-father",
-      "hero-number-one",
-      "made-in-heaven-priest",
-      "black-wizard-brother",
-      "undead-overlord-king"
-    ]
-  },
-  {
-    "id": "demon-progenitor",
-    "name": "Demon Progenitor",
-    "series": "",
-    "image": "images/cards/demon-progenitor.webp",
-    "base": {
-      "atk": 448603,
-      "hp": 2990686,
-      "def": 0,
-      "status": 0,
-      "odds": 669000000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Progenitor of All Demons",
-      "desc": "Muzan: Every hit also hits the whole enemy bench for 20%. Each hit adds 3 Poison stacks (0.8% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 4.7% of its max HP every turn. Comes back once with 16% HP. Takes 2x damage from Sun cards."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 12.0,
-      "hp": 12.0,
-      "passive": 73,
-      "skill": 73,
-      "matchup": 17.2,
-      "team": 76,
-      "overall": 44.4
-    },
-    "tier": "B",
-    "updated": "2026-10-29",
-    "beats": [
-      "wood-god-hokage",
-      "monk-of-names",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil"
     ],
     "losesTo": [
@@ -11020,53 +11353,56 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
-      "pumpkin-sun-pride",
       "golden-gate-king",
       "infinity-sorcerer",
-      "demon-god-of-flame",
       "soul-magic-father",
       "hero-number-one",
       "made-in-heaven-priest",
       "black-wizard-brother",
       "undead-overlord-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
-    "id": "earthquake-emperor",
-    "name": "Earthquake Emperor",
+    "id": "demon-progenitor",
+    "name": "Demon Progenitor",
     "series": "",
-    "image": "images/cards/earthquake-emperor.webp",
+    "image": "images/cards/demon-progenitor.webp",
     "base": {
-      "atk": 404044,
-      "hp": 2693626,
+      "atk": 448603,
+      "hp": 2990686,
       "def": 0,
       "status": 0,
-      "odds": 354400000
+      "odds": 669000000
     },
     "exact": {},
     "obtain": "Rolls anywhere",
     "passive": {
-      "name": "Gura Gura no Mi",
-      "desc": "Whitebeard cracks the air. Every hit also hits the whole enemy bench for 20%. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. Under 21% HP: +40% damage. When Ace falls: +34% damage."
+      "name": "Progenitor of All Demons",
+      "desc": "Muzan: Every hit also hits the whole enemy bench for 20%. Each hit adds 3 Poison stacks (0.8% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 4.7% of its max HP every turn. Comes back once with 16% HP. Takes 2x damage from Sun cards."
     },
     "skill": {
       "name": "",
       "desc": ""
     },
     "scores": {
-      "atk": 10.0,
-      "hp": 10.0,
-      "passive": 68,
-      "skill": 68,
-      "matchup": 11.4,
-      "team": 79,
-      "overall": 41.5
+      "atk": 10.4,
+      "hp": 10.4,
+      "passive": 73,
+      "skill": 73,
+      "matchup": 16.6,
+      "team": 76,
+      "overall": 43.9
     },
-    "tier": "B",
-    "updated": "2026-10-29",
-    "beats": [],
+    "tier": "C",
+    "updated": "2026-10-30",
+    "beats": [
+      "wood-god-hokage",
+      "monk-of-names",
+      "king-of-curses",
+      "control-devil"
+    ],
     "losesTo": [
       "founding-titan",
       "sword-saint",
@@ -11101,7 +11437,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -11110,14 +11445,45 @@
       "soul-magic-father",
       "hero-number-one",
       "made-in-heaven-priest",
-      "wood-god-hokage",
-      "monk-of-names",
-      "demon-progenitor",
-      "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
-    ]
+      "undead-overlord-king"
+    ],
+    "prevTier": "B"
+  },
+  {
+    "id": "earthquake-emperor",
+    "name": "Earthquake Emperor",
+    "series": "",
+    "image": "images/cards/earthquake-emperor.webp",
+    "base": {
+      "atk": 404044,
+      "hp": 2693626,
+      "def": 0,
+      "status": 0,
+      "odds": 354400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Gura Gura no Mi",
+      "desc": "Whitebeard cracks the air. Every hit also hits the whole enemy bench for 20%. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. Under 21% HP: +40% damage. When Ace falls: +34% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-30",
+    "prevTier": "B"
   },
   {
     "id": "fist-hero-vice-admiral",
@@ -11210,16 +11576,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 66,
+      "skill": 66,
+      "matchup": 3.7,
+      "team": 77,
+      "overall": 36.6
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 10.8
   },
   {
     "id": "golden-gate-king",
@@ -11244,16 +11663,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 28.0,
-      "hp": 28.0,
+      "atk": 27.1,
+      "hp": 27.1,
       "passive": 72,
       "skill": 72,
-      "matchup": 25.6,
+      "matchup": 24.8,
       "team": 75,
-      "overall": 50.0
+      "overall": 49.6
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "pumpkin-sun-pride",
       "infinity-sorcerer",
@@ -11264,10 +11683,9 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -11303,10 +11721,10 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "black-wizard-brother"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "hero-number-one",
@@ -11331,25 +11749,24 @@
       "desc": ""
     },
     "scores": {
-      "atk": 20.0,
-      "hp": 20.0,
-      "passive": 66,
-      "skill": 66,
-      "matchup": 20.0,
+      "atk": 18.8,
+      "hp": 18.8,
+      "passive": 67,
+      "skill": 67,
+      "matchup": 19.1,
       "team": 64,
-      "overall": 42.6
+      "overall": 42.4
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "D",
+    "updated": "2026-10-30",
     "beats": [
       "pumpkin-sun-pride",
       "demon-god-of-flame",
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
-      "control-devil",
-      "soul-queen-emperor"
+      "king-of-curses",
+      "control-devil"
     ],
     "losesTo": [
       "founding-titan",
@@ -11385,7 +11802,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "golden-gate-king",
       "infinity-sorcerer",
@@ -11393,7 +11809,8 @@
       "made-in-heaven-priest",
       "black-wizard-brother",
       "undead-overlord-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "homunculus-father",
@@ -11418,16 +11835,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 36.0,
-      "hp": 36.0,
-      "passive": 71,
-      "skill": 71,
-      "matchup": 35.1,
+      "atk": 33.3,
+      "hp": 33.3,
+      "passive": 72,
+      "skill": 72,
+      "matchup": 34.0,
       "team": 83,
-      "overall": 55.7
+      "overall": 55.0
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "white-hawk-godhand",
       "pumpkin-sun-pride",
@@ -11440,10 +11857,9 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -11478,9 +11894,9 @@
       "pirate-king",
       "beast-emperor",
       "rabbit-goddess",
-      "moon-breath-swordsman",
       "black-wizard-brother"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "infinity-sorcerer",
@@ -11505,16 +11921,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 26.0,
-      "hp": 26.0,
-      "passive": 65,
-      "skill": 65,
-      "matchup": 21.9,
+      "atk": 25.0,
+      "hp": 25.0,
+      "passive": 66,
+      "skill": 66,
+      "matchup": 21.3,
       "team": 72,
-      "overall": 45.9
+      "overall": 45.8
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "C",
+    "updated": "2026-10-30",
     "beats": [
       "demon-god-of-flame",
       "soul-magic-father",
@@ -11522,9 +11938,8 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
-      "control-devil",
-      "soul-queen-emperor"
+      "king-of-curses",
+      "control-devil"
     ],
     "losesTo": [
       "founding-titan",
@@ -11560,14 +11975,14 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
       "made-in-heaven-priest",
       "black-wizard-brother",
       "undead-overlord-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "king-of-curses",
@@ -11592,16 +12007,66 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 8.3,
+      "hp": 8.3,
+      "passive": 66,
+      "skill": 66,
+      "matchup": 13.1,
+      "team": 72,
+      "overall": 39.5
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "demon-progenitor",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ]
   },
   {
     "id": "legendary-berserker",
@@ -11660,16 +12125,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 18.0,
-      "hp": 18.0,
+      "atk": 16.7,
+      "hp": 16.7,
       "passive": 74,
       "skill": 74,
-      "matchup": 25.6,
+      "matchup": 24.3,
       "team": 63,
-      "overall": 45.7
+      "overall": 45.1
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "C",
+    "updated": "2026-10-30",
     "beats": [
       "pumpkin-sun-pride",
       "infinity-sorcerer",
@@ -11678,9 +12143,8 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
-      "control-devil",
-      "soul-queen-emperor"
+      "king-of-curses",
+      "control-devil"
     ],
     "losesTo": [
       "founding-titan",
@@ -11716,13 +12180,13 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "golden-gate-king",
       "soul-magic-father",
       "black-wizard-brother",
       "undead-overlord-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "monk-of-names",
@@ -11747,19 +12211,17 @@
       "desc": ""
     },
     "scores": {
-      "atk": 14.0,
-      "hp": 14.0,
+      "atk": 12.5,
+      "hp": 12.5,
       "passive": 64,
       "skill": 64,
-      "matchup": 14.7,
+      "matchup": 14.1,
       "team": 73,
-      "overall": 41.0
+      "overall": 40.5
     },
-    "tier": "B",
-    "updated": "2026-10-29",
-    "beats": [
-      "earthquake-emperor"
-    ],
+    "tier": "D",
+    "updated": "2026-10-30",
+    "beats": [],
     "losesTo": [
       "founding-titan",
       "sword-saint",
@@ -11794,7 +12256,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -11808,7 +12269,8 @@
       "control-devil",
       "black-wizard-brother",
       "undead-overlord-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "moon-breath-swordsman",
@@ -11833,69 +12295,17 @@
       "desc": ""
     },
     "scores": {
-      "atk": 34.0,
-      "hp": 34.0,
-      "passive": 74,
-      "skill": 74,
-      "matchup": 41.9,
-      "team": 69,
-      "overall": 55.0
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
     },
-    "tier": "B",
-    "updated": "2026-10-29",
-    "beats": [
-      "atomic-shadow-lord",
-      "pirate-king",
-      "rabbit-goddess",
-      "homunculus-father",
-      "white-hawk-godhand",
-      "pumpkin-sun-pride",
-      "golden-gate-king",
-      "infinity-sorcerer",
-      "demon-god-of-flame",
-      "soul-magic-father",
-      "hero-number-one",
-      "made-in-heaven-priest",
-      "wood-god-hokage",
-      "monk-of-names",
-      "demon-progenitor",
-      "earthquake-emperor",
-      "control-devil",
-      "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
-    ],
-    "losesTo": [
-      "founding-titan",
-      "sword-saint",
-      "octopus-teacher",
-      "shadow-monarch",
-      "slime-demon-lord",
-      "quirk-thief-overlord",
-      "ant-king",
-      "one-punch-caped-hero",
-      "sun-breath-origin",
-      "soul-king-father",
-      "sun-god-captain",
-      "divergent-fist-vessel",
-      "golden-wind-boss",
-      "destroyer-god",
-      "storm-dragon",
-      "witch-of-envy",
-      "dragon-king-of-ruin",
-      "spiral-drill-king",
-      "ultra-instinct-saiyan",
-      "no-life-king",
-      "full-moon-demon-king",
-      "destroyer-dragonoid",
-      "dragon-god",
-      "dragon-emperor-monarch",
-      "primordial-butler-demon",
-      "moon-eye-ghost",
-      "hypnosis-traitor",
-      "hollow-mask-reaper",
-      "beast-emperor"
-    ]
+    "tier": "",
+    "updated": "2026-10-30",
+    "prevTier": "B"
   },
   {
     "id": "otsutsuki-vessel",
@@ -11988,25 +12398,24 @@
       "desc": ""
     },
     "scores": {
-      "atk": 30.0,
-      "hp": 30.0,
+      "atk": 29.2,
+      "hp": 29.2,
       "passive": 66,
       "skill": 66,
-      "matchup": 20.0,
+      "matchup": 19.1,
       "team": 78,
-      "overall": 47.9
+      "overall": 47.5
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "C",
+    "updated": "2026-10-30",
     "beats": [
       "infinity-sorcerer",
       "soul-magic-father",
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
-      "control-devil",
-      "soul-queen-emperor"
+      "king-of-curses",
+      "control-devil"
     ],
     "losesTo": [
       "founding-titan",
@@ -12042,7 +12451,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "golden-gate-king",
       "demon-god-of-flame",
@@ -12050,7 +12458,8 @@
       "made-in-heaven-priest",
       "black-wizard-brother",
       "undead-overlord-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "six-paths-fox-sage",
@@ -12075,16 +12484,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 4.1,
+      "hp": 4.1,
+      "passive": 67,
+      "skill": 67,
+      "matchup": 10.5,
+      "team": 70,
+      "overall": 37.8
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 9.8
   },
   {
     "id": "soul-magic-father",
@@ -12109,16 +12571,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 22.0,
-      "hp": 22.0,
-      "passive": 73,
-      "skill": 73,
-      "matchup": 24.4,
+      "atk": 20.8,
+      "hp": 20.8,
+      "passive": 72,
+      "skill": 72,
+      "matchup": 23.1,
       "team": 70,
-      "overall": 47.5
+      "overall": 46.6
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "C",
+    "updated": "2026-10-30",
     "beats": [
       "demon-god-of-flame",
       "hero-number-one",
@@ -12126,10 +12588,9 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
-      "black-wizard-brother",
-      "soul-queen-emperor"
+      "black-wizard-brother"
     ],
     "losesTo": [
       "founding-titan",
@@ -12165,12 +12626,12 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
       "infinity-sorcerer"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "soul-queen-emperor",
@@ -12195,67 +12656,17 @@
       "desc": ""
     },
     "scores": {
-      "atk": 2.0,
-      "hp": 2.0,
-      "passive": 79,
-      "skill": 79,
-      "matchup": 17.2,
-      "team": 64,
-      "overall": 41.3
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
     },
-    "tier": "B",
-    "updated": "2026-10-29",
-    "beats": [
-      "wood-god-hokage",
-      "earthquake-emperor"
-    ],
-    "losesTo": [
-      "founding-titan",
-      "sword-saint",
-      "octopus-teacher",
-      "shadow-monarch",
-      "slime-demon-lord",
-      "quirk-thief-overlord",
-      "ant-king",
-      "one-punch-caped-hero",
-      "sun-breath-origin",
-      "soul-king-father",
-      "sun-god-captain",
-      "divergent-fist-vessel",
-      "golden-wind-boss",
-      "destroyer-god",
-      "storm-dragon",
-      "witch-of-envy",
-      "dragon-king-of-ruin",
-      "spiral-drill-king",
-      "ultra-instinct-saiyan",
-      "no-life-king",
-      "full-moon-demon-king",
-      "destroyer-dragonoid",
-      "dragon-god",
-      "dragon-emperor-monarch",
-      "primordial-butler-demon",
-      "moon-eye-ghost",
-      "atomic-shadow-lord",
-      "hypnosis-traitor",
-      "hollow-mask-reaper",
-      "pirate-king",
-      "beast-emperor",
-      "rabbit-goddess",
-      "homunculus-father",
-      "moon-breath-swordsman",
-      "white-hawk-godhand",
-      "pumpkin-sun-pride",
-      "golden-gate-king",
-      "infinity-sorcerer",
-      "demon-god-of-flame",
-      "soul-magic-father",
-      "hero-number-one",
-      "made-in-heaven-priest",
-      "control-devil",
-      "black-wizard-brother",
-      "undead-overlord-king"
-    ]
+    "tier": "",
+    "updated": "2026-10-30",
+    "prevTier": "B"
   },
   {
     "id": "ultra-ego-prince",
@@ -12314,16 +12725,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 4.0,
-      "hp": 4.0,
+      "atk": 2.1,
+      "hp": 2.1,
       "passive": 90,
       "skill": 90,
-      "matchup": 17.4,
+      "matchup": 16.6,
       "team": 76,
-      "overall": 47.6
+      "overall": 46.9
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "C",
+    "updated": "2026-10-30",
     "beats": [
       "pumpkin-sun-pride",
       "infinity-sorcerer",
@@ -12333,8 +12744,7 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
-      "soul-queen-emperor"
+      "king-of-curses"
     ],
     "losesTo": [
       "founding-titan",
@@ -12370,12 +12780,12 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "golden-gate-king",
       "control-devil",
       "black-wizard-brother"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "white-hawk-godhand",
@@ -12400,16 +12810,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 32.0,
-      "hp": 32.0,
-      "passive": 67,
-      "skill": 67,
-      "matchup": 26.6,
+      "atk": 31.2,
+      "hp": 31.2,
+      "passive": 68,
+      "skill": 68,
+      "matchup": 26.2,
       "team": 73,
       "overall": 49.4
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -12421,11 +12831,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -12460,9 +12869,9 @@
       "pirate-king",
       "beast-emperor",
       "rabbit-goddess",
-      "homunculus-father",
-      "moon-breath-swordsman"
-    ]
+      "homunculus-father"
+    ],
+    "prevTier": "B"
   },
   {
     "id": "wood-god-hokage",
@@ -12487,19 +12896,19 @@
       "desc": ""
     },
     "scores": {
-      "atk": 16.0,
-      "hp": 16.0,
-      "passive": 70,
-      "skill": 70,
-      "matchup": 13.6,
+      "atk": 14.6,
+      "hp": 14.6,
+      "passive": 71,
+      "skill": 71,
+      "matchup": 13.2,
       "team": 79,
-      "overall": 44.2
+      "overall": 44.0
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "C",
+    "updated": "2026-10-30",
     "beats": [
       "monk-of-names",
-      "earthquake-emperor"
+      "king-of-curses"
     ],
     "losesTo": [
       "founding-titan",
@@ -12535,7 +12944,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -12547,9 +12955,9 @@
       "demon-progenitor",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
-    ]
+      "undead-overlord-king"
+    ],
+    "prevTier": "B"
   },
   {
     "id": "destroyer-dragonoid",
@@ -12574,16 +12982,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 58.0,
-      "hp": 58.0,
+      "atk": 56.2,
+      "hp": 56.2,
       "passive": 69,
       "skill": 69,
-      "matchup": 53.9,
+      "matchup": 52.7,
       "team": 75,
-      "overall": 63.7
+      "overall": 62.9
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "dragon-emperor-monarch",
       "moon-eye-ghost",
@@ -12594,7 +13002,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -12606,11 +13013,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -12636,7 +13042,8 @@
       "full-moon-demon-king",
       "dragon-god",
       "primordial-butler-demon"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "destroyer-god",
@@ -12661,16 +13068,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 74.0,
-      "hp": 74.0,
-      "passive": 73,
-      "skill": 73,
-      "matchup": 70.1,
+      "atk": 72.9,
+      "hp": 72.9,
+      "passive": 74,
+      "skill": 74,
+      "matchup": 69.1,
       "team": 68,
-      "overall": 71.5
+      "overall": 71.3
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "golden-wind-boss",
       "storm-dragon",
@@ -12692,7 +13099,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -12704,11 +13110,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -12723,7 +13128,8 @@
       "soul-king-father",
       "sun-god-captain",
       "divergent-fist-vessel"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "dragon-god",
@@ -12748,16 +13154,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 56.0,
-      "hp": 56.0,
-      "passive": 68,
-      "skill": 68,
-      "matchup": 55.4,
+      "atk": 54.2,
+      "hp": 54.2,
+      "passive": 69,
+      "skill": 69,
+      "matchup": 54.1,
       "team": 67,
-      "overall": 61.6
+      "overall": 61.2
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "destroyer-dragonoid",
       "dragon-emperor-monarch",
@@ -12769,7 +13175,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -12781,11 +13186,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -12810,7 +13214,8 @@
       "no-life-king",
       "full-moon-demon-king",
       "primordial-butler-demon"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "dragon-king-of-ruin",
@@ -12835,16 +13240,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 68.0,
-      "hp": 68.0,
-      "passive": 68,
-      "skill": 68,
-      "matchup": 59.9,
+      "atk": 66.7,
+      "hp": 66.7,
+      "passive": 69,
+      "skill": 69,
+      "matchup": 58.7,
       "team": 83,
-      "overall": 69.0
+      "overall": 68.7
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "destroyer-dragonoid",
       "dragon-god",
@@ -12858,7 +13263,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -12870,11 +13274,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -12897,7 +13300,8 @@
       "ultra-instinct-saiyan",
       "no-life-king",
       "full-moon-demon-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "full-moon-demon-king",
@@ -12922,16 +13326,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 60.0,
-      "hp": 60.0,
+      "atk": 58.3,
+      "hp": 58.3,
       "passive": 70,
       "skill": 70,
-      "matchup": 63.0,
+      "matchup": 62.0,
       "team": 64,
-      "overall": 64.5
+      "overall": 63.9
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "dragon-king-of-ruin",
       "spiral-drill-king",
@@ -12948,7 +13352,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -12960,11 +13363,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -12984,7 +13386,8 @@
       "storm-dragon",
       "witch-of-envy",
       "ultra-instinct-saiyan"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "golden-wind-boss",
@@ -13009,16 +13412,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 76.0,
-      "hp": 76.0,
+      "atk": 75.0,
+      "hp": 75.0,
       "passive": 71,
       "skill": 71,
-      "matchup": 73.8,
+      "matchup": 72.8,
       "team": 70,
-      "overall": 72.8
+      "overall": 72.2
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "storm-dragon",
       "witch-of-envy",
@@ -13039,7 +13442,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13051,11 +13453,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13071,7 +13472,8 @@
       "sun-god-captain",
       "divergent-fist-vessel",
       "destroyer-god"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "hollow-mask-reaper",
@@ -13096,22 +13498,21 @@
       "desc": ""
     },
     "scores": {
-      "atk": 44.0,
-      "hp": 44.0,
-      "passive": 67,
-      "skill": 67,
-      "matchup": 40.3,
+      "atk": 41.7,
+      "hp": 41.7,
+      "passive": 68,
+      "skill": 68,
+      "matchup": 39.3,
       "team": 72,
-      "overall": 55.6
+      "overall": 55.0
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "atomic-shadow-lord",
       "pirate-king",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13123,11 +13524,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13157,7 +13557,8 @@
       "primordial-butler-demon",
       "moon-eye-ghost",
       "hypnosis-traitor"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "hypnosis-traitor",
@@ -13182,16 +13583,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 46.0,
-      "hp": 46.0,
+      "atk": 43.8,
+      "hp": 43.8,
       "passive": 69,
       "skill": 69,
-      "matchup": 44.6,
+      "matchup": 43.4,
       "team": 64,
-      "overall": 56.2
+      "overall": 55.3
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "dragon-emperor-monarch",
       "atomic-shadow-lord",
@@ -13200,7 +13601,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13212,11 +13612,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13244,7 +13643,8 @@
       "dragon-god",
       "primordial-butler-demon",
       "moon-eye-ghost"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "no-life-king",
@@ -13269,16 +13669,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 62.0,
-      "hp": 62.0,
-      "passive": 78,
-      "skill": 78,
-      "matchup": 61.1,
+      "atk": 60.4,
+      "hp": 60.4,
+      "passive": 79,
+      "skill": 79,
+      "matchup": 59.8,
       "team": 83,
-      "overall": 70.8
+      "overall": 70.3
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "dragon-king-of-ruin",
       "destroyer-dragonoid",
@@ -13293,7 +13693,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13305,11 +13704,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13330,7 +13728,8 @@
       "witch-of-envy",
       "ultra-instinct-saiyan",
       "full-moon-demon-king"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "pirate-king",
@@ -13355,16 +13754,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 42.0,
-      "hp": 42.0,
+      "atk": 39.6,
+      "hp": 39.6,
       "passive": 65,
       "skill": 65,
-      "matchup": 39.1,
+      "matchup": 38.0,
       "team": 73,
-      "overall": 54.4
+      "overall": 53.5
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "atomic-shadow-lord",
       "homunculus-father",
@@ -13379,11 +13778,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13415,9 +13813,9 @@
       "hypnosis-traitor",
       "hollow-mask-reaper",
       "beast-emperor",
-      "rabbit-goddess",
-      "moon-breath-swordsman"
-    ]
+      "rabbit-goddess"
+    ],
+    "prevTier": "B"
   },
   {
     "id": "primordial-butler-demon",
@@ -13442,16 +13840,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 52.0,
-      "hp": 52.0,
-      "passive": 76,
-      "skill": 76,
-      "matchup": 58.5,
+      "atk": 50.0,
+      "hp": 50.0,
+      "passive": 75,
+      "skill": 75,
+      "matchup": 57.1,
       "team": 63,
-      "overall": 63.0
+      "overall": 61.9
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "destroyer-dragonoid",
       "dragon-god",
@@ -13464,7 +13862,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13476,11 +13873,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13504,7 +13900,8 @@
       "ultra-instinct-saiyan",
       "no-life-king",
       "full-moon-demon-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "rabbit-goddess",
@@ -13529,16 +13926,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 38.0,
-      "hp": 38.0,
+      "atk": 35.4,
+      "hp": 35.4,
       "passive": 68,
       "skill": 68,
-      "matchup": 44.0,
+      "matchup": 43.1,
       "team": 64,
-      "overall": 53.7
+      "overall": 52.8
     },
     "tier": "B",
-    "updated": "2026-10-29",
+    "updated": "2026-10-30",
     "beats": [
       "moon-eye-ghost",
       "atomic-shadow-lord",
@@ -13555,11 +13952,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13589,9 +13985,9 @@
       "primordial-butler-demon",
       "hypnosis-traitor",
       "hollow-mask-reaper",
-      "beast-emperor",
-      "moon-breath-swordsman"
-    ]
+      "beast-emperor"
+    ],
+    "prevTier": "B"
   },
   {
     "id": "spiral-drill-king",
@@ -13616,16 +14012,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 66.0,
-      "hp": 66.0,
-      "passive": 61,
-      "skill": 61,
-      "matchup": 61.7,
+      "atk": 64.6,
+      "hp": 64.6,
+      "passive": 62,
+      "skill": 62,
+      "matchup": 60.5,
       "team": 68,
-      "overall": 63.8
+      "overall": 63.5
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "dragon-king-of-ruin",
       "destroyer-dragonoid",
@@ -13640,7 +14036,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13652,11 +14047,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13677,7 +14071,8 @@
       "witch-of-envy",
       "ultra-instinct-saiyan",
       "full-moon-demon-king"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "storm-dragon",
@@ -13702,16 +14097,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 74.0,
-      "hp": 74.0,
+      "atk": 72.9,
+      "hp": 72.9,
       "passive": 80,
       "skill": 80,
-      "matchup": 68.3,
+      "matchup": 67.2,
       "team": 86,
-      "overall": 76.8
+      "overall": 76.2
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "dragon-king-of-ruin",
       "spiral-drill-king",
@@ -13730,7 +14125,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13742,11 +14136,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13764,7 +14157,8 @@
       "golden-wind-boss",
       "destroyer-god",
       "witch-of-envy"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "witch-of-envy",
@@ -13789,16 +14183,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 74.0,
-      "hp": 74.0,
+      "atk": 72.9,
+      "hp": 72.9,
       "passive": 82,
       "skill": 82,
-      "matchup": 71.0,
+      "matchup": 69.9,
       "team": 86,
-      "overall": 78.0
+      "overall": 77.5
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "SS",
+    "updated": "2026-10-30",
     "beats": [
       "storm-dragon",
       "dragon-king-of-ruin",
@@ -13818,7 +14212,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13830,11 +14223,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13851,7 +14243,8 @@
       "divergent-fist-vessel",
       "golden-wind-boss",
       "destroyer-god"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "ant-king",
@@ -13876,16 +14269,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 88.0,
-      "hp": 88.0,
-      "passive": 75,
-      "skill": 75,
-      "matchup": 85.0,
+      "atk": 87.5,
+      "hp": 87.5,
+      "passive": 76,
+      "skill": 76,
+      "matchup": 84.4,
       "team": 73,
-      "overall": 80.3
+      "overall": 80.4
     },
-    "tier": "S",
-    "updated": "2026-10-29",
+    "tier": "SS",
+    "updated": "2026-10-30",
     "beats": [
       "one-punch-caped-hero",
       "sun-breath-origin",
@@ -13913,7 +14306,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13925,11 +14317,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -13938,7 +14329,8 @@
       "shadow-monarch",
       "slime-demon-lord",
       "quirk-thief-overlord"
-    ]
+    ],
+    "prevTier": "S"
   },
   {
     "id": "divergent-fist-vessel",
@@ -13963,16 +14355,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 78.0,
-      "hp": 78.0,
-      "passive": 64,
-      "skill": 64,
-      "matchup": 73.0,
+      "atk": 77.1,
+      "hp": 77.1,
+      "passive": 65,
+      "skill": 65,
+      "matchup": 72.1,
       "team": 64,
-      "overall": 69.8
+      "overall": 69.6
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "sun-breath-origin",
       "golden-wind-boss",
@@ -13996,7 +14388,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14008,11 +14399,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -14025,7 +14415,8 @@
       "one-punch-caped-hero",
       "soul-king-father",
       "sun-god-captain"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "founding-titan",
@@ -14054,12 +14445,12 @@
       "hp": 100.0,
       "passive": 62,
       "skill": 62,
-      "matchup": 88.4,
+      "matchup": 88.0,
       "team": 76,
-      "overall": 80.9
+      "overall": 80.8
     },
-    "tier": "S",
-    "updated": "2026-10-29",
+    "tier": "Meta",
+    "updated": "2026-10-30",
     "beats": [
       "slime-demon-lord",
       "quirk-thief-overlord",
@@ -14090,7 +14481,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14102,17 +14492,17 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "sword-saint",
       "octopus-teacher",
       "shadow-monarch"
-    ]
+    ],
+    "prevTier": "S"
   },
   {
     "id": "octopus-teacher",
@@ -14137,16 +14527,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 96.0,
-      "hp": 96.0,
+      "atk": 95.8,
+      "hp": 95.8,
       "passive": 78,
       "skill": 78,
-      "matchup": 94.1,
+      "matchup": 93.8,
       "team": 64,
-      "overall": 83.7
+      "overall": 83.6
     },
-    "tier": "S",
-    "updated": "2026-10-29",
+    "tier": "Meta",
+    "updated": "2026-10-30",
     "beats": [
       "founding-titan",
       "sword-saint",
@@ -14180,7 +14570,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14192,13 +14581,13 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
-    "losesTo": []
+    "losesTo": [],
+    "prevTier": "S"
   },
   {
     "id": "one-punch-caped-hero",
@@ -14223,16 +14612,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 86.0,
-      "hp": 86.0,
-      "passive": 65,
-      "skill": 65,
-      "matchup": 82.5,
+      "atk": 85.4,
+      "hp": 85.4,
+      "passive": 66,
+      "skill": 66,
+      "matchup": 81.8,
       "team": 60,
       "overall": 73.6
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "sun-breath-origin",
       "soul-king-father",
@@ -14259,7 +14648,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14271,11 +14659,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -14285,7 +14672,8 @@
       "slime-demon-lord",
       "quirk-thief-overlord",
       "ant-king"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "quirk-thief-overlord",
@@ -14310,16 +14698,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 90.0,
-      "hp": 90.0,
+      "atk": 89.6,
+      "hp": 89.6,
       "passive": 76,
       "skill": 76,
-      "matchup": 84.4,
+      "matchup": 83.8,
       "team": 77,
-      "overall": 81.8
+      "overall": 81.6
     },
-    "tier": "S",
-    "updated": "2026-10-29",
+    "tier": "Meta",
+    "updated": "2026-10-30",
     "beats": [
       "ant-king",
       "one-punch-caped-hero",
@@ -14348,7 +14736,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14360,11 +14747,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -14372,7 +14758,8 @@
       "octopus-teacher",
       "shadow-monarch",
       "slime-demon-lord"
-    ]
+    ],
+    "prevTier": "S"
   },
   {
     "id": "slime-demon-lord",
@@ -14397,16 +14784,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 92.0,
-      "hp": 92.0,
-      "passive": 73,
-      "skill": 73,
-      "matchup": 86.4,
+      "atk": 91.7,
+      "hp": 91.7,
+      "passive": 72,
+      "skill": 72,
+      "matchup": 85.9,
       "team": 72,
-      "overall": 80.9
+      "overall": 80.4
     },
-    "tier": "S",
-    "updated": "2026-10-29",
+    "tier": "SS",
+    "updated": "2026-10-30",
     "beats": [
       "quirk-thief-overlord",
       "ant-king",
@@ -14436,7 +14823,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14448,17 +14834,17 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
       "sword-saint",
       "octopus-teacher"
-    ]
+    ],
+    "prevTier": "S"
   },
   {
     "id": "soul-king-father",
@@ -14483,16 +14869,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 82.0,
-      "hp": 82.0,
+      "atk": 81.2,
+      "hp": 81.2,
       "passive": 72,
       "skill": 72,
-      "matchup": 76.7,
+      "matchup": 75.8,
       "team": 69,
-      "overall": 75.1
+      "overall": 74.6
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "sun-god-captain",
       "divergent-fist-vessel",
@@ -14517,7 +14903,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14529,11 +14914,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -14544,7 +14928,8 @@
       "quirk-thief-overlord",
       "ant-king",
       "one-punch-caped-hero"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "sun-breath-origin",
@@ -14569,16 +14954,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 84.0,
-      "hp": 84.0,
-      "passive": 63,
-      "skill": 63,
-      "matchup": 77.0,
+      "atk": 83.3,
+      "hp": 83.3,
+      "passive": 62,
+      "skill": 62,
+      "matchup": 76.1,
       "team": 60,
-      "overall": 71.2
+      "overall": 70.4
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "golden-wind-boss",
       "destroyer-god",
@@ -14601,7 +14986,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14613,11 +14997,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -14630,7 +15013,8 @@
       "one-punch-caped-hero",
       "sun-god-captain",
       "divergent-fist-vessel"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "sun-god-captain",
@@ -14655,16 +15039,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 80.0,
-      "hp": 80.0,
+      "atk": 79.2,
+      "hp": 79.2,
       "passive": 69,
       "skill": 69,
-      "matchup": 75.7,
+      "matchup": 74.8,
       "team": 64,
-      "overall": 72.4
+      "overall": 72.0
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "S",
+    "updated": "2026-10-30",
     "beats": [
       "sun-breath-origin",
       "divergent-fist-vessel",
@@ -14689,7 +15073,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14701,11 +15084,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -14717,7 +15099,8 @@
       "ant-king",
       "one-punch-caped-hero",
       "soul-king-father"
-    ]
+    ],
+    "prevTier": "A"
   },
   {
     "id": "sword-saint",
@@ -14742,16 +15125,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 98.0,
-      "hp": 98.0,
-      "passive": 69,
-      "skill": 69,
-      "matchup": 89.3,
+      "atk": 97.9,
+      "hp": 97.9,
+      "passive": 70,
+      "skill": 70,
+      "matchup": 88.9,
       "team": 64,
-      "overall": 80.3
+      "overall": 80.5
     },
-    "tier": "S",
-    "updated": "2026-10-29",
+    "tier": "SS",
+    "updated": "2026-10-30",
     "beats": [
       "founding-titan",
       "shadow-monarch",
@@ -14784,7 +15167,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14796,15 +15178,15 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "octopus-teacher"
-    ]
+    ],
+    "prevTier": "S"
   },
   {
     "id": "ultra-instinct-saiyan",
@@ -14829,16 +15211,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 64.0,
-      "hp": 64.0,
+      "atk": 62.5,
+      "hp": 62.5,
       "passive": 69,
       "skill": 69,
-      "matchup": 65.7,
+      "matchup": 64.6,
       "team": 67,
-      "overall": 66.5
+      "overall": 65.9
     },
-    "tier": "B",
-    "updated": "2026-10-29",
+    "tier": "A",
+    "updated": "2026-10-30",
     "beats": [
       "dragon-king-of-ruin",
       "spiral-drill-king",
@@ -14856,7 +15238,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -14868,11 +15249,10 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "founding-titan",
@@ -14891,7 +15271,8 @@
       "destroyer-god",
       "storm-dragon",
       "witch-of-envy"
-    ]
+    ],
+    "prevTier": "B"
   },
   {
     "id": "hunter-chairman",
@@ -15426,16 +15807,69 @@
       "desc": ""
     },
     "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 69,
+      "skill": 69,
+      "matchup": 1.1,
+      "team": 71,
+      "overall": 35.7
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 36.4
   },
   {
     "id": "panther-king-espada",
@@ -16276,16 +16710,16 @@
       "desc": ""
     },
     "scores": {
-      "atk": 94.0,
-      "hp": 94.0,
+      "atk": 93.8,
+      "hp": 93.8,
       "passive": 67,
       "skill": 67,
-      "matchup": 87.6,
+      "matchup": 87.2,
       "team": 68,
-      "overall": 79.1
+      "overall": 78.9
     },
-    "tier": "A",
-    "updated": "2026-10-29",
+    "tier": "SS",
+    "updated": "2026-10-30",
     "beats": [
       "founding-titan",
       "quirk-thief-overlord",
@@ -16316,7 +16750,6 @@
       "beast-emperor",
       "rabbit-goddess",
       "homunculus-father",
-      "moon-breath-swordsman",
       "white-hawk-godhand",
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -16328,15 +16761,15 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "earthquake-emperor",
+      "king-of-curses",
       "control-devil",
       "black-wizard-brother",
-      "undead-overlord-king",
-      "soul-queen-emperor"
+      "undead-overlord-king"
     ],
     "losesTo": [
       "sword-saint",
       "octopus-teacher"
-    ]
+    ],
+    "prevTier": "A"
   }
 ]

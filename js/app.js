@@ -22,7 +22,8 @@
   };
   const STORE_KEY = "cbi:lastPage";
   const RARITY_KEY = "cbi:rarity";
-  const TIER_COLOR = { Meta: "--t-meta", SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b" };   // Meta = was GOD (owner 2026-10-28) · C / D dropped
+  // Meta = was GOD (owner 2026-10-28) · C / D back + Utility (cards that lift the whole deck, own row) 2026-10-30
+  const TIER_COLOR = { Meta: "--t-meta", SS: "--t-ss", S: "--t-s", A: "--t-a", B: "--t-b", C: "--t-c", D: "--t-d", Utility: "--t-x-teal" };
   const RARITY_SWATCH = {
     Normal: "var(--r-normal)", Shiny: "var(--r-shiny)",
     Rainbow: "linear-gradient(135deg,#e8607a,#e9a75a,#7fd39a,#69b9e0,#8a7be0)",
@@ -51,12 +52,14 @@
     return res.json();
   }
 
-  /* Only the best meta.rankTop of a list keep their tier (routine B ranks at most that many · this guards the rest) */
-  const rankTop = () => (state.meta && Number(state.meta.rankTop) > 0 ? Math.floor(state.meta.rankTop) : 50);
+  /* Only the best meta.rankTop of a list keep their tier (routine B ranks at most that many · this guards the rest)
+     · rows marked cardsOnly in meta.tiers (Utility) sit outside the count: their cards keep their tier */
+  const rankTop = () => (state.meta && Number(state.meta.rankTop) > 0 ? Math.floor(state.meta.rankTop) : 48);
+  const extraTiers = () => new Set(state.meta.tiers.filter((t) => t.cardsOnly).map((t) => t.name));
   function topOnly(list, val) {
     if (!Array.isArray(list)) return;
-    const top = rankTop();
-    list.filter((x) => x && x.tier && val(x) > 0).sort((a, b) => val(b) - val(a)).slice(top).forEach((x) => { x.tier = ""; });
+    const top = rankTop(), extra = extraTiers();
+    list.filter((x) => x && x.tier && !extra.has(x.tier) && val(x) > 0).sort((a, b) => val(b) - val(a)).slice(top).forEach((x) => { x.tier = ""; });
   }
 
   /* ---------- Number helpers ---------- */
@@ -133,7 +136,7 @@
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
-     Only the strongest meta.rankTop (50) cards and 50 support are ranked (owner 2026-10-28): the rest stay unranked for good
+     Only the strongest meta.rankTop (48: every card at 1 in 500M+ · owner 2026-10-30) cards + the Utility row and the top support are ranked: the rest stay unranked for good
      (in the library, searchable, usable in decks, never in the Tier List). New cards from routine A are unranked too. */
   const isRanked = (card) => !!(card.scores && (isSupport(card) ? card.scores.value : card.scores.overall) > 0 && card.tier);
   const cardLabel = (card, rarity) => `${card.name}${isSupport(card) ? ", support" : ""}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", unranked"}`;
@@ -760,7 +763,7 @@
 
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
-    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, rankTop, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
+    renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, rankTop, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
