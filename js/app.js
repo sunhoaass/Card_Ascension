@@ -520,7 +520,27 @@
      pages comes from the list's length, so it grows by itself as cards are added · bindPager(box, go): ‹ › and the
      typed page number call go(i) (0-based, already inside 0…pages-1) · pageTop(grid): scroll back up to the grid's
      tools after a page change */
-  const PAGE_SIZE = 30;
+  /* Cards per page follow the screen so every page fills whole rows (owner 2026-10-30): phone 3 × 10 = 30 · tablet 4 × 8 = 32 ·
+     laptop 6 × 6 = 36 · big screen 8 × 5 = 40 · the four grids share the column count (--grid-cols on <html>, css/base.css) ·
+     turning the phone / resizing the window fires "cbi:pagesize": each grid shows the page that has its first card on it again */
+  const PAGE = { cols: 3, rows: 10, size: 30 };
+  const PAGE_STEPS = [[600, 3, 10], [1000, 4, 8], [1600, 6, 6], [Infinity, 8, 5]];   // [screen width below, columns, rows]
+  function pageLayout() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const [, cols, rows] = PAGE_STEPS.find((s) => w < s[0]);
+    if (cols === PAGE.cols && rows === PAGE.rows) return;
+    PAGE.cols = cols; PAGE.rows = rows; PAGE.size = cols * rows;
+    document.documentElement.style.setProperty("--grid-cols", cols);
+    document.dispatchEvent(new CustomEvent("cbi:pagesize"));
+  }
+  pageLayout();
+  let pageRaf = 0;
+  window.addEventListener("resize", () => { cancelAnimationFrame(pageRaf); pageRaf = requestAnimationFrame(pageLayout); });
+  // the page (0-based) that holds the first card now on the screen, so a new page size keeps what was being looked at
+  function pageKeep(shown, onPage, page) {
+    const k = onPage.length ? shown.indexOf(onPage[0]) : -1;
+    return k >= 0 ? Math.floor(k / PAGE.size) : page;
+  }
   function pager(box, page, pages) {
     if (!box) return;
     box.hidden = pages < 1;
@@ -782,7 +802,7 @@
     isSupport, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
-    PAGE_SIZE, pager, bindPager, pageTop,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)
+    get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js

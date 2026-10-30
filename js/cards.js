@@ -223,6 +223,8 @@
     paint({ animate: true });
     C.pageTop(ui.grid);
   }
+  // the screen changed size (rows × columns per page): keep the first card in view on the new page
+  document.addEventListener("cbi:pagesize", () => { if (!built) return; page = C.pageKeep(shown, onPage, page); paint(); });
 
   /* Change rarity everywhere (page chips, grid cards; the open detail listens to "cbi:rarity") */
   function setRarity(name) {

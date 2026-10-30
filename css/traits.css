@@ -196,14 +196,13 @@
 
 /* ---------- wide screens: grid on the left (scrolls on its own, stays in view), shop on the right ---------- */
 @media (min-width: 900px) {
-  .trw { grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr); align-items: start; gap: var(--s-6) var(--s-8); }
+  .trw { grid-template-columns: minmax(300px, 1fr) minmax(460px, 1fr); align-items: start; gap: var(--s-6) var(--s-8); }
   .trw__pick {
     position: sticky; top: calc(var(--header-h) + var(--s-3));
     max-height: calc(100dvh - var(--header-h) - var(--nav-h) - var(--s-6));
     overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
     margin: calc(var(--s-1) * -1); padding: var(--s-1) var(--s-2) var(--s-4) var(--s-1);
   }
-  .trw__grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
   .trs__backbar { display: none; }
   .trs { padding: var(--s-5); }
   .trs__top { grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "hero info" "hero eq"; gap: var(--s-4) var(--s-5); }
@@ -214,9 +213,8 @@
 @media (min-width: 1100px) {
   /* no top bar or bottom menu here · the page zoom above 1920 px makes dvh too big, so divide by it */
   .trw__pick { top: var(--s-6); max-height: calc(100dvh / var(--zoom, 1) - var(--s-12)); }
-  .trw__grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
-@media (min-width: 1700px) { .trw { grid-template-columns: minmax(300px, 1fr) minmax(0, 1fr); } }
+@media (min-width: 1700px) { .trw { grid-template-columns: minmax(300px, 1fr) minmax(0, 1fr); } }   /* the grid column is wider than the shop so 4 / 6 / 8 columns stay readable */
 
 /* ==========================================================
    Details sheet: Trait panel (js/traits.js panelHTML)
