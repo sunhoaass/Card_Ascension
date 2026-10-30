@@ -14,7 +14,8 @@ Modes (the owner's 3 modes, 2026-10-30):
            each with a support from the top FIELD_SUPS by Value, random order) · each side first · deck score 0–100 (deck_sim)
 - tower  = Tower Infinity, a long climb: waves of 5 random ranked cards (no supports) one after another, every wave
            TOWER_GROW × stronger than the last · our HP, knocked-out cards, used revives and debuffs carry over
-           · score = enemy cards knocked out before the whole deck falls (+ the share of the last wave's HP taken)
+           · score = enemy cards knocked out in TOWER_TURNS turns or before the whole deck falls (+ the share of the last
+           wave's HP taken) · a turn budget, because heals and hits in % of max HP never fall behind the waves' growth
 - overall = goes anywhere: 50% pvp ÷ best pvp + 50% tower ÷ best tower (best = the "best" team of each mode)
 
 Teams per mode: best (any card / support) · alt (shares at most ALT_SHARED cards with best) · easy (cards with Normal odds
@@ -32,7 +33,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TODAY = "2026-10-30"
 RARITY = "Godly"
 FIELD_N, FIELD_CARDS, FIELD_SUPS, PVP_RUNS, META_RUNS = 24, 24, 30, 1, 2
-TOWER_GROW, TOWER_RUNS, TOWER_WAVES = 1.2, 16, 60
+TOWER_GROW, TOWER_RUNS, TOWER_WAVES, TOWER_TURNS = 1.2, 16, 400, 1500
 EASY_CARD_ODDS, EASY_SUP_ODDS = 1_000_000_000, 1_000_000
 ALT_SHARED = 2
 SEED = 20261030
@@ -157,7 +158,9 @@ def tower(deck, seed=SEED, runs=TOWER_RUNS):
         b.wrng = random.Random(seed * 53 + r); b.wave = 0; b.kills = 0
         w0 = b.make_wave()
         Battle.__init__(b, me, [(c, None, rr) for c, _, rr, _ in w0], rng.random)
-        b.run(r % 2)
+        keep, deck_sim.MAX_TURNS = deck_sim.MAX_TURNS, TOWER_TURNS
+        try: b.run(r % 2)
+        finally: deck_sim.MAX_TURNS = keep
         left = [u for u in b.sides[1] if not u.shadow]
         b.kills += sum(1 for u in left if not u.alive)
         alive = [u for u in left if u.alive]
