@@ -145,7 +145,11 @@
   const NEW_DAYS = 14;
   const dayOf = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) / 864e5 : NaN; };
   const today = () => { const d = new Date(); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5; };
-  const isNew = (x) => { const age = today() - dayOf(x && x.added); return age >= 0 && age < NEW_DAYS; };
+  // pool.json newAfter: cards added on or before that date never count as new (owner 2026-10-30: the whole-game import isn't "new")
+  const isNew = (x) => {
+    const d = dayOf(x && x.added), cut = dayOf(state.pool && state.pool.newAfter), age = today() - d;
+    return age >= 0 && age < NEW_DAYS && !(d <= cut);
+  };
   const newHTML = (x, cls = "") => (isNew(x) ? `<span class="gc__new${cls ? " " + cls : ""}" aria-hidden="true">New</span>` : "");
 
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
@@ -611,7 +615,7 @@
   }
 
   /* ---------- Router ----------
-     #home #tier #cards #deck #grade #traits -> tabs (no hash on a first visit = Home · later = the page shown last, cbi:lastPage) · #support = the Cards tab, Support side
+     #home #tier #cards #deck #grade #traits -> tabs (no hash = Home, always · owner 2026-10-30) · #support = the Cards tab, Support side
      #card/<id>                    -> card (or support) detail, laid over whichever tab is underneath
      #support/<id> (old links)     -> the Support side + that support's detail
      #grade/<id>/<grades>          -> the grader inside the Grade tab */
@@ -636,7 +640,7 @@
     $(".nav__list").style.setProperty("--i", PAGES.indexOf(page));
     const side = page === "cards" && state.kind === "support" ? "support" : page;
     document.title = PAGE_TITLES[side];   // tab / history / share title follows the page
-    store.set(STORE_KEY, side);           // "support" = the Cards tab, Support side (reopens there)
+    store.set(STORE_KEY, side);           // "support" = the Cards tab, Support side · still saved, no longer opened (no hash = Home)
     runLazy(page);   // first visit to this tab: build its cards now (step 9.5)
     if (page === "cards" && state.loaded) CBI.cards.view(state.kind, { animate: kindChanged && !changed });
     if (changed && state.loaded) {
@@ -675,8 +679,7 @@
       return;
     }
     if (state.loaded) CBI.detail.close();
-    let first = state.page === null ? store.get(STORE_KEY) || "home" : "home";
-    if (first === "support") { first = "cards"; if (!location.hash) { try { history.replaceState(null, "", "#support"); } catch {} } }   // reopened on the Support side
+    const first = "home";   // opening the site with no hash = Home every time (owner 2026-10-30 · cbi:lastPage is not read)
     const k = kindFromHash();
     if (k) state.kind = k;
     showPage(pageFromHash() || first);
