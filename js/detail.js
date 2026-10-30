@@ -1179,7 +1179,7 @@
         </section>`
       : `<section class="dpanel" aria-labelledby="d-t-overall">
           <h3 class="dpanel__title" id="d-t-overall">Value score</h3>
-          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>Only the top ${C.rankTop()} support cards get a Value score and a tier. Decks still count this one, from its effect at the deck's rarity.</span></div>
+          <div class="unranked"><span class="badge badge--muted">Unranked</span><span>Only the top ${C.rankTopSupport()} support cards get a Value score and a tier. Decks still count this one, from its effect at the deck's rarity.</span></div>
         </section>`;
     const teamHTML = `
         <section class="dpanel" aria-labelledby="d-t-team">

@@ -12,6 +12,7 @@
     { "name": "Godly",  "stat": 327,  "odds": 1000000 }
   ],
   "rankTop": 48,
+  "rankTopSupport": 100,
   "tiers": [
     { "name": "Meta", "to": 3, "supportTo": 5 },
     { "name": "SS", "to": 8, "supportTo": 12 },
