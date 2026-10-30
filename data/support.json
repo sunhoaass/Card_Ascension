@@ -26,14 +26,15 @@
     "odds": 146,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 9.6,
+      "reliability": 64.2,
+      "flexibility": 25.0,
+      "synergy": 21.2,
+      "value": 25.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "flying-cat-partner",
@@ -62,14 +63,15 @@
     "odds": 256,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 6.8,
+      "reliability": 58.5,
+      "flexibility": 31.2,
+      "synergy": 13.4,
+      "value": 23.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "fox-kit-trickster",
@@ -98,14 +100,15 @@
     "odds": 204,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 15.0,
+      "reliability": 73.6,
+      "flexibility": 35.4,
+      "synergy": 24.0,
+      "value": 32.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "gate-healer",
@@ -134,14 +137,15 @@
     "odds": 130,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 23.1,
+      "reliability": 69.0,
+      "flexibility": 31.2,
+      "synergy": 40.9,
+      "value": 37.5
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "inventor-girl",
@@ -170,14 +174,15 @@
     "odds": 359,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 4.8,
+      "reliability": 56.7,
+      "flexibility": 25.0,
+      "synergy": 11.7,
+      "value": 20.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "navigation-pixie",
@@ -206,14 +211,15 @@
     "odds": 183,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 3.2,
+      "reliability": 59.8,
+      "flexibility": 20.8,
+      "synergy": 7.3,
+      "value": 18.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "pig-captain",
@@ -253,14 +259,15 @@
     "odds": 287,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 9.7,
+      "reliability": 71.1,
+      "flexibility": 39.6,
+      "synergy": 16.4,
+      "value": 29.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "plant-healer",
@@ -289,14 +296,15 @@
     "odds": 163,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 13.2,
+      "reliability": 65.6,
+      "flexibility": 25.0,
+      "synergy": 29.5,
+      "value": 29.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "portal-playboy",
@@ -325,14 +333,15 @@
     "odds": 229,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 12.5,
+      "reliability": 50.9,
+      "flexibility": 16.7,
+      "synergy": 33.0,
+      "value": 25.1
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "spirit-sidekick",
@@ -361,14 +370,15 @@
     "odds": 321,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 7.3,
+      "reliability": 57.3,
+      "flexibility": 18.8,
+      "synergy": 20.5,
+      "value": 22.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "cafe-owner-owl",
@@ -397,14 +407,15 @@
     "odds": 4992,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 23.2,
+      "reliability": 57.7,
+      "flexibility": 29.2,
+      "synergy": 45.7,
+      "value": 35.8
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "crow-banker",
@@ -433,14 +444,15 @@
     "odds": 6097,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 10.4,
+      "reliability": 63.1,
+      "flexibility": 47.9,
+      "synergy": 14.8,
+      "value": 29.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "desert-princess",
@@ -469,14 +481,15 @@
     "odds": 3183,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 8.3,
+      "reliability": 60.6,
+      "flexibility": 29.2,
+      "synergy": 15.5,
+      "value": 24.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "doctor-hunter",
@@ -505,14 +518,15 @@
     "odds": 2740,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 13.9,
+      "reliability": 72.2,
+      "flexibility": 81.2,
+      "synergy": 14.3,
+      "value": 39.1
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "food-mage",
@@ -541,14 +555,15 @@
     "odds": 4517,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 24.0,
+      "reliability": 48.7,
+      "flexibility": 37.5,
+      "synergy": 38.4,
+      "value": 34.5
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "foundation-gentleman",
@@ -588,14 +603,15 @@
     "odds": 4749,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 10.4,
+      "reliability": 70.1,
+      "flexibility": 27.1,
+      "synergy": 22.0,
+      "value": 28.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "fox-mask-mentor",
@@ -624,14 +640,15 @@
     "odds": 2479,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 5.9,
+      "reliability": 63.0,
+      "flexibility": 22.9,
+      "synergy": 13.8,
+      "value": 22.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "lonely-crimson-mage",
@@ -660,14 +677,15 @@
     "odds": 4087,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 15.9,
+      "reliability": 60.9,
+      "flexibility": 22.9,
+      "synergy": 35.4,
+      "value": 30.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "master-spy-father",
@@ -696,14 +714,15 @@
     "odds": 2880,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 14.7,
+      "reliability": 66.3,
+      "flexibility": 27.1,
+      "synergy": 27.9,
+      "value": 30.1
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "mind-transfer-kunoichi",
@@ -732,14 +751,15 @@
     "odds": 3346,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 27.6,
+      "reliability": 75.7,
+      "flexibility": 39.6,
+      "synergy": 41.7,
+      "value": 42.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "namekian-healer",
@@ -768,14 +788,15 @@
     "odds": 2358,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 26.7,
+      "reliability": 58.8,
+      "flexibility": 27.1,
+      "synergy": 55.3,
+      "value": 38.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "nen-teacher",
@@ -804,14 +825,15 @@
     "odds": 6410,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 14.2,
+      "reliability": 68.2,
+      "flexibility": 25.0,
+      "synergy": 31.4,
+      "value": 30.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "rifle-girl",
@@ -840,14 +862,15 @@
     "odds": 7084,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 6.5,
+      "reliability": 58.9,
+      "flexibility": 20.8,
+      "synergy": 15.5,
+      "value": 21.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "salt-splash-mentor",
@@ -887,14 +910,15 @@
     "odds": 3028,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 39.7,
+      "reliability": 79.2,
+      "flexibility": 50.0,
+      "synergy": 53.9,
+      "value": 52.5
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "second-princess",
@@ -923,14 +947,15 @@
     "odds": 7447,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 10.5,
+      "reliability": 70.8,
+      "flexibility": 25.0,
+      "synergy": 20.0,
+      "value": 27.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "senzu-bean-cat",
@@ -959,14 +984,15 @@
     "odds": 3518,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 9.1,
+      "reliability": 55.6,
+      "flexibility": 35.4,
+      "synergy": 14.5,
+      "value": 24.7
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "shadow-garden-strategist",
@@ -995,14 +1021,15 @@
     "odds": 3888,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 0.0,
+      "reliability": 0.0,
+      "flexibility": 0.0,
+      "synergy": 0.0,
+      "value": 0.1
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "silent-healer-elf",
@@ -1031,14 +1058,15 @@
     "odds": 3698,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 53.5,
+      "reliability": 73.7,
+      "flexibility": 39.6,
+      "synergy": 79.7,
+      "value": 60.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "sister-of-prayer",
@@ -1067,14 +1095,15 @@
     "odds": 5248,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 6.5,
+      "reliability": 58.5,
+      "flexibility": 35.4,
+      "synergy": 11.6,
+      "value": 23.7
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "song-sorceress",
@@ -1103,14 +1132,15 @@
     "odds": 2606,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 7.6,
+      "reliability": 60.7,
+      "flexibility": 27.1,
+      "synergy": 16.3,
+      "value": 23.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "spirit-ferry-girl",
@@ -1150,14 +1180,15 @@
     "odds": 4297,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 20.8,
+      "reliability": 70.5,
+      "flexibility": 27.1,
+      "synergy": 41.9,
+      "value": 36.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "spirit-medium-granny",
@@ -1186,14 +1217,15 @@
     "odds": 5517,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 30.9,
+      "reliability": 85.3,
+      "flexibility": 100.0,
+      "synergy": 22.3,
+      "value": 53.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "toad-boss",
@@ -1222,14 +1254,15 @@
     "odds": 5800,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 16.4,
+      "reliability": 73.2,
+      "flexibility": 83.3,
+      "synergy": 17.4,
+      "value": 41.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "true-queen",
@@ -1258,14 +1291,15 @@
     "odds": 6739,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 35.3,
+      "reliability": 87.7,
+      "flexibility": 93.8,
+      "synergy": 22.8,
+      "value": 55.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "boomerang-demon-slayer",
@@ -1294,14 +1328,15 @@
     "odds": 61000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 12.9,
+      "reliability": 65.0,
+      "flexibility": 31.2,
+      "synergy": 26.1,
+      "value": 29.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "corps-master",
@@ -1330,14 +1365,15 @@
     "odds": 54000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 44.1,
+      "reliability": 92.1,
+      "flexibility": 100.0,
+      "synergy": 26.8,
+      "value": 61.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "crusader-tank",
@@ -1377,14 +1413,15 @@
     "odds": 56000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 15.6,
+      "reliability": 69.1,
+      "flexibility": 20.8,
+      "synergy": 36.1,
+      "value": 31.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "doctor-demon",
@@ -1413,14 +1450,15 @@
     "odds": 45000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 17.9,
+      "reliability": 75.7,
+      "flexibility": 39.6,
+      "synergy": 26.8,
+      "value": 35.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "dwarf-warrior-guard",
@@ -1460,14 +1498,15 @@
     "odds": 64000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 17.2,
+      "reliability": 78.6,
+      "flexibility": 29.2,
+      "synergy": 31.3,
+      "value": 34.7
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "erasure-teacher",
@@ -1496,14 +1535,15 @@
     "odds": 46000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 13.1,
+      "reliability": 63.3,
+      "flexibility": 16.7,
+      "synergy": 32.3,
+      "value": 27.7
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "fate-thread-witch",
@@ -1543,14 +1583,15 @@
     "odds": 63000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 13.5,
+      "reliability": 67.6,
+      "flexibility": 37.5,
+      "synergy": 23.7,
+      "value": 31.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "foresight-hero",
@@ -1579,14 +1620,15 @@
     "odds": 70000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 19.6,
+      "reliability": 54.6,
+      "flexibility": 18.8,
+      "synergy": 48.8,
+      "value": 32.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "gem-mage",
@@ -1615,14 +1657,15 @@
     "odds": 59000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 5.5,
+      "reliability": 55.5,
+      "flexibility": 27.1,
+      "synergy": 11.4,
+      "value": 21.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "genius-inventor",
@@ -1651,14 +1694,15 @@
     "odds": 52000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 12.6,
+      "reliability": 65.3,
+      "flexibility": 37.5,
+      "synergy": 20.9,
+      "value": 29.8
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "goddess-princess",
@@ -1687,14 +1731,15 @@
     "odds": 49000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 17.5,
+      "reliability": 56.0,
+      "flexibility": 29.2,
+      "synergy": 37.4,
+      "value": 31.5
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "gun-captain",
@@ -1723,14 +1768,15 @@
     "odds": 65000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 23.2,
+      "reliability": 77.7,
+      "flexibility": 43.8,
+      "synergy": 33.1,
+      "value": 40.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "half-elf-ice-mage",
@@ -1759,14 +1805,15 @@
     "odds": 51000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 20.6,
+      "reliability": 63.7,
+      "flexibility": 22.9,
+      "synergy": 44.6,
+      "value": 34.5
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "hawks-eye-sniper",
@@ -1795,14 +1842,15 @@
     "odds": 68000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 20.8,
+      "reliability": 70.9,
+      "flexibility": 25.0,
+      "synergy": 38.0,
+      "value": 35.1
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "healing-hero",
@@ -1831,14 +1879,15 @@
     "odds": 45000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 68.3,
+      "reliability": 75.8,
+      "flexibility": 41.7,
+      "synergy": 90.4,
+      "value": 68.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Meta",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "pacifier-prince",
@@ -1867,14 +1916,15 @@
     "odds": 62000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 8.0,
+      "reliability": 52.2,
+      "flexibility": 27.1,
+      "synergy": 13.9,
+      "value": 21.8
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "star-key-mage",
@@ -1903,14 +1953,15 @@
     "odds": 58000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 11.6,
+      "reliability": 69.1,
+      "flexibility": 27.1,
+      "synergy": 22.9,
+      "value": 28.5
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "supreme-kai",
@@ -1939,14 +1990,15 @@
     "odds": 69000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 13.1,
+      "reliability": 57.1,
+      "flexibility": 25.0,
+      "synergy": 28.1,
+      "value": 27.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "turtle-hermit",
@@ -1986,14 +2038,15 @@
     "odds": 53000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 12.3,
+      "reliability": 70.1,
+      "flexibility": 22.9,
+      "synergy": 27.5,
+      "value": 29.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "weather-witch-navigator",
@@ -2022,14 +2075,15 @@
     "odds": 44000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 18.8,
+      "reliability": 62.7,
+      "flexibility": 25.0,
+      "synergy": 40.5,
+      "value": 33.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "wind-tunnel-monk",
@@ -2058,14 +2112,15 @@
     "odds": 60000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 25.7,
+      "reliability": 58.6,
+      "flexibility": 29.2,
+      "synergy": 50.0,
+      "value": 37.8
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "zero-gravity-hero",
@@ -2094,14 +2149,15 @@
     "odds": 55000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 21.7,
+      "reliability": 64.6,
+      "flexibility": 22.9,
+      "synergy": 46.3,
+      "value": 35.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "blue-healer-cat-knight",
@@ -2130,14 +2186,15 @@
     "odds": 737000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 60.5,
+      "reliability": 67.3,
+      "flexibility": 41.7,
+      "synergy": 87.1,
+      "value": 63.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "charge-commander",
@@ -2166,14 +2223,15 @@
     "odds": 558000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 58.4,
+      "reliability": 92.1,
+      "flexibility": 95.8,
+      "synergy": 37.9,
+      "value": 68.5
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "cherry-blossom-medic",
@@ -2202,14 +2260,15 @@
     "odds": 520000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 19.0,
+      "reliability": 61.4,
+      "flexibility": 22.9,
+      "synergy": 37.3,
+      "value": 31.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "flower-hand-scholar",
@@ -2249,14 +2308,15 @@
     "odds": 641000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 27.7,
+      "reliability": 75.5,
+      "flexibility": 50.0,
+      "synergy": 35.0,
+      "value": 43.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "future-sight-dog",
@@ -2285,14 +2345,15 @@
     "odds": 612000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 17.9,
+      "reliability": 70.4,
+      "flexibility": 47.9,
+      "synergy": 25.5,
+      "value": 35.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "gentle-palm-heiress",
@@ -2321,14 +2382,15 @@
     "odds": 672000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 45.8,
+      "reliability": 78.0,
+      "flexibility": 39.6,
+      "synergy": 66.4,
+      "value": 55.1
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "gentle-priest",
@@ -2357,14 +2419,15 @@
     "odds": 571000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 91.7,
+      "reliability": 78.4,
+      "flexibility": 52.1,
+      "synergy": 100.0,
+      "value": 82.8
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Meta",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "golden-shield-healer",
@@ -2393,14 +2456,15 @@
     "odds": 532000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 14.8,
+      "reliability": 65.8,
+      "flexibility": 37.5,
+      "synergy": 24.9,
+      "value": 31.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "hellsing-commander",
@@ -2430,14 +2494,15 @@
     "odds": 720000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 25.9,
+      "reliability": 76.6,
+      "flexibility": 39.6,
+      "synergy": 39.0,
+      "value": 41.4
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "hero-of-legend",
@@ -2466,14 +2531,15 @@
     "odds": 584000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 17.6,
+      "reliability": 66.6,
+      "flexibility": 33.3,
+      "synergy": 30.0,
+      "value": 33.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "reindeer-doctor",
@@ -2502,14 +2568,15 @@
     "odds": 626000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 21.9,
+      "reliability": 67.7,
+      "flexibility": 37.5,
+      "synergy": 33.1,
+      "value": 36.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "sacred-arrow-priestess",
@@ -2538,14 +2605,15 @@
     "odds": 688000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 28.3,
+      "reliability": 77.3,
+      "flexibility": 43.8,
+      "synergy": 43.3,
+      "value": 44.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "shadow-strategist",
@@ -2574,14 +2642,15 @@
     "odds": 656000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 9.5,
+      "reliability": 63.8,
+      "flexibility": 37.5,
+      "synergy": 14.1,
+      "value": 26.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "teacher-alchemist",
@@ -2610,14 +2679,15 @@
     "odds": 704000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 22.0,
+      "reliability": 66.2,
+      "flexibility": 35.4,
+      "synergy": 37.5,
+      "value": 36.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "titan-scientist",
@@ -2646,14 +2716,15 @@
     "odds": 545000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 35.1,
+      "reliability": 78.3,
+      "flexibility": 62.5,
+      "synergy": 40.4,
+      "value": 50.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "useless-goddess",
@@ -2693,14 +2764,15 @@
     "odds": 598000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 40.5,
+      "reliability": 76.5,
+      "flexibility": 45.8,
+      "synergy": 53.0,
+      "value": 51.3
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "water-king-teacher",
@@ -2729,14 +2801,15 @@
     "odds": 755000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 22.5,
+      "reliability": 44.1,
+      "flexibility": 16.7,
+      "synergy": 61.4,
+      "value": 33.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "ancient-archmage",
@@ -2765,14 +2838,15 @@
     "odds": 21400000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 9.5,
+      "reliability": 63.3,
+      "flexibility": 14.6,
+      "synergy": 30.3,
+      "value": 25.4
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "dark-king-coach",
@@ -2801,14 +2875,15 @@
     "odds": 22400000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 19.6,
+      "reliability": 65.6,
+      "flexibility": 22.9,
+      "synergy": 40.6,
+      "value": 33.7
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "geass-strategist",
@@ -2837,14 +2912,15 @@
     "odds": 17200000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 56.1,
+      "reliability": 84.2,
+      "flexibility": 54.2,
+      "synergy": 64.5,
+      "value": 63.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "great-spirit-cat",
@@ -2873,14 +2949,15 @@
     "odds": 18800000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 35.1,
+      "reliability": 69.0,
+      "flexibility": 33.3,
+      "synergy": 63.4,
+      "value": 47.2
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "guild-master-giant",
@@ -2909,14 +2986,15 @@
     "odds": 20500000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 82.2,
+      "reliability": 96.5,
+      "flexibility": 100.0,
+      "synergy": 48.7,
+      "value": 81.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "Meta",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "hat-and-clogs-shopkeeper",
@@ -2945,14 +3023,15 @@
     "odds": 15700000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 16.9,
+      "reliability": 70.4,
+      "flexibility": 47.9,
+      "synergy": 20.9,
+      "value": 34.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "serpent-sin-mage",
@@ -2981,14 +3060,15 @@
     "odds": 16400000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 24.2,
+      "reliability": 73.6,
+      "flexibility": 25.0,
+      "synergy": 46.0,
+      "value": 38.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "slug-princess-hokage",
@@ -3017,14 +3097,15 @@
     "odds": 15100000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 24.7,
+      "reliability": 67.4,
+      "flexibility": 35.4,
+      "synergy": 37.4,
+      "value": 37.9
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "spirit-wave-master",
@@ -3053,14 +3134,15 @@
     "odds": 19600000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 24.9,
+      "reliability": 70.8,
+      "flexibility": 33.3,
+      "synergy": 44.2,
+      "value": 39.6
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "sweet-tooth-detective",
@@ -3089,14 +3171,15 @@
     "odds": 18000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 55.6,
+      "reliability": 80.4,
+      "flexibility": 50.0,
+      "synergy": 73.2,
+      "value": 63.0
     },
-    "tier": "",
-    "updated": "2026-10-28"
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "chainsaw-pup-devil",
@@ -3136,14 +3219,15 @@
     "odds": 220400000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 46.0,
+      "reliability": 77.1,
+      "flexibility": 43.8,
+      "synergy": 59.9,
+      "value": 54.6
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "flower-healer-captain",
@@ -3183,14 +3267,15 @@
     "odds": 189000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 100.0,
+      "reliability": 77.8,
+      "flexibility": 58.3,
+      "synergy": 93.7,
+      "value": 86.0
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "Meta",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "rewind-girl",
@@ -3219,14 +3304,15 @@
     "odds": 204100000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 30.2,
+      "reliability": 66.4,
+      "flexibility": 37.5,
+      "synergy": 45.2,
+      "value": 41.9
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "angel-attendant",
@@ -3255,14 +3341,15 @@
     "odds": 1900000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 42.8,
+      "reliability": 61.1,
+      "flexibility": 20.8,
+      "synergy": 75.6,
+      "value": 48.6
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "first-master-fairy",
@@ -3291,14 +3378,15 @@
     "odds": 2200000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 47.4,
+      "reliability": 90.6,
+      "flexibility": 100.0,
+      "synergy": 35.1,
+      "value": 64.1
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "nine-tails-fox",
@@ -3327,14 +3415,15 @@
     "odds": 2000000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 33.6,
+      "reliability": 77.4,
+      "flexibility": 39.6,
+      "synergy": 53.2,
+      "value": 47.5
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "wish-granter",
@@ -3374,14 +3463,15 @@
     "odds": 21400000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 39.3,
+      "reliability": 80.4,
+      "flexibility": 39.6,
+      "synergy": 65.6,
+      "value": 52.8
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "eternal-wish-dragon",
@@ -3432,14 +3522,15 @@
     "odds": 211000000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 78.7,
+      "reliability": 93.4,
+      "flexibility": 97.9,
+      "synergy": 59.8,
+      "value": 81.7
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "Meta",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "immortal-witch",
@@ -3479,14 +3570,15 @@
     "odds": 73000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 28.2,
+      "reliability": 74.6,
+      "flexibility": 45.8,
+      "synergy": 38.6,
+      "value": 43.1
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "library-spirit",
@@ -3515,14 +3607,15 @@
     "odds": 52000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 18.0,
+      "reliability": 75.4,
+      "flexibility": 27.1,
+      "synergy": 33.7,
+      "value": 34.4
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "little-witch",
@@ -3551,14 +3644,15 @@
     "odds": 67000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 8.4,
+      "reliability": 60.8,
+      "flexibility": 31.2,
+      "synergy": 16.1,
+      "value": 25.0
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "mind-reader-child",
@@ -3587,14 +3681,15 @@
     "odds": 47000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 14.0,
+      "reliability": 52.2,
+      "flexibility": 16.7,
+      "synergy": 37.3,
+      "value": 26.8
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "notebook-genius",
@@ -3623,14 +3718,15 @@
     "odds": 72000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 20.7,
+      "reliability": 73.0,
+      "flexibility": 47.9,
+      "synergy": 28.3,
+      "value": 38.1
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "ogre-shrine-princess",
@@ -3659,14 +3755,15 @@
     "odds": 76000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 13.0,
+      "reliability": 69.5,
+      "flexibility": 29.2,
+      "synergy": 24.9,
+      "value": 29.9
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "reverse-cursed-doctor",
@@ -3695,14 +3792,15 @@
     "odds": 48000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 32.8,
+      "reliability": 73.8,
+      "flexibility": 27.1,
+      "synergy": 65.6,
+      "value": 46.4
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "shapeshift-actor",
@@ -3731,14 +3829,15 @@
     "odds": 74000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 16.1,
+      "reliability": 74.2,
+      "flexibility": 31.2,
+      "synergy": 27.9,
+      "value": 33.1
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": ""
   },
   {
     "id": "sky-dragon-healer",
@@ -3767,13 +3866,14 @@
     "odds": 50000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 0,
-      "reliability": 0,
-      "flexibility": 0,
-      "synergy": 0,
-      "value": 0
+      "effect": 50.2,
+      "reliability": 63.6,
+      "flexibility": 91.7,
+      "synergy": 39.4,
+      "value": 59.0
     },
-    "tier": "",
-    "updated": "2026-10-29"
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": ""
   }
 ]

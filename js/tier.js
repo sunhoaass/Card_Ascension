@@ -19,8 +19,8 @@
   const KIND_KEY = "cbi:tierKind";      // "cards" | "support" (last Global view)
   const TITLES = { global: null, my: "My Tier Lists — Card Battle Infinity" };   // null = the page's normal title
   const LEADS = {
-    cards: "The strongest cards by Overall score, from Meta at the top to B at the bottom. Meta and SS are the Meta cards. Pick a rarity to see its stats. Tap a card for the full breakdown.",
-    support: "The strongest support cards by Value at Godly, from Meta at the top to B at the bottom. Tap one for the full breakdown.",
+    cards: "The strongest cards by Overall score, from Meta at the top to D, then the Utility row (cards that boost the whole deck). Meta and SS are the Meta cards. Pick a rarity to see its stats. Tap a card for the full breakdown.",
+    support: "The strongest support cards by Value at Godly, from Meta at the top to D at the bottom. Tap one for the full breakdown.",
     my: "Your own tier lists, saved on this device.",
     shared: "A tier list someone shared with you. It's view only: tap Save a copy to keep your own.",
   };

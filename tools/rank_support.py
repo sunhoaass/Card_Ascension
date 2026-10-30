@@ -15,7 +15,8 @@ Scores (0–100 · §5.4 weights 40 / 20 / 20 / 20):
 - reliability = % of trials where the support helped (gain > 0): chance, triggers that never fire, slots that never come in
 - flexibility = % of host cards whose mean gain is at least FLEX_SHARE of this support's own best 3 hosts
 - synergy     = 100 × mean gain of its best 3 host cards ÷ the best such value
-- value = 0.4 effect + 0.2 reliability + 0.2 flexibility + 0.2 synergy · tier by rank (meta.json → tiers[].supportTo)
+- value = 0.4 effect + 0.2 reliability + 0.2 flexibility + 0.2 synergy (at least 0.1: the site reads 0 as unranked · gems only)
+  · tier by rank (meta.json → tiers[].supportTo) · prevTier = tier before this run ("" = was unranked)
 """
 import argparse, json, os, random, sys
 from multiprocessing import Pool
@@ -110,7 +111,7 @@ def score(path, write):
     for i, v in st.items():
         o = dict(effect=round(max(0.0, 100 * v["mean"] / best_mean), 1), reliability=round(v["pos"], 1),
                  flexibility=round(v["flex"], 1), synergy=round(max(0.0, 100 * v["top3"] / best_top3), 1))
-        o["value"] = round(0.4 * o["effect"] + 0.2 * (o["reliability"] + o["flexibility"] + o["synergy"]), 1)
+        o["value"] = max(0.1, round(0.4 * o["effect"] + 0.2 * (o["reliability"] + o["flexibility"] + o["synergy"]), 1))   # 0 = unranked on the site
         r[i] = o
     name = {s["id"]: s["name"] for s in sups}
     rank = sorted(r, key=lambda i: (-r[i]["value"], name[i]))
