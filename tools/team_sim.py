@@ -223,9 +223,11 @@ def search(out):
     all_cards = [c["id"] for c in ranked + util]
     short = [s["id"] for s in sorted(sups, key=lambda x: -x["scores"]["value"])[:SUP_SHORT]]
     easy_cards = [c for c in all_cards if card_by[c]["base"]["odds"] <= EASY_CARD]
-    easy_sups = [s for s in sorted(sups, key=lambda x: -x["scores"]["value"]) if s["odds"] <= EASY_SUP][:SUP_SHORT]
+    easy_sups = [s["id"] for s in sorted(sups, key=lambda x: -x["scores"]["value"]) if s["odds"] <= EASY_SUP][:SUP_SHORT]
     ref = reference(ranked, sups)
-    res = {"ref": ref, "teams": {}, "rounds": []}
+    tt = lambda d: tuple(tuple(x) for x in d) if d else None
+    res = json.load(open(out)) if os.path.exists(out) else {}           # resume: every finished search is saved in <out>
+    res.update(ref=ref); res.setdefault("done", {})
     extra = []
     for rnd_ in (1, 2):
         log(f"round {rnd_} · gauntlet {GAUNTLET} random + {len(extra)} found decks")
@@ -234,22 +236,30 @@ def search(out):
             S.tref = pool.map(evaluate, [(ref, "tower")])[0]["tower"]
             log(f"reference {ref} tower {S.tref:.2f}")
             teams = {}
+
+            def run(mode, kind, start, cards, sups_, ok):
+                key = f"{rnd_}|{mode}|{kind}"
+                if key in res["done"]:
+                    log(f"  {key}: saved"); d = res["done"][key]; return tt(d["deck"]), d["score"]
+                deck, sc = S.climb(tt(start), mode, cards, sups_, ok, f"{mode} {kind}")
+                res["done"][key] = {"deck": deck, "score": sc}
+                json.dump(res, open(out, "w"), indent=1)
+                return deck, sc
+
             for mode in ("pvp", "tower", "overall"):
-                prev = res["teams"].get(mode, {})
-                b0 = prev.get("best", {}).get("deck") or start_deck(all_cards, short, card_by, sup_by)
-                best, bs = S.climb(b0, mode, all_cards, short, lambda t: True, f"{mode} best")
+                prev = res.get("teams", {}).get(mode, {}) if rnd_ == 2 else {}
+                best, bs = run(mode, "best", prev.get("best", {}).get("deck") or start_deck(all_cards, short, card_by, sup_by), all_cards, short, lambda t: True)
                 bset = {c for c, _ in best}
                 ok2 = lambda t, bset=bset: len({c for c, _ in t} & bset) <= SECOND_SHARE
-                s0 = prev.get("second", {}).get("deck")
-                if not s0 or not ok2(tuple(map(tuple, s0))): s0 = start_deck(all_cards, short, card_by, sup_by, avoid=bset)
-                second, ss = S.climb(tuple(map(tuple, s0)), mode, all_cards, short, ok2, f"{mode} second")
-                e0 = prev.get("easy", {}).get("deck") or start_deck(easy_cards, easy_sups, card_by, sup_by)
-                easy, es = S.climb(tuple(map(tuple, e0)), mode, easy_cards, easy_sups, lambda t: True, f"{mode} easy")
+                s0 = tt(prev.get("second", {}).get("deck"))
+                if not s0 or not ok2(s0): s0 = start_deck(all_cards, short, card_by, sup_by, avoid=bset)
+                second, ss = run(mode, "second", s0, all_cards, short, ok2)
+                easy, es = run(mode, "easy", prev.get("easy", {}).get("deck") or start_deck(easy_cards, easy_sups, card_by, sup_by), easy_cards, easy_sups, lambda t: True)
                 teams[mode] = {"best": {"deck": best, "score": bs}, "second": {"deck": second, "score": ss}, "easy": {"deck": easy, "score": es}}
             res["teams"] = teams
-            res["rounds"].append({"round": rnd_, "tref": S.tref, "teams": teams})
+            res.setdefault("tref", {})[str(rnd_)] = S.tref
             json.dump(res, open(out, "w"), indent=1)
-        extra = list({tuple(v["deck"]) for m in teams.values() for k, v in m.items() if k in ("best", "second")} | {ref})
+        extra = list({tt(v["deck"]) for m in teams.values() for k, v in m.items() if k in ("best", "second")} | {ref})
     res["found"] = extra
     json.dump(res, open(out, "w"), indent=1)
 
