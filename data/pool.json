@@ -1,6 +1,7 @@
 {
   "updated": "2026-10-30",
-  "note": "Every card and support in the game (PROGRESS.md §5.2). The site loads it for the dates (NEW badge, Home > New cards); routine B picks the top meta.rankTop from here. card: atk/hp at Normal · support: vals/type = effect.vals/effect.type at Normal · src = screenshot file in inbox/ · round = batch round (0 = added before the batch) · added = the date that round went in (YYYY-MM-DD, NEW badge for 14 days).",
+  "newAfter": "2026-10-29",
+  "note": "Every card and support in the game (PROGRESS.md §5.2). The site loads it for the dates (NEW badge, Home > New cards); routine B picks the top meta.rankTop from here. card: atk/hp at Normal · support: vals/type = effect.vals/effect.type at Normal · src = screenshot file in inbox/ · round = batch round (0 = added before the batch) · added = the date that round went in (YYYY-MM-DD, NEW badge for 14 days) · newAfter = no NEW badge for anything added on or before this date (the whole-game import, owner 2026-10-30).",
   "items": [
     {
       "id": "dragon-emperor-monarch",

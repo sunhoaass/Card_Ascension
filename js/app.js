@@ -145,7 +145,11 @@
   const NEW_DAYS = 14;
   const dayOf = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) / 864e5 : NaN; };
   const today = () => { const d = new Date(); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5; };
-  const isNew = (x) => { const age = today() - dayOf(x && x.added); return age >= 0 && age < NEW_DAYS; };
+  // pool.json newAfter: cards added on or before that date never count as new (owner 2026-10-30: the whole-game import isn't "new")
+  const isNew = (x) => {
+    const d = dayOf(x && x.added), cut = dayOf(state.pool && state.pool.newAfter), age = today() - d;
+    return age >= 0 && age < NEW_DAYS && !(d <= cut);
+  };
   const newHTML = (x, cls = "") => (isNew(x) ? `<span class="gc__new${cls ? " " + cls : ""}" aria-hidden="true">New</span>` : "");
 
   /* A card is "ranked" once it has been analysed (scores.overall > 0 and a tier).
