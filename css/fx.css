@@ -104,6 +104,41 @@
 }
 .gc--noart .gc__name { display: block; }
 
+/* Card text drawn by the web (owner 2026-10-30 · cleanArt: tools/erase_text.py took it out of the picture · js/app.js fitText)
+   name top-left beside the HP number · ability name + text at the bottom · sizes in cqw, fitted on a canvas (never spill) */
+.gc__scrim {
+  position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none;
+  background:
+    radial-gradient(120% 100% at 0 0, var(--gc-scrim-top), transparent 70%) 0 0 / 72% 18.3cqw no-repeat,
+    linear-gradient(transparent, var(--gc-scrim) 26%, var(--gc-scrim) 60%, transparent 94%) 0 100% / 100% 71.7cqw no-repeat;
+}
+.gc--sup .gc__scrim { background:
+    radial-gradient(120% 100% at 0 0, var(--gc-scrim-top), transparent 70%) 0 0 / 90% 18.3cqw no-repeat,
+    linear-gradient(transparent, var(--gc-scrim) 26%, var(--gc-scrim) 50%, transparent 76%) 0 100% / 100% 71.7cqw no-repeat; }
+.gc__title {
+  position: absolute; z-index: 4; left: 3.7cqw; top: 3.4cqw; pointer-events: none; white-space: nowrap;
+  font-family: var(--gc-font-pop); font-size: 7cqw; line-height: 1; letter-spacing: .05cqw; color: var(--gc-title);
+  text-shadow: 0 .35cqw 0 var(--gc-text-shade), 0 0 1.3cqw var(--gc-text-shade);
+  transform: scaleX(var(--sx, 1)); transform-origin: 0 50%;
+}
+.gc__ab {
+  position: absolute; z-index: 4; left: 5cqw; right: 5cqw; top: 78cqw; bottom: 19.7cqw; pointer-events: none;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.gc--sup .gc__ab { bottom: 25cqw; }
+.gc__abn {
+  display: block; white-space: nowrap; font-family: var(--gc-font-pop); font-weight: 400; font-size: 7.3cqw; line-height: 1.05;
+  letter-spacing: .05cqw; margin-bottom: 1.6cqw; transform: scaleX(var(--sx, 1)); transform-origin: 0 50%;
+  background: var(--gc-ab-name); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 .5cqw 0 var(--gc-text-shade));
+}
+.gc__abd {
+  display: block; font-family: var(--gc-font-text); font-weight: 500; font-size: 5cqw; line-height: 1.32; color: var(--gc-text);
+  text-shadow: 0 .17cqw .35cqw var(--gc-text-shade); overflow-wrap: break-word;
+}
+.gc__abd b { font-weight: 700; color: var(--gc-text-num); }
+.gc--noart .gc__title, .gc--noart .gc__ab, .gc--noart .gc__scrim { display: none; }
+
 /* HP: green number left of the heart (the heart is in the picture) · ATK: red number between the swords */
 .gc__hp, .gc__atk { position: absolute; z-index: 4; display: flex; align-items: center; white-space: nowrap; pointer-events: none; }
 .gc__hp { left: 40cqw; width: 43.2cqw; top: 3.2cqw; height: 14.4cqw; justify-content: flex-end; }

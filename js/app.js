@@ -86,16 +86,14 @@
   }
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
-  /* HP like the game (owner 2026-10-29 · HP only, ATK stays whole): up to 999,999,999 = the whole number with commas ·
-     1B and up = B T Qa Qi with one decimal (100 and up = whole · .0 dropped) (999,500,000 · 1B · 1.5B · 12.3B · 250B · 1.2T) */
+  /* HP (owner 2026-10-30 · HP only, ATK stays whole): short from 1K up, like the odds (shortNum): K = whole number ·
+     M B T Qa Qi = one decimal (100 and up = whole · .0 dropped) · under 10,000 the game's comma number would not fit
+     beside the name, so 1,000–9,999 is K too (8,887,688 -> 8.9M · 12,345 -> 12K · 1,500 -> 2K · 999 -> 999) */
   function fmtHp(n) {
     n = Math.round(n);
-    if (n < 1e9) return n.toLocaleString("en-US");
-    const units = [[1e9, "B"], [1e12, "T"], [1e15, "Qa"], [1e18, "Qi"]];
-    for (let i = 0; i < units.length; i++) {
-      const [v, s] = units[i], x = n / v, r = x >= 100 ? Math.round(x) : Number(x.toFixed(1));
-      if (r < 1000 || i === units.length - 1) return r + s;   // 999.96B -> 1T, not 1000B
-    }
+    if (n < 1000) return String(n);
+    if (Math.round(n / 1e3) < 1000) return Math.round(n / 1e3) + "K";
+    return shortNum(n);
   }
   const fmtKey = (k) => (k === "hp" ? fmtHp : fmtStat);
 
@@ -326,12 +324,95 @@
   }
   function fitCard(el, samples = {}) {
     ["hp", "atk", "odds", "rar"].forEach((k) => fitNum($(`[data-k="${k}"]`, el), k, samples[k]));
+    fitText(el, samples.hp);
+  }
+
+  /* ---------- Card text drawn by the web (owner 2026-10-30 · PROGRESS ▶️ "แผนข้อความบนการ์ดใหม่") ----------
+     cleanArt: tools/erase_text.py took the name, ability name and ability text out of the picture; they are written
+     here from the data (the game's exact words) and always stay inside the card: a name / ability name is squeezed
+     sideways to 82% first, then shrinks · the ability text starts at 5cqw and shrinks until its lines fit the box.
+     Widths come from a canvas like the numbers (no page layout), so a card can be fitted before it is on the page.
+     Numbers in the text are gold (<b>) · a support's {0} {1} … are its values at the rarity (setSupportNums counts them). */
+  const TXT = { name: 7, abn: 7.3, abd: [5, 2.2, 1.32], left: 3.7, gap: 2.3, hpRight: 83.2, supRight: 96.3, boxW: 90, boxH: { card: 42.3, sup: 37 } };
+  let txtFonts = null;
+  function txtW(kind, text) {                      // width at font-size 1 (em) · kind: name (Bangers) / desc / bold (Oswald)
+    const key = "t" + kind + "|" + text;
+    let w = fitCache.get(key);
+    if (w !== undefined) return w;
+    if (!fitCtx) { const cv = document.createElement("canvas"); fitCtx = cv.getContext && cv.getContext("2d"); }
+    if (!fitCtx) return 0;
+    if (!txtFonts) { const cs = getComputedStyle(document.documentElement); txtFonts = { pop: cs.getPropertyValue("--gc-font-pop").trim() || "sans-serif", text: cs.getPropertyValue("--gc-font-text").trim() || "sans-serif" }; }
+    fitCtx.font = kind === "name" ? `400 100px ${txtFonts.pop}` : `${kind === "bold" ? 700 : 500} 100px ${txtFonts.text}`;
+    w = fitCtx.measureText(text).width / 100 + (kind === "name" ? 0.005 * text.length : 0);
+    if (fitCache.size > 4000) fitCache.clear();
+    fitCache.set(key, w);
+    return w;
+  }
+  // one line in `room` cqw: squeeze to 82% (--sx), then a smaller font
+  function fitLine(span, base, room) {
+    const need = txtW("name", span.textContent) * base;
+    let size = base, sx = 1;
+    if (need > room) { sx = Math.max(0.82, room / need); if (need * sx > room) size = Math.floor(base * room / (need * sx) * 0.98 * 100) / 100; }
+    span.style.fontSize = size === base ? "" : size + "cqw";
+    span.style.setProperty("--sx", sx.toFixed(3));
+    return size;
+  }
+  // lines the ability text needs at font-size fs (cqw) in a box `room` cqw wide (word wrap like the page)
+  function textLines(parts, fs, room) {
+    const max = room / fs, sp = txtW("desc", " ");
+    let lines = 1, x = 0;
+    for (const [word, bold] of parts) {
+      const w = txtW(bold ? "bold" : "desc", word);
+      if (x > 0 && x + sp + w > max) { lines++; x = w; } else x += (x > 0 ? sp : 0) + w;
+    }
+    return lines;
+  }
+  function fitText(el, hpSample) {
+    const title = $(".gc__title", el);
+    if (!title) return;
+    const sup = el.classList.contains("gc--sup");
+    let right = TXT.supRight;
+    if (!sup) {                                    // the name ends TXT.gap before the HP number (right-aligned at 83.2cqw)
+      const hp = $('[data-k="hp"]', el);
+      const hs = parseFloat(hp.style.fontSize) || FIT.hp[0];
+      right = TXT.hpRight - textW("num", hpSample || hp.textContent) * hs - TXT.gap;
+    }
+    fitLine(title, TXT.name, right - TXT.left);
+    const abn = $(".gc__abn", el), abd = $(".gc__abd", el);
+    if (!abd) return;
+    const ns = abn && abn.textContent ? fitLine(abn, TXT.abn, TXT.boxW) * 1.05 + 1.6 : 0;
+    const room = TXT.boxH[sup ? "sup" : "card"] - ns, [base, min, lh] = TXT.abd;
+    const parts = [];
+    abd.childNodes.forEach((n) => String(n.textContent).split(/\s+/).forEach((w) => w && parts.push([w, n.nodeType === 1])));
+    let fs = base;
+    while (fs > min && textLines(parts, fs, TXT.boxW * 0.98) * fs * lh > room) fs = Math.round((fs - 0.1) * 100) / 100;
+    abd.style.fontSize = fs === base ? "" : fs + "cqw";
+  }
+  // ability text → HTML: numbers gold · {n} = a support value at the rarity
+  function textHTML(text, s, rarity) {
+    return String(text || "").split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).map((part, i) => {
+      if (!(i % 2)) return esc(part);
+      const m = /^\{(\d)\}(%?)$/.exec(part);
+      if (m && s && supVals(s)[+m[1]] != null) {
+        const v = supValAt(s, +m[1], rarity);
+        return `<b class="gc__dv" data-sv="${m[1]}" data-pct="${m[2]}" data-value="${v}">${v}${m[2]}</b>`;
+      }
+      return `<b>${esc(part)}</b>`;
+    }).join("");
+  }
+  // name + ability for a cleanArt picture ("" = the picture still has them)
+  function textBlockHTML(item, rarity) {
+    if (!item.cleanArt || !item.image) return "";
+    const sup = isSupport(item);
+    const ab = sup ? item.effect || {} : (item.passive && item.passive.name ? item.passive : item.skill) || {};
+    return `<span class="gc__scrim"></span><span class="gc__title">${esc(item.name)}</span>` +
+      `<span class="gc__ab"><span class="gc__abn">${esc(ab.name || "")}</span><span class="gc__abd">${textHTML(ab.desc, sup ? item : null, rarity)}</span></span>`;
   }
   // the web fonts (Oswald, Bangers) arrive after the first cards: measure again with the real ones
   const supById = (id) => (Array.isArray(state.support) ? state.support.find((x) => x && x.id === id) : null);
   function refitAll() {
     fitCache.clear();
-    svFont = "";
+    svFont = ""; txtFonts = null;
     for (const ref of watched) {
       const el = ref.deref(); if (!el) continue;
       fitCard(el);
@@ -359,6 +440,7 @@
       <span class="gc__name">${esc(card.name)}</span>
       <span class="gc__ring"><i></i></span>
       <span class="gc__sweep"></span>
+      ${textBlockHTML(card, rarity)}
       <span class="gc__hp"><span class="gc__num" data-k="hp" data-value="${hp}">${fmtHp(hp)}</span></span>
       <span class="gc__odds"><span class="gc__pop" data-k="odds">${fmtOdds(oddsAt(card, rarity))}</span></span>
       <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
@@ -382,13 +464,14 @@
     clearTimeout(el._fitT);
     if (animate && !FX.reduced) {
       fitNum(hpEl, "hp", longer(hpEl, hp, fmtHp)); fitNum(atkEl, "atk", longer(atkEl, atk, fmtStat));   // counting never spills out
+      fitText(el, longer(hpEl, hp, fmtHp));
       FX.countTo(atkEl, atk, { format: fmtStat, duration: 650 });
       FX.countTo(hpEl, hp, { format: fmtHp, duration: 650 });
-      el._fitT = setTimeout(() => { fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); }, 700);
+      el._fitT = setTimeout(() => { fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); fitText(el); }, 700);
     } else {
       atkEl.dataset.value = atk; atkEl.textContent = fmtStat(atk);
       hpEl.dataset.value = hp; hpEl.textContent = fmtHp(hp);
-      fitNum(hpEl, "hp"); fitNum(atkEl, "atk");
+      fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); fitText(el);
     }
   }
   const flashCard = (el) => { const f = $(".gc__flash", el); if (f && !FX.reduced) f.animate([{ opacity: 0 }, { opacity: 0.5, offset: 0.35 }, { opacity: 0 }], { duration: 400, easing: "cubic-bezier(.2,.8,.2,1)" }); };
@@ -478,7 +561,7 @@
       <span class="gc__sweep"></span>
       ${odds ? `<span class="gc__odds"><span class="gc__pop" data-k="odds">${fmtOdds(odds)}</span></span>` : ""}
       <span class="gc__rar"><span class="gc__pop" data-k="rar">${esc(rarity)}</span></span>
-      ${s.image ? supNumsHTML(s, rarity, ART_ZOOM) : ""}
+      ${s.cleanArt ? textBlockHTML(s, rarity) : s.image ? supNumsHTML(s, rarity, ART_ZOOM) : ""}
       ${s.mock ? `<span class="gc__mock">mock</span>` : ""}
       ${newHTML(s)}
       <span class="gc__sheen"><span class="card__glare"></span></span>
@@ -503,6 +586,15 @@
         clearTimeout(n._fitT); n._fitT = setTimeout(() => { n.textContent = a; fitSv(n, s, p); }, 700);
       } else { n.dataset.value = v; n.textContent = a; fitSv(n, s, p); }
     });
+    // cleanArt: the values sit in the text the web writes (textHTML) · refit once the new numbers are in
+    const dvs = el.querySelectorAll(".gc__dv");
+    dvs.forEach((n) => {
+      const v = supValAt(s, +n.dataset.sv, rarity), pct = n.dataset.pct || "", a = v + pct;
+      const dec = String(v).includes(".") || n.textContent.includes(".");
+      if (animate && !FX.reduced) FX.countTo(n, v, { duration: 650, format: (x) => (x === v ? a : (dec ? x.toFixed(1) : Math.round(x)) + pct) });
+      else { n.dataset.value = v; n.textContent = a; }
+    });
+    if (dvs.length) { clearTimeout(el._txtT); el._txtT = setTimeout(() => fitText(el), animate && !FX.reduced ? 700 : 0); }
   }
   function setSupportRarity(el, s, rarity, { animate = true } = {}) {
     el.dataset.rarity = rarity;

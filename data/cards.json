@@ -11199,6 +11199,7 @@
     "name": "Black Wizard Brother",
     "series": "",
     "image": "images/cards/black-wizard-brother.webp",
+    "cleanArt": true,
     "base": {
       "atk": 377999,
       "hp": 2519996,
@@ -11294,6 +11295,7 @@
     "name": "Control Devil",
     "series": "",
     "image": "images/cards/control-devil.webp",
+    "cleanArt": true,
     "base": {
       "atk": 386540,
       "hp": 2576934,
@@ -11389,6 +11391,7 @@
     "name": "Demon God of Flame",
     "series": "",
     "image": "images/cards/demon-god-of-flame.webp",
+    "cleanArt": true,
     "base": {
       "atk": 577501,
       "hp": 3850004,
@@ -11777,6 +11780,7 @@
     "name": "Golden Gate King",
     "series": "",
     "image": "images/cards/golden-gate-king.webp",
+    "cleanArt": true,
     "base": {
       "atk": 614885,
       "hp": 4099230,
@@ -11872,6 +11876,7 @@
     "name": "Hero Number One",
     "series": "",
     "image": "images/cards/hero-number-one.webp",
+    "cleanArt": true,
     "base": {
       "atk": 493403,
       "hp": 3289350,
@@ -11967,6 +11972,7 @@
     "name": "Homunculus Father",
     "series": "",
     "image": "images/cards/homunculus-father.webp",
+    "cleanArt": true,
     "base": {
       "atk": 867245,
       "hp": 5781630,
@@ -12284,6 +12290,7 @@
     "name": "Made in Heaven Priest",
     "series": "",
     "image": "images/cards/made-in-heaven-priest.webp",
+    "cleanArt": true,
     "base": {
       "atk": 492380,
       "hp": 3282532,
@@ -12575,6 +12582,7 @@
     "name": "Pumpkin Sun Pride",
     "series": "",
     "image": "images/cards/pumpkin-sun-pride.webp",
+    "cleanArt": true,
     "base": {
       "atk": 622225,
       "hp": 4148164,
@@ -12765,6 +12773,7 @@
     "name": "Soul Magic Father",
     "series": "",
     "image": "images/cards/soul-magic-father.webp",
+    "cleanArt": true,
     "base": {
       "atk": 542488,
       "hp": 3616586,
@@ -12928,6 +12937,7 @@
     "name": "Undead Overlord King",
     "series": "",
     "image": "images/cards/undead-overlord-king.webp",
+    "cleanArt": true,
     "base": {
       "atk": 318294,
       "hp": 2121958,
@@ -13022,6 +13032,7 @@
     "name": "White Hawk Godhand",
     "series": "",
     "image": "images/cards/white-hawk-godhand.webp",
+    "cleanArt": true,
     "base": {
       "atk": 711153,
       "hp": 4741018,
@@ -13307,6 +13318,7 @@
     "name": "Destroyer God",
     "series": "",
     "image": "images/cards/destroyer-god.webp",
+    "cleanArt": true,
     "base": {
       "atk": 2267115,
       "hp": 15114100,
@@ -13782,6 +13794,7 @@
     "name": "Hollow Mask Reaper",
     "series": "",
     "image": "images/cards/hollow-mask-reaper.webp",
+    "cleanArt": true,
     "base": {
       "atk": 967488,
       "hp": 6449918,
@@ -14065,6 +14078,7 @@
     "name": "Pirate King",
     "series": "",
     "image": "images/cards/pirate-king.webp",
+    "cleanArt": true,
     "base": {
       "atk": 945317,
       "hp": 6302110,
@@ -14444,6 +14458,7 @@
     "name": "Storm Dragon",
     "series": "",
     "image": "images/cards/storm-dragon.webp",
+    "cleanArt": true,
     "base": {
       "atk": 2267115,
       "hp": 15114100,
@@ -14539,6 +14554,7 @@
     "name": "Witch of Envy",
     "series": "",
     "image": "images/cards/witch-of-envy.webp",
+    "cleanArt": true,
     "base": {
       "atk": 2267115,
       "hp": 15114100,

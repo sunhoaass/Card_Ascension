@@ -3433,6 +3433,7 @@
     "id": "angel-attendant",
     "name": "Angel Attendant",
     "image": "images/support/angel-attendant.webp",
+    "cleanArt": true,
     "effect": {
       "name": "Angel's Grace",
       "desc": "Angel Attendant moves like an angel: the supported card dodges {0}% of hits and gets {1}% more damage and {2}% more max HP.",
@@ -3475,6 +3476,7 @@
     "id": "first-master-fairy",
     "name": "First Master Fairy",
     "image": "images/support/first-master-fairy.webp",
+    "cleanArt": true,
     "effect": {
       "name": "Fairy Law",
       "desc": "First Master Fairy casts Fairy Law: the supported card blasts every enemy card for {0}% of its max HP with its first hit (once per fight; bench cards keep 1 HP).",
@@ -3513,6 +3515,7 @@
     "id": "nine-tails-fox",
     "name": "Nine Tails Fox",
     "image": "images/support/nine-tails-fox.webp",
+    "cleanArt": true,
     "effect": {
       "name": "Nine-Tails Chakra Mode",
       "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage.",

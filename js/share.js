@@ -358,6 +358,79 @@
     ctx.restore();
   }
 
+  /* Card text drawn by the web (owner 2026-10-30 · cleanArt · same layout as js/app.js fitText / .gc__ab in css/fx.css):
+     dark fades, the name top-left (beside the HP number), the ability name + text at the bottom, numbers gold. */
+  function drawCardText(ctx, x, y, w, h, item, rarity, u) {
+    const sup = C.isSupport(item), cs = (n) => cssVar(n);
+    const pop = cs("--gc-font-pop") || "sans-serif", txt = cs("--gc-font-text") || "sans-serif", num = cs("--gc-font-num") || "sans-serif";
+    ctx.save();
+    roundRect(ctx, x, y, w, h, 3.7 * u); ctx.clip();
+    const scrim = cs("--gc-scrim") || "rgba(5, 4, 10, .88)", clear = "rgba(0, 0, 0, 0)";
+    const bh = 71.7 * u, by = y + h - bh, lg = ctx.createLinearGradient(0, by, 0, y + h);
+    [[0, clear], [0.26, scrim], [sup ? 0.5 : 0.6, scrim], [sup ? 0.76 : 0.94, clear]].forEach(([o, c]) => lg.addColorStop(o, c));
+    ctx.fillStyle = lg; ctx.fillRect(x, by, w, bh);
+    ctx.save(); ctx.translate(x, y); ctx.scale(1, 18.3 / ((sup ? 90 : 72) * 1.2));
+    const rg = ctx.createRadialGradient(0, 0, 0, 0, 0, (sup ? 90 : 72) * 1.2 * u);
+    rg.addColorStop(0, cs("--gc-scrim-top") || "rgba(0, 0, 0, .8)"); rg.addColorStop(0.7, clear);
+    ctx.fillStyle = rg; ctx.fillRect(0, 0, w, (sup ? 90 : 72) * 1.2 * u); ctx.restore();
+    // one line: squeeze to 82%, then smaller (fitLine in js/app.js)
+    const line = (text, size, room, tx, ty, paint) => {
+      ctx.font = `400 ${size * u}px ${pop}`;
+      const need = ctx.measureText(text).width; let sx = 1;
+      if (need > room * u) { sx = Math.max(0.82, room * u / need); if (need * sx > room * u) { size = size * room * u / (need * sx) * 0.98; ctx.font = `400 ${size * u}px ${pop}`; } }
+      ctx.save(); ctx.translate(tx, ty); ctx.scale(sx, 1); paint(text, size); ctx.restore();
+      return size;
+    };
+    ctx.textBaseline = "top"; ctx.textAlign = "left"; ctx.lineJoin = "round";
+    let right = 96.3;
+    if (!sup) { ctx.font = `700 ${12.4 * u}px ${num}`; right = 83.2 - Math.min(43.2, ctx.measureText(C.fmtHp(C.statAt(item, "hp", rarity))).width / u) - 2.3; }
+    line(item.name, 7, right - 3.7, x + 3.7 * u, y + 3.4 * u, (t, s) => {
+      ctx.fillStyle = cs("--gc-text-shade") || "#000"; ctx.fillText(t, 0, 0.35 * u);
+      ctx.fillStyle = cs("--gc-title") || "#fff"; ctx.fillText(t, 0, 0);
+    });
+    const ab = sup ? item.effect || {} : (item.passive && item.passive.name ? item.passive : item.skill) || {};
+    const top = y + 78 * u;
+    let used = 0;
+    if (ab.name) {
+      const s = line(ab.name, 7.3, 90, x + 5 * u, top, (t, s) => {
+        ctx.fillStyle = cs("--gc-text-shade") || "#000"; ctx.fillText(t, 0, 0.5 * u);
+        const g = ctx.createLinearGradient(0, 0, 0, s * u); g.addColorStop(0, "#f6d3ff"); g.addColorStop(1, "#c06bff");
+        ctx.fillStyle = g; ctx.fillText(t, 0, 0);
+      });
+      used = s * 1.05 + 1.6;
+    }
+    // ability text: words (numbers bold gold) wrapped in 90u, font from 5u down until it fits
+    const words = [];
+    String(ab.desc || "").split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).forEach((part, i) => {
+      if (i % 2) { const m = /^\{(\d)\}(%?)$/.exec(part); words.push([m && sup ? C.supValAt(item, +m[1], rarity) + m[2] : part, true, true]); return; }
+      part.split(/(\s+)/).forEach((p) => { if (/^\s+$/.test(p)) words.push([" ", false, false]); else if (p) words.push([p, false, true]); });
+    });
+    const room = (sup ? 37 : 42.3) - used;
+    const layout = (fs) => {
+      const rows = [[]]; let xw = 0;
+      const sp = (ctx.font = `500 ${fs * u}px ${txt}`, ctx.measureText(" ").width);
+      // glue: a number right after a word with no space stays on that word's line
+      let pend = 0;
+      words.forEach(([t, bold, solid]) => {
+        if (!solid) { pend = sp; return; }
+        ctx.font = `${bold ? 700 : 500} ${fs * u}px ${txt}`;
+        const tw = ctx.measureText(t).width;
+        if (xw > 0 && pend && xw + pend + tw > 90 * 0.98 * u) { rows.push([]); xw = 0; pend = 0; }
+        rows[rows.length - 1].push([t, bold, xw + (xw > 0 ? pend : 0)]); xw += (xw > 0 ? pend : 0) + tw; pend = 0;
+      });
+      return rows;
+    };
+    let fs = 5, rows = layout(fs);
+    while (fs > 2.2 && rows.length * fs * 1.32 > room) { fs = Math.round((fs - 0.1) * 100) / 100; rows = layout(fs); }
+    rows.forEach((row, ri) => row.forEach(([t, bold, ox]) => {
+      ctx.font = `${bold ? 700 : 500} ${fs * u}px ${txt}`;
+      const ty = top + (used + ri * fs * 1.32 + fs * 0.16) * u;
+      ctx.fillStyle = cs("--gc-text-shade") || "#000"; ctx.fillText(t, x + 5 * u + ox, ty + 0.17 * u);
+      ctx.fillStyle = bold ? cs("--gc-text-num") || "#ffcf5a" : cs("--gc-text") || "#eee"; ctx.fillText(t, x + 5 * u + ox, ty);
+    }));
+    ctx.restore();
+  }
+
   /* ==========================================================
      Game card (step 13, §3.5): same look as .gc in css/fx.css. The picture fills the card; HP, the 1 IN X pill,
      the rarity pill and ATK are drawn on top at the game's spots (u = 1% of the card width, like cqw).
@@ -436,7 +509,8 @@
     const sup = C.isSupport && C.isSupport(item);
     if (item.missing || (!item.base && !sup)) return;
     const r = rarity || "Normal";
-    if (sup && art) drawSupNums(ctx, item, art, x - w * 0.006, y - h * 0.006, w * 1.012, h * 1.012, r);
+    if (art && item.cleanArt) drawCardText(ctx, x, y, w, h, item, r, u);
+    else if (sup && art) drawSupNums(ctx, item, art, x - w * 0.006, y - h * 0.006, w * 1.012, h * 1.012, r);
     ctx.save();
     ctx.lineJoin = "round"; ctx.textBaseline = "middle";
     const numText = (text, cx, cy, align, size, room, fill, line, sw, drop, dropColor) => {
