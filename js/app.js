@@ -324,16 +324,17 @@
   }
   function fitCard(el, samples = {}) {
     ["hp", "atk", "odds", "rar"].forEach((k) => fitNum($(`[data-k="${k}"]`, el), k, samples[k]));
-    fitText(el, samples.hp);
+    fitText(el);
   }
 
   /* ---------- Card text drawn by the web (owner 2026-10-30 · PROGRESS ▶️ "แผนข้อความบนการ์ดใหม่") ----------
-     cleanArt: tools/erase_text.py took the name, ability name and ability text out of the picture; they are written
-     here from the data (the game's exact words) and always stay inside the card: a name / ability name is squeezed
-     sideways to 82% first, then shrinks · the ability text starts at 5cqw and shrinks until its lines fit the box.
+     cleanArt: tools/erase_text.py took the ability name and ability text out of the picture (letters only · the card
+     name stays the game's, owner 2026-10-31); they are written here from the data (the game's exact words) and always
+     stay inside the card: the ability name is squeezed sideways to 82% first, then shrinks · the ability text starts
+     at 5cqw and shrinks until its lines fit the box.
      Widths come from a canvas like the numbers (no page layout), so a card can be fitted before it is on the page.
      Numbers in the text are gold (<b>) · a support's {0} {1} … are its values at the rarity (setSupportNums counts them). */
-  const TXT = { name: 7, abn: 7.3, abd: [5, 2.2, 1.32], left: 3.7, gap: 2.3, hpRight: 83.2, supRight: 96.3, boxW: 90, boxH: { card: 42.3, sup: 37 } };
+  const TXT = { abn: 7.3, abd: [5, 2.2, 1.32], boxW: 90, boxH: { card: 42.3, sup: 37 } };
   let txtFonts = null;
   function txtW(kind, text) {                      // width at font-size 1 (em) · kind: name (Bangers) / desc / bold (Oswald)
     const key = "t" + kind + "|" + text;
@@ -367,19 +368,10 @@
     }
     return lines;
   }
-  function fitText(el, hpSample) {
-    const title = $(".gc__title", el);
-    if (!title) return;
-    const sup = el.classList.contains("gc--sup");
-    let right = TXT.supRight;
-    if (!sup) {                                    // the name ends TXT.gap before the HP number (right-aligned at 83.2cqw)
-      const hp = $('[data-k="hp"]', el);
-      const hs = parseFloat(hp.style.fontSize) || FIT.hp[0];
-      right = TXT.hpRight - textW("num", hpSample || hp.textContent) * hs - TXT.gap;
-    }
-    fitLine(title, TXT.name, right - TXT.left);
+  function fitText(el) {
     const abn = $(".gc__abn", el), abd = $(".gc__abd", el);
     if (!abd) return;
+    const sup = el.classList.contains("gc--sup");
     const ns = abn && abn.textContent ? fitLine(abn, TXT.abn, TXT.boxW) * 1.05 + 1.6 : 0;
     const room = TXT.boxH[sup ? "sup" : "card"] - ns, [base, min, lh] = TXT.abd;
     const parts = [];
@@ -405,7 +397,7 @@
     if (!item.cleanArt || !item.image) return "";
     const sup = isSupport(item);
     const ab = sup ? item.effect || {} : (item.passive && item.passive.name ? item.passive : item.skill) || {};
-    return `<span class="gc__scrim"></span><span class="gc__title">${esc(item.name)}</span>` +
+    return `<span class="gc__scrim"></span>` +   // the card name stays the game's, in the picture (owner 2026-10-31)
       `<span class="gc__ab"><span class="gc__abn">${esc(ab.name || "")}</span><span class="gc__abd">${textHTML(ab.desc, sup ? item : null, rarity)}</span></span>`;
   }
   // the web fonts (Oswald, Bangers) arrive after the first cards: measure again with the real ones
@@ -464,14 +456,13 @@
     clearTimeout(el._fitT);
     if (animate && !FX.reduced) {
       fitNum(hpEl, "hp", longer(hpEl, hp, fmtHp)); fitNum(atkEl, "atk", longer(atkEl, atk, fmtStat));   // counting never spills out
-      fitText(el, longer(hpEl, hp, fmtHp));
       FX.countTo(atkEl, atk, { format: fmtStat, duration: 650 });
       FX.countTo(hpEl, hp, { format: fmtHp, duration: 650 });
-      el._fitT = setTimeout(() => { fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); fitText(el); }, 700);
+      el._fitT = setTimeout(() => { fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); }, 700);
     } else {
       atkEl.dataset.value = atk; atkEl.textContent = fmtStat(atk);
       hpEl.dataset.value = hp; hpEl.textContent = fmtHp(hp);
-      fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); fitText(el);
+      fitNum(hpEl, "hp"); fitNum(atkEl, "atk");
     }
   }
   const flashCard = (el) => { const f = $(".gc__flash", el); if (f && !FX.reduced) f.animate([{ opacity: 0 }, { opacity: 0.5, offset: 0.35 }, { opacity: 0 }], { duration: 400, easing: "cubic-bezier(.2,.8,.2,1)" }); };
