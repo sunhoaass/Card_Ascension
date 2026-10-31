@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from deck_sim import deck_score, SUP
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TODAY = "2026-10-30"
+TODAY = "2026-10-31"
 RARITY = "Godly"
 TRIALS_PER_HOST = 40
 RUNS = 4

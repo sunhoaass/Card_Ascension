@@ -25,7 +25,7 @@
       "hp": 52.1,
       "passive": 66,
       "skill": 66,
-      "matchup": 43.7,
+      "matchup": 43.9,
       "team": 81,
       "overall": 60.0
     },
@@ -141,7 +141,7 @@
       "hp": 47.9,
       "passive": 65,
       "skill": 65,
-      "matchup": 43.3,
+      "matchup": 43.4,
       "team": 72,
       "overall": 56.7
     },
@@ -255,11 +255,11 @@
     "scores": {
       "atk": 45.8,
       "hp": 45.8,
-      "passive": 64,
-      "skill": 64,
-      "matchup": 39.4,
+      "passive": 65,
+      "skill": 65,
+      "matchup": 39.6,
       "team": 69,
-      "overall": 54.3
+      "overall": 54.7
     },
     "tier": "B",
     "bestTrait": "prodigy",
@@ -375,7 +375,7 @@
       "hp": 37.5,
       "passive": 67,
       "skill": 67,
-      "matchup": 40.8,
+      "matchup": 41.0,
       "team": 64,
       "overall": 52.5
     },
@@ -11210,7 +11210,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Ankhseram's Curse",
-      "desc": "Zeref's death magic kills everything around him. When it comes in, the strongest enemy card dies after 4 turns unless this card falls first (bosses lose 30% HP). Instantly kills enemies under 12% HP (not bosses). Every 2nd attack also hits the card behind for 35%. Comes back once with 40% HP."
+      "desc": "Black Wizard Brother's death magic kills everything around him. When it comes in, the strongest enemy card dies after 4 turns unless this card falls first (bosses lose 30% HP instead). Instantly kills enemies under 12% HP (not bosses). Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Comes back once with 40% HP."
     },
     "skill": {
       "name": "",
@@ -11221,12 +11221,12 @@
       "hp": 4.2,
       "passive": 85,
       "skill": 85,
-      "matchup": 21.9,
+      "matchup": 22.0,
       "team": 79,
       "overall": 47.8
     },
-    "tier": "B",
-    "updated": "2026-10-30",
+    "tier": "C",
+    "updated": "2026-10-31",
     "beats": [
       "beast-emperor",
       "homunculus-father",
@@ -11305,7 +11305,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Control",
-      "desc": "Makima controls everything weaker than her. 17% chance per hit to Confuse the enemy (it hits itself instead). Its first hit on each new enemy Seals its ability for 2 turns. Attackers take 9.1% of their damage back. Comes back once with 38% HP."
+      "desc": "Control Devil controls everything weaker than her. 17% chance per hit to Confuse the enemy (it skips its next turn and hits itself for half damage). Its first hit on each new enemy Seals that card's ability for 2 turns. Sends 9.1% of the damage it takes back at the attacker. Comes back once with 38% HP."
     },
     "skill": {
       "name": "",
@@ -11314,19 +11314,17 @@
     "scores": {
       "atk": 6.2,
       "hp": 6.2,
-      "passive": 70,
-      "skill": 70,
-      "matchup": 20.1,
+      "passive": 69,
+      "skill": 69,
+      "matchup": 17.9,
       "team": 64,
-      "overall": 40.4
+      "overall": 39.5
     },
     "tier": "D",
     "updated": "2026-10-30",
     "beats": [
-      "wood-god-hokage",
       "monk-of-names",
-      "king-of-curses",
-      "undead-overlord-king"
+      "king-of-curses"
     ],
     "losesTo": [
       "founding-titan",
@@ -11370,8 +11368,10 @@
       "soul-magic-father",
       "hero-number-one",
       "made-in-heaven-priest",
+      "wood-god-hokage",
       "demon-progenitor",
-      "black-wizard-brother"
+      "black-wizard-brother",
+      "undead-overlord-king"
     ],
     "prevTier": "B",
     "team": {
@@ -11400,7 +11400,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "God of Demons",
-      "desc": "Satan's blue flames consume everything. Every hit sets the whole enemy deck on fire for 2 turns. Each hit adds 3 Burn stacks (0.9% of the enemy's max HP per turn each, up to 4, 3 turns). Every enemy card starts with 4.6% less damage. 6.8% chance per hit to Confuse the enemy (it hits itself instead). Can't be burned."
+      "desc": "Demon God of Flame's blue flames consume everything. Each hit sets every enemy card on fire for 2 turns (5% of its max HP per turn). Each hit adds 3 Burn stacks (each stack: 0.9% of the enemy's max HP per turn, max 4 stacks, 3 turns). Every enemy card starts with 4.6% less damage. 6.8% chance per hit to Confuse the enemy (it skips its next turn and hits itself for half damage). Can't be burned."
     },
     "skill": {
       "name": "",
@@ -11409,16 +11409,15 @@
     "scores": {
       "atk": 22.9,
       "hp": 22.9,
-      "passive": 63,
-      "skill": 63,
-      "matchup": 20.6,
+      "passive": 62,
+      "skill": 62,
+      "matchup": 20.2,
       "team": 68,
-      "overall": 43.4
+      "overall": 43.0
     },
     "tier": "C",
     "updated": "2026-10-30",
     "beats": [
-      "pumpkin-sun-pride",
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
@@ -11506,7 +11505,7 @@
       "hp": 10.4,
       "passive": 73,
       "skill": 73,
-      "matchup": 16.6,
+      "matchup": 16.7,
       "team": 76,
       "overall": 43.9
     },
@@ -11789,7 +11788,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Enuma Elish",
-      "desc": "Gilgamesh fires the Gate of Babylon. 42% chance to attack twice (each hit does 0.8x damage). Every hit also hits the whole enemy bench for 20%. Every 3rd attack does 1.83x damage. Ignores shields, dodges and barriers. Every enemy card starts with 6.3% less damage."
+      "desc": "Golden Gate King opens his golden treasury. Its hits do 0.8x damage. 42% chance to attack twice. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Every 3rd attack does 1.83x damage. Ignores the enemy's shields, dodges and barriers. Every enemy card starts with 6.3% less damage."
     },
     "skill": {
       "name": "",
@@ -11798,11 +11797,11 @@
     "scores": {
       "atk": 27.1,
       "hp": 27.1,
-      "passive": 72,
-      "skill": 72,
-      "matchup": 24.8,
+      "passive": 73,
+      "skill": 73,
+      "matchup": 24.9,
       "team": 75,
-      "overall": 49.6
+      "overall": 49.9
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -11884,7 +11883,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Blast",
-      "desc": "Blast's cubes warp space. Each hit swaps the enemy's front card with a random one (not bosses). Ignores shields, dodges and barriers. 40% chance to dodge each hit. +10% damage every turn (up to 10 times)."
+      "desc": "Hero Number One's cubes warp space. Each hit swaps the enemy's front card with a random card from its deck (not bosses). Ignores the enemy's shields, dodges and barriers. 40% chance to dodge each hit. +10% damage every turn (up to 10 times)."
     },
     "skill": {
       "name": "",
@@ -11895,7 +11894,7 @@
       "hp": 18.8,
       "passive": 67,
       "skill": 67,
-      "matchup": 19.1,
+      "matchup": 19.2,
       "team": 64,
       "overall": 42.4
     },
@@ -11979,7 +11978,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "God Within",
-      "desc": "Father holds God inside him. Each kill gives it 13% of the defeated card's damage and HP. Its first hit on each new enemy Seals its ability for 2 turns. Every hit also hits the whole enemy bench for 20%. Heals 4.5% of its max HP every turn."
+      "desc": "Father holds God inside him. Each kill gives it 13% of the defeated card's damage and HP. Its first hit on each new enemy Seals that card's ability for 2 turns. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Heals 4.5% of its max HP every turn."
     },
     "skill": {
       "name": "",
@@ -12085,7 +12084,7 @@
       "hp": 25.0,
       "passive": 66,
       "skill": 66,
-      "matchup": 21.3,
+      "matchup": 21.4,
       "team": 72,
       "overall": 45.8
     },
@@ -12178,11 +12177,11 @@
     "scores": {
       "atk": 8.3,
       "hp": 8.3,
-      "passive": 66,
-      "skill": 66,
+      "passive": 67,
+      "skill": 67,
       "matchup": 13.1,
       "team": 72,
-      "overall": 39.5
+      "overall": 39.8
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -12296,7 +12295,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Made in Heaven",
-      "desc": "Pucci accelerates time. 76% chance to attack twice (each hit does 0.8x damage). 38% chance to dodge each hit. Its first hit on each new enemy Seals its ability for 3 turns. With Dio in the deck: +23% damage and HP."
+      "desc": "Made in Heaven Priest accelerates time. Its hits do 0.8x damage. 76% chance to attack twice. 38% chance to dodge each hit. Its first hit on each new enemy Seals that card's ability for 3 turns. With Time Stop Vampire in your deck: +23% damage and HP."
     },
     "skill": {
       "name": "",
@@ -12587,7 +12586,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "The One",
-      "desc": "At noon, Escanor is the strongest. +5.2% damage every turn. Every hit sets the whole enemy deck on fire for 1 turn. Every hit also hits the whole enemy bench for 20%. Can't be stunned, frozen or paralyzed."
+      "desc": "At noon, Pumpkin Sun Pride is the strongest. +5.2% damage every turn. Each hit sets every enemy card on fire for 1 turn (5% of its max HP per turn). Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Can't be stunned, frozen, paralyzed, confused, sealed or weakened."
     },
     "skill": {
       "name": "",
@@ -12596,14 +12595,14 @@
     "scores": {
       "atk": 29.2,
       "hp": 29.2,
-      "passive": 66,
-      "skill": 66,
-      "matchup": 19.1,
+      "passive": 67,
+      "skill": 67,
+      "matchup": 19.8,
       "team": 78,
-      "overall": 47.5
+      "overall": 48.0
     },
-    "tier": "C",
-    "updated": "2026-10-30",
+    "tier": "B",
+    "updated": "2026-10-31",
     "beats": [
       "infinity-sorcerer",
       "soul-magic-father",
@@ -12649,13 +12648,12 @@
       "homunculus-father",
       "white-hawk-godhand",
       "golden-gate-king",
-      "demon-god-of-flame",
       "hero-number-one",
       "made-in-heaven-priest",
       "black-wizard-brother",
       "undead-overlord-king"
     ],
-    "prevTier": "B",
+    "prevTier": "C",
     "team": {
       "bestSupport": [
         "guild-master-giant",
@@ -12778,7 +12776,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Soul Magic",
-      "desc": "Lucius rewrites souls. Copies the ability of every enemy card it faces. Each kill gives it 8.4% of the defeated card's damage and HP. Its first hit on each new enemy Seals its ability for 2 turns."
+      "desc": "Soul Magic Father rewrites souls. Copies the ability of every new enemy card it faces. Each kill gives it 8.4% of the defeated card's damage and HP. Its first hit on each new enemy Seals that card's ability for 2 turns."
     },
     "skill": {
       "name": "",
@@ -12789,9 +12787,9 @@
       "hp": 20.8,
       "passive": 72,
       "skill": 72,
-      "matchup": 23.1,
+      "matchup": 22.9,
       "team": 70,
-      "overall": 46.6
+      "overall": 46.5
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -12941,7 +12939,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "The Goal of All Life is Death",
-      "desc": "Ainz's super-tier magic. When it comes in, the strongest enemy card dies after 3 turns unless this card falls first (bosses lose 30% HP). Every enemy card starts with 6.8% less damage. Instantly kills enemies under 10% HP (not bosses). Nazarick cards in your deck get +6.8% damage and HP. Takes 6.8% less damage."
+      "desc": "Undead Overlord King's super-tier magic. When it comes in, the strongest enemy card dies after 3 turns unless this card falls first (bosses lose 30% HP instead). Every enemy card starts with 6.8% less damage. Instantly kills enemies under 10% HP (not bosses). Great Tomb cards in your deck get +6.8% damage and HP. Takes 6.8% less damage."
     },
     "skill": {
       "name": "",
@@ -12967,7 +12965,8 @@
       "wood-god-hokage",
       "monk-of-names",
       "demon-progenitor",
-      "king-of-curses"
+      "king-of-curses",
+      "control-devil"
     ],
     "losesTo": [
       "founding-titan",
@@ -13005,7 +13004,6 @@
       "homunculus-father",
       "white-hawk-godhand",
       "golden-gate-king",
-      "control-devil",
       "black-wizard-brother"
     ],
     "prevTier": "B",
@@ -13035,7 +13033,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Eclipse",
-      "desc": "Griffith: 36% chance per hit to Mark the enemy (it takes 9.1% more damage from everyone). Every enemy card starts with 7.1% less damage. Every 2nd attack also hits the card behind for 35%. Comes back once with 36% HP."
+      "desc": "White Hawk Godhand: 36% chance per hit to Mark the enemy: it takes 9.1% more damage from every card. Every enemy card starts with 7.1% less damage. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Comes back once with 36% HP."
     },
     "skill": {
       "name": "",
@@ -13141,15 +13139,16 @@
       "hp": 14.6,
       "passive": 71,
       "skill": 71,
-      "matchup": 13.2,
+      "matchup": 13.3,
       "team": 79,
-      "overall": 44.0
+      "overall": 44.1
     },
     "tier": "C",
     "updated": "2026-10-30",
     "beats": [
       "monk-of-names",
-      "king-of-curses"
+      "king-of-curses",
+      "control-devil"
     ],
     "losesTo": [
       "founding-titan",
@@ -13194,7 +13193,6 @@
       "hero-number-one",
       "made-in-heaven-priest",
       "demon-progenitor",
-      "control-devil",
       "black-wizard-brother",
       "undead-overlord-king"
     ],
@@ -13236,14 +13234,15 @@
       "hp": 56.2,
       "passive": 69,
       "skill": 69,
-      "matchup": 52.7,
+      "matchup": 53.0,
       "team": 75,
-      "overall": 62.9
+      "overall": 63.0
     },
     "tier": "A",
     "updated": "2026-10-30",
     "beats": [
       "dragon-emperor-monarch",
+      "primordial-butler-demon",
       "moon-eye-ghost",
       "atomic-shadow-lord",
       "hypnosis-traitor",
@@ -13290,8 +13289,7 @@
       "ultra-instinct-saiyan",
       "no-life-king",
       "full-moon-demon-king",
-      "dragon-god",
-      "primordial-butler-demon"
+      "dragon-god"
     ],
     "prevTier": "B",
     "team": {
@@ -13320,7 +13318,7 @@
     "obtain": "Weather card: only drops during a Starfall Night",
     "passive": {
       "name": "Hakai",
-      "desc": "Beerus erases anything. 21% chance per hit to instantly kill an enemy under 60% HP (not bosses). Ignores shields, dodges and barriers. 30% chance to dodge each hit. Every enemy card starts with 17% less damage."
+      "desc": "Destroyer God erases anything. 21% chance per hit to instantly kill an enemy under 60% HP (not bosses). Ignores the enemy's shields, dodges and barriers. 30% chance to dodge each hit. Every enemy card starts with 17% less damage."
     },
     "skill": {
       "name": "",
@@ -13331,7 +13329,7 @@
       "hp": 72.9,
       "passive": 74,
       "skill": 74,
-      "matchup": 69.1,
+      "matchup": 69.3,
       "team": 68,
       "overall": 71.3
     },
@@ -13426,7 +13424,7 @@
       "hp": 54.2,
       "passive": 69,
       "skill": 69,
-      "matchup": 54.1,
+      "matchup": 54.4,
       "team": 67,
       "overall": 61.2
     },
@@ -13435,6 +13433,7 @@
     "beats": [
       "destroyer-dragonoid",
       "dragon-emperor-monarch",
+      "primordial-butler-demon",
       "moon-eye-ghost",
       "atomic-shadow-lord",
       "hypnosis-traitor",
@@ -13480,8 +13479,7 @@
       "spiral-drill-king",
       "ultra-instinct-saiyan",
       "no-life-king",
-      "full-moon-demon-king",
-      "primordial-butler-demon"
+      "full-moon-demon-king"
     ],
     "prevTier": "B",
     "team": {
@@ -13521,7 +13519,7 @@
       "hp": 66.7,
       "passive": 69,
       "skill": 69,
-      "matchup": 58.7,
+      "matchup": 58.9,
       "team": 83,
       "overall": 68.7
     },
@@ -13616,7 +13614,7 @@
       "hp": 58.3,
       "passive": 70,
       "skill": 70,
-      "matchup": 62.0,
+      "matchup": 62.2,
       "team": 64,
       "overall": 63.9
     },
@@ -13711,9 +13709,9 @@
       "hp": 75.0,
       "passive": 71,
       "skill": 71,
-      "matchup": 72.8,
+      "matchup": 73.1,
       "team": 70,
-      "overall": 72.2
+      "overall": 72.3
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -13795,7 +13793,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Getsuga Tensho",
-      "desc": "Ichigo: Every 2nd attack also hits the card behind for 50%. Under 38% HP: +66% damage. +9.4% damage every time it is hit. Survives its first killing blow with 1 HP. With Rukia in the deck, both get +14% damage and HP."
+      "desc": "Hollow Mask Reaper: Every 2nd attack also hits the card behind for 50% of its normal hit (no crits or bonuses). Under 38% HP: +66% damage. +9.4% damage every time it is hit. Survives its first killing blow with 1 HP. With Snow White Reaper in your deck, both get +14% damage and HP."
     },
     "skill": {
       "name": "",
@@ -13806,9 +13804,9 @@
       "hp": 41.7,
       "passive": 68,
       "skill": 68,
-      "matchup": 39.3,
+      "matchup": 39.5,
       "team": 72,
-      "overall": 55.0
+      "overall": 55.1
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -13898,11 +13896,11 @@
     "scores": {
       "atk": 43.8,
       "hp": 43.8,
-      "passive": 69,
-      "skill": 69,
-      "matchup": 43.4,
+      "passive": 68,
+      "skill": 68,
+      "matchup": 42.4,
       "team": 64,
-      "overall": 55.3
+      "overall": 54.8
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -13995,9 +13993,9 @@
       "hp": 60.4,
       "passive": 79,
       "skill": 79,
-      "matchup": 59.8,
+      "matchup": 60.1,
       "team": 83,
-      "overall": 70.3
+      "overall": 70.4
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -14078,7 +14076,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Kamusari",
-      "desc": "Roger: When it comes in, every weaker enemy card loses its first turn (not bosses). Every 2nd attack also hits the card behind for 50%. Ignores shields, dodges and barriers. 30% chance to crit for 2x damage."
+      "desc": "Pirate King: When it comes in, every enemy card with less power than it loses its next turn. Every 2nd attack also hits the card behind for 50% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. 30% chance to crit for 2x damage."
     },
     "skill": {
       "name": "",
@@ -14087,11 +14085,11 @@
     "scores": {
       "atk": 39.6,
       "hp": 39.6,
-      "passive": 65,
-      "skill": 65,
-      "matchup": 38.0,
+      "passive": 66,
+      "skill": 66,
+      "matchup": 38.2,
       "team": 73,
-      "overall": 53.5
+      "overall": 53.9
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -14182,17 +14180,15 @@
     "scores": {
       "atk": 50.0,
       "hp": 50.0,
-      "passive": 75,
-      "skill": 75,
-      "matchup": 57.1,
+      "passive": 72,
+      "skill": 72,
+      "matchup": 53.4,
       "team": 63,
-      "overall": 61.9
+      "overall": 60.0
     },
     "tier": "A",
     "updated": "2026-10-30",
     "beats": [
-      "destroyer-dragonoid",
-      "dragon-god",
       "dragon-emperor-monarch",
       "moon-eye-ghost",
       "atomic-shadow-lord",
@@ -14239,7 +14235,9 @@
       "spiral-drill-king",
       "ultra-instinct-saiyan",
       "no-life-king",
-      "full-moon-demon-king"
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god"
     ],
     "prevTier": "B",
     "team": {
@@ -14277,11 +14275,11 @@
     "scores": {
       "atk": 35.4,
       "hp": 35.4,
-      "passive": 68,
-      "skill": 68,
-      "matchup": 43.1,
+      "passive": 69,
+      "skill": 69,
+      "matchup": 43.3,
       "team": 64,
-      "overall": 52.8
+      "overall": 53.2
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -14374,9 +14372,9 @@
       "hp": 64.6,
       "passive": 62,
       "skill": 62,
-      "matchup": 60.5,
+      "matchup": 60.8,
       "team": 68,
-      "overall": 63.5
+      "overall": 63.6
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -14457,7 +14455,7 @@
     "obtain": "Weather card: only drops during a Rain Storm",
     "passive": {
       "name": "Storm Dragon",
-      "desc": "Veldora: Every hit also hits the whole enemy bench for 20%. 28% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Every enemy card starts with 15% less damage. Takes 26% less damage. With Rimuru in the deck, both get +11% damage and HP."
+      "desc": "Storm Dragon: Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). 28% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Every enemy card starts with 15% less damage. Takes 26% less damage. With Slime Demon Lord in your deck, both get +11% damage and HP."
     },
     "skill": {
       "name": "",
@@ -14466,11 +14464,11 @@
     "scores": {
       "atk": 72.9,
       "hp": 72.9,
-      "passive": 80,
-      "skill": 80,
-      "matchup": 67.2,
+      "passive": 81,
+      "skill": 81,
+      "matchup": 67.5,
       "team": 86,
-      "overall": 76.2
+      "overall": 76.6
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -14561,11 +14559,11 @@
     "scores": {
       "atk": 72.9,
       "hp": 72.9,
-      "passive": 82,
-      "skill": 82,
-      "matchup": 69.9,
+      "passive": 83,
+      "skill": 83,
+      "matchup": 70.2,
       "team": 86,
-      "overall": 77.5
+      "overall": 77.9
     },
     "tier": "SS",
     "updated": "2026-10-30",
@@ -14658,7 +14656,7 @@
       "hp": 87.5,
       "passive": 76,
       "skill": 76,
-      "matchup": 84.4,
+      "matchup": 84.6,
       "team": 73,
       "overall": 80.4
     },
@@ -14753,9 +14751,9 @@
       "hp": 77.1,
       "passive": 65,
       "skill": 65,
-      "matchup": 72.1,
+      "matchup": 72.4,
       "team": 64,
-      "overall": 69.6
+      "overall": 69.7
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -14848,7 +14846,7 @@
       "hp": 100.0,
       "passive": 62,
       "skill": 62,
-      "matchup": 88.0,
+      "matchup": 88.2,
       "team": 76,
       "overall": 80.8
     },
@@ -14943,7 +14941,7 @@
       "hp": 95.8,
       "passive": 78,
       "skill": 78,
-      "matchup": 93.8,
+      "matchup": 93.9,
       "team": 64,
       "overall": 83.6
     },
@@ -15037,9 +15035,9 @@
       "hp": 85.4,
       "passive": 66,
       "skill": 66,
-      "matchup": 81.8,
+      "matchup": 82.0,
       "team": 60,
-      "overall": 73.6
+      "overall": 73.7
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -15132,7 +15130,7 @@
       "hp": 89.6,
       "passive": 76,
       "skill": 76,
-      "matchup": 83.8,
+      "matchup": 83.9,
       "team": 77,
       "overall": 81.6
     },
@@ -15227,7 +15225,7 @@
       "hp": 91.7,
       "passive": 72,
       "skill": 72,
-      "matchup": 85.9,
+      "matchup": 86.0,
       "team": 72,
       "overall": 80.4
     },
@@ -15321,9 +15319,9 @@
       "hp": 81.2,
       "passive": 72,
       "skill": 72,
-      "matchup": 75.8,
+      "matchup": 75.9,
       "team": 69,
-      "overall": 74.6
+      "overall": 74.7
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -15415,9 +15413,9 @@
       "hp": 83.3,
       "passive": 62,
       "skill": 62,
-      "matchup": 76.1,
+      "matchup": 76.2,
       "team": 60,
-      "overall": 70.4
+      "overall": 70.5
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -15509,7 +15507,7 @@
       "hp": 79.2,
       "passive": 69,
       "skill": 69,
-      "matchup": 74.8,
+      "matchup": 74.9,
       "team": 64,
       "overall": 72.0
     },
@@ -15604,7 +15602,7 @@
       "hp": 97.9,
       "passive": 70,
       "skill": 70,
-      "matchup": 88.9,
+      "matchup": 89.0,
       "team": 64,
       "overall": 80.5
     },
@@ -15699,7 +15697,7 @@
       "hp": 62.5,
       "passive": 69,
       "skill": 69,
-      "matchup": 64.6,
+      "matchup": 64.7,
       "team": 67,
       "overall": 65.9
     },
@@ -17216,9 +17214,9 @@
       "hp": 93.8,
       "passive": 67,
       "skill": 67,
-      "matchup": 87.2,
+      "matchup": 87.3,
       "team": 68,
-      "overall": 78.9
+      "overall": 79.0
     },
     "tier": "SS",
     "updated": "2026-10-30",

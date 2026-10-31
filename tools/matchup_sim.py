@@ -57,6 +57,10 @@ def parse(desc):
                 a.setdefault("team_link", []).append(s0)
             elif i == 0 and not re.search(r"\d", s0): a["flavor"] = s0
             else: a["unknown"].append(s0)
+    hm = a.pop("hits_mult", None)
+    if hm is not None:
+        if "double" in a: a["double"] = (a["double"][0], hm)
+        else: a["unknown"].append("Its hits do %sx damage." % hm)
     return a
 
 
@@ -69,12 +73,12 @@ def one(a, s):
         return m
     if True:
         if g(F + r"% chance to dodge each hit"): a["dodge"] = float(m[1]) / 100
-        elif g(r"Ignores shields, dodges and barriers"): a["ignore"] = True
+        elif g(r"Ignores (the enemy's )?shields, dodges and barriers"): a["ignore"] = True
         elif g(r"Its attacks can't be dodged"): a["undodgeable"] = True
         elif g(r"Every hit also hits the whole enemy bench for " + F + r"%( of its normal hit \(no crits or bonuses\))?"): a["bench"] = float(m[1]) / 100
         elif g(r"Its first attack also hits the whole enemy bench for " + F + "%"): a["bench_first"] = float(m[1]) / 100
         elif g(r"Every enemy card starts with " + F + "% less damage"): a["enemy_less"] = float(m[1]) / 100
-        elif g(r"Every (\d)\w\w attack also hits the card behind for " + F + "%"): a["behind"] = (int(m[1]), float(m[2]) / 100)
+        elif g(r"Every (\d)\w\w attack also hits the card behind for " + F + r"%( of its normal hit \(no crits or bonuses\))?"): a["behind"] = (int(m[1]), float(m[2]) / 100)
         elif g(r"Comes back once with " + F + "% HP"): a["revive"] = float(m[1]) / 100
         elif g(r"Heals " + F + "% of its max HP every turn"): a["regen"] = float(m[1]) / 100
         elif g(r"Survives its first killing blow with 1 HP"): a["survive"] = True
@@ -83,22 +87,25 @@ def one(a, s):
         elif g(r"Takes " + F + r"% less damage until it has been hit (\d+) times"): a["dr_until"] = (float(m[1]) / 100, int(m[2]))
         elif g(r"Takes " + F + r"% less from an attack each time it has seen it \(up to (\d+) times\)"): a["adapt"] = (float(m[1]) / 100, int(m[2]))
         elif g(r"Can't be stunned, frozen or paralyzed"): a["cc_immune"] = True
+        elif g(r"Can't be stunned, frozen, paralyzed, confused, sealed or weakened"): a["cc_immune"] = a["status_immune"] = True
         elif g(r"Can't be burned"): a["burn_immune"] = True
         elif g(r"Heals " + F + "% of the damage it deals"): a["lifesteal"] = float(m[1]) / 100
         elif g(r"Every (\d)\w\w attack does " + F + "x damage"): a["every_n"] = (int(m[1]), float(m[2]))
         elif g(r"Its first hit on each new enemy does " + F + "x damage"): a["first_mult"] = float(m[1])
-        elif g(r"Its first hit on each new enemy Seals its ability for (\d+) turns?"): a["seal_first"] = int(m[1])
+        elif g(r"Its first hit on each new enemy Seals (its|that card's) ability for (\d+) turns?"): a["seal_first"] = int(m[2])
+        elif g(r"Its hits do " + F + "x damage"): a["hits_mult"] = float(m[1])
         elif g(r"\+" + F + "% damage every time it is hit"): a["hit_ramp"] = float(m[1]) / 100
         elif g(r"\+" + F + r"% damage every turn \(up to (\d+) times\)"): a["turn_ramp"] = (float(m[1]) / 100, int(m[2]))
         elif g(r"\+" + F + "% damage every turn"): a["turn_ramp"] = (float(m[1]) / 100, 10 ** 6)
         elif g(r"\+" + F + "% damage"): a["flat"] = a.get("flat", 0) + float(m[1]) / 100
         elif g(r"\+" + F + r"% damage against (\w+) cards"): a["vs_group"] = (m[2].lower(), float(m[1]) / 100)
         elif g(r"Takes " + F + r"x damage from (\w+) cards"): a["weak_group"] = (m[2].lower(), float(m[1]))
-        elif g(r"Copies the ability of every enemy card it faces"): a["copy"] = True
+        elif g(r"Copies the ability of every (new )?enemy card it faces"): a["copy"] = True
         elif g(r"Attackers take " + F + "% of their damage back"): a["reflect"] = float(m[1]) / 100
+        elif g(r"Sends " + F + "% of the damage it takes back at the attacker"): a["reflect"] = float(m[1]) / 100
         elif g(r"Instantly kills enemies under " + F + r"% HP \(not bosses\)"): a["execute"] = float(m[1]) / 100
         elif g(F + r"% chance per hit to instantly kill an enemy under " + F + r"% HP \(not bosses\)"): a["instakill"] = (float(m[1]) / 100, float(m[2]) / 100)
-        elif g(F + r"% chance per hit to Confuse the enemy \(it hits itself instead\)"): a["confuse"] = float(m[1]) / 100
+        elif g(F + r"% chance per hit to Confuse the enemy \((it hits itself instead|it skips its next turn and hits itself for half damage)\)"): a["confuse"] = float(m[1]) / 100
         elif g(r"Under " + F + r"% HP: \+" + F + "% damage"): a["low_hp"] = (float(m[1]) / 100, float(m[2]) / 100)
         elif g(F + r"% chance to attack twice \(each hit does " + F + r"x damage\)"): a["double"] = (float(m[1]) / 100, float(m[2]))
         elif g(F + r"% chance to attack twice"): a["double"] = (float(m[1]) / 100, 1.0)
@@ -112,18 +119,23 @@ def one(a, s):
         elif g(r"Blocks the first (\d+) hits completely"): a["block"] = int(m[1])
         elif g(F + r"% chance to crit for " + F + "x damage"): a["crit"] = (float(m[1]) / 100, float(m[2]))
         elif g(r"Every hit sets the whole enemy deck on fire for (\d+) turns?"): a["fire"] = int(m[1])
+        elif g(r"Each hit sets every enemy card on fire for (\d+) turns? \(5% of its max HP per turn\)"): a["fire"] = int(m[1])
         elif g(r"Each hit adds (\d+) (Burn|Poison|Bleed) stacks? \(" + F + r"% of the enemy's max HP per turn each, up to (\d+), (\d+) turns\)"):
+            a.setdefault("dots", []).append((m[2].lower(), int(m[1]), float(m[3]) / 100, int(m[4]), int(m[5])))
+        elif g(r"Each hit adds (\d+) (Burn|Poison|Bleed) stacks? \(each stack: " + F + r"% of the enemy's max HP per turn, max (\d+) stacks, (\d+) turns\)"):
             a.setdefault("dots", []).append((m[2].lower(), int(m[1]), float(m[3]) / 100, int(m[4]), int(m[5])))
         elif g(r"Each hit also deals " + F + "% of the enemy's max HP"): a["maxhp_hit"] = float(m[1]) / 100
         elif g(r"Hits set black flames on the enemy: " + F + "% of its max HP every turn, forever"): a["black_flame"] = float(m[1]) / 100
         elif g(r"Each hit crushes the enemy for " + F + r"% of its max HP per turn for (\d+) turns"): a["crush"] = (float(m[1]) / 100, int(m[2]))
-        elif g(r"When it comes in, the strongest enemy card dies after (\d+) turns unless this card falls first \(bosses lose 30% HP\)"): a["doom"] = int(m[1])
+        elif g(r"When it comes in, the strongest enemy card dies after (\d+) turns unless this card falls first \(bosses lose 30% HP( instead)?\)"): a["doom"] = int(m[1])
         elif g(r"When it comes in, every weaker enemy card loses its first turn \(not bosses\)"): a["skip_weaker"] = True
+        elif g(r"When it comes in, every enemy card with less power than it loses its next turn"): a["skip_weaker"] = True
         elif g(F + r"% chance per hit to Mark the enemy \(it takes " + F + r"% more damage from everyone\)"): a["mark"] = (float(m[1]) / 100, float(m[2]) / 100)
+        elif g(F + r"% chance per hit to Mark the enemy: it takes " + F + r"% more damage from every card"): a["mark"] = (float(m[1]) / 100, float(m[2]) / 100)
         elif g(r"Black Flash: " + F + r"% chance \(\+" + F + r"% per Zone, up to (\d+)\) to hit for " + F + r"x damage, guaranteed at full Zone"):
             a["black_flash"] = (float(m[1]) / 100, float(m[2]) / 100, int(m[3]), float(m[4]))
         elif g(r"Once, raises a defeated enemy as its shadow at " + F + "% strength"): a["raise"] = float(m[1]) / 100
-        elif g(r"Each hit swaps the enemy's front card with a random one \(not bosses\)"): a["swap"] = True
+        elif g(r"Each hit swaps the enemy's front card with a random (one|card from its deck) \(not bosses\)"): a["swap"] = True
         elif g(r"Every other card in your deck gets \+" + F + "% damage"): a["team_dmg"] = float(m[1]) / 100
         elif g(r"While on the bench, heals the card in front " + F + "% of its max HP every turn"): a["bench_heal"] = float(m[1]) / 100
         elif g(r"Shadows raised by your deck are " + F + "% stronger"): a["shadow_boost"] = float(m[1]) / 100
@@ -185,7 +197,7 @@ def one_hit(att, d, mult, rnd, counter=False):
     """one hit of att on d · returns 'dead' if d died, 'attdead' if att died (reflect/confuse)."""
     if not counter and att.confused:
         att.confused = False
-        dmg = att.atk * mult
+        dmg = att.atk * mult * 0.5   # game text 2026-10-30: "skips its next turn and hits itself for half damage"
         att.hp -= dmg * reduce_mult(att, att)
         return "attdead" if lethal(att) else None
     # dodge / block
@@ -228,9 +240,10 @@ def one_hit(att, d, mult, rnd, counter=False):
         if pa and cc and rnd() < pa[0]: d.para = max(d.para, pa[1])
         fr = att.get("freeze")
         if fr and cc and rnd() < fr[0]: d.frozen = max(d.frozen, fr[1])
-        if att.has("confuse") and rnd() < att.a["confuse"]: d.confused = True
+        st_ok = "status_immune" not in d.a   # confused / sealed / weakened
+        if att.has("confuse") and st_ok and rnd() < att.a["confuse"]: d.confused = True
         sc = att.get("seal_chance")
-        if sc and rnd() < sc[0]: d.sealed = max(d.sealed, sc[1])
+        if sc and st_ok and rnd() < sc[0]: d.sealed = max(d.sealed, sc[1])
         mk = att.get("mark")
         if mk and rnd() < mk[0]: d.marked = mk[1]
         for kind, n, pct, cap, turns in att.get("dots") or []:
@@ -324,7 +337,7 @@ def fight(c1, a1, c2, a2, first, rnd, fire_pct):
             for h in range(hits):
                 fm = att.a["first_mult"] if first_hit and h == 0 and att.has("first_mult") else 1.0
                 r = one_hit(att, d, mult * fm, rnd)
-                if first_hit and h == 0 and att.has("seal_first") and d.hp > 0: d.sealed = max(d.sealed, att.a["seal_first"])
+                if first_hit and h == 0 and att.has("seal_first") and d.hp > 0 and "status_immune" not in d.a: d.sealed = max(d.sealed, att.a["seal_first"])
                 if r == "dead": return att, d
                 if r == "attdead": return d, att
         # end of own turn: statuses on me tick down, doom counts my turns
