@@ -74,9 +74,7 @@
   --gc-sv-line: #050505;        /* its dark outline */
   --gc-corner: 3.7% / 2.64%;    /* the game's 22px corner on a 600×840 card (on the card itself) */
   --gc-radius: 3.7cqw;          /* the same corner for parts inside the card (cqw only works inside .gc) */
-  --gc-scrim: rgba(5, 4, 10, .88);   /* card text drawn by the web (cleanArt): dark fade under it */
-  --gc-scrim-top: rgba(0, 0, 0, .8);
-  --gc-title: #fff;                   /* card name */
+  --gc-scrim: rgba(5, 4, 10, .6);    /* card text drawn by the web (cleanArt): light dark fade under it (the art shows) */
   --gc-text: #eee;                    /* ability text */
   --gc-text-num: #ffcf5a;             /* numbers in the ability text (gold) */
   --gc-text-shade: #000;

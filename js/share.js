@@ -359,20 +359,16 @@
   }
 
   /* Card text drawn by the web (owner 2026-10-30 · cleanArt · same layout as js/app.js fitText / .gc__ab in css/fx.css):
-     dark fades, the name top-left (beside the HP number), the ability name + text at the bottom, numbers gold. */
+     a light fade, the ability name + text at the bottom, numbers gold · the card name is in the picture (owner 2026-10-31) */
   function drawCardText(ctx, x, y, w, h, item, rarity, u) {
     const sup = C.isSupport(item), cs = (n) => cssVar(n);
-    const pop = cs("--gc-font-pop") || "sans-serif", txt = cs("--gc-font-text") || "sans-serif", num = cs("--gc-font-num") || "sans-serif";
+    const pop = cs("--gc-font-pop") || "sans-serif", txt = cs("--gc-font-text") || "sans-serif";
     ctx.save();
     roundRect(ctx, x, y, w, h, 3.7 * u); ctx.clip();
-    const scrim = cs("--gc-scrim") || "rgba(5, 4, 10, .88)", clear = "rgba(0, 0, 0, 0)";
+    const scrim = cs("--gc-scrim") || "rgba(5, 4, 10, .6)", clear = "rgba(0, 0, 0, 0)";
     const bh = 71.7 * u, by = y + h - bh, lg = ctx.createLinearGradient(0, by, 0, y + h);
-    [[0, clear], [0.26, scrim], [sup ? 0.5 : 0.6, scrim], [sup ? 0.76 : 0.94, clear]].forEach(([o, c]) => lg.addColorStop(o, c));
+    [[0, clear], [0.24, scrim], [sup ? 0.5 : 0.62, scrim], [sup ? 0.76 : 0.94, clear]].forEach(([o, c]) => lg.addColorStop(o, c));
     ctx.fillStyle = lg; ctx.fillRect(x, by, w, bh);
-    ctx.save(); ctx.translate(x, y); ctx.scale(1, 18.3 / ((sup ? 90 : 72) * 1.2));
-    const rg = ctx.createRadialGradient(0, 0, 0, 0, 0, (sup ? 90 : 72) * 1.2 * u);
-    rg.addColorStop(0, cs("--gc-scrim-top") || "rgba(0, 0, 0, .8)"); rg.addColorStop(0.7, clear);
-    ctx.fillStyle = rg; ctx.fillRect(0, 0, w, (sup ? 90 : 72) * 1.2 * u); ctx.restore();
     // one line: squeeze to 82%, then smaller (fitLine in js/app.js)
     const line = (text, size, room, tx, ty, paint) => {
       ctx.font = `400 ${size * u}px ${pop}`;
@@ -382,12 +378,6 @@
       return size;
     };
     ctx.textBaseline = "top"; ctx.textAlign = "left"; ctx.lineJoin = "round";
-    let right = 96.3;
-    if (!sup) { ctx.font = `700 ${12.4 * u}px ${num}`; right = 83.2 - Math.min(43.2, ctx.measureText(C.fmtHp(C.statAt(item, "hp", rarity))).width / u) - 2.3; }
-    line(item.name, 7, right - 3.7, x + 3.7 * u, y + 3.4 * u, (t, s) => {
-      ctx.fillStyle = cs("--gc-text-shade") || "#000"; ctx.fillText(t, 0, 0.35 * u);
-      ctx.fillStyle = cs("--gc-title") || "#fff"; ctx.fillText(t, 0, 0);
-    });
     const ab = sup ? item.effect || {} : (item.passive && item.passive.name ? item.passive : item.skill) || {};
     const top = y + 78 * u;
     let used = 0;
@@ -425,7 +415,7 @@
     rows.forEach((row, ri) => row.forEach(([t, bold, ox]) => {
       ctx.font = `${bold ? 700 : 500} ${fs * u}px ${txt}`;
       const ty = top + (used + ri * fs * 1.32 + fs * 0.16) * u;
-      ctx.fillStyle = cs("--gc-text-shade") || "#000"; ctx.fillText(t, x + 5 * u + ox, ty + 0.17 * u);
+      ctx.fillStyle = cs("--gc-text-shade") || "#000"; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 0.9 * u; ctx.fillText(t, x + 5 * u + ox, ty + 0.17 * u); ctx.shadowBlur = 0;
       ctx.fillStyle = bold ? cs("--gc-text-num") || "#ffcf5a" : cs("--gc-text") || "#eee"; ctx.fillText(t, x + 5 * u + ox, ty);
     }));
     ctx.restore();
@@ -529,7 +519,7 @@
     const pill = (text, top, hgt, size, min, bg, line, ink, inner, flat) => {
       const fs = fitFont(ctx, text, size * u, 36.8 * u, `italic 400 {s}px ${pop}`);
       const pw = Math.min(42 * u, Math.max(min * u, ctx.measureText(text).width + 5.2 * u));
-      const px = x + w - 1.2 * u - pw, py = y + top * u;
+      const px = x + w - (1.4 + (sp.normal ? 0 : sp.ring)) * u - pw, py = y + top * u;   // inside the frame, like css/fx.css
       roundRect(ctx, px, py, pw, hgt * u, hgt * u / 2);
       ctx.fillStyle = bg; ctx.fill();
       ctx.lineWidth = 1.1 * u; ctx.strokeStyle = line; ctx.stroke();
