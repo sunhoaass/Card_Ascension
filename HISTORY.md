@@ -1552,3 +1552,4 @@
   - **ป้าย 1 IN X + ป้ายระดับ** ขยับเข้าในกรอบ (`right: calc(1.4cqw + var(--ring))` · รูปแชร์ทำเหมือนกัน) · เดิมทับกรอบที่ระดับ Shiny ขึ้นไป
   - **ทดสอบ (Chromium 390×844):** Cards ค้น "father" ระดับ Secret / Godly (ป้ายอยู่ในกรอบ) · `#card/hollow-mask-reaper` · `#card/first-master-fairy` · ไม่มี JS error · `node --check` ผ่าน
   - **ไฟล์:** `tools/erase_text.py` · รูป 19 ใบ + `thumb/` · `js/app.js` · `js/share.js` · `css/fx.css` · `css/tokens.css` · `index.html` (`?v=52`) · `PROGRESS.md` · `HISTORY.md`
+- 2026-10-31: อัปเดตข่าว (E) — เพิ่ม patch notes "Two Battles at Once" 1 อัปเดต (major) + 2 ระบบใหม่ (Two Battles at Once, Climb Bar) ใน data/news.json · ไม่มีโค้ด

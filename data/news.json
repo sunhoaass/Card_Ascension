@@ -1,7 +1,22 @@
 {
-  "updated": "2026-10-30",
+  "updated": "2026-10-31",
   "note": "Home page news (PROGRESS.md §5.2 · routine E). updates: game patches, newest first, kind major|minor · codes: redeem codes (expires optional) · systems: new features in the game. All text in English.",
   "updates": [
+    {
+      "date": "2026-10-31",
+      "kind": "major",
+      "title": "Two Battles at Once",
+      "items": [
+        "Two Battles at Once: hide your battle, then start a second battle with any fight (towers too); Battle 1 uses your equipped deck, Battle 2 uses your next deck with cards",
+        "Buttons now say SHOW BATTLE · B1 / B2; when B1 ends, B2 becomes B1; a hidden battle that finishes turns its button gold (SEE RESULT); climbs keep going hidden while you watch your other battle",
+        "Climb Bar: new smaller top bar with one STOP per battle when you run two climbs; tap the arrow to slide it away; Tower is back to normal so you get a lot of packs again",
+        "Cards you haven't found now show faintly behind a dark overlay instead of solid black (Index + Weather); battle music keeps playing while any battle is going; the rest of the UI stays hidden while a battle is on screen",
+        "Smaller, cleaner SHOW BATTLE buttons on phone & tablet; Guild Hall text updated (guilds are here!)",
+        "Console: full controller pass for every menu, both battles, the climb bar and the guild team picker",
+        "Translations: everything new is translated into all 45 languages, plus battle status tags and the Teleport buildings list",
+        "Fixes: gem counter sometimes showing negative gems (gems were always safe); tower climbs stopping when you used another battle; a Shop error when switching tabs; performance improvements & less lag"
+      ]
+    },
     {
       "date": "2026-10-30",
       "kind": "minor",
@@ -22,5 +37,16 @@
     }
   ],
   "codes": [],
-  "systems": []
+  "systems": [
+    {
+      "date": "2026-10-31",
+      "title": "Two Battles at Once",
+      "desc": "Hide a battle and start a second one with any fight, towers included. Battle 1 uses your equipped deck and Battle 2 your next deck with cards."
+    },
+    {
+      "date": "2026-10-31",
+      "title": "Climb Bar",
+      "desc": "A smaller top bar with one STOP per battle when you run two climbs. Tap the arrow to slide it away."
+    }
+  ]
 }
