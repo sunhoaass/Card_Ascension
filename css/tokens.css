@@ -74,6 +74,13 @@
   --gc-sv-line: #050505;        /* its dark outline */
   --gc-corner: 3.7% / 2.64%;    /* the game's 22px corner on a 600×840 card (on the card itself) */
   --gc-radius: 3.7cqw;          /* the same corner for parts inside the card (cqw only works inside .gc) */
+  --gc-scrim: rgba(5, 4, 10, .88);   /* card text drawn by the web (cleanArt): dark fade under it */
+  --gc-scrim-top: rgba(0, 0, 0, .8);
+  --gc-title: #fff;                   /* card name */
+  --gc-text: #eee;                    /* ability text */
+  --gc-text-num: #ffcf5a;             /* numbers in the ability text (gold) */
+  --gc-text-shade: #000;
+  --gc-ab-name: linear-gradient(#f6d3ff, #c06bff);   /* ability name: the game's lilac */
   --gc-hp: #52b257;             /* sampled from the game picture */
   --gc-hp-line: #000a03;
   --gc-atk: #ec453b;
