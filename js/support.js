@@ -4,8 +4,8 @@
      js/app.js) with search, the rarity chips (the numbers on the cards grow with the level), tier filter and sort
      (rarest first by default, the Sort menu changes it) · 30 a page like the Cards side (C.pager)
    · Tapping one opens the same card detail as a card (js/detail.js, #card/<id>); there is no support detail view any more
-   · card(s): the gilded support tile still used by the Tier List, Deck and Tier Maker, now with the values written on
-     the picture (the numbers were erased from the pictures, tools/support_nums.py) at the site-wide rarity
+   · The Tier List, Deck and Tier Maker show the same game card (2026-10-30, owner: support looks like the battle cards ·
+     the gilded support tile is gone)
    Needs js/fx.js, js/app.js and js/cards.js loaded first.
    Data: data/support.json (PROGRESS.md §5.4). No ATK / HP. Effect values = Normal × (1 + 0.25 × level) (C.supText, js/app.js).
    ========================================================== */
@@ -45,37 +45,6 @@
     rankedCount = ranked.length;
     let r = 0, prev = null;
     ranked.forEach((s, i) => { if (s.scores.value !== prev) { r = i + 1; prev = s.scores.value; } rankOf.set(s.id, r); });
-  }
-
-  /* ---------- the gilded support tile (Tier List, Deck, Tier Maker) ---------- */
-  const tiles = new Set();       // tiles with values on them that follow the site-wide rarity (WeakRef)
-  // rarity: a tile with its own level (a deck's rarity · setTile() moves it) · none = the site-wide rarity, kept in step
-  function supportCard(s, { thumb = false, rarity = null } = {}) {
-    const el = document.createElement("span");
-    el.className = "scard" + (thumb ? " scard--thumb" : "");
-    el.dataset.sid = s.id;   // js/detail.js flies the detail back to it
-    if (thumb) el.setAttribute("aria-hidden", "true");
-    else { el.setAttribute("role", "img"); el.setAttribute("aria-label", `${s.name}, support card`); }
-    if (isRanked(s)) el.style.setProperty("--tc", tierVar(s.tier));
-    el.innerHTML = `
-      <span class="scard__frame"><span class="scard__body">
-        <span class="scard__art">${s.image ? C.artImg(s.image) : C.placeholderArt(s)}${s.image ? `<span class="scard__sv">${C.supNumsHTML(s, rarity || state.rarity)}</span>` : ""}</span>
-        ${thumb ? "" : `<span class="scard__tag">Support</span>${isRanked(s) ? (String(s.tier).length > 2 ? `<span class="scard__tier scard__tier--long"><span>${esc(s.tier)}</span></span>` : `<span class="scard__tier">${esc(s.tier)}</span>`) : ""}
-        <span class="scard__info"><span class="scard__name">${esc(s.name)}</span></span>
-        <span class="scard__glare"></span>`}
-      </span>${thumb ? "" : `<span class="scard__orn"></span>`}</span>`;
-    const sv = $(".scard__sv", el);
-    if (sv) { C.fitSupport(sv, s); sv.dataset.rarity = rarity || state.rarity; if (!rarity && window.WeakRef) tiles.add(new WeakRef(el)); }
-    C.bindArt(el, s);   // missing image -> the generated art
-    return el;
-  }
-
-  // a tile with its own level (Deck): count its values to another rarity
-  function setTile(el, s, rarity, { animate = false } = {}) {
-    const sv = el && $(".scard__sv", el);
-    if (!sv || !s || sv.dataset.rarity === rarity) return;
-    sv.dataset.rarity = rarity;
-    C.setSupportNums(sv, s, rarity, { animate });
   }
 
   /* ==========================================================
@@ -183,36 +152,19 @@
     apply({ animate: true });
   }
 
-  /* Rarity changed (chips here or anywhere · js/cards.js): the grid's numbers count to the new values, the tiles follow */
+  /* Rarity changed (chips here or anywhere · js/cards.js): the grid's numbers count to the new values */
   function recolor(name) {
-    if (built) {
-      const seen = new Map();
-      cardEls.forEach((el, id) => seen.set(id, el.isConnected && rectVisible(el.getBoundingClientRect())));
-      cardEls.forEach((el, id) => C.setCardRarity(el, byId.get(id), name, { animate: seen.get(id) }));
-      if (filters.sort === "effect") apply({ keepPage: true });
-    }
-    for (const ref of tiles) {
-      const el = ref.deref();
-      if (!el) { tiles.delete(ref); continue; }
-      const sv = $(".scard__sv", el), s = byId.get(el.dataset.sid);
-      if (!sv || !s || sv.dataset.rarity === name) continue;
-      sv.dataset.rarity = name;
-      C.setSupportNums(sv, s, name, { animate: el.isConnected && rectVisible(el.getBoundingClientRect()) });
-    }
+    if (!built) return;
+    const seen = new Map();
+    cardEls.forEach((el, id) => seen.set(id, el.isConnected && rectVisible(el.getBoundingClientRect())));
+    cardEls.forEach((el, id) => C.setCardRarity(el, byId.get(id), name, { animate: seen.get(id) }));
+    if (filters.sort === "effect") apply({ keepPage: true });
   }
 
   /* The Support side's order (filters + sort) · the detail swipes / its wheel walk it */
   function order() {
     if (built) return shown.slice();
     return items.slice().sort(compare).map((s) => s.id);
-  }
-
-  /* Open a support's detail from a gilded tile (Tier List, Deck, Tier Maker): swiping walks the tiles around it */
-  function openSupport(id, originEl) {
-    const box = originEl && originEl.closest("#tier-support-view");
-    const list = box ? [...box.querySelectorAll("[data-sid]")].map((n) => n.dataset.sid).filter((x, i, a) => a.indexOf(x) === i) : order();
-    if (originEl && !originEl.dataset.sid) originEl.dataset.sid = id;
-    C.openCard(id, originEl, { list });
   }
 
   /* ---------- Boot ---------- */
@@ -237,7 +189,6 @@
     bindGrid();
   }
 
-  // card(s): the gilded tile · open(id, el): its detail · build(): the grid (js/cards.js, first time the side shows)
-  // effect / values / rank: the detail's Support parts (js/detail.js)
-  C.support = { init, build, order, card: supportCard, setTile, open: openSupport, effect, values, rank: (id) => rankOf.get(id) || 0, rankedCount: () => rankedCount };
+  // build(): the grid (js/cards.js, first time the side shows) · effect / values / rank: the detail's Support parts (js/detail.js)
+  C.support = { init, build, order, effect, values, rank: (id) => rankOf.get(id) || 0, rankedCount: () => rankedCount };
 })();

@@ -157,7 +157,7 @@
 
   /* ==========================================================
      Image: the tier list board, drawn with Canvas
-     spec = { id, title, type: "card"|"support", rarity: name|null, rows: [{ label, color: "--t-ss", items: [id, ...] }], captions }
+     spec = { id, title, type: "card"|"support", rarity: name, rows: [{ label, color: "--t-ss", items: [id, ...] }], captions }
      captions: true = the Global Tier List's picture (plan 2026-10-30 item 3): narrower (1080), 5 bigger cards a line, the full
      name written under each card (wrapped, never cut) so it reads on a phone, and ▲▼ where the tier moved (C.tierMove)
      ========================================================== */
@@ -168,12 +168,10 @@
   // captions (Global): W 1080 · 5 a line · names 26px (2 lines; 3 at 22px for a long one) under the card
   const CAPS = { W: 1080, LABEL: 112, GAP: 14, PER_LINE: 5, CAP_GAP: 8, CAP: 26, CAP_MIN: 22, CAP_LINES: 3 };
 
-  // Rarity colours for the parts around the cards (rarity ribbon of the image) and the support frame (gilded, css/support.css).
-  // Game cards themselves are drawn by drawGameCard() from gcSpec() (step 13). Tokens are read from tokens.css.
+  // Rarity colours for the parts around the cards (rarity ribbon of the image).
+  // Game cards themselves (support too since 2026-10-30) are drawn by drawGameCard() from gcSpec() (step 13). Tokens are read from tokens.css.
   const stopsOf = (token) => cssVar(token).match(/#[0-9a-f]{3,8}/gi) || [];
-  function frameSpec(rarity, kind) {
-    const t = cssVar;
-    if (kind === "support") return { stops: [[0, t("--gold-hi")], [0.3, t("--gold-lo")], [0.5, t("--gold")], [0.7, t("--gold-lo")], [1, t("--gold-hi")]], glow: "rgba(216, 180, 106, .28)", body: t("--void"), orn: t("--gold-hi"), line: t("--gold") };
+  function frameSpec(rarity) {
     return { ...rarityFrame(rarity), kind: "card", rarity: rarity || "Normal" };
   }
   function rarityFrame(rarity) {
@@ -211,14 +209,6 @@
     const g = ctx.createLinearGradient(cx - dx, cy - dx, cx + dx, cy + dx);
     stops.forEach(([o, c]) => g.addColorStop(o, c));
     return g;
-  }
-  function frameFill(ctx, x, y, w, h, spec) {
-    if (spec.conic && ctx.createConicGradient) {
-      const g = ctx.createConicGradient(-Math.PI / 2, x + w / 2, y + h / 2);   // CSS conic starts at 12 o'clock
-      evenStops(spec.conic).forEach(([o, c]) => g.addColorStop(o, c));
-      return g;
-    }
-    return lin135(ctx, x, y, w, h, spec.conic ? evenStops(spec.conic) : spec.stops);
   }
   // CSS color-mix(in srgb, a t, b) for two hex colours (tier plates)
   function mix(a, b, t) {
@@ -486,64 +476,22 @@
     ctx.restore();
   }
 
-  /* One mini card. Game cards: drawGameCard() · support: gilded frame (3px) + art + name.
+  /* One mini card: the game card (drawGameCard · support too, 2026-10-30), or a dashed slot when it's not in the library.
      item = card / support object, or { missing: true, id } */
   function drawCard(ctx, x, y, w, h, item, spec, art, k, pal) {
-    const R = 8, inset = 4;
-    if (spec.kind === "card" && !item.missing) { drawGameCard(ctx, x, y, w, h, item, spec.rarity, art, k, pal); return; }
-    if (item.missing) {                                  // not in the library any more: a dashed slot, like in the editor
-      roundRect(ctx, x + 1, y + 1, w - 2, h - 2, R);
-      ctx.fillStyle = pal.glass; ctx.fill();
-      ctx.setLineDash([5, 4]); ctx.lineWidth = 1.5; ctx.strokeStyle = pal.faint; ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = pal.dim; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-      ctx.font = `600 12px ${pal.body}`;
-      const lines = wrapText(ctx, pretty(item.id), w - 18).slice(0, 3);
-      const top = y + h / 2 - (lines.length * 15) / 2;
-      lines.forEach((l, i) => ctx.fillText(fitText(ctx, l, w - 18), x + w / 2, top + 11 + i * 15));
-      ctx.font = `500 10px ${pal.body}`; ctx.fillStyle = pal.faint;
-      ctx.fillText("Not in the library", x + w / 2, y + h - 12);
-      ctx.textAlign = "left";
-      return;
-    }
-    // drop shadow, then the rarity glow
-    ctx.save();
-    roundRect(ctx, x, y, w, h, R);
-    ctx.shadowColor = "rgba(0, 0, 0, .5)"; ctx.shadowBlur = 10 * k; ctx.shadowOffsetY = 5 * k;
-    ctx.fillStyle = spec.stops ? spec.stops[0][1] : spec.conic[0];
-    ctx.fill();
-    ctx.restore();
-    ctx.save();
-    roundRect(ctx, x, y, w, h, R);
-    if (spec.glow) { ctx.shadowColor = spec.glow; ctx.shadowBlur = 16 * k; }
-    ctx.fillStyle = frameFill(ctx, x, y, w, h, spec);
-    ctx.fill();
-    ctx.restore();
-    // body
-    const bx = x + inset, by = y + inset, bw = w - inset * 2, bh = h - inset * 2;
-    ctx.save();
-    roundRect(ctx, bx, by, bw, bh, 4);
-    ctx.clip();
-    ctx.fillStyle = spec.body || "#0d1020"; ctx.fillRect(bx, by, bw, bh);
-    if (art) { drawCoverImage(ctx, art, bx, by, bw, bh); drawSupNums(ctx, item, art, bx, by, bw, bh, spec.supRarity || state.rarity); }
-    else drawPlaceholder(ctx, bx, by, bw, bh, item, pal);
-    // name strip (not when the name is written under the card: captions)
-    if (!spec.noName) {
-    const infoH = Math.round(bh * 0.3);
-    const gr = ctx.createLinearGradient(0, by + bh - infoH, 0, by + bh);
-    gr.addColorStop(0, "rgba(8, 10, 22, 0)"); gr.addColorStop(0.42, "rgba(8, 10, 22, .9)"); gr.addColorStop(1, "rgba(8, 10, 22, .9)");
-    ctx.fillStyle = gr; ctx.fillRect(bx, by + bh - infoH, bw, infoH);
-    ctx.fillStyle = pal.ink; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-    ctx.font = `700 12px ${pal.display}`;
-    ctx.fillText(fitText(ctx, item.name, bw - 14), bx + bw / 2, by + bh - 9);
+    if (!item.missing) { drawGameCard(ctx, x, y, w, h, item, spec.rarity, art, k, pal); return; }
+    const R = 8;
+    roundRect(ctx, x + 1, y + 1, w - 2, h - 2, R);
+    ctx.fillStyle = pal.glass; ctx.fill();
+    ctx.setLineDash([5, 4]); ctx.lineWidth = 1.5; ctx.strokeStyle = pal.faint; ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = pal.dim; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+    ctx.font = `600 12px ${pal.body}`;
+    const lines = wrapText(ctx, pretty(item.id), w - 18).slice(0, 3);
+    const top = y + h / 2 - (lines.length * 15) / 2;
+    lines.forEach((l, i) => ctx.fillText(fitText(ctx, l, w - 18), x + w / 2, top + 11 + i * 15));
+    ctx.font = `500 10px ${pal.body}`; ctx.fillStyle = pal.faint;
+    ctx.fillText("Not in the library", x + w / 2, y + h - 12);
     ctx.textAlign = "left";
-    }
-    // the thin inner line of the picture frame + corner ornaments (css .card__body::after, .card__orn)
-    ctx.globalAlpha = 0.55; ctx.strokeStyle = spec.line || pal.rift; ctx.lineWidth = 1;
-    ctx.strokeRect(bx + 3.5, by + 3.5, bw - 7, bh - 7);
-    ctx.globalAlpha = 0.95;
-    drawOrnaments(ctx, x + 3, y + 3, w - 6, h - 6, 18, spec.orn || pal.rift);
-    ctx.globalAlpha = 1;
-    ctx.restore();
   }
 
   function libFor(type) {
@@ -645,7 +593,7 @@
     await fontsReady();
     const lib = libFor(spec.type);
     const kind = spec.type === "support" ? "support" : "card";
-    const frame = { ...frameSpec(kind === "card" ? spec.rarity || "Normal" : null, kind), noName: caps };
+    const frame = frameSpec(spec.rarity || "Normal");   // support too (2026-10-30): game cards at the list's rarity
     const rows = spec.rows.map((r) => ({ label: String(r.label || ""), color: r.color, items: r.items.map((id) => lib.get(id) || { missing: true, id }) }));
     const total = rows.reduce((s, r) => s + r.items.length, 0);
 
@@ -695,14 +643,12 @@
     ctx.fillText("CARD BATTLE INFINITY", B.PAD, 46);
     spacing(0);
     ctx.fillStyle = pal.ink; ctx.font = `700 46px ${pal.display}`;
-    const pillW = kind === "card" ? 150 : 0;
+    const pillW = 150;
     ctx.fillText(fitText(ctx, spec.title || "Tier list", B.W - B.PAD * 2 - pillW - 20), B.PAD, 98);
     ctx.fillStyle = pal.dim; ctx.font = `500 18px ${pal.body}`;
-    const sub = [kind === "card" ? "Cards" : "Support", kind === "card" ? spec.rarity || "Normal" : null, plural(rows.length, "row", "rows"), plural(total, kind === "card" ? "card" : "support card", kind === "card" ? "cards" : "support cards")].filter(Boolean).join("  ·  ");
+    const sub = [kind === "card" ? "Cards" : "Support", spec.rarity || "Normal", plural(rows.length, "row", "rows"), plural(total, kind === "card" ? "card" : "support card", kind === "card" ? "cards" : "support cards")].filter(Boolean).join("  ·  ");
     ctx.fillText(fitText(ctx, sub, B.W - B.PAD * 2), B.PAD, 128);
-    if (kind === "card") {                                // rarity tag, top right (like the tag on a card)
-      paintRibbon(ctx, String(spec.rarity || "Normal").toUpperCase(), pillW, B.W, B.PAD, frame, pal);
-    }
+    paintRibbon(ctx, String(spec.rarity || "Normal").toUpperCase(), pillW, B.W, B.PAD, frame, pal);   // rarity tag, top right (like the tag on a card)
 
     // rows
     let y = B.HEAD;
@@ -791,7 +737,7 @@
     while (sups.length < DECK_SLOTS) sups.push(null);
     const nC = cards.filter(Boolean).length, nS = sups.filter(Boolean).length;
     const rarity = spec.rarity || "Normal";
-    const frame = frameSpec(rarity, "card");   // support too (2026-10-28): the game card, as big as the cards, at the deck's rarity
+    const frame = frameSpec(rarity);   // support too (2026-10-28): the game card, as big as the cards, at the deck's rarity
 
     const P1 = 14 + 22 + 24 + B.CH + 18, P2 = 14 + 22 + B.CH + 18;
     const H = B.HEAD + P1 + B.PANEL_GAP + P2 + 20 + B.FOOT;

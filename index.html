@@ -74,18 +74,18 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=49">
-  <link rel="stylesheet" href="css/base.css?v=49">
-  <link rel="stylesheet" href="css/fx.css?v=49">
-  <link rel="stylesheet" href="css/cards.css?v=49">
-  <link rel="stylesheet" href="css/tier.css?v=49">
-  <link rel="stylesheet" href="css/deck.css?v=49">
-  <link rel="stylesheet" href="css/support.css?v=49">
-  <link rel="stylesheet" href="css/grade.css?v=49">
-  <link rel="stylesheet" href="css/tiermaker.css?v=49">
-  <link rel="stylesheet" href="css/detail.css?v=49">
-  <link rel="stylesheet" href="css/traits.css?v=49">
-  <link rel="stylesheet" href="css/home.css?v=49">
+  <link rel="stylesheet" href="css/tokens.css?v=50">
+  <link rel="stylesheet" href="css/base.css?v=50">
+  <link rel="stylesheet" href="css/fx.css?v=50">
+  <link rel="stylesheet" href="css/cards.css?v=50">
+  <link rel="stylesheet" href="css/tier.css?v=50">
+  <link rel="stylesheet" href="css/deck.css?v=50">
+  <link rel="stylesheet" href="css/support.css?v=50">
+  <link rel="stylesheet" href="css/grade.css?v=50">
+  <link rel="stylesheet" href="css/tiermaker.css?v=50">
+  <link rel="stylesheet" href="css/detail.css?v=50">
+  <link rel="stylesheet" href="css/traits.css?v=50">
+  <link rel="stylesheet" href="css/home.css?v=50">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -266,9 +266,10 @@
         </div>
         <!-- Save image (plan 2026-10-30 item 3): the list showing (Cards or Support) as one picture · js/tier.js + js/share.js -->
         <div class="tier-tools"><button id="tier-save" class="tm-btn fx-press" type="button" hidden>Save image</button></div>
+        <!-- one rarity for both sides: support cards are game cards too (2026-10-30) -->
+        <div id="tier-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
 
         <div id="tier-cards-view">
-          <div id="tier-rarity" class="rarity-picker" role="group" aria-label="Rarity" hidden></div>
           <div id="tier-list" class="tier-list"></div>
           <p id="tier-note" class="tier-note" hidden></p>
 
@@ -850,20 +851,20 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=49"></script>
-  <script src="js/app.js?v=49"></script>
-  <script src="js/teamscore.js?v=49"></script>
-  <script src="js/share.js?v=49"></script>
-  <script src="js/cards.js?v=49"></script>
-  <script src="js/detail.js?v=49"></script>
-  <script src="js/tier.js?v=49"></script>
-  <script src="js/deck.js?v=49"></script>
-  <script src="js/support.js?v=49"></script>
-  <script src="js/grade.js?v=49"></script>
-  <script src="js/traits.js?v=49"></script>
-  <script src="js/home.js?v=49"></script>
-  <script src="js/tiermaker.js?v=49"></script>
-  <script src="js/music.js?v=49"></script>
+  <script src="js/fx.js?v=50"></script>
+  <script src="js/app.js?v=50"></script>
+  <script src="js/teamscore.js?v=50"></script>
+  <script src="js/share.js?v=50"></script>
+  <script src="js/cards.js?v=50"></script>
+  <script src="js/detail.js?v=50"></script>
+  <script src="js/tier.js?v=50"></script>
+  <script src="js/deck.js?v=50"></script>
+  <script src="js/support.js?v=50"></script>
+  <script src="js/grade.js?v=50"></script>
+  <script src="js/traits.js?v=50"></script>
+  <script src="js/home.js?v=50"></script>
+  <script src="js/tiermaker.js?v=50"></script>
+  <script src="js/music.js?v=50"></script>
 </body>
 </html>
 
