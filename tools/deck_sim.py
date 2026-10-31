@@ -158,9 +158,9 @@ SUP = {
     "chainsaw-pup-devil": lambda v: dict(revive=(v[0], v[1])),
     "flower-healer-captain": lambda v: dict(regen_chance=(v[0], v[1])),
     "rewind-girl": lambda v: dict(low_heal=(0.20, v[0])),
-    "angel-attendant": lambda v: dict(dodge=v[0]),
+    "angel-attendant": lambda v: dict(dodge=v[0], flat=v[1], maxhp=v[2]),
     "first-master-fairy": lambda v: dict(fairy=v[0]),
-    "nine-tails-fox": lambda v: dict(flat=v[0]),
+    "nine-tails-fox": lambda v: dict(flat=v[0], maxhp=v[1], dr=v[2]),
     "wish-granter": lambda v: dict(flat=v[0], maxhp=v[1]),
     "eternal-wish-dragon": lambda v: dict(revive=(v[0], v[2]), team_others=v[1]),
     "immortal-witch": lambda v: dict(revive=(v[0], v[1])),
@@ -369,7 +369,7 @@ class Battle:
         rnd = s.rnd
         if not counter and att.confused:
             att.confused = False
-            s.raw_damage(att, att.atk * mult * s.reduce_mult(att, att))
+            s.raw_damage(att, att.atk * mult * 0.5 * s.reduce_mult(att, att))   # game text: hits itself for half damage
             return "attdead" if att.hp <= 0 and s.lethal(att) else None
         ign = att.has("ignore") or att.e.get("ignore", False)
         if not counter and att.miss and att.miss[0] > 0:
@@ -445,14 +445,15 @@ class Battle:
             if pa and cc and rnd() < pa[0] and s.debuff(d): d.para = max(d.para, pa[1])
         for fr in (att.get("freeze"), att.e.get("freeze")):
             if fr and cc and rnd() < fr[0] and s.debuff(d): d.frozen = max(d.frozen, fr[1])
+        st_ok = not (d.a.get("status_immune") or d.e.get("status_immune"))   # confused / sealed / weakened
         for cf in ((att.a.get("confuse") if att.sealed == 0 else None), att.e.get("confuse")):
-            if cf and rnd() < cf and s.debuff(d): d.confused = True
+            if cf and st_ok and rnd() < cf and s.debuff(d): d.confused = True
         for sc in (att.get("seal_chance"), att.e.get("seal")):
-            if sc and rnd() < sc[0] and s.debuff(d): d.sealed = max(d.sealed, sc[1])
+            if sc and st_ok and rnd() < sc[0] and s.debuff(d): d.sealed = max(d.sealed, sc[1])
         for mk in (att.get("mark"), att.e.get("mark")):
             if mk and rnd() < mk[0] and s.debuff(d): d.marked = max(d.marked, mk[1])
         wk = att.e.get("weaken")
-        if wk and d.weak < wk[2] and rnd() < wk[0] and s.debuff(d):
+        if wk and st_ok and d.weak < wk[2] and rnd() < wk[0] and s.debuff(d):
             d.weak += 1; d.weak_x = wk[1]
         for kind, n, pct, cap, turns in att.get("dots") or []:
             if kind == "burn" and d.has("burn_immune"): continue
@@ -575,7 +576,7 @@ class Battle:
                     att.fairy_used = True
                     for o in [o for o in s.sides[d.side] if o.alive]:
                         if o is d: s.raw_damage(o, o.max * att.e["fairy"]); s.low_heal(o); (o.hp <= 0 and s.lethal(o) and s.fell(o, att))
-                        else: s.side_hit(o, o.max * att.e["fairy"])
+                        else: s.side_hit(o, min(o.max * att.e["fairy"], o.hp - 1))   # bench cards keep 1 HP
                 if d.alive:
                     if att.has("bench_first") and att.attacks == 1:
                         for o in s.bench(d.side): s.side_hit(o, att.atk * s.out_mult(att) * att.a["bench_first"] * s.reduce_mult(o, att))
@@ -592,7 +593,7 @@ class Battle:
                         r = s.hit(att, d, mult * fm)
                         if first_hit and h == 0 and d.alive and d.hp > 0:
                             sf = max(att.get("seal_first", 0) or 0, att.e.get("seal_first", 0))
-                            if sf and s.debuff(d): d.sealed = max(d.sealed, sf)
+                            if sf and not d.a.get("status_immune") and s.debuff(d): d.sealed = max(d.sealed, sf)
                         if r: break
             if att.alive and att.sealed > 0: att.sealed -= 1
             for o in s.sides[side]:   # doom counts the doomed card's side turns

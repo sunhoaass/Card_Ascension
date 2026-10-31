@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from matchup_sim import parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TODAY = "2026-10-30"
+TODAY = "2026-10-31"
 MIN_ODDS = 500_000_000      # owner 2026-10-30: rank every card at 1 in 500M or rarer (Normal)
 INC = 0.15                  # an equal card takes ATK / HP = 15% of its max HP per enemy hit (HP ≈ 6.67 × ATK for these cards)
 GROUP_BUFF = re.compile(r"(\w[\w ]*?) cards in your deck get \+([\d.]+)% damage( and HP)?")

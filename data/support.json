@@ -3435,9 +3435,11 @@
     "image": "images/support/angel-attendant.webp",
     "effect": {
       "name": "Angel's Grace",
-      "desc": "Whis moves like an angel: the supported card dodges {0}% of hits.",
+      "desc": "Angel Attendant moves like an angel: the supported card dodges {0}% of hits and gets {1}% more damage and {2}% more max HP.",
       "vals": [
-        29
+        37,
+        12.5,
+        12.5
       ],
       "type": "dodge",
       "pos": [
@@ -3463,7 +3465,7 @@
       "value": 48.6
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-10-31",
     "prevTier": "",
     "bestDeck": [
       "pvp-doom-opener"
@@ -3475,9 +3477,9 @@
     "image": "images/support/first-master-fairy.webp",
     "effect": {
       "name": "Fairy Law",
-      "desc": "Mavis casts Fairy Law: once per fight, the supported card's first hit strikes EVERY enemy card for {0}% of its max HP.",
+      "desc": "First Master Fairy casts Fairy Law: the supported card blasts every enemy card for {0}% of its max HP with its first hit (once per fight; bench cards keep 1 HP).",
       "vals": [
-        8
+        11
       ],
       "type": "splash",
       "pos": [
@@ -3503,7 +3505,7 @@
       "value": 64.1
     },
     "tier": "SS",
-    "updated": "2026-10-30",
+    "updated": "2026-10-31",
     "prevTier": "",
     "bestDeck": []
   },
@@ -3513,9 +3515,11 @@
     "image": "images/support/nine-tails-fox.webp",
     "effect": {
       "name": "Nine-Tails Chakra Mode",
-      "desc": "Kurama lends his chakra: the supported card deals {0}% more damage.",
+      "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage.",
       "vals": [
-        30
+        30,
+        30,
+        15
       ],
       "type": "dmg",
       "pos": [
@@ -3541,7 +3545,7 @@
       "value": 47.5
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-10-31",
     "prevTier": "",
     "bestDeck": []
   },
