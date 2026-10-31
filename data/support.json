@@ -27,10 +27,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 9.6,
-      "reliability": 64.2,
-      "flexibility": 25.0,
-      "synergy": 21.2,
-      "value": 25.9
+      "reliability": 63.5,
+      "flexibility": 29.2,
+      "synergy": 20.8,
+      "value": 26.5
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -65,10 +65,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 6.8,
-      "reliability": 58.5,
+      "reliability": 57.9,
       "flexibility": 31.2,
-      "synergy": 13.4,
-      "value": 23.3
+      "synergy": 13.1,
+      "value": 23.2
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -102,11 +102,11 @@
     "odds": 204,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 15.0,
-      "reliability": 73.6,
-      "flexibility": 35.4,
-      "synergy": 24.0,
-      "value": 32.6
+      "effect": 15.4,
+      "reliability": 73.5,
+      "flexibility": 39.6,
+      "synergy": 23.6,
+      "value": 33.5
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -140,11 +140,11 @@
     "odds": 130,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 23.1,
-      "reliability": 69.0,
+      "effect": 23.4,
+      "reliability": 68.0,
       "flexibility": 31.2,
-      "synergy": 40.9,
-      "value": 37.5
+      "synergy": 40.8,
+      "value": 37.4
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -178,11 +178,11 @@
     "odds": 359,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 4.8,
-      "reliability": 56.7,
+      "effect": 4.7,
+      "reliability": 57.6,
       "flexibility": 25.0,
-      "synergy": 11.7,
-      "value": 20.6
+      "synergy": 11.5,
+      "value": 20.7
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -217,10 +217,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 3.2,
-      "reliability": 59.8,
-      "flexibility": 20.8,
+      "reliability": 59.2,
+      "flexibility": 22.9,
       "synergy": 7.3,
-      "value": 18.9
+      "value": 19.2
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -265,11 +265,11 @@
     "odds": 287,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 9.7,
-      "reliability": 71.1,
+      "effect": 9.9,
+      "reliability": 71.5,
       "flexibility": 39.6,
-      "synergy": 16.4,
-      "value": 29.3
+      "synergy": 16.5,
+      "value": 29.5
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -303,11 +303,11 @@
     "odds": 163,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 13.2,
-      "reliability": 65.6,
+      "effect": 13.0,
+      "reliability": 64.8,
       "flexibility": 25.0,
-      "synergy": 29.5,
-      "value": 29.3
+      "synergy": 29.2,
+      "value": 29.0
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -342,10 +342,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 12.5,
-      "reliability": 50.9,
+      "reliability": 50.2,
       "flexibility": 16.7,
-      "synergy": 33.0,
-      "value": 25.1
+      "synergy": 33.1,
+      "value": 25.0
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -379,11 +379,11 @@
     "odds": 321,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 7.3,
-      "reliability": 57.3,
+      "effect": 7.6,
+      "reliability": 57.6,
       "flexibility": 18.8,
       "synergy": 20.5,
-      "value": 22.2
+      "value": 22.4
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -417,10 +417,10 @@
     "odds": 4992,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 23.2,
-      "reliability": 57.7,
+      "effect": 23.6,
+      "reliability": 56.7,
       "flexibility": 29.2,
-      "synergy": 45.7,
+      "synergy": 45.8,
       "value": 35.8
     },
     "tier": "B",
@@ -455,11 +455,11 @@
     "odds": 6097,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 10.4,
-      "reliability": 63.1,
-      "flexibility": 47.9,
-      "synergy": 14.8,
-      "value": 29.3
+      "effect": 10.6,
+      "reliability": 63.0,
+      "flexibility": 54.2,
+      "synergy": 14.6,
+      "value": 30.6
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -493,11 +493,11 @@
     "odds": 3183,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 8.3,
-      "reliability": 60.6,
+      "effect": 8.2,
+      "reliability": 59.8,
       "flexibility": 29.2,
-      "synergy": 15.5,
-      "value": 24.4
+      "synergy": 15.1,
+      "value": 24.1
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -531,11 +531,11 @@
     "odds": 2740,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 13.9,
-      "reliability": 72.2,
-      "flexibility": 81.2,
+      "effect": 14.2,
+      "reliability": 71.9,
+      "flexibility": 79.2,
       "synergy": 14.3,
-      "value": 39.1
+      "value": 38.8
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -569,10 +569,10 @@
     "odds": 4517,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 24.0,
-      "reliability": 48.7,
+      "effect": 24.4,
+      "reliability": 48.5,
       "flexibility": 37.5,
-      "synergy": 38.4,
+      "synergy": 37.9,
       "value": 34.5
     },
     "tier": "B",
@@ -618,11 +618,11 @@
     "odds": 4749,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 10.4,
-      "reliability": 70.1,
+      "effect": 10.5,
+      "reliability": 69.1,
       "flexibility": 27.1,
-      "synergy": 22.0,
-      "value": 28.0
+      "synergy": 21.4,
+      "value": 27.7
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -656,11 +656,11 @@
     "odds": 2479,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 5.9,
-      "reliability": 63.0,
-      "flexibility": 22.9,
-      "synergy": 13.8,
-      "value": 22.3
+      "effect": 6.0,
+      "reliability": 62.9,
+      "flexibility": 20.8,
+      "synergy": 14.0,
+      "value": 21.9
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -695,10 +695,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 15.9,
-      "reliability": 60.9,
+      "reliability": 59.9,
       "flexibility": 22.9,
-      "synergy": 35.4,
-      "value": 30.2
+      "synergy": 35.6,
+      "value": 30.0
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -732,11 +732,11 @@
     "odds": 2880,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 14.7,
-      "reliability": 66.3,
-      "flexibility": 27.1,
-      "synergy": 27.9,
-      "value": 30.1
+      "effect": 15.0,
+      "reliability": 66.2,
+      "flexibility": 29.2,
+      "synergy": 28.0,
+      "value": 30.7
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -770,11 +770,11 @@
     "odds": 3346,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 27.6,
-      "reliability": 75.7,
-      "flexibility": 39.6,
-      "synergy": 41.7,
-      "value": 42.4
+      "effect": 21.9,
+      "reliability": 72.5,
+      "flexibility": 35.4,
+      "synergy": 36.2,
+      "value": 37.6
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -808,11 +808,11 @@
     "odds": 2358,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 26.7,
-      "reliability": 58.8,
+      "effect": 27.3,
+      "reliability": 58.1,
       "flexibility": 27.1,
-      "synergy": 55.3,
-      "value": 38.9
+      "synergy": 55.1,
+      "value": 39.0
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -846,11 +846,11 @@
     "odds": 6410,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 14.2,
-      "reliability": 68.2,
+      "effect": 14.0,
+      "reliability": 67.2,
       "flexibility": 25.0,
-      "synergy": 31.4,
-      "value": 30.6
+      "synergy": 30.8,
+      "value": 30.2
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -884,11 +884,11 @@
     "odds": 7084,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 6.5,
-      "reliability": 58.9,
-      "flexibility": 20.8,
-      "synergy": 15.5,
-      "value": 21.6
+      "effect": 6.8,
+      "reliability": 59.3,
+      "flexibility": 22.9,
+      "synergy": 16.0,
+      "value": 22.4
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -933,11 +933,11 @@
     "odds": 3028,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 39.7,
-      "reliability": 79.2,
-      "flexibility": 50.0,
-      "synergy": 53.9,
-      "value": 52.5
+      "effect": 40.8,
+      "reliability": 78.2,
+      "flexibility": 52.1,
+      "synergy": 53.8,
+      "value": 53.1
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -971,11 +971,11 @@
     "odds": 7447,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 10.5,
-      "reliability": 70.8,
-      "flexibility": 25.0,
-      "synergy": 20.0,
-      "value": 27.4
+      "effect": 10.8,
+      "reliability": 69.9,
+      "flexibility": 27.1,
+      "synergy": 19.8,
+      "value": 27.7
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -1010,10 +1010,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 9.1,
-      "reliability": 55.6,
-      "flexibility": 35.4,
-      "synergy": 14.5,
-      "value": 24.7
+      "reliability": 55.3,
+      "flexibility": 33.3,
+      "synergy": 15.0,
+      "value": 24.4
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -1085,15 +1085,15 @@
     "odds": 3698,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 53.5,
-      "reliability": 73.7,
+      "effect": 54.4,
+      "reliability": 72.3,
       "flexibility": 39.6,
-      "synergy": 79.7,
-      "value": 60.0
+      "synergy": 80.1,
+      "value": 60.2
     },
-    "tier": "SS",
-    "updated": "2026-10-30",
-    "prevTier": "",
+    "tier": "S",
+    "updated": "2026-10-31",
+    "prevTier": "SS",
     "bestDeck": []
   },
   {
@@ -1123,11 +1123,11 @@
     "odds": 5248,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 6.5,
-      "reliability": 58.5,
-      "flexibility": 35.4,
-      "synergy": 11.6,
-      "value": 23.7
+      "effect": 6.3,
+      "reliability": 57.6,
+      "flexibility": 29.2,
+      "synergy": 12.1,
+      "value": 22.3
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -1161,11 +1161,11 @@
     "odds": 2606,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 7.6,
-      "reliability": 60.7,
-      "flexibility": 27.1,
-      "synergy": 16.3,
-      "value": 23.9
+      "effect": 7.9,
+      "reliability": 60.4,
+      "flexibility": 29.2,
+      "synergy": 16.1,
+      "value": 24.3
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -1210,10 +1210,10 @@
     "odds": 4297,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 20.8,
-      "reliability": 70.5,
+      "effect": 21.2,
+      "reliability": 69.7,
       "flexibility": 27.1,
-      "synergy": 41.9,
+      "synergy": 42.0,
       "value": 36.2
     },
     "tier": "B",
@@ -1248,11 +1248,11 @@
     "odds": 5517,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 30.9,
-      "reliability": 85.3,
-      "flexibility": 100.0,
+      "effect": 31.0,
+      "reliability": 85.1,
+      "flexibility": 97.9,
       "synergy": 22.3,
-      "value": 53.9
+      "value": 53.5
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -1289,11 +1289,11 @@
     "odds": 5800,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 16.4,
-      "reliability": 73.2,
+      "effect": 16.8,
+      "reliability": 73.4,
       "flexibility": 83.3,
-      "synergy": 17.4,
-      "value": 41.3
+      "synergy": 17.5,
+      "value": 41.6
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -1327,11 +1327,11 @@
     "odds": 6739,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 35.3,
-      "reliability": 87.7,
-      "flexibility": 93.8,
-      "synergy": 22.8,
-      "value": 55.0
+      "effect": 36.2,
+      "reliability": 88.6,
+      "flexibility": 95.8,
+      "synergy": 22.9,
+      "value": 55.9
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -1365,11 +1365,11 @@
     "odds": 61000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 12.9,
-      "reliability": 65.0,
+      "effect": 13.3,
+      "reliability": 64.8,
       "flexibility": 31.2,
-      "synergy": 26.1,
-      "value": 29.6
+      "synergy": 26.2,
+      "value": 29.8
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -1403,11 +1403,11 @@
     "odds": 54000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 44.1,
-      "reliability": 92.1,
+      "effect": 44.6,
+      "reliability": 92.0,
       "flexibility": 100.0,
-      "synergy": 26.8,
-      "value": 61.4
+      "synergy": 27.0,
+      "value": 61.6
     },
     "tier": "SS",
     "updated": "2026-10-30",
@@ -1452,10 +1452,10 @@
     "odds": 56000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 15.6,
-      "reliability": 69.1,
+      "effect": 16.0,
+      "reliability": 68.0,
       "flexibility": 20.8,
-      "synergy": 36.1,
+      "synergy": 36.0,
       "value": 31.4
     },
     "tier": "C",
@@ -1490,11 +1490,11 @@
     "odds": 45000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 17.9,
-      "reliability": 75.7,
-      "flexibility": 39.6,
-      "synergy": 26.8,
-      "value": 35.6
+      "effect": 18.2,
+      "reliability": 75.1,
+      "flexibility": 41.7,
+      "synergy": 26.7,
+      "value": 36.0
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -1539,11 +1539,11 @@
     "odds": 64000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 17.2,
+      "effect": 17.4,
       "reliability": 78.6,
-      "flexibility": 29.2,
-      "synergy": 31.3,
-      "value": 34.7
+      "flexibility": 31.2,
+      "synergy": 30.9,
+      "value": 35.1
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -1577,11 +1577,11 @@
     "odds": 46000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 13.1,
+      "effect": 13.4,
       "reliability": 63.3,
-      "flexibility": 16.7,
-      "synergy": 32.3,
-      "value": 27.7
+      "flexibility": 14.6,
+      "synergy": 32.6,
+      "value": 27.5
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -1627,10 +1627,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 13.5,
-      "reliability": 67.6,
-      "flexibility": 37.5,
+      "reliability": 67.0,
+      "flexibility": 33.3,
       "synergy": 23.7,
-      "value": 31.2
+      "value": 30.2
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -1664,11 +1664,11 @@
     "odds": 70000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 19.6,
-      "reliability": 54.6,
+      "effect": 19.5,
+      "reliability": 53.2,
       "flexibility": 18.8,
-      "synergy": 48.8,
-      "value": 32.3
+      "synergy": 49.1,
+      "value": 32.0
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -1703,9 +1703,9 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 5.5,
-      "reliability": 55.5,
+      "reliability": 55.2,
       "flexibility": 27.1,
-      "synergy": 11.4,
+      "synergy": 11.8,
       "value": 21.0
     },
     "tier": "D",
@@ -1740,11 +1740,11 @@
     "odds": 52000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 12.6,
-      "reliability": 65.3,
-      "flexibility": 37.5,
-      "synergy": 20.9,
-      "value": 29.8
+      "effect": 12.7,
+      "reliability": 64.9,
+      "flexibility": 39.6,
+      "synergy": 20.8,
+      "value": 30.1
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -1778,10 +1778,10 @@
     "odds": 49000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 17.5,
-      "reliability": 56.0,
+      "effect": 17.6,
+      "reliability": 55.5,
       "flexibility": 29.2,
-      "synergy": 37.4,
+      "synergy": 37.5,
       "value": 31.5
     },
     "tier": "C",
@@ -1816,11 +1816,11 @@
     "odds": 65000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 23.2,
-      "reliability": 77.7,
-      "flexibility": 43.8,
+      "effect": 24.0,
+      "reliability": 78.0,
+      "flexibility": 45.8,
       "synergy": 33.1,
-      "value": 40.2
+      "value": 41.0
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -1854,11 +1854,11 @@
     "odds": 51000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 20.6,
-      "reliability": 63.7,
-      "flexibility": 22.9,
-      "synergy": 44.6,
-      "value": 34.5
+      "effect": 21.0,
+      "reliability": 62.9,
+      "flexibility": 20.8,
+      "synergy": 45.5,
+      "value": 34.2
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -1892,11 +1892,11 @@
     "odds": 68000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 20.8,
-      "reliability": 70.9,
-      "flexibility": 25.0,
-      "synergy": 38.0,
-      "value": 35.1
+      "effect": 21.0,
+      "reliability": 70.1,
+      "flexibility": 29.2,
+      "synergy": 38.3,
+      "value": 35.9
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -1930,15 +1930,15 @@
     "odds": 45000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 68.3,
-      "reliability": 75.8,
+      "effect": 69.1,
+      "reliability": 74.1,
       "flexibility": 41.7,
-      "synergy": 90.4,
-      "value": 68.9
+      "synergy": 90.9,
+      "value": 69.0
     },
-    "tier": "Meta",
-    "updated": "2026-10-30",
-    "prevTier": "",
+    "tier": "SS",
+    "updated": "2026-10-31",
+    "prevTier": "Meta",
     "bestDeck": []
   },
   {
@@ -1968,10 +1968,10 @@
     "odds": 62000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 8.0,
-      "reliability": 52.2,
+      "effect": 7.9,
+      "reliability": 52.1,
       "flexibility": 27.1,
-      "synergy": 13.9,
+      "synergy": 13.8,
       "value": 21.8
     },
     "tier": "D",
@@ -2006,11 +2006,11 @@
     "odds": 58000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 11.6,
-      "reliability": 69.1,
-      "flexibility": 27.1,
+      "effect": 12.2,
+      "reliability": 69.2,
+      "flexibility": 29.2,
       "synergy": 22.9,
-      "value": 28.5
+      "value": 29.1
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -2044,11 +2044,11 @@
     "odds": 69000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 13.1,
-      "reliability": 57.1,
-      "flexibility": 25.0,
-      "synergy": 28.1,
-      "value": 27.3
+      "effect": 13.6,
+      "reliability": 58.3,
+      "flexibility": 22.9,
+      "synergy": 28.4,
+      "value": 27.4
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -2093,11 +2093,11 @@
     "odds": 53000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 12.3,
-      "reliability": 70.1,
+      "effect": 12.6,
+      "reliability": 70.2,
       "flexibility": 22.9,
-      "synergy": 27.5,
-      "value": 29.0
+      "synergy": 27.6,
+      "value": 29.2
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -2131,11 +2131,11 @@
     "odds": 44000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 18.8,
-      "reliability": 62.7,
+      "effect": 19.1,
+      "reliability": 62.4,
       "flexibility": 25.0,
-      "synergy": 40.5,
-      "value": 33.2
+      "synergy": 41.0,
+      "value": 33.3
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -2169,11 +2169,11 @@
     "odds": 60000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 25.7,
-      "reliability": 58.6,
+      "effect": 26.2,
+      "reliability": 58.1,
       "flexibility": 29.2,
-      "synergy": 50.0,
-      "value": 37.8
+      "synergy": 49.8,
+      "value": 37.9
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -2207,11 +2207,11 @@
     "odds": 55000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 21.7,
-      "reliability": 64.6,
-      "flexibility": 22.9,
-      "synergy": 46.3,
-      "value": 35.4
+      "effect": 22.1,
+      "reliability": 64.1,
+      "flexibility": 25.0,
+      "synergy": 46.9,
+      "value": 36.0
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -2245,11 +2245,11 @@
     "odds": 737000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 60.5,
-      "reliability": 67.3,
+      "effect": 61.0,
+      "reliability": 65.5,
       "flexibility": 41.7,
-      "synergy": 87.1,
-      "value": 63.4
+      "synergy": 87.2,
+      "value": 63.3
     },
     "tier": "SS",
     "updated": "2026-10-30",
@@ -2283,11 +2283,11 @@
     "odds": 558000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 58.4,
-      "reliability": 92.1,
-      "flexibility": 95.8,
-      "synergy": 37.9,
-      "value": 68.5
+      "effect": 59.5,
+      "reliability": 92.8,
+      "flexibility": 97.9,
+      "synergy": 37.8,
+      "value": 69.5
     },
     "tier": "SS",
     "updated": "2026-10-30",
@@ -2329,11 +2329,11 @@
     "odds": 520000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 19.0,
-      "reliability": 61.4,
+      "effect": 19.6,
+      "reliability": 61.7,
       "flexibility": 22.9,
-      "synergy": 37.3,
-      "value": 31.9
+      "synergy": 37.5,
+      "value": 32.3
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -2379,10 +2379,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 27.7,
-      "reliability": 75.5,
+      "reliability": 74.9,
       "flexibility": 50.0,
-      "synergy": 35.0,
-      "value": 43.2
+      "synergy": 35.1,
+      "value": 43.1
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -2416,11 +2416,11 @@
     "odds": 612000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 17.9,
-      "reliability": 70.4,
-      "flexibility": 47.9,
-      "synergy": 25.5,
-      "value": 35.9
+      "effect": 18.2,
+      "reliability": 70.3,
+      "flexibility": 43.8,
+      "synergy": 26.0,
+      "value": 35.3
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -2454,11 +2454,11 @@
     "odds": 672000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 45.8,
-      "reliability": 78.0,
+      "effect": 46.5,
+      "reliability": 77.0,
       "flexibility": 39.6,
-      "synergy": 66.4,
-      "value": 55.1
+      "synergy": 66.2,
+      "value": 55.2
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -2492,11 +2492,11 @@
     "odds": 571000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 91.7,
-      "reliability": 78.4,
-      "flexibility": 52.1,
+      "effect": 92.4,
+      "reliability": 77.0,
+      "flexibility": 47.9,
       "synergy": 100.0,
-      "value": 82.8
+      "value": 81.9
     },
     "tier": "Meta",
     "updated": "2026-10-30",
@@ -2538,10 +2538,10 @@
     "odds": 532000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 14.8,
-      "reliability": 65.8,
+      "effect": 15.0,
+      "reliability": 65.4,
       "flexibility": 37.5,
-      "synergy": 24.9,
+      "synergy": 25.1,
       "value": 31.6
     },
     "tier": "C",
@@ -2577,11 +2577,11 @@
     "odds": 720000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 25.9,
-      "reliability": 76.6,
+      "effect": 26.8,
+      "reliability": 76.9,
       "flexibility": 39.6,
-      "synergy": 39.0,
-      "value": 41.4
+      "synergy": 39.6,
+      "value": 41.9
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -2615,11 +2615,11 @@
     "odds": 584000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 17.6,
-      "reliability": 66.6,
-      "flexibility": 33.3,
+      "effect": 18.0,
+      "reliability": 66.4,
+      "flexibility": 35.4,
       "synergy": 30.0,
-      "value": 33.0
+      "value": 33.6
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -2653,11 +2653,11 @@
     "odds": 626000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 21.9,
-      "reliability": 67.7,
-      "flexibility": 37.5,
-      "synergy": 33.1,
-      "value": 36.4
+      "effect": 22.6,
+      "reliability": 67.4,
+      "flexibility": 39.6,
+      "synergy": 33.2,
+      "value": 37.1
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -2691,11 +2691,11 @@
     "odds": 688000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 28.3,
+      "effect": 28.8,
       "reliability": 77.3,
       "flexibility": 43.8,
       "synergy": 43.3,
-      "value": 44.2
+      "value": 44.4
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -2730,10 +2730,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 9.5,
-      "reliability": 63.8,
+      "reliability": 63.4,
       "flexibility": 37.5,
-      "synergy": 14.1,
-      "value": 26.9
+      "synergy": 14.0,
+      "value": 26.8
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -2767,11 +2767,11 @@
     "odds": 704000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 22.0,
-      "reliability": 66.2,
-      "flexibility": 35.4,
-      "synergy": 37.5,
-      "value": 36.6
+      "effect": 22.1,
+      "reliability": 65.5,
+      "flexibility": 37.5,
+      "synergy": 37.7,
+      "value": 37.0
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -2805,11 +2805,11 @@
     "odds": 545000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 35.1,
-      "reliability": 78.3,
-      "flexibility": 62.5,
-      "synergy": 40.4,
-      "value": 50.3
+      "effect": 35.5,
+      "reliability": 78.1,
+      "flexibility": 60.4,
+      "synergy": 40.5,
+      "value": 50.0
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -2854,11 +2854,11 @@
     "odds": 598000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 40.5,
-      "reliability": 76.5,
-      "flexibility": 45.8,
-      "synergy": 53.0,
-      "value": 51.3
+      "effect": 41.0,
+      "reliability": 75.9,
+      "flexibility": 43.8,
+      "synergy": 54.0,
+      "value": 51.1
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -2892,10 +2892,10 @@
     "odds": 755000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 22.5,
-      "reliability": 44.1,
+      "effect": 22.7,
+      "reliability": 43.3,
       "flexibility": 16.7,
-      "synergy": 61.4,
+      "synergy": 61.5,
       "value": 33.4
     },
     "tier": "B",
@@ -2931,10 +2931,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 9.5,
-      "reliability": 63.3,
+      "reliability": 62.7,
       "flexibility": 14.6,
-      "synergy": 30.3,
-      "value": 25.4
+      "synergy": 30.0,
+      "value": 25.3
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -2968,11 +2968,11 @@
     "odds": 22400000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 19.6,
-      "reliability": 65.6,
+      "effect": 19.8,
+      "reliability": 65.3,
       "flexibility": 22.9,
-      "synergy": 40.6,
-      "value": 33.7
+      "synergy": 41.3,
+      "value": 33.8
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -3006,15 +3006,15 @@
     "odds": 17200000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 56.1,
-      "reliability": 84.2,
-      "flexibility": 54.2,
-      "synergy": 64.5,
-      "value": 63.0
+      "effect": 45.9,
+      "reliability": 80.4,
+      "flexibility": 45.8,
+      "synergy": 60.5,
+      "value": 55.7
     },
-    "tier": "SS",
-    "updated": "2026-10-30",
-    "prevTier": "",
+    "tier": "S",
+    "updated": "2026-10-31",
+    "prevTier": "SS",
     "bestDeck": []
   },
   {
@@ -3044,15 +3044,15 @@
     "odds": 18800000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 35.1,
-      "reliability": 69.0,
-      "flexibility": 33.3,
-      "synergy": 63.4,
-      "value": 47.2
+      "effect": 35.6,
+      "reliability": 68.5,
+      "flexibility": 31.2,
+      "synergy": 63.7,
+      "value": 46.9
     },
-    "tier": "S",
-    "updated": "2026-10-30",
-    "prevTier": "",
+    "tier": "A",
+    "updated": "2026-10-31",
+    "prevTier": "S",
     "bestDeck": []
   },
   {
@@ -3082,11 +3082,11 @@
     "odds": 20500000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 82.2,
-      "reliability": 96.5,
+      "effect": 83.3,
+      "reliability": 96.2,
       "flexibility": 100.0,
       "synergy": 48.7,
-      "value": 81.9
+      "value": 82.3
     },
     "tier": "Meta",
     "updated": "2026-10-30",
@@ -3126,10 +3126,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 16.9,
-      "reliability": 70.4,
+      "reliability": 69.7,
       "flexibility": 47.9,
-      "synergy": 20.9,
-      "value": 34.6
+      "synergy": 21.0,
+      "value": 34.5
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -3163,11 +3163,11 @@
     "odds": 16400000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 24.2,
-      "reliability": 73.6,
+      "effect": 23.9,
+      "reliability": 73.2,
       "flexibility": 25.0,
-      "synergy": 46.0,
-      "value": 38.6
+      "synergy": 45.4,
+      "value": 38.3
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -3201,11 +3201,11 @@
     "odds": 15100000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 24.7,
-      "reliability": 67.4,
+      "effect": 25.2,
+      "reliability": 67.1,
       "flexibility": 35.4,
-      "synergy": 37.4,
-      "value": 37.9
+      "synergy": 37.5,
+      "value": 38.1
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -3239,11 +3239,11 @@
     "odds": 19600000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 24.9,
-      "reliability": 70.8,
-      "flexibility": 33.3,
-      "synergy": 44.2,
-      "value": 39.6
+      "effect": 25.7,
+      "reliability": 70.4,
+      "flexibility": 31.2,
+      "synergy": 44.6,
+      "value": 39.5
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -3277,11 +3277,11 @@
     "odds": 18000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 55.6,
-      "reliability": 80.4,
-      "flexibility": 50.0,
-      "synergy": 73.2,
-      "value": 63.0
+      "effect": 56.4,
+      "reliability": 79.5,
+      "flexibility": 54.2,
+      "synergy": 73.0,
+      "value": 63.9
     },
     "tier": "SS",
     "updated": "2026-10-30",
@@ -3326,11 +3326,11 @@
     "odds": 220400000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 46.0,
-      "reliability": 77.1,
+      "effect": 46.6,
+      "reliability": 76.2,
       "flexibility": 43.8,
-      "synergy": 59.9,
-      "value": 54.6
+      "synergy": 60.7,
+      "value": 54.8
     },
     "tier": "S",
     "updated": "2026-10-30",
@@ -3376,10 +3376,10 @@
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 100.0,
-      "reliability": 77.8,
-      "flexibility": 58.3,
-      "synergy": 93.7,
-      "value": 86.0
+      "reliability": 77.1,
+      "flexibility": 56.2,
+      "synergy": 93.8,
+      "value": 85.4
     },
     "tier": "Meta",
     "updated": "2026-10-30",
@@ -3418,11 +3418,11 @@
     "odds": 204100000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 30.2,
-      "reliability": 66.4,
+      "effect": 31.1,
+      "reliability": 66.2,
       "flexibility": 37.5,
-      "synergy": 45.2,
-      "value": 41.9
+      "synergy": 45.5,
+      "value": 42.3
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -3458,15 +3458,15 @@
     "odds": 1900000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 42.8,
-      "reliability": 61.1,
-      "flexibility": 20.8,
-      "synergy": 75.6,
-      "value": 48.6
+      "effect": 84.0,
+      "reliability": 86.2,
+      "flexibility": 58.3,
+      "synergy": 92.1,
+      "value": 80.9
     },
-    "tier": "S",
+    "tier": "SS",
     "updated": "2026-10-31",
-    "prevTier": "",
+    "prevTier": "S",
     "bestDeck": [
       "pvp-doom-opener"
     ]
@@ -3498,11 +3498,11 @@
     "odds": 2200000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 47.4,
-      "reliability": 90.6,
+      "effect": 64.4,
+      "reliability": 90.4,
       "flexibility": 100.0,
-      "synergy": 35.1,
-      "value": 64.1
+      "synergy": 42.6,
+      "value": 72.4
     },
     "tier": "SS",
     "updated": "2026-10-31",
@@ -3538,15 +3538,15 @@
     "odds": 2000000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 33.6,
-      "reliability": 77.4,
-      "flexibility": 39.6,
-      "synergy": 53.2,
-      "value": 47.5
+      "effect": 99.5,
+      "reliability": 90.3,
+      "flexibility": 56.2,
+      "synergy": 96.7,
+      "value": 88.4
     },
-    "tier": "S",
+    "tier": "Meta",
     "updated": "2026-10-31",
-    "prevTier": "",
+    "prevTier": "S",
     "bestDeck": []
   },
   {
@@ -3587,10 +3587,10 @@
     "odds": 21400000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 39.3,
-      "reliability": 80.4,
-      "flexibility": 39.6,
-      "synergy": 65.6,
+      "effect": 40.1,
+      "reliability": 80.5,
+      "flexibility": 37.5,
+      "synergy": 65.8,
       "value": 52.8
     },
     "tier": "S",
@@ -3647,11 +3647,11 @@
     "odds": 211000000000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 78.7,
-      "reliability": 93.4,
+      "effect": 79.5,
+      "reliability": 93.6,
       "flexibility": 97.9,
-      "synergy": 59.8,
-      "value": 81.7
+      "synergy": 60.2,
+      "value": 82.1
     },
     "tier": "Meta",
     "updated": "2026-10-30",
@@ -3701,11 +3701,11 @@
     "odds": 73000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 28.2,
-      "reliability": 74.6,
-      "flexibility": 45.8,
-      "synergy": 38.6,
-      "value": 43.1
+      "effect": 28.5,
+      "reliability": 73.4,
+      "flexibility": 43.8,
+      "synergy": 39.1,
+      "value": 42.7
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -3739,11 +3739,11 @@
     "odds": 52000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 18.0,
-      "reliability": 75.4,
-      "flexibility": 27.1,
-      "synergy": 33.7,
-      "value": 34.4
+      "effect": 18.4,
+      "reliability": 74.8,
+      "flexibility": 29.2,
+      "synergy": 33.3,
+      "value": 34.8
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -3777,11 +3777,11 @@
     "odds": 67000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 8.4,
-      "reliability": 60.8,
+      "effect": 7.9,
+      "reliability": 59.6,
       "flexibility": 31.2,
-      "synergy": 16.1,
-      "value": 25.0
+      "synergy": 15.7,
+      "value": 24.5
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -3815,11 +3815,11 @@
     "odds": 47000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 14.0,
-      "reliability": 52.2,
+      "effect": 13.9,
+      "reliability": 51.4,
       "flexibility": 16.7,
       "synergy": 37.3,
-      "value": 26.8
+      "value": 26.6
     },
     "tier": "D",
     "updated": "2026-10-30",
@@ -3853,11 +3853,11 @@
     "odds": 72000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 20.7,
-      "reliability": 73.0,
-      "flexibility": 47.9,
-      "synergy": 28.3,
-      "value": 38.1
+      "effect": 20.9,
+      "reliability": 73.1,
+      "flexibility": 52.1,
+      "synergy": 28.6,
+      "value": 39.1
     },
     "tier": "A",
     "updated": "2026-10-30",
@@ -3891,11 +3891,11 @@
     "odds": 76000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 13.0,
-      "reliability": 69.5,
+      "effect": 13.6,
+      "reliability": 69.9,
       "flexibility": 29.2,
-      "synergy": 24.9,
-      "value": 29.9
+      "synergy": 25.0,
+      "value": 30.3
     },
     "tier": "C",
     "updated": "2026-10-30",
@@ -3929,15 +3929,15 @@
     "odds": 48000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 32.8,
-      "reliability": 73.8,
-      "flexibility": 27.1,
-      "synergy": 65.6,
-      "value": 46.4
+      "effect": 33.4,
+      "reliability": 73.2,
+      "flexibility": 29.2,
+      "synergy": 65.8,
+      "value": 47.0
     },
-    "tier": "A",
-    "updated": "2026-10-30",
-    "prevTier": "",
+    "tier": "S",
+    "updated": "2026-10-31",
+    "prevTier": "A",
     "bestDeck": []
   },
   {
@@ -3967,11 +3967,11 @@
     "odds": 74000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 16.1,
-      "reliability": 74.2,
+      "effect": 16.5,
+      "reliability": 74.1,
       "flexibility": 31.2,
-      "synergy": 27.9,
-      "value": 33.1
+      "synergy": 27.6,
+      "value": 33.2
     },
     "tier": "B",
     "updated": "2026-10-30",
@@ -4005,11 +4005,11 @@
     "odds": 50000,
     "obtain": "Rolls anywhere",
     "scores": {
-      "effect": 50.2,
-      "reliability": 63.6,
-      "flexibility": 91.7,
-      "synergy": 39.4,
-      "value": 59.0
+      "effect": 50.9,
+      "reliability": 63.3,
+      "flexibility": 93.8,
+      "synergy": 39.7,
+      "value": 59.7
     },
     "tier": "S",
     "updated": "2026-10-30",
