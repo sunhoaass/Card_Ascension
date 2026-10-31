@@ -1,23 +1,290 @@
 [
   {
-    "id": "emperor-wall",
-    "name": "Emperor Wall",
+    "id": "pvp-doom-opener",
+    "name": "Doom Opener",
+    "mode": "pvp",
+    "kind": "best",
     "slots": [
       {
-        "card": "dragon-emperor-monarch"
+        "card": "black-wizard-brother",
+        "support": "angel-attendant"
       },
       {
-        "card": "moon-eye-ghost"
+        "card": "founding-titan",
+        "support": "gentle-priest"
       },
       {
-        "card": "atomic-shadow-lord"
+        "card": "sword-saint",
+        "support": "charge-commander"
       },
       {
-        "card": "beast-emperor"
+        "card": "founding-titan",
+        "support": "guild-master-giant"
       }
     ],
-    "support": [],
-    "notes": "All 4 current cards. Monarch opens: every hit burns and splashes the whole enemy bench. Ghost's 3 blocks and revive soak hits and stack a second debuff (enemies deal about 88%). Shadow Lord's 2.3x first hits finish hurt cards, Beast Emperor anchors at the back. Slot 5 is open until more cards are added.",
-    "updated": "2026-10-25"
+    "sim": {
+      "pvp": 93.0,
+      "tower": 20.81,
+      "T": 46.7,
+      "overall": 69.8
+    },
+    "notes": "Black Wizard Brother goes first: when it comes in, the strongest enemy card dies after 4 turns unless it falls first, and Angel Attendant's dodges (plus its own comeback) keep it standing. Two Founding Titans hit the whole enemy bench and cut enemy damage, Sword Saint finishes. Gentle Priest heals the whole deck, Charge Commander and Guild Master Giant add damage. Simulated: 93.0 / 100 against 47 strong player decks.",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "pvp-titan-wall",
+    "name": "Titan Wall",
+    "mode": "pvp",
+    "kind": "second",
+    "slots": [
+      {
+        "card": "six-paths-fox-sage",
+        "support": "charge-commander"
+      },
+      {
+        "card": "founding-titan",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "founding-titan",
+        "support": "guild-master-giant"
+      },
+      {
+        "card": "founding-titan",
+        "support": "charge-commander"
+      }
+    ],
+    "sim": {
+      "pvp": 90.1,
+      "tower": 21.12,
+      "T": 47.4,
+      "overall": 68.8
+    },
+    "notes": "Three Founding Titans: every hit splashes the whole enemy bench and their less-damage auras stack. Six Paths Fox Sage opens with black flames and +9.7% damage for the rest of the deck. Charge Commander twice gives the Titans +66% damage. Shares only 2 cards with Doom Opener. Simulated: 90.1 / 100 against 47 strong player decks.",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "pvp-beerus-squad",
+    "name": "Beerus Squad",
+    "mode": "pvp",
+    "kind": "easy",
+    "slots": [
+      {
+        "card": "storm-dragon",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "sky-dragon-healer"
+      }
+    ],
+    "sim": {
+      "pvp": 74.5,
+      "tower": 17.52,
+      "T": 39.3,
+      "overall": 56.9
+    },
+    "notes": "Easy to get: every card is 1 in 1B or easier, every support 1 in 1M or easier. Storm Dragon opens (bench hits, paralyze, takes 26% less damage), then three Destroyer Gods stack 17% less enemy damage each and instantly kill hurt enemies. Charge Commander twice (+66% damage), Gentle Priest heals the deck, Sky Dragon Healer heals the front card from the bench. Simulated: 74.5 / 100. Also the easy Overall team.",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "tower-predator-court",
+    "name": "Predator Court",
+    "mode": "tower",
+    "kind": "best",
+    "slots": [
+      {
+        "card": "slime-demon-lord",
+        "support": "flower-healer-captain"
+      },
+      {
+        "card": "quirk-thief-overlord",
+        "support": "spirit-medium-granny"
+      },
+      {
+        "card": "founding-titan",
+        "support": "guild-master-giant"
+      },
+      {
+        "card": "witch-of-envy",
+        "support": "eternal-wish-dragon"
+      }
+    ],
+    "sim": {
+      "pvp": 89.1,
+      "tower": 25.38,
+      "T": 57.0,
+      "overall": 73.0
+    },
+    "notes": "Built to last floor after floor. Flower Healer Captain keeps Slime Demon Lord healing big chunks every turn while it copies every enemy ability and grows with each kill. Spirit Medium Granny stops bench damage for the whole deck. Founding Titan and Witch of Envy stack less-damage auras and hit the enemy bench; Eternal Wish Dragon brings Witch of Envy back. 25.4 floors in the tower simulation (the top 4 cards with the top 4 support: 22.3). Also the best Overall team.",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "tower-blessed-blades",
+    "name": "Blessed Blades",
+    "mode": "tower",
+    "kind": "second",
+    "slots": [
+      {
+        "card": "founding-titan",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "sword-saint",
+        "support": "flower-healer-captain"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "eternal-wish-dragon"
+      }
+    ],
+    "sim": {
+      "pvp": 88.9,
+      "tower": 25.03,
+      "T": 56.2,
+      "overall": 72.5
+    },
+    "notes": "Founding Titan opens with bench hits and Gentle Priest's whole-deck heal, Sword Saint (Flower Healer Captain) comes back once and ignores dodges, then two Destroyer Gods stack less enemy damage and instant kills, with Charge Commander and Eternal Wish Dragon adding damage. Shares only 2 cards with Predator Court. 25.0 floors in the tower simulation. Also the Overall runner-up.",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "tower-storm-front",
+    "name": "Storm Front",
+    "mode": "tower",
+    "kind": "easy",
+    "slots": [
+      {
+        "card": "storm-dragon",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      }
+    ],
+    "sim": {
+      "pvp": 70.9,
+      "tower": 17.49,
+      "T": 39.3,
+      "overall": 55.1
+    },
+    "notes": "Easy to get: every card is 1 in 1B or easier, every support 1 in 1M or easier. Two Gentle Priests double the whole-deck heal each turn, which is what a long climb with no healing between floors needs. Storm Dragon and three Destroyer Gods cut enemy damage, Charge Commander twice adds +66% damage. 17.5 floors in the tower simulation.",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "overall-predator-court",
+    "name": "Predator Court",
+    "mode": "overall",
+    "kind": "best",
+    "slots": [
+      {
+        "card": "slime-demon-lord",
+        "support": "flower-healer-captain"
+      },
+      {
+        "card": "quirk-thief-overlord",
+        "support": "spirit-medium-granny"
+      },
+      {
+        "card": "founding-titan",
+        "support": "guild-master-giant"
+      },
+      {
+        "card": "witch-of-envy",
+        "support": "eternal-wish-dragon"
+      }
+    ],
+    "sim": {
+      "pvp": 89.1,
+      "tower": 25.38,
+      "T": 57.0,
+      "overall": 73.0
+    },
+    "notes": "Same team as the Tower Infinity Best: no team found did better at both. PvP 89.1 / 100 against 47 strong player decks and 25.4 tower floors (the top 4 cards with the top 4 support: 79.8 and 22.3).",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "overall-blessed-blades",
+    "name": "Blessed Blades",
+    "mode": "overall",
+    "kind": "second",
+    "slots": [
+      {
+        "card": "founding-titan",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "sword-saint",
+        "support": "flower-healer-captain"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "eternal-wish-dragon"
+      }
+    ],
+    "sim": {
+      "pvp": 88.9,
+      "tower": 25.03,
+      "T": 56.2,
+      "overall": 72.5
+    },
+    "notes": "Same team as the Tower Infinity Runner-up. PvP 88.9 / 100 and 25.0 tower floors: nearly as good as Predator Court at both, with only 2 cards in common.",
+    "updated": "2026-10-30"
+  },
+  {
+    "id": "overall-beerus-squad",
+    "name": "Beerus Squad",
+    "mode": "overall",
+    "kind": "easy",
+    "slots": [
+      {
+        "card": "storm-dragon",
+        "support": "gentle-priest"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "charge-commander"
+      },
+      {
+        "card": "destroyer-god",
+        "support": "sky-dragon-healer"
+      }
+    ],
+    "sim": {
+      "pvp": 74.5,
+      "tower": 17.52,
+      "T": 39.3,
+      "overall": 56.9
+    },
+    "notes": "Same team as the PvP Easy to get: the best easy team at both. PvP 74.5 / 100 and 17.5 tower floors.",
+    "updated": "2026-10-30"
   }
 ]

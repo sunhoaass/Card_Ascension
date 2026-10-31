@@ -642,7 +642,7 @@
       if (key === "tier") return [card.notes ? li(esc(String(card.notes))) : "", C.isRanked(card) ? li(`Rank #${C.support.rank(card.id)} of ${C.support.rankedCount()}`, "is-meta") : ""].filter(Boolean);
       if (key === "ability") { const e = C.support.effect(card); return [e.name ? li(`<b>${esc(e.name)}</b>`, e.desc ? "is-name" : "") : "", e.desc ? li(esc(e.desc)) : ""].filter(Boolean); }
       if (key === "strong") {
-        const decks = arr(card.bestDeck).map((id) => arr(state.teams).find((t) => t && t.id === id)).filter(Boolean).map((t) => t.name || pretty(t.id));
+        const decks = [...new Set(arr(card.bestDeck).map((id) => arr(state.teams).find((t) => t && t.id === id)).filter(Boolean).map((t) => t.name || pretty(t.id)))];   // a team listed in 2 modes = once
         return decks.length ? [li(`Best decks: ${esc(decks.join(", "))}`, "is-meta")] : [];
       }
       return [];
@@ -1148,7 +1148,8 @@
     const pane = (id, html) => `<div class="bs-pane" id="bs-pane-${id}" role="tabpanel" aria-labelledby="bs-tab-${id}" tabindex="-1" data-pane="${id}" hidden>${html}</div>`;
     const row = (id, ids) => arr(ids).some((x) => byId.has(x)) ? `<div class="mini-row" id="${id}" data-card-list></div>` : `<p class="muted">Not analyzed yet</p>`;
     const vals = C.supVals(sp);
-    const decks = arr(sp.bestDeck).map((id) => arr(state.teams).find((t) => t && t.id === id)).filter(Boolean);
+    const decks = arr(sp.bestDeck).map((id) => arr(state.teams).find((t) => t && t.id === id)).filter(Boolean)
+      .filter((t, i, a) => a.findIndex((x) => (x.name || x.id) === (t.name || t.id)) === i);   // a team listed in 2 modes = once
     const modes = modesOf(sp);
     const overview = `
         <section class="dpanel" aria-labelledby="d-t-stats">

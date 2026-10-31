@@ -16,12 +16,9 @@
 .deck__copy { min-height: 40px; padding: 0 14px; font-size: var(--fs-xs); }
 .deck__copy svg { width: 16px; height: 16px; }
 .deck__name { font-size: var(--fs-lg); letter-spacing: .04em; color: var(--ink); }
-.deck__slots {
-  display: flex; gap: var(--s-3);
-  overflow-x: auto; scrollbar-width: thin;
-  margin: var(--s-3) calc(var(--s-4) * -1) 0; padding: var(--s-1) var(--s-4) var(--s-2);
-}
-.deck__slot { flex: none; width: 92px; display: flex; flex-direction: column; gap: var(--s-2); }
+/* 4 slots since 2026-10-30: they fit side by side on a phone, no sideways scroll */
+.deck__slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); margin-top: var(--s-3); padding: var(--s-1) 0 var(--s-2); }
+.deck__slot { min-width: 0; display: flex; flex-direction: column; gap: var(--s-2); }
 .deck__slot .card { width: 100%; }
 /* brass plate under each slot */
 .deck__pos {
@@ -63,8 +60,7 @@
 /* ---------- Desktop ---------- */
 @media (min-width: 900px) {
   .deck { padding: var(--s-5); }
-  .deck__slots { margin-inline: calc(var(--s-5) * -1); padding-inline: var(--s-5); }
-  .deck__slot { width: 120px; }
+  .deck__slots { max-width: 560px; gap: var(--s-3); }
 }
 
 
