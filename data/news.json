@@ -1,7 +1,21 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "note": "Home page news (PROGRESS.md §5.2 · routine E). updates: game patches, newest first, kind major|minor · codes: redeem codes (expires optional) · systems: new features in the game. All text in English.",
   "updates": [
+    {
+      "date": "2026-11-01",
+      "kind": "major",
+      "title": "Guild Boss & Guild Stats",
+      "items": [
+        "Guild Boss: 1,500 stages, much harder the higher you go; rewards buffed a lot (gems, roll packs, Huge Luck, Mutation & Weather potions); fixed a bug that gave fake huge damage",
+        "Guild Stats: owners & officers spend bank gems on Luck (up to x50), Mutation Luck, Roll Speed & Gems for every member; member upgrade is now Guild Room Upgrade; Guild Master moved to the counter; donate box fixed",
+        "Deck: pick a separate team for Battle 2; Favorite cards go to the top, get their own filter & can't be merged; Equip as Cosmetic to wear a card on your back; search & filters in the Card Grader and Trait pickers",
+        "Towers & Battles: Auto Tower never stops on its own; battles reopen after you rejoin or reconnect; battle buttons react instantly, shorter intro, smooth show/hide; hidden battles play the world music; copy-ability cards no longer copy traits or support effects",
+        "Fixed dark screen tint, and buttons shrinking & flickering with 2 battles",
+        "Backpack: potion popup stays open so you can use more than once; new % / amount toggle, up to 1,000,000 at once",
+        "Other: new Titan Serum & Progenitor's Blood art; Leaderboard & Weather hide arrows fixed on all devices; offline rewards removed; performance & security fixes; new text translated to all languages"
+      ]
+    },
     {
       "date": "2026-10-31",
       "kind": "major",
@@ -38,6 +52,16 @@
   ],
   "codes": [],
   "systems": [
+    {
+      "date": "2026-11-01",
+      "title": "Guild Stats",
+      "desc": "Owners and officers spend bank gems on Luck (up to x50), Mutation Luck, Roll Speed and Gems for every member."
+    },
+    {
+      "date": "2026-11-01",
+      "title": "Favorite & Cosmetic Cards",
+      "desc": "Favorite cards go to the top with their own filter and can't be merged. Equip a card as a cosmetic to wear it on your back."
+    },
     {
       "date": "2026-10-31",
       "title": "Two Battles at Once",
