@@ -1306,9 +1306,9 @@
     "image": "images/support/true-queen.webp",
     "effect": {
       "name": "Queen's Command",
-      "desc": "Queen Historia rallies her soldiers: every OTHER card in your deck deals {0}% more damage.",
+      "desc": "True Queen rallies her soldiers: the supported card makes every OTHER card in your deck deal {0}% more damage. Mutation bonus: +16% damage and max HP.",
       "vals": [
-        6
+        2.767
       ],
       "type": "dmg",
       "pos": [
@@ -1334,7 +1334,7 @@
       "value": 55.9
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "prevTier": "",
     "bestDeck": []
   },
@@ -3065,6 +3065,9 @@
       "vals": [
         1.867
       ],
+      "real": [
+        1.879752
+      ],
       "type": "dmg",
       "pos": [
         {
@@ -3524,6 +3527,9 @@
         17.233,
         14.8
       ],
+      "real": [
+        17.246667
+      ],
       "type": "dmg",
       "pos": [
         {
@@ -3612,6 +3618,10 @@
         74,
         6.08,
         50
+      ],
+      "real": [
+        null,
+        6.087235
       ],
       "type": "revive",
       "pos": [

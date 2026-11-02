@@ -244,6 +244,7 @@ I18N.addSK({
  "Botan won't ferry this one yet": "Botan ยังไม่ส่งใบนี้ข้ามฟาก",
  "Gamabunta lands with a splash": "Gamabunta ลงมาพร้อมน้ำกระเซ็น",
  "Queen Historia rallies her soldiers": "Queen Historia รวมพลทหารของเธอ",
+ "True Queen rallies her soldiers": "True Queen รวมพลทหารของเธอ",
  "Darkness takes every hit with joy": "Darkness รับทุกการโจมตีด้วยความยินดี",
  "Tamayo's blood poisons the enemy": "เลือดของ Tamayo เป็นพิษต่อศัตรู",
  "Eisen takes the hit for everyone": "Eisen รับการโจมตีแทนทุกคน",
