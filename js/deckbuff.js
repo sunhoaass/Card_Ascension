@@ -16,7 +16,7 @@
 
    Where buffs come from (only the ones with no condition: a buff that starts on a hit / a turn / under X% HP doesn't change
    the starting numbers):
-   ① Support (data/support.json effect.desc, value = C.supValAt at the support slot's rarity)
+   ① Support (data/support.json effect.desc, value = C.supBuffAt at the support slot's rarity: effect.real when measured, else the shown value)
       "the supported card gets / deals {n}% more damage / max HP" -> the card in the same column (support i -> card i)
       "EVERY card in your deck …" -> every card · "every OTHER card in your deck …" -> every card but the one it supports
       A support for the whole deck (EVERY / every OTHER card · deckWide) counts once (owner 2026-11-02): the first copy
@@ -165,7 +165,7 @@
       if (!s || isOff(s.id) || !first[j]) return;
       const sr = rarityOf(deck, "support", j);
       supportRules(s).rules.forEach((r) => {
-        const v = C.supValAt(s, r.i, sr);
+        const v = C.supBuffAt(s, r.i, sr);
         if (!(v > 0)) return;
         for (let k = 0; k < SLOTS; k++) {
           if (r.scope === "slot" ? k !== j : r.scope === "others" ? k === j : false) continue;

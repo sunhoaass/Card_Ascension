@@ -1306,9 +1306,12 @@
     "image": "images/support/true-queen.webp",
     "effect": {
       "name": "Queen's Command",
-      "desc": "Queen Historia rallies her soldiers: every OTHER card in your deck deals {0}% more damage.",
+      "desc": "True Queen rallies her soldiers: the supported card makes every OTHER card in your deck deal {0}% more damage. Mutation bonus: +16% damage and max HP.",
       "vals": [
-        6
+        2.777
+      ],
+      "real": [
+        2.776667
       ],
       "type": "dmg",
       "pos": [
@@ -1334,7 +1337,7 @@
       "value": 55.9
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "prevTier": "",
     "bestDeck": []
   },
@@ -3063,7 +3066,10 @@
       "name": "Guild Master's Faith",
       "desc": "Guild Master Giant believes in his guild: the supported card gives EVERY card in your deck {0}% more damage and max HP. Mutation bonus: +32% damage and max HP.",
       "vals": [
-        1.867
+        1.87
+      ],
+      "real": [
+        1.87
       ],
       "type": "dmg",
       "pos": [
@@ -3524,6 +3530,9 @@
         17.233,
         14.8
       ],
+      "real": [
+        17.246667
+      ],
       "type": "dmg",
       "pos": [
         {
@@ -3610,8 +3619,12 @@
       "desc": "Eternal Wish Dragon grants one wish: the supported card has a {0}% chance to come back once with {2}% HP and makes every OTHER card in your deck deal {1}% more damage. Mutation bonus: +25% damage and max HP.",
       "vals": [
         74,
-        6.08,
+        6.1,
         50
+      ],
+      "real": [
+        null,
+        6.1
       ],
       "type": "revive",
       "pos": [

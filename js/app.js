@@ -133,6 +133,18 @@
     v = t + c * (1 - Math.exp(-(v - t) / c));
     return dp ? Math.round(v * 10) / 10 : Math.round(v);
   };
+  /* The value a deck buff uses (js/deckbuff.js · owner 2026-11-02): the game keeps more decimals than it shows (Nine Tails Fox
+     Godly shows 51.7%, buffs 51.74% · measured on Founding Titan's full battle ATK, one support at a time). effect.real[i] =
+     that measured Normal value: × the level multiplier with no rounding (soft cap still on) · missing = the shown value */
+  const supBuffAt = (s, i, rarity) => {
+    const real = s && s.effect && Array.isArray(s.effect.real) ? Number(s.effect.real[i]) : NaN;
+    if (!(real > 0)) return supValAt(s, i, rarity);
+    const k = supKind(s, i);
+    const v = real * supLevelMult(rarity);
+    if (k === "hp") return Math.min(100, v);
+    const [t, c] = SOFT[k];
+    return v <= t ? v : t + c * (1 - Math.exp(-(v - t) / c));
+  };
   const supValue = (s, rarity) => supValAt(s, 0, rarity);  // the main value (vals[0]) at a rarity · 0 = none
   const supText = (s, text, rarity) => I18N.desc(String(text || "")).replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
@@ -907,7 +919,7 @@
   const CBI = window.CBI = {
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
-    isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
+    isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)

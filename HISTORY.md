@@ -1752,3 +1752,32 @@
 - **ข้อความบนรูป Deck:** `deck.note` (≤ 200 ตัวอักษร · ≤ 6 บรรทัด) · editor `#dk-note` + `editNote()` · รูป: กล่องขอบทองใต้ชื่อ Oswald/body 600 30px · หน้าแชร์ + ลิงก์ `o` · ไม่อยู่ใน Undo
 - **ทดสอบ (Chromium · ไม่มี error):** deck ตามรูปเจ้าของ: ATK สี rgb(236,69,59) / HP rgb(82,178,87) · ใส่ข้อความ 2 บรรทัด (ไทย + อังกฤษ) → บันทึก → รูป Save image มีกล่องข้อความ · ลิงก์แชร์เปิดแล้วเห็นข้อความ · หน้า Cards → Support: ค่าขาว · ภาษาไทยของปุ่ม/กล่องข้อความ
 - **ไฟล์:** `images/cards/founding-titan.webp` `witch-of-envy.webp` (+ `thumb/`) · `images/support/charge-commander.webp` `guild-master-giant.webp` `eternal-wish-dragon.webp` `spirit-medium-granny.webp` (+ `thumb/`) · `data/cards.json` · `data/support.json` · `js/deck.js` · `js/share.js` · `js/i18n-th-ui.js` · `js/i18n-th-sk2.js` · `css/tokens.css` · `css/fx.css` · `css/deck.css` · `index.html` (`?v=57`) · `PROGRESS.md` · `HISTORY.md` · `SUPPORT-CHANGES.md`
+
+### 2026-11-02 ค่า Support จริงในเกม + True Queen ข้อมูลใหม่ (`?v=58`)
+- **ที่มา:** เจ้าของส่งรูปจอต่อสู้ Founding Titan (Godlike · Limitless · เกรด 10 ครบ) ใส่ทีละใบ + deck เต็ม (Support: Nine Tails Fox · Charge Commander · True Queen · Guild Master Giant ทุกใบ Godly · การ์ด: Titan + King of Conquerors ×3) + รูป True Queen Godly
+- **ผลวัด (อัตราส่วนแต่ละขั้น):** ฐาน 5,823,678 × 183 × 1.3 × 1.7 = 2,355,270,094 vs เกม 2,355,270,032 (ตรง) · +NTF ×2.124360 = 1.5174 × 1.40 → **NTF 51.74%** (แสดง 51.7) · +King ×1.1500000 ตรง · +CC ×1.1360000 ตรง · +King ×2 + True Queen + GMG ×1.513037 = 1.15² × 1.083 × 1.056393 → **GMG 5.6393%** (แสดง 5.6 · สมมติ TQ = 8.3 พอดี) · Witch deck เดิม (`?v=55`) เหลือ ×1.000158 → **Eternal Wish Dragon {1} Ascended 15.218%** (แสดง 15.2 · ถ้า TQ เป็นตัวคลาดแทน GMG ค่า EWD ต้องเป็น 15.26 ซึ่งเกมจะแสดง 15.3 → จึงเลือก GMG)
+- **สิ่งที่เปลี่ยน:** `C.supBuffAt(s, i, rarity)` ใน app.js = `effect.real[i]` × ตัวคูณระดับ (ไม่ปัด · soft cap เดิม) ถ้ามี ไม่มี = `supValAt` · `deckbuff.js` ใช้ตัวนี้ · ค่าที่แสดงบนการ์ด/ข้อความไม่เปลี่ยน · `support.json`: NTF `real [17.246667]` · GMG `real [1.879752]` · EWD `real [null, 6.087235]` · True Queen: ข้อความเกมใหม่ + Mutation +16% + `vals [2.767]` (เดิม 6 = 18% ที่ Godly) · `pool.json` vals True Queen · คำแปลไทย "True Queen rallies her soldiers"
+
+  | ATK Founding Titan | เกม | เว็บก่อน | เว็บหลัง |
+  |---|---|---|---|
+  | ฐาน (เกรด + Limitless) | 2,355,270,032 | 2,355,270,094 | 2,355,270,094 |
+  | + NTF | 5,003,441,445 | 5,002,122,625 | 5,003,441,609 |
+  | + King | 5,753,957,662 | 5,752,441,018 | 5,753,957,850 |
+  | + Charge Commander | 6,536,495,903 | 6,534,772,997 | 6,536,496,118 |
+  | deck เต็ม | 9,889,958,286 | 10,768,919,040 (+8.9% · True Queen 18%) | 9,889,958,718 |
+  | Witch of Envy (deck `?v=55`) | 8,610,742,660 | 8,603,923,043 | 8,610,742,810 |
+
+- **ทดสอบ:** Chromium · คำนวณด้วย `CBI.deckBuff.compute` ของเว็บจริง (ตารางบน) · ค่าที่แสดง NTF 51.7 · GMG 5.6 · EWD 15.2 (Ascended) เท่าเดิม · ข้อความ True Queen แสดง 8.3% · ไม่มี error ใน console
+- **ยังไม่รู้:** ค่า `real` ของ Support ใบอื่น · รูป True Queen ยังข้อความเก่า (ต้องแคปใหม่ + `support_nums.py --redo`) · Tier True Queen คิดจากค่าเก่า
+- **ไฟล์:** `js/app.js` · `js/deckbuff.js` · `js/i18n-th-sk2.js` · `data/support.json` · `data/pool.json` · `index.html` (`?v=58`) · `PROGRESS.md` · `HISTORY.md`
+- **รอบ 2 (เจ้าของส่งเพิ่ม: deck เดิมถอด True Queen เหลือ NTF · CC · GMG = 9,129,473,170):** ×1.396692 จากขั้น CC = 1.15² × **1.0561** → GMG = **5.61%** พอดี · deck เต็ม ÷ ค่านี้ = **True Queen 8.33%** พอดี (สมมติฐานรอบแรก "TQ 8.3 พอดี · GMG 5.639" ผิด) · Witch deck เดิม → **Eternal Wish Dragon {1} 15.25%** ที่ Ascended (เกมปัด .25 คู่ → แสดง 15.2) = Normal 6.1
+  - `support.json`: GMG `vals [1.87]` `real [1.87]` · True Queen `vals [2.777]` `real [2.776667]` · EWD `vals[1] 6.1` `real [null, 6.1]` (Godly แสดง 18.3 แทน 18.2) · `pool.json` ตาม
+  - เว็บหลังแก้ (เกม): NTF+CC+GMG 9,129,473,470 (9,129,473,170) · deck เต็ม 9,889,958,701 (9,889,958,286) · Witch 8,610,742,427 (8,610,742,660) · ต่าง ≤ 0.00001% ทุกค่า (มาจากฐาน 2,355,270,094 vs 2,355,270,032)
+
+### 2026-11-02 รูป Save image: Deck ชื่อ + ระดับ + ข้อความล่างสุด · Tier List ชื่อขนาดเดียว (`?v=59`)
+- **ที่มา:** เจ้าของส่งรูป Save image ของ Deck · สั่ง: ข้อความไปล่างสุด · ชื่อการ์ดแทน SLOT 1–4 · ระดับใต้การ์ดเหนือ Trait · Tier List ทุกใบมาตรฐานเดียวกัน (ตอบตัวเลือก: แบบรูป Deck · ชื่อใต้การ์ดเท่ากัน · ข้อความบนการ์ดเท่ากัน · Deck ใช้ทั้ง Cards/Support · ป้ายสีตามระดับ)
+- **สิ่งที่เปลี่ยน (`js/share.js`):** `deckImage` ชื่อ (`slotName` · body 600 17px · ≤ 2 บรรทัด · ช่องว่าง = ไม่มีชื่อ) + ป้ายระดับ (`drawRarityPill` · สี `gcSpec` แบบป้ายบนการ์ด · Normal = ป้ายเข้ม) ทั้ง 2 แผง · กล่อง note วาดหลังแผง Support · `tierImage` captions: `capSize` เลือกขนาดเดียวทั้งรูป (26 → 18px จนทุกชื่อพอดี ≤ 3 บรรทัด ไม่ตัดคำ) · กว้างชื่อ = กว้างการ์ด − 6 (เดิมกว้างเกินการ์ด ชื่อติดกัน)
+- **ไม่ได้ทำ:** ข้อความความสามารถบนการ์ดเท่ากันทุกใบ → ข้อความอยู่ในรูปเกม (เกมย่อเองตามความยาว เช่น King of Conquerors ตัวใหญ่ Witch of Envy ตัวเล็ก) เปลี่ยนไม่ได้ถ้าไม่ลบข้อความออกจากรูป (เจ้าของเพิ่งสั่งใช้รูปต้นฉบับ)
+- **ทดสอบ (Chromium):** Deck 4 การ์ด (Godly/Godly/Normal/Ascended · Trait 1 ใบ · Support 3 + ช่องว่าง · note 2 บรรทัดไทย/อังกฤษ) · Tier List การ์ด 12 / Support 12 ใบ ที่ Godly · ชื่อทุกใบขนาดเดียว · ไม่มี error
+- **ไฟล์:** `js/share.js` · `index.html` (`?v=59`) · `PROGRESS.md` · `HISTORY.md`
+
