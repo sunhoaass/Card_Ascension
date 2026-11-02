@@ -1220,7 +1220,7 @@
       "series": "",
       "odds": 6739,
       "vals": [
-        2.767
+        2.777
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_115442551.png",
@@ -3994,7 +3994,7 @@
       "series": "",
       "odds": 20500000,
       "vals": [
-        5.8
+        1.87
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_122359628.png",
@@ -5804,7 +5804,7 @@
       "odds": 211000000000,
       "vals": [
         55,
-        7.5
+        6.1
       ],
       "type": "revive",
       "src": "RobloxScreenShot20261028_124108761.png",

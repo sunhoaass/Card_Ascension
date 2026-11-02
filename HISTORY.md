@@ -1770,3 +1770,6 @@
 - **ทดสอบ:** Chromium · คำนวณด้วย `CBI.deckBuff.compute` ของเว็บจริง (ตารางบน) · ค่าที่แสดง NTF 51.7 · GMG 5.6 · EWD 15.2 (Ascended) เท่าเดิม · ข้อความ True Queen แสดง 8.3% · ไม่มี error ใน console
 - **ยังไม่รู้:** ค่า `real` ของ Support ใบอื่น · รูป True Queen ยังข้อความเก่า (ต้องแคปใหม่ + `support_nums.py --redo`) · Tier True Queen คิดจากค่าเก่า
 - **ไฟล์:** `js/app.js` · `js/deckbuff.js` · `js/i18n-th-sk2.js` · `data/support.json` · `data/pool.json` · `index.html` (`?v=58`) · `PROGRESS.md` · `HISTORY.md`
+- **รอบ 2 (เจ้าของส่งเพิ่ม: deck เดิมถอด True Queen เหลือ NTF · CC · GMG = 9,129,473,170):** ×1.396692 จากขั้น CC = 1.15² × **1.0561** → GMG = **5.61%** พอดี · deck เต็ม ÷ ค่านี้ = **True Queen 8.33%** พอดี (สมมติฐานรอบแรก "TQ 8.3 พอดี · GMG 5.639" ผิด) · Witch deck เดิม → **Eternal Wish Dragon {1} 15.25%** ที่ Ascended (เกมปัด .25 คู่ → แสดง 15.2) = Normal 6.1
+  - `support.json`: GMG `vals [1.87]` `real [1.87]` · True Queen `vals [2.777]` `real [2.776667]` · EWD `vals[1] 6.1` `real [null, 6.1]` (Godly แสดง 18.3 แทน 18.2) · `pool.json` ตาม
+  - เว็บหลังแก้ (เกม): NTF+CC+GMG 9,129,473,470 (9,129,473,170) · deck เต็ม 9,889,958,701 (9,889,958,286) · Witch 8,610,742,427 (8,610,742,660) · ต่าง ≤ 0.00001% ทุกค่า (มาจากฐาน 2,355,270,094 vs 2,355,270,032)
