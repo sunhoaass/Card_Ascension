@@ -1781,3 +1781,8 @@
 - **ทดสอบ (Chromium):** Deck 4 การ์ด (Godly/Godly/Normal/Ascended · Trait 1 ใบ · Support 3 + ช่องว่าง · note 2 บรรทัดไทย/อังกฤษ) · Tier List การ์ด 12 / Support 12 ใบ ที่ Godly · ชื่อทุกใบขนาดเดียว · ไม่มี error
 - **ไฟล์:** `js/share.js` · `index.html` (`?v=59`) · `PROGRESS.md` · `HISTORY.md`
 
+
+### 2026-11-02 ตัวอย่างกฎตัดภาพใหม่ "เขียนใหม่ทั้งใบ" (Long Hair Invader · mockup เท่านั้น ไม่แตะเว็บ)
+- **สิ่งที่ทำ:** ตัดรูป Normal จากหน้า Index (2400×1080 · x 527–973 y 228–848 → 600×840) แล้วลบชื่อ, HP, หัวใจ, ป้าย 1 IN X, ชื่อสกิล, คำอธิบาย, ดาบ, ATK, ×N (mask สี/ความสว่าง + กล่อง · OpenCV `xphoto.inpaint` FSR_FAST · `mockup/card-redraw/erase_all.py`) · หน้า `mockup/card-redraw.html` วาดทุกอย่างใหม่ (หน่วย cqw · ขอบดำเป็นชั้นแยกใต้ตัวอักษรไล่สี) · สีชื่อ/กรอบ/ป้ายระดับดูดจากแคป 9 ระดับ · HP < 1B เต็ม · ปรับขนาดชื่อ/HP/ATK/คำอธิบายเองตามความยาว · ตัวเลือกให้เจ้าของกด 9 ข้อ + ปุ่มคัดลอกตัวเลือก · Cosmic HP ในแคปโดนป้ายบัง ใช้ค่าคำนวณ 73,132
+- **ทดสอบ (Chromium):** 400px ไม่มีเลื่อนข้าง · การ์ด 360/260/180/130/96px · ชื่อ 6–45 ตัวอักษร (ยาวมาก = 2 บรรทัด) · HP 999,999,999 / 1.2B / 45.6T · คำอธิบายยาวสุดในเว็บ (Demon God of Flame) อยู่ในกรอบ · ฟอนต์ 4 ชุด · ไม่มี error
+- **ไฟล์:** `mockup/card-redraw.html` · `mockup/card-redraw/long-hair-invader.webp` · `mockup/card-redraw/erase_all.py` · `PROGRESS.md` · `HISTORY.md`
