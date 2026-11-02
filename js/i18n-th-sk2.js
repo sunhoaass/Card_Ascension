@@ -330,5 +330,17 @@ I18N.addSK({
  "Mutation bonus": "โบนัสกลายพันธุ์",
  "Spirit Medium Granny's barrier talismans guard your WHOLE deck": "เครื่องรางบาเรียของ Spirit Medium Granny ปกป้องทั้งเด็ค",
  "the supported card protects your whole deck: only the card that is attacked takes damage (no splash, card-behind or bench hits) and takes #% less damage.": "การ์ดที่ซัพพอร์ตปกป้องทั้งเด็ค: เฉพาะการ์ดที่โดนโจมตีเท่านั้นที่รับดาเมจ (ไม่โดนดาเมจกระจาย ไม่โดนตีใบหลัง ไม่โดนตีม้านั่ง) และรับดาเมจน้อยลง #1%",
- "+#% damage and max HP.": "+#1% ดาเมจและ HP สูงสุด"
+ "+#% damage and max HP.": "+#1% ดาเมจและ HP สูงสุด",
+ "Atomic Shadow Lord rules from the shadows.": "Atomic Shadow Lord ปกครองจากเงามืด",
+ "Its first hit of the fight also hits the whole enemy bench for #% of that hit.": "การตีครั้งแรกของการต่อสู้จะโจมตีแถวสำรองศัตรูทั้งหมดด้วย #1% ของการตีนั้น",
+ "No-Life King releases every soul he has consumed.": "No-Life King ปลดปล่อยทุกวิญญาณที่เขากลืนกิน",
+ "Dragon God, the strongest in the world.": "Dragon God ผู้แข็งแกร่งที่สุดในโลก",
+ "#% chance to strike back when hit.": "โอกาส #1% สวนกลับเมื่อถูกตี",
+ "Dragon Emperor Monarch's dragon fear.": "ความกลัวมังกรของ Dragon Emperor Monarch",
+ "Destroyer Dragonoid's Drago Nova destroys everything.": "Drago Nova ของ Destroyer Dragonoid ทำลายทุกสิ่ง",
+ "With Slime Demon Lord in your deck, both get +#% damage.": "เมื่อมี Slime Demon Lord ในเด็คของคุณ ทั้งคู่ได้ +#1% ดาเมจ",
+ "Primordial Butler Demon's world of temptation.": "โลกแห่งการล่อลวงของ Primordial Butler Demon",
+ "Hypnosis Traitor's perfect hypnosis.": "การสะกดจิตอันสมบูรณ์แบบของ Hypnosis Traitor",
+ "Beast Emperor can't die.": "Beast Emperor ตายไม่ได้",
+ "Rabbit Goddess is the origin of chakra.": "Rabbit Goddess คือต้นกำเนิดของจักระ"
 });

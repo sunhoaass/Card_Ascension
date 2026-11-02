@@ -76,7 +76,7 @@ def one(a, s):
         elif g(r"Ignores (the enemy's )?shields, dodges and barriers"): a["ignore"] = True
         elif g(r"Its attacks can't be dodged"): a["undodgeable"] = True
         elif g(r"Every hit also hits the whole enemy bench for " + F + r"%( of its normal hit \(no crits or bonuses\))?"): a["bench"] = float(m[1]) / 100
-        elif g(r"Its first attack also hits the whole enemy bench for " + F + "%"): a["bench_first"] = float(m[1]) / 100
+        elif g(r"Its first (?:attack|hit of the fight) also hits the whole enemy bench for " + F + "%( of that hit)?"): a["bench_first"] = float(m[1]) / 100
         elif g(r"Every enemy card starts with " + F + "% less damage"): a["enemy_less"] = float(m[1]) / 100
         elif g(r"Every (\d)\w\w attack also hits the card behind for " + F + r"%( of its normal hit \(no crits or bonuses\))?"): a["behind"] = (int(m[1]), float(m[2]) / 100)
         elif g(r"Comes back once with " + F + "% HP"): a["revive"] = float(m[1]) / 100
@@ -115,7 +115,7 @@ def one(a, s):
         elif g(F + r"% chance per hit to Freeze the enemy for (\d+) turns? \(frozen cards take 25% more damage\)"): a["freeze"] = (float(m[1]) / 100, int(m[2]))
         elif g(F + r"x damage against frozen enemies"): a["vs_frozen"] = float(m[1])
         elif g(F + r"% chance per hit to Seal the enemy's ability for (\d+) turns( \(bosses: \d+ turns?\))?"): a["seal_chance"] = (float(m[1]) / 100, int(m[2]))
-        elif g(F + r"% chance to counter-attack when hit"): a["counter"] = float(m[1]) / 100
+        elif g(F + r"% chance to (?:counter-attack|strike back) when hit"): a["counter"] = float(m[1]) / 100
         elif g(r"Blocks the first (\d+) hits completely"): a["block"] = int(m[1])
         elif g(F + r"% chance to crit for " + F + "x damage"): a["crit"] = (float(m[1]) / 100, float(m[2]))
         elif g(r"Every hit sets the whole enemy deck on fire for (\d+) turns?"): a["fire"] = int(m[1])
