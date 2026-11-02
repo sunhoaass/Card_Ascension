@@ -14,15 +14,23 @@
      a deck saved or shared in one of them keeps it, and shows / scores as Overall until another mode is picked).
    · Decks live in localStorage "cbi:decks" (PROGRESS.md §10.4) and save on every change. No Save button.
    · Putting cards in: tap an empty slot -> picker (search + filters). Moving: drag (mouse moves right away, touch = hold
-     ~0.26s) or tap a card, then tap the slot it should go to (swaps when that slot has a card). × clears a slot.
+     ~0.26s), or tap a card -> its slot sheet -> "Move to another slot", then tap the slot it should go to (swaps when that
+     slot has a card). × clears a slot.
+   · Owner 2026-11-02 "rarity and grade per slot": every card slot and support slot has its own rarity (deck.cardRarity /
+     deck.supRarity) and every card slot its own grades (deck.grades, 0–10 × ATK / DEF / Status / HP, kept in the deck, the
+     Grade page is never changed from here). Tap a card / support = slotSheet(): rarity + grades + trait (cards) + Details /
+     Change / Move / Remove. A new card or support starts at the rarity used last (cbi:deckRarity, first time Godly), a new
+     card with its saved grades (C.grade.get). The editor has no mode buttons, deck rarity buttons, meta line or score ring
+     any more (deck.mode is still saved and used by the analysis). Decks saved before: every slot = the deck's old rarity,
+     grades = the user's saved grades once (fillGrades). Links carry cr / sr / g (older links: the deck's rarity, no grades).
    · Undo / Redo: 50 steps per deck (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
    · Step 9 tools (js/share.js) are reused: Save as image (C.share.deckImageDialog), Share link (#deck/s/<data>),
      backup file (registers "decks"). Dialogs are the Tier Maker's C.dialog.
    · Step 11: team score (js/teamscore.js does the maths, this file paints it). refresh() runs after every commit() / step() /
-     setRarity() / setMode() and paints: the score ring (paintScore), "Score breakdown" (5 parts), "Strengths & weaknesses"
-     (Strong vs / Weak vs / Fits modes), "Fill the gaps" (3 best cards / support for the empty slots, tap = add) and the
-     score pill on each row of My Decks. "Compare" = a dialog with two decks side by side (stacked on a phone).
-   · Traits (js/traits.js): a trait button under each card slot of the editor. In the game every copy of a card has the same
+     setMode() and paints: "Score breakdown" (5 parts), "Strengths & weaknesses" (Strong vs / Weak vs / Fits modes),
+     "Fill the gaps" (3 best cards / support for the empty slots, tap = add) and the score pill on each row of My Decks
+     (the editor's score ring went 2026-11-02 · the shared view and Compare still have one). "Compare" = a dialog with two decks side by side (stacked on a phone).
+   · Traits (js/traits.js): set in the slot sheet (a pill under the card shows it). In the game every copy of a card has the same
      trait, so a slot's trait IS that card's trait (cbi:traits, shared with the Details sheet). The user's own decks are scored
      with their traits (mine()); shared decks and Meta Decks are scored without. The backup is unchanged.
    · Owner 2026-11-02: the share link carries the sharer's traits (payload t: [trait id|"" × 4], optional: older links open
@@ -63,7 +71,7 @@
     easy: "Only cards and support that are easier to pull",
   };
   const LEADS = {
-    my: "Build your own four-card decks, with a support under each card. A card or support can fill more than one slot. Pick a mode and a rarity, then tap a slot to add a card. The team score updates as you build. Decks are saved on this device.",
+    my: "Build your own four-card decks, with a support under each card. A card or support can fill more than one slot. Tap a slot to add a card, then tap the card to set its rarity, grade and trait. Decks are saved on this device.",
     meta: "Meta decks: four-card teams for PvP, Tower Infinity and both, with the support under each card. Picked from simulated battles. Pick a rarity to see the stats. Tap a card for the full breakdown, or copy a deck to My Decks to make it yours.",
     shared: "A deck someone shared with you. It's view only: tap Save a copy to keep your own.",
   };
@@ -77,6 +85,7 @@
     x: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
     info: svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'),
     swap: svg('<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>'),
+    move: svg('<path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/>'),
     search: svg('<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>'),
     filter: svg('<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>'),
     ...((C.share && C.share.icons) || {}),         // image, link, download, upload, archive, check
@@ -130,22 +139,74 @@
   const modes = () => allModes().filter((m) => !m.hidden);   // the ones on the buttons
   // a deck's mode as shown and scored: hidden (Story / Boss) or unknown = Overall
   const modeOf = (id) => { const all = modes(); return all.find((m) => m.id === id && m.enabled) || all.find((m) => m.id === DEFAULT_MODE) || all[0]; };
-  // the image of a deck · traitOf(cardId, slot) = whose traits (the user's own, or the ones a shared link carried)
-  const deckSpec = (d, traitOf, gradeOf = myGradeOf) => {
+  // the image of a deck · traitOf(cardId, slot) = whose traits (the user's own, or the ones a shared link carried) ·
+  // grades + rarity = the deck's own per slot
+  const deckSpec = (d, traitOf) => {
     const t = (id, i) => (id && cardById.has(id) && traitOf ? traitOf(id, i) || null : null);
-    const res = C.deckBuff ? C.deckBuff.compute(d, { traitOf, gradeOf }) : [];
+    const res = C.deckBuff ? C.deckBuff.compute(d, { traitOf, gradeOf: (id, i) => (Array.isArray(d.grades) ? d.grades[i] : null) }) : [];
     return {
       id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice(),
+      cardRarity: d.cards.map((x, i) => rarityAt(d, "cards", i)), supRarity: d.support.map((x, i) => rarityAt(d, "support", i)),
       traits: d.cards.map(t),
       nums: d.cards.map((id, i) => { const r = res[i]; return r ? { atk: r.atk, hp: r.hp, upAtk: r.atk !== r.base.atk, upHp: r.hp !== r.base.hp } : null; }),
     };
   };
   const myTraitOf = (id) => (C.traits && C.traits.of ? C.traits.of(id) : null);
-  const myGradeOf = (id) => (C.grade && C.grade.get ? C.grade.get(id) : null);   // the user's grades (js/grade.js) · all 10 = +30%
-  const noGrade = () => null;                                                     // a shared deck: the link carries no grades
+  const myGradeOf = (id) => (C.grade && C.grade.get ? C.grade.get(id) : null);   // the user's saved grades (js/grade.js) · all 10 = +30%
+
+  /* ---------- Rarity + grades per slot (owner 2026-11-02) ----------
+     deck.cardRarity / deck.supRarity = [rarity name × 4] · deck.grades = [[atk, def, status, hp] | null × 4] (0–10) */
+  const LAST_KEY = "cbi:deckRarity", FIRST_RARITY = "Godly", GRADE_MAX = 10;
+  const RKEY = { cards: "cardRarity", support: "supRarity" };
+  const isRarity = (r) => typeof r === "string" && state.meta.rarities.some((x) => x.name === r);
+  // the rarity a new card / support starts at: the one picked last in a slot sheet (first time = Godly)
+  function lastRarity() {
+    let r = null;
+    try { r = localStorage.getItem(LAST_KEY); } catch {}
+    return isRarity(r) ? r : isRarity(FIRST_RARITY) ? FIRST_RARITY : state.meta.rarities[state.meta.rarities.length - 1].name;
+  }
+  function rememberRarity(r) { try { localStorage.setItem(LAST_KEY, r); } catch {} }
+  const rarityAt = (d, kind, i) => C.deckBuff.rarityOf(d, kind, i);
+  const raritiesOf = (a, fallback) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(Array.isArray(a) && isRarity(a[i]) ? a[i] : fallback); return o; };
+  // one slot's grades: 4 whole numbers 0–10 · nothing set = null
+  function gradeOf(a) {
+    if (!Array.isArray(a) || a.length < 4) return null;
+    const g = a.slice(0, 4).map((n) => Math.max(0, Math.min(GRADE_MAX, Math.round(Number(n) || 0))));
+    return g.some((n) => n > 0) ? g : null;
+  }
+  const gradesOf = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(gradeOf(Array.isArray(a) ? a[i] : null)); return o; };
+  // decks saved before 2026-11-02 have no grades: they take the user's saved grades once (what their numbers showed before)
+  function fillGrades(d) {
+    if (Array.isArray(d.grades)) return false;
+    d.grades = d.cards.map((id) => (id ? gradeOf(myGradeOf(id)) : null));
+    return true;
+  }
+  // a card / support put in a slot: the last rarity · a card: its saved grades
+  function place(d, kind, i, id) {
+    d[kind][i] = id;
+    d[RKEY[kind]][i] = lastRarity();
+    if (kind === "cards") { if (!Array.isArray(d.grades)) d.grades = new Array(SLOTS).fill(null); d.grades[i] = gradeOf(myGradeOf(id)); }
+  }
+  // move / swap two slots of a row: the rarity and the grades go with the card
+  function swapSlots(d, kind, a, b) {
+    const sw = (arr) => { if (Array.isArray(arr)) [arr[a], arr[b]] = [arr[b], arr[a]]; };
+    sw(d[kind]); sw(d[RKEY[kind]]);
+    if (kind === "cards") sw(d.grades);
+  }
+  // "Godly" when every filled slot has the same rarity, else "Mixed rarity" (deck list, shared deck)
+  function rarityLabel(d) {
+    const set = new Set();
+    KINDS.forEach((k) => d[k].forEach((id, i) => { if (id) set.add(rarityAt(d, k, i)); }));
+    return set.size > 1 ? "Mixed rarity" : set.size ? [...set][0] : rarityAt(d, "cards", 0);
+  }
   const anyCards = (d) => countOf(d.cards) + countOf(d.support) > 0;
   // the user's own deck as the team score sees it: with the user's trait per card (js/traits.js)
   const mine = (d) => ({ ...d, traits: C.traits.map() });
+  // ...and for "Fill the gaps": an empty slot is at the rarity a new pick would get
+  const mineToFill = (d) => {
+    const lr = lastRarity();
+    return { ...mine(d), cardRarity: d.cardRarity.map((r, i) => (d.cards[i] ? r : lr)), supRarity: d.supRarity.map((r, i) => (d.support[i] ? r : lr)) };
+  };
 
   /* ==========================================================
      Saving (localStorage, never crashes when blocked)
@@ -173,16 +234,25 @@
     return { cards, support, extra: extra.cards.length || extra.support.length ? extra : null };
   }
   // Anything odd in storage (old format, hand edits, a backup or a link made by someone else) is repaired, not thrown away
+  // rarity per slot: unknown / missing = the deck's rarity (decks from before 2026-11-02 keep what they showed) ·
+  // grades: kept only when the deck has them (fillGrades() gives old decks the user's saved grades once)
   function clean(d) {
     if (!d || typeof d !== "object") return null;
-    return {
+    const rarity = isRarity(d.rarity) ? d.rarity : "Normal";
+    const f = fitOld(d);
+    const out = {
       id: str(d.id).slice(0, 60) || newId("dk_"),
       name: str(d.name).trim().slice(0, NAME_MAX) || "Untitled deck",
       mode: MODES.some((m) => m.id === d.mode) ? d.mode : DEFAULT_MODE,
-      rarity: state.meta.rarities.some((r) => r.name === d.rarity) ? d.rarity : "Normal",
-      ...(() => { const f = fitOld(d); return f.extra ? { cards: f.cards, support: f.support, extra: f.extra } : { cards: f.cards, support: f.support }; })(),
-      created: str(d.created) || now(), updated: str(d.updated) || now(),
+      rarity,
+      cards: f.cards, support: f.support,
+      cardRarity: raritiesOf(d.cardRarity, rarity), supRarity: raritiesOf(d.supRarity, rarity),
     };
+    if (Array.isArray(d.grades)) out.grades = gradesOf(d.grades);
+    if (f.extra) out.extra = f.extra;
+    out.created = str(d.created) || now();
+    out.updated = str(d.updated) || now();
+    return out;
   }
   function load() {
     let raw = [];
@@ -196,7 +266,7 @@
   }
   function touch() { if (cur) cur.updated = now(); save(); }
   const histOf = (id) => { if (!hist.has(id)) hist.set(id, { undo: [], redo: [] }); return hist.get(id); };
-  const snap = () => JSON.stringify({ c: cur.cards, s: cur.support, m: cur.mode });
+  const snap = () => JSON.stringify({ c: cur.cards, s: cur.support, m: cur.mode, cr: cur.cardRarity, sr: cur.supRarity, g: cur.grades || null });
 
   /* ==========================================================
      Motion helpers (transform / opacity only, §4)
@@ -287,7 +357,9 @@
     b.root = root;
     b.editable = editable;
     b.traitOf = editable ? myTraitOf : (id, i) => (shared && shared.traits ? shared.traits[i] || null : null);
-    b.gradeOf = editable ? myGradeOf : noGrade;
+    // grades: the deck's own per slot (a shared deck: the ones its link carried, older links none)
+    b.gradeOf = editable ? (id, i) => (cur && Array.isArray(cur.grades) ? cur.grades[i] : null)
+      : (id, i) => (shared && Array.isArray(shared.deck.grades) ? shared.deck.grades[i] : null);
     root.innerHTML = KINDS.map((kind) => `
       <section class="dk-group" aria-label="${kind === "cards" ? "Cards" : "Support cards"}">
         <div class="dk-group__head"><h3 class="dk-group__title">${kind === "cards" ? "Cards" : "Support"}</h3><span class="dk-group__count" data-count="${kind}"></span></div>
@@ -302,8 +374,9 @@
         slot.className = "dk-slot is-empty";
         slot.dataset.kind = kind;
         slot.dataset.i = i;
-        slot.innerHTML = `${kind === "cards" ? `<span class="deck__pos">Slot ${i + 1}</span>` : ""}<div class="dk-slot__box"></div>`;
+        slot.innerHTML = `${kind === "cards" ? `<span class="deck__pos">Slot ${i + 1}</span>` : ""}<div class="dk-slot__box"></div><span class="dk-rar" hidden></span>`;
         const box = $(".dk-slot__box", slot);
+        slot._rar = $(".dk-rar", slot);                   // the slot's rarity, written under the card (owner 2026-11-02)
         if (editable) {
           const add = document.createElement("button");
           add.type = "button";
@@ -320,11 +393,9 @@
           slot._x = x;
           slot.appendChild(x);
           box.appendChild(add);
-          if (kind === "cards") {                          // the card's trait (js/traits.js)
-            const t = document.createElement("button");
-            t.type = "button";
-            t.className = "dk-trait fx-press";
-            t.dataset.act = "trait";
+          if (kind === "cards") {                          // the card's trait (js/traits.js) · set in the slot sheet: here a pill, a tap opens the sheet
+            const t = document.createElement("span");
+            t.className = "dk-trait dk-trait--ro dk-trait--tap";
             t.hidden = true;
             slot._trait = t;
             slot.appendChild(t);
@@ -365,6 +436,7 @@
     el.tabIndex = 0;
     el.setAttribute("role", "button");
     el.dataset.id = id;
+    el._r = rarity;                                     // the slot's rarity it shows (paintKind recolours it when that changes)
     const x = lookup(kind, id);
     if (!x) {                                           // not in the library (yet): keep it, show a dashed slot
       el.classList.add("dk-item--missing");
@@ -373,7 +445,7 @@
       return el;
     }
     el.dataset.name = x.name;
-    // support too (2026-10-28, owner): the game card, as big as the cards, its values at the deck's rarity
+    // support too (2026-10-28, owner): the game card, as big as the cards, its values at its slot's rarity
     const art = C.renderCard(x, rarity, { mini: true });
     art.tabIndex = -1;
     art.removeAttribute("role");
@@ -387,12 +459,13 @@
   function paintKind(b, kind, d, { animate = false, land = null } = {}) {
     const old = b.shown[kind];
     const rects = animate ? old.map((o) => (o && o.el.isConnected ? o.el.getBoundingClientRect() : null)) : [];
-    const used = new Set();
+    const used = new Set(), recolor = [];
     const next = d[kind].map((id, i) => {
       if (!id) return null;
+      const r = rarityAt(d, kind, i);
       let j = old[i] && old[i].id === id && !used.has(i) ? i : old.findIndex((o, k) => o && o.id === id && !used.has(k));
-      if (j >= 0) { used.add(j); return { ...old[j], from: j }; }
-      return { id, el: makeItem(kind, id, d.rarity), from: -1 };
+      if (j >= 0) { used.add(j); if (old[j].el._r !== r) recolor.push([old[j].el, id, r]); return { ...old[j], from: j }; }
+      return { id, el: makeItem(kind, id, r), from: -1 };
     });
     const gone = old.map((o, k) => (o && !used.has(k) ? [o, k] : null)).filter(Boolean);
     if (animate) old.forEach((o) => { if (o) stop(o.el); });
@@ -412,6 +485,7 @@
         if (n) slot._x.setAttribute("aria-label", `Remove ${n.el.dataset.name} from ${kind === "cards" ? "slot" : "support slot"} ${i + 1}`);
       }
       if (slot._trait) paintTrait(slot, n && !n.el.classList.contains("dk-item--missing") ? n.id : null, b);
+      paintRar(slot, n && !n.el.classList.contains("dk-item--missing") ? rarityAt(d, kind, i) : null, animate);
       if (slot._empty && b.editable) slot._empty.setAttribute("aria-label", `Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}`);
     });
     b.shown[kind] = next.map((n) => (n ? { id: n.id, el: n.el } : null));
@@ -425,16 +499,41 @@
         if (a && (Math.abs(a.left - r.left) > 0.5 || Math.abs(a.top - r.top) > 0.5) && (rectVisible(a) || rectVisible(r))) slide(n.el, a.left - r.left, a.top - r.top);
       });
     }
+    // a slot's rarity changed (slot sheet, undo): flash + numbers count, like the rarity buttons elsewhere (§4)
+    if (recolor.length) {
+      const seen = recolor.map(([el]) => animate && el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
+      recolor.forEach(([el, id, r], n) => {
+        el._r = r;
+        const x = lookup(kind, id), card = $(".card", el);
+        if (!x || !card) return;
+        const nums = kind === "cards" ? [$('[data-k="atk"]', card), $('[data-k="hp"]', card)].filter(Boolean) : [], was = nums.map((e) => e.dataset.value);
+        C.setCardRarity(card, x, r, { animate: seen[n] });
+        nums.forEach((e, q) => { e.dataset.value = was[q]; });   // the deck's buffs (paintBuffs) count on from what was shown
+      });
+    }
     const cnt = $(`[data-count="${kind}"]`, b.root);
     if (cnt) cnt.textContent = `${countOf(d[kind])} / ${SLOTS}`;
   }
   const paintBoard = (b, d, opts) => KINDS.forEach((k) => paintKind(b, k, d, opts));
 
-  // trait button under a card slot: the card's trait in its tier colour, or "+ Trait" · shared view: the sharer's, or nothing
+  // the slot's rarity under the card (a fresh one flashes · §4)
+  function paintRar(slot, r, animate) {
+    const t = slot._rar;
+    t.hidden = !r;
+    if (!r || t.dataset.r === r) return;
+    const was = t.dataset.r;
+    t.dataset.r = r;
+    t.style.setProperty("--sw", C.RARITY_SWATCH[r] || "var(--r-normal)");
+    t.innerHTML = `<span>${esc(r)}</span>`;
+    t.setAttribute("aria-label", `Rarity: ${r}`);
+    if (animate && was && !FX.reduced) FX.flash(t);
+  }
+  // trait pill under a card slot: the card's trait in its tier colour, or nothing (editor: it's set in the slot sheet, and a
+  // tap on the pill opens that sheet · shared view: the sharer's)
   function paintTrait(slot, id, b = ed) {
     const t = slot._trait;
     const tr = id ? C.traits.byId(b.traitOf(id, Number(slot.dataset.i))) : null;
-    t.hidden = !id || (!b.editable && !tr);
+    t.hidden = !id || !tr;
     if (t.hidden) return;
     const name = lookup("cards", id).name;
     const key = tr ? tr.id : "";
@@ -443,8 +542,7 @@
     t.classList.toggle("dk-trait--none", !tr);
     t.style.cssText = C.traits.colorStyle(tr);
     t.innerHTML = `${C.traits.iconHTML(tr)}<span>${tr ? esc(tr.name) : "Trait"}</span>`;
-    if (b.editable) t.setAttribute("aria-label", tr ? `${name}'s trait: ${tr.name} (${tr.tier}). Tap to change` : `Pick a trait for ${name}`);
-    else t.setAttribute("aria-label", `${name}'s trait: ${tr.name} (${tr.tier})`);
+    t.setAttribute("aria-label", `${name}'s trait: ${tr.name} (${tr.tier})`);
   }
 
   /* ---------- Deck buffs on the cards (owner 2026-11-02 · js/deckbuff.js) ----------
@@ -506,18 +604,11 @@
       html: `<div class="dk-bf">
           <div class="dk-bf__sum">${stat("ATK", r.base.atk, r.atk, r.atkPct)}${stat("HP", r.base.hp, r.hp, r.hpPct)}</div>
           <ul class="dk-bf__list">${rows}</ul>
-          <p class="tm-field__note">Deck buffs multiply: ATK = base × (1 + each %) one after another, then × the trait, then × 1.3 if all 4 grades are 10. A support's mutation bonus goes to the card in its column. Buffs that need a hit, a turn or low HP aren't counted, and the same support twice counts once.</p>
+          <p class="tm-field__note">Deck buffs multiply: ATK = base × (1 + each %) one after another, then × the trait, then × 1.3 if all 4 grades are 10. A support's mutation bonus goes to the card in its column. Buffs that need a hit, a turn or low HP aren't counted. A support for the whole deck counts once: a second copy gives nothing.</p>
         </div>`,
       actions: [{ label: "Close", value: "cancel" }],
       onMount(dlg) { FX.stagger($(".dk-bf__list", dlg), 40, { cls: "fx-up", max: 8, cleanup: true }); },
     });
-  }
-  async function pickTrait(btn) {
-    const slot = btn.closest(".dk-slot");
-    const id = slot && cur ? cur.cards[Number(slot.dataset.i)] : null;
-    if (!id || !lookup("cards", id) || !C.traits.pickDialog) return;
-    clearSel();
-    await C.traits.pickDialog(id);   // the "cbi:trait" event repaints the slot and the score
   }
   // a trait changed (here, in the Details sheet or on the Traits page)
   function onTrait(e) {
@@ -529,6 +620,7 @@
         if (state.page === "deck" && !FX.reduced) FX.flash(slot._trait);
       });
       if (cur.cards.includes(id)) refresh();
+      if (sheet) sheet.paint(true);
     }
     if (mode === "index" && decks.some((d) => d.cards.includes(id))) renderIndex(false);
   }
@@ -728,17 +820,19 @@
       el.className = "dk-sug__item fx-press";
       el.dataset.sugKind = kind;
       el.dataset.id = s.id;
-      const art = C.renderCard(x, cur.rarity, { mini: true });
+      const lr = lastRarity();                     // the rarity it would get in the slot
+      const art = C.renderCard(x, lr, { mini: true });
       art.tabIndex = -1;
       art.removeAttribute("role");
       art.setAttribute("aria-hidden", "true");
-      el._rarity = cur.rarity;
+      el._rarity = lr;
       el.appendChild(art);
       el.insertAdjacentHTML("beforeend", `<span class="dk-sug__gain"></span><span class="dk-sug__slot"></span>`);
       if (sugCache.size > 60) sugCache.clear();
       sugCache.set(k, el);
     }
-    if (el._rarity !== cur.rarity) { const card = $(".card", el); if (card) C.setCardRarity(card, x, cur.rarity, { animate: false }); el._rarity = cur.rarity; }
+    const lr = lastRarity();
+    if (el._rarity !== lr) { const card = $(".card", el); if (card) C.setCardRarity(card, x, lr, { animate: false }); el._rarity = lr; }
     const d = (s.after || 0) - (s.before || 0);
     const gain = d >= 1 ? `+${d}` : "+<1";
     el.dataset.slot = s.slot;
@@ -756,7 +850,7 @@
       const wrap = $(`[data-sug-kind="${kind}"]`, box), row = $("[data-sug-row]", wrap);
       const empty = cur[kind].some((x) => !x);
       if (empty) anyEmpty = true;
-      const picks = empty && libs[kind].length ? TS().suggest(mine(cur), kind, 3) : [];
+      const picks = empty && libs[kind].length ? TS().suggest(mineToFill(cur), kind, 3) : [];
       wrap.hidden = !picks.length;
       if (picks.length) any = true;
       const before = new Set(row.children);
@@ -774,16 +868,16 @@
     if (!(i >= 0 && i < SLOTS) || cur[kind][i]) i = cur[kind].indexOf(null);
     if (i < 0) return;
     const name = lookup(kind, id).name;
-    if (commit((d) => { d[kind][i] = id; })) undoToast(`Added ${name} to ${kind === "cards" ? "slot" : "support"} ${i + 1}`);
+    if (commit((d) => { place(d, kind, i, id); })) undoToast(`Added ${name} to ${kind === "cards" ? "slot" : "support"} ${i + 1}`);
   }
 
-  // score + analysis of the deck in the editor; called after every change
+  // buffs + analysis of the deck in the editor; called after every change (the score ring left the editor 2026-11-02:
+  // the breakdown below still adds up to the score)
   function refresh({ animate = true } = {}) {
     if (!cur) return;
     paintBuffs(ed, cur, { animate });                // the deck's buffs on the cards (js/deckbuff.js)
     if (!TS()) return;
     const d = mine(cur), r = TS().score(d);
-    paintScore(ui.score, r, { animate, note: r.empty ? null : `${modeOf(cur.mode).name}${r.notes.length ? " · see the notes below" : ""}` });
     paintAnalysis(ui.ana, d, r, { animate, editable: true });
     scheduleSuggest();
   }
@@ -857,42 +951,18 @@
      ========================================================== */
   function chrome() {
     if (!cur) return;
-    const m = modeOf(cur.mode);
     const h = histOf(cur.id);
     ui.undo.disabled = !h.undo.length;
     ui.redo.disabled = !h.redo.length;
     ui.nameText.textContent = cur.name;
     ui.name.setAttribute("aria-label", `Deck name: ${cur.name}. Tap to rename.`);
-    ui.metaLine.textContent = `${m.name} · ${cur.rarity} · ${countOf(cur.cards)}/${SLOTS} cards · ${countOf(cur.support)}/${SLOTS} support`;
-    const all = modes();
-    ui.modeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkMode === m.id)));
-    ui.mode.style.setProperty("--i", Math.max(0, all.findIndex((x) => x.id === m.id)));
-    ui.rarity.querySelectorAll("[data-dk-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dkRarity === cur.rarity)));
-    requestAnimationFrame(() => C.revealChip(ui.rarity.parentNode));
     ui.hint.textContent = fine.matches
-      ? "Click an empty slot to add a card. Drag a card to another slot, or click it and then click where it should go."
-      : "Tap an empty slot to add a card. Hold a card to drag it, or tap it and then tap where it should go.";
+      ? "Click an empty slot to add a card. Click a card to set its rarity, grade and trait, or to move it. You can also drag a card to another slot."
+      : "Tap an empty slot to add a card. Tap a card to set its rarity, grade and trait, or to move it. You can also hold a card and drag it to another slot.";
   }
   function setMode(id) {
     if (!cur || mode !== "editor" || modeOf(cur.mode).id === id || !modes().some((m) => m.id === id && m.enabled)) return;
     commit((d) => { d.mode = id; }, { animate: false });
-  }
-  function setRarity(name) {
-    if (!cur || cur.rarity === name || !state.meta.rarities.some((r) => r.name === name)) return;
-    cur.rarity = name;
-    touch();
-    chrome();
-    // cards and support (their values count to the new level)
-    const els = KINDS.flatMap((k) => ed.shown[k].filter(Boolean).map((o) => [o.el, lookup(k, o.el.dataset.id)]));
-    const seen = els.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
-    els.forEach(([el, c], i) => {
-      const card = $(".card", el);
-      if (!c || !card) return;
-      const nums = C.isSupport(c) ? [] : [$('[data-k="atk"]', card), $('[data-k="hp"]', card)].filter(Boolean), was = nums.map((n) => n.dataset.value);
-      C.setCardRarity(card, c, name, { animate: seen[i] });
-      nums.forEach((n, j) => { n.dataset.value = was[j]; });   // the deck's buffs (refresh below) count on from what was shown
-    });
-    refresh();                                     // card scores don't depend on rarity; unranked support does (its effect at this level, §10.5)
   }
 
   /* ==========================================================
@@ -904,6 +974,9 @@
     fn(cur);
     cur.cards = slotsOf(cur.cards, true);
     cur.support = slotsOf(cur.support, false);
+    cur.cardRarity = raritiesOf(cur.cardRarity, cur.rarity);
+    cur.supRarity = raritiesOf(cur.supRarity, cur.rarity);
+    cur.grades = gradesOf(cur.grades);
     const changed = snap() !== before;
     if (changed) {
       const h = histOf(cur.id);
@@ -925,6 +998,7 @@
     to.push(snap());
     const s = JSON.parse(from.pop());
     cur.cards = slotsOf(s.c, true); cur.support = slotsOf(s.s, false);
+    cur.cardRarity = raritiesOf(s.cr, cur.rarity); cur.supRarity = raritiesOf(s.sr, cur.rarity); cur.grades = gradesOf(s.g);
     if (MODES.some((m) => m.id === s.m)) cur.mode = s.m;
     clearSel();
     touch();
@@ -939,7 +1013,8 @@
   }
 
   /* ==========================================================
-     Selecting (tap) and placing (tap another slot)
+     Moving by tap: "Move to another slot" in the slot sheet picks the card up (select), then a tap on a slot of the same
+     row puts it there (swaps with the card there) · the dock at the bottom says so and has Cancel
      ========================================================== */
   function select(kind, i) {
     const o = ed.shown[kind][i];
@@ -953,7 +1028,6 @@
     ui.editor.dataset.target = kind;
     ui.actName.textContent = o.el.dataset.name;
     ui.actHint.textContent = `Tap another ${kind === "cards" ? "card" : "support"} slot to move it there`;
-    ui.actDetails.disabled = o.el.classList.contains("dk-item--missing");
     ui.act.classList.add("is-on");
     // keep the picked card above the command bar (the dock's margin has just made room to scroll)
     const r = o.el.getBoundingClientRect(), limit = innerHeight - (70 + 168) * FX.zoom();
@@ -974,25 +1048,181 @@
       if (sel.kind === kind) {
         if (sel.i === i) { clearSel(); return; }
         const from = sel.i;
-        commit((d) => { const a = d[kind]; [a[from], a[i]] = [a[i], a[from]]; });    // empty target = move, a card there = swap
+        commit((d) => { swapSlots(d, kind, from, i); });    // empty target = move, a card there = swap (rarity + grades go along)
         return;
       }
-      if (here) { select(kind, i); return; }                // another kind: just pick that one up instead
-      clearSel();
+      clearSel();                                           // the other row: stop moving, then this slot as usual
     }
-    if (here) select(kind, i);
+    if (here) slotSheet(kind, i);
     else openPicker(kind, i);
   }
   function clearSlot(kind, i) {
     const o = ed.shown[kind][i];
     if (!o) return;
     const name = o.el.dataset.name;
-    if (commit((d) => { d[kind][i] = null; })) undoToast(`Removed ${name}`);
+    if (commit((d) => { d[kind][i] = null; if (kind === "cards") d.grades[i] = null; })) undoToast(`Removed ${name}`);
   }
   function details(el, kind) {
     const id = el.dataset.id;
     if (!lookup(kind, id)) return;
     C.openCard(id, $(".card", el));   // a support opens the same card detail (2026-10-28)
+  }
+
+
+  /* ==========================================================
+     Slot sheet (owner 2026-11-02): tap a card or support in a slot = one dialog for that slot
+       card:    the card (its numbers with the deck's buffs) · Rarity (Normal … Godly) · Grade ATK / DEF / Status / HP 0–10
+                (like the Grade page: tap the current grade again = 0) · Trait (shared by every copy of the card) ·
+                Details / Change card / Move to another slot / Remove
+       support: the support card · Rarity · Details / Change / Move / Remove
+     Every change goes through commit() (Undo works) and paints the board behind and the card in the sheet at once
+     (flash + numbers count · §4). A new rarity is remembered for the next card (cbi:deckRarity).
+     ========================================================== */
+  const GSTATS = [{ k: "atk", name: "ATK" }, { k: "def", name: "DEF" }, { k: "status", name: "Status" }, { k: "hp", name: "HP" }];
+  const gband = (g) => (g >= 10 ? "rainbow" : g >= 7 ? "gold" : g >= 4 ? "silver" : g >= 1 ? "bronze" : "none");
+  let sheet = null;                                // { kind, i, id, root, paint(animate) } while a slot sheet is open
+  function sheetHTML(kind, i) {
+    const isCard = kind === "cards", id = cur[kind][i], x = lookup(kind, id), r = rarityAt(cur, kind, i);
+    const chips = state.meta.rarities.map((q) => `<button type="button" class="chip glass fx-press" data-ss-rarity="${esc(q.name)}" aria-pressed="${q.name === r}" style="--sw:${C.RARITY_SWATCH[q.name] || "var(--r-normal)"}"><span class="chip__swatch"></span>${esc(q.name)}</button>`).join("");
+    const g = (isCard && cur.grades[i]) || [0, 0, 0, 0];
+    const grades = GSTATS.map((st, k) => `<div class="gstat gstat--${st.k} dk-ss__g" data-ss-row="${k}" data-band="${gband(g[k])}">
+        <div class="gstat__top"><span class="gstat__name">${st.name}</span><b class="dk-ss__gv" data-ss-gv>${g[k]}</b></div>
+        <div class="gbar" role="group" aria-label="${st.name} grade, 0 to 10. Tap the current grade again to set 0.">${Array.from({ length: GRADE_MAX }, (_, j) =>
+          `<button type="button" class="gbar__seg" data-ss-g="${k}" data-g="${j + 1}" style="--i:${j}" aria-label="${st.name} grade ${j + 1}" aria-pressed="false"></button>`).join("")}</div>
+      </div>`).join("");
+    const btn = (act, icon, label, cls = "", aria = "") => `<button type="button" class="tm-btn fx-press ${cls}" data-dlg="${act}"${aria ? ` aria-label="${aria}"` : ""}>${icon}${label}</button>`;
+    return `<div class="dk-ss" data-kind="${kind}">
+        <div class="dk-ss__top">
+          <div class="dk-ss__card" data-ss-card></div>
+          <div class="dk-ss__sum">
+            <p class="dk-ss__where">${isCard ? `Slot ${i + 1}` : `Support ${i + 1}`}</p>
+            ${isCard && x ? `<p class="dk-ss__stat dk-ss__stat--atk"><span>ATK</span><b data-ss-atk></b></p>
+            <p class="dk-ss__stat dk-ss__stat--hp"><span>HP</span><b data-ss-hp></b></p>
+            <p class="dk-ss__buff" data-ss-buff></p>` : ""}
+            ${!isCard && x ? `<p class="dk-ss__fx" data-ss-fx></p>` : ""}
+            ${x ? "" : `<p class="dk-ss__fx">Not in the library yet.</p>`}
+          </div>
+        </div>
+        ${x ? `<section class="dk-ss__sec" aria-label="Rarity">
+          <h3 class="tm-field__label">Rarity</h3>
+          <div class="rarity-picker dk-ss__rar" role="group" aria-label="Rarity of this ${isCard ? "card" : "support"}">${chips}</div>
+        </section>` : ""}
+        ${isCard && x ? `<section class="dk-ss__sec" aria-label="Grade">
+          <h3 class="tm-field__label">Grade</h3>
+          <div class="dk-ss__grades">${grades}</div>
+          <p class="tm-field__note">All four at 10 = +30% ATK and HP. Saved with this deck only: your Grade page stays the same.</p>
+        </section>` : ""}
+        ${isCard && x && C.traits.chipsHTML && C.traits.list && C.traits.list().length ? `<section class="dk-ss__sec" aria-label="Trait">
+          <h3 class="tm-field__label">Trait</h3>
+          <div class="rarity-picker dk-ss__tr" role="group" aria-label="Trait of ${esc(x.name)}">${C.traits.chipsHTML(myTraitOf(id))}</div>
+          <p class="tm-field__note">Every copy of this card shares one trait, so this changes it everywhere on this device.</p>
+        </section>` : ""}
+        <div class="dk-ss__acts">
+          ${x ? btn("details", ICON.info, "Details") : ""}
+          ${btn("replace", ICON.swap, isCard ? "Change card" : "Change support")}
+          ${btn("move", ICON.move, "Move", "", "Move to another slot")}
+          ${btn("remove", ICON.trash, "Remove", "tm-btn--danger")}
+        </div>
+      </div>`;
+  }
+  async function slotSheet(kind, i) {
+    if (!cur || mode !== "editor" || !cur[kind][i] || sheet || dialogOpen()) return;
+    clearSel();
+    const id = cur[kind][i], x = lookup(kind, id), isCard = kind === "cards";
+    const res = await dialog({
+      title: `${x ? x.name : pretty(id)}`,
+      html: sheetHTML(kind, i),
+      actions: [{ label: "Done", value: "cancel", cls: "tm-btn--primary" }],
+      onMount(dlg) {
+        $(".tm-dlg__sheet", dlg).classList.add("dk-ss-sheet");
+        const root = $(".dk-ss", dlg), box = $("[data-ss-card]", root);
+        let art = null;
+        if (x) {
+          art = C.renderCard(x, rarityAt(cur, kind, i), { mini: true, tilt: false });
+          art.tabIndex = -1; art.removeAttribute("role"); art.setAttribute("aria-hidden", "true");
+          art._r = rarityAt(cur, kind, i);
+          box.appendChild(art);
+        } else box.innerHTML = `<span class="tm-missing"><span>${esc(pretty(id))}</span><small>Not in the library</small></span>`;
+        const alive = () => sheet && sheet.root === root && cur && cur[kind][i] === id;
+        // paint the sheet from the deck as it is now (after a commit / a trait change)
+        const paint = (animate) => {
+          if (!alive() || !x) return;
+          const r = rarityAt(cur, kind, i);
+          root.querySelectorAll("[data-ss-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssRarity === r)));
+          if (art._r !== r) {
+            const nums = isCard ? [$('[data-k="atk"]', art), $('[data-k="hp"]', art)].filter(Boolean) : [], was = nums.map((e) => e.dataset.value);
+            C.setCardRarity(art, x, r, { animate });
+            nums.forEach((e, q) => { e.dataset.value = was[q]; });
+            art._r = r;
+          }
+          if (isCard) {
+            const b = ed.buffs && ed.buffs[i];
+            if (b && b.id === id) {
+              C.setCardNums(art, { atk: b.atk, hp: b.hp }, { animate });
+              const a = $('[data-k="atk"]', art), h = $('[data-k="hp"]', art);
+              if (a) a.classList.toggle("is-buffed", b.atk !== b.base.atk);
+              if (h) h.classList.toggle("is-buffed", b.hp !== b.base.hp);
+              const sa = $("[data-ss-atk]", root), sh2 = $("[data-ss-hp]", root);
+              sa.textContent = C.fmtStat(b.atk); sh2.textContent = C.fmtHp(b.hp);
+              sa.classList.toggle("is-up", b.atk !== b.base.atk); sh2.classList.toggle("is-up", b.hp !== b.base.hp);
+              $("[data-ss-buff]", root).innerHTML = b.atkPct || b.hpPct ? `<span>Deck buffs</span> <b>${esc(buffText(b))}</b>` : "<span>No deck buff</span>";
+              if (animate) { FX.flash(sa.parentNode); FX.flash(sh2.parentNode); }
+            }
+            const g = cur.grades[i] || [0, 0, 0, 0];
+            root.querySelectorAll("[data-ss-row]").forEach((row) => {
+              const k = Number(row.dataset.ssRow), v = g[k];
+              row.dataset.band = gband(v);
+              $("[data-ss-gv]", row).textContent = v;
+              row.querySelectorAll(".gbar__seg").forEach((seg) => {
+                const n = Number(seg.dataset.g), on = n <= v, was = seg.classList.contains("is-on");
+                seg.classList.toggle("is-on", on);
+                seg.setAttribute("aria-pressed", String(n === v));
+                if (animate && on && !was && !FX.reduced) { seg.style.setProperty("--d", "0ms"); seg.classList.remove("is-pop"); void seg.offsetWidth; seg.classList.add("is-pop"); }
+              });
+            });
+            const tr = $(".dk-ss__tr", root);
+            if (tr) { const t = myTraitOf(id); tr.querySelectorAll("[data-trait]").forEach((b) => b.setAttribute("aria-pressed", String((b.dataset.trait || null) === (t || null)))); }
+          } else {
+            const fx = $("[data-ss-fx]", root);
+            if (fx) fx.textContent = x.effect && x.effect.desc ? C.supText(x, x.effect.desc, r) : "";   // its values at this rarity
+          }
+        };
+        sheet = { kind, i, id, root, paint };
+        paint(false);
+        requestAnimationFrame(() => root.querySelectorAll(".rarity-picker").forEach((p) => C.revealChip(p.parentNode)));
+        root.addEventListener("click", (e) => {
+          if (!alive()) return;
+          const rb = e.target.closest("[data-ss-rarity]");
+          if (rb) {
+            const r = rb.dataset.ssRarity;
+            if (!isRarity(r)) return;
+            rememberRarity(r);                             // the next card / support starts here
+            if (r !== rarityAt(cur, kind, i)) commit((d) => { d[RKEY[kind]][i] = r; });
+            paint(true);
+            return;
+          }
+          const gs = e.target.closest("[data-ss-g]");
+          if (gs) {
+            const k = Number(gs.dataset.ssG), n = Number(gs.dataset.g);
+            commit((d) => {
+              const g = (d.grades[i] || [0, 0, 0, 0]).slice();
+              g[k] = g[k] === n ? 0 : n;                   // tap the current grade again = 0 (like the Grade page)
+              d.grades[i] = gradeOf(g);
+            });
+            paint(true);
+            return;
+          }
+          const tc = e.target.closest("[data-trait]");
+          if (tc) { C.traits.set(id, tc.dataset.trait || null); return; }   // "cbi:trait" -> onTrait() -> refresh + paint
+        });
+      },
+    });
+    sheet = null;
+    if (!res || !cur || mode !== "editor" || cur[kind][i] !== id) return;
+    if (res.action === "details") { const o = ed.shown[kind][i]; if (o) details(o.el, kind); }
+    else if (res.action === "replace") openPicker(kind, i);
+    else if (res.action === "move") select(kind, i);
+    else if (res.action === "remove") clearSlot(kind, i);
   }
 
   /* ==========================================================
@@ -1010,7 +1240,7 @@
     if (isCard) cur.cards.forEach((id, k) => { if (id) usedAt.set(id, k); });
     const f = { q: "", tier: "", role: "", series: "" };
     const text = new Map(all.map((x) => [x.id, [x.name, x.series, x.role].filter(Boolean).join(" ").toLowerCase()]));
-    const rarity = cur.rarity;
+    const rarity = lastRarity();                       // the rarity the pick will get (owner 2026-11-02)
     const noun = isCard ? "cards" : "support cards";
     const tierNames = state.meta.tiers.filter((t) => isCard || !t.cardsOnly).map((t) => t.name);   // Utility = cards only
     let filters = `<div class="tm-chips" role="group" aria-label="Filter by tier">${tierNames.map((t) => chipHTML("tier", t, t, `--sw:var(${C.TIER_COLOR[t] || "--t-d"});--sw-line:var(${C.TIER_COLOR[t] || "--t-d"})`)).join("")}${chipHTML("tier", "-", "Unranked")}</div>`;
@@ -1129,7 +1359,7 @@
     });
     if (!res || res.action !== "pick" || !cur || mode !== "editor") return;
     if (res.id === here) return;
-    commit((d) => { d[kind][i] = res.id; });
+    commit((d) => { place(d, kind, i, res.id); });
   }
 
   /* ==========================================================
@@ -1291,7 +1521,7 @@
     const j = target ? Number(target.dataset.i) : -1;
     if (target && j !== i) {                                // dropped on another slot: it moves there (or swaps with the card there)
       g.remove();
-      commit((d) => { const a = d[kind]; [a[i], a[j]] = [a[j], a[i]]; }, { animate: true, land: { kind, i: j, id, rect: gr } });
+      commit((d) => { swapSlots(d, kind, i, j); }, { animate: true, land: { kind, i: j, id, rect: gr } });
       return;
     }
     const to = el.getBoundingClientRect();                  // anywhere else: it goes back where it came from
@@ -1324,7 +1554,7 @@
     if (!res || res.action !== "ok") return;
     const name = res.form.elements.name.value.trim().slice(0, NAME_MAX) || suggestName();
     const t = now();
-    const d = clean({ id: newId("dk_"), name, mode: pickOf(res.form, "mode") || DEFAULT_MODE, rarity: state.rarity, cards: [], support: [], created: t, updated: t });
+    const d = clean({ id: newId("dk_"), name, mode: pickOf(res.form, "mode") || DEFAULT_MODE, rarity: lastRarity(), cards: [], support: [], grades: [], created: t, updated: t });
     decks.unshift(d);
     save();
     openDeck(d.id);
@@ -1420,8 +1650,14 @@
      ========================================================== */
   // a deck packed for a link: ids by slot ("" = empty) · mode and rarity by name
   // t = the user's trait per card slot (owner 2026-11-02 · only when there is one: older links stay as they were)
+  // cr / sr = the rarity of each card / support slot ("" = empty) · g = each card slot's grades ([4] or 0, only when any)
+  // (owner 2026-11-02 · r stays: the deck's old rarity, what a link without cr / sr uses)
   function toPayload(d) {
     const p = { v: 1, n: d.name, m: d.mode, r: d.rarity, c: d.cards.map((x) => x || ""), s: d.support.map((x) => x || "") };
+    p.cr = d.cards.map((x, i) => (x ? rarityAt(d, "cards", i) : ""));
+    p.sr = d.support.map((x, i) => (x ? rarityAt(d, "support", i) : ""));
+    const g = d.cards.map((x, i) => (x && Array.isArray(d.grades) && gradeOf(d.grades[i])) || 0);
+    if (g.some(Boolean)) p.g = g;
     const t = d.cards.map((x) => (x && myTraitOf(x)) || "");
     if (t.some(Boolean)) p.t = t;
     return p;
@@ -1435,12 +1671,15 @@
   function fromPayload(p) {
     if (!p || p.v !== 1 || typeof p.n !== "string" || !Array.isArray(p.c) || !Array.isArray(p.s) || p.c.length > OLD_SLOTS || p.s.length > OLD_SLOTS) return null;   // 5-slot links still open
     const ids = (a) => a.map((x) => (typeof x === "string" && x && x.length <= 80 ? x : null));
-    return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s), created: now(), updated: now() });
+    const arr = (a) => (Array.isArray(a) && a.length <= OLD_SLOTS ? a : null);   // anything odd = as if it wasn't there
+    // a link without g = no grades (never the grades of whoever opens it)
+    return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s),
+      cardRarity: arr(p.cr), supRarity: arr(p.sr), grades: arr(p.g) || [], created: now(), updated: now() });
   }
 
-  async function saveImage(d, flashEl, traitOf = myTraitOf, gradeOf = myGradeOf) {
+  async function saveImage(d, flashEl, traitOf = myTraitOf) {
     if (!C.share || !C.share.deckImageDialog) return;
-    await C.share.deckImageDialog(deckSpec(d, traitOf, gradeOf), { flashEl });
+    await C.share.deckImageDialog(deckSpec(d, traitOf), { flashEl });
   }
   async function shareLink(d, flashEl) {
     if (!C.share) return;
@@ -1460,7 +1699,7 @@
   function paintSharedMeta() {
     const d = shared.deck, m = modeOf(d.mode);
     ui.shName.textContent = d.name;
-    ui.shMeta.textContent = `${m.name} · ${d.rarity} · ${countOf(d.cards)}/${SLOTS} cards · ${countOf(d.support)}/${SLOTS} support`;
+    ui.shMeta.textContent = `${m.name} · ${rarityLabel(d)} · ${countOf(d.cards)}/${SLOTS} cards · ${countOf(d.support)}/${SLOTS} support`;
     const mine = shared.copyId && decks.some((x) => x.id === shared.copyId);
     ui.shCopyText.textContent = mine ? "Open my copy" : "Save a copy";
     let missing = 0;
@@ -1518,6 +1757,7 @@
   // merge: add decks you don't have; the same deck in both keeps the one edited last · replace: the backup is all there is
   function importDecks(data, how) {
     const incoming = (Array.isArray(data) ? data : []).slice(0, DECK_MAX).map(clean).filter(Boolean);
+    if (built) incoming.forEach(fillGrades);          // a backup from before 2026-11-02: the user's saved grades (build() does it otherwise)
     let changed = 0;
     if (how === "replace") {
       const seen = new Set();
@@ -1573,7 +1813,7 @@
       <button type="button" class="tml__open dkl__open fx-press" data-act="open" aria-label="Open ${esc(d.name)}, ${esc(m.name)}, ${nc} of ${SLOTS} cards, ${ns} of ${SLOTS} support${sc != null ? `, team score ${sc}` : ""}">
         <span class="tml__text">
           <span class="tml__name">${esc(d.name)}</span>
-          <span class="tml__meta"><b>${esc(m.name)}</b> · ${esc(d.rarity)} · ${nc}/${SLOTS} cards · ${ns}/${SLOTS} support</span>
+          <span class="tml__meta"><b>${esc(m.name)}</b> · ${esc(rarityLabel(d))} · ${nc}/${SLOTS} cards · ${ns}/${SLOTS} support</span>
           <span class="dkl__strip" aria-hidden="true"></span>
           <span class="tml__date">Edited ${esc(fmtDate(d.updated))}</span>
         </span>
@@ -1618,6 +1858,7 @@
     clearSel();
     if (drag.on) finishDrag(false);
     cur = d;
+    if (fillGrades(cur)) save();
     mode = "editor";
     shToken++; shData = null; shared = null;
     ui.index.hidden = true;
@@ -1742,7 +1983,9 @@
     const taken = new Set(decks.map((x) => x.name));
     const base = (team.name || pretty(team.id || "Deck")).slice(0, NAME_MAX);
     const t = now();
-    return clean({ id: newId("dk_"), name: taken.has(base) ? copyName(base) : base, mode: modeOf(team.mode).id, rarity: state.rarity, cards, support, created: t, updated: t });
+    // owner 2026-11-02: every slot at the rarity picked on Meta Decks · each card with the user's saved grades
+    return clean({ id: newId("dk_"), name: taken.has(base) ? copyName(base) : base, mode: modeOf(team.mode).id, rarity: state.rarity, cards, support,
+      grades: cards.map((id) => (id ? gradeOf(myGradeOf(id)) : null)), created: t, updated: t });
   }
   function copyMeta(btn) {
     const art = btn.closest(".deck");
@@ -1853,15 +2096,11 @@
       case "backup": if (C.share) C.share.backupDialog(); break;
       case "compare": compareDialog(cur ? cur.id : null); break;
       case "sh-copy": saveCopy(); break;
-      case "sh-image": if (shared) saveImage(shared.deck, sh.root, sh.traitOf, noGrade); break;
+      case "sh-image": if (shared) saveImage(shared.deck, sh.root, sh.traitOf); break;
       case "buff": buffDialog(btn); break;
       case "undo": step(-1); break;
       case "redo": step(1); break;
-      case "trait": if (mode === "editor") pickTrait(btn); break;
       case "clear": { const slot = btn.closest(".dk-slot"); if (slot && mode === "editor") clearSlot(slot.dataset.kind, Number(slot.dataset.i)); break; }
-      case "sel-details": if (sel) { const o = ed.shown[sel.kind][sel.i]; if (o) details(o.el, sel.kind); } break;
-      case "sel-replace": if (sel) { const { kind, i } = sel; clearSel(); openPicker(kind, i); } break;
-      case "sel-remove": if (sel) { const { kind, i } = sel; clearSlot(kind, i); } break;
       case "sel-cancel": clearSel(); break;
     }
   }
@@ -1872,8 +2111,6 @@
     if (oc && ui.root.contains(oc)) { if (cardById.has(oc.dataset.openCard)) C.openCard(oc.dataset.openCard, oc); return; }   // the card grows from the chip and returns to it
     const sg = e.target.closest(".dk-sug__item");
     if (sg && ui.root.contains(sg)) { addSuggested(sg.dataset.sugKind, sg.dataset.id, sg.dataset.slot); return; }
-    const rb = e.target.closest("[data-dk-rarity]");
-    if (rb && ui.root.contains(rb)) { setRarity(rb.dataset.dkRarity); return; }
     const mb = e.target.closest("[data-dk-mode]");
     if (mb && ui.root.contains(mb)) { if (!mb.disabled) setMode(mb.dataset.dkMode); return; }
     const b = e.target.closest("[data-act]");
@@ -1920,16 +2157,6 @@
     else if (k === "y") { e.preventDefault(); step(1); }
   }
 
-  function rarityChips() {
-    return state.meta.rarities.map((r) =>
-      `<button type="button" class="chip glass fx-press" data-dk-rarity="${esc(r.name)}" aria-pressed="false" style="--sw:${C.RARITY_SWATCH[r.name] || "var(--r-normal)"}"><span class="chip__swatch"></span>${esc(r.name)}</button>`
-    ).join("");   // data-dk-rarity, not data-rarity: these must not change the site-wide rarity (cards.js listens to data-rarity)
-  }
-  function modeButtons() {
-    return modes().map((m) =>
-      `<button type="button" class="seg__btn fx-press" data-dk-mode="${esc(m.id)}" aria-pressed="false"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`
-    ).join("");
-  }
 
   function bind() {
     ui.root.addEventListener("click", onClick);
@@ -1968,13 +2195,8 @@
     built = true;
     buildBoard(ed, $("#dk-board"), true);
     buildBoard(sh, $("#dk-sh-board"), false);
-    ui.rarity.innerHTML = rarityChips();
-    ui.mode.insertAdjacentHTML("beforeend", modeButtons());
-    ui.modeBtns = [...ui.mode.querySelectorAll("[data-dk-mode]")];
-    ui.mode.style.setProperty("--n", modes().length);
-    ui.score.innerHTML = scoreHTML();
-    ui.score = $(".dk-score", ui.score);
-    C.watchLive(ui.score);                          // the rainbow ring of a 100 only turns while it's on screen
+    // decks saved before 2026-11-02 have no grades of their own: they take the user's saved grades once (js/grade.js is ready now)
+    if (decks.map(fillGrades).some(Boolean)) save();
     ui.shScore.innerHTML = scoreHTML();
     ui.shScore = $(".dk-score", ui.shScore);
     C.watchLive(ui.shScore);
@@ -1994,8 +2216,8 @@
       warn: $("#dk-warn"), loading: $("#dk-loading"),
       index: $("#dk-index"), indexHead: $("#dk-index-head"), count: $("#dk-count"), lists: $("#dk-lists"), empty: $("#dk-empty"),
       editor: $("#dk-editor"), name: $("#dk-name"), nameText: $("#dk-name-text"), undo: $("#dk-undo"), redo: $("#dk-redo"),
-      metaLine: $("#dk-meta"), score: $("#dk-score"), mode: $("#dk-mode"), rarity: $("#dk-rarity"), hint: $("#dk-hint"),
-      act: $("#dk-act"), actName: $("#dk-act-name"), actHint: $("#dk-act-hint"), actDetails: $("#dk-act-details"),
+      hint: $("#dk-hint"),
+      act: $("#dk-act"), actName: $("#dk-act-name"), actHint: $("#dk-act-hint"),
       shLoad: $("#dk-sh-load"), shBad: $("#dk-sh-bad"), shBadTitle: $("#dk-sh-bad-title"), shBadText: $("#dk-sh-bad-text"),
       shared: $("#dk-shared"), shName: $("#dk-sh-name"), shMeta: $("#dk-sh-meta"), shCopyText: $("#dk-sh-copy-text"), shNote: $("#dk-sh-note"),
       metaList: $("#deck-list"), metaNone: $("#decks-none"), metaRarity: $("#deck-rarity"),

@@ -12,8 +12,9 @@
      suggest(deck, kind, n = 3) -> [{ id, slot, gain, before, after }]   kind = "cards" | "support"
      band(score), modeConfig(id), modes(), resolveMode(id), PARTS
    }
-   deck = { mode, rarity?, cards: [4 ids | null], support: [4 ids | null], traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks;
-          traits = the user's trait per card from js/traits.js, added by js/deck.js for the user's own decks only)
+   deck = { mode, rarity?, cards: [4 ids | null], support: [4 ids | null], cardRarity?: [4 names], supRarity?: [4 names],
+            traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks; traits = the user's trait per card from js/traits.js,
+          added by js/deck.js for the user's own decks only · a slot without its own rarity uses deck.rarity, owner 2026-11-02)
 
    The 5 parts (weights per mode from data/meta.json -> modes[].weights; default 30 / 25 / 20 / 15 / 10):
      power     card Overall (unranked = from ATK × HP) + its trait bonus vs the best card in the library 4 times (no traits)
@@ -213,6 +214,8 @@
     const r = (deck && deck.rarity) || C.state.rarity;
     return C.state.meta && C.state.meta.rarities.some((x) => x.name === r) ? r : "Normal";
   };
+  // a support slot's rarity (js/deckbuff.js: its own, else the deck's) · decks without one (Meta Decks) = the deck's rarity
+  const supRarityAt = (deck, i) => (C.deckBuff && C.deckBuff.rarityOf ? C.deckBuff.rarityOf({ ...deck, rarity: rarityOfDeck(deck) }, "support", i) : rarityOfDeck(deck));
 
   /* ==========================================================
      score(deck, modeId)
@@ -242,14 +245,16 @@
       const b = bestOf(mode, rarity);
       const cAvg = at.reduce((a, c) => a + (c ? cardValT(deck, c, mode) : 0), 0) / SLOTS;
       // owner 2026-11-02: the same support twice doesn't stack · one that reaches the whole deck (EVERY / every OTHER card)
-      // hits the same cards again, so its 2nd copy adds nothing · one for "the supported card" still helps its own column
-      const wide = new Set();
-      const sAvg = sat.reduce((a, s) => {
-        if (!s) return a;
-        if (C.deckBuff && C.deckBuff.deckWide(s)) { if (wide.has(s.id)) return a; wide.add(s.id); }
-        return a + supVal(s, mode, rarity);
+      // counts once: its 2nd, 3rd … copy adds nothing (js/deckbuff.js wideFirst, same rule as the ATK / HP numbers) · one for
+      // "the supported card" still helps its own column · each support at its own slot's rarity, against the best support at
+      // that rarity (a deck at one rarity, like the Meta Decks, scores exactly as before)
+      const first = C.deckBuff && C.deckBuff.wideFirst ? C.deckBuff.wideFirst(sat) : sat.map(() => true);
+      const sAvg = sat.reduce((a, s, i) => {
+        if (!s || !first[i]) return a;
+        const r = supRarityAt(deck, i);
+        return a + supVal(s, mode, r) / bestOf(mode, r).sup;
       }, 0) / SLOTS;
-      const cr = clamp01(cAvg / b.card), sr = clamp01(sAvg / b.sup);
+      const cr = clamp01(cAvg / b.card), sr = clamp01(sAvg);
       const v = l.sups.length ? K.powerCards * cr + K.powerSupport * sr : cr;
       const avgOv = nCards ? members.reduce((a, c) => a + cardValT(deck, c, mode), 0) / nCards : 0;
       const tb = members.reduce((a, c) => a + cardValT(deck, c, mode) - cardVal(c, mode), 0), nTr = members.filter((c) => traitBonus(deck, c) > 0).length;
@@ -357,7 +362,9 @@
     const full = out.every((p) => p.v >= 1 - EPS);
     const sc = empty ? null : full ? 100 : Math.max(1, Math.min(99, Math.floor(raw + EPS)));
     const notes = [];
-    if (unranked) notes.push(`${unranked} unranked ${unranked === 1 ? "pick is" : "picks are"} scored from ${unranked === 1 ? "its" : "their"} stats (cards: ATK and HP · support: effect at ${rarity}).`);
+    const supRs = [...new Set(sat.map((s, i) => (s ? supRarityAt(deck, i) : null)).filter(Boolean))];
+    const atR = supRs.length > 1 ? "each slot's rarity" : supRs[0] || rarity;
+    if (unranked) notes.push(`${unranked} unranked ${unranked === 1 ? "pick is" : "picks are"} scored from ${unranked === 1 ? "its" : "their"} stats (cards: ATK and HP · support: effect at ${atR}).`);
     if (missing) notes.push(`${missing} ${missing === 1 ? "card isn't" : "cards aren't"} in the library yet, so ${missing === 1 ? "it doesn't" : "they don't"} count.`);
     if (out.some((p) => p.noData || p.partial)) notes.push("Parts marked “Not enough data yet” score half until the cards are analysed.");
     const b = band(sc);
@@ -448,8 +455,8 @@
       });
       if (best && best.raw > base.raw + EPS) out.push({ ...best, gain: best.raw - base.raw, before: base.score });
     });
-    const val = (id) => (key === "cards" ? cardValT(deck, l.cardById.get(id), base.mode) : supVal(l.supById.get(id), base.mode, base.rarity));
-    return out.sort((a, b) => b.gain - a.gain || val(b.id) - val(a.id) || a.id.localeCompare(b.id)).slice(0, n);
+    const val = (x) => (key === "cards" ? cardValT(deck, l.cardById.get(x.id), base.mode) : supVal(l.supById.get(x.id), base.mode, supRarityAt(deck, x.slot)));
+    return out.sort((a, b) => b.gain - a.gain || val(b) - val(a) || a.id.localeCompare(b.id)).slice(0, n);
   }
 
   C.teamScore = { score, analyze, suggest, band, modeConfig, modes: modeList, resolveMode, PARTS, K, SLOTS };
