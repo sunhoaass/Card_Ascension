@@ -1690,3 +1690,11 @@
     - Spirit Detective (spirit-gun-delinquent)
     - Roger (fist-hero-vice-admiral)
     - Ichigo (snow-white-reaper)
+
+### 2026-11-02 แก้สูตรบัฟ Deck ให้ตรงเกม (`?v=55`)
+- **ที่มา:** เจ้าของส่งรูปเกม (Tower Infinity ชั้น 98 · deck: Witch of Envy Godly [Ascendant · เกรด 10] + King of Conquerors Godly ×3 / Support: Nine Tails Fox Godly · Charge Commander Godly · Guild Master Giant Godly · Eternal Wish Dragon Ascended) · เว็บคำนวณไม่ตรง
+- **สิ่งที่เปลี่ยน:** (1) `js/deckbuff.js` บัฟ**คูณกัน** `Π(1 + p/100)` แทนบวก · ป้ายที่มาของบัฟรวมสำเนาแบบคูณ (King ×3 = +52.09%) (2) **Mutation bonus**: อ่าน "Mutation bonus: +X% damage and max HP." จาก `effect.desc` → การ์ดช่องเดียวกันได้ +X% ATK และ HP เมื่อระดับ deck ≠ Normal (`mutOf(s)`) (3) `data/support.json` 4 ใบ: ข้อความตรงเกม + Mutation bonus + `vals` ใหม่ (ค่า Normal = ค่าในรูป ÷ ตัวคูณระดับ): Nine Tails Fox 17.233 / 17.233 / 14.8 (+40%) · Charge Commander 4.533 (+16%) · Guild Master Giant 1.867 (+32%) · Eternal Wish Dragon 74 / 6.08 / 50 (+25% · จากรูประดับ Ascended)
+- **ผลตรวจ (ATK ในรูปเกม vs เว็บ):** King ช่อง 2 = 20.3M vs 20,320,574 · ช่อง 3 = 26.3M vs 26,268,196 · ช่อง 4 = 21.6M vs 21,593,043 · Witch = 8,610,742,660 vs 6,618,402,340 × 1.3 (เกรด 10 · เว็บ Deck ไม่รู้เกรด) = 8,603,923,042 (ต่าง 0.08%) · HP Witch × 1.3 = 28.82B vs เกม 28.8B · (ทดสอบให้ Eternal Wish Dragon เป็น Ascended · สูตรบวกเดิมได้ King 16.4M / 17.9M / 16.3M)
+- **ยังไม่รู้:** Mutation bonus ที่ระดับอื่น · ค่า Normal ของ 4 ใบเดาจากระดับเดียว (ระดับอื่นอาจต่างเล็กน้อย) · Support อีก 96 ใบยังค่าเก่า · ตัวคูณเกรดในเกม (เกรด 10 = ×1.3 ทั้ง ATK/HP · `grade.js` ใช้ +2.5% ต่อเกรด)
+- **ไฟล์:** `js/deckbuff.js` · `js/i18n-th-sk2.js` · `data/support.json` · `index.html` (`?v=55`) · `PROGRESS.md` · `HISTORY.md`
+

@@ -2262,9 +2262,9 @@
     "image": "images/support/charge-commander.webp",
     "effect": {
       "name": "Dedicate Your Hearts!",
-      "desc": "Erwin leads the charge: every OTHER card in your deck deals {0}% more damage.",
+      "desc": "Charge Commander leads the charge: the supported card makes every OTHER card in your deck deal {0}% more damage. Mutation bonus: +16% damage and max HP.",
       "vals": [
-        11
+        4.533
       ],
       "type": "dmg",
       "pos": [
@@ -2290,7 +2290,7 @@
       "value": 69.5
     },
     "tier": "SS",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "prevTier": "",
     "bestDeck": [
       "pvp-doom-opener",
@@ -3061,9 +3061,9 @@
     "image": "images/support/guild-master-giant.webp",
     "effect": {
       "name": "Guild Master's Faith",
-      "desc": "Makarov believes in his guild: EVERY card in your deck gets {0}% more damage and max HP.",
+      "desc": "Guild Master Giant believes in his guild: the supported card gives EVERY card in your deck {0}% more damage and max HP. Mutation bonus: +32% damage and max HP.",
       "vals": [
-        5.8
+        1.867
       ],
       "type": "dmg",
       "pos": [
@@ -3089,7 +3089,7 @@
       "value": 82.3
     },
     "tier": "Meta",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "prevTier": "",
     "bestDeck": [
       "pvp-doom-opener",
@@ -3518,11 +3518,11 @@
     "cleanArt": true,
     "effect": {
       "name": "Nine-Tails Chakra Mode",
-      "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage.",
+      "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage. Mutation bonus: +40% damage and max HP.",
       "vals": [
-        30,
-        30,
-        15
+        17.233,
+        17.233,
+        14.8
       ],
       "type": "dmg",
       "pos": [
@@ -3548,7 +3548,7 @@
       "value": 88.4
     },
     "tier": "Meta",
-    "updated": "2026-10-31",
+    "updated": "2026-11-02",
     "prevTier": "S",
     "bestDeck": []
   },
@@ -3607,10 +3607,10 @@
     "image": "images/support/eternal-wish-dragon.webp",
     "effect": {
       "name": "Wish Granted",
-      "desc": "Eternal Wish Dragon grants one wish: the supported card has a {0}% chance to come back once with {2}% HP and makes every OTHER card in your deck deal {1}% more damage.",
+      "desc": "Eternal Wish Dragon grants one wish: the supported card has a {0}% chance to come back once with {2}% HP and makes every OTHER card in your deck deal {1}% more damage. Mutation bonus: +25% damage and max HP.",
       "vals": [
-        55,
-        7.5,
+        74,
+        6.08,
         50
       ],
       "type": "revive",
@@ -3657,7 +3657,7 @@
       "value": 82.1
     },
     "tier": "Meta",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "prevTier": "",
     "bestDeck": [
       "tower-predator-court",

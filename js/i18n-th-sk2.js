@@ -321,5 +321,11 @@ I18N.addSK({
  "With Kamina in the deck": "เมื่อมี Kamina ในเด็ค",
  "Each hit adds # Burn stacks (each stack: #% of the enemy's max HP per turn, max # stacks, # turns).": "ทุกครั้งที่ตีเพิ่ม Burn #1 สแตก (สแตกละ #2% ของ HP สูงสุดศัตรูต่อตา สูงสุด #3 สแตก นาน #4 ตา)",
  "When Ace falls": "เมื่อ Ace ล้ม",
- "Each hit": "ทุกครั้งที่ตี"
+ "Each hit": "ทุกครั้งที่ตี",
+ "Charge Commander leads the charge": "Charge Commander นำการบุก",
+ "the supported card makes every OTHER card in your deck deal #% more damage.": "การ์ดที่ซัพพอร์ตทำให้การ์ดอื่นทุกใบในเด็คทำดาเมจเพิ่ม #1%",
+ "Guild Master Giant believes in his guild": "Guild Master Giant เชื่อมั่นในกิลด์ของเขา",
+ "the supported card gives EVERY card in your deck #% more damage and max HP.": "การ์ดที่ซัพพอร์ตทำให้การ์ดทุกใบในเด็คได้ดาเมจและ HP สูงสุดเพิ่ม #1%",
+ "Mutation bonus": "โบนัสกลายพันธุ์",
+ "+#% damage and max HP.": "+#1% ดาเมจและ HP สูงสุด"
 });
