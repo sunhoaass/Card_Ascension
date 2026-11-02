@@ -44,3 +44,9 @@
 - **Hero Number One · Blast:** Hero Number One's cubes warp space. Each hit swaps the enemy's front card with a random card from its deck (not bosses). Ignores the enemy's shields, dodges and barriers. 40% chance to dodge each hit. +10% damage every turn (up to 10 times).
 
 **ตรงกับเกมแล้ว (ไม่ต้องแก้):** Witch of Envy
+
+
+## ชุด 2026-11-02 (รูปจากเจ้าของ · รอ T4)
+
+- **Founding Titan · The Rumbling** (การ์ด · รูปใหม่ในเว็บตรงเกมแล้ว · `cards.json` ยังข้อความเก่า "Eren … 20% … 7.7% … 9.1%"): Founding Titan unleashes the Wall Titans. Every hit also hits the whole enemy bench for 30% of its normal hit (no crits or bonuses). Every enemy card starts with 10% less damage. Takes 12% less damage. · ATK / HP / odds เท่าเดิม (5,823,678 / 38,824,518 / 1 in 78.6B)
+- **Spirit Medium Granny · Exorcist's Barrier** (Support · **แก้ลง `support.json` แล้ว** เพราะต้องใช้หาตำแหน่งเลขบนรูป · Tier / Value ยังไม่คิดใหม่): Spirit Medium Granny's barrier talismans guard your WHOLE deck: the supported card protects your whole deck: only the card that is attacked takes damage (no splash, card-behind or bench hits) and takes {0}% less damage. Mutation bonus: +16% damage and max HP. (`vals` [2] เท่าเดิม · Godly 6%)

@@ -1227,7 +1227,7 @@
     "image": "images/support/spirit-medium-granny.webp",
     "effect": {
       "name": "Exorcist's Barrier",
-      "desc": "Seiko's barrier talismans guard your WHOLE deck: with her in any support slot, attacks that hit your bench or the card behind do no damage to them (whole-bench hits, card-behind hits, Supernova, Fairy Law and Domain on the bench), and the supported card takes {0}% less damage.",
+      "desc": "Spirit Medium Granny's barrier talismans guard your WHOLE deck: the supported card protects your whole deck: only the card that is attacked takes damage (no splash, card-behind or bench hits) and takes {0}% less damage. Mutation bonus: +16% damage and max HP.",
       "vals": [
         2
       ],
@@ -1235,13 +1235,13 @@
       "pos": [
         {
           "i": 0,
-          "x": 66.5,
-          "y": 112.17,
-          "w": 5.5,
-          "h": 3.67,
-          "cap": 3.67,
-          "gl": 1.5,
-          "gr": 1.67
+          "x": 43.17,
+          "y": 104.33,
+          "w": 4.67,
+          "h": 3.0,
+          "cap": 3.0,
+          "gl": 1.33,
+          "gr": 1.0
         }
       ]
     },
@@ -2270,13 +2270,13 @@
       "pos": [
         {
           "i": 0,
-          "x": 24.67,
-          "y": 109.5,
-          "w": 11.5,
-          "h": 6.17,
-          "cap": 6.17,
-          "gl": 13.33,
-          "gr": 2.5
+          "x": 40.17,
+          "y": 103.67,
+          "w": 12.17,
+          "h": 4.17,
+          "cap": 4.17,
+          "gl": 1.83,
+          "gr": 1.67
         }
       ]
     },
@@ -3069,13 +3069,13 @@
       "pos": [
         {
           "i": 0,
-          "x": 7.0,
-          "y": 109.5,
-          "w": 14.5,
-          "h": 6.17,
-          "cap": 6.17,
-          "gl": 7.0,
-          "gr": 2.5
+          "x": 19.83,
+          "y": 103.67,
+          "w": 10.17,
+          "h": 4.17,
+          "cap": 4.17,
+          "gl": 13.33,
+          "gr": 1.67
         }
       ]
     },
@@ -3617,33 +3617,33 @@
       "pos": [
         {
           "i": 0,
-          "x": 26.33,
-          "y": 96.67,
-          "w": 11.33,
-          "h": 3.67,
-          "cap": 3.67,
-          "gl": 1.5,
-          "gr": 1.5
+          "x": 5.67,
+          "y": 95.0,
+          "w": 9.5,
+          "h": 3.5,
+          "cap": 3.5,
+          "gl": 5.67,
+          "gr": 1.33
         },
         {
           "i": 1,
-          "x": 36.67,
-          "y": 109.17,
-          "w": 10.5,
-          "h": 3.67,
-          "cap": 3.67,
-          "gl": 1.67,
-          "gr": 1.5
+          "x": 61.83,
+          "y": 100.33,
+          "w": 9.67,
+          "h": 3.5,
+          "cap": 3.5,
+          "gl": 1.33,
+          "gr": 1.33
         },
         {
           "i": 2,
-          "x": 4.83,
-          "y": 102.83,
-          "w": 11.33,
-          "h": 3.67,
-          "cap": 3.67,
-          "gl": 4.83,
-          "gr": 1.5
+          "x": 64.17,
+          "y": 95.0,
+          "w": 8.83,
+          "h": 3.5,
+          "cap": 3.33,
+          "gl": 1.17,
+          "gr": 1.33
         }
       ]
     },

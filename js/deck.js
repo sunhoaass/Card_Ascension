@@ -45,6 +45,7 @@
   const { state, $, esc } = C;
 
   const KEY = "cbi:decks";
+  const NOTE_MAX = 200, NOTE_LINES = 6;            // the deck's note for its image (owner 2026-11-02: farming time …)
   const SLOTS = 4, OLD_SLOTS = 5, NAME_MAX = 40, DECK_MAX = 200, HISTORY_MAX = 50, CHUNK = 40;
   const HOLD_MS = 260;                             // touch: hold this long before a card lifts
   const SLOP = 10;                                 // touch: moving further than this before the lift = scrolling
@@ -145,10 +146,10 @@
     const t = (id, i) => (id && cardById.has(id) && traitOf ? traitOf(id, i) || null : null);
     const res = C.deckBuff ? C.deckBuff.compute(d, { traitOf, gradeOf: (id, i) => (Array.isArray(d.grades) ? d.grades[i] : null) }) : [];
     return {
-      id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice(),
+      id: d.id, title: d.name, note: d.note || "", mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice(),
       cardRarity: d.cards.map((x, i) => rarityAt(d, "cards", i)), supRarity: d.support.map((x, i) => rarityAt(d, "support", i)),
       traits: d.cards.map(t),
-      nums: d.cards.map((id, i) => { const r = res[i]; return r ? { atk: r.atk, hp: r.hp, upAtk: r.atk !== r.base.atk, upHp: r.hp !== r.base.hp } : null; }),
+      nums: d.cards.map((id, i) => { const r = res[i]; return r ? { atk: r.atk, hp: r.hp } : null; }),
     };
   };
   const myTraitOf = (id) => (C.traits && C.traits.of ? C.traits.of(id) : null);
@@ -234,6 +235,8 @@
     return { cards, support, extra: extra.cards.length || extra.support.length ? extra : null };
   }
   // Anything odd in storage (old format, hand edits, a backup or a link made by someone else) is repaired, not thrown away
+  // the deck's note: plain text, at most NOTE_MAX characters and NOTE_LINES lines (owner 2026-11-02 · shown on the image)
+  const noteOf = (v) => (typeof v === "string" ? v.replace(/\r\n?/g, "\n").split("\n").slice(0, NOTE_LINES).map((l) => l.trimEnd()).join("\n").trim().slice(0, NOTE_MAX) : "");
   // rarity per slot: unknown / missing = the deck's rarity (decks from before 2026-11-02 keep what they showed) ·
   // grades: kept only when the deck has them (fillGrades() gives old decks the user's saved grades once)
   function clean(d) {
@@ -249,6 +252,8 @@
       cardRarity: raritiesOf(d.cardRarity, rarity), supRarity: raritiesOf(d.supRarity, rarity),
     };
     if (Array.isArray(d.grades)) out.grades = gradesOf(d.grades);
+    const note = noteOf(d.note);
+    if (note) out.note = note;
     if (f.extra) out.extra = f.extra;
     out.created = str(d.created) || now();
     out.updated = str(d.updated) || now();
@@ -546,7 +551,7 @@
   }
 
   /* ---------- Deck buffs on the cards (owner 2026-11-02 · js/deckbuff.js) ----------
-     ATK / HP = base × (1 + deck buffs %) × trait · raised numbers are green-gold (.is-buffed) · count 650 ms when on screen ·
+     ATK / HP = base × (1 + deck buffs %) × trait · in the game's colours (owner 2026-11-02: no green-gold) · count 650 ms when on screen ·
      the pill under the card (+45% ATK …) opens the list of where they come from */
   const pct = (n) => "+" + Number(n.toFixed(1)) + "%";
   function buffText(r) {
@@ -564,8 +569,6 @@
       if (card) {
         const a = $('[data-k="atk"]', card), h = $('[data-k="hp"]', card);
         if (Number(a.dataset.value) !== r.atk || Number(h.dataset.value) !== r.hp) C.setCardNums(card, { atk: r.atk, hp: r.hp }, { animate: seen[i] });
-        a.classList.toggle("is-buffed", r.atk !== r.base.atk);
-        h.classList.toggle("is-buffed", r.hp !== r.base.hp);
       }
       const f = slot._buff;
       if (!f) return;
@@ -956,6 +959,7 @@
     ui.redo.disabled = !h.redo.length;
     ui.nameText.textContent = cur.name;
     ui.name.setAttribute("aria-label", `Deck name: ${cur.name}. Tap to rename.`);
+    paintNote(ui.note, cur.note, true);
     ui.hint.textContent = fine.matches
       ? "Click an empty slot to add a card. Click a card to set its rarity, grade and trait, or to move it. You can also drag a card to another slot."
       : "Tap an empty slot to add a card. Tap a card to set its rarity, grade and trait, or to move it. You can also hold a card and drag it to another slot.";
@@ -1159,12 +1163,8 @@
             const b = ed.buffs && ed.buffs[i];
             if (b && b.id === id) {
               C.setCardNums(art, { atk: b.atk, hp: b.hp }, { animate });
-              const a = $('[data-k="atk"]', art), h = $('[data-k="hp"]', art);
-              if (a) a.classList.toggle("is-buffed", b.atk !== b.base.atk);
-              if (h) h.classList.toggle("is-buffed", b.hp !== b.base.hp);
               const sa = $("[data-ss-atk]", root), sh2 = $("[data-ss-hp]", root);
               sa.textContent = C.fmtStat(b.atk); sh2.textContent = C.fmtHp(b.hp);
-              sa.classList.toggle("is-up", b.atk !== b.base.atk); sh2.classList.toggle("is-up", b.hp !== b.base.hp);
               $("[data-ss-buff]", root).innerHTML = b.atkPct || b.hpPct ? `<span>Deck buffs</span> <b>${esc(buffText(b))}</b>` : "<span>No deck buff</span>";
               if (animate) { FX.flash(sa.parentNode); FX.flash(sh2.parentNode); }
             }
@@ -1571,6 +1571,42 @@
     else { history.replaceState(null, "", "#deck"); C.route(); }          // opened from a direct link
   }
 
+  /* ---------- The deck's note (owner 2026-11-02): the user's own words on the image (farming time …) ----------
+     Editor: a box under the name (empty = "+ Add a note for the image") · tap = editNote() · shared view: read only */
+  function paintNote(el, note, editable) {
+    if (!el) return;
+    const t = note || "";
+    if (el.dataset.note === t && el.dataset.ready) return;
+    el.dataset.note = t; el.dataset.ready = "1";
+    el.classList.toggle("is-empty", !t);
+    if (editable) {
+      el.innerHTML = t ? `<span class="dk-note__text">${esc(t)}</span>${ICON.pencil}` : `${ICON.plus}<span>Add a note for the image (farming time, floor …)</span>`;
+      el.setAttribute("aria-label", t ? `Note on the image: ${t}. Tap to edit` : "Add a note for the deck image");
+    } else {
+      el.hidden = !t;
+      el.innerHTML = t ? `<span class="dk-note__text">${esc(t)}</span>` : "";
+    }
+  }
+  async function editNote() {
+    if (!cur || mode !== "editor") return;
+    clearSel();
+    const res = await dialog({
+      title: "Note on the image",
+      html: `<label class="tm-field"><span class="tm-field__label">Note</span>
+          <textarea class="tm-input dk-note__input" name="note" maxlength="${NOTE_MAX}" rows="4" spellcheck="false" placeholder="Farming time, floor, what this deck is for …">${esc(cur.note || "")}</textarea></label>
+        <p class="tm-field__note">Shown in a box under the deck's name when you save the image or share the deck. Up to ${NOTE_LINES} lines.</p>`,
+      actions: [...(cur.note ? [{ label: "Remove", value: "clear", cls: "tm-btn--danger" }] : []), { label: "Cancel", value: "cancel" }, { label: "Save", value: "ok", submit: true, cls: "tm-btn--primary" }],
+      onMount(d) { const t = $("textarea", d); if (fine.matches) { t.focus(); t.setSelectionRange(t.value.length, t.value.length); } },
+    });
+    if (!res || !cur || (res.action !== "ok" && res.action !== "clear")) return;
+    const v = res.action === "clear" ? "" : noteOf(res.form.elements.note.value);
+    if (v === (cur.note || "")) return;
+    if (v) cur.note = v; else delete cur.note;
+    touch();
+    chrome();
+    if (!FX.reduced) FX.flash(ui.note); else FX.fade(ui.note, 1, { duration: 150 });
+  }
+
   async function renameDeck() {
     const res = await dialog({
       title: "Rename deck",
@@ -1660,6 +1696,7 @@
     if (g.some(Boolean)) p.g = g;
     const t = d.cards.map((x) => (x && myTraitOf(x)) || "");
     if (t.some(Boolean)) p.t = t;
+    if (d.note) p.o = d.note;                        // the note for the image (owner 2026-11-02 · older links: none)
     return p;
   }
   // the traits a link carried, by slot (unknown ids = none) · a link without t = no traits
@@ -1674,7 +1711,7 @@
     const arr = (a) => (Array.isArray(a) && a.length <= OLD_SLOTS ? a : null);   // anything odd = as if it wasn't there
     // a link without g = no grades (never the grades of whoever opens it)
     return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s),
-      cardRarity: arr(p.cr), supRarity: arr(p.sr), grades: arr(p.g) || [], created: now(), updated: now() });
+      cardRarity: arr(p.cr), supRarity: arr(p.sr), grades: arr(p.g) || [], note: typeof p.o === "string" ? p.o : "", created: now(), updated: now() });
   }
 
   async function saveImage(d, flashEl, traitOf = myTraitOf) {
@@ -1700,6 +1737,7 @@
     const d = shared.deck, m = modeOf(d.mode);
     ui.shName.textContent = d.name;
     ui.shMeta.textContent = `${m.name} · ${rarityLabel(d)} · ${countOf(d.cards)}/${SLOTS} cards · ${countOf(d.support)}/${SLOTS} support`;
+    paintNote(ui.shNoteText, d.note, false);
     const mine = shared.copyId && decks.some((x) => x.id === shared.copyId);
     ui.shCopyText.textContent = mine ? "Open my copy" : "Save a copy";
     let missing = 0;
@@ -2092,6 +2130,7 @@
       case "del": if (li) deleteDeck(li.dataset.deck); break;
       case "back": back(); break;
       case "rename": if (cur) renameDeck(); break;
+      case "note": if (cur) editNote(); break;
       case "menu": if (cur) deckMenu(); break;
       case "backup": if (C.share) C.share.backupDialog(); break;
       case "compare": compareDialog(cur ? cur.id : null); break;
@@ -2216,7 +2255,7 @@
       warn: $("#dk-warn"), loading: $("#dk-loading"),
       index: $("#dk-index"), indexHead: $("#dk-index-head"), count: $("#dk-count"), lists: $("#dk-lists"), empty: $("#dk-empty"),
       editor: $("#dk-editor"), name: $("#dk-name"), nameText: $("#dk-name-text"), undo: $("#dk-undo"), redo: $("#dk-redo"),
-      hint: $("#dk-hint"),
+      hint: $("#dk-hint"), note: $("#dk-note"), shNoteText: $("#dk-sh-note-text"),
       act: $("#dk-act"), actName: $("#dk-act-name"), actHint: $("#dk-act-hint"),
       shLoad: $("#dk-sh-load"), shBad: $("#dk-sh-bad"), shBadTitle: $("#dk-sh-bad-title"), shBadText: $("#dk-sh-bad-text"),
       shared: $("#dk-shared"), shName: $("#dk-sh-name"), shMeta: $("#dk-sh-meta"), shCopyText: $("#dk-sh-copy-text"), shNote: $("#dk-sh-note"),

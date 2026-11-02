@@ -335,7 +335,7 @@
   }
 
   /* Support (2026-10-28): the level values where the picture's numbers were erased (same spots as js/app.js supNumsHTML ·
-     effect.pos in % of the picture width) · gold Oswald (--gc-sv) with a dark outline, squeezed to the old number's room */
+     effect.pos in % of the picture width) · white Oswald (--gc-sv, like the game's text) with a dark outline, squeezed to the old number's room */
   function drawSupNums(ctx, item, img, x, y, w, h, rarity) {
     const pos = item && item.effect && Array.isArray(item.effect.pos) ? item.effect.pos : [];
     if (!pos.length || !C.supVals) return;
@@ -352,7 +352,7 @@
       ctx.save();
       ctx.translate(ox + (p.x + p.w / 2) * u, oy + (p.y + p.h) * u); ctx.scale(sx, 1);
       ctx.lineWidth = fs * 0.15; ctx.strokeStyle = cssVar("--gc-sv-line") || "#050505"; ctx.strokeText(t, 0, 0);
-      ctx.fillStyle = cssVar("--gc-sv") || "#ffd45c"; ctx.fillText(t, 0, 0);
+      ctx.fillStyle = cssVar("--gc-sv") || "#f0f0f2"; ctx.fillText(t, 0, 0);
       ctx.restore();
     });
     ctx.restore();
@@ -416,7 +416,7 @@
       ctx.font = `${bold ? 700 : 500} ${fs * u}px ${txt}`;
       const ty = top + (used + ri * fs * 1.32 + fs * 0.16) * u;
       ctx.fillStyle = cs("--gc-text-shade") || "#000"; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 0.9 * u; ctx.fillText(t, x + 5 * u + ox, ty + 0.17 * u); ctx.shadowBlur = 0;
-      ctx.fillStyle = bold ? cs("--gc-text-num") || "#ffcf5a" : cs("--gc-text") || "#eee"; ctx.fillText(t, x + 5 * u + ox, ty);
+      ctx.fillStyle = bold ? cs("--gc-text-num") || "#eee" : cs("--gc-text") || "#eee"; ctx.fillText(t, x + 5 * u + ox, ty);
     }));
     ctx.restore();
   }
@@ -456,7 +456,7 @@
     if (wv > room) { size = size * room / wv * 0.97; ctx.font = `${font.replace("{s}", size)}`; }
     return size;
   }
-  // nums (deck image, 2026-11-02) = { atk, hp, upAtk, upHp }: the numbers to show instead of the rarity's (up = raised: green-gold)
+  // nums (deck image, 2026-11-02) = { atk, hp }: the numbers to show instead of the rarity's (game colours, owner 2026-11-02)
   function drawGameCard(ctx, x, y, w, h, item, rarity, art, k, pal, nums) {
     const u = w / 100, R = 3.7 * u, sp = gcSpec(rarity);
     const num = cssVar("--gc-font-num"), pop = cssVar("--gc-font-pop");
@@ -514,11 +514,12 @@
       return s;
     };
     // HP: right-aligned, left of the heart · ATK: centred between the swords
-    const n = nums || {}, up = (v, key) => (v ? cssVar(key) : null);
+    // the game's colours always (owner 2026-11-02: HP green, ATK red, also when the deck raised them)
+    const n = nums || {};
     if (!sup) numText(C.fmtHp(n.hp != null ? n.hp : C.statAt(item, "hp", r)), x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2,
-      up(n.upHp, "--gc-buff") || cssVar("--gc-hp"), up(n.upHp, "--gc-buff-line") || cssVar("--gc-hp-line"), 1.5, 0.5, up(n.upHp, "--gc-buff-line") || cssVar("--gc-hp-line"));
+      cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
     if (!sup) numText(C.fmtStat(n.atk != null ? n.atk : C.statAt(item, "atk", r)), x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5,
-      up(n.upAtk, "--gc-buff") || cssVar("--gc-atk"), up(n.upAtk, "--gc-buff-line") || cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
+      cssVar("--gc-atk"), cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
     // pills (right edge 1.2u in from the card's right side)
     const pill = (text, top, hgt, size, min, bg, line, ink, inner, flat) => {
       const fs = fitFont(ctx, text, size * u, 36.8 * u, `italic 400 {s}px ${pop}`);
@@ -782,13 +783,27 @@
      drawn with the same card / frame / backdrop code.
      Owner 2026-11-02: only the deck's name as words (no "CARD BATTLE INFINITY", no "Deck · mode · rarity · 4/4 …" line,
      no footer, no "4 / 4" counts) · SLOT 1–4 and the CARDS / SUPPORT headings stay · each card's trait under it ·
-     ATK / HP with the deck's buffs + trait + grades (js/deckbuff.js, green-gold when raised). The tier list image is unchanged.
+     ATK / HP with the deck's buffs + trait + grades (js/deckbuff.js · the game's HP green / ATK red, owner 2026-11-02). The tier list image is unchanged.
      Owner 2026-11-02 "rarity per slot": every card and support is drawn at its own slot's rarity (its rarity pill on the card,
      like the cards on the site) · the one rarity ribbon top right (paintRibbon) is gone from the deck image.
-     spec = { id, title, mode, rarity: name (fallback), cards: [id|null x4], support: [id|null x4],
-              cardRarity: [name x4], supRarity: [name x4], traits: [trait id|null x4], nums: [{ atk, hp, upAtk, upHp }|null x4] }
+     Owner 2026-11-02: spec.note (the user's own words, e.g. farming time) = a gold-edged box under the name, wrapped.
+     spec = { id, title, note?, mode, rarity: name (fallback), cards: [id|null x4], support: [id|null x4],
+              cardRarity: [name x4], supRarity: [name x4], traits: [trait id|null x4], nums: [{ atk, hp }|null x4] }
      ========================================================== */
   const DECK_SLOTS = 4;
+  const NOTE = { FS: 30, LH: 40, PAD: 18, BAR: 8, GAP: 18, LINES: 6 };
+  // the deck's note in lines: the user's line breaks kept, long lines wrapped, at most NOTE.LINES lines
+  function deckNoteLines(note, maxW) {
+    const text = String(note || "").trim();
+    if (!text) return [];
+    const mc = document.createElement("canvas").getContext("2d");
+    if (!mc) return [];
+    mc.font = `600 ${NOTE.FS}px ${cssVar("--font-body")}`;
+    const out = text.split(/\n/).flatMap((p) => (p.trim() ? wrapText(mc, p.trim(), maxW) : [""]));
+    while (out.length && !out[out.length - 1]) out.pop();
+    if (out.length > NOTE.LINES) { out.length = NOTE.LINES; out[NOTE.LINES - 1] = fitText(mc, out[NOTE.LINES - 1] + " …", maxW); }
+    return out;
+  }
   const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10 };
 
   function drawEmptySlot(ctx, x, y, w, h, pal) {
@@ -848,7 +863,10 @@
 
     const TR = anyTrait ? B.TRAIT_GAP + B.TRAIT : 0;
     const P1 = 14 + 22 + 24 + B.CH + TR + 18, P2 = 14 + 22 + B.CH + 18;
-    const H = B.HEAD + P1 + B.PANEL_GAP + P2 + B.FOOT;
+    // the deck's note (owner 2026-11-02: farming time …, written by the user): a clear box under the name, wrapped
+    const noteLines = deckNoteLines(spec.note, B.W - B.PAD * 2 - NOTE.PAD * 2 - NOTE.BAR);
+    const NH = noteLines.length ? noteLines.length * NOTE.LH + NOTE.PAD * 2 + NOTE.GAP : 0;
+    const H = B.HEAD + NH + P1 + B.PANEL_GAP + P2 + B.FOOT;
     let k = Math.min(want, Math.sqrt(MAX_PIXELS / (B.W * H)), MAX_SIDE / H, MAX_SIDE / B.W);
     k = Math.floor(k * 100) / 100;
     if (k < 0.5) throw new Error("This deck is too big for one image");
@@ -878,6 +896,18 @@
     ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
     ctx.fillStyle = pal.ink; ctx.font = `700 46px ${pal.display}`;
     ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2), B.PAD, 66);
+    if (noteLines.length) {
+      const ny = B.HEAD - 8, nh = NH - NOTE.GAP, nw = B.W - B.PAD * 2, gold = cssVar("--gold") || "#d8b45a";
+      ctx.save();
+      roundRect(ctx, B.PAD, ny, nw, nh, 14); ctx.clip();
+      ctx.fillStyle = mix(gold, "#0f1425", 0.14); ctx.fillRect(B.PAD, ny, nw, nh);   // dark panel with a gold tint
+      ctx.fillStyle = gold; ctx.fillRect(B.PAD, ny, NOTE.BAR, nh);
+      ctx.restore();
+      roundRect(ctx, B.PAD + 1, ny + 1, nw - 2, nh - 2, 14);
+      ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = pal.ink; ctx.font = `600 ${NOTE.FS}px ${pal.body}`; ctx.textBaseline = "alphabetic";
+      noteLines.forEach((l, i) => ctx.fillText(l, B.PAD + NOTE.BAR + NOTE.PAD, ny + NOTE.PAD + NOTE.FS + i * NOTE.LH - 4));
+    }
 
     // one panel per kind. Columns line up, so the support under a card sits in the same column.
     const pw = B.W - B.PAD * 2;
@@ -895,7 +925,7 @@
       ctx.fillText(label.toUpperCase(), B.PAD + 22, y + 14 + 14);
       setSpacing(ctx, 0);
     };
-    let y = B.HEAD;
+    let y = B.HEAD + NH;
     panel(y, P1, "Cards");
     cards.forEach((it, i) => {
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + 24;
