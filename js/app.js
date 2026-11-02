@@ -134,7 +134,7 @@
     return dp ? Math.round(v * 10) / 10 : Math.round(v);
   };
   const supValue = (s, rarity) => supValAt(s, 0, rarity);  // the main value (vals[0]) at a rarity · 0 = none
-  const supText = (s, text, rarity) => String(text || "").replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
+  const supText = (s, text, rarity) => I18N.desc(String(text || "")).replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
   /* NEW badge (plan 2026-10-30 item 5): a card / support added to the site in the last NEW_DAYS days (x.added from
@@ -382,7 +382,7 @@
   }
   // ability text → HTML: numbers gold · {n} = a support value at the rarity
   function textHTML(text, s, rarity) {
-    return String(text || "").split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).map((part, i) => {
+    return I18N.desc(String(text || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).map((part, i) => {
       if (!(i % 2)) return esc(part);
       const m = /^\{(\d)\}(%?)$/.exec(part);
       if (m && s && supVals(s)[+m[1]] != null) {

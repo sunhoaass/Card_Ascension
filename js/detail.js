@@ -600,7 +600,7 @@
   function abilities(card) {
     return [["Passive", card.passive], ["Skill", card.skill]].map(([kind, a]) => {
       a = a || {};
-      const n = String(a.name || "").trim(), d = String(a.desc || "").trim();
+      const n = String(a.name || "").trim(), d = I18N.desc(String(a.desc || "").trim());
       return n || d ? { kind, n, d } : null;
     }).filter(Boolean);
   }
