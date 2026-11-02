@@ -3110,22 +3110,15 @@
     "image": "images/support/hat-and-clogs-shopkeeper.webp",
     "effect": {
       "name": "Blood Mist Shield",
-      "desc": "Urahara's Blood Mist: when the supported card comes in, the enemy's next 2 attacks each have a {0}% chance to miss.",
+      "desc": "Hat and Clogs Shopkeeper's Blood Mist: the supported card blinds the enemy in front when it comes in (its next 3 attacks each have a {0}% chance to miss) and deals {1}% more damage.",
       "vals": [
-        48
+        58,
+        10
       ],
       "type": "dodge",
-      "pos": [
-        {
-          "i": 0,
-          "x": 40.67,
-          "y": 105.83,
-          "w": 10.83,
-          "h": 5.0,
-          "cap": 5.0,
-          "gl": 1.83,
-          "gr": 1.67
-        }
+      "knee": [
+        90,
+        35
       ]
     },
     "odds": 15700000,
@@ -3138,9 +3131,10 @@
       "value": 34.5
     },
     "tier": "B",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "prevTier": "",
-    "bestDeck": []
+    "bestDeck": [],
+    "redraw": true
   },
   {
     "id": "serpent-sin-mage",
@@ -3526,12 +3520,12 @@
       "name": "Nine-Tails Chakra Mode",
       "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage. Mutation bonus: +40% damage and max HP.",
       "vals": [
-        17.233,
-        17.233,
-        14.8
+        30,
+        30,
+        15
       ],
       "real": [
-        17.246667
+        30
       ],
       "type": "dmg",
       "pos": [
@@ -3545,9 +3539,14 @@
           "gl": 2.0,
           "gr": 2.33
         }
+      ],
+      "knee": [
+        35,
+        35,
+        40
       ]
     },
-    "odds": 2000000000,
+    "odds": 2033000000,
     "obtain": "Rolls anywhere",
     "scores": {
       "effect": 99.5,

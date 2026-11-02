@@ -391,7 +391,7 @@
     }
     // ability text: words (numbers bold gold) wrapped in 90u, font from 5u down until it fits
     const words = [];
-    I18N.desc(String(ab.desc || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).forEach((part, i) => {
+    I18N.desc(sup && C.mutText ? C.mutText(item, ab.desc, rarity) : String(ab.desc || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).forEach((part, i) => {
       if (i % 2) { const m = /^\{(\d)\}(%?)$/.exec(part); words.push([m && sup ? C.supValAt(item, +m[1], rarity) + m[2] : part, true, true]); return; }
       part.split(/(\s+)/).forEach((p) => { if (/^\s+$/.test(p)) words.push([" ", false, false]); else if (p) words.push([p, false, true]); });
     });
@@ -456,8 +456,203 @@
     if (wv > room) { size = size * room / wv * 0.97; ctx.font = `${font.replace("{s}", size)}`; }
     return size;
   }
+  /* ==========================================================
+     Redrawn card (owner 2026-11-02 · "redraw": true · same look as css/fx.css .gc--rd): the erased picture inside a
+     1.7u frame in the rarity's sampled colours, then every text the web writes · sizes come from C.redrawEl (the page's own
+     fit, read off an offscreen copy) so the image matches the card on screen · f = 1% of the face width (like the face's cqw)
+     ========================================================== */
+  // CSS linear-gradient(<deg>, …) over a box
+  function linDeg(ctx, x, y, w, h, deg, stops) {
+    const a = deg * Math.PI / 180, dx = Math.sin(a), dy = -Math.cos(a), len = Math.abs(w * dx) + Math.abs(h * dy);
+    const cx = x + w / 2, cy = y + h / 2, g = ctx.createLinearGradient(cx - dx * len / 2, cy - dy * len / 2, cx + dx * len / 2, cy + dy * len / 2);
+    stops.forEach(([o, c]) => g.addColorStop(o, c));
+    return g;
+  }
+  const degOf = (str, def = 180) => { const m = /(-?[\d.]+)deg/.exec(String(str)); return m ? Number(m[1]) : def; };
+  const gradOn = (ctx, token, x, y, w, h) => { const v = cssVar(token); return /gradient/.test(v) ? linDeg(ctx, x, y, w, h, degOf(v), gradStops(v)) : v || "#fff"; };
+  function drawRedraw(ctx, x, y, w, h, item, rarity, art, k, nums) {
+    const u = w / 100, R = 3.7 * u, r = String(rarity || "Normal").toLowerCase(), sup = C.isSupport(item);
+    const fx = x + 1.7 * u, fy = y + 1.7 * u, fw = w - 3.4 * u, fh = h - 3.4 * u, f = fw / 100, FH = fh / f;
+    const el = C.redrawEl(item, rarity, nums || {}), q = (s) => el.querySelector(s);
+    const fsOf = (n, d) => (n && parseFloat(n.style.fontSize)) || d;
+    const A = cssVar("--rd-font") || "sans-serif", T = cssVar("--rd-font-text") || "sans-serif", stroke = cssVar("--rd-stroke") || "#07050a";
+    const LS = "letterSpacing" in ctx, big = w >= 170, K = k || 1;   // a card under 170px hides its text, like the page · shadows are in device px (× k)
+    // glow + frame + picture
+    ctx.save();
+    roundRect(ctx, x, y, w, h, R);
+    ctx.shadowColor = cssVar("--rd-glow-" + r) || "rgba(0, 0, 0, .5)"; ctx.shadowBlur = 10 * u * K;
+    ctx.fillStyle = gradOn(ctx, "--rd-ring-" + r, x, y, w, h); ctx.fill();
+    ctx.restore();
+    ctx.save();
+    roundRect(ctx, fx, fy, fw, fh, 3.2 * f); ctx.clip();
+    ctx.fillStyle = cssVar("--gc-under") || "#0d0a14"; ctx.fillRect(fx, fy, fw, fh);
+    if (art) drawCoverImage(ctx, art, fx - fw * 0.006, fy - fh * 0.006, fw * 1.012, fh * 1.012);
+    ctx.restore();
+    ctx.save();
+    roundRect(ctx, x, y, w, h, R); ctx.lineWidth = 0.35 * u; ctx.strokeStyle = "rgba(0, 0, 0, .6)"; ctx.stroke();
+    roundRect(ctx, fx, fy, fw, fh, 3.2 * f); ctx.lineWidth = 0.4 * u; ctx.strokeStyle = "rgba(0, 0, 0, .55)"; ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    roundRect(ctx, fx, fy, fw, fh, 3.2 * f); ctx.clip();
+    ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
+    const X = (v) => fx + v * f, Y = (v) => fy + v * f;
+    // one outlined word / line: black edge + soft shadow under it, then the fill (a colour or a gradient over its box)
+    const edge = (t, tx, ty) => {
+      ctx.strokeStyle = stroke; ctx.lineWidth = 1.5 * f;
+      ctx.shadowColor = "rgba(0, 0, 0, .85)"; ctx.shadowBlur = 1.6 * f * K; ctx.strokeText(t, tx, ty);
+      ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 3.2 * f * K; ctx.strokeText(t, tx, ty);
+      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0;
+    };
+    const out = (t, tx, ty, fill, font, ls = 0, align = "left") => {
+      ctx.font = font; ctx.textAlign = align;
+      if (LS) ctx.letterSpacing = ls ? ls + "px" : "0px";
+      edge(t, tx, ty); ctx.fillStyle = fill; ctx.fillText(t, tx, ty);
+    };
+    const tw = (t, font, ls = 0) => { ctx.font = font; if (LS) ctx.letterSpacing = ls ? ls + "px" : "0px"; return ctx.measureText(t).width; };
+    // greedy word wrap at `room` px (a support's text) · balance = the narrowest width with the same line count (a card's text)
+    const wrap = (words, font, room, balance) => {
+      const lay = (rw) => {
+        const rows = [[]]; let xw = 0; ctx.font = font; if (LS) ctx.letterSpacing = "0px";
+        const sp = ctx.measureText(" ").width;
+        words.forEach((wd) => { const ww = ctx.measureText(wd.t).width; if (xw > 0 && xw + sp + ww > rw) { rows.push([]); xw = 0; } rows[rows.length - 1].push(wd); xw += (xw > 0 ? sp : 0) + ww; });
+        return rows;
+      };
+      let rows = lay(room);
+      if (balance && rows.length > 1) {
+        let lo = room / rows.length, hi = room;
+        for (let i = 0; i < 12; i++) { const m = (lo + hi) / 2; if (lay(m).length > rows.length) lo = m; else hi = m; }
+        rows = lay(hi);
+      }
+      return rows;
+    };
+    // words of a text node list: [{ t, gold }] (gold = inside <b>)
+    // a gold number written right against a word ("(5%") stays one word with it
+    const wordsIn = (node) => {
+      const list = [];
+      let space = true;
+      node.childNodes.forEach((n) => String(n.textContent).split(/(\s+)/).forEach((t) => {
+        if (!t) return;
+        if (/^\s+$/.test(t)) { space = true; return; }
+        const part = { t, gold: n.nodeType === 1 };
+        if (!space && list.length) { const last = list[list.length - 1]; last.parts.push(part); last.t += t; }
+        else list.push({ t, parts: [part] });
+        space = false;
+      }));
+      return list;
+    };
+    const drawRows = (rows, font, fs, lh, base, cx, ink) => {
+      ctx.font = font; if (LS) ctx.letterSpacing = "0px";
+      const sp = ctx.measureText(" ").width;
+      rows.forEach((row, ri) => {
+        const ws = row.map((wd) => ctx.measureText(wd.t).width), total = ws.reduce((a, b) => a + b, 0) + sp * (row.length - 1);
+        let px = cx - total / 2;
+        const py = base + ri * lh * fs * f;
+        row.forEach((wd, wi) => {
+          wd.parts.forEach((p) => { ctx.textAlign = "left"; edge(p.t, px, py); ctx.fillStyle = p.gold ? cssVar("--rd-num") || "#ffcf5a" : ink; ctx.fillText(p.t, px, py); px += ctx.measureText(p.t).width; });
+          px += wi < row.length - 1 ? sp : 0;
+        });
+      });
+    };
+    const ink = cssVar("--rd-ink") || "#f4f1f6";
+    const nameFill = (bx, by, bw, bh) => linDeg(ctx, bx, by, bw, bh, degOf(cssVar("--rd-name-" + r), 90), gradStops(cssVar("--rd-name-" + r)));
+
+    // name (left half · 1 or 2 lines)
+    const nm = q(".rd__nm"), nfs = fsOf(nm, 10), two = nm.classList.contains("is-two"), up = nm.textContent.toUpperCase();
+    const nfont = `400 ${nfs * f}px ${A}`, nls = 0.02 * nfs * f;
+    const nrows = two ? wrap(up.split(/\s+/).filter(Boolean).map((t) => ({ t, parts: [{ t }] })), nfont, 43.7 * f, false).map((row) => row.map((x) => x.t).join(" ")) : [up];
+    const nlh = two ? (sup ? 1.02 : 0.98) : 1;
+    let nTop;
+    if (sup) nTop = parseFloat(q(".rd__top").style.top) || 6;
+    else nTop = 3 + 6.25 - (nrows.length * nlh * nfs + 0.6) / 2 + 0.4;
+    const nBase0 = nTop + ((nlh - 1.51) / 2 + 1.18) * nfs;   // Anton: ascent 1.18 + descent .33 in a line box nlh tall
+    const nW = Math.max(...nrows.map((t) => tw(t, nfont, nls)));
+    nrows.forEach((t, i) => out(t, X(3.6 + 0.6), Y(nBase0 + i * nlh * nfs), nameFill(X(3.6), Y(nTop), nW + 1.2 * f, nrows.length * nlh * nfs * f), nfont, nls));
+
+    // pills (odds + rarity) at the top right
+    let pTop = 17;
+    el.querySelectorAll(".rd__pill").forEach((p) => {
+      const rar = p.classList.contains("rd__pill--rar");
+      if (rar && r === "normal") return;
+      const pfs = fsOf(p, 5.6), font = `400 ${pfs * f}px ${A}`, ls = 0.03 * pfs * f, t = p.textContent.toUpperCase();
+      const pw = tw(t, font, ls) + 5.2 * f, ph = 7.4 * f, px = X(96.4) - pw, py = Y(pTop);
+      ctx.save();
+      roundRect(ctx, px, py, pw, ph, ph / 2);
+      ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 2 * f * K; ctx.shadowOffsetY = 0.6 * f * K;
+      ctx.fillStyle = rar ? gradOn(ctx, "--rd-pill-" + r, px, py, pw, ph) : cssVar("--rd-pill") || "#fff"; ctx.fill();
+      ctx.shadowColor = "transparent";
+      ctx.lineWidth = 1.1 * f; ctx.strokeStyle = cssVar("--rd-pill-line") || "#0b0b0d"; ctx.stroke();
+      roundRect(ctx, px + (rar ? 0.45 : 0.55) * f, py + (rar ? 0.45 : 0.55) * f, pw - (rar ? 0.9 : 1.1) * f, ph - (rar ? 0.9 : 1.1) * f, ph / 2);
+      ctx.lineWidth = (rar ? 0.45 : 0.55) * f; ctx.strokeStyle = rar ? "rgba(255, 255, 255, .35)" : cssVar("--rd-pill-inner") || "#c9c9cf"; ctx.stroke();
+      ctx.font = font; if (LS) ctx.letterSpacing = ls + "px"; ctx.textAlign = "center";
+      ctx.fillStyle = rar ? cssVar("--rd-pill-ink-" + r) || "#111" : cssVar("--rd-pill-ink") || "#111";
+      ctx.fillText(t, px + pw / 2 + ls / 2, py + ((7.4 - pfs) / 2 + 0.925 * pfs) * f);
+      ctx.restore();
+      pTop += 7.4 + 1.6;
+    });
+
+    // ability name + text
+    const abn = q(".rd__abn"), afs = fsOf(abn, sup ? 7.5 : 7.2), afont = `400 ${afs * f}px ${A}`, als = 0.02 * afs * f;
+    const abd = q(".rd__abd"), dfs = fsOf(abd, sup ? 4.57 : 5), dfont = `500 ${dfs * f}px ${T}`;
+    const dwords = abd ? wordsIn(abd) : [];
+    if (!sup) {
+      const rows = wrap(dwords, dfont, 91.6 * f, true);
+      const blockH = (abn ? afs + 0.6 + 1.2 : 0) + rows.length * dfs * 1.16, top = FH - 17.5 - blockH;
+      if (abn) { const t = abn.textContent.toUpperCase(); out(t, X(4.2 + 0.5), Y(top + 0.3 + 0.925 * afs), linDeg(ctx, X(4.2), Y(top), tw(t, afont, als) + f, (afs + 0.6) * f, 180, gradStops(cssVar("--rd-ab"))), afont, als); }
+      if (big) drawRows(rows, dfont, dfs, 1.16, Y(top + (abn ? afs + 0.6 + 1.2 : 0) + 1.03 * dfs), X(50), ink);
+      // HP + heart (top right) · swords + ATK (bottom)
+      const hp = q('[data-k="hp"]'), hfs = fsOf(hp, 10), hfont = `400 ${hfs * f}px ${A}`, ht = hp.textContent;
+      const hy = 3 + 6.25 - (hfs + 0.6) / 2, hw = tw(ht, hfont);
+      out(ht, X(96.4 - 9.6 - 1.2 - 0.3) - hw, Y(hy + 0.3 + 0.925 * hfs), linDeg(ctx, X(96.4 - 10.8) - hw, Y(hy), hw, (hfs + 0.6) * f, 180, gradStops(cssVar("--rd-hp"))), hfont);
+      drawHeart(ctx, X(96.4 - 9.6), Y(9.25 - 4.8), 9.6 * f, K);
+      const at = q('[data-k="atk"]'), tfs = fsOf(at, 12.5), tfont = `400 ${tfs * f}px ${A}`, tt = at.textContent, ty = FH - 3 - 6.25 - (tfs + 0.6) / 2, aw = tw(tt, tfont);
+      out(tt, X(50), Y(ty + 0.3 + 0.925 * tfs), linDeg(ctx, X(50) - aw / 2, Y(ty), aw, (tfs + 0.6) * f, 180, gradStops(cssVar("--rd-atk"))), tfont, 0, "center");
+      drawSwords(ctx, X(3.6 + 0.25), Y(FH - 3 - 6.25 - 6), 12 * f);
+    } else {
+      if (abn) { const t = abn.textContent.toUpperCase(), top = parseFloat(abn.style.top) || 79; out(t, X(3.6 + 0.5), Y(top + 0.925 * afs), linDeg(ctx, X(3.6), Y(top), tw(t, afont, als) + f, afs * f, 180, gradStops(cssVar("--rd-ab"))), afont, als); }
+      if (big) {
+        const top = parseFloat(q(".rd__txt").style.top) || 88, room = 92.3 * f;
+        const rows = wrap(dwords, dfont, room, false), mut = q(".rd__mut");
+        const mrows = mut && !mut.hidden ? wrap(wordsIn(mut), dfont, room, false) : [];
+        drawRows(rows.concat(mrows), dfont, dfs, 1.385, Y(top + 1.1425 * dfs), X(50), ink);
+      }
+      const wfs = 10.3, wfont = `700 ${wfs * f}px ${T}`, wt = parseFloat(q(".rd__sup").style.top) || 124.5, ww = tw("SUPPORT", wfont);
+      out("SUPPORT", X(50), Y(wt + 0.95 * wfs), linDeg(ctx, X(50) - ww / 2, Y(wt), ww, wfs * f, 180, gradStops(cssVar("--rd-sup"))), wfont, 0, "center");
+    }
+    if (LS) ctx.letterSpacing = "0px";
+    ctx.restore();
+  }
+  // the heart / crossed swords of index.html's #rd-heart / #rd-sword (same paths, drawn into a s × s box)
+  function drawHeart(ctx, x, y, s, K = 1) {
+    ctx.save(); ctx.translate(x, y + s * 0.04); ctx.scale(s / 100, s / 100);   // viewBox 100 × 92 in an s × s box
+    ctx.shadowColor = "rgba(0, 0, 0, .6)"; ctx.shadowBlur = s * 0.083 * K; ctx.shadowOffsetY = s * 0.052 * K;
+    const p = new Path2D("M50 88 C20 66 4 50 4 29 C4 14 16 4 29 4 C39 4 46 9 50 17 C54 9 61 4 71 4 C84 4 96 14 96 29 C96 50 80 66 50 88 Z");
+    const g = ctx.createLinearGradient(0, 0, 0, 92); g.addColorStop(0, "#ff6b6b"); g.addColorStop(0.55, "#e3222c"); g.addColorStop(1, "#a50f1a");
+    ctx.fillStyle = g; ctx.fill(p); ctx.shadowColor = "transparent";
+    ctx.lineWidth = 5; ctx.lineJoin = "round"; ctx.strokeStyle = "#1a0306"; ctx.stroke(p);
+    ctx.save(); ctx.translate(29, 24); ctx.rotate(-Math.PI / 6); ctx.beginPath(); ctx.ellipse(0, 0, 12, 8, 0, 0, Math.PI * 2); ctx.fillStyle = "rgba(255, 255, 255, .75)"; ctx.fill(); ctx.restore();
+    ctx.restore();
+  }
+  function drawSwords(ctx, x, y, s) {
+    const lin = (x0, y0, x1, y1, st) => { const g = ctx.createLinearGradient(x0, y0, x1, y1); st.forEach(([o, c]) => g.addColorStop(o, c)); return g; };
+    const blade = lin(45, 0, 55, 0, [[0, "#ffffff"], [0.5, "#dfe5ee"], [0.51, "#9aa6b8"], [1, "#c3ccd8"]]);
+    const gold = lin(0, 63, 0, 96, [[0, "#ffe9a0"], [1, "#c08a2a"]]), grip = lin(45.5, 0, 54.5, 0, [[0, "#e2453f"], [1, "#8e1414"]]);
+    [-135, 135].forEach((deg) => {
+      ctx.save(); ctx.translate(x, y); ctx.scale(s / 100, s / 100);
+      ctx.translate(50, 50); ctx.rotate(deg * Math.PI / 180); ctx.translate(-50, -50);
+      ctx.lineWidth = 2.6; ctx.lineJoin = "round"; ctx.strokeStyle = "#14161c";
+      const shape = (p, fill) => { ctx.fillStyle = fill; ctx.fill(p); ctx.stroke(p); };
+      shape(new Path2D("M50 4 L55 13 L55 64 L45 64 L45 13 Z"), blade);
+      const rr = (a, b, c, d, e) => { const p = new Path2D(); if (p.roundRect) p.roundRect(a, b, c, d, e); else p.rect(a, b, c, d); return p; };
+      shape(rr(34, 63, 32, 7, 3.5), gold); shape(rr(45.5, 70, 9, 17, 2), grip);
+      const c = new Path2D(); c.arc(50, 91, 5, 0, Math.PI * 2); shape(c, gold);
+      ctx.restore();
+    });
+  }
+
   // nums (deck image, 2026-11-02) = { atk, hp }: the numbers to show instead of the rarity's (game colours, owner 2026-11-02)
   function drawGameCard(ctx, x, y, w, h, item, rarity, art, k, pal, nums) {
+    if (art && C.isRedraw && C.isRedraw(item) && !item.missing) { drawRedraw(ctx, x, y, w, h, item, rarity, art, k, nums); return; }
     const u = w / 100, R = 3.7 * u, sp = gcSpec(rarity);
     const num = cssVar("--gc-font-num"), pop = cssVar("--gc-font-pop");
     // shadow (+ the rarity glow)

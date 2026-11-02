@@ -54,8 +54,9 @@ def sup_val(s, i, rarity="Godly"):
     v = float(base) * (1 + 0.25 * level)
     plain = sup_at(base, level) if dp else round(v)
     if k == "hp": return min(100.0, plain)
-    if v <= SOFT[k][0]: return plain
-    t, c = SOFT[k]
+    kn = (e.get("knee") or [None] * (i + 1))[i] if i < len(e.get("knee") or []) else None   # effect.knee (app.js softOf)
+    t, c = (kn, 100 - kn if k == "chance" else kn / 2) if kn else SOFT[k]
+    if v <= t: return plain
     v = t + c * (1 - math.exp(-(v - t) / c))
     return round(v, 1) if dp else round(v)
 
@@ -150,7 +151,7 @@ SUP = {
     "geass-strategist": lambda v: dict(confuse=v[0]),
     "great-spirit-cat": lambda v: dict(freeze=(v[0], 1), vs_frozen=1.30),
     "guild-master-giant": lambda v: dict(team_all=(v[0], v[0])),
-    "hat-and-clogs-shopkeeper": lambda v: dict(entry_miss=(2, v[0])),
+    "hat-and-clogs-shopkeeper": lambda v: dict(entry_miss=(3, v[0]), flat=v[1]),   # game text 2026-11-02
     "serpent-sin-mage": lambda v: dict(dblock=3, dr=v[0]),
     "slug-princess-hokage": lambda v: dict(low_heal=(0.30, v[0])),
     "spirit-wave-master": lambda v: dict(every_n=[(2, 1 + v[0])]),

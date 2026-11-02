@@ -198,7 +198,7 @@
   transition: scale var(--t-fast) var(--ease), translate var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
 }
 .dk-item .card { width: 100%; touch-action: manipulation; }   /* .card is pan-y: a drag must not scroll */
-.dk-item .gc__rar, .dk-tile .gc__rar { display: none; }   /* too small to read here: the slot's rarity is written under the card (.dk-rar) */
+.dk-item .gc__rar, .dk-tile .gc__rar, .dk-item .rd__pill--rar, .dk-tile .rd__pill--rar { display: none; }   /* too small to read here: the slot's rarity is written under the card (.dk-rar) */
 .dk-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
 .dk-item.is-pressing { scale: 0.95; }
 .dk-item.is-source { opacity: 0.35; }
@@ -344,7 +344,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-sug__item:active { scale: .96; }
 .dk-sug__item:focus-visible { outline-offset: 3px; }
 .dk-sug__item .card { width: 100%; pointer-events: none; }
-.dk-sug__item .gc__rar { display: none; }
+.dk-sug__item .gc__rar, .dk-sug__item .rd__pill--rar { display: none; }
 .dk-sug__gain {
   position: absolute; z-index: 4; top: -6px; left: -4px; padding: 1px 7px;   /* top-left: the tier seal sits top-right */ border-radius: var(--r-pill);
   font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xs);

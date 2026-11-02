@@ -77,8 +77,9 @@
   function oddsAt(card, rarity) { return (isSupport(card) ? Number(card.odds) || 0 : card.base.odds) * rarityOf(rarity).odds; }
   /* Game style (owner's answer §3.5.4 item 3, step 13 · checked on the game's Bald Cadet 2026-10-28):
      under 10,000 = the whole number with commas · K = whole number · M B T Qa Qi = one decimal (100 and up = whole)
-     (1 in 59 · 1 in 1,195 · 1 in 30K · 1 in 148K · 1 in 14.8M · 1 in 9.5B · 1 in 140T) */
-  const SHORT = [[1e18, "Qi"], [1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"]];
+     (1 in 59 · 1 in 1,195 · 1 in 30K · 1 in 148K · 1 in 14.8M · 1 in 9.5B · 1 in 140T)
+     · a thousand trillion is "Qd" like the game (owner 2026-11-02 · was Qa) */
+  const SHORT = [[1e18, "Qi"], [1e15, "Qd"], [1e12, "T"], [1e9, "B"], [1e6, "M"]];
   function shortNum(n) {
     if (Math.round(n) < 1e4) return Math.round(n).toLocaleString("en-US");
     if (Math.round(n / 1e3) < 1000) return Math.round(n / 1e3) + "K";
@@ -86,14 +87,12 @@
   }
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
-  /* HP (owner 2026-10-30 · HP only, ATK stays whole): short from 1K up, like the odds (shortNum): K = whole number ·
-     M B T Qa Qi = one decimal (100 and up = whole · .0 dropped) · under 10,000 the game's comma number would not fit
-     beside the name, so 1,000–9,999 is K too (8,887,688 -> 8.9M · 12,345 -> 12K · 1,500 -> 2K · 999 -> 999) */
+  /* HP (owner 2026-11-02 · the whole site · ATK stays whole): the full number with commas below 1B, like the game ·
+     from 1B up short like the odds (shortNum): B T Qd Qi with one decimal (100 and up = whole · .0 dropped)
+     (8,887,688 · 999,999,999 · 1,234,567,890 -> 1.2B · 45.6T) */
   function fmtHp(n) {
     n = Math.round(n);
-    if (n < 1000) return String(n);
-    if (Math.round(n / 1e3) < 1000) return Math.round(n / 1e3) + "K";
-    return shortNum(n);
+    return n < 1e9 ? n.toLocaleString("en-US") : shortNum(n);
   }
   const fmtKey = (k) => (k === "hp" ? fmtHp : fmtStat);
 
@@ -118,6 +117,13 @@
      · anything else: knee 150, room 75 (Hellsing Commander Ascended 166 · Godlike 177 · Godly 187)
      effect.dp = decimals the game shows for that card (default 1 · Hellsing Commander 0: 84 / 101 / 117 …) */
   const SOFT = { chance: [75, 25], other: [150, 75] };
+  /* effect.knee[i] (owner + game 2026-11-02 · PROGRESS ▶️ "ค่า Support ตามระดับ"): the knee is not the same on every card
+     (Nine Tails Fox damage + HP 35, less damage 40 · Hat and Clogs miss chance 90, damage 35) · past it a chance closes in
+     on 100 (room = 100 − knee), anything else on 1.5 × knee (room = knee ÷ 2) · no knee = SOFT above */
+  const softOf = (s, i, k) => {
+    const kn = s && s.effect && Array.isArray(s.effect.knee) ? Number(s.effect.knee[i]) : NaN;
+    return kn > 0 ? [kn, k === "chance" ? 100 - kn : kn / 2] : SOFT[k];
+  };
   const supKind = (s, i) => {
     const d = (s && s.effect && s.effect.desc) || "";
     return new RegExp(`\\{${i}\\}% (chance|of (the )?hits)`).test(d) ? "chance" : new RegExp(`\\{${i}\\}% HP\\b`).test(d) ? "hp" : "other";
@@ -128,8 +134,8 @@
     if (!Number.isFinite(v) || v <= 0) return 0;
     const plain = dp ? supAt(base, rarity) : Math.round(v);       // tenths: the game's even rounding of an exact …5
     if (k === "hp") return Math.min(100, plain);
-    if (v <= SOFT[k][0]) return plain;
-    const [t, c] = SOFT[k];
+    const [t, c] = softOf(s, i, k);
+    if (v <= t) return plain;
     v = t + c * (1 - Math.exp(-(v - t) / c));
     return dp ? Math.round(v * 10) / 10 : Math.round(v);
   };
@@ -142,11 +148,34 @@
     const k = supKind(s, i);
     const v = real * supLevelMult(rarity);
     if (k === "hp") return Math.min(100, v);
-    const [t, c] = SOFT[k];
+    const [t, c] = softOf(s, i, k);
     return v <= t ? v : t + c * (1 - Math.exp(-(v - t) / c));
   };
   const supValue = (s, rarity) => supValAt(s, 0, rarity);  // the main value (vals[0]) at a rarity · 0 = none
-  const supText = (s, text, rarity) => I18N.desc(String(text || "")).replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
+  /* Mutation bonus (owner's table from the game 2026-11-02 · 24/24 values match): a support above Normal gives the card it
+     supports +X% damage and max HP · X comes from the support's odds AT that rarity (Normal odds × the rarity's multiplier)
+     · [from odds, X] per level, first match wins · Normal = none (no line on the card) */
+  const MUT = [null,
+    [[1e9, 3], [1e8, 2], [0, 1]], [[1e10, 5], [1e9, 4], [0, 2]], [[5e10, 8], [1e9, 6], [0, 3]],
+    [[1e11, 13], [1e10, 10], [1e6, 5], [0, 4]], [[1e12, 18], [1e11, 14], [1e7, 7], [0, 6]], [[9e12, 25], [1e11, 20], [1e8, 10], [0, 8]],
+    [[1e13, 33], [1e12, 26], [1e8, 13], [0, 10]], [[1e14, 40], [1e12, 32], [1e9, 16], [0, 13]]];
+  const MUT_RE = /\s*Mutation bonus: \+[\d.]+% damage and max HP\.?/i;
+  // every support has one above Normal (owner 2026-11-02) · the text's own number (copied at one rarity) is replaced
+  const hasMut = (s) => isSupport(s);
+  function mutAt(s, rarity) {
+    const L = levelOf(rarity);
+    if (!L || !hasMut(s) || !MUT[L]) return 0;
+    const o = oddsAt(s, rarity);
+    return MUT[L].find(([t]) => o >= t)[1];
+  }
+  // the text with the Mutation sentence at this rarity (added when the data has none · gone at Normal, like the game)
+  const mutLine = (m) => `Mutation bonus: +${m}% damage and max HP.`;
+  const mutText = (s, text, rarity) => {
+    const t = String(text || "").replace(MUT_RE, "");
+    const m = mutAt(s, rarity);
+    return m ? (t ? t + " " : "") + mutLine(m) : t;
+  };
+  const supText = (s, text, rarity) => I18N.desc(mutText(s, text, rarity)).replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
   /* NEW badge (plan 2026-10-30 item 5): a card / support added to the site in the last NEW_DAYS days (x.added from
@@ -328,13 +357,14 @@
   }
   // sample = the text to make room for (while a number counts, the longer of the old and the new value)
   function fitNum(span, key, sample) {
-    if (!span) return;
+    if (!span || span.closest(".gc__face")) return;   // a redrawn card fits itself (fitRedraw)
     const [base, room, kind] = FIT[key];
     const need = textW(kind, sample || span.textContent) * base;
     const size = need > room ? Math.floor(base * room / need * 0.97 * 100) / 100 : 0;
     span.style.fontSize = size ? size + "cqw" : "";
   }
   function fitCard(el, samples = {}) {
+    if (el.classList.contains("gc--rd")) { fitRedraw(el, samples); return; }
     ["hp", "atk", "odds", "rar"].forEach((k) => fitNum($(`[data-k="${k}"]`, el), k, samples[k]));
     fitText(el);
   }
@@ -392,8 +422,14 @@
     while (fs > min && textLines(parts, fs, TXT.boxW * 0.98) * fs * lh > room) fs = Math.round((fs - 0.1) * 100) / 100;
     abd.style.fontSize = fs === base ? "" : fs + "cqw";
   }
-  // ability text → HTML: numbers gold · {n} = a support value at the rarity
-  function textHTML(text, s, rarity) {
+  // ability text → HTML: numbers gold · {n} = a support value at the rarity · a support's Mutation line = the table's value
+  // at the rarity in its own span (setSupportNums changes it · gone at Normal)
+  function textHTML(text, s, rarity, mut = true) {
+    if (mut && s && hasMut(s)) {
+      const m = mutAt(s, rarity);
+      return textHTML(String(text || "").replace(MUT_RE, ""), s, rarity, false) +
+        `<span class="gc__mut"${m ? "" : " hidden"}> ${m ? mutHTML(m) : ""}</span>`;
+    }
     return I18N.desc(String(text || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).map((part, i) => {
       if (!(i % 2)) return esc(part);
       const m = /^\{(\d)\}(%?)$/.exec(part);
@@ -412,11 +448,195 @@
     return `<span class="gc__scrim"></span>` +   // the card name stays the game's, in the picture (owner 2026-10-31)
       `<span class="gc__ab"><span class="gc__abn">${esc(ab.name || "")}</span><span class="gc__abd">${textHTML(ab.desc, sup ? item : null, rarity)}</span></span>`;
   }
-  // the web fonts (Oswald, Bangers) arrive after the first cards: measure again with the real ones
+  /* ---------- Redrawn card (owner 2026-11-02 · PROGRESS ▶️ "เขียนใหม่ทั้งใบ" · mockup/card-redraw.html + support-redraw.html) ----------
+     "redraw": true in the data = tools/erase_all.py took EVERYTHING off the picture; it is all written here as real text
+     (sharp at every size): name (rarity colour) · HP + heart · 1 IN X + rarity pills · ability name · ability text (numbers
+     gold) · swords + ATK · a support: name · ability name · text (its level values gold) + the Mutation line · SUPPORT.
+     Sizes are in cqw of .gc__face (the picture inside the 1.7cqw frame) · widths come from a canvas (no layout, so a card
+     can be fitted before it is on the page). Letters = .rd-ot: data-t holds the text for the black edge layer (::before),
+     so anything that changes the text must change data-t too (FX.countTo does · syncT here). css/fx.css .gc--rd ·
+     saved images: js/share.js drawRedraw. */
+  const isRedraw = (x) => !!(x && x.redraw && x.image);
+  const RD = { pad: 3.6, half: (100 - 2 * 3.6 - 3) / 2, ls: 0.02, lsPill: 0.03 };
+  // where the capital letters start inside a line box, in em (Chromium metrics: Anton ascent 1.18 / descent .33 / caps .86 ·
+  // Oswald 1.19 / .29 / .81) · support tops: the game's cap lines measured on Hat and Clogs Shopkeeper (Deck view, 600×840)
+  const capOff = (f, lh) => (lh - (f.a + f.d)) / 2 + f.a - f.c;
+  const ANTON = { a: 1.18, d: 0.33, c: 0.86 }, OSW = { a: 1.19, d: 0.29, c: 0.81 };
+  const RDS = { name: 6.67, nameFs: 4.27, abn: 79.67, abnFs: 7.5, txt: 90.5, txtFs: 4.57, txtLh: 1.385, txtH: 27.7, word: 126, wordFs: 10.3 };
+  let rdFonts = null;
+  function rdW(kind, text) {                       // width at font-size 1 (em) · a = Anton · t = Oswald 500 · s = Oswald 700
+    const key = "rd" + kind + "|" + text;
+    let w = fitCache.get(key);
+    if (w !== undefined) return w;
+    if (!fitCtx) { const cv = document.createElement("canvas"); fitCtx = cv.getContext && cv.getContext("2d"); }
+    if (!fitCtx) return 0;
+    if (!rdFonts) { const cs = getComputedStyle(document.documentElement); rdFonts = { a: cs.getPropertyValue("--rd-font").trim() || "sans-serif", t: cs.getPropertyValue("--rd-font-text").trim() || "sans-serif" }; }
+    fitCtx.font = kind === "a" ? `400 100px ${rdFonts.a}` : `${kind === "s" ? 700 : 500} 100px ${rdFonts.t}`;
+    w = fitCtx.measureText(text).width / 100;
+    if (fitCache.size > 4000) fitCache.clear();
+    fitCache.set(key, w);
+    return w;
+  }
+  const capsW = (t, ls) => rdW("a", t) + ls * t.length;            // Anton capitals + letter-spacing (em)
+  // lines a text needs at font size fs in `room` cqw (word wrap like the page) · [lines, widest word]
+  function rdLines(words, kind, fs, room, ls = 0) {
+    const sp = rdW(kind, " ") * fs;
+    let n = 1, x = 0, wide = 0;
+    for (const word of words) {
+      const w = (rdW(kind, word) + ls * word.length) * fs;
+      if (w > wide) wide = w;
+      if (x > 0 && x + sp + w > room) { n++; x = w; } else x += (x > 0 ? sp : 0) + w;
+    }
+    return [n, wide];
+  }
+  const wordsOf = (t) => String(t || "").split(/\s+/).filter(Boolean);
+  const cq = (n) => n.toFixed(2) + "cqw";
+  // the black edge layer reads data-t: keep it the same as the text after a change
+  function syncT(n) { const h = n && n.closest && n.closest("[data-t]"); if (h) h.dataset.t = h.textContent; }
+  const RD_HEART = `<svg class="rd__heart" viewBox="0 0 100 92" aria-hidden="true"><use href="#rd-heart"/></svg>`;
+  const RD_SWORDS = `<svg class="rd__swords" viewBox="0 0 100 100" aria-hidden="true"><use href="#rd-swords"/></svg>`;
+  const rdSpan = (cls, text, attrs = "") => `<span class="${cls}"${attrs} data-t="${esc(text)}">${esc(text)}</span>`;
+  // a support's text: only the values that change with the rarity are gold (owner 2026-11-02 · "next 3 attacks" stays white)
+  function rdSupHTML(s, rarity) {
+    const text = I18N.desc(String((s.effect && s.effect.desc) || "").replace(MUT_RE, ""));
+    return text.split(/(\{\d\}%?)/).map((part, i) => {
+      if (!(i % 2)) return esc(part);
+      const m = /^\{(\d)\}(%?)$/.exec(part);
+      if (!m || supVals(s)[+m[1]] == null) return esc(part);
+      const v = supValAt(s, +m[1], rarity);
+      return `<b class="gc__dv" data-sv="${m[1]}" data-pct="${m[2]}" data-value="${v}">${v}${m[2]}</b>`;
+    }).join("");
+  }
+  const mutHTML = (m) => esc(I18N.desc(mutLine(m))).replace(`+${m}%`, `<b>+${m}%</b>`);
+  function setMut(el, s, rarity) {
+    const p = $(".rd__mut", el);
+    if (!p) return;
+    const m = mutAt(s, rarity);
+    p.hidden = !m;
+    p.innerHTML = m ? mutHTML(m) : "";
+    p.dataset.t = p.textContent;
+  }
+  function redrawHTML(item, rarity) {
+    const sup = isSupport(item);
+    const ab = (sup ? item.effect : item.passive && item.passive.name ? item.passive : item.skill) || {};
+    const odds = sup ? (Number(item.odds) > 0 ? fmtOdds(oddsAt(item, rarity)) : "") : fmtOdds(oddsAt(item, rarity));
+    const top = `<div class="rd__top"><div class="rd__name">${rdSpan("rd__nm rd-ot rd-fill", item.name)}</div>` +
+      (sup ? "" : (() => { const hp = statAt(item, "hp", rarity); return `<div class="rd__hp">${rdSpan("rd__num rd-ot rd-fill", fmtHp(hp), ` data-k="hp" data-value="${hp}"`)}${RD_HEART}</div>`; })()) + `</div>`;
+    const pills = `<div class="rd__pills">${odds ? `<span class="rd__pill" data-k="odds">${esc(odds)}</span>` : ""}<span class="rd__pill rd__pill--rar" data-k="rar">${esc(rarity)}</span></div>`;
+    const abn = ab.name ? rdSpan("rd__abn rd-ot rd-fill", ab.name) : "";
+    if (sup) {
+      const html = rdSupHTML(item, rarity), plain = html.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+      const m = mutAt(item, rarity);
+      return top + pills + `<div class="rd__ab">${abn}<div class="rd__txt"><p class="rd__abd rd-ot" data-t="${esc(plain)}">${html}</p>` +
+        `<p class="rd__mut rd-ot"${m ? "" : " hidden"} data-t="${m ? esc(I18N.desc(mutLine(m))) : ""}">${m ? mutHTML(m) : ""}</p></div></div>` +
+        `<div class="rd__sup">${rdSpan("rd-ot rd-fill", "SUPPORT")}</div>`;
+    }
+    const atk = statAt(item, "atk", rarity), desc = I18N.desc(String(ab.desc || ""));
+    return top + pills +
+      `<div class="rd__ab">${abn}<p class="rd__abd rd-ot" data-t="${esc(desc)}">${textHTML(ab.desc, null, rarity)}</p></div>` +
+      `<div class="rd__bot">${RD_SWORDS}${rdSpan("rd__num rd-ot rd-fill", fmtStat(atk), ` data-k="atk" data-value="${atk}"`)}</div>`;
+  }
+  // one line of Anton capitals in `room` cqw: the size it may have (biggest = base)
+  const rdFitLine = (text, base, room, ls, pad) => { const w = capsW(String(text).toUpperCase(), ls); return w * base + pad > room ? Math.max(1, (room - pad) / w * 0.98) : base; };
+  // samples = { hp, atk } texts to make room for while a number counts (the longer of the old and the new)
+  function fitRedraw(el, samples = {}) {
+    const q = (s) => $(s, el), sup = el.classList.contains("gc--sup"), half = RD.half;
+    // name: short = big, long = smaller, then 2 lines (always in its half: the left one)
+    const nm = q(".rd__nm");
+    if (nm) {
+      const up = nm.textContent.toUpperCase(), w = capsW(up, RD.ls);
+      const max = sup ? RDS.nameFs : 10, min = sup ? 3.4 : 5;
+      let fs = max, two = false;
+      if (w * fs + 1.2 > half) fs = Math.max(min, (half - 1.4) / w);
+      if (w * fs + 1.2 > half + 0.2) {
+        two = true;
+        const words = wordsOf(up);
+        if (sup) fs = 3.6;
+        else {
+          fs = 6.4;
+          for (; fs > 2.6; fs -= 0.2) { const [n, wide] = rdLines(words, "a", fs, half - 1.2, RD.ls); if (n <= 2 && wide <= half - 1.2 && n * fs * 0.98 + 0.6 <= 12.3) break; }
+        }
+      }
+      nm.classList.toggle("is-two", two);
+      nm.style.fontSize = cq(fs);
+      if (sup) q(".rd__top").style.top = cq(RDS.name - capOff(ANTON, two ? 1.02 : 1) * fs);
+    }
+    // HP: shrinks until number + heart fit the right half
+    const hp = q('.rd__hp [data-k="hp"]');
+    if (hp) {
+      const w = rdW("a", samples.hp || hp.textContent), room = half - 9.6 - 1.2 - 0.6;
+      hp.style.fontSize = cq(w * 10 > room ? Math.max(3, room / w * 0.98) : 10);
+    }
+    const atk = q('.rd__bot [data-k="atk"]');
+    if (atk) { const w = rdW("a", samples.atk || atk.textContent) * 12.5 + 0.6; atk.style.fontSize = cq(w > 66 ? 12.5 * 66 / w : 12.5); }
+    // pills: one line, at most 44cqw
+    el.querySelectorAll(".rd__pill").forEach((p) => { p.style.fontSize = cq(rdFitLine(p.textContent, 5.6, 44, RD.lsPill, 5.2)); });
+    // ability name: one line across the card
+    const abn = q(".rd__abn"), abnFs = abn ? rdFitLine(abn.textContent, sup ? RDS.abnFs : 7.2, sup ? 100 - 2 * RD.pad : 91.6, RD.ls, 1) : 0;
+    if (abn) { abn.style.fontSize = cq(abnFs); if (sup) abn.style.top = cq(RDS.abn - capOff(ANTON, 1) * abnFs); }
+    const abd = q(".rd__abd");
+    if (!abd) return;
+    const words = wordsOf(abd.textContent);
+    if (sup) {
+      // text + Mutation line: the game's size, smaller until both fit the box (27.7cqw tall)
+      const mut = q(".rd__mut"), mw = mut && !mut.hidden ? wordsOf(mut.textContent) : [], room = 100 - 2 * 3.85;
+      const tall = (f) => (rdLines(words, "t", f, room)[0] + (mw.length ? rdLines(mw, "t", f, room)[0] : 0)) * f * RDS.txtLh;
+      let f = RDS.txtFs;
+      if (tall(f) > RDS.txtH) { let lo = 2.4, hi = f; for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; if (tall(m) > RDS.txtH) hi = m; else lo = m; } f = lo; }
+      abd.style.fontSize = cq(f); if (mut) mut.style.fontSize = cq(f);
+      q(".rd__txt").style.top = cq(RDS.txt - capOff(OSW, RDS.txtLh) * f);
+      q(".rd__sup").style.top = cq(RDS.word - capOff(OSW, 1) * RDS.wordFs);
+      return;
+    }
+    // card: the biggest size whose name + text block fits between the art and the ATK row (44cqw)
+    const head = abn ? abnFs + 0.6 + 1.2 : 0;
+    const tall = (f) => head + rdLines(words, "t", f, 91.6)[0] * f * 1.16;
+    let f = 6.4;
+    if (tall(f) > 44) { let lo = 3, hi = f; for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; if (tall(m) > 44) hi = m; else lo = m; } f = lo; }
+    abd.style.fontSize = cq(f);
+  }
+  /* an offscreen, fitted copy of the card's text layer for js/share.js drawRedraw (sizes are read from it, nothing is
+     drawn) · nums = { atk, hp } to show instead of the rarity's (the deck image's buffed numbers) */
+  function redrawEl(item, rarity, nums = {}) {
+    const el = document.createElement("div");
+    el.className = "gc gc--rd" + (isSupport(item) ? " gc--sup" : "");
+    el.innerHTML = `<div class="gc__face">${redrawHTML(item, rarity)}</div>`;
+    [["hp", fmtHp], ["atk", fmtStat]].forEach(([k, f]) => { const n = $(`[data-k="${k}"]`, el); if (n && nums[k] != null) { n.textContent = f(nums[k]); syncT(n); } });
+    fitRedraw(el);
+    return el;
+  }
+  function renderRedraw(item, rarity, { mini = false, tilt = true } = {}) {
+    const sup = isSupport(item);
+    const el = document.createElement("article");
+    el.className = "card gc gc--rd" + (sup ? " gc--sup" : "") + (mini ? " card--mini gc--mini" : "");
+    el.dataset.rarity = rarity;
+    el.dataset.id = item.id;
+    if (sup) el.dataset.kind = "support";
+    el.tabIndex = 0;
+    el.setAttribute("role", "button");
+    el.setAttribute("aria-label", cardLabel(item, rarity));
+    el.innerHTML = `
+      <span class="gc__glow"></span>
+      <div class="gc__art">${artImg(item.image, mini, true)}</div>
+      <span class="gc__ring"><i></i></span>
+      <span class="gc__sweep"></span>
+      <div class="gc__face">${redrawHTML(item, rarity)}</div>
+      ${item.mock ? `<span class="gc__mock">mock</span>` : ""}
+      ${newHTML(item)}
+      <span class="gc__sheen"><span class="card__glare"></span></span>
+      <span class="gc__flash"></span>`;
+    fitRedraw(el);
+    bindArt(el, item);
+    if (tilt) FX.tilt(el);
+    watchLive(el);
+    return el;
+  }
+
+  // the web fonts (Oswald, Bangers, Anton) arrive after the first cards: measure again with the real ones
   const supById = (id) => (Array.isArray(state.support) ? state.support.find((x) => x && x.id === id) : null);
   function refitAll() {
     fitCache.clear();
-    svFont = ""; txtFonts = null;
+    svFont = ""; txtFonts = null; rdFonts = null;
     for (const ref of watched) {
       const el = ref.deref(); if (!el) continue;
       fitCard(el);
@@ -429,6 +649,7 @@
      The game's own card (§3.5): cleaned picture + HP / 1 IN X / rarity / ATK drawn on top.
      .card = tap / tilt / keyboard · .gc = the look (see css/fx.css). tilt:false = no finger tilt (the detail scene turns its card by itself) */
   function renderCard(card, rarity, { mini = false, tilt = true } = {}) {
+    if (isRedraw(card)) return renderRedraw(card, rarity, { mini, tilt });
     if (isSupport(card)) return renderSupport(card, rarity, { mini, tilt });
     const el = document.createElement("article");
     el.className = "card gc" + (mini ? " card--mini gc--mini" : "") + (card.image ? "" : " gc--noart");
@@ -465,16 +686,18 @@
   function setCardNums(el, { atk, hp }, { animate = true } = {}) {
     const atkEl = $('[data-k="atk"]', el), hpEl = $('[data-k="hp"]', el);
     const longer = (span, v, f) => { const a = f(v), b = span.textContent; return a.length >= b.length ? a : b; };
+    const rd = el.classList.contains("gc--rd");
+    const fit = (sh, sa) => { if (rd) fitRedraw(el, { hp: sh, atk: sa }); else { fitNum(hpEl, "hp", sh); fitNum(atkEl, "atk", sa); } };
     clearTimeout(el._fitT);
     if (animate && !FX.reduced) {
-      fitNum(hpEl, "hp", longer(hpEl, hp, fmtHp)); fitNum(atkEl, "atk", longer(atkEl, atk, fmtStat));   // counting never spills out
+      fit(longer(hpEl, hp, fmtHp), longer(atkEl, atk, fmtStat));   // counting never spills out
       FX.countTo(atkEl, atk, { format: fmtStat, duration: 650 });
       FX.countTo(hpEl, hp, { format: fmtHp, duration: 650 });
-      el._fitT = setTimeout(() => { fitNum(hpEl, "hp"); fitNum(atkEl, "atk"); }, 700);
+      el._fitT = setTimeout(() => fit(), 700);
     } else {
-      atkEl.dataset.value = atk; atkEl.textContent = fmtStat(atk);
-      hpEl.dataset.value = hp; hpEl.textContent = fmtHp(hp);
-      fitNum(hpEl, "hp"); fitNum(atkEl, "atk");
+      atkEl.dataset.value = atk; atkEl.textContent = fmtStat(atk); syncT(atkEl);
+      hpEl.dataset.value = hp; hpEl.textContent = fmtHp(hp); syncT(hpEl);
+      fit();
     }
   }
   const flashCard = (el) => { const f = $(".gc__flash", el); if (f && !FX.reduced) f.animate([{ opacity: 0 }, { opacity: 0.5, offset: 0.35 }, { opacity: 0 }], { duration: 400, easing: "cubic-bezier(.2,.8,.2,1)" }); };
@@ -595,9 +818,12 @@
       const v = supValAt(s, +n.dataset.sv, rarity), pct = n.dataset.pct || "", a = v + pct;
       const dec = String(v).includes(".") || n.textContent.includes(".");
       if (animate && !FX.reduced) FX.countTo(n, v, { duration: 650, format: (x) => (x === v ? a : (dec ? x.toFixed(1) : Math.round(x)) + pct) });
-      else { n.dataset.value = v; n.textContent = a; }
+      else { n.dataset.value = v; n.textContent = a; syncT(n); }
     });
-    if (dvs.length) { clearTimeout(el._txtT); el._txtT = setTimeout(() => fitText(el), animate && !FX.reduced ? 700 : 0); }
+    const rd = el.classList.contains("gc--rd");
+    if (rd) setMut(el, s, rarity);
+    el.querySelectorAll(".gc__mut").forEach((p) => { const m = mutAt(s, rarity); p.hidden = !m; p.innerHTML = m ? " " + mutHTML(m) : ""; });
+    if (dvs.length || rd || el.querySelector(".gc__mut")) { clearTimeout(el._txtT); el._txtT = setTimeout(() => (rd ? fitRedraw(el) : fitText(el)), animate && !FX.reduced ? 700 : 0); }
   }
   function setSupportRarity(el, s, rarity, { animate = true } = {}) {
     el.dataset.rarity = rarity;
@@ -920,6 +1146,7 @@
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
+    isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, capOff, ANTON, OSW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)

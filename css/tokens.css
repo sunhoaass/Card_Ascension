@@ -122,6 +122,47 @@
   --gc-glow-godlike: rgba(255, 228, 150, .75);
   --gc-glow-godly: rgba(240, 120, 150, .55);
 
+  /* ---- Redrawn card (owner 2026-11-02 · PROGRESS ▶️ "เขียนใหม่ทั้งใบ" · mockup/card-redraw.html + support-redraw.html) ----
+     everything on the card is real text over an erased picture (data "redraw": true · css/fx.css .gc--rd · js/app.js renderRedraw)
+     frame / glow / name colour / rarity pill: sampled from the owner's 9 in-game screenshots (2026-11-02) */
+  --rd-font: "Anton", "Oswald", "Arial Narrow", sans-serif;          /* card name, HP, ATK, pills, ability name */
+  --rd-font-text: "Oswald", "Arial Narrow", sans-serif;              /* ability text (500) · SUPPORT (700) */
+  --rd-ink: #f4f1f6;            /* ability text */
+  --rd-num: #ffcf5a;            /* numbers in the ability text (gold · owner's pick) */
+  --rd-stroke: #07050a;         /* the black edge behind every letter */
+  --rd-soft: 0 0 1.6cqw rgba(0, 0, 0, .85), 0 0 3.2cqw rgba(0, 0, 0, .45);   /* soft shadow right around the letters (no dark band) */
+  --rd-hp: linear-gradient(180deg, #8ff08a, #46b04e 55%, #2f8a3a);
+  --rd-atk: linear-gradient(180deg, #ff8a74, #ec453b 55%, #b8231d);
+  --rd-ab: linear-gradient(180deg, #f6d3ff, #c06bff);                 /* ability name: the game's lilac */
+  --rd-sup: linear-gradient(180deg, #a6f5a0, #5fd36a 55%, #3aa84a);   /* the green SUPPORT word */
+  --rd-pill: #fff;  --rd-pill-ink: #111;  --rd-pill-inner: #c9c9cf;  --rd-pill-line: #0b0b0d;
+  --rd-ring-normal: linear-gradient(160deg, #f3f2f6, #b9b6c0 50%, #ecebf0);   --rd-glow-normal: rgba(255, 255, 255, .15);
+  --rd-name-normal: linear-gradient(90deg, #f4f3f8, #b9b9c0 35%, #e9e8ee 65%, #c4c4cb, #f4f3f8);
+  --rd-ring-shiny: linear-gradient(135deg, #c6f7c9, #eaf1b7 20%, #f8d1d9 45%, #e7c4ef 65%, #cec1f9 80%, #b4d2f9);   --rd-glow-shiny: rgba(200, 240, 220, .45);
+  --rd-name-shiny: linear-gradient(90deg, #c6f7c9, #eaf1b7, #f8d1d9, #e7c4ef, #cec1f9, #b4d2f9, #c6f7c9);
+  --rd-pill-shiny: linear-gradient(90deg, #d4f8d6, #f8d1d9, #d6ccfb);   --rd-pill-ink-shiny: #1d1b2a;
+  --rd-ring-rainbow: linear-gradient(135deg, #f4824c, #f7c449, #9ee373, #4fbedd, #8277f0, #da5dd0);   --rd-glow-rainbow: rgba(200, 140, 220, .5);
+  --rd-name-rainbow: linear-gradient(90deg, #f4824c, #f7c449, #9ee373, #4fbedd, #8277f0, #da5dd0, #f4824c);
+  --rd-pill-rainbow: linear-gradient(90deg, #f4824c, #f7c449, #9ee373, #4fbedd, #a493f5);   --rd-pill-ink-rainbow: #170d1e;
+  --rd-ring-secret: linear-gradient(160deg, #ffffff, #d9d8de 50%, #ffffff);   --rd-glow-secret: rgba(255, 255, 255, .35);
+  --rd-name-secret: linear-gradient(90deg, #ffffff, #a9a8ae 30%, #e2e1e6 55%, #ffffff 80%, #c9c8ce);
+  --rd-pill-secret: linear-gradient(180deg, #ffffff, #e4e3e8);   --rd-pill-ink-secret: #2b2b30;
+  --rd-ring-divine: linear-gradient(160deg, #f7c2c4, #d9636b 50%, #f3a9ad);   --rd-glow-divine: rgba(240, 110, 120, .5);
+  --rd-name-divine: linear-gradient(90deg, #ff8a8a, #d5535a 35%, #ffc9cb 75%, #ffb3b5, #ff8a8a);
+  --rd-pill-divine: linear-gradient(180deg, #ffd4d6, #ef8f94);   --rd-pill-ink-divine: #4a0b12;
+  --rd-ring-cosmic: linear-gradient(160deg, #cfc8ff, #8e86ea 50%, #b8b2ff);   --rd-glow-cosmic: rgba(130, 120, 255, .55);
+  --rd-name-cosmic: linear-gradient(90deg, #a08bff, #5d6ff0 35%, #6fa3ff 60%, #d6dcff, #a08bff);
+  --rd-pill-cosmic: linear-gradient(180deg, #d8d4ff, #9b98f2);   --rd-pill-ink-cosmic: #14123e;
+  --rd-ring-ascended: linear-gradient(160deg, #fff0b8, #d9a640 50%, #ffe39a);   --rd-glow-ascended: rgba(240, 200, 90, .55);
+  --rd-name-ascended: linear-gradient(90deg, #ffe39a, #e7ac3e 35%, #f7cc62 65%, #e2ad45, #ffe39a);
+  --rd-pill-ascended: linear-gradient(180deg, #ffe9a8, #e3ad3e);   --rd-pill-ink-ascended: #2c1c02;
+  --rd-ring-godlike: linear-gradient(160deg, #ffffff, #f6e4b0 50%, #ffffff);   --rd-glow-godlike: rgba(255, 228, 150, .7);
+  --rd-name-godlike: linear-gradient(90deg, #ffffff, #fbe7b4 40%, #fffaf0 70%, #fdeec8, #ffffff);
+  --rd-pill-godlike: linear-gradient(180deg, #fffdf6, #f6e2a8);   --rd-pill-ink-godlike: #1a1408;
+  --rd-ring-godly: linear-gradient(180deg, #ffd56e 0%, #ffd56e 24%, #f5a96c 36%, #dc5280 50%, #f19a6a 64%, #ffd06a 76%, #ffd06a 100%);   --rd-glow-godly: rgba(240, 120, 150, .55);
+  --rd-name-godly: linear-gradient(90deg, #f7b36f, #e06e83 35%, #f4c49b 65%, #e98a74, #f7b36f);
+  --rd-pill-godly: linear-gradient(90deg, #e2507f, #f19a62, #ffd56e);   --rd-pill-ink-godly: #140608;
+
   /* ---- Graded case (.slab, step 13 · card detail sheet + Grade page, css/grade.css) ---- */
   --slab-plastic: linear-gradient(155deg, rgba(255, 255, 255, .26), rgba(255, 255, 255, .07) 32%, rgba(255, 255, 255, .03) 60%, rgba(255, 255, 255, .14));
   --slab-edge: rgba(255, 255, 255, .5);

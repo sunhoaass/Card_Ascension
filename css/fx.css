@@ -82,7 +82,7 @@
 }
 
 .gc {
-  container-type: inline-size;
+  container: gc / inline-size;
   position: relative; display: block;
   aspect-ratio: var(--card-ratio);
   border-radius: var(--gc-corner);          /* the game's 22px corner on 600×840 (cqw can't be used on the container itself) */
@@ -288,6 +288,108 @@
 .gc--mini { --gc-shadow: var(--gc-shadow-mini); }
 .gc--mini .gc__sweep, .gc--mini .gc__mock { display: none; }
 .gc--mini.is-live .gc__ring > i, .gc--mini.is-live .gc__glow { animation: none; }
+
+/* ==========================================================
+   Redrawn card (owner 2026-11-02 · PROGRESS ▶️ "เขียนใหม่ทั้งใบ" · mockup/card-redraw.html + support-redraw.html)
+   data "redraw": true = the picture has NOTHING written on it (tools/erase_all.py) · the web writes it all as real text:
+   card name (rarity colour), HP + heart, 1 IN X + rarity pills, ability name, ability text (numbers gold), swords + ATK ·
+   a support: name, ability name, text + Mutation line, the green SUPPORT word. Markup + fitting: js/app.js renderRedraw /
+   fitRedraw (canvas widths, no layout) · saved images: js/share.js drawRedraw (keep the three in step).
+   .gc__face = the picture's inner face (inset 1.7cqw inside the rarity frame) and its own size container: every size
+   below is in cqw of the FACE, like the mockups. Letters: a black edge layer (::before, content = data-t) under the
+   coloured letters (gradient letters keep their full width) + a soft shadow, no dark band over the art.
+   ========================================================== */
+.gc--rd { --ring: 1.7cqw; }
+.gc--rd .gc__art { inset: 1.7cqw; border-radius: 3.2cqw; }
+.gc--rd .gc__ring { background: var(--rd-ring); }
+.gc--rd .gc__ring > i { display: none; }
+.gc--rd .gc__glow { opacity: 1; box-shadow: 0 0 5cqw var(--rd-glow); }
+.gc--rd:not([data-rarity="Normal"]) .gc__sweep { opacity: 1; }
+.gc--rd:not([data-rarity="Normal"]).is-live .gc__sweep::before { animation: gc-sweep 3.6s var(--ease) infinite; }
+.gc--rd[data-rarity="Normal"]   { --rd-ring: var(--rd-ring-normal);   --rd-glow: var(--rd-glow-normal);   --rd-name: var(--rd-name-normal); }
+.gc--rd[data-rarity="Shiny"]    { --rd-ring: var(--rd-ring-shiny);    --rd-glow: var(--rd-glow-shiny);    --rd-name: var(--rd-name-shiny);    --rd-rp: var(--rd-pill-shiny);    --rd-rp-ink: var(--rd-pill-ink-shiny); }
+.gc--rd[data-rarity="Rainbow"]  { --rd-ring: var(--rd-ring-rainbow);  --rd-glow: var(--rd-glow-rainbow);  --rd-name: var(--rd-name-rainbow);  --rd-rp: var(--rd-pill-rainbow);  --rd-rp-ink: var(--rd-pill-ink-rainbow); }
+.gc--rd[data-rarity="Secret"]   { --rd-ring: var(--rd-ring-secret);   --rd-glow: var(--rd-glow-secret);   --rd-name: var(--rd-name-secret);   --rd-rp: var(--rd-pill-secret);   --rd-rp-ink: var(--rd-pill-ink-secret); }
+.gc--rd[data-rarity="Divine"]   { --rd-ring: var(--rd-ring-divine);   --rd-glow: var(--rd-glow-divine);   --rd-name: var(--rd-name-divine);   --rd-rp: var(--rd-pill-divine);   --rd-rp-ink: var(--rd-pill-ink-divine); }
+.gc--rd[data-rarity="Cosmic"]   { --rd-ring: var(--rd-ring-cosmic);   --rd-glow: var(--rd-glow-cosmic);   --rd-name: var(--rd-name-cosmic);   --rd-rp: var(--rd-pill-cosmic);   --rd-rp-ink: var(--rd-pill-ink-cosmic); }
+.gc--rd[data-rarity="Ascended"] { --rd-ring: var(--rd-ring-ascended); --rd-glow: var(--rd-glow-ascended); --rd-name: var(--rd-name-ascended); --rd-rp: var(--rd-pill-ascended); --rd-rp-ink: var(--rd-pill-ink-ascended); }
+.gc--rd[data-rarity="Godlike"]  { --rd-ring: var(--rd-ring-godlike);  --rd-glow: var(--rd-glow-godlike);  --rd-name: var(--rd-name-godlike);  --rd-rp: var(--rd-pill-godlike);  --rd-rp-ink: var(--rd-pill-ink-godlike); }
+.gc--rd[data-rarity="Godly"]    { --rd-ring: var(--rd-ring-godly);    --rd-glow: var(--rd-glow-godly);    --rd-name: var(--rd-name-godly);    --rd-rp: var(--rd-pill-godly);    --rd-rp-ink: var(--rd-pill-ink-godly); }
+
+.gc__face { position: absolute; inset: 1.7cqw; z-index: 4; container-type: inline-size; pointer-events: none; }
+.rd-ot { position: relative; isolation: isolate; }
+.rd-ot::before, .rd-fill::after {
+  content: attr(data-t); position: absolute; inset: 0; padding: inherit; box-sizing: border-box;
+  white-space: inherit; text-align: inherit; pointer-events: none;
+}
+.rd-ot::before { z-index: -1; color: var(--rd-stroke); -webkit-text-stroke: 1.5cqw var(--rd-stroke); text-shadow: var(--rd-soft); }
+.rd-fill { color: transparent; }
+.rd-fill::after { background: var(--fill); background-size: 100% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+
+/* top row: name left · HP + heart right · each side at most half the card (js fits the sizes) */
+.rd__top {
+  position: absolute; top: 3cqw; left: 3.6cqw; right: 3.6cqw; height: 12.5cqw;
+  display: grid; grid-template-columns: minmax(0, 44.9cqw) minmax(0, 44.9cqw); justify-content: space-between; align-items: center;
+}
+.rd__name { min-width: 0; display: flex; align-items: center; height: 100%; }
+.rd__nm {
+  flex: none; display: inline-block; white-space: nowrap; font-family: var(--rd-font); font-weight: 400; font-size: 10cqw;
+  letter-spacing: .02em; line-height: 1; text-transform: uppercase; padding: .4cqw .6cqw .2cqw; --fill: var(--rd-name);
+}
+.rd__nm.is-two { white-space: normal; line-height: .98; max-width: 44.9cqw; }
+.rd__hp { min-width: 0; justify-self: end; display: flex; align-items: center; gap: 1.2cqw; }
+.rd__num { font-family: var(--rd-font); font-weight: 400; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; padding: .3cqw; }
+.rd__hp .rd__num { font-size: 10cqw; --fill: var(--rd-hp); }
+.rd__heart { width: 9.6cqw; height: 9.6cqw; flex: none; filter: drop-shadow(0 .5cqw .4cqw rgba(0, 0, 0, .6)); }
+
+.rd__pills { position: absolute; top: 17cqw; right: 3.6cqw; display: grid; gap: 1.6cqw; justify-items: end; }
+.rd__pill {
+  display: inline-flex; align-items: center; justify-content: center; height: 7.4cqw; padding: 0 2.6cqw; border-radius: 99cqw;
+  font-family: var(--rd-font); font-weight: 400; font-size: 5.6cqw; line-height: 1; letter-spacing: .03em; white-space: nowrap; text-transform: uppercase;
+  color: var(--rd-pill-ink); background: var(--rd-pill);
+  box-shadow: inset 0 0 0 .55cqw var(--rd-pill-inner), 0 0 0 .55cqw var(--rd-pill-line), 0 .6cqw 1cqw rgba(0, 0, 0, .45);
+}
+.rd__pill--rar { color: var(--rd-rp-ink); background: var(--rd-rp); box-shadow: inset 0 0 0 .45cqw rgba(255, 255, 255, .35), 0 0 0 .55cqw var(--rd-pill-line), 0 .6cqw 1cqw rgba(0, 0, 0, .45); }
+.gc--rd[data-rarity="Normal"] .rd__pill--rar { display: none; }
+
+/* ability name + text above the ATK row · the text block shrinks until it fits (44cqw tall) */
+.rd__ab { position: absolute; left: 4.2cqw; right: 4.2cqw; bottom: 17.5cqw; display: grid; gap: 1.2cqw; }
+.rd__abn {
+  font-family: var(--rd-font); font-weight: 400; font-size: 7.2cqw; letter-spacing: .02em; line-height: 1; white-space: nowrap;
+  text-transform: uppercase; justify-self: start; padding: .3cqw .5cqw; --fill: var(--rd-ab);
+}
+.rd__abd { margin: 0; font-family: var(--rd-font-text); font-weight: 500; font-size: 5cqw; color: var(--rd-ink); text-align: center; line-height: 1.16; text-wrap: balance; }
+.rd__abd b { font-weight: inherit; color: var(--rd-num); }
+.rd__bot {
+  position: absolute; left: 3.6cqw; right: 3.6cqw; bottom: 3cqw; height: 12.5cqw;
+  display: grid; grid-template-columns: 12.5cqw 1fr 12.5cqw; align-items: center;
+}
+.rd__swords { width: 12cqw; height: 12cqw; filter: drop-shadow(0 .5cqw .4cqw rgba(0, 0, 0, .6)); }
+.rd__bot .rd__num { justify-self: center; font-size: 12.5cqw; --fill: var(--rd-atk); }
+
+/* support (game layout measured on Hat and Clogs Shopkeeper, Deck view 600×840): the tops are set by js so the capital
+   letters of each block land on the game's line (fitRedraw · capOff) */
+.gc--sup.gc--rd .rd__top { top: 0; height: auto; display: block; }
+.gc--sup.gc--rd .rd__name { height: auto; display: block; }
+.gc--sup.gc--rd .rd__nm { padding-top: 0; padding-bottom: 0; font-size: 4.27cqw; }
+.gc--sup.gc--rd .rd__nm.is-two { line-height: 1.02; }
+.gc--sup.gc--rd .rd__ab { inset: 0; display: block; }
+.gc--sup.gc--rd .rd__abn { position: absolute; left: 3.6cqw; font-size: 7.5cqw; padding-top: 0; padding-bottom: 0; }
+.rd__txt { position: absolute; left: 3.85cqw; right: 3.85cqw; text-align: center; }
+.rd__txt .rd__abd, .rd__mut { line-height: 1.385; text-wrap: wrap; }
+.rd__mut { margin: 0; font-family: var(--rd-font-text); font-weight: 500; color: var(--rd-ink); text-align: center; }
+.rd__mut b { font-weight: inherit; color: var(--rd-num); }
+.rd__sup { position: absolute; left: 0; right: 0; text-align: center; }
+.rd__sup .rd-ot { display: inline-block; font-family: var(--rd-font-text); font-weight: 700; font-size: 10.3cqw; line-height: 1; padding: 0 .6cqw; --fill: var(--rd-sup); }
+
+/* name colour runs (Shiny and up) · only on the card in the detail scene: it repaints the name every frame (not a transform),
+   60 redrawn Ascended cards in the Cards grid fell from 46 to 23 fps with it (CPU ×6) · a card under 170px hides the text */
+@keyframes rd-run { from { background-position: 0% 0; } to { background-position: 200% 0; } }
+#detail .gc--rd.is-live:not(.gc--mini):not([data-rarity="Normal"]) .rd__nm::after { background-size: 200% 100%; animation: rd-run 4s linear infinite; }
+@container gc (width < 170px) {
+  .rd__abd, .rd__mut { display: none; }
+  .gc--rd:not(.gc--sup) .rd__ab { bottom: 16cqw; }
+}
 
 /* ---------- Toast (FX.toast) ---------- */
 .fx-toast {

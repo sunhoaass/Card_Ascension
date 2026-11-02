@@ -663,7 +663,7 @@
       const keep = ["atk", "hp"].map((k) => { const n = $(`[data-k="${k}"]`, hero); return [n.dataset.value, n.textContent]; });
       C.setCardRarity(hero, cardOf(sel), e.detail, { animate: false });
       heroLabel();
-      ["atk", "hp"].forEach((k, j) => { const n = $(`[data-k="${k}"]`, hero); n.dataset.value = keep[j][0]; n.textContent = keep[j][1]; });
+      ["atk", "hp"].forEach((k, j) => { const n = $(`[data-k="${k}"]`, hero); n.dataset.value = keep[j][0]; n.textContent = keep[j][1]; C.syncT(n); });
       if (hero.classList.contains("is-live")) C.flashCard(hero);
       paint({ animate: true });
     });
