@@ -30,8 +30,10 @@
   --f-text: "Oswald", "Arial Narrow", sans-serif;   --w-text: 500;
   --f-pill: "Bangers", "Arial Narrow", sans-serif;  --w-pill: 400; --s-pill: normal;
   --ol: .75;            /* outline outside the letter, in cqw */
-  --scrim-top: .5;
-  --scrim-bot: .72;
+  --scrim-top: 0;
+  --scrim-bot: 0;
+  --pad: 3.6;           /* gap between the text and the card edge, in cqw */
+  --soft: 0 0 1.6cqw rgba(0,0,0,.85), 0 0 3.2cqw rgba(0,0,0,.45);   /* soft shadow right around the letters (keeps the art) */
   --num-hl: #f4f1f6;     /* numbers in the ability text */
   --card-ink: #f4f1f6;
   --stroke: #07050a;
@@ -107,31 +109,31 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 /* outlined text: the ::before layer holds the black outline behind the coloured letters, so gradient letters keep their full width */
 .ot { position: relative; isolation: isolate; }
 .ot::before, .ot.fill::after { content: attr(data-t); position: absolute; inset: 0; padding: inherit; box-sizing: border-box; white-space: inherit; text-align: inherit; pointer-events: none; }
-.ot::before { z-index: -1; color: var(--stroke); -webkit-text-stroke: calc(var(--ol) * 2cqw) var(--stroke); }
+.ot::before { z-index: -1; color: var(--stroke); -webkit-text-stroke: calc(var(--ol) * 2cqw) var(--stroke); text-shadow: var(--soft); }
 .ot.fill { color: transparent; }
 .ot.fill::after { background: var(--fill); background-size: 100% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 
-.top { position: absolute; top: 3cqw; left: 3.4cqw; right: 3.4cqw; height: 12.5cqw; display: flex; align-items: center; justify-content: space-between; gap: 3cqw; }
-.name { min-width: 0; flex: 1 1 auto; display: flex; align-items: center; height: 100%; }
+.top { position: absolute; top: 3cqw; left: calc(var(--pad) * 1cqw); right: calc(var(--pad) * 1cqw); height: 12.5cqw; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3cqw; align-items: center; }
+.name { min-width: 0; display: flex; align-items: center; justify-content: flex-start; height: 100%; }
 .name .ot { display: inline-block; white-space: nowrap; font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); line-height: 1; text-transform: uppercase; padding: .4cqw .6cqw .2cqw; --fill: var(--name-fill); }
 .name .ot.wrap { white-space: normal; line-height: .98; }
-.hp { flex: 0 0 auto; display: flex; align-items: center; gap: 1.2cqw; }
+.hp { min-width: 0; justify-self: end; display: flex; align-items: center; gap: 1.2cqw; }
 .hp .ot { font-family: var(--f-num); font-weight: var(--w-num); line-height: 1; white-space: nowrap; --fill: var(--hp-fill); font-variant-numeric: tabular-nums; padding: .3cqw .3cqw; }
 .hp svg { width: 9.6cqw; height: 9.6cqw; flex: none; filter: drop-shadow(0 .5cqw .4cqw rgba(0,0,0,.6)); }
 
-.pills { position: absolute; top: 17cqw; right: 3.4cqw; display: grid; gap: 1.6cqw; justify-items: end; }
+.pills { position: absolute; top: 17cqw; right: calc(var(--pad) * 1cqw); display: grid; gap: 1.6cqw; justify-items: end; }
 .pill { display: inline-flex; align-items: center; justify-content: center; height: 7.4cqw; padding: 0 2.6cqw; border-radius: 99cqw; font-family: var(--f-pill); font-weight: var(--w-pill); font-style: var(--s-pill); font-size: 5.6cqw; line-height: 1; letter-spacing: .03em; white-space: nowrap; color: #111; background: #fff; box-shadow: inset 0 0 0 .55cqw #c9c9cf, 0 0 0 .55cqw #0b0b0d, 0 .6cqw 1cqw rgba(0,0,0,.45); }
 .pill.rar { background: var(--pill-bg); color: var(--pill-ink); box-shadow: inset 0 0 0 .45cqw rgba(255,255,255,.35), 0 0 0 .55cqw #0b0b0d, 0 .6cqw 1cqw rgba(0,0,0,.45); }
 .r-normal .pill.rar { display: none; }
 
-.ab { position: absolute; left: 4cqw; right: 4cqw; bottom: 17.5cqw; display: grid; gap: 1.2cqw; }
+.ab { position: absolute; left: calc(var(--pad) * 1cqw + .6cqw); right: calc(var(--pad) * 1cqw + .6cqw); bottom: 17.5cqw; display: grid; gap: 1.2cqw; }
 .ab .abn { font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); text-transform: uppercase; font-size: 7.2cqw; line-height: 1; justify-self: start; --fill: var(--ab-fill); padding: .3cqw .5cqw; }
 .ab .abd { margin: 0; font-family: var(--f-text); font-weight: var(--w-text); color: var(--card-ink); text-align: center; line-height: 1.16; text-wrap: balance; }
 .ab .abd b { font-weight: inherit; color: var(--num-hl); }
 .card.tiny .abd { display: none; }
 .card.tiny .ab { bottom: 16cqw; }
 
-.bot { position: absolute; left: 3.4cqw; right: 3.4cqw; bottom: 3cqw; height: 12.5cqw; display: grid; grid-template-columns: 12.5cqw 1fr 12.5cqw; align-items: center; }
+.bot { position: absolute; left: calc(var(--pad) * 1cqw); right: calc(var(--pad) * 1cqw); bottom: 3cqw; height: 12.5cqw; display: grid; grid-template-columns: 12.5cqw 1fr 12.5cqw; align-items: center; }
 .bot svg { width: 12cqw; height: 12cqw; filter: drop-shadow(0 .5cqw .4cqw rgba(0,0,0,.6)); }
 .bot .atk { justify-self: center; font-family: var(--f-num); font-weight: var(--w-num); line-height: 1; white-space: nowrap; --fill: var(--atk-fill); font-variant-numeric: tabular-nums; padding: .3cqw; }
 .bot .own { justify-self: end; font-family: var(--f-num); font-weight: var(--w-num); font-size: 5.6cqw; line-height: 1; color: var(--card-ink); white-space: nowrap; }
@@ -171,10 +173,10 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
               --pill-bg: linear-gradient(90deg, #e2507f, #f19a62, #ffd56e); --pill-ink: #140608; }
 
 /* name on its own band (option) */
-.card.lay-band .top, .card.tiny .top { display: block; }
-.card.lay-band .name, .card.tiny .name { height: 12.5cqw; }
-.card.lay-band .hp, .card.tiny .hp { position: absolute; right: 0; top: 13.2cqw; }
-.card.lay-band .pills, .card.tiny .pills { top: 28cqw; }
+/* compare views */
+.card.v-bg .top, .card.v-bg .pills, .card.v-bg .ab, .card.v-bg .bot, .card.v-bg .scrim,
+.card.v-orig .top, .card.v-orig .pills, .card.v-orig .ab, .card.v-orig .bot, .card.v-orig .scrim { visibility: hidden; }
+.view { justify-content: center; }
 
 @media (prefers-reduced-motion: reduce) {
   .card.run::after, .card.name-run .name .ot.fill::after { animation: none; }
@@ -186,6 +188,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 <div class="wrap">
   <header>
     <h1>Card Redraw Lab · Long Hair Invader</h1>
+    <p>รอบ 2 · ชื่อกับ HP คนละครึ่งการ์ด ชิดซ้าย/ขวามีช่องไฟ ย่อเองทุกครั้งที่ตัวเลขเปลี่ยน · พื้นหลังลบแบบใหม่ (เนียนกว่าเดิม) และไม่มีแถบมืดทับภาพแล้ว · กดปุ่มใต้การ์ดเพื่อเทียบกับรูปต้นฉบับเกม</p>
     <p>ตัวอย่างกฎตัดภาพใหม่: ลบตัวอักษร/ตัวเลข/ไอคอนออกจากรูปทั้งหมด แล้วเว็บเขียนใหม่เองทุกตัว (ชัดทุกขนาดจอ เพราะเป็นตัวอักษรจริง ไม่ใช่ภาพ) · กดระดับเพื่อเปลี่ยนสีชื่อ/กรอบ · กดตัวเลือกด้านขวาแล้วกด "คัดลอกตัวเลือก" ส่งกลับมาในแชท</p>
   </header>
 
@@ -193,6 +196,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     <div class="stage">
       <div class="card" id="main"></div>
       <div class="rar-row" id="rarRow" role="group" aria-label="ระดับการ์ด"></div>
+      <div class="seg view" id="view" role="group" aria-label="มุมมองเทียบ"></div>
     </div>
 
     <div class="panel" id="panel">
@@ -261,7 +265,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
 <script>
 (() => {
-  const ART = 'card-redraw/long-hair-invader.webp';
+  const ARTS = { best: 'card-redraw/long-hair-invader.webp', fast: 'card-redraw/long-hair-invader-fast.webp', orig: 'card-redraw/long-hair-invader-original.webp' };
   const BASE_NAME = 'Long Hair Invader';
   const AB_NAME = 'Saiyan Pride';
   const DESC = {
@@ -291,13 +295,16 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
   /* options = the owner's choices (item 8). first = recommended */
   const OPTS = [
     { id: 'font', t: 'ฟอนต์', d: 'ข้อ 4 · ทุกชุดเป็น Google Font ฟรี ไม่ใช่ไฟล์จากเกม', ch: Object.entries(FONTS).map(([k, f]) => [k, f.label, f.rec]), def: 'a' },
-    { id: 'lay', t: 'ตำแหน่งชื่อการ์ด', d: 'ข้อ 5 · ทุกแบบอยู่ในขอบการ์ด ไม่ทับกรอบเหมือนต้นฉบับ', ch: [['row', 'ชื่อ + HP แถวเดียว (แบบเกม)', 'แนะนำ'], ['band', 'ชื่อเต็มแถวบน · HP ลงมาใต้ชื่อ', 'ชื่อยาวใหญ่ขึ้น']], def: 'row' },
+    { id: 'split', t: 'ชื่อกับ HP แบ่งพื้นที่', d: 'ข้อ 1 · ชื่อชิดซ้าย HP ชิดขวา ฝั่งละไม่เกินครึ่งการ์ด ยาวเกินก็ย่อลง', ch: [['half', 'ครึ่ง-ครึ่งตายตัว', 'ตามที่สั่ง'], ['share', 'ครึ่ง-ครึ่ง แต่ยืมที่ว่างได้ถ้าอีกฝั่งสั้น']], def: 'half' },
+    { id: 'wrap', t: 'ชื่อยาวเกินครึ่ง', d: 'เมื่อย่อถึงขนาดเล็กสุดแล้วยังไม่พอ', ch: [['two', 'ขึ้น 2 บรรทัด', 'แนะนำ'], ['one', 'ย่อต่อจนพอดี 1 บรรทัด']], def: 'two' },
+    { id: 'pad', t: 'ช่องไฟจากขอบการ์ด', d: 'ระยะระหว่างตัวอักษรกับขอบการ์ด ทุกด้าน', ch: [['2.6', 'แคบ'], ['3.6', 'กลาง', 'แนะนำ'], ['4.8', 'กว้าง']], def: '3.6' },
+    { id: 'erase', t: 'วิธีลบตัวอักษรออกจากพื้นหลัง', d: 'ข้อ 2 · แบบใหม่เติมลายหิน/ผมจากรอบๆ ให้เหมือนเดิมมากขึ้น · ใช้ปุ่มใต้การ์ดเทียบกับต้นฉบับได้', ch: [['best', 'แบบใหม่ (เนียนกว่า)', 'แนะนำ'], ['fast', 'แบบรอบแรก']], def: 'best' },
+    { id: 'read', t: 'ช่วยให้อ่านง่ายบนภาพ', d: 'ข้อ 2 · ไม่ทับพื้นหลังทั้งแถบ ภาพเดิมยังอยู่', ch: [['soft', 'ขอบดำ + เงานุ่มรอบตัวอักษร', 'แนะนำ'], ['ol', 'ขอบดำอย่างเดียว'], ['scrim', 'แถบมืดไล่ (แบบรอบแรก)']], def: 'soft' },
     { id: 'ol', t: 'ความหนาขอบตัวอักษร', d: 'ขอบดำช่วยให้อ่านได้บนทุกภาพ', ch: [['.55', 'บาง'], ['.75', 'กลาง', 'แนะนำ'], ['1', 'หนา']], def: '.75' },
-    { id: 'scrim', t: 'เงามืดใต้ตัวอักษร', d: 'ไล่มืดบนสุด/ล่างสุดของภาพ ให้ตัวอักษรอ่านง่ายแม้ภาพสว่าง', ch: [['0', 'ไม่มี'], ['1', 'อ่อน', 'แนะนำ'], ['2', 'เข้ม']], def: '1' },
     { id: 'nums', t: 'ตัวเลขในคำอธิบาย', d: 'เช่น 50% · +30%', ch: [['white', 'ขาวแบบเกม', 'แนะนำ'], ['gold', 'ทอง เห็นค่าเด่น']], def: 'white' },
     { id: 'shine', t: 'แสงวิ่ง', d: 'แสงวิ่งบนกรอบ + สีชื่อวิ่ง (ระดับ Shiny ขึ้นไป) · ปิดเองถ้าเครื่องตั้งลดการเคลื่อนไหว', ch: [['on', 'เปิด', 'แนะนำ'], ['off', 'ปิด']], def: 'on' },
     { id: 'glow', t: 'เรืองแสงรอบการ์ด', d: 'สีตามระดับ', ch: [['on', 'เปิด', 'แนะนำ'], ['off', 'ปิด']], def: 'on' },
-    { id: 'tiny', t: 'การ์ดเล็ก (กว้างไม่ถึง 170px)', d: 'ตัวหนังสือคำอธิบายเล็กเกินอ่าน · ซ่อนคำอธิบาย + ให้ชื่อเต็มแถวบน (HP ลงมาใต้ชื่อ) ชื่อจะใหญ่ขึ้น', ch: [['hide', 'ซ่อนคำอธิบาย + ชื่อเต็มแถว', 'แนะนำ'], ['show', 'แสดงทุกขนาด']], def: 'hide' },
+    { id: 'tiny', t: 'การ์ดเล็ก (กว้างไม่ถึง 170px)', d: 'ตัวหนังสือคำอธิบายเล็กเกินอ่าน · ซ่อนแล้วเหลือชื่อสกิล ชื่อ HP ATK ชัดกว่า', ch: [['hide', 'ซ่อนคำอธิบาย', 'แนะนำ'], ['show', 'แสดงทุกขนาด']], def: 'hide' },
     { id: 'own', t: 'ตัวนับ ×N (จำนวนที่มี)', d: 'ในเกมเป็นของแต่ละคน · เว็บไม่รู้ว่าผู้ใช้มีกี่ใบ', ch: [['off', 'ไม่แสดง', 'แนะนำ'], ['on', 'แสดง']], def: 'off' }
   ];
   const TESTS = {
@@ -306,10 +313,10 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     desc: [['game', 'ข้อความเกม'], ['mid', 'ยาวขึ้น'], ['long', 'ยาวที่สุดในเว็บ']]
   };
 
-  const state = { rar: 'godly', name: BASE_NAME, hp: 'real', desc: 'game' };
+  const state = { rar: 'godly', name: BASE_NAME, hp: 'real', desc: 'game', view: 'new' };
   OPTS.forEach(o => state[o.id] = o.def);
-  try { const s = JSON.parse(localStorage.getItem('cbi-redraw') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
-  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-redraw', JSON.stringify(s)); } catch (e) {} };
+  try { const s = JSON.parse(localStorage.getItem('cbi-redraw2') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
+  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-redraw2', JSON.stringify(s)); } catch (e) {} };
 
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -326,7 +333,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
   function cardHTML() {
     return `<div class="face">
-      <img class="art" src="${ART}" alt="" decoding="async">
+      <img class="art" src="${ARTS.best}" alt="" decoding="async">
       <div class="scrim t"></div><div class="scrim b"></div>
       <div class="top">
         <div class="name"><span class="ot fill"></span></div>
@@ -341,7 +348,11 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
   function fill(card, r) {
     card.className = 'card r-' + r.k;
-    card.classList.toggle('lay-band', state.lay === 'band');
+    const isMain = card.id === 'main';
+    card.classList.toggle('v-bg', isMain && state.view === 'bg');
+    card.classList.toggle('v-orig', isMain && state.view === 'orig');
+    const src = isMain && state.view === 'orig' ? ARTS.orig : ARTS[state.erase];
+    const img = card.querySelector('.art'); if (!img.src.endsWith(src)) img.src = src;
     card.classList.toggle('glow', state.glow === 'on');
     const live = state.shine === 'on' && r.k !== 'normal';
     card.classList.toggle('run', live && !card.classList.contains('mini'));
@@ -368,26 +379,44 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     const cq = el => el.getBoundingClientRect().width / W * 100;
     const ch = el => el.getBoundingClientRect().height / W * 100;
     card.classList.toggle('tiny', state.tiny === 'hide' && card.getBoundingClientRect().width < 170);
-    const band = card.classList.contains('lay-band') || card.classList.contains('tiny');
+    const pad = +state.pad, GAP = 3;
+    const half = (100 - 2 * pad - GAP) / 2;         // each side may use at most half the card
 
-    // HP: 10cqw, shrink if wider than its room
-    const hp = card.querySelector('.hp .ot'); const hpBox = card.querySelector('.hp');
-    hp.style.fontSize = '10cqw';
-    const hpRoom = band ? 70 : 50;
-    const hw = cq(hpBox); if (hw > hpRoom) hp.style.fontSize = (10 * (hpRoom - 11) / (hw - 11)).toFixed(2) + 'cqw';
+    // natural widths at the biggest size
+    const hp = card.querySelector('.hp .ot'), hpBox = card.querySelector('.hp'), heart = card.querySelector('.hp svg');
+    const nm = card.querySelector('.name .ot');
+    const HP_MAX = 10, N_MAX = 10, N_MIN = 5;
+    hp.style.fontSize = HP_MAX + 'cqw'; nm.classList.remove('wrap'); nm.style.maxWidth = ''; nm.style.fontSize = N_MAX + 'cqw';
+    const top = card.querySelector('.top'); top.style.gridTemplateColumns = 'max-content max-content';
+    const heartW = cq(heart) + 1.2;
+    const hpNat = cq(hpBox), nmNat = cq(nm);
 
-    // name: short = big, long = smaller, very long = 2 lines
-    const nm = card.querySelector('.name .ot'); nm.classList.remove('wrap'); nm.style.maxWidth = '';
-    const room = band ? 93.2 : 93.2 - cq(hpBox) - 3;
-    const MAX = band ? 11.5 : 9.6, MIN = band ? 5.2 : 5;
-    nm.style.fontSize = MAX + 'cqw';
-    let w = cq(nm), fs = MAX;
-    if (w > room) fs = Math.max(MIN, MAX * room / w);
+    // room for each side: half each · "share" lets one side borrow what the other leaves empty
+    let hpRoom = half, nmRoom = half;
+    if (state.split === 'share') {
+      const all = 100 - 2 * pad - GAP;
+      if (hpNat < half) nmRoom = all - hpNat;
+      else if (nmNat < half) hpRoom = all - nmNat;
+    }
+    top.style.gridTemplateColumns = `minmax(0, ${nmRoom.toFixed(2)}cqw) minmax(0, ${hpRoom.toFixed(2)}cqw)`;
+    top.style.justifyContent = 'space-between';
+
+    // HP: shrink until it fits its side
+    if (hpNat > hpRoom) hp.style.fontSize = Math.max(3, HP_MAX * (hpRoom - heartW) / (hpNat - heartW)).toFixed(2) + 'cqw';
+    for (let i = 0; i < 6 && cq(hpBox) > hpRoom; i++) hp.style.fontSize = (parseFloat(hp.style.fontSize) * .97).toFixed(2) + 'cqw';
+
+    // name: short = big, long = smaller, then 2 lines (or keep shrinking)
+    let fs = N_MAX;
+    if (nmNat > nmRoom) fs = Math.max(N_MIN, N_MAX * nmRoom / nmNat);
     nm.style.fontSize = fs.toFixed(2) + 'cqw';
-    if (cq(nm) > room + .2) {           // still too long at the smallest size: 2 lines
-      nm.classList.add('wrap'); nm.style.maxWidth = room + 'cqw';
-      let s = 6.2; nm.style.fontSize = s + 'cqw';
-      while (s > 3.4 && (ch(nm) > 12.3 || nm.scrollWidth > nm.clientWidth + 1)) { s -= .2; nm.style.fontSize = s.toFixed(2) + 'cqw'; }
+    if (cq(nm) > nmRoom + .2) {
+      if (state.wrap === 'two') {
+        nm.classList.add('wrap'); nm.style.maxWidth = nmRoom + 'cqw';
+        let s = 6.4; nm.style.fontSize = s + 'cqw';
+        while (s > 2.6 && (ch(nm) > 12.3 || nm.scrollWidth > nm.clientWidth + 1)) { s -= .2; nm.style.fontSize = s.toFixed(2) + 'cqw'; }
+      } else {
+        nm.style.fontSize = Math.max(2.4, fs * nmRoom / cq(nm)).toFixed(2) + 'cqw';
+      }
     }
 
     // ATK
@@ -409,8 +438,9 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
   /* count-up on the main card when the rarity changes (650ms · reduced motion = instant) */
   function countTo(el, from, to, fmt) {
     if (reduced() || from === to) return;
+    const end = () => fit(el.closest('.card'));
     const t0 = performance.now(), D = 650;
-    const step = t => { const p = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - p, 3); const v = fmt(from + (to - from) * e); el.textContent = v; el.dataset.t = v; if (p < 1) requestAnimationFrame(step); };
+    const step = t => { const p = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - p, 3); const v = fmt(from + (to - from) * e); el.textContent = v; el.dataset.t = v; if (p < 1) requestAnimationFrame(step); else end(); };
     requestAnimationFrame(step);
   }
 
@@ -456,6 +486,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     opts.appendChild(box);
   });
 
+  seg(document.getElementById('view'), [['new', 'แบบใหม่'], ['bg', 'พื้นหลังที่ลบแล้ว'], ['orig', 'ต้นฉบับเกม']], state.view, v => { state.view = v; fill(main, rarOf(state.rar)); });
   const nameIn = document.getElementById('nameIn');
   seg(document.querySelector('[data-test="name"]'), TESTS.name, state.name, v => { state.name = v; nameIn.value = v; renderAll(); });
   seg(document.querySelector('[data-test="hp"]'), TESTS.hp, state.hp, v => { state.hp = v; renderAll(); });
@@ -466,8 +497,10 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     const root = document.documentElement.style;
     Object.entries(FONTS[state.font].vars).forEach(([k, v]) => root.setProperty(k, v));
     root.setProperty('--ol', state.ol);
-    const sc = { 0: [0, 0], 1: [.5, .72], 2: [.72, .9] }[state.scrim];
+    const sc = state.read === 'scrim' ? [.5, .72] : [0, 0];
     root.setProperty('--scrim-top', sc[0]); root.setProperty('--scrim-bot', sc[1]);
+    root.setProperty('--soft', state.read === 'soft' ? '0 0 1.6cqw rgba(0,0,0,.85), 0 0 3.2cqw rgba(0,0,0,.45)' : 'none');
+    root.setProperty('--pad', state.pad);
     root.setProperty('--num-hl', state.nums === 'gold' ? '#ffcf5a' : '#f4f1f6');
   }
 
@@ -489,6 +522,8 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     const b = e.target.closest('button'); if (!b || b.dataset.k === state.rar) return;
     const old = rarOf(state.rar), nu = rarOf(b.dataset.k);
     state.rar = nu.k; renderAll();
+    const a = fmtHp(hpOf(old)), z = fmtHp(hpOf(nu)), hpEl = main.querySelector('.hp .ot');
+    if (!reduced() && a.length > z.length) { setT(hpEl, a); fit(main); setT(hpEl, z); }   // size for the longer number so it never overflows while counting
     countTo(main.querySelector('.hp .ot'), hpOf(old), hpOf(nu), fmtHp);
     countTo(main.querySelector('.atk'), old.atk, nu.atk, full);
     if (!reduced()) { main.classList.remove('flash'); void main.offsetWidth; main.classList.add('flash'); setTimeout(() => main.classList.remove('flash'), 520); }
