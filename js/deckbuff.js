@@ -5,6 +5,9 @@
    base = C.statAt(card, key, deck rarity) · every buff MULTIPLIES (checked 2026-11-02 on the owner's battle screenshot:
    King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying) · the trait multiplier
    (data/traits.json dmg / hp) is on top (owner 2026-11-02: the numbers include the trait).
+   Grade (game 2026-11-02): all 4 grades 10 = +30% ATK and HP (× 1.3 · gradeOf(cardId) -> [atk, def, status, hp] | null).
+   The +2.5% a grade in js/grade.js is NOT in these numbers: with it the owner's Witch of Envy (Ascendant ×2 · all 10) would be
+   ×3.25 over base, the game shows ×2.60 = ×2 × 1.3.
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
    (same column) gets +X% damage and max HP when the support is mutated (deck rarity above Normal).
 
@@ -118,7 +121,9 @@
   const round = (n) => Math.round(n * 100) / 100;
 
   /* ---------- the deck ---------- */
-  function compute(deck, { traitOf } = {}) {
+  const GRADE_MAX = 10, GRADE_BONUS = 1.3;
+  const fullGrade = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => Number(n) >= GRADE_MAX);
+  function compute(deck, { traitOf, gradeOf } = {}) {
     const st = C.state, rarity = deck && st.meta && st.meta.rarities.some((r) => r.name === deck.rarity) ? deck.rarity : "Normal";
     const cardBy = new Map((st.cards || []).map((c) => [c.id, c])), supBy = new Map((Array.isArray(st.support) ? st.support : []).map((s) => [s.id, s]));
     const slot = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(Array.isArray(a) && typeof a[i] === "string" && a[i] ? a[i] : null); return o; };
@@ -185,10 +190,12 @@
       });
       from.forEach((f) => { f.n = f.copies.size; delete f.copies; });
       if (trait && (tD !== 1 || tH !== 1)) from.push({ key: "t:" + trait.id, name: trait.name, kind: "trait", atk: tD, hp: tH, n: 1, tier: trait.tier });
+      const gM = gradeOf && fullGrade(gradeOf(c.id, k)) ? GRADE_BONUS : 1;
+      if (gM !== 1) from.push({ key: "g", name: "Grade 10 (all 4)", kind: "grade", atk: gM, hp: gM, n: 1 });
       return {
         id: c.id, base, atkPct, hpPct, trait,
-        atk: Math.round(base.atk * mA * tD),
-        hp: Math.round(base.hp * mH * tH),
+        atk: Math.round(base.atk * mA * tD * gM),
+        hp: Math.round(base.hp * mH * tH * gM),
         from,
       };
     });
