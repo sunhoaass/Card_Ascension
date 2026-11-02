@@ -1,9 +1,15 @@
 /* ==========================================================
    Card Battle Infinity — Deck buffs (owner 2026-11-02 · PROGRESS §3.3 `deckbuff.js`)
    The ATK / HP a card shows in a deck once the deck's buffs are in:
-     ATK = base × (1 + Σ%damage ÷ 100) × trait damage · HP = base × (1 + Σ%HP ÷ 100) × trait HP
-   base = C.statAt(card, key, deck rarity) · every buff adds (no multiplying) · the trait multiplier (data/traits.json dmg / hp)
-   is on top (owner 2026-11-02: the numbers include the trait).
+     ATK = base × Π(1 + %damage ÷ 100) × trait damage · HP = base × Π(1 + %HP ÷ 100) × trait HP
+   base = C.statAt(card, key, deck rarity) · every buff MULTIPLIES (checked 2026-11-02 on the owner's battle screenshot:
+   King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying) · the trait multiplier
+   (data/traits.json dmg / hp) is on top (owner 2026-11-02: the numbers include the trait).
+   Grade (game 2026-11-02): all 4 grades 10 = +30% ATK and HP (× 1.3 · gradeOf(cardId) -> [atk, def, status, hp] | null).
+   The +2.5% a grade in js/grade.js is NOT in these numbers: with it the owner's Witch of Envy (Ascendant ×2 · all 10) would be
+   ×3.25 over base, the game shows ×2.60 = ×2 × 1.3.
+   Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
+   (same column) gets +X% damage and max HP when the support is mutated (deck rarity above Normal).
 
    Where buffs come from (only the ones with no condition: a buff that starts on a hit / a turn / under X% HP doesn't change
    the starting numbers):
@@ -63,6 +69,9 @@
     return out;
   }
   // a support whose effect reaches the whole deck (a second copy adds nothing · js/teamscore.js)
+  // "Mutation bonus: +40% damage and max HP." -> 40 (0 = none)
+  const MUT_RE = /Mutation bonus: \+([\d.]+)% damage and max HP/i;
+  const mutOf = (s) => { const m = MUT_RE.exec(descOf(s)); return m ? +m[1] : 0; };
   const deckWide = (s) => /\bevery (?:other )?card in your deck\b|\bwhole deck\b/i.test(descOf(s));
 
   /* ---------- reading card abilities ---------- */
@@ -112,7 +121,9 @@
   const round = (n) => Math.round(n * 100) / 100;
 
   /* ---------- the deck ---------- */
-  function compute(deck, { traitOf } = {}) {
+  const GRADE_MAX = 10, GRADE_BONUS = 1.3;
+  const fullGrade = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => Number(n) >= GRADE_MAX);
+  function compute(deck, { traitOf, gradeOf } = {}) {
     const st = C.state, rarity = deck && st.meta && st.meta.rarities.some((r) => r.name === deck.rarity) ? deck.rarity : "Normal";
     const cardBy = new Map((st.cards || []).map((c) => [c.id, c])), supBy = new Map((Array.isArray(st.support) ? st.support : []).map((s) => [s.id, s]));
     const slot = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(Array.isArray(a) && typeof a[i] === "string" && a[i] ? a[i] : null); return o; };
@@ -136,6 +147,9 @@
           add(k, { key: "s:" + s.id, copy: s.id, name: s.name, kind: "support", atk: r.stat === "dmg" ? v : 0, hp: r.stat === "hp" ? v : 0 });
         }
       });
+      // mutation bonus: the supported card only, when the support is mutated
+      const mb = rarity !== "Normal" ? mutOf(s) : 0;
+      if (mb > 0) add(j, { key: "m:" + s.id, copy: s.id, name: s.name + " · Mutation", kind: "support", atk: mb, hp: mb });
     });
     // ② card abilities · every copy counts, never on itself
     at.forEach((c, j) => {
@@ -160,23 +174,28 @@
     return at.map((c, k) => {
       if (!c || !c.base) return null;
       const base = { atk: C.statAt(c, "atk", rarity), hp: C.statAt(c, "hp", rarity) };
-      const atkPct = round(got[k].reduce((a, x) => a + x.atk, 0)), hpPct = round(got[k].reduce((a, x) => a + x.hp, 0));
+      // every buff multiplies: total % = (Π(1 + p/100) − 1) × 100
+      const mul = (key) => got[k].reduce((a, x) => a * (1 + x[key] / 100), 1);
+      const mA = mul("atk"), mH = mul("hp");
+      const atkPct = round((mA - 1) * 100), hpPct = round((mH - 1) * 100);
       const tid = traitOf ? traitOf(c.id, k) : null;
       const trait = tid && C.traits && C.traits.byId ? C.traits.byId(tid) : null;
       const tD = trait && trait.dmg > 0 ? trait.dmg : 1, tH = trait && trait.hp > 0 ? trait.hp : 1;
-      // one line per source: its ATK and HP together, every copy added (King of Conquerors ×3 = +45%, n = 3)
+      // one line per source: its ATK and HP together, every copy multiplied (King of Conquerors ×3 = 1.15³ = +52.09%, n = 3)
       const from = [];
       got[k].forEach((x) => {
         let f = from.find((y) => y.key === x.key);
         if (!f) from.push(f = { key: x.key, name: x.name, kind: x.kind, atk: 0, hp: 0, copies: new Set() });
-        f.atk = round(f.atk + x.atk); f.hp = round(f.hp + x.hp); f.copies.add(x.copy);
+        f.atk = round(((1 + f.atk / 100) * (1 + x.atk / 100) - 1) * 100); f.hp = round(((1 + f.hp / 100) * (1 + x.hp / 100) - 1) * 100); f.copies.add(x.copy);
       });
       from.forEach((f) => { f.n = f.copies.size; delete f.copies; });
       if (trait && (tD !== 1 || tH !== 1)) from.push({ key: "t:" + trait.id, name: trait.name, kind: "trait", atk: tD, hp: tH, n: 1, tier: trait.tier });
+      const gM = gradeOf && fullGrade(gradeOf(c.id, k)) ? GRADE_BONUS : 1;
+      if (gM !== 1) from.push({ key: "g", name: "Grade 10 (all 4)", kind: "grade", atk: gM, hp: gM, n: 1 });
       return {
         id: c.id, base, atkPct, hpPct, trait,
-        atk: Math.round(base.atk * (1 + atkPct / 100) * tD),
-        hp: Math.round(base.hp * (1 + hpPct / 100) * tH),
+        atk: Math.round(base.atk * mA * tD * gM),
+        hp: Math.round(base.hp * mH * tH * gM),
         from,
       };
     });
@@ -202,5 +221,5 @@
   }
 
   root.CBI = root.CBI || {};
-  root.CBI.deckBuff = { compute, supportRules, cardRules, deckWide, report, SLOTS };
+  root.CBI.deckBuff = { compute, supportRules, cardRules, deckWide, mutOf, report, SLOTS };
 })(typeof window !== "undefined" ? window : globalThis);

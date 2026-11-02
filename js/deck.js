@@ -131,9 +131,9 @@
   // a deck's mode as shown and scored: hidden (Story / Boss) or unknown = Overall
   const modeOf = (id) => { const all = modes(); return all.find((m) => m.id === id && m.enabled) || all.find((m) => m.id === DEFAULT_MODE) || all[0]; };
   // the image of a deck · traitOf(cardId, slot) = whose traits (the user's own, or the ones a shared link carried)
-  const deckSpec = (d, traitOf) => {
+  const deckSpec = (d, traitOf, gradeOf = myGradeOf) => {
     const t = (id, i) => (id && cardById.has(id) && traitOf ? traitOf(id, i) || null : null);
-    const res = C.deckBuff ? C.deckBuff.compute(d, { traitOf }) : [];
+    const res = C.deckBuff ? C.deckBuff.compute(d, { traitOf, gradeOf }) : [];
     return {
       id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice(),
       traits: d.cards.map(t),
@@ -141,6 +141,8 @@
     };
   };
   const myTraitOf = (id) => (C.traits && C.traits.of ? C.traits.of(id) : null);
+  const myGradeOf = (id) => (C.grade && C.grade.get ? C.grade.get(id) : null);   // the user's grades (js/grade.js) · all 10 = +30%
+  const noGrade = () => null;                                                     // a shared deck: the link carries no grades
   const anyCards = (d) => countOf(d.cards) + countOf(d.support) > 0;
   // the user's own deck as the team score sees it: with the user's trait per card (js/traits.js)
   const mine = (d) => ({ ...d, traits: C.traits.map() });
@@ -285,6 +287,7 @@
     b.root = root;
     b.editable = editable;
     b.traitOf = editable ? myTraitOf : (id, i) => (shared && shared.traits ? shared.traits[i] || null : null);
+    b.gradeOf = editable ? myGradeOf : noGrade;
     root.innerHTML = KINDS.map((kind) => `
       <section class="dk-group" aria-label="${kind === "cards" ? "Cards" : "Support cards"}">
         <div class="dk-group__head"><h3 class="dk-group__title">${kind === "cards" ? "Cards" : "Support"}</h3><span class="dk-group__count" data-count="${kind}"></span></div>
@@ -454,7 +457,7 @@
   }
   function paintBuffs(b, d, { animate = false } = {}) {
     if (!C.deckBuff || !b.root) return;
-    const res = C.deckBuff.compute(d, { traitOf: b.traitOf });
+    const res = C.deckBuff.compute(d, { traitOf: b.traitOf, gradeOf: b.gradeOf });
     b.buffs = res;
     const cards = b.slots.cards.map((slot, i) => { const o = b.shown.cards[i]; return o && res[i] && o.id === res[i].id ? $(".card", o.el) : null; });
     const seen = cards.map((el) => !!(animate && el && el.isConnected && rectVisible(el.getBoundingClientRect())));   // read all, then write
@@ -487,8 +490,8 @@
     const card = r && lookup("cards", r.id);
     if (!card) return;
     clearSel();
-    const kindName = { card: "Card", support: "Support", trait: "Trait" };
-    const val = (x) => (x.kind === "trait"
+    const kindName = { card: "Card", support: "Support", trait: "Trait", grade: "Grade" };
+    const val = (x) => (x.kind === "trait" || x.kind === "grade"
       ? [x.atk !== 1 ? `×${Number(x.atk.toFixed(2))} ATK` : "", x.hp !== 1 ? `×${Number(x.hp.toFixed(2))} HP` : ""]
       : [x.atk ? `${pct(x.atk)} ATK` : "", x.hp ? `${pct(x.hp)} HP` : ""]).filter(Boolean).join(" · ");
     const rows = r.from.map((x) => `<li class="dk-bf__row" data-kind="${x.kind}"${x.kind === "trait" ? ` style="${C.traits.colorStyle(r.trait)}"` : ""}>
@@ -503,7 +506,7 @@
       html: `<div class="dk-bf">
           <div class="dk-bf__sum">${stat("ATK", r.base.atk, r.atk, r.atkPct)}${stat("HP", r.base.hp, r.hp, r.hpPct)}</div>
           <ul class="dk-bf__list">${rows}</ul>
-          <p class="tm-field__note">Deck buffs add up: ATK = base × (1 + all the % together), then × the trait. Buffs that need a hit, a turn or low HP aren't counted, and the same support twice counts once.</p>
+          <p class="tm-field__note">Deck buffs multiply: ATK = base × (1 + each %) one after another, then × the trait, then × 1.3 if all 4 grades are 10. A support's mutation bonus goes to the card in its column. Buffs that need a hit, a turn or low HP aren't counted, and the same support twice counts once.</p>
         </div>`,
       actions: [{ label: "Close", value: "cancel" }],
       onMount(dlg) { FX.stagger($(".dk-bf__list", dlg), 40, { cls: "fx-up", max: 8, cleanup: true }); },
@@ -1435,9 +1438,9 @@
     return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s), created: now(), updated: now() });
   }
 
-  async function saveImage(d, flashEl, traitOf = myTraitOf) {
+  async function saveImage(d, flashEl, traitOf = myTraitOf, gradeOf = myGradeOf) {
     if (!C.share || !C.share.deckImageDialog) return;
-    await C.share.deckImageDialog(deckSpec(d, traitOf), { flashEl });
+    await C.share.deckImageDialog(deckSpec(d, traitOf, gradeOf), { flashEl });
   }
   async function shareLink(d, flashEl) {
     if (!C.share) return;
@@ -1850,7 +1853,7 @@
       case "backup": if (C.share) C.share.backupDialog(); break;
       case "compare": compareDialog(cur ? cur.id : null); break;
       case "sh-copy": saveCopy(); break;
-      case "sh-image": if (shared) saveImage(shared.deck, sh.root, sh.traitOf); break;
+      case "sh-image": if (shared) saveImage(shared.deck, sh.root, sh.traitOf, noGrade); break;
       case "buff": buffDialog(btn); break;
       case "undo": step(-1); break;
       case "redo": step(1); break;

@@ -6,7 +6,7 @@
  "+#% from the deck": "+#1% จากเด็ค",
  "Buffs": "บัฟ",
  "No deck buff": "ไม่มีบัฟจากเด็ค",
- "Deck buffs add up: ATK = base × (# + all the % together), then × the trait. Buffs that need a hit, a turn or low HP aren't counted, and the same support twice counts once.": "บัฟในเด็คบวกกัน: ATK = ค่าตั้งต้น × (#1 + % ทั้งหมดรวมกัน) แล้ว × Trait · บัฟที่ต้องโดนตี ต้องรอเทิร์น หรือต้อง HP ต่ำ ไม่นับ และซัพพอร์ตใบเดียวกันใส่ 2 ช่องนับครั้งเดียว",
+ "Deck buffs multiply: ATK = base × (# + each %) one after another, then × the trait, then × # if all # grades are #. A support's mutation bonus goes to the card in its column. Buffs that need a hit, a turn or low HP aren't counted, and the same support twice counts once.": "บัฟในเด็คคูณกัน: ATK = ค่าตั้งต้น × (#1 + % แต่ละก้อน) คูณต่อกันทีละก้อน แล้ว × Trait แล้ว × #2 ถ้าเกรดครบ #3 ช่องเป็น #4 · โบนัสกลายพันธุ์ของซัพพอร์ตให้การ์ดคอลัมน์เดียวกัน · บัฟที่ต้องโดนตี ต้องรอเทิร์น หรือต้อง HP ต่ำ ไม่นับ และซัพพอร์ตใบเดียวกันใส่ 2 ช่องนับครั้งเดียว",
  "# cards": "#1 การ์ด",
  "# decks": "#1 เด็ค",
  "# lists": "#1 ลิสต์",
