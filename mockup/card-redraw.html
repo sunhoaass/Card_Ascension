@@ -188,6 +188,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 <div class="wrap">
   <header>
     <h1>Card Redraw Lab · Long Hair Invader</h1>
+    <p><b>เจ้าของเลือกแล้ว 2026-11-02:</b> ค่าเริ่มต้นของหน้านี้ = ตัวเลือกที่เลือก (ฟอนต์ C Anton · ตัวเลขในคำอธิบายสีทอง · ที่เหลือตามที่แนะนำ)</p>
     <p>รอบ 2 · ชื่อกับ HP คนละครึ่งการ์ด ชิดซ้าย/ขวามีช่องไฟ ย่อเองทุกครั้งที่ตัวเลขเปลี่ยน · พื้นหลังลบแบบใหม่ (เนียนกว่าเดิม) และไม่มีแถบมืดทับภาพแล้ว · กดปุ่มใต้การ์ดเพื่อเทียบกับรูปต้นฉบับเกม</p>
     <p>ตัวอย่างกฎตัดภาพใหม่: ลบตัวอักษร/ตัวเลข/ไอคอนออกจากรูปทั้งหมด แล้วเว็บเขียนใหม่เองทุกตัว (ชัดทุกขนาดจอ เพราะเป็นตัวอักษรจริง ไม่ใช่ภาพ) · กดระดับเพื่อเปลี่ยนสีชื่อ/กรอบ · กดตัวเลือกด้านขวาแล้วกด "คัดลอกตัวเลือก" ส่งกลับมาในแชท</p>
   </header>
@@ -288,20 +289,20 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
   const FONTS = {
     a: { label: 'A · Bangers + Oswald', rec: 'ใกล้เกม', vars: { '--f-name': '"Bangers", "Arial Narrow", sans-serif', '--w-name': '400', '--s-name': 'normal', '--ls-name': '.03em', '--f-num': '"Oswald", "Arial Narrow", sans-serif', '--w-num': '700', '--f-text': '"Oswald", "Arial Narrow", sans-serif', '--w-text': '500', '--f-pill': '"Bangers", "Arial Narrow", sans-serif', '--w-pill': '400', '--s-pill': 'normal' } },
     b: { label: 'B · Barlow Condensed', rec: 'คมสุดตอนเล็ก', vars: { '--f-name': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-name': '800', '--s-name': 'italic', '--ls-name': '.01em', '--f-num': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-num': '800', '--f-text': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-text': '600', '--f-pill': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-pill': '800', '--s-pill': 'italic' } },
-    c: { label: 'C · Anton', rec: 'หนัก ดุ', vars: { '--f-name': '"Anton", "Arial Narrow", sans-serif', '--w-name': '400', '--s-name': 'normal', '--ls-name': '.02em', '--f-num': '"Anton", "Arial Narrow", sans-serif', '--w-num': '400', '--f-text': '"Oswald", "Arial Narrow", sans-serif', '--w-text': '500', '--f-pill': '"Anton", "Arial Narrow", sans-serif', '--w-pill': '400', '--s-pill': 'normal' } },
+    c: { label: 'C · Anton', rec: 'เจ้าของเลือก', vars: { '--f-name': '"Anton", "Arial Narrow", sans-serif', '--w-name': '400', '--s-name': 'normal', '--ls-name': '.02em', '--f-num': '"Anton", "Arial Narrow", sans-serif', '--w-num': '400', '--f-text': '"Oswald", "Arial Narrow", sans-serif', '--w-text': '500', '--f-pill': '"Anton", "Arial Narrow", sans-serif', '--w-pill': '400', '--s-pill': 'normal' } },
     d: { label: 'D · Teko', rec: 'สปอร์ต', vars: { '--f-name': '"Teko", "Arial Narrow", sans-serif', '--w-name': '700', '--s-name': 'normal', '--ls-name': '.03em', '--f-num': '"Teko", "Arial Narrow", sans-serif', '--w-num': '600', '--f-text': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-text': '600', '--f-pill': '"Teko", "Arial Narrow", sans-serif', '--w-pill': '600', '--s-pill': 'normal' } }
   };
 
   /* options = the owner's choices (item 8). first = recommended */
   const OPTS = [
-    { id: 'font', t: 'ฟอนต์', d: 'ข้อ 4 · ทุกชุดเป็น Google Font ฟรี ไม่ใช่ไฟล์จากเกม', ch: Object.entries(FONTS).map(([k, f]) => [k, f.label, f.rec]), def: 'a' },
+    { id: 'font', t: 'ฟอนต์', d: 'ข้อ 4 · ทุกชุดเป็น Google Font ฟรี ไม่ใช่ไฟล์จากเกม', ch: Object.entries(FONTS).map(([k, f]) => [k, f.label, f.rec]), def: 'c' },
     { id: 'split', t: 'ชื่อกับ HP แบ่งพื้นที่', d: 'ข้อ 1 · ชื่อชิดซ้าย HP ชิดขวา ฝั่งละไม่เกินครึ่งการ์ด ยาวเกินก็ย่อลง', ch: [['half', 'ครึ่ง-ครึ่งตายตัว', 'ตามที่สั่ง'], ['share', 'ครึ่ง-ครึ่ง แต่ยืมที่ว่างได้ถ้าอีกฝั่งสั้น']], def: 'half' },
     { id: 'wrap', t: 'ชื่อยาวเกินครึ่ง', d: 'เมื่อย่อถึงขนาดเล็กสุดแล้วยังไม่พอ', ch: [['two', 'ขึ้น 2 บรรทัด', 'แนะนำ'], ['one', 'ย่อต่อจนพอดี 1 บรรทัด']], def: 'two' },
     { id: 'pad', t: 'ช่องไฟจากขอบการ์ด', d: 'ระยะระหว่างตัวอักษรกับขอบการ์ด ทุกด้าน', ch: [['2.6', 'แคบ'], ['3.6', 'กลาง', 'แนะนำ'], ['4.8', 'กว้าง']], def: '3.6' },
     { id: 'erase', t: 'วิธีลบตัวอักษรออกจากพื้นหลัง', d: 'ข้อ 2 · แบบใหม่เติมลายหิน/ผมจากรอบๆ ให้เหมือนเดิมมากขึ้น · ใช้ปุ่มใต้การ์ดเทียบกับต้นฉบับได้', ch: [['best', 'แบบใหม่ (เนียนกว่า)', 'แนะนำ'], ['fast', 'แบบรอบแรก']], def: 'best' },
     { id: 'read', t: 'ช่วยให้อ่านง่ายบนภาพ', d: 'ข้อ 2 · ไม่ทับพื้นหลังทั้งแถบ ภาพเดิมยังอยู่', ch: [['soft', 'ขอบดำ + เงานุ่มรอบตัวอักษร', 'แนะนำ'], ['ol', 'ขอบดำอย่างเดียว'], ['scrim', 'แถบมืดไล่ (แบบรอบแรก)']], def: 'soft' },
     { id: 'ol', t: 'ความหนาขอบตัวอักษร', d: 'ขอบดำช่วยให้อ่านได้บนทุกภาพ', ch: [['.55', 'บาง'], ['.75', 'กลาง', 'แนะนำ'], ['1', 'หนา']], def: '.75' },
-    { id: 'nums', t: 'ตัวเลขในคำอธิบาย', d: 'เช่น 50% · +30%', ch: [['white', 'ขาวแบบเกม', 'แนะนำ'], ['gold', 'ทอง เห็นค่าเด่น']], def: 'white' },
+    { id: 'nums', t: 'ตัวเลขในคำอธิบาย', d: 'เช่น 50% · +30%', ch: [['white', 'ขาวแบบเกม'], ['gold', 'ทอง เห็นค่าเด่น']], def: 'gold' },
     { id: 'shine', t: 'แสงวิ่ง', d: 'แสงวิ่งบนกรอบ + สีชื่อวิ่ง (ระดับ Shiny ขึ้นไป) · ปิดเองถ้าเครื่องตั้งลดการเคลื่อนไหว', ch: [['on', 'เปิด', 'แนะนำ'], ['off', 'ปิด']], def: 'on' },
     { id: 'glow', t: 'เรืองแสงรอบการ์ด', d: 'สีตามระดับ', ch: [['on', 'เปิด', 'แนะนำ'], ['off', 'ปิด']], def: 'on' },
     { id: 'tiny', t: 'การ์ดเล็ก (กว้างไม่ถึง 170px)', d: 'ตัวหนังสือคำอธิบายเล็กเกินอ่าน · ซ่อนแล้วเหลือชื่อสกิล ชื่อ HP ATK ชัดกว่า', ch: [['hide', 'ซ่อนคำอธิบาย', 'แนะนำ'], ['show', 'แสดงทุกขนาด']], def: 'hide' },
@@ -315,8 +316,8 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
   const state = { rar: 'godly', name: BASE_NAME, hp: 'real', desc: 'game', view: 'new' };
   OPTS.forEach(o => state[o.id] = o.def);
-  try { const s = JSON.parse(localStorage.getItem('cbi-redraw2') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
-  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-redraw2', JSON.stringify(s)); } catch (e) {} };
+  try { const s = JSON.parse(localStorage.getItem('cbi-redraw3') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
+  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-redraw3', JSON.stringify(s)); } catch (e) {} };
 
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
