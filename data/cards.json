@@ -14554,8 +14554,7 @@
     "name": "Witch of Envy",
     "series": "",
     "image": "images/cards/witch-of-envy.webp",
-    "cleanArt": true,
-    "base": {
+        "base": {
       "atk": 2267115,
       "hp": 15114100,
       "def": 0,

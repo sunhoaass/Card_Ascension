@@ -327,5 +327,7 @@ I18N.addSK({
  "Guild Master Giant believes in his guild": "Guild Master Giant เชื่อมั่นในกิลด์ของเขา",
  "the supported card gives EVERY card in your deck #% more damage and max HP.": "การ์ดที่ซัพพอร์ตทำให้การ์ดทุกใบในเด็คได้ดาเมจและ HP สูงสุดเพิ่ม #1%",
  "Mutation bonus": "โบนัสกลายพันธุ์",
+ "Spirit Medium Granny's barrier talismans guard your WHOLE deck": "เครื่องรางบาเรียของ Spirit Medium Granny ปกป้องทั้งเด็ค",
+ "the supported card protects your whole deck: only the card that is attacked takes damage (no splash, card-behind or bench hits) and takes #% less damage.": "การ์ดที่ซัพพอร์ตปกป้องทั้งเด็ค: เฉพาะการ์ดที่โดนโจมตีเท่านั้นที่รับดาเมจ (ไม่โดนดาเมจกระจาย ไม่โดนตีใบหลัง ไม่โดนตีม้านั่ง) และรับดาเมจน้อยลง #1%",
  "+#% damage and max HP.": "+#1% ดาเมจและ HP สูงสุด"
 });

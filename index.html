@@ -74,18 +74,18 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=56">
-  <link rel="stylesheet" href="css/base.css?v=56">
-  <link rel="stylesheet" href="css/fx.css?v=56">
-  <link rel="stylesheet" href="css/cards.css?v=56">
-  <link rel="stylesheet" href="css/tier.css?v=56">
-  <link rel="stylesheet" href="css/deck.css?v=56">
-  <link rel="stylesheet" href="css/support.css?v=56">
-  <link rel="stylesheet" href="css/grade.css?v=56">
-  <link rel="stylesheet" href="css/tiermaker.css?v=56">
-  <link rel="stylesheet" href="css/detail.css?v=56">
-  <link rel="stylesheet" href="css/traits.css?v=56">
-  <link rel="stylesheet" href="css/home.css?v=56">
+  <link rel="stylesheet" href="css/tokens.css?v=57">
+  <link rel="stylesheet" href="css/base.css?v=57">
+  <link rel="stylesheet" href="css/fx.css?v=57">
+  <link rel="stylesheet" href="css/cards.css?v=57">
+  <link rel="stylesheet" href="css/tier.css?v=57">
+  <link rel="stylesheet" href="css/deck.css?v=57">
+  <link rel="stylesheet" href="css/support.css?v=57">
+  <link rel="stylesheet" href="css/grade.css?v=57">
+  <link rel="stylesheet" href="css/tiermaker.css?v=57">
+  <link rel="stylesheet" href="css/detail.css?v=57">
+  <link rel="stylesheet" href="css/traits.css?v=57">
+  <link rel="stylesheet" href="css/home.css?v=57">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -453,6 +453,7 @@
               <span id="dk-sh-meta" class="tm-meta"></span>
               <span class="tm-badge">Shared deck · view only</span>
             </div>
+            <p id="dk-sh-note-text" class="dk-note dk-note--ro" hidden></p>
             <div class="tm-shbar">
               <button id="dk-sh-copy" class="tm-btn tm-btn--primary fx-press" type="button" data-act="sh-copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span id="dk-sh-copy-text">Save a copy</span></button>
               <button class="tm-btn fx-press" type="button" data-act="sh-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Save image</button>
@@ -475,6 +476,8 @@
               <button class="iconbtn glass fx-press" type="button" data-act="menu" aria-label="Deck options"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
             </div>
             <!-- 2026-11-02: no mode / deck rarity / score ring here any more: tap a card = its slot sheet (rarity, grade, trait) -->
+            <!-- the deck's note, shown on its image (farming time …): tap = edit -->
+            <button id="dk-note" class="dk-note fx-press" type="button" data-act="note"></button>
             <p id="dk-hint" class="tm-hint"></p>
             <div id="dk-board" class="dk-board"></div>
 
@@ -839,24 +842,24 @@
     </section>
   </div>
 
-  <script src="js/i18n.js?v=56"></script>
-  <script src="js/i18n-th-ui.js?v=56"></script>
-  <script src="js/i18n-th-sk1.js?v=56"></script>
-  <script src="js/i18n-th-sk2.js?v=56"></script>
-  <script src="js/fx.js?v=56"></script>
-  <script src="js/app.js?v=56"></script>
-  <script src="js/deckbuff.js?v=56"></script>
-  <script src="js/teamscore.js?v=56"></script>
-  <script src="js/share.js?v=56"></script>
-  <script src="js/cards.js?v=56"></script>
-  <script src="js/detail.js?v=56"></script>
-  <script src="js/tier.js?v=56"></script>
-  <script src="js/deck.js?v=56"></script>
-  <script src="js/support.js?v=56"></script>
-  <script src="js/grade.js?v=56"></script>
-  <script src="js/traits.js?v=56"></script>
-  <script src="js/home.js?v=56"></script>
-  <script src="js/tiermaker.js?v=56"></script>
+  <script src="js/i18n.js?v=57"></script>
+  <script src="js/i18n-th-ui.js?v=57"></script>
+  <script src="js/i18n-th-sk1.js?v=57"></script>
+  <script src="js/i18n-th-sk2.js?v=57"></script>
+  <script src="js/fx.js?v=57"></script>
+  <script src="js/app.js?v=57"></script>
+  <script src="js/deckbuff.js?v=57"></script>
+  <script src="js/teamscore.js?v=57"></script>
+  <script src="js/share.js?v=57"></script>
+  <script src="js/cards.js?v=57"></script>
+  <script src="js/detail.js?v=57"></script>
+  <script src="js/tier.js?v=57"></script>
+  <script src="js/deck.js?v=57"></script>
+  <script src="js/support.js?v=57"></script>
+  <script src="js/grade.js?v=57"></script>
+  <script src="js/traits.js?v=57"></script>
+  <script src="js/home.js?v=57"></script>
+  <script src="js/tiermaker.js?v=57"></script>
 </body>
 </html>
 

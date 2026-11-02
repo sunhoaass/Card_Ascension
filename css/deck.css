@@ -481,7 +481,6 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-ss__stat b { font-family: var(--font-display); font-size: var(--fs-lg); line-height: 1.15; overflow-wrap: anywhere; }
 .dk-ss__stat--atk b { color: var(--atk); }
 .dk-ss__stat--hp b { color: var(--hp); }
-.dk-ss__stat b.is-up { color: var(--gc-buff); }
 .dk-ss__buff { font-size: 11px; color: var(--ink-faint); }
 .dk-ss__fx { font-size: var(--fs-sm); color: var(--ink-dim); }
 .dk-ss__sec { display: grid; gap: var(--s-2); min-width: 0; }
@@ -499,3 +498,20 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 @media (prefers-reduced-motion: reduce) {
   .dk-ss .gbar__seg.is-pop::before { animation: none; }
 }
+
+/* ==========================================================
+   The deck's note (owner 2026-11-02 · deck.js paintNote / editNote): the user's own words, also on the image
+   ========================================================== */
+.dk-note {
+  display: flex; align-items: flex-start; gap: var(--s-2); width: 100%; min-height: 44px; margin: 0 0 var(--s-3);
+  padding: 10px 14px; text-align: left; border-radius: var(--r-chip);
+  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); border-left-width: 4px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 12%, var(--void)), var(--void));
+  color: var(--ink); font-size: var(--fs-md); font-weight: 600; line-height: 1.45;
+}
+.dk-note__text { flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.dk-note svg { flex: none; width: 16px; height: 16px; margin-top: 3px; color: var(--gold); }
+.dk-note.is-empty { align-items: center; border-style: dashed; border-left-width: 1px; background: transparent; color: var(--ink-faint); font-weight: 500; font-size: var(--fs-sm); }
+.dk-note--ro { cursor: default; }
+[hidden].dk-note { display: none; }
+.dk-note__input { min-height: 120px; padding: 10px 12px; resize: vertical; line-height: 1.45; }

@@ -9,6 +9,12 @@
  "Deck buffs multiply: ATK = base × (# + each %) one after another, then × the trait, then × # if all # grades are #. A support's mutation bonus goes to the card in its column. Buffs that need a hit, a turn or low HP aren't counted. A support for the whole deck counts once: a second copy gives nothing.": "บัฟในเด็คคูณกัน: ATK = ค่าตั้งต้น × (#1 + % แต่ละก้อน) คูณต่อกันทีละก้อน แล้ว × Trait แล้ว × #2 ถ้าเกรดครบ #3 ช่องเป็น #4 · โบนัสกลายพันธุ์ของซัพพอร์ตให้การ์ดคอลัมน์เดียวกัน · บัฟที่ต้องโดนตี ต้องรอเทิร์น หรือต้อง HP ต่ำ ไม่นับ · ซัพพอร์ตที่บัฟทั้งเด็คนับใบเดียว ใบที่ 2 ไม่ให้อะไรเลย",
  // Deck: rarity + grade per slot (2026-11-02)
  "Deck buffs": "บัฟจากเด็ค",
+ "Add a note for the image (farming time, floor …)": "เพิ่มข้อความบนรูป (เวลาฟาร์ม, ชั้น …)",
+ "Add a note for the deck image": "เพิ่มข้อความบนรูปเด็ค",
+ "Note on the image": "ข้อความบนรูป",
+ "Note": "ข้อความ",
+ "Farming time, floor, what this deck is for …": "เวลาฟาร์ม, ชั้น, เด็คนี้ใช้ทำอะไร …",
+ "Shown in a box under the deck's name when you save the image or share the deck. Up to # lines.": "แสดงในกล่องใต้ชื่อเด็คตอนบันทึกรูปหรือแชร์เด็ค · สูงสุด #1 บรรทัด",
  "Mixed rarity": "หลายระดับ",
  "Support #": "ซัพพอร์ต #1",
  "Change card": "เปลี่ยนการ์ด",

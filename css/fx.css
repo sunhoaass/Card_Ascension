@@ -143,8 +143,6 @@
 .gc__hp .gc__num { font-size: 12.4cqw; color: var(--gc-hp); --sw: 1.5cqw; --line: var(--gc-hp-line); text-shadow: 0 .5cqw 0 var(--gc-hp-line); }
 .gc__atk .gc__num { font-size: 14.2cqw; color: var(--gc-atk); --sw: .9cqw; --line: var(--gc-atk-line); text-shadow: 0 .35cqw 0 var(--gc-num-shade); }
 /* a number raised by the deck's buffs / the trait (js/deck.js · 2026-11-02): green-gold */
-.gc__num.is-buffed { color: var(--gc-buff); --line: var(--gc-buff-line); }
-.gc__hp .gc__num.is-buffed { text-shadow: 0 .5cqw 0 var(--gc-buff-line); }
 
 /* Support (2026-10-28): the level values written where the picture's numbers were (js/app.js supNumsHTML · effect.pos)
    same font (Oswald), white with a dark outline, same size · centred on the old number · --sx squeezes a longer one */

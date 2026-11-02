@@ -70,20 +70,20 @@
   --gc-font-num: "Oswald", "TeX Gyre Heros Cn", "Arial Narrow", "Roboto Condensed", sans-serif;   /* HP / ATK */
   --gc-font-pop: "Bangers", "TeX Gyre Heros Cn", "Arial Narrow", sans-serif;                      /* 1 IN X / rarity pills */
   --gc-font-text: "Oswald", "TeX Gyre Heros Cn", "Arial Narrow", "Roboto Condensed", sans-serif;  /* support ability text (the % values drawn on the picture) */
-  --gc-sv: #ffd45c;               /* support value: gold, so the numbers the rarity changes stand out from the white text (owner 2026-10-29) */
+  --gc-sv: #f0f0f2;               /* support value: white like the game's own text (owner 2026-11-02: original colours · was gold 2026-10-29) */
   --gc-sv-line: #050505;        /* its dark outline */
   --gc-corner: 3.7% / 2.64%;    /* the game's 22px corner on a 600×840 card (on the card itself) */
   --gc-radius: 3.7cqw;          /* the same corner for parts inside the card (cqw only works inside .gc) */
   --gc-scrim: rgba(5, 4, 10, .6);    /* card text drawn by the web (cleanArt): light dark fade under it (the art shows) */
   --gc-text: #eee;                    /* ability text */
-  --gc-text-num: #ffcf5a;             /* numbers in the ability text (gold) */
+  --gc-text-num: #eee;                /* numbers in the ability text: the same white as the text, like the game (owner 2026-11-02 · was gold) */
   --gc-text-shade: #000;
   --gc-ab-name: linear-gradient(#f6d3ff, #c06bff);   /* ability name: the game's lilac */
   --gc-hp: #52b257;             /* sampled from the game picture */
   --gc-hp-line: #000a03;
   --gc-atk: #ec453b;
   --gc-atk-line: #2a0101;
-  --gc-buff: #d4e85c;           /* ATK / HP raised by the deck's buffs (or the trait) · Deck page + its image (2026-11-02) */
+  --gc-buff: #d4e85c;           /* the deck's buff pills (.dk-buff) · ATK / HP on the cards keep the game's colours (owner 2026-11-02) */
   --gc-buff-line: #1c2400;
   --gc-num-shade: rgba(0, 0, 0, .5);
   --gc-pill: #fff;
