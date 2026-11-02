@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Card Redraw Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Cinzel:wght@600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Teko:wght@500;600;700&display=swap">
+<style>
+/* Layout: one big live card + option panel beside it (stacked on phones), then "all sizes" and "all rarities" strips. Single dark look, same world as the site's Gilded Nocturne. */
+:root {
+  color-scheme: dark;
+  --bg: #0e0b12;
+  --panel: #17131d;
+  --panel-2: #1f1a27;
+  --line: #2e2738;
+  --ink: #ece6f2;
+  --muted: #a49cb1;
+  --gold: #d8b46a;
+  --gold-hi: #f3dca0;
+  --gold-ink: #1a1306;
+  --ui-font: "Noto Sans Thai", "Inter", system-ui, sans-serif;
+  --ui-display: "Cinzel", Georgia, serif;
+
+  /* card text fonts (switched by the font option) */
+  --f-name: "Bangers", "Arial Narrow", sans-serif;  --w-name: 400; --s-name: normal; --ls-name: .02em;
+  --f-num: "Oswald", "Arial Narrow", sans-serif;    --w-num: 700;
+  --f-text: "Oswald", "Arial Narrow", sans-serif;   --w-text: 500;
+  --f-pill: "Bangers", "Arial Narrow", sans-serif;  --w-pill: 400; --s-pill: normal;
+  --ol: .75;            /* outline outside the letter, in cqw */
+  --scrim-top: 0;
+  --scrim-bot: 0;
+  --pad: 3.6;           /* gap between the text and the card edge, in cqw */
+  --soft: 0 0 1.6cqw rgba(0,0,0,.85), 0 0 3.2cqw rgba(0,0,0,.45);   /* soft shadow right around the letters (keeps the art) */
+  --num-hl: #f4f1f6;     /* numbers in the ability text */
+  --card-ink: #f4f1f6;
+  --stroke: #07050a;
+  --hp-fill: linear-gradient(180deg, #8ff08a, #46b04e 55%, #2f8a3a);
+  --atk-fill: linear-gradient(180deg, #ff8a74, #ec453b 55%, #b8231d);
+  --ab-fill: linear-gradient(180deg, #f6d3ff, #c06bff);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 var(--ui-font);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 28px; }
+header h1 { font: 700 clamp(22px, 5vw, 32px)/1.15 var(--ui-display); margin: 0; letter-spacing: .04em; color: var(--gold-hi); text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 64ch; }
+
+.lab { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 760px) { .lab { grid-template-columns: minmax(0, 1fr); } }
+.stage { display: grid; gap: 14px; justify-items: center; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); }
+@media (max-width: 760px) { .stage { position: static; } }
+.stage .card { width: min(100%, 360px); }
+
+.rar-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.rar-row button { font: 600 13px/1 var(--ui-font); color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px; padding: 8px 11px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; transition: transform .12s ease, border-color .15s ease, background .15s ease; }
+.rar-row button i { width: 10px; height: 10px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 0 1px rgba(0,0,0,.5); }
+.rar-row button[aria-pressed="true"] { border-color: var(--gold); background: #2a2216; }
+button:active { transform: scale(.96); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
+
+.panel { display: grid; gap: 14px; min-width: 0; }
+.opt { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
+.opt h3 { margin: 0; font: 600 15px/1.35 var(--ui-font); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.opt h3 small { font-weight: 500; color: var(--muted); font-size: 12px; }
+.opt p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: 500 13.5px/1.25 var(--ui-font); color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: transform .12s ease, background .15s ease, border-color .15s ease; text-align: left; }
+.seg button[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); font-weight: 700; }
+.seg button .rec { font-size: 11px; font-weight: 700; color: var(--gold-hi); margin-left: 4px; }
+.seg button[aria-pressed="true"] .rec { color: var(--gold-ink); }
+.test input { width: 100%; font: 500 15px/1.3 var(--ui-font); color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; }
+.test label { font-size: 13px; color: var(--muted); }
+
+.summary { background: #1d1710; border: 1px solid #4a3a1c; border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; }
+.summary h3 { margin: 0; font: 600 15px var(--ui-font); color: var(--gold-hi); }
+.summary output { display: block; font: 500 13.5px/1.6 var(--ui-font); white-space: pre-wrap; user-select: all; }
+.summary button { justify-self: start; font: 700 14px var(--ui-font); background: var(--gold); color: var(--gold-ink); border: 0; border-radius: 8px; padding: 9px 16px; cursor: pointer; }
+
+section.strip h2 { font: 700 18px/1.3 var(--ui-display); letter-spacing: .03em; margin: 0 0 4px; color: var(--gold-hi); }
+section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+.sizes { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; }
+.sizes figure { margin: 0; display: grid; gap: 6px; justify-items: center; }
+.sizes figcaption, .grid figcaption { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.grid figure { margin: 0; display: grid; gap: 6px; justify-items: center; }
+.grid .card { width: 100%; max-width: 200px; }
+.note { font-size: 13px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 10px; }
+
+/* ===================== the card ===================== */
+.card { position: relative; container-type: inline-size; aspect-ratio: 100 / 138.64; max-width: 100%; border-radius: 4.4cqw; background: var(--ring); box-shadow: 0 10px 26px rgba(0,0,0,.5), 0 0 0 .35cqw rgba(0,0,0,.6); isolation: isolate; }
+.card.glow { box-shadow: 0 10px 26px rgba(0,0,0,.5), 0 0 0 .35cqw rgba(0,0,0,.6), 0 0 5cqw var(--glow); }
+.card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%) no-repeat; background-size: 250% 100%; background-position: 150% 0; mix-blend-mode: overlay; opacity: 0; }
+.card.run::after { opacity: 1; animation: sweep 3.6s ease-in-out infinite; }
+@keyframes sweep { 0%, 55% { background-position: 150% 0; } 100% { background-position: -60% 0; } }
+.face { position: absolute; inset: 1.7cqw; border-radius: 3.2cqw; overflow: hidden; container-type: inline-size; background: #0d0a14; }
+.face .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.scrim { position: absolute; left: 0; right: 0; pointer-events: none; }
+.scrim.t { top: 0; height: 30cqw; background: linear-gradient(rgba(5,4,10,var(--scrim-top)), rgba(5,4,10,0)); }
+.scrim.b { bottom: 0; height: 72cqw; background: linear-gradient(rgba(5,4,10,0), rgba(5,4,10,calc(var(--scrim-bot) * .85)) 40%, rgba(5,4,10,var(--scrim-bot))); }
+
+/* outlined text: the ::before layer holds the black outline behind the coloured letters, so gradient letters keep their full width */
+.ot { position: relative; isolation: isolate; }
+.ot::before, .ot.fill::after { content: attr(data-t); position: absolute; inset: 0; padding: inherit; box-sizing: border-box; white-space: inherit; text-align: inherit; pointer-events: none; }
+.ot::before { z-index: -1; color: var(--stroke); -webkit-text-stroke: calc(var(--ol) * 2cqw) var(--stroke); text-shadow: var(--soft); }
+.ot.fill { color: transparent; }
+.ot.fill::after { background: var(--fill); background-size: 100% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+
+.top { position: absolute; top: 3cqw; left: calc(var(--pad) * 1cqw); right: calc(var(--pad) * 1cqw); height: 12.5cqw; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3cqw; align-items: center; }
+.name { min-width: 0; display: flex; align-items: center; justify-content: flex-start; height: 100%; }
+.name .ot { display: inline-block; white-space: nowrap; font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); line-height: 1; text-transform: uppercase; padding: .4cqw .6cqw .2cqw; --fill: var(--name-fill); }
+.name .ot.wrap { white-space: normal; line-height: .98; }
+.hp { min-width: 0; justify-self: end; display: flex; align-items: center; gap: 1.2cqw; }
+.hp .ot { font-family: var(--f-num); font-weight: var(--w-num); line-height: 1; white-space: nowrap; --fill: var(--hp-fill); font-variant-numeric: tabular-nums; padding: .3cqw .3cqw; }
+.hp svg { width: 9.6cqw; height: 9.6cqw; flex: none; filter: drop-shadow(0 .5cqw .4cqw rgba(0,0,0,.6)); }
+
+.pills { position: absolute; top: 17cqw; right: calc(var(--pad) * 1cqw); display: grid; gap: 1.6cqw; justify-items: end; }
+.pill { display: inline-flex; align-items: center; justify-content: center; height: 7.4cqw; padding: 0 2.6cqw; border-radius: 99cqw; font-family: var(--f-pill); font-weight: var(--w-pill); font-style: var(--s-pill); font-size: 5.6cqw; line-height: 1; letter-spacing: .03em; white-space: nowrap; color: #111; background: #fff; box-shadow: inset 0 0 0 .55cqw #c9c9cf, 0 0 0 .55cqw #0b0b0d, 0 .6cqw 1cqw rgba(0,0,0,.45); }
+.pill.rar { background: var(--pill-bg); color: var(--pill-ink); box-shadow: inset 0 0 0 .45cqw rgba(255,255,255,.35), 0 0 0 .55cqw #0b0b0d, 0 .6cqw 1cqw rgba(0,0,0,.45); }
+.r-normal .pill.rar { display: none; }
+
+.ab { position: absolute; left: calc(var(--pad) * 1cqw + .6cqw); right: calc(var(--pad) * 1cqw + .6cqw); bottom: 17.5cqw; display: grid; gap: 1.2cqw; }
+.ab .abn { font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); text-transform: uppercase; font-size: 7.2cqw; line-height: 1; justify-self: start; --fill: var(--ab-fill); padding: .3cqw .5cqw; }
+.ab .abd { margin: 0; font-family: var(--f-text); font-weight: var(--w-text); color: var(--card-ink); text-align: center; line-height: 1.16; text-wrap: balance; }
+.ab .abd b { font-weight: inherit; color: var(--num-hl); }
+.card.tiny .abd { display: none; }
+.card.tiny .ab { bottom: 16cqw; }
+
+.bot { position: absolute; left: calc(var(--pad) * 1cqw); right: calc(var(--pad) * 1cqw); bottom: 3cqw; height: 12.5cqw; display: grid; grid-template-columns: 12.5cqw 1fr 12.5cqw; align-items: center; }
+.bot svg { width: 12cqw; height: 12cqw; filter: drop-shadow(0 .5cqw .4cqw rgba(0,0,0,.6)); }
+.bot .atk { justify-self: center; font-family: var(--f-num); font-weight: var(--w-num); line-height: 1; white-space: nowrap; --fill: var(--atk-fill); font-variant-numeric: tabular-nums; padding: .3cqw; }
+.bot .own { justify-self: end; font-family: var(--f-num); font-weight: var(--w-num); font-size: 5.6cqw; line-height: 1; color: var(--card-ink); white-space: nowrap; }
+.card:not(.show-own) .own { visibility: hidden; }
+
+.flash::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #fff; z-index: 5; pointer-events: none; animation: flash .5s ease-out forwards; }
+@keyframes flash { from { opacity: .75; } to { opacity: 0; } }
+@keyframes namerun { from { background-position: 0% 0; } to { background-position: 200% 0; } }
+.card.name-run .name .ot.fill::after { background-size: 200% 100%; animation: namerun 4s linear infinite; }
+
+/* rarities: frame / glow / name colour / rarity pill, sampled from the owner's screenshots */
+.r-normal   { --ring: linear-gradient(160deg, #f3f2f6, #b9b6c0 50%, #ecebf0); --glow: rgba(255,255,255,.15); --dot: #d8d7dc;
+              --name-fill: linear-gradient(90deg, #f4f3f8, #b9b9c0 35%, #e9e8ee 65%, #c4c4cb, #f4f3f8); }
+.r-shiny    { --ring: linear-gradient(135deg, #c6f7c9, #eaf1b7 20%, #f8d1d9 45%, #e7c4ef 65%, #cec1f9 80%, #b4d2f9); --glow: rgba(200,240,220,.45); --dot: #c6f7c9;
+              --name-fill: linear-gradient(90deg, #c6f7c9, #eaf1b7, #f8d1d9, #e7c4ef, #cec1f9, #b4d2f9, #c6f7c9);
+              --pill-bg: linear-gradient(90deg, #d4f8d6, #f8d1d9, #d6ccfb); --pill-ink: #1d1b2a; }
+.r-rainbow  { --ring: linear-gradient(135deg, #f4824c, #f7c449, #9ee373, #4fbedd, #8277f0, #da5dd0); --glow: rgba(200,140,220,.5); --dot: #f7c449;
+              --name-fill: linear-gradient(90deg, #f4824c, #f7c449, #9ee373, #4fbedd, #8277f0, #da5dd0, #f4824c);
+              --pill-bg: linear-gradient(90deg, #f4824c, #f7c449, #9ee373, #4fbedd, #a493f5); --pill-ink: #170d1e; }
+.r-secret   { --ring: linear-gradient(160deg, #ffffff, #d9d8de 50%, #ffffff); --glow: rgba(255,255,255,.35); --dot: #f6f5fa;
+              --name-fill: linear-gradient(90deg, #ffffff, #a9a8ae 30%, #e2e1e6 55%, #ffffff 80%, #c9c8ce);
+              --pill-bg: linear-gradient(180deg, #ffffff, #e4e3e8); --pill-ink: #2b2b30; }
+.r-divine   { --ring: linear-gradient(160deg, #f7c2c4, #d9636b 50%, #f3a9ad); --glow: rgba(240,110,120,.5); --dot: #e57374;
+              --name-fill: linear-gradient(90deg, #ff8a8a, #d5535a 35%, #ffc9cb 75%, #ffb3b5, #ff8a8a);
+              --pill-bg: linear-gradient(180deg, #ffd4d6, #ef8f94); --pill-ink: #4a0b12; }
+.r-cosmic   { --ring: linear-gradient(160deg, #cfc8ff, #8e86ea 50%, #b8b2ff); --glow: rgba(130,120,255,.55); --dot: #8689ec;
+              --name-fill: linear-gradient(90deg, #a08bff, #5d6ff0 35%, #6fa3ff 60%, #d6dcff, #a08bff);
+              --pill-bg: linear-gradient(180deg, #d8d4ff, #9b98f2); --pill-ink: #14123e; }
+.r-ascended { --ring: linear-gradient(160deg, #fff0b8, #d9a640 50%, #ffe39a); --glow: rgba(240,200,90,.55); --dot: #e7bb58;
+              --name-fill: linear-gradient(90deg, #ffe39a, #e7ac3e 35%, #f7cc62 65%, #e2ad45, #ffe39a);
+              --pill-bg: linear-gradient(180deg, #ffe9a8, #e3ad3e); --pill-ink: #2c1c02; }
+.r-godlike  { --ring: linear-gradient(160deg, #ffffff, #f6e4b0 50%, #ffffff); --glow: rgba(255,228,150,.7); --dot: #fdf2db;
+              --name-fill: linear-gradient(90deg, #ffffff, #fbe7b4 40%, #fffaf0 70%, #fdeec8, #ffffff);
+              --pill-bg: linear-gradient(180deg, #fffdf6, #f6e2a8); --pill-ink: #1a1408; }
+.r-godly    { --ring: linear-gradient(180deg, #ffd56e 0%, #ffd56e 24%, #f5a96c 36%, #dc5280 50%, #f19a6a 64%, #ffd06a 76%, #ffd06a 100%); --glow: rgba(240,120,150,.55); --dot: #df957f;
+              --name-fill: linear-gradient(90deg, #f7b36f, #e06e83 35%, #f4c49b 65%, #e98a74, #f7b36f);
+              --pill-bg: linear-gradient(90deg, #e2507f, #f19a62, #ffd56e); --pill-ink: #140608; }
+
+/* name on its own band (option) */
+/* compare views */
+.card.v-bg .top, .card.v-bg .pills, .card.v-bg .ab, .card.v-bg .bot, .card.v-bg .scrim,
+.card.v-orig .top, .card.v-orig .pills, .card.v-orig .ab, .card.v-orig .bot, .card.v-orig .scrim { visibility: hidden; }
+.view { justify-content: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card.run::after, .card.name-run .name .ot.fill::after { animation: none; }
+  .flash::before { animation: none; opacity: 0; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Card Redraw Lab · Long Hair Invader</h1>
+    <p><b>เจ้าของเลือกแล้ว 2026-11-02:</b> ค่าเริ่มต้นของหน้านี้ = ตัวเลือกที่เลือก (ฟอนต์ C Anton · ตัวเลขในคำอธิบายสีทอง · ที่เหลือตามที่แนะนำ)</p>
+    <p>รอบ 2 · ชื่อกับ HP คนละครึ่งการ์ด ชิดซ้าย/ขวามีช่องไฟ ย่อเองทุกครั้งที่ตัวเลขเปลี่ยน · พื้นหลังลบแบบใหม่ (เนียนกว่าเดิม) และไม่มีแถบมืดทับภาพแล้ว · กดปุ่มใต้การ์ดเพื่อเทียบกับรูปต้นฉบับเกม</p>
+    <p>ตัวอย่างกฎตัดภาพใหม่: ลบตัวอักษร/ตัวเลข/ไอคอนออกจากรูปทั้งหมด แล้วเว็บเขียนใหม่เองทุกตัว (ชัดทุกขนาดจอ เพราะเป็นตัวอักษรจริง ไม่ใช่ภาพ) · กดระดับเพื่อเปลี่ยนสีชื่อ/กรอบ · กดตัวเลือกด้านขวาแล้วกด "คัดลอกตัวเลือก" ส่งกลับมาในแชท</p>
+  </header>
+
+  <div class="lab">
+    <div class="stage">
+      <div class="card" id="main"></div>
+      <div class="rar-row" id="rarRow" role="group" aria-label="ระดับการ์ด"></div>
+      <div class="seg view" id="view" role="group" aria-label="มุมมองเทียบ"></div>
+    </div>
+
+    <div class="panel" id="panel">
+      <div class="opt test">
+        <h3>ทดสอบชื่อยาว/สั้น <small>ข้อ 6 · ชื่อสั้นขยายใหญ่ ชื่อยาวย่อลง</small></h3>
+        <div class="seg" data-test="name"></div>
+        <label for="nameIn">หรือพิมพ์ชื่อเอง</label>
+        <input id="nameIn" type="text" maxlength="60" value="Long Hair Invader" autocomplete="off">
+      </div>
+      <div class="opt test">
+        <h3>ทดสอบ HP <small>ข้อ 2 · ต่ำกว่า 1B เขียนเต็ม · ตั้งแต่ 1B ย่อ</small></h3>
+        <div class="seg" data-test="hp"></div>
+      </div>
+      <div class="opt test">
+        <h3>ทดสอบคำอธิบาย <small>ยาวแค่ไหนก็อยู่ในกรอบ</small></h3>
+        <div class="seg" data-test="desc"></div>
+      </div>
+      <div id="opts"></div>
+      <div class="summary">
+        <h3>ตัวเลือกที่เลือกไว้</h3>
+        <output id="sum"></output>
+        <button type="button" id="copy">คัดลอกตัวเลือก</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="strip">
+    <h2>ทุกขนาดจอ</h2>
+    <p>การ์ดเดียวกันที่ 260 / 180 / 130 / 96 px (ขนาดหน้า Cards, Deck, Tier List บนมือถือ) · ตัวอักษรเป็นข้อความจริงจึงคมทุกขนาดและทุกความละเอียดจอ</p>
+    <div class="sizes" id="sizes"></div>
+  </section>
+
+  <section class="strip">
+    <h2>ทุกระดับ</h2>
+    <p>สีชื่อ กรอบ และป้ายระดับ ดูดสีจากภาพที่ส่งมา 9 ระดับ (Cosmic: HP ในภาพโดนป้ายประกาศบัง ใช้ค่าคำนวณ 73,132)</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <p class="note">รูปการ์ดในหน้านี้ = ภาพจากหน้า Index ระดับ Normal ตัดกรอบในแล้วลบตัวอักษร ตัวเลข ป้าย หัวใจ ดาบ ×N ออกทั้งหมด (เติมพื้นจากภาพรอบๆ) · ไอคอนหัวใจ/ดาบวาดใหม่ด้วย SVG</p>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gHeart" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b6b"/><stop offset=".55" stop-color="#e3222c"/><stop offset="1" stop-color="#a50f1a"/></linearGradient>
+    <linearGradient id="gBlade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#dfe5ee"/><stop offset=".51" stop-color="#9aa6b8"/><stop offset="1" stop-color="#c3ccd8"/></linearGradient>
+    <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#c08a2a"/></linearGradient>
+    <linearGradient id="gGrip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e2453f"/><stop offset="1" stop-color="#8e1414"/></linearGradient>
+    <symbol id="heart" viewBox="0 0 100 92">
+      <path d="M50 88 C20 66 4 50 4 29 C4 14 16 4 29 4 C39 4 46 9 50 17 C54 9 61 4 71 4 C84 4 96 14 96 29 C96 50 80 66 50 88 Z" fill="url(#gHeart)" stroke="#1a0306" stroke-width="5" stroke-linejoin="round"/>
+      <ellipse cx="29" cy="24" rx="12" ry="8" fill="#fff" opacity=".75" transform="rotate(-30 29 24)"/>
+    </symbol>
+    <symbol id="sword1" viewBox="0 0 100 100">
+      <g stroke="#14161c" stroke-width="2.6" stroke-linejoin="round">
+        <path d="M50 4 L55 13 L55 64 L45 64 L45 13 Z" fill="url(#gBlade)"/>
+        <rect x="34" y="63" width="32" height="7" rx="3.5" fill="url(#gGold)"/>
+        <rect x="45.5" y="70" width="9" height="17" rx="2" fill="url(#gGrip)"/>
+        <circle cx="50" cy="91" r="5" fill="url(#gGold)"/>
+      </g>
+    </symbol>
+    <symbol id="swords" viewBox="0 0 100 100">
+      <use href="#sword1" width="100" height="100" transform="rotate(-135 50 50)"/>
+      <use href="#sword1" width="100" height="100" transform="rotate(135 50 50)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<script>
+(() => {
+  const ARTS = { best: 'card-redraw/long-hair-invader.webp', fast: 'card-redraw/long-hair-invader-fast.webp', orig: 'card-redraw/long-hair-invader-original.webp' };
+  const BASE_NAME = 'Long Hair Invader';
+  const AB_NAME = 'Saiyan Pride';
+  const DESC = {
+    game:  'Long Hair Invader hits harder when hurt. Under 50% HP: +30% damage.',
+    mid:   'Long Hair Invader hits harder when hurt. Under 50% HP: +30% damage. Every 3rd hit deals 2x damage and heals 5% of max HP.',
+    long:  "Demon God of Flame's blue flames consume everything. Each hit sets every enemy card on fire for 2 turns (5% of its max HP per turn). Each hit adds 3 Burn stacks (each stack: 0.9% of the enemy's max HP per turn, max 4 stacks, 3 turns). Every enemy card starts with 4.6% less damage. 6.8% chance per hit to Confuse the enemy (it skips its next turn and hits itself for half damage). Can't be burned."
+  };
+  const R = [
+    { k: 'normal',   n: 'Normal',   hp: 1556,   atk: 233,   odds: '1 IN 10',    own: 4637 },
+    { k: 'shiny',    n: 'Shiny',    hp: 5444,   atk: 817,   odds: '1 IN 203',   own: 573 },
+    { k: 'rainbow',  n: 'Rainbow',  hp: 10890,  atk: 1634,  odds: '1 IN 1,003', own: 235 },
+    { k: 'secret',   n: 'Secret',   hp: 21002,  atk: 3150,  odds: '1 IN 5,003', own: 56 },
+    { k: 'divine',   n: 'Divine',   hp: 41226,  atk: 6184,  odds: '1 IN 25K',   own: 55 },
+    { k: 'cosmic',   n: 'Cosmic',   hp: 73132,  atk: 10968, odds: '1 IN 100K',  own: 99 },
+    { k: 'ascended', n: 'Ascended', hp: 144678, atk: 21702, odds: '1 IN 500K',  own: 5 },
+    { k: 'godlike',  n: 'Godlike',  hp: 284690, atk: 42704, odds: '1 IN 2.5M',  own: 91 },
+    { k: 'godly',    n: 'Godly',    hp: 508708, atk: 76306, odds: '1 IN 10M',   own: 3468 }
+  ];
+
+  const FONTS = {
+    a: { label: 'A · Bangers + Oswald', rec: 'ใกล้เกม', vars: { '--f-name': '"Bangers", "Arial Narrow", sans-serif', '--w-name': '400', '--s-name': 'normal', '--ls-name': '.03em', '--f-num': '"Oswald", "Arial Narrow", sans-serif', '--w-num': '700', '--f-text': '"Oswald", "Arial Narrow", sans-serif', '--w-text': '500', '--f-pill': '"Bangers", "Arial Narrow", sans-serif', '--w-pill': '400', '--s-pill': 'normal' } },
+    b: { label: 'B · Barlow Condensed', rec: 'คมสุดตอนเล็ก', vars: { '--f-name': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-name': '800', '--s-name': 'italic', '--ls-name': '.01em', '--f-num': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-num': '800', '--f-text': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-text': '600', '--f-pill': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-pill': '800', '--s-pill': 'italic' } },
+    c: { label: 'C · Anton', rec: 'เจ้าของเลือก', vars: { '--f-name': '"Anton", "Arial Narrow", sans-serif', '--w-name': '400', '--s-name': 'normal', '--ls-name': '.02em', '--f-num': '"Anton", "Arial Narrow", sans-serif', '--w-num': '400', '--f-text': '"Oswald", "Arial Narrow", sans-serif', '--w-text': '500', '--f-pill': '"Anton", "Arial Narrow", sans-serif', '--w-pill': '400', '--s-pill': 'normal' } },
+    d: { label: 'D · Teko', rec: 'สปอร์ต', vars: { '--f-name': '"Teko", "Arial Narrow", sans-serif', '--w-name': '700', '--s-name': 'normal', '--ls-name': '.03em', '--f-num': '"Teko", "Arial Narrow", sans-serif', '--w-num': '600', '--f-text': '"Barlow Condensed", "Arial Narrow", sans-serif', '--w-text': '600', '--f-pill': '"Teko", "Arial Narrow", sans-serif', '--w-pill': '600', '--s-pill': 'normal' } }
+  };
+
+  /* options = the owner's choices (item 8). first = recommended */
+  const OPTS = [
+    { id: 'font', t: 'ฟอนต์', d: 'ข้อ 4 · ทุกชุดเป็น Google Font ฟรี ไม่ใช่ไฟล์จากเกม', ch: Object.entries(FONTS).map(([k, f]) => [k, f.label, f.rec]), def: 'c' },
+    { id: 'split', t: 'ชื่อกับ HP แบ่งพื้นที่', d: 'ข้อ 1 · ชื่อชิดซ้าย HP ชิดขวา ฝั่งละไม่เกินครึ่งการ์ด ยาวเกินก็ย่อลง', ch: [['half', 'ครึ่ง-ครึ่งตายตัว', 'ตามที่สั่ง'], ['share', 'ครึ่ง-ครึ่ง แต่ยืมที่ว่างได้ถ้าอีกฝั่งสั้น']], def: 'half' },
+    { id: 'wrap', t: 'ชื่อยาวเกินครึ่ง', d: 'เมื่อย่อถึงขนาดเล็กสุดแล้วยังไม่พอ', ch: [['two', 'ขึ้น 2 บรรทัด', 'แนะนำ'], ['one', 'ย่อต่อจนพอดี 1 บรรทัด']], def: 'two' },
+    { id: 'pad', t: 'ช่องไฟจากขอบการ์ด', d: 'ระยะระหว่างตัวอักษรกับขอบการ์ด ทุกด้าน', ch: [['2.6', 'แคบ'], ['3.6', 'กลาง', 'แนะนำ'], ['4.8', 'กว้าง']], def: '3.6' },
+    { id: 'erase', t: 'วิธีลบตัวอักษรออกจากพื้นหลัง', d: 'ข้อ 2 · แบบใหม่เติมลายหิน/ผมจากรอบๆ ให้เหมือนเดิมมากขึ้น · ใช้ปุ่มใต้การ์ดเทียบกับต้นฉบับได้', ch: [['best', 'แบบใหม่ (เนียนกว่า)', 'แนะนำ'], ['fast', 'แบบรอบแรก']], def: 'best' },
+    { id: 'read', t: 'ช่วยให้อ่านง่ายบนภาพ', d: 'ข้อ 2 · ไม่ทับพื้นหลังทั้งแถบ ภาพเดิมยังอยู่', ch: [['soft', 'ขอบดำ + เงานุ่มรอบตัวอักษร', 'แนะนำ'], ['ol', 'ขอบดำอย่างเดียว'], ['scrim', 'แถบมืดไล่ (แบบรอบแรก)']], def: 'soft' },
+    { id: 'ol', t: 'ความหนาขอบตัวอักษร', d: 'ขอบดำช่วยให้อ่านได้บนทุกภาพ', ch: [['.55', 'บาง'], ['.75', 'กลาง', 'แนะนำ'], ['1', 'หนา']], def: '.75' },
+    { id: 'nums', t: 'ตัวเลขในคำอธิบาย', d: 'เช่น 50% · +30%', ch: [['white', 'ขาวแบบเกม'], ['gold', 'ทอง เห็นค่าเด่น']], def: 'gold' },
+    { id: 'shine', t: 'แสงวิ่ง', d: 'แสงวิ่งบนกรอบ + สีชื่อวิ่ง (ระดับ Shiny ขึ้นไป) · ปิดเองถ้าเครื่องตั้งลดการเคลื่อนไหว', ch: [['on', 'เปิด', 'แนะนำ'], ['off', 'ปิด']], def: 'on' },
+    { id: 'glow', t: 'เรืองแสงรอบการ์ด', d: 'สีตามระดับ', ch: [['on', 'เปิด', 'แนะนำ'], ['off', 'ปิด']], def: 'on' },
+    { id: 'tiny', t: 'การ์ดเล็ก (กว้างไม่ถึง 170px)', d: 'ตัวหนังสือคำอธิบายเล็กเกินอ่าน · ซ่อนแล้วเหลือชื่อสกิล ชื่อ HP ATK ชัดกว่า', ch: [['hide', 'ซ่อนคำอธิบาย', 'แนะนำ'], ['show', 'แสดงทุกขนาด']], def: 'hide' },
+    { id: 'own', t: 'ตัวนับ ×N (จำนวนที่มี)', d: 'ในเกมเป็นของแต่ละคน · เว็บไม่รู้ว่าผู้ใช้มีกี่ใบ', ch: [['off', 'ไม่แสดง', 'แนะนำ'], ['on', 'แสดง']], def: 'off' }
+  ];
+  const TESTS = {
+    name: [['Long Hair Invader', 'ชื่อจริง'], ['Goblin', 'สั้นสุด'], ['Flash Lightning Swordswoman', 'ยาวสุดในเว็บ'], ['Ultimate Shadow Monarch of the Endless Abyss', 'ยาวมาก (2 บรรทัด)']],
+    hp: [['real', 'ค่าระดับนั้น'], ['999999999', '999,999,999'], ['1234567890', '1,234,567,890 → 1.2B'], ['45600000000000', '45.6T']],
+    desc: [['game', 'ข้อความเกม'], ['mid', 'ยาวขึ้น'], ['long', 'ยาวที่สุดในเว็บ']]
+  };
+
+  const state = { rar: 'godly', name: BASE_NAME, hp: 'real', desc: 'game', view: 'new' };
+  OPTS.forEach(o => state[o.id] = o.def);
+  try { const s = JSON.parse(localStorage.getItem('cbi-redraw3') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
+  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-redraw3', JSON.stringify(s)); } catch (e) {} };
+
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const full = n => Math.round(n).toLocaleString('en-US');
+  /* HP: full number below 1B · from 1B up: B / T / Qa / Qi, 1 decimal (none from 100 up, .0 dropped) */
+  function fmtHp(n) {
+    if (n < 1e9) return full(n);
+    const U = [['Qi', 1e18], ['Qa', 1e15], ['T', 1e12], ['B', 1e9]];
+    for (const [u, v] of U) if (n >= v) { const x = n / v; return (x >= 100 ? Math.floor(x) : (Math.floor(x * 10) / 10)).toString() + u; }
+  }
+  const rarOf = k => R.find(r => r.k === k);
+  const hpOf = r => state.hp === 'real' ? r.hp : +state.hp;
+  const descHTML = s => esc(s).replace(/([+\-]?\d[\d.,]*%?x?)/g, '<b>$1</b>');
+
+  function cardHTML() {
+    return `<div class="face">
+      <img class="art" src="${ARTS.best}" alt="" decoding="async">
+      <div class="scrim t"></div><div class="scrim b"></div>
+      <div class="top">
+        <div class="name"><span class="ot fill"></span></div>
+        <div class="hp"><span class="ot fill"></span><svg viewBox="0 0 100 92" aria-hidden="true"><use href="#heart"/></svg></div>
+      </div>
+      <div class="pills"><span class="pill odds"></span><span class="pill rar"></span></div>
+      <div class="ab"><div class="abn ot fill"></div><p class="abd ot"></p></div>
+      <div class="bot"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#swords"/></svg><span class="atk ot fill"></span><span class="own"></span></div>
+    </div>`;
+  }
+  const setT = (el, txt, html) => { el.dataset.t = txt; if (html != null) el.innerHTML = html; else el.textContent = txt; };
+
+  function fill(card, r) {
+    card.className = 'card r-' + r.k;
+    const isMain = card.id === 'main';
+    card.classList.toggle('v-bg', isMain && state.view === 'bg');
+    card.classList.toggle('v-orig', isMain && state.view === 'orig');
+    const src = isMain && state.view === 'orig' ? ARTS.orig : ARTS[state.erase];
+    const img = card.querySelector('.art'); if (!img.src.endsWith(src)) img.src = src;
+    card.classList.toggle('glow', state.glow === 'on');
+    const live = state.shine === 'on' && r.k !== 'normal';
+    card.classList.toggle('run', live && !card.classList.contains('mini'));
+    card.classList.toggle('name-run', live);
+    card.classList.toggle('show-own', state.own === 'on');
+    const q = s => card.querySelector(s);
+    setT(q('.name .ot'), state.name || ' ');
+    setT(q('.hp .ot'), fmtHp(hpOf(r)));
+    q('.odds').textContent = r.odds;
+    q('.rar').textContent = r.n.toUpperCase();
+    setT(q('.abn'), AB_NAME);
+    const d = DESC[state.desc];
+    setT(q('.abd'), d, state.nums === 'gold' ? descHTML(d) : null);
+    setT(q('.atk'), full(r.atk));
+    q('.own').textContent = '×' + r.own;
+    card.setAttribute('role', 'img');
+    card.setAttribute('aria-label', `${r.n} ${state.name}, HP ${fmtHp(hpOf(r))}, ATK ${full(r.atk)}, ${r.odds}`);
+    fit(card);
+  }
+
+  /* ---- fitting: every size is in cqw of the face, so one fit works at any card width ---- */
+  function fit(card) {
+    const face = card.querySelector('.face'); const W = face.clientWidth; if (!W) return;
+    const cq = el => el.getBoundingClientRect().width / W * 100;
+    const ch = el => el.getBoundingClientRect().height / W * 100;
+    card.classList.toggle('tiny', state.tiny === 'hide' && card.getBoundingClientRect().width < 170);
+    const pad = +state.pad, GAP = 3;
+    const half = (100 - 2 * pad - GAP) / 2;         // each side may use at most half the card
+
+    // natural widths at the biggest size
+    const hp = card.querySelector('.hp .ot'), hpBox = card.querySelector('.hp'), heart = card.querySelector('.hp svg');
+    const nm = card.querySelector('.name .ot');
+    const HP_MAX = 10, N_MAX = 10, N_MIN = 5;
+    hp.style.fontSize = HP_MAX + 'cqw'; nm.classList.remove('wrap'); nm.style.maxWidth = ''; nm.style.fontSize = N_MAX + 'cqw';
+    const top = card.querySelector('.top'); top.style.gridTemplateColumns = 'max-content max-content';
+    const heartW = cq(heart) + 1.2;
+    const hpNat = cq(hpBox), nmNat = cq(nm);
+
+    // room for each side: half each · "share" lets one side borrow what the other leaves empty
+    let hpRoom = half, nmRoom = half;
+    if (state.split === 'share') {
+      const all = 100 - 2 * pad - GAP;
+      if (hpNat < half) nmRoom = all - hpNat;
+      else if (nmNat < half) hpRoom = all - nmNat;
+    }
+    top.style.gridTemplateColumns = `minmax(0, ${nmRoom.toFixed(2)}cqw) minmax(0, ${hpRoom.toFixed(2)}cqw)`;
+    top.style.justifyContent = 'space-between';
+
+    // HP: shrink until it fits its side
+    if (hpNat > hpRoom) hp.style.fontSize = Math.max(3, HP_MAX * (hpRoom - heartW) / (hpNat - heartW)).toFixed(2) + 'cqw';
+    for (let i = 0; i < 6 && cq(hpBox) > hpRoom; i++) hp.style.fontSize = (parseFloat(hp.style.fontSize) * .97).toFixed(2) + 'cqw';
+
+    // name: short = big, long = smaller, then 2 lines (or keep shrinking)
+    let fs = N_MAX;
+    if (nmNat > nmRoom) fs = Math.max(N_MIN, N_MAX * nmRoom / nmNat);
+    nm.style.fontSize = fs.toFixed(2) + 'cqw';
+    if (cq(nm) > nmRoom + .2) {
+      if (state.wrap === 'two') {
+        nm.classList.add('wrap'); nm.style.maxWidth = nmRoom + 'cqw';
+        let s = 6.4; nm.style.fontSize = s + 'cqw';
+        while (s > 2.6 && (ch(nm) > 12.3 || nm.scrollWidth > nm.clientWidth + 1)) { s -= .2; nm.style.fontSize = s.toFixed(2) + 'cqw'; }
+      } else {
+        nm.style.fontSize = Math.max(2.4, fs * nmRoom / cq(nm)).toFixed(2) + 'cqw';
+      }
+    }
+
+    // ATK
+    const atk = card.querySelector('.atk'); atk.style.fontSize = '12.5cqw';
+    const aw = cq(atk); if (aw > 66) atk.style.fontSize = (12.5 * 66 / aw).toFixed(2) + 'cqw';
+
+    // ability text: biggest size whose block fits between the art and the bottom row
+    const ab = card.querySelector('.ab'), abd = card.querySelector('.abd');
+    if (!card.classList.contains('tiny')) {
+      const LIM = 44; let lo = 3, hi = 6.4;
+      abd.style.fontSize = hi + 'cqw';
+      if (ch(ab) > LIM) {
+        for (let i = 0; i < 9; i++) { const m = (lo + hi) / 2; abd.style.fontSize = m + 'cqw'; if (ch(ab) > LIM) hi = m; else lo = m; }
+        abd.style.fontSize = lo.toFixed(2) + 'cqw';
+      }
+    }
+  }
+
+  /* count-up on the main card when the rarity changes (650ms · reduced motion = instant) */
+  function countTo(el, from, to, fmt) {
+    if (reduced() || from === to) return;
+    const end = () => fit(el.closest('.card'));
+    const t0 = performance.now(), D = 650;
+    const step = t => { const p = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - p, 3); const v = fmt(from + (to - from) * e); el.textContent = v; el.dataset.t = v; if (p < 1) requestAnimationFrame(step); else end(); };
+    requestAnimationFrame(step);
+  }
+
+  // build
+  const main = document.getElementById('main'); main.innerHTML = cardHTML();
+  const sizes = document.getElementById('sizes');
+  [260, 180, 130, 96].forEach(px => {
+    const f = document.createElement('figure');
+    f.innerHTML = `<div class="card${px < 150 ? ' mini' : ''}" style="width:${px}px">${cardHTML()}</div><figcaption>${px}px</figcaption>`;
+    sizes.appendChild(f);
+  });
+  const grid = document.getElementById('grid');
+  R.forEach(r => {
+    const f = document.createElement('figure');
+    f.innerHTML = `<div class="card" data-r="${r.k}">${cardHTML()}</div><figcaption>${r.n}</figcaption>`;
+    grid.appendChild(f);
+  });
+
+  const rarRow = document.getElementById('rarRow');
+  R.forEach(r => {
+    const b = document.createElement('button'); b.type = 'button'; b.dataset.k = r.k;
+    b.innerHTML = `<i class="r-${r.k}"></i>${r.n}`;
+    rarRow.appendChild(b);
+  });
+
+  function seg(host, list, cur, onPick) {
+    host.innerHTML = '';
+    list.forEach(([v, label, rec]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.dataset.v = v;
+      b.setAttribute('aria-pressed', String(v === cur));
+      b.innerHTML = esc(label) + (rec ? `<span class="rec">${esc(rec)}</span>` : '');
+      b.addEventListener('click', () => { host.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); onPick(v); });
+      host.appendChild(b);
+    });
+  }
+
+  const opts = document.getElementById('opts');
+  opts.style.display = 'grid'; opts.style.gap = '14px';
+  OPTS.forEach(o => {
+    const box = document.createElement('div'); box.className = 'opt';
+    box.innerHTML = `<h3>${esc(o.t)}</h3><p>${esc(o.d)}</p><div class="seg"></div>`;
+    seg(box.querySelector('.seg'), o.ch, state[o.id], v => { state[o.id] = v; save(); applyVars(); renderAll(); });
+    opts.appendChild(box);
+  });
+
+  seg(document.getElementById('view'), [['new', 'แบบใหม่'], ['bg', 'พื้นหลังที่ลบแล้ว'], ['orig', 'ต้นฉบับเกม']], state.view, v => { state.view = v; fill(main, rarOf(state.rar)); });
+  const nameIn = document.getElementById('nameIn');
+  seg(document.querySelector('[data-test="name"]'), TESTS.name, state.name, v => { state.name = v; nameIn.value = v; renderAll(); });
+  seg(document.querySelector('[data-test="hp"]'), TESTS.hp, state.hp, v => { state.hp = v; renderAll(); });
+  seg(document.querySelector('[data-test="desc"]'), TESTS.desc, state.desc, v => { state.desc = v; renderAll(); });
+  nameIn.addEventListener('input', () => { state.name = nameIn.value; document.querySelectorAll('[data-test="name"] button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === state.name))); renderAll(); });
+
+  function applyVars() {
+    const root = document.documentElement.style;
+    Object.entries(FONTS[state.font].vars).forEach(([k, v]) => root.setProperty(k, v));
+    root.setProperty('--ol', state.ol);
+    const sc = state.read === 'scrim' ? [.5, .72] : [0, 0];
+    root.setProperty('--scrim-top', sc[0]); root.setProperty('--scrim-bot', sc[1]);
+    root.setProperty('--soft', state.read === 'soft' ? '0 0 1.6cqw rgba(0,0,0,.85), 0 0 3.2cqw rgba(0,0,0,.45)' : 'none');
+    root.setProperty('--pad', state.pad);
+    root.setProperty('--num-hl', state.nums === 'gold' ? '#ffcf5a' : '#f4f1f6');
+  }
+
+  function renderSummary() {
+    const lines = OPTS.map(o => { const c = o.ch.find(x => x[0] === state[o.id]); return `${o.t}: ${c[1]}`; });
+    document.getElementById('sum').textContent = 'การ์ดแบบเขียนใหม่ (Long Hair Invader)\n' + lines.join('\n');
+  }
+
+  function renderAll() {
+    const r = rarOf(state.rar);
+    fill(main, r);
+    sizes.querySelectorAll('.card').forEach(c => fill(c, r));
+    grid.querySelectorAll('.card').forEach(c => fill(c, rarOf(c.dataset.r)));
+    rarRow.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === state.rar)));
+    renderSummary();
+  }
+
+  rarRow.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || b.dataset.k === state.rar) return;
+    const old = rarOf(state.rar), nu = rarOf(b.dataset.k);
+    state.rar = nu.k; renderAll();
+    const a = fmtHp(hpOf(old)), z = fmtHp(hpOf(nu)), hpEl = main.querySelector('.hp .ot');
+    if (!reduced() && a.length > z.length) { setT(hpEl, a); fit(main); setT(hpEl, z); }   // size for the longer number so it never overflows while counting
+    countTo(main.querySelector('.hp .ot'), hpOf(old), hpOf(nu), fmtHp);
+    countTo(main.querySelector('.atk'), old.atk, nu.atk, full);
+    if (!reduced()) { main.classList.remove('flash'); void main.offsetWidth; main.classList.add('flash'); setTimeout(() => main.classList.remove('flash'), 520); }
+  });
+
+  document.getElementById('copy').addEventListener('click', e => {
+    const txt = document.getElementById('sum').textContent; const btn = e.currentTarget;
+    const done = () => { btn.textContent = 'คัดลอกแล้ว'; setTimeout(() => btn.textContent = 'คัดลอกตัวเลือก', 1600); };
+    const pick = () => { const s = getSelection(), rg = document.createRange(); rg.selectNodeContents(document.getElementById('sum')); s.removeAllRanges(); s.addRange(rg); btn.textContent = 'เลือกข้อความแล้ว กดคัดลอกเอง'; };
+    try { navigator.clipboard.writeText(txt).then(done, pick); } catch (err) { pick(); }
+  });
+
+  // refit when a card changes width or fonts finish loading
+  const ro = new ResizeObserver(es => es.forEach(en => { const c = en.target.closest('.card'); if (c) fit(c); }));
+  document.querySelectorAll('.card .face').forEach(f => ro.observe(f));
+  applyVars(); renderAll();
+  if (document.fonts) { document.fonts.ready.then(renderAll); document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => document.querySelectorAll('.card').forEach(fit)); }
+})();
+</script>
+</body>
+</html>
