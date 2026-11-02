@@ -83,6 +83,8 @@
   --gc-hp-line: #000a03;
   --gc-atk: #ec453b;
   --gc-atk-line: #2a0101;
+  --gc-buff: #d4e85c;           /* ATK / HP raised by the deck's buffs (or the trait) · Deck page + its image (2026-11-02) */
+  --gc-buff-line: #1c2400;
   --gc-num-shade: rgba(0, 0, 0, .5);
   --gc-pill: #fff;
   --gc-pill-ink: #111;

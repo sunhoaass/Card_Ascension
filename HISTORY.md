@@ -1554,3 +1554,139 @@
   - **ไฟล์:** `tools/erase_text.py` · รูป 19 ใบ + `thumb/` · `js/app.js` · `js/share.js` · `css/fx.css` · `css/tokens.css` · `index.html` (`?v=52`) · `PROGRESS.md` · `HISTORY.md`
 - 2026-10-31: อัปเดตข่าว (E) — เพิ่ม patch notes "Two Battles at Once" 1 อัปเดต (major) + 2 ระบบใหม่ (Two Battles at Once, Climb Bar) ใน data/news.json · ไม่มีโค้ด
 - 2026-11-01: อัปเดตข่าว (E) — เพิ่ม patch notes "Guild Boss & Guild Stats" 1 อัปเดต (major) + 2 ระบบใหม่ (Guild Stats, Favorite & Cosmetic Cards) ใน data/news.json · ไม่มีโค้ด
+- **2026-11-02 · Deck: รูป Save image สะอาดขึ้น + Trait บนรูป + บัฟเปลี่ยนเลข ATK/HP (`?v=54`):**
+  - **เจ้าของเลือก (ถามก่อนทำ):** ลิงก์แชร์พก Trait · เลขบนการ์ดรวมตัวคูณ Trait · Support "supported card" = คอลัมน์เดียวกัน · ตารางชื่อ Claude ร่างให้ตรวจ
+  - **รูป Save image ของ Deck (`share.js deckImage`):** เอาออก: หัว CARD BATTLE INFINITY · บรรทัด "Deck · mode · rarity · 4/4 cards · 4/4 support" · footer ทั้งแถบ · ตัวนับ "4 / 4" ของแผง · `HEAD` 150 → 100 · `FOOT` 96 → 28 (ขอบล่าง) · ชื่อ deck baseline 98 → 66 · เพิ่มป้าย Trait ใต้การ์ด (แถวนี้มีเมื่อ deck มี Trait อย่างน้อย 1 ใบ) + เลข ATK/HP ที่บัฟ (เขียวทอง `--gc-buff`) · รูป Tier List ไม่แตะ (`paintFooter` / `paintBackdrop` เหมือนเดิม · `drawGameCard` รับ `nums` เพิ่มแบบไม่ใส่ก็ได้) · รูปตัวอย่าง deck ในสเปก = 2400 × 1700 px (เดิม ~2400 × 1844)
+  - **บัฟ (`js/deckbuff.js` ใหม่ + `data/buffs.json` ใหม่):** สูตร ATK = base × (1 + Σ%) × Trait · บัฟบวกกัน · Support ซ้ำ = 1 ครั้งต่อการ์ด 1 ใบ · การ์ดซ้ำนับทุกใบ ไม่บัฟตัวเอง · ข้ามแบบมีเงื่อนไข · ชื่อตัวละคร/กลุ่มที่ไม่แน่ใจ = `null` + `guess`
+  - **หน้า Deck:** editor + หน้าแชร์: เลขบนการ์ดเปลี่ยนตามบัฟ + Trait (นับ 650ms · เปลี่ยนระดับนับจากเลขเดิมต่อไปค่าใหม่) · ปุ่ม `.dk-buff` ใต้การ์ด (มือถือ 2 บรรทัด ATK / HP) → กล่องที่มาของบัฟ (ATK/HP ตั้งต้น → ใหม่ · แถวต่อต้นทาง · ×n) · หน้าแชร์โชว์ Trait ของคนแชร์เป็นป้าย · ลิงก์ใหม่มี `t` เฉพาะเมื่อมี Trait · คำแปลไทยของข้อความใหม่ใน `i18n-th-ui.js`
+  - **คะแนนทีม (`teamscore.js`):** Card power: Support แบบทั้ง deck ใส่ซ้ำ ใบที่ 2 = 0 · Support ช่องเดียวยังนับต่อช่อง · ส่วน Synergy ยังนับ Support ซ้ำ (ถามเจ้าของ)
+  - **ข้อความเดิมที่แก้:** หัว `deck.js` + PROGRESS ข้อ 6 "ใบเดียวกันใส่ซ้ำ บัฟบวกกัน" → กติกาใหม่
+  - **ทดสอบ (Chromium · 390×844 + 1280×800 + reduced motion):** deck ในสเปก (Witch of Envy + King of Conquerors ×3 · Nine Tails Fox / Guild Master Giant / Eternal Wish Dragon / Charge Commander · Godly · King มี Trait Ascendant) · คำนวณมือ: ค่า Godly = Nine Tails 90/90 · Guild 17.4 · Charge 33 · Eternal 22.5 → Witch ATK +90 +45 (King 15 × 3) +17.4 +33 +22.5 = **+207.9%** · HP +90 +17.4 = **+107.4%** · King ช่อง 2 = 30 (King 2 ใบอื่น) +17.4 +33 +22.5 = **+102.9%** · ช่อง 3 (Eternal อยู่ช่องนี้ = ไม่บัฟ) **+80.4%** · ช่อง 4 (Charge อยู่ช่องนี้) **+69.9%** · HP King +17.4% · หน้าเว็บตรงทุกช่อง · King ATK 10,888,446 × 2.029 × 2 (Ascendant) = 44,185,314 ✓ · Witch ไม่ได้บัฟจาก Return by Death Boy (ไม่อยู่ใน deck · และเป็นบัฟให้คู่อย่างเดียว) ✓ · ลิงก์แชร์ (ผู้เปิดไม่มี Trait) เห็น Ascendant 3 ใบ + เลขเดียวกัน ✓ · ลิงก์เก่าไม่มี `t` / 5 ช่อง เปิดได้ ไม่มี Trait ✓ · เปลี่ยนระดับเป็น Normal เลขตรงค่าคำนวณ ✓ · Guild Master Giant ×2 Card power เท่า ×1 (0.32) · Nine Tails ×2 Card power เพิ่ม (0.323 → 0.373) ✓ · รูป Tier List สร้างได้ ✓ · ไม่มี scroll แนวนอน · ไม่มี error ใน console · ไม่ได้วัด fps (ไม่มี animation ใหม่ที่วนตลอด · เลขนับใช้ `FX.countTo` เดิม)
+  - **ไฟล์:** `js/deckbuff.js` (ใหม่) · `data/buffs.json` (ใหม่) · `tools/deckbuff_report.js` (ใหม่) · `js/share.js` · `js/deck.js` · `js/teamscore.js` · `js/app.js` · `js/i18n-th-ui.js` · `css/deck.css` · `css/fx.css` · `css/tokens.css` · `index.html` (`?v=54`) · `PROGRESS.md` · `HISTORY.md`
+  - **ตารางให้เจ้าของตรวจ (`node tools/deckbuff_report.js`):**
+
+    ### Support: counted (18)
+
+    | Support | Buff → target |
+    |---|---|
+    | Automail Mechanic | HP {0} → slot |
+    | Navigation Pixie | DMG {0} → slot |
+    | Pig Captain | HP {1} → slot |
+    | Foundation Gentleman | DMG {0} → slot · HP {1} → slot |
+    | True Queen | DMG {0} → others |
+    | Corps Master | DMG {0} → all · HP {0} → all |
+    | Crusader Tank | HP {0} → slot (skipped: DMG {1}: {1}% more damage every time it is hit.) |
+    | Star Key Mage | DMG {0} → slot |
+    | Turtle Hermit | HP {0} → slot (skipped: DMG {1}: deals {1}% more damage every turn (up to 5 times).) |
+    | Charge Commander | DMG {0} → others |
+    | Sacred Arrow Priestess | DMG {0} → slot |
+    | Ancient Archmage | DMG {0} → slot |
+    | Guild Master Giant | DMG {0} → all · HP {0} → all |
+    | Angel Attendant | DMG {1} → slot · HP {2} → slot |
+    | Nine Tails Fox | DMG {0} → slot · HP {1} → slot |
+    | Wish Granter | DMG {0} → slot · HP {1} → slot |
+    | Eternal Wish Dragon | DMG {1} → others |
+    | Ogre Shrine Princess | DMG {0} → slot |
+
+    ### Support: skipped, has a condition (8)
+
+    | Support | Why |
+    |---|---|
+    | Spirit Sidekick | DMG {0}: the supported card gets {0}% more damage every time it is hit. |
+    | Fox Mask Mentor | DMG {0}: the supported card deals {0}% more damage every turn (up to 5 times). |
+    | Rifle Girl | DMG {0}: the supported card's first attack of the fight does {0}% more damage. |
+    | Song Sorceress | DMG {0}: every other attack of the supported card does {0}% more damage. |
+    | Supreme Kai | DMG {0}: it deals {0}% more damage. |
+    | Cherry Blossom Medic | DMG {0}: every 3rd attack of the supported card does {0}% more damage. |
+    | Hellsing Commander | DMG {0}: the supported card does {0}% more damage with its first hit on each new enemy. |
+    | Hero of Legend | DMG {0}: under 30% HP the supported card deals {0}% more damage. |
+
+    Other support (74): no damage / max HP buff in the text.
+
+    ### Cards (69 with a deck buff)
+
+    | Card | Buff | Not used |
+    |---|---|---|
+    | Atomic Shadow Lord | group Shadow Garden +16% DMG +16% HP |  |
+    | Destructo Monk | both Android 18 +15% DMG +15% HP |  |
+    | Esper Brother | both Mob +15% DMG +15% HP |  |
+    | Haunted Armor Brother | both Edward Elric +15% DMG +15% HP |  |
+    | Horse Face Captain | others +6% DMG |  |
+    | Asaemon Swordswoman | both Gabimaru +15% DMG +15% HP |  |
+    | Axe Warrior Kid | self Frieren +15% DMG +15% HP |  |
+    | Bird Queen | self Naofumi +20% DMG +20% HP |  |
+    | Boogie Woogie Brother | both Yuji +15% DMG |  |
+    | Colossal Titan Boy | both Reiner +15% DMG +15% HP |  |
+    | Cyborg Disciple | self Saitama +20% DMG +20% HP |  |
+    | Flash Lightning Swordswoman | both Kirito +20% DMG +20% HP |  |
+    | Giant Earth Sin | both King +20% DMG +20% HP |  |
+    | Gun Exorcist Twin | both Rin Okumura +15% DMG +15% HP |  |
+    | Spirit Sword Punk | both Yusuke +15% DMG +15% HP |  |
+    | Turbo Ghost Kid | both Momo Ayase +20% DMG +20% HP |  |
+    | Ant Shadow General | — | Shadows raised by your deck are 20% stronger. |
+    | Black Dragon Swordsman | group Spirit Detective +3.2% DMG (no table yet) |  |
+    | Black Leg Cook | both Zoro +15% DMG +15% HP |  |
+    | Blade Dancer | both Sung Jinwoo +15% DMG +15% HP |  |
+    | Blood Fiend | both Denji +20% DMG +20% HP |  |
+    | Blood-Red Knight | — | Shadows raised by your deck are 25% stronger. |
+    | Colossal Strategist | others +10% DMG |  |
+    | Dragon Butler | group Nazarick +10% DMG |  |
+    | Dragon Grandpa Assassin | both Killua +15% DMG +15% HP |  |
+    | Explosion Rival | both Deku +13% DMG +13% HP |  |
+    | Godspeed Assassin | both Gon +20% DMG +20% HP |  |
+    | Half-Demon Fang | both Sesshomaru +14% DMG +14% HP |  |
+    | Retired Hitman | others +8% DMG |  |
+    | Second Hokage | self Hashirama +20% DMG +20% HP |  |
+    | Steel Arm Alchemist | both Alphonse Elric +15% DMG +15% HP |  |
+    | Superd Spear Warrior | others +8% DMG |  |
+    | Sword King Girl | both Rudeus +15% DMG +15% HP |  |
+    | Tanuki Sword Girl | self Naofumi +20% DMG +20% HP |  |
+    | Anti-Magic Devil Knight | both Yuno +20% DMG +20% HP |  |
+    | Fire Dragon Slayer | both Zeref +20% DMG +20% HP (no table yet) |  |
+    | Flame Pillar | — | When knocked out, the next card in the deck gets +35% damage. |
+    | Last Avenger | both Naruto +14% DMG +14% HP |  |
+    | One For All Heir | self All Might +25% DMG +25% HP |  |
+    | Phoenix Commander | self Whitebeard +20% DMG +20% HP |  |
+    | Shadow Garden Alpha | group Shadow Garden +15% DMG +15% HP |  |
+    | Jajanken Kid | both Killua +20% DMG +20% HP |  |
+    | King of Conquerors | others +15% DMG |  |
+    | Sword Demon | both Reinhard +15% DMG +15% HP |  |
+    | Thousand-Year Witch | group Party +15% DMG (no table yet) |  |
+    | Yellow Flash Hokage | both Naruto +15% DMG +15% HP |  |
+    | Beast Mode Scholar | self Piccolo +20% DMG +20% HP |  |
+    | Sun Dance Slayer | both Nezuko +15% DMG +15% HP |  |
+    | Red Hair Emperor | partner Luffy +20% DMG +20% HP |  |
+    | Spirit Gun Delinquent | group Spirit Detective +6.7% DMG (no table yet) |  |
+    | Wrath Shield Hero | others +7% DMG |  |
+    | Fist Hero Vice Admiral | both Roger +20% DMG +20% HP (no table yet) |  |
+    | Hero Number One | — | Each hit swaps the enemy's front card with a random card from its deck (not bosses). |
+    | Infinity Sorcerer | both Geto +7.6% DMG +7.6% HP |  |
+    | Made in Heaven Priest | self Time Stop Vampire +23% DMG +23% HP |  |
+    | Six Paths Fox Sage | others +9.7% DMG |  |
+    | Ultra Ego Prince | both Goku +25% DMG +25% HP |  |
+    | Undead Overlord King | group Great Tomb +6.8% DMG +6.8% HP |  |
+    | Wood God Hokage | both Madara +15% DMG +15% HP |  |
+    | Destroyer Dragonoid | both Rimuru +6% DMG |  |
+    | Hollow Mask Reaper | both Snow White Reaper +14% DMG +14% HP |  |
+    | Primordial Butler Demon | self Rimuru +30% DMG +30% HP |  |
+    | Spiral Drill King | self Kamina +21% DMG +21% HP |  |
+    | Storm Dragon | both Slime Demon Lord +11% DMG +11% HP |  |
+    | Witch of Envy | partner Return by Death Boy +21% DMG +21% HP |  |
+    | Quirk Thief Overlord | both Shigaraki +9.7% DMG +9.7% HP |  |
+    | Slime Demon Lord | others +3.6% DMG |  |
+    | Ultra Instinct Saiyan | both Vegeta +19% DMG +19% HP |  |
+    | Ice Make Mage | both Natsu +15% DMG +15% HP |  |
+    | Knight King | both Shinra +15% DMG +15% HP |  |
+    | One Horn Oni Maid | both Rem +20% DMG +20% HP |  |
+    | Orc Shaman Shadow | — | Shadows raised by your deck are 10% stronger. |
+    | Ranger Android | both Android 18 +15% DMG +15% HP |  |
+    | Snow White Reaper | both Ichigo +15% DMG +15% HP (no table yet) |  |
+
+    ### Names data/buffs.json doesn't know yet (6)
+
+    - Spirit Detective (black-dragon-swordsman)
+    - Zeref (fire-dragon-slayer)
+    - Party (thousand-year-witch)
+    - Spirit Detective (spirit-gun-delinquent)
+    - Roger (fist-hero-vice-admiral)
+    - Ichigo (snow-white-reaper)

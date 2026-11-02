@@ -841,15 +841,16 @@
     route();
 
     try {
-      const [meta, cards, support, teams, traits, pool] = await Promise.all([
+      const [meta, cards, support, teams, traits, pool, buffs] = await Promise.all([
         loadJSON("data/meta.json"),
         loadJSON("data/cards.json"),
         loadJSON("data/support.json").catch(() => []),   // support cards (step 4); the page copes without it
         loadJSON("data/teams.json").catch(() => []),     // Meta Decks; the page copes without it
         loadJSON("data/traits.json").catch(() => null),  // Trait Shop (js/traits.js); the site copes without it
         loadJSON("data/pool.json").catch(() => null),    // dates added (NEW badge, Home); the site copes without it
+        loadJSON("data/buffs.json").catch(() => null),   // names in ability texts -> card ids (js/deckbuff.js); the site copes without it
       ]);
-      state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits;
+      state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits; state.buffs = buffs;
       state.pool = pool && Array.isArray(pool.items) ? pool : null;
       if (Array.isArray(support)) support.forEach((x) => { if (x && x.id) { x.kind = "support"; if (!x.name) x.name = x.id.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); } });
       if (state.pool) {   // the date each card / support was added (pool.json "added") rides on the object: C.isNew(x)
