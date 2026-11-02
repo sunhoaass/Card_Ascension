@@ -115,8 +115,8 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
 .top { position: absolute; top: 3cqw; left: calc(var(--pad) * 1cqw); right: calc(var(--pad) * 1cqw); height: 12.5cqw; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3cqw; align-items: center; }
 .name { min-width: 0; display: flex; align-items: center; justify-content: flex-start; height: 100%; }
-.name .ot { display: inline-block; white-space: nowrap; font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); line-height: 1; text-transform: uppercase; padding: .4cqw .6cqw .2cqw; --fill: var(--name-fill); }
-.name .ot.wrap { white-space: normal; line-height: .98; }
+.name .ot { flex: none; display: inline-block; white-space: nowrap; font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); line-height: 1; text-transform: uppercase; padding: .4cqw .6cqw .2cqw; --fill: var(--name-fill); }
+.name .ot.two { white-space: normal; line-height: .98; }
 .hp { min-width: 0; justify-self: end; display: flex; align-items: center; gap: 1.2cqw; }
 .hp .ot { font-family: var(--f-num); font-weight: var(--w-num); line-height: 1; white-space: nowrap; --fill: var(--hp-fill); font-variant-numeric: tabular-nums; padding: .3cqw .3cqw; }
 .hp svg { width: 9.6cqw; height: 9.6cqw; flex: none; filter: drop-shadow(0 .5cqw .4cqw rgba(0,0,0,.6)); }
@@ -387,7 +387,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     const hp = card.querySelector('.hp .ot'), hpBox = card.querySelector('.hp'), heart = card.querySelector('.hp svg');
     const nm = card.querySelector('.name .ot');
     const HP_MAX = 10, N_MAX = 10, N_MIN = 5;
-    hp.style.fontSize = HP_MAX + 'cqw'; nm.classList.remove('wrap'); nm.style.maxWidth = ''; nm.style.fontSize = N_MAX + 'cqw';
+    hp.style.fontSize = HP_MAX + 'cqw'; nm.classList.remove('two'); nm.style.maxWidth = ''; nm.style.fontSize = N_MAX + 'cqw';
     const top = card.querySelector('.top'); top.style.gridTemplateColumns = 'max-content max-content';
     const heartW = cq(heart) + 1.2;
     const hpNat = cq(hpBox), nmNat = cq(nm);
@@ -408,11 +408,11 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
     // name: short = big, long = smaller, then 2 lines (or keep shrinking)
     let fs = N_MAX;
-    if (nmNat > nmRoom) fs = Math.max(N_MIN, N_MAX * nmRoom / nmNat);
+    if (nmNat > nmRoom) fs = Math.max(N_MIN, N_MAX * (nmRoom - 1.4) / (nmNat - 1.4));   // 1.2cqw side padding does not scale
     nm.style.fontSize = fs.toFixed(2) + 'cqw';
     if (cq(nm) > nmRoom + .2) {
       if (state.wrap === 'two') {
-        nm.classList.add('wrap'); nm.style.maxWidth = nmRoom + 'cqw';
+        nm.classList.add('two'); nm.style.maxWidth = nmRoom + 'cqw';
         let s = 6.4; nm.style.fontSize = s + 'cqw';
         while (s > 2.6 && (ch(nm) > 12.3 || nm.scrollWidth > nm.clientWidth + 1)) { s -= .2; nm.style.fontSize = s.toFixed(2) + 'cqw'; }
       } else {
