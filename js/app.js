@@ -160,21 +160,20 @@
     [[1e11, 13], [1e10, 10], [1e6, 5], [0, 4]], [[1e12, 18], [1e11, 14], [1e7, 7], [0, 6]], [[9e12, 25], [1e11, 20], [1e8, 10], [0, 8]],
     [[1e13, 33], [1e12, 26], [1e8, 13], [0, 10]], [[1e14, 40], [1e12, 32], [1e9, 16], [0, 13]]];
   const MUT_RE = /\s*Mutation bonus: \+[\d.]+% damage and max HP\.?/i;
-  // does it have one? the game's text says so (written at the rarity it was copied at), or it is a redrawn support (all of
-  // them do above Normal · the line is written by the web)
-  const hasMut = (s) => isSupport(s) && (MUT_RE.test(String((s.effect && s.effect.desc) || "")) || !!s.redraw);
+  // every support has one above Normal (owner 2026-11-02) · the text's own number (copied at one rarity) is replaced
+  const hasMut = (s) => isSupport(s);
   function mutAt(s, rarity) {
     const L = levelOf(rarity);
     if (!L || !hasMut(s) || !MUT[L]) return 0;
     const o = oddsAt(s, rarity);
     return MUT[L].find(([t]) => o >= t)[1];
   }
-  // the text with the Mutation sentence at this rarity (gone at Normal, like the game)
+  // the text with the Mutation sentence at this rarity (added when the data has none · gone at Normal, like the game)
+  const mutLine = (m) => `Mutation bonus: +${m}% damage and max HP.`;
   const mutText = (s, text, rarity) => {
-    const t = String(text || "");
-    if (!MUT_RE.test(t)) return t;
+    const t = String(text || "").replace(MUT_RE, "");
     const m = mutAt(s, rarity);
-    return t.replace(MUT_RE, (x) => (m ? x.replace(/\+[\d.]+%/, "+" + m + "%") : ""));
+    return m ? (t ? t + " " : "") + mutLine(m) : t;
   };
   const supText = (s, text, rarity) => I18N.desc(mutText(s, text, rarity)).replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
@@ -425,10 +424,10 @@
   }
   // ability text → HTML: numbers gold · {n} = a support value at the rarity · a support's Mutation line = the table's value
   // at the rarity in its own span (setSupportNums changes it · gone at Normal)
-  function textHTML(text, s, rarity) {
-    if (s && MUT_RE.test(String(text || ""))) {
+  function textHTML(text, s, rarity, mut = true) {
+    if (mut && s && hasMut(s)) {
       const m = mutAt(s, rarity);
-      return textHTML(String(text).replace(MUT_RE, ""), s, rarity) +
+      return textHTML(String(text || "").replace(MUT_RE, ""), s, rarity, false) +
         `<span class="gc__mut"${m ? "" : " hidden"}> ${m ? mutHTML(m) : ""}</span>`;
     }
     return I18N.desc(String(text || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).map((part, i) => {
@@ -508,7 +507,7 @@
       return `<b class="gc__dv" data-sv="${m[1]}" data-pct="${m[2]}" data-value="${v}">${v}${m[2]}</b>`;
     }).join("");
   }
-  const mutHTML = (m) => esc(I18N.desc(`Mutation bonus: +${m}% damage and max HP.`)).replace(`+${m}%`, `<b>+${m}%</b>`);
+  const mutHTML = (m) => esc(I18N.desc(mutLine(m))).replace(`+${m}%`, `<b>+${m}%</b>`);
   function setMut(el, s, rarity) {
     const p = $(".rd__mut", el);
     if (!p) return;
@@ -529,7 +528,7 @@
       const html = rdSupHTML(item, rarity), plain = html.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
       const m = mutAt(item, rarity);
       return top + pills + `<div class="rd__ab">${abn}<div class="rd__txt"><p class="rd__abd rd-ot" data-t="${esc(plain)}">${html}</p>` +
-        `<p class="rd__mut rd-ot"${m ? "" : " hidden"} data-t="${m ? esc(I18N.desc(`Mutation bonus: +${m}% damage and max HP.`)) : ""}">${m ? mutHTML(m) : ""}</p></div></div>` +
+        `<p class="rd__mut rd-ot"${m ? "" : " hidden"} data-t="${m ? esc(I18N.desc(mutLine(m))) : ""}">${m ? mutHTML(m) : ""}</p></div></div>` +
         `<div class="rd__sup">${rdSpan("rd-ot rd-fill", "SUPPORT")}</div>`;
     }
     const atk = statAt(item, "atk", rarity), desc = I18N.desc(String(ab.desc || ""));
@@ -1147,7 +1146,7 @@
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
-    isRedraw, syncT, mutAt, hasMut, MUT_RE, redrawEl, RDS, capOff, ANTON, OSW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
+    isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, capOff, ANTON, OSW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)

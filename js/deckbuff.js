@@ -10,8 +10,7 @@
    ×3.25 over base, the game shows ×2.60 = ×2 × 1.3.
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
    (same column) gets +X% damage and max HP when the support is mutated (its slot's rarity above Normal) · X = the owner's
-   table by the support's odds at the slot's rarity (C.mutAt · 2026-11-02), for supports whose text has the line or that
-   are redrawn (the web writes the line).
+   table by the support's odds at the slot's rarity (C.mutAt · 2026-11-02) · every support has one (owner 2026-11-02).
    Rarity per slot (owner 2026-11-02): deck.cardRarity[i] / deck.supRarity[i] (a name · missing or unknown = deck.rarity,
    so decks and links from before still read the same) · the card's numbers use its slot's rarity, a support's value and
    its mutation bonus use the support slot's rarity.
@@ -81,7 +80,7 @@
   }
   // a support whose effect reaches the whole deck (a second copy adds nothing · js/teamscore.js)
   // Mutation bonus at the support slot's rarity (owner's table from the game 2026-11-02 · C.mutAt in js/app.js: by the
-  // support's odds at that rarity · was the one number in the text, the rarity it was copied at) · 0 = none / Normal
+  // support's odds at that rarity · every support · was the one number in the text, the rarity it was copied at) · 0 = Normal
   const mutOf = (s, rarity) => C.mutAt(s, rarity);
   const deckWide = (s) => /\bevery (?:other )?card in your deck\b|\bwhole deck\b/i.test(descOf(s));
 
