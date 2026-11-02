@@ -391,7 +391,7 @@
     }
     // ability text: words (numbers bold gold) wrapped in 90u, font from 5u down until it fits
     const words = [];
-    String(ab.desc || "").split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).forEach((part, i) => {
+    I18N.desc(String(ab.desc || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).forEach((part, i) => {
       if (i % 2) { const m = /^\{(\d)\}(%?)$/.exec(part); words.push([m && sup ? C.supValAt(item, +m[1], rarity) + m[2] : part, true, true]); return; }
       part.split(/(\s+)/).forEach((p) => { if (/^\s+$/.test(p)) words.push([" ", false, false]); else if (p) words.push([p, false, true]); });
     });

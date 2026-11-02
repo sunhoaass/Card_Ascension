@@ -152,27 +152,26 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 }
 .brand__date { font-size: 11px; color: var(--ink-faint); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* ---------- Music button (js/music.js): ♪ + small sound waves while playing (transform only) ---------- */
-.music {
-  position: relative; flex: none; width: 44px; height: 44px; display: grid; place-items: center;
-  border-radius: 50%; border: 1px solid var(--gold-lo); background: var(--brass); color: var(--gold-hi);
+/* Thai: Cinzel / Oswald / Bangers have no Thai letters → Noto Sans Thai sits behind them (only the Thai letters fall through to it) */
+html.is-th {
+  --font-display: "Cinzel", "Noto Sans Thai", Georgia, serif;
+  --font-body: "Inter", "Noto Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --gc-font-text: "Oswald", "Noto Sans Thai", "TeX Gyre Heros Cn", "Arial Narrow", sans-serif;
+  --gc-font-pop: "Bangers", "Noto Sans Thai", "TeX Gyre Heros Cn", sans-serif;
+}
+
+/* ---------- Language button (js/i18n.js): "ไทย" / "EN" on phones, globe + name in the PC menu rail ---------- */
+.lang {
+  position: relative; flex: none; min-width: 44px; height: 44px; padding: 0 10px; display: grid; place-items: center;
+  border-radius: 22px; border: 1px solid var(--gold-lo); background: var(--brass); color: var(--gold-hi);
   box-shadow: inset 0 1px 0 rgba(255, 230, 170, .15);
+  font-family: var(--font-body); font-weight: 700; font-size: 14px; line-height: 1;
   transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
 }
-.music[hidden] { display: none; }
-.music svg { width: 20px; height: 20px; }
-.music__eq {
-  position: absolute; right: 7px; bottom: 9px; display: flex; gap: 1.5px; align-items: flex-end; height: 9px; opacity: 0;
-  transition: opacity var(--t-med) var(--ease);
-}
-.music__eq i { width: 2px; height: 9px; background: var(--gold-hi); border-radius: 1px; transform-origin: bottom; transform: scaleY(.3); }
-.music.is-on { border-color: var(--gold); box-shadow: inset 0 1px 0 rgba(255, 230, 170, .2), 0 0 14px rgba(216, 180, 106, .35); }
-.music.is-on .music__eq { opacity: 1; }
-.music.is-on .music__eq i { animation: eq 900ms ease-in-out infinite alternate; }
-.music.is-on .music__eq i:nth-child(2) { animation-delay: -300ms; animation-duration: 700ms; }
-.music.is-on .music__eq i:nth-child(3) { animation-delay: -600ms; animation-duration: 1100ms; }
-@keyframes eq { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
-.music__label { display: none; }
+.lang[hidden] { display: none; }
+.lang:hover { border-color: var(--gold); }
+.lang svg { width: 20px; height: 20px; }
+.lang__label { display: none; }
 
 /* ==========================================================
    Menu: brass bar at the bottom (phones / tablets) · left rail on PC (≥ 1100px)
@@ -392,10 +391,10 @@ html.is-detail .nav > * { opacity: .5; }   /* the menu is inert while a card det
   .nav__btn:hover { color: var(--ink); }
   .nav__btn[aria-current="page"]:hover { color: var(--gold-hi); }
   .nav__foot { display: grid; gap: var(--s-3); margin-top: auto; padding-top: var(--s-5); border-top: 1px solid var(--glass-line); }
-  .nav__foot .music { width: 100%; height: 46px; border-radius: var(--r-chip); display: flex; justify-content: flex-start; gap: var(--s-3); padding: 0 var(--s-4); }
-  .nav__foot .music[hidden] { display: none; }
-  .nav__foot .music__label { display: block; font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .08em; }
-  .nav__foot .music__eq { right: 14px; bottom: 18px; }
+  .nav__foot .lang { width: 100%; height: 46px; border-radius: var(--r-chip); display: flex; justify-content: flex-start; gap: var(--s-3); padding: 0 var(--s-4); }
+  .nav__foot .lang[hidden] { display: none; }
+  .nav__foot .lang__label { display: block; font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .08em; }
+  .nav__foot .lang__code { display: none; }
   .nav__foot .brand__date { text-align: center; }
   .main {
     max-width: none; margin: 0 0 0 var(--side-w);
