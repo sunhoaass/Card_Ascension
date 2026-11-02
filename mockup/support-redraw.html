@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Support Redraw Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Cinzel:wght@600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Teko:wght@500;600;700&display=swap">
+<style>
+/* Layout: one big live card + option panel beside it (stacked on phones), then "all sizes" and "all rarities" strips. Single dark look, same world as the site's Gilded Nocturne. */
+:root {
+  color-scheme: dark;
+  --bg: #0e0b12;
+  --panel: #17131d;
+  --panel-2: #1f1a27;
+  --line: #2e2738;
+  --ink: #ece6f2;
+  --muted: #a49cb1;
+  --gold: #d8b46a;
+  --gold-hi: #f3dca0;
+  --gold-ink: #1a1306;
+  --ui-font: "Noto Sans Thai", "Inter", system-ui, sans-serif;
+  --ui-display: "Cinzel", Georgia, serif;
+
+  /* card text fonts (switched by the font option) */
+  --f-name: "Bangers", "Arial Narrow", sans-serif;  --w-name: 400; --s-name: normal; --ls-name: .02em;
+  --f-num: "Oswald", "Arial Narrow", sans-serif;    --w-num: 700;
+  --f-text: "Oswald", "Arial Narrow", sans-serif;   --w-text: 500;
+  --f-pill: "Bangers", "Arial Narrow", sans-serif;  --w-pill: 400; --s-pill: normal;
+  --ol: .75;            /* outline outside the letter, in cqw */
+  --scrim-top: 0;
+  --scrim-bot: 0;
+  --pad: 3.6;           /* gap between the text and the card edge, in cqw */
+  --soft: 0 0 1.6cqw rgba(0,0,0,.85), 0 0 3.2cqw rgba(0,0,0,.45);   /* soft shadow right around the letters (keeps the art) */
+  --num-hl: #f4f1f6;     /* numbers in the ability text */
+  --card-ink: #f4f1f6;
+  --stroke: #07050a;
+  --hp-fill: linear-gradient(180deg, #8ff08a, #46b04e 55%, #2f8a3a);
+  --atk-fill: linear-gradient(180deg, #ff8a74, #ec453b 55%, #b8231d);
+  --ab-fill: linear-gradient(180deg, #f6d3ff, #c06bff);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 var(--ui-font);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 28px; }
+header h1 { font: 700 clamp(22px, 5vw, 32px)/1.15 var(--ui-display); margin: 0; letter-spacing: .04em; color: var(--gold-hi); text-wrap: balance; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 64ch; }
+
+.lab { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 760px) { .lab { grid-template-columns: minmax(0, 1fr); } }
+.stage { display: grid; gap: 14px; justify-items: center; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); }
+@media (max-width: 760px) { .stage { position: static; } }
+.stage .card { width: min(100%, 360px); }
+
+.rar-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.rar-row button { font: 600 13px/1 var(--ui-font); color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px; padding: 8px 11px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; transition: transform .12s ease, border-color .15s ease, background .15s ease; }
+.rar-row button i { width: 10px; height: 10px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 0 1px rgba(0,0,0,.5); }
+.rar-row button[aria-pressed="true"] { border-color: var(--gold); background: #2a2216; }
+button:active { transform: scale(.96); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
+
+.panel { display: grid; gap: 14px; min-width: 0; }
+.opt { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
+.opt h3 { margin: 0; font: 600 15px/1.35 var(--ui-font); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.opt h3 small { font-weight: 500; color: var(--muted); font-size: 12px; }
+.opt p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: 500 13.5px/1.25 var(--ui-font); color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: transform .12s ease, background .15s ease, border-color .15s ease; text-align: left; }
+.seg button[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); font-weight: 700; }
+.seg button .rec { font-size: 11px; font-weight: 700; color: var(--gold-hi); margin-left: 4px; }
+.seg button[aria-pressed="true"] .rec { color: var(--gold-ink); }
+.test input { width: 100%; font: 500 15px/1.3 var(--ui-font); color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; }
+.test label { font-size: 13px; color: var(--muted); }
+
+.summary { background: #1d1710; border: 1px solid #4a3a1c; border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; }
+.summary h3 { margin: 0; font: 600 15px var(--ui-font); color: var(--gold-hi); }
+.summary output { display: block; font: 500 13.5px/1.6 var(--ui-font); white-space: pre-wrap; user-select: all; }
+.summary button { justify-self: start; font: 700 14px var(--ui-font); background: var(--gold); color: var(--gold-ink); border: 0; border-radius: 8px; padding: 9px 16px; cursor: pointer; }
+
+section.strip h2 { font: 700 18px/1.3 var(--ui-display); letter-spacing: .03em; margin: 0 0 4px; color: var(--gold-hi); }
+section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+.sizes { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; }
+.sizes figure { margin: 0; display: grid; gap: 6px; justify-items: center; }
+.sizes figcaption, .grid figcaption { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.grid figure { margin: 0; display: grid; gap: 6px; justify-items: center; }
+.grid .card { width: 100%; max-width: 200px; }
+.note { font-size: 13px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 10px; }
+
+/* ===================== the card ===================== */
+.card { position: relative; container-type: inline-size; aspect-ratio: 100 / 138.64; max-width: 100%; border-radius: 4.4cqw; background: var(--ring); box-shadow: 0 10px 26px rgba(0,0,0,.5), 0 0 0 .35cqw rgba(0,0,0,.6); isolation: isolate; }
+.card.glow { box-shadow: 0 10px 26px rgba(0,0,0,.5), 0 0 0 .35cqw rgba(0,0,0,.6), 0 0 5cqw var(--glow); }
+.card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%) no-repeat; background-size: 250% 100%; background-position: 150% 0; mix-blend-mode: overlay; opacity: 0; }
+.card.run::after { opacity: 1; animation: sweep 3.6s ease-in-out infinite; }
+@keyframes sweep { 0%, 55% { background-position: 150% 0; } 100% { background-position: -60% 0; } }
+.face { position: absolute; inset: 1.7cqw; border-radius: 3.2cqw; overflow: hidden; container-type: inline-size; background: #0d0a14; }
+.face .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.scrim { position: absolute; left: 0; right: 0; pointer-events: none; }
+.scrim.t { top: 0; height: 30cqw; background: linear-gradient(rgba(5,4,10,var(--scrim-top)), rgba(5,4,10,0)); }
+.scrim.b { bottom: 0; height: 72cqw; background: linear-gradient(rgba(5,4,10,0), rgba(5,4,10,calc(var(--scrim-bot) * .85)) 40%, rgba(5,4,10,var(--scrim-bot))); }
+
+/* outlined text: the ::before layer holds the black outline behind the coloured letters, so gradient letters keep their full width */
+.ot { position: relative; isolation: isolate; }
+.ot::before, .ot.fill::after { content: attr(data-t); position: absolute; inset: 0; padding: inherit; box-sizing: border-box; white-space: inherit; text-align: inherit; pointer-events: none; }
+.ot::before { z-index: -1; color: var(--stroke); -webkit-text-stroke: calc(var(--ol) * 2cqw) var(--stroke); text-shadow: var(--soft); }
+.ot.fill { color: transparent; }
+.ot.fill::after { background: var(--fill); background-size: 100% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+
+.top { position: absolute; top: 3cqw; left: calc(var(--pad) * 1cqw); right: calc(var(--pad) * 1cqw); height: 12.5cqw; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3cqw; align-items: center; }
+.name { min-width: 0; display: flex; align-items: center; justify-content: flex-start; height: 100%; }
+.name .ot { flex: none; display: inline-block; white-space: nowrap; font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); line-height: 1; text-transform: uppercase; padding: .4cqw .6cqw .2cqw; --fill: var(--name-fill); }
+.name .ot.two { white-space: normal; line-height: .98; }
+.hp { min-width: 0; justify-self: end; display: flex; align-items: center; gap: 1.2cqw; }
+.hp .ot { font-family: var(--f-num); font-weight: var(--w-num); line-height: 1; white-space: nowrap; --fill: var(--hp-fill); font-variant-numeric: tabular-nums; padding: .3cqw .3cqw; }
+.hp svg { width: 9.6cqw; height: 9.6cqw; flex: none; filter: drop-shadow(0 .5cqw .4cqw rgba(0,0,0,.6)); }
+
+.pills { position: absolute; top: 17cqw; right: calc(var(--pad) * 1cqw); display: grid; gap: 1.6cqw; justify-items: end; }
+.pill { display: inline-flex; align-items: center; justify-content: center; height: 7.4cqw; padding: 0 2.6cqw; border-radius: 99cqw; font-family: var(--f-pill); font-weight: var(--w-pill); font-style: var(--s-pill); font-size: 5.6cqw; line-height: 1; letter-spacing: .03em; white-space: nowrap; color: #111; background: #fff; box-shadow: inset 0 0 0 .55cqw #c9c9cf, 0 0 0 .55cqw #0b0b0d, 0 .6cqw 1cqw rgba(0,0,0,.45); }
+.pill.rar { background: var(--pill-bg); color: var(--pill-ink); box-shadow: inset 0 0 0 .45cqw rgba(255,255,255,.35), 0 0 0 .55cqw #0b0b0d, 0 .6cqw 1cqw rgba(0,0,0,.45); }
+.r-normal .pill.rar { display: none; }
+
+.ab { position: absolute; left: calc(var(--pad) * 1cqw + .6cqw); right: calc(var(--pad) * 1cqw + .6cqw); bottom: 17.5cqw; display: grid; gap: 1.2cqw; }
+.ab .abn { font-family: var(--f-name); font-weight: var(--w-name); font-style: var(--s-name); letter-spacing: var(--ls-name); text-transform: uppercase; font-size: 7.2cqw; line-height: 1; justify-self: start; --fill: var(--ab-fill); padding: .3cqw .5cqw; }
+.ab .abd { margin: 0; font-family: var(--f-text); font-weight: var(--w-text); color: var(--card-ink); text-align: center; line-height: 1.16; text-wrap: balance; }
+.ab .abd b { font-weight: inherit; color: var(--num-hl); }
+.card.tiny .abd { display: none; }
+.card.tiny .ab { bottom: 16cqw; }
+
+.bot { position: absolute; left: calc(var(--pad) * 1cqw); right: calc(var(--pad) * 1cqw); bottom: 3cqw; height: 12.5cqw; display: grid; grid-template-columns: 12.5cqw 1fr 12.5cqw; align-items: center; }
+.bot svg { width: 12cqw; height: 12cqw; filter: drop-shadow(0 .5cqw .4cqw rgba(0,0,0,.6)); }
+.bot .atk { justify-self: center; font-family: var(--f-num); font-weight: var(--w-num); line-height: 1; white-space: nowrap; --fill: var(--atk-fill); font-variant-numeric: tabular-nums; padding: .3cqw; }
+.bot .own { justify-self: end; font-family: var(--f-num); font-weight: var(--w-num); font-size: 5.6cqw; line-height: 1; color: var(--card-ink); white-space: nowrap; }
+.card:not(.show-own) .own { visibility: hidden; }
+
+.flash::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #fff; z-index: 5; pointer-events: none; animation: flash .5s ease-out forwards; }
+@keyframes flash { from { opacity: .75; } to { opacity: 0; } }
+@keyframes namerun { from { background-position: 0% 0; } to { background-position: 200% 0; } }
+.card.name-run .name .ot.fill::after { background-size: 200% 100%; animation: namerun 4s linear infinite; }
+
+/* rarities: frame / glow / name colour / rarity pill, sampled from the owner's screenshots */
+.r-normal   { --ring: linear-gradient(160deg, #f3f2f6, #b9b6c0 50%, #ecebf0); --glow: rgba(255,255,255,.15); --dot: #d8d7dc;
+              --name-fill: linear-gradient(90deg, #f4f3f8, #b9b9c0 35%, #e9e8ee 65%, #c4c4cb, #f4f3f8); }
+.r-shiny    { --ring: linear-gradient(135deg, #c6f7c9, #eaf1b7 20%, #f8d1d9 45%, #e7c4ef 65%, #cec1f9 80%, #b4d2f9); --glow: rgba(200,240,220,.45); --dot: #c6f7c9;
+              --name-fill: linear-gradient(90deg, #c6f7c9, #eaf1b7, #f8d1d9, #e7c4ef, #cec1f9, #b4d2f9, #c6f7c9);
+              --pill-bg: linear-gradient(90deg, #d4f8d6, #f8d1d9, #d6ccfb); --pill-ink: #1d1b2a; }
+.r-rainbow  { --ring: linear-gradient(135deg, #f4824c, #f7c449, #9ee373, #4fbedd, #8277f0, #da5dd0); --glow: rgba(200,140,220,.5); --dot: #f7c449;
+              --name-fill: linear-gradient(90deg, #f4824c, #f7c449, #9ee373, #4fbedd, #8277f0, #da5dd0, #f4824c);
+              --pill-bg: linear-gradient(90deg, #f4824c, #f7c449, #9ee373, #4fbedd, #a493f5); --pill-ink: #170d1e; }
+.r-secret   { --ring: linear-gradient(160deg, #ffffff, #d9d8de 50%, #ffffff); --glow: rgba(255,255,255,.35); --dot: #f6f5fa;
+              --name-fill: linear-gradient(90deg, #ffffff, #a9a8ae 30%, #e2e1e6 55%, #ffffff 80%, #c9c8ce);
+              --pill-bg: linear-gradient(180deg, #ffffff, #e4e3e8); --pill-ink: #2b2b30; }
+.r-divine   { --ring: linear-gradient(160deg, #f7c2c4, #d9636b 50%, #f3a9ad); --glow: rgba(240,110,120,.5); --dot: #e57374;
+              --name-fill: linear-gradient(90deg, #ff8a8a, #d5535a 35%, #ffc9cb 75%, #ffb3b5, #ff8a8a);
+              --pill-bg: linear-gradient(180deg, #ffd4d6, #ef8f94); --pill-ink: #4a0b12; }
+.r-cosmic   { --ring: linear-gradient(160deg, #cfc8ff, #8e86ea 50%, #b8b2ff); --glow: rgba(130,120,255,.55); --dot: #8689ec;
+              --name-fill: linear-gradient(90deg, #a08bff, #5d6ff0 35%, #6fa3ff 60%, #d6dcff, #a08bff);
+              --pill-bg: linear-gradient(180deg, #d8d4ff, #9b98f2); --pill-ink: #14123e; }
+.r-ascended { --ring: linear-gradient(160deg, #fff0b8, #d9a640 50%, #ffe39a); --glow: rgba(240,200,90,.55); --dot: #e7bb58;
+              --name-fill: linear-gradient(90deg, #ffe39a, #e7ac3e 35%, #f7cc62 65%, #e2ad45, #ffe39a);
+              --pill-bg: linear-gradient(180deg, #ffe9a8, #e3ad3e); --pill-ink: #2c1c02; }
+.r-godlike  { --ring: linear-gradient(160deg, #ffffff, #f6e4b0 50%, #ffffff); --glow: rgba(255,228,150,.7); --dot: #fdf2db;
+              --name-fill: linear-gradient(90deg, #ffffff, #fbe7b4 40%, #fffaf0 70%, #fdeec8, #ffffff);
+              --pill-bg: linear-gradient(180deg, #fffdf6, #f6e2a8); --pill-ink: #1a1408; }
+.r-godly    { --ring: linear-gradient(180deg, #ffd56e 0%, #ffd56e 24%, #f5a96c 36%, #dc5280 50%, #f19a6a 64%, #ffd06a 76%, #ffd06a 100%); --glow: rgba(240,120,150,.55); --dot: #df957f;
+              --name-fill: linear-gradient(90deg, #f7b36f, #e06e83 35%, #f4c49b 65%, #e98a74, #f7b36f);
+              --pill-bg: linear-gradient(90deg, #e2507f, #f19a62, #ffd56e); --pill-ink: #140608; }
+
+/* name on its own band (option) */
+/* compare views */
+.card.v-bg .top, .card.v-bg .pills, .card.v-bg .ab, .card.v-bg .bot, .card.v-bg .scrim,
+.card.v-orig .top, .card.v-orig .pills, .card.v-orig .ab, .card.v-orig .bot, .card.v-orig .scrim { visibility: hidden; }
+.view { justify-content: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card.run::after, .card.name-run .name .ot.fill::after { animation: none; }
+  .flash::before { animation: none; opacity: 0; }
+}
+
+/* ===== support card (no HP / ATK) ===== */
+.card.sup .top { grid-template-columns: minmax(0, 1fr); }
+.card.sup.lay-half .top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.card.sup.lay-half .pills { top: 3cqw; height: 12.5cqw; align-content: center; grid-auto-flow: column; gap: 1.6cqw; }
+.card.sup .ab { bottom: 17.5cqw; }
+.ab .mut { margin: 0; font-family: var(--f-text); font-weight: var(--w-text); color: var(--card-ink); text-align: center; line-height: 1.16; }
+.ab .mut b { font-weight: inherit; color: var(--num-hl); }
+.card.mut-chip .ab .mut { display: none; }
+.sup-word { position: absolute; left: 0; right: 0; bottom: 3cqw; height: 12.5cqw; display: flex; align-items: center; justify-content: center; gap: 3cqw; }
+.sup-word .ot { font-family: var(--f-num); font-weight: var(--w-num); font-size: 12cqw; line-height: 1; letter-spacing: .02em; --fill: var(--sup-fill); padding: .3cqw .6cqw; }
+.card.sup-rar .sup-word .ot { --fill: var(--name-fill); }
+.chip { display: none; height: 6.4cqw; padding: 0 2.2cqw; border-radius: 99cqw; align-items: center; font-family: var(--f-pill); font-weight: var(--w-pill); font-size: 4.6cqw; line-height: 1; white-space: nowrap; color: #2c1c02; background: linear-gradient(180deg, #ffe9a8, #e3ad3e); box-shadow: 0 0 0 .5cqw #0b0b0d; }
+.card.mut-chip:not(.r-normal) .chip { display: inline-flex; }
+.card.tiny .mut { display: none; }
+:root { --sup-fill: linear-gradient(180deg, #a6f5a0, #5fd36a 55%, #3aa84a); }
+
+.check { overflow-x: auto; }
+.check table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+.check th, .check td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.check th:first-child, .check td:first-child { text-align: left; }
+.check th { color: var(--muted); font-weight: 600; }
+.check .ok { color: #7fdc8a; }
+.check .no { color: #ff8a80; font-weight: 700; }
+.check tr.on td { background: #2a2216; }
+
+/* ===== support layout measured from the game (2026-11-02 · Hat and Clogs Shopkeeper, Deck view, 600×840):
+   name caps 40–62 px · skill name caps 478–515 · text first caps 543, 4 lines 38 px apart (5 lines 33) · text box x 23–577
+   · SUPPORT caps 756–807 · tops are set in fit() so each block's capital letters land on the game's line ===== */
+.card.v-over .top, .card.v-over .ab, .card.v-over .sup-word { opacity: .55; }
+.card.v-over .pills { visibility: hidden; }
+.card.sup .top { top: 0; height: auto; display: block; }
+.card.sup .name { height: auto; display: block; }
+.card.sup .name .ot { padding-top: 0; padding-bottom: 0; line-height: 1; }
+.card.sup .name .ot.two { line-height: 1.02; }
+.card.sup .ab { top: 0; bottom: auto; left: 0; right: 0; display: block; }
+.card.sup .ab .abn { position: absolute; left: calc(var(--pad) * 1cqw); font-size: 7.5cqw; line-height: 1; padding-top: 0; padding-bottom: 0; }
+.card.sup .txt { position: absolute; left: 3.85cqw; right: 3.85cqw; text-align: center; }
+.card.sup .ab .abd, .card.sup .ab .mut { line-height: 1.385; text-wrap: wrap; }
+.card.sup .sup-word { top: 0; bottom: auto; height: auto; display: block; text-align: center; }
+.card.sup .sup-word .ot { display: inline-block; font-family: "Oswald", "Arial Narrow", sans-serif; font-weight: 700; font-size: 10.3cqw; line-height: 1; letter-spacing: 0; padding: 0 .6cqw; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Support Redraw Lab · Hat and Clogs Shopkeeper</h1>
+    <p><b>รอบ 2:</b> จัดวางเหมือนในเกม (วัดตำแหน่งจากรูปเกม: ชื่อ ชื่อสกิล คำอธิบาย คำ SUPPORT ขนาดและตำแหน่งเดียวกับเกม · คำอธิบายย่อเองเมื่อยาวขึ้นแบบเกม) · ทุกอย่างยังอยู่ในขอบการ์ด · กดปุ่ม "เทียบตำแหน่ง" ใต้การ์ดเพื่อซ้อนกับรูปเกม</p>
+    <p>ตัวอย่างการ์ด Support แบบเขียนใหม่ทั้งใบ: ลบชื่อการ์ด ชื่อสกิล คำอธิบาย และคำ SUPPORT ออกจากรูป แล้วเว็บเขียนใหม่ด้วยตัวเลือกที่เลือกไว้ (Anton · ตัวเลขสีทอง · ขอบดำ + เงานุ่ม) · ค่าในคำอธิบายและ Mutation <b>คำนวณเองทุกระดับ</b> ด้วยสูตรที่หาจาก 3 ใบ + ตาราง Mutation ของเจ้าของ · ตารางใต้การ์ดเทียบกับค่าในรูปเกม</p>
+    <p>รูปตัดจากหน้า Deck (การ์ดใหญ่ ภาพชัดกว่าหน้า Index)</p>
+  </header>
+
+  <div class="lab">
+    <div class="stage">
+      <div class="card sup" id="main"></div>
+      <div class="rar-row" id="rarRow" role="group" aria-label="ระดับการ์ด"></div>
+      <div class="seg view" id="view" role="group" aria-label="มุมมองเทียบ"></div>
+    </div>
+
+    <div class="panel" id="panel">
+      <div class="opt check">
+        <h3>เทียบกับเกม <small>ค่าที่เว็บคำนวณ / ค่าในรูปเกม</small></h3>
+        <table>
+          <thead><tr><th>ระดับ</th><th>โอกาส</th><th>หลบ %</th><th>damage %</th><th>Mutation</th></tr></thead>
+          <tbody id="chk"></tbody>
+        </table>
+      </div>
+      <div class="opt test">
+        <h3>ทดสอบชื่อยาว/สั้น</h3>
+        <div class="seg" data-test="name"></div>
+        <label for="nameIn">หรือพิมพ์ชื่อเอง</label>
+        <input id="nameIn" type="text" maxlength="60" value="Hat and Clogs Shopkeeper" autocomplete="off">
+      </div>
+      <div id="opts"></div>
+      <div class="summary">
+        <h3>ตัวเลือกที่เลือกไว้</h3>
+        <output id="sum"></output>
+        <button type="button" id="copy">คัดลอกตัวเลือก</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="strip">
+    <h2>ทุกขนาดจอ</h2>
+    <p>260 / 180 / 130 / 96 px · การ์ดกว้างไม่ถึง 170px ซ่อนคำอธิบาย (ตามที่เลือกไว้)</p>
+    <div class="sizes" id="sizes"></div>
+  </section>
+
+  <section class="strip">
+    <h2>ทุกระดับ</h2>
+    <p>ค่าในคำอธิบาย + Mutation เปลี่ยนตามระดับเอง · โอกาส = 1 in 15.7M × ตัวคูณระดับ (โอกาส Normal จากข้อมูลเว็บ ยังไม่ได้เช็คกับเกม)</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <p class="note">รูปการ์ด = ภาพจากหน้า Deck ระดับ Normal ตัดกรอบในแล้วลบตัวอักษรทั้งหมด (เติมพื้นจากภาพรอบๆ) · ตรงที่คำอธิบายทับตัวละคร (ชายเสื้อ ไม้เท้า ขา) เป็นภาพที่เติมเดา ใช้ปุ่ม "ต้นฉบับเกม" เทียบได้</p>
+</div>
+
+<script>
+(() => {
+  const ARTS = { best: 'card-redraw/hat-and-clogs-shopkeeper.webp', orig: 'card-redraw/hat-and-clogs-shopkeeper-original.webp' };
+  const BASE_NAME = 'Hat and Clogs Shopkeeper';
+  const AB_NAME = 'Blood Mist Shield';
+  const DESC = "Hat and Clogs Shopkeeper's Blood Mist: the supported card blinds the enemy in front when it comes in (its next 3 attacks each have a {0}% chance to miss) and deals {1}% more damage.";
+  const ODDS = 15.7e6;                 // Normal odds (site data · not checked against the game yet)
+  /* each value: Normal × (1 + 0.25 × level), past the knee it bends toward a ceiling (chance: 100 · other: 1.5 × knee) */
+  const VALS = [{ base: 58, knee: 90, chance: true }, { base: 10, knee: 35 }];
+  const R = [
+    ['normal', 'Normal', 1], ['shiny', 'Shiny', 20.2531370], ['rainbow', 'Rainbow', 100.2530284], ['secret', 'Secret', 500.2626116],
+    ['divine', 'Divine', 2500.3125326], ['cosmic', 'Cosmic', 10000.2500052], ['ascended', 'Ascended', 50000.2500011],
+    ['godlike', 'Godlike', 250000.2500003], ['godly', 'Godly', 1000000]
+  ].map(([k, n, m], L) => ({ k, n, m, L }));
+  // owner's Mutation table (2026-11-02): by the card's odds AT that rarity
+  const MUT = [null,
+    [[1e9, 3], [1e8, 2], [0, 1]], [[1e10, 5], [1e9, 4], [0, 2]], [[5e10, 8], [1e9, 6], [0, 3]],
+    [[1e11, 13], [1e10, 10], [1e6, 5], [0, 4]], [[1e12, 18], [1e11, 14], [1e7, 7], [0, 6]], [[9e12, 25], [1e11, 20], [1e8, 10], [0, 8]],
+    [[1e13, 33], [1e12, 26], [1e8, 13], [0, 10]], [[1e14, 40], [1e12, 32], [1e9, 16], [0, 13]]];
+  const GAME = { miss: [58, 72.5, 87, 96.8, 99.3, 99.8, 100, 100, 100], dmg: [10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30], mut: [0, 2, 4, 6, 10, 14, 20, 26, 32] };
+
+  const valAt = (v, L) => {
+    let x = v.base * (1 + 0.25 * L);
+    if (x > v.knee) { const room = v.chance ? 100 - v.knee : v.knee / 2; x = v.knee + room * (1 - Math.exp(-(x - v.knee) / room)); }
+    return Math.round(x * 10) / 10;
+  };
+  const fmtV = x => (Math.round(x * 10) / 10).toString();
+  const mutAt = r => r.L === 0 ? 0 : MUT[r.L].find(([t]) => ODDS * r.m >= t)[1];
+  /* odds like the game: under 10,000 in full · K whole · M B T Qd 1 decimal (none from 100 up, .0 dropped) */
+  function shortNum(n) {
+    if (n < 1e4) return Math.round(n).toLocaleString('en-US');
+    const U = [['Qd', 1e15], ['T', 1e12], ['B', 1e9], ['M', 1e6], ['K', 1e3]];
+    for (const [u, d] of U) if (n >= d) { const x = n / d; if (u === 'K') return Math.round(x) + u; return (x >= 100 ? Math.round(x) : Math.round(x * 10) / 10) + u; }
+  }
+
+  const FONT = { '--f-name': '"Anton", "Arial Narrow", sans-serif', '--w-name': '400', '--s-name': 'normal', '--ls-name': '.02em', '--f-num': '"Anton", "Arial Narrow", sans-serif', '--w-num': '400', '--f-text': '"Oswald", "Arial Narrow", sans-serif', '--w-text': '500', '--f-pill': '"Anton", "Arial Narrow", sans-serif', '--w-pill': '400', '--s-pill': 'normal' };
+  const OPTS = [
+    { id: 'hl', t: 'ตัวเลขสีทองในคำอธิบาย', d: 'เช่น "next 3 attacks" เลข 3 ไม่เปลี่ยนตามระดับ', ch: [['lvl', 'เฉพาะค่าที่เปลี่ยนตามระดับ', 'แนะนำ'], ['all', 'ทุกตัวเลข']], def: 'lvl' },
+    { id: 'word', t: 'สีคำ SUPPORT', d: '', ch: [['green', 'เขียวแบบเกม', 'แนะนำ'], ['rar', 'สีตามระดับ (เหมือนชื่อ)']], def: 'green' }
+  ];
+  const TESTS = { name: [['Hat and Clogs Shopkeeper', 'ชื่อจริง'], ['Goblin', 'สั้น'], ['Ultimate Shadow Monarch of the Endless Abyss', 'ยาวมาก']] };
+
+  const state = { rar: 'godly', name: BASE_NAME, view: 'new' };
+  OPTS.forEach(o => state[o.id] = o.def);
+  try { const s = JSON.parse(localStorage.getItem('cbi-sup2') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
+  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-sup2', JSON.stringify(s)); } catch (e) {} };
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const rarOf = k => R.find(r => r.k === k);
+
+  function descParts(r) {
+    const vals = VALS.map(v => fmtV(valAt(v, r.L)));
+    const plain = DESC.replace(/\{(\d)\}/g, (m, i) => vals[+i]);
+    let html;
+    if (state.hl === 'all') html = esc(plain).replace(/(\d[\d.,]*%?)/g, '<b>$1</b>');
+    else html = esc(DESC).replace(/\{(\d)\}%/g, (m, i) => `<b>${vals[+i]}%</b>`);
+    return { plain, html };
+  }
+
+  function cardHTML() {
+    return `<div class="face">
+      <img class="art" src="${ARTS.best}" alt="" decoding="async">
+      <div class="top"><div class="name"><span class="ot fill"></span></div></div>
+      <div class="pills"><span class="pill odds"></span><span class="pill rar"></span></div>
+      <div class="ab"><div class="abn ot fill"></div><div class="txt"><p class="abd ot"></p><p class="mut ot"></p></div></div>
+      <div class="sup-word"><span class="ot fill" data-t="SUPPORT">SUPPORT</span><span class="chip"></span></div>
+    </div>`;
+  }
+  const setT = (el, txt, html) => { el.dataset.t = txt; if (html != null) el.innerHTML = html; else el.textContent = txt; };
+
+  function fill(card, r) {
+    card.className = 'card sup r-' + r.k;
+    card.classList.toggle('glow', true);
+    card.classList.toggle('run', r.k !== 'normal' && !card.classList.contains('mini'));
+    card.classList.toggle('name-run', r.k !== 'normal');
+    card.classList.toggle('sup-rar', state.word === 'rar');
+    const isMain = card.id === 'main';
+    card.classList.toggle('v-bg', isMain && state.view === 'bg');
+    card.classList.toggle('v-orig', isMain && state.view === 'orig');
+    card.classList.toggle('v-over', isMain && state.view === 'over');
+    const src = isMain && (state.view === 'orig' || state.view === 'over') ? ARTS.orig : ARTS.best;
+    const img = card.querySelector('.art'); if (!img.src.endsWith(src)) img.src = src;
+    const q = s => card.querySelector(s);
+    setT(q('.name .ot'), state.name || ' ');
+    q('.odds').textContent = '1 IN ' + shortNum(ODDS * r.m).toUpperCase();
+    q('.rar').textContent = r.n.toUpperCase();
+    setT(q('.abn'), AB_NAME);
+    const d = descParts(r); setT(q('.abd'), d.plain, d.html);
+    const mu = mutAt(r), mutEl = q('.mut');
+    mutEl.hidden = !mu;
+    if (mu) setT(mutEl, `Mutation bonus: +${mu}% damage and max HP.`, `Mutation bonus: <b>+${mu}%</b> damage and max HP.`);
+    q('.chip').textContent = mu ? `MUTATION +${mu}%` : '';
+    card.setAttribute('role', 'img');
+    card.setAttribute('aria-label', `${r.n} ${state.name}, support, 1 in ${shortNum(ODDS * r.m)}`);
+    fit(card);
+  }
+
+  /* where the capital letters start inside a line box, in em (font metrics measured in Chromium: Anton ascent 1.18 / descent .33
+     / caps .86 · Oswald 1.19 / .29 / .81): (line-height − (ascent + descent)) / 2 + ascent − caps */
+  const capOff = (f, lh) => (lh - (f.a + f.d)) / 2 + f.a - f.c;
+  const ANTON = { a: 1.18, d: .33, c: .86 }, OSW = { a: 1.19, d: .29, c: .81 };
+  const G = { name: 6.67, nameFs: 4.27, abn: 79.67, abnFs: 7.5, txt: 90.5, txtFs: 4.57, txtLh: 1.385, txtH: 27.7, word: 126, wordFs: 10.3 };
+
+  function fit(card) {
+    const face = card.querySelector('.face'); const W = face.clientWidth; if (!W) return;
+    const cq = el => el.getBoundingClientRect().width / W * 100;
+    const ch = el => el.getBoundingClientRect().height / W * 100;
+    card.classList.toggle('tiny', card.getBoundingClientRect().width < 170);
+    const pad = 3.6, room = (100 - 2 * pad - 3) / 2;          // the name keeps to the left half, like the attack cards
+    // name: the game's size, smaller when it would pass half the card, then 2 lines
+    const nm = card.querySelector('.name .ot'), top = card.querySelector('.top');
+    nm.classList.remove('two'); nm.style.maxWidth = '';
+    let fs = G.nameFs; nm.style.fontSize = fs + 'cqw';
+    const w = cq(nm);
+    if (w > room) { fs = Math.max(3.4, G.nameFs * (room - 1.4) / (w - 1.4)); nm.style.fontSize = fs.toFixed(2) + 'cqw'; }
+    if (cq(nm) > room + .2) { nm.classList.add('two'); nm.style.maxWidth = room + 'cqw'; fs = 3.6; nm.style.fontSize = fs + 'cqw'; }
+    top.style.top = (G.name - capOff(ANTON, nm.classList.contains('two') ? 1.02 : 1) * fs).toFixed(2) + 'cqw';
+    // skill name + text: fixed tops like the game, the text shrinks until it fits its box
+    const abn = card.querySelector('.abn'); abn.style.top = (G.abn - capOff(ANTON, 1) * G.abnFs).toFixed(2) + 'cqw';
+    const txt = card.querySelector('.txt'), abd = card.querySelector('.abd'), mut = card.querySelector('.mut');
+    const setT = v => { abd.style.fontSize = mut.style.fontSize = v + 'cqw'; txt.style.top = (G.txt - capOff(OSW, G.txtLh) * v).toFixed(2) + 'cqw'; };
+    if (!card.classList.contains('tiny')) {
+      setT(G.txtFs);
+      if (ch(txt) > G.txtH) { let lo = 2.4, hi = G.txtFs; for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; setT(m); if (ch(txt) > G.txtH) hi = m; else lo = m; } setT(lo.toFixed(3)); }
+    }
+    // SUPPORT word
+    const wd = card.querySelector('.sup-word'); wd.style.top = (G.word - capOff(OSW, 1) * G.wordFs).toFixed(2) + 'cqw';
+  }
+
+  function renderCheck() {
+    const tb = document.getElementById('chk');
+    tb.innerHTML = R.map(r => {
+      const a = valAt(VALS[0], r.L), b = valAt(VALS[1], r.L), m = mutAt(r);
+      const cell = (calc, game, suf) => { const c = fmtV(calc), g = String(game); const ok = c === g; return `<td class="${ok ? 'ok' : 'no'}">${c}${suf} ${ok ? '✓' : '≠ ' + g}</td>`; };
+      return `<tr class="${r.k === state.rar ? 'on' : ''}"><td>${r.n}</td><td>${shortNum(ODDS * r.m)}</td>${cell(a, GAME.miss[r.L], '')}${cell(b, GAME.dmg[r.L], '')}${r.L ? cell(m, GAME.mut[r.L], '') : '<td>–</td>'}</tr>`;
+    }).join('');
+  }
+
+  const main = document.getElementById('main'); main.innerHTML = cardHTML();
+  const sizes = document.getElementById('sizes');
+  [260, 180, 130, 96].forEach(px => { const f = document.createElement('figure'); f.innerHTML = `<div class="card sup${px < 150 ? ' mini' : ''}" style="width:${px}px">${cardHTML()}</div><figcaption>${px}px</figcaption>`; sizes.appendChild(f); });
+  const grid = document.getElementById('grid');
+  R.forEach(r => { const f = document.createElement('figure'); f.innerHTML = `<div class="card sup" data-r="${r.k}">${cardHTML()}</div><figcaption>${r.n}</figcaption>`; grid.appendChild(f); });
+  const rarRow = document.getElementById('rarRow');
+  R.forEach(r => { const b = document.createElement('button'); b.type = 'button'; b.dataset.k = r.k; b.innerHTML = `<i class="r-${r.k}"></i>${r.n}`; rarRow.appendChild(b); });
+
+  function seg(host, list, cur, onPick) {
+    host.innerHTML = '';
+    list.forEach(([v, label, rec]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.dataset.v = v;
+      b.setAttribute('aria-pressed', String(v === cur));
+      b.innerHTML = esc(label) + (rec ? `<span class="rec">${esc(rec)}</span>` : '');
+      b.addEventListener('click', () => { host.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); onPick(v); });
+      host.appendChild(b);
+    });
+  }
+  const opts = document.getElementById('opts'); opts.style.display = 'grid'; opts.style.gap = '14px';
+  OPTS.forEach(o => {
+    const box = document.createElement('div'); box.className = 'opt';
+    box.innerHTML = `<h3>${esc(o.t)}</h3>${o.d ? `<p>${esc(o.d)}</p>` : ''}<div class="seg"></div>`;
+    seg(box.querySelector('.seg'), o.ch, state[o.id], v => { state[o.id] = v; save(); renderAll(); });
+    opts.appendChild(box);
+  });
+  seg(document.getElementById('view'), [['new', 'แบบใหม่'], ['bg', 'พื้นหลังที่ลบแล้ว'], ['orig', 'ต้นฉบับเกม'], ['over', 'เทียบตำแหน่ง (ซ้อนรูปเกม)']], state.view, v => { state.view = v; fill(main, rarOf(state.rar)); });
+  const nameIn = document.getElementById('nameIn');
+  seg(document.querySelector('[data-test="name"]'), TESTS.name, state.name, v => { state.name = v; nameIn.value = v; renderAll(); });
+  nameIn.addEventListener('input', () => { state.name = nameIn.value; document.querySelectorAll('[data-test="name"] button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === state.name))); renderAll(); });
+
+  function renderSummary() {
+    const lines = OPTS.map(o => { const c = o.ch.find(x => x[0] === state[o.id]); return `${o.t}: ${c[1]}`; });
+    document.getElementById('sum').textContent = 'การ์ด Support แบบเขียนใหม่ (Hat and Clogs Shopkeeper)\n' + lines.join('\n');
+  }
+  function renderAll() {
+    Object.entries(FONT).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+    document.documentElement.style.setProperty('--num-hl', '#ffcf5a');
+    fill(main, rarOf(state.rar));
+    sizes.querySelectorAll('.card').forEach(c => fill(c, rarOf(state.rar)));
+    grid.querySelectorAll('.card').forEach(c => fill(c, rarOf(c.dataset.r)));
+    rarRow.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === state.rar)));
+    renderCheck(); renderSummary();
+  }
+  rarRow.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || b.dataset.k === state.rar) return;
+    state.rar = b.dataset.k; renderAll();
+    if (!reduced()) { main.classList.remove('flash'); void main.offsetWidth; main.classList.add('flash'); setTimeout(() => main.classList.remove('flash'), 520); }
+  });
+  document.getElementById('copy').addEventListener('click', e => {
+    const txt = document.getElementById('sum').textContent; const btn = e.currentTarget;
+    const done = () => { btn.textContent = 'คัดลอกแล้ว'; setTimeout(() => btn.textContent = 'คัดลอกตัวเลือก', 1600); };
+    const pick = () => { const s = getSelection(), rg = document.createRange(); rg.selectNodeContents(document.getElementById('sum')); s.removeAllRanges(); s.addRange(rg); btn.textContent = 'เลือกข้อความแล้ว กดคัดลอกเอง'; };
+    try { navigator.clipboard.writeText(txt).then(done, pick); } catch (err) { pick(); }
+  });
+  const ro = new ResizeObserver(es => es.forEach(en => { const c = en.target.closest('.card'); if (c) fit(c); }));
+  document.querySelectorAll('.card .face').forEach(f => ro.observe(f));
+  renderAll();
+  if (document.fonts) { document.fonts.ready.then(renderAll); document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => document.querySelectorAll('.card').forEach(fit)); }
+})();
+</script>
+</body>
+</html>
