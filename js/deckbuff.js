@@ -9,7 +9,9 @@
    The +2.5% a grade in js/grade.js is NOT in these numbers: with it the owner's Witch of Envy (Ascendant ×2 · all 10) would be
    ×3.25 over base, the game shows ×2.60 = ×2 × 1.3.
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
-   (same column) gets +X% damage and max HP when the support is mutated (its slot's rarity above Normal).
+   (same column) gets +X% damage and max HP when the support is mutated (its slot's rarity above Normal) · X = the owner's
+   table by the support's odds at the slot's rarity (C.mutAt · 2026-11-02), for supports whose text has the line or that
+   are redrawn (the web writes the line).
    Rarity per slot (owner 2026-11-02): deck.cardRarity[i] / deck.supRarity[i] (a name · missing or unknown = deck.rarity,
    so decks and links from before still read the same) · the card's numbers use its slot's rarity, a support's value and
    its mutation bonus use the support slot's rarity.
@@ -78,9 +80,9 @@
     return out;
   }
   // a support whose effect reaches the whole deck (a second copy adds nothing · js/teamscore.js)
-  // "Mutation bonus: +40% damage and max HP." -> 40 (0 = none)
-  const MUT_RE = /Mutation bonus: \+([\d.]+)% damage and max HP/i;
-  const mutOf = (s) => { const m = MUT_RE.exec(descOf(s)); return m ? +m[1] : 0; };
+  // Mutation bonus at the support slot's rarity (owner's table from the game 2026-11-02 · C.mutAt in js/app.js: by the
+  // support's odds at that rarity · was the one number in the text, the rarity it was copied at) · 0 = none / Normal
+  const mutOf = (s, rarity) => C.mutAt(s, rarity);
   const deckWide = (s) => /\bevery (?:other )?card in your deck\b|\bwhole deck\b/i.test(descOf(s));
 
   /* ---------- reading card abilities ---------- */
@@ -176,7 +178,7 @@
         }
       });
       // mutation bonus: the supported card only, when the support is mutated (its slot above Normal)
-      const mb = sr !== "Normal" ? mutOf(s) : 0;
+      const mb = mutOf(s, sr);
       if (mb > 0) add(j, { key: "m:" + s.id, copy: s.id, name: s.name + " · Mutation", kind: "support", atk: mb, hp: mb });
     });
     // ② card abilities · every copy counts, never on itself

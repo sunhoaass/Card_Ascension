@@ -161,7 +161,7 @@
 }
 .tm-item[hidden], .tm-item.tm-src { display: none; }
 .tm-item .card { width: 100%; touch-action: manipulation; }   /* .card is pan-y: let the pool scroll sideways */
-.tm-item .gc__rar { display: none; }                       /* the list's rarity is in the chips above; too small to read here */
+.tm-item .gc__rar, .tm-item .rd__pill--rar { display: none; }                       /* the list's rarity is in the chips above; too small to read here */
 .tm-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
 .tm-item.is-pressing { scale: 0.95; }
 .tm-item.is-source { opacity: 0.35; }

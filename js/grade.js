@@ -601,7 +601,7 @@
   function swapRarity(c, card, name) {
     const keep = ["atk", "hp"].map((k) => { const n = $(`[data-k="${k}"]`, c); return [n.dataset.value, n.textContent]; });
     C.setCardRarity(c, card, name, { animate: false });
-    ["atk", "hp"].forEach((k, j) => { const n = $(`[data-k="${k}"]`, c); n.dataset.value = keep[j][0]; n.textContent = keep[j][1]; });
+    ["atk", "hp"].forEach((k, j) => { const n = $(`[data-k="${k}"]`, c); n.dataset.value = keep[j][0]; n.textContent = keep[j][1]; C.syncT(n); });
     if (c.classList.contains("is-live")) C.flashCard(c);
   }
   function recolor(name) {

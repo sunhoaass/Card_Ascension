@@ -84,15 +84,18 @@
   };
 
   /* ---------- Count numbers up/down ---------- */
+  // a redrawn card's letters (css/fx.css .rd-ot) draw their black edge from data-t: it follows the text every frame
   FX.countTo = function (el, to, { duration = 400, format = (n) => Math.round(n).toLocaleString("en-US") } = {}) {
     const from = Number(el.dataset.value || 0);
+    const host = el.closest ? el.closest("[data-t]") : null;
+    const put = (t) => { el.textContent = t; if (host) host.dataset.t = host.textContent; };
     el.dataset.value = to;
-    if (FX.reduced || from === to) { el.textContent = format(to); return; }
+    if (FX.reduced || from === to) { put(format(to)); return; }
     const t0 = performance.now();
     const ease = (t) => 1 - Math.pow(1 - t, 3);
     const step = (now) => {
       const t = Math.min(1, (now - t0) / duration);
-      el.textContent = format(from + (to - from) * ease(t));
+      put(format(from + (to - from) * ease(t)));
       if (t < 1 && el.dataset.value == to) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
