@@ -1821,3 +1821,13 @@
 - **สีชื่อวิ่ง:** เจ้าของเลือกเฉพาะหน้าดูการ์ด (คงตามที่ทำ) · **Tier NTF + HCS:** รอรวมกับรอบอื่น
 - **ทดสอบ:** Angel Attendant (เดิมไม่มี) 0/3/5/8/13/18/25/33/40 · NTF Shiny "+3%" · Normal ไม่มีบรรทัด · หน้า Cards / Grade / Traits / ดูการ์ด ไม่มี error · รูป Deck: บรรทัด Mutation บรรทัดเดียว
 - **ไฟล์:** `js/app.js` · `js/deckbuff.js` · `js/share.js` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-02 ③ รอบเขียนใหม่ 1: การ์ด 10 ใบจากแคป Index Floor 664–687 (`?v=61`)
+- **เจ้าของส่ง 20 แคป** · ซ้ำกับที่ทำแล้ว 6 ใบ = ข้าม (Hollow Mask Reaper, Pirate King, Demon God of Flame, Homunculus Father, Black Wizard Brother, Made in Heaven Priest) · เหลือ 14 → ทำ 10 ใบตามกฎรอบละ ≤ 10: Atomic Shadow Lord · No-Life King · Dragon God · Dragon Emperor Monarch · Destroyer Dragonoid · Primordial Butler Demon · Hypnosis Traitor · Moon Eye Ghost · Beast Emperor · Rabbit Goddess · อีก 4 ใบ (White Hawk Godhand + Support Angel Attendant, First Master Fairy, Nine Tails Fox) มีรูปรออยู่ใน `inbox/redraw/` แล้ว · เช็คข้อความกับแคปแล้วตรงทุกตัว → รอบถัดไป
+- **ข้อมูล:** HP / ATK / โอกาส ทั้ง 10 ใบตรงแคปอยู่แล้ว · `passive.desc` เปลี่ยนเป็นข้อความเกมทุกตัวอักษร (ชื่อการ์ดแทนชื่อตัวละคร · "of its normal hit (no crits or bonuses)" · "Ignores the enemy's shields…" · Confuse "(it skips its next turn and hits itself for half damage)" · "Can't be stunned, frozen, paralyzed, confused, sealed or weakened" · DEM ไฟ "(5% of its max HP per turn)" · Dragon God "strike back" · Rimuru → Slime Demon Lord) · `"redraw": true` · `updated` 2026-11-02
+- **รูป:** `tools/erase_all.py … --crop index --out` (FSR_BEST 98–244 วิ/ใบ) · ดู sheet แล้ว ลบหมดทุกส่วน · ตรงที่ข้อความทับตัวละคร = ภาพเติมเดา (Dragon God หน้าเบลอนิดหน่อยใต้ HP)
+- **คำแปลไทย:** ประโยคใหม่ 12 ประโยคใน `js/i18n-th-sk2.js` (เช็คประโยคต่อประโยค: ไม่มีประโยคไหนขาด)
+- **tools/matchup_sim.py:** regex รับ "strike back when hit" และ "Its first hit of the fight … for X% of that hit" · `--parse` 10 ใบ = เหมือนเดิมทุกค่า (+ `status_immune` ของ Primordial Butler Demon / Beast Emperor ตามข้อความใหม่)
+- **Deck buff (`tools/deckbuff_report.js`):** Destroyer Dragonoid / Primordial Butler Demon อ่านเป็น "Slime Demon Lord" (ชื่อการ์ดจริง · เดิม Rimuru) · ไม่มีชื่อที่ไม่รู้จักเพิ่ม
+- **ทดสอบ (Chromium 390×844):** หน้าดูการ์ด Atomic Shadow Lord / Primordial Butler Demon แบบ EN + TH ขึ้นครบ (ชื่อ 2 บรรทัด, เลขทอง, ไทยครบ) · หน้า Cards มีการ์ดแบบใหม่ 13 ใบในหน้าแรก · ไม่มี error
+- **ไฟล์:** `index.html` (`?v=61`) · `js/i18n-th-sk2.js` · `tools/matchup_sim.py` · `data/cards.json` · `images/cards/` + `thumb/` 10 ใบ · `PROGRESS.md` · `HISTORY.md`

@@ -14,7 +14,7 @@
     "exact": {},
     "passive": {
       "name": "Monarch of Destruction",
-      "desc": "Antares' dragon fear. Every enemy card starts with 6.4% less damage. Every hit sets the whole enemy deck on fire for 2 turns. Every hit also hits the whole enemy bench for 20%. Instantly kills enemies under 5% HP (not bosses)."
+      "desc": "Dragon Emperor Monarch's dragon fear. Every enemy card starts with 6.4% less damage. Each hit sets every enemy card on fire for 2 turns (5% of its max HP per turn). Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Instantly kills enemies under 5% HP (not bosses)."
     },
     "skill": {
       "name": "",
@@ -111,9 +111,10 @@
         "flower-healer-captain"
       ]
     },
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "obtain": "Rolls anywhere",
-    "prevTier": "B"
+    "prevTier": "B",
+    "redraw": true
   },
   {
     "id": "moon-eye-ghost",
@@ -130,7 +131,7 @@
     "exact": {},
     "passive": {
       "name": "Infinite Tsukuyomi",
-      "desc": "Madara: Every enemy card starts with 5.5% less damage. Every 2nd attack also hits the card behind for 35%. Blocks the first 3 hits completely. Comes back once with 14% HP."
+      "desc": "Moon Eye Ghost: Every enemy card starts with 5.5% less damage. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Blocks the first 3 hits completely. Comes back once with 14% HP."
     },
     "skill": {
       "name": "",
@@ -227,9 +228,10 @@
         "gentle-priest"
       ]
     },
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "obtain": "Rolls anywhere",
-    "prevTier": "B"
+    "prevTier": "B",
+    "redraw": true
   },
   {
     "id": "atomic-shadow-lord",
@@ -246,7 +248,7 @@
     "exact": {},
     "passive": {
       "name": "I AM ATOMIC",
-      "desc": "Cid Kagenou, the Eminence in Shadow. Its first hit on each new enemy does 2.3x damage. Its first attack also hits the whole enemy bench for 26%. Ignores shields, dodges and barriers. 20% chance to dodge each hit. Shadow Garden cards in your deck get +16% damage and HP."
+      "desc": "Atomic Shadow Lord rules from the shadows. Its first hit on each new enemy does 2.3x damage. Its first hit of the fight also hits the whole enemy bench for 26% of that hit. Ignores the enemy's shields, dodges and barriers. 20% chance to dodge each hit. Shadow Garden cards in your deck get +16% damage and HP."
     },
     "skill": {
       "name": "",
@@ -345,9 +347,10 @@
         "eternal-wish-dragon"
       ]
     },
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "obtain": "Rolls anywhere",
-    "prevTier": "B"
+    "prevTier": "B",
+    "redraw": true
   },
   {
     "id": "beast-emperor",
@@ -364,7 +367,7 @@
     "exact": {},
     "passive": {
       "name": "Strongest Creature",
-      "desc": "Kaido can't die. Survives its first killing blow with 1 HP. Takes 30% less damage. Can't be stunned, frozen or paralyzed. Every 3rd attack does 2.5x damage."
+      "desc": "Beast Emperor can't die. Survives its first killing blow with 1 HP. Takes 30% less damage. Can't be stunned, frozen, paralyzed, confused, sealed or weakened. Every 3rd attack does 2.5x damage."
     },
     "skill": {
       "name": "",
@@ -460,9 +463,10 @@
         "charge-commander"
       ]
     },
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "obtain": "Rolls anywhere",
-    "prevTier": "B"
+    "prevTier": "B",
+    "redraw": true
   },
   {
     "id": "bald-cadet",
@@ -13267,7 +13271,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Drago Nova",
-      "desc": "Milim's Drago Nova destroys everything. +32% damage. Every hit also hits the whole enemy bench for 20%. Ignores shields, dodges and barriers. +4% damage every time it is hit. With Rimuru in the deck, both get +6% damage."
+      "desc": "Destroyer Dragonoid's Drago Nova destroys everything. +32% damage. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. +4% damage every time it is hit. With Slime Demon Lord in your deck, both get +6% damage."
     },
     "skill": {
       "name": "",
@@ -13283,7 +13287,7 @@
       "overall": 63.0
     },
     "tier": "A",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "beats": [
       "dragon-emperor-monarch",
       "primordial-butler-demon",
@@ -13344,7 +13348,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "destroyer-god",
@@ -13458,7 +13463,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Dragon God Style",
-      "desc": "Orsted, the strongest in the world. Every enemy card starts with 14% less damage. 28% chance to counter-attack when hit. Ignores shields, dodges and barriers. Every 3rd attack does 1.85x damage."
+      "desc": "Dragon God, the strongest in the world. Every enemy card starts with 14% less damage. 28% chance to strike back when hit. Ignores the enemy's shields, dodges and barriers. Every 3rd attack does 1.85x damage."
     },
     "skill": {
       "name": "",
@@ -13474,7 +13479,7 @@
       "overall": 61.2
     },
     "tier": "A",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "beats": [
       "destroyer-dragonoid",
       "dragon-emperor-monarch",
@@ -13535,7 +13540,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "dragon-king-of-ruin",
@@ -13933,7 +13939,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Kyoka Suigetsu",
-      "desc": "Aizen's perfect hypnosis. 18% chance to dodge each hit. 12% chance per hit to Confuse the enemy (it hits itself instead). Comes back once with 31% HP. Every 3rd attack does 1.91x damage."
+      "desc": "Hypnosis Traitor's perfect hypnosis. 18% chance to dodge each hit. 12% chance per hit to Confuse the enemy (it skips its next turn and hits itself for half damage). Comes back once with 31% HP. Every 3rd attack does 1.91x damage."
     },
     "skill": {
       "name": "",
@@ -13949,7 +13955,7 @@
       "overall": 54.8
     },
     "tier": "B",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "beats": [
       "dragon-emperor-monarch",
       "atomic-shadow-lord",
@@ -14010,7 +14016,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "no-life-king",
@@ -14028,7 +14035,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Release Restriction: Level Zero",
-      "desc": "Alucard releases every soul he has consumed. Each kill gives it 13% of the defeated card's damage and HP. Comes back once with 43% HP. Heals 4.3% of its max HP every turn. Every hit also hits the whole enemy bench for 20%."
+      "desc": "No-Life King releases every soul he has consumed. Each kill gives it 13% of the defeated card's damage and HP. Comes back once with 43% HP. Heals 4.3% of its max HP every turn. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses)."
     },
     "skill": {
       "name": "",
@@ -14044,7 +14051,7 @@
       "overall": 70.4
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "beats": [
       "dragon-king-of-ruin",
       "destroyer-dragonoid",
@@ -14104,7 +14111,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "pirate-king",
@@ -14218,7 +14226,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Temptation World",
-      "desc": "Diablo's world of temptation. 40% chance per hit to Confuse the enemy (it hits itself instead). Its first hit on each new enemy Seals its ability for 2 turns. 35% chance to dodge each hit. Can't be stunned, frozen or paralyzed. With Rimuru in the deck: +30% damage and HP."
+      "desc": "Primordial Butler Demon's world of temptation. 40% chance per hit to Confuse the enemy (it skips its next turn and hits itself for half damage). Its first hit on each new enemy Seals that card's ability for 2 turns. 35% chance to dodge each hit. Can't be stunned, frozen, paralyzed, confused, sealed or weakened. With Slime Demon Lord in your deck: +30% damage and HP."
     },
     "skill": {
       "name": "",
@@ -14234,7 +14242,7 @@
       "overall": 60.0
     },
     "tier": "A",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "beats": [
       "dragon-emperor-monarch",
       "moon-eye-ghost",
@@ -14295,7 +14303,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "rabbit-goddess",
@@ -14313,7 +14322,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Expansive Truth-Seeking Ball",
-      "desc": "Kaguya is the origin of chakra. Ignores shields, dodges and barriers. Each hit also deals 8.4% of the enemy's max HP. Each hit swaps the enemy's front card with a random one (not bosses). Heals 17% of the damage it deals."
+      "desc": "Rabbit Goddess is the origin of chakra. Ignores the enemy's shields, dodges and barriers. Each hit also deals 8.4% of the enemy's max HP. Each hit swaps the enemy's front card with a random card from its deck (not bosses). Heals 17% of the damage it deals."
     },
     "skill": {
       "name": "",
@@ -14329,7 +14338,7 @@
       "overall": 53.2
     },
     "tier": "B",
-    "updated": "2026-10-30",
+    "updated": "2026-11-02",
     "beats": [
       "moon-eye-ghost",
       "atomic-shadow-lord",
@@ -14390,7 +14399,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "spiral-drill-king",
