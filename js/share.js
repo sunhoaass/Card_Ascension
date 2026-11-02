@@ -626,17 +626,19 @@
     ctx.textAlign = "left";
   }
 
-  // a name under its card: as many words a line as fit, 2 lines at CAP px, else smaller (3 lines) · a word is never split
-  // unless it is wider than the card even at the smallest size
-  const CAP_STEPS = [[CAPS.CAP, 2], [CAPS.CAP - 2, 2], [CAPS.CAP_MIN, CAPS.CAP_LINES], [CAPS.CAP_MIN - 2, CAPS.CAP_LINES], [CAPS.CAP_MIN - 4, CAPS.CAP_LINES]];
-  function captionOf(ctx, name, maxW, font) {
-    const words = String(name).split(/\s+/).filter(Boolean);
-    let size = 0, lines = [];
-    for (const [sz, max] of CAP_STEPS) {
-      size = sz; ctx.font = `600 ${size}px ${font}`;
-      lines = wrapText(ctx, name, maxW);
-      if (lines.length <= max && words.every((w) => ctx.measureText(w).width <= maxW)) break;
-    }
+  // a name under its card · owner 2026-11-02: every name in one picture the same size (was smaller for long names):
+  // capSize() picks the biggest size at which every name fits (no word split, at most CAP_LINES lines), captionOf() wraps at it
+  const CAP_SIZES = [CAPS.CAP, CAPS.CAP - 2, CAPS.CAP_MIN, CAPS.CAP_MIN - 2, CAPS.CAP_MIN - 4];
+  function capFits(ctx, name, maxW, size, font) {
+    ctx.font = `600 ${size}px ${font}`;
+    return wrapText(ctx, name, maxW).length <= CAPS.CAP_LINES && String(name).split(/\s+/).filter(Boolean).every((w) => ctx.measureText(w).width <= maxW);
+  }
+  function capSize(ctx, names, maxW, font) {
+    return CAP_SIZES.find((sz) => names.every((n) => capFits(ctx, n, maxW, sz, font))) || CAP_SIZES[CAP_SIZES.length - 1];
+  }
+  function captionOf(ctx, name, maxW, font, size) {
+    ctx.font = `600 ${size}px ${font}`;
+    const lines = wrapText(ctx, name, maxW);
     const out = lines.slice(0, CAPS.CAP_LINES);
     if (lines.length > CAPS.CAP_LINES) out[CAPS.CAP_LINES - 1] = fitText(ctx, lines.slice(CAPS.CAP_LINES - 1).join(" "), maxW);   // never seen: a 4-line name
     return { size, lines: out, h: out.length * Math.round(size * 1.18) };
@@ -673,11 +675,13 @@
     const ch = caps ? Math.round(cw * B.CARD_H / B.CARD_W) : B.CARD_H;
     const mctx = caps ? document.createElement("canvas").getContext("2d") : null;            // measures the names before the real canvas exists
     const bodyFont = cssVar("--font-body");
+    const capName = (it) => (it.missing ? pretty(it.id) : String(it.name || pretty(it.id)));
+    const capPx = caps ? capSize(mctx, rows.flatMap((r) => r.items.map(capName)), cw - 6, bodyFont) : 0;   // one size for every name (a gap between neighbours)
     rows.forEach((r) => {
       const lines = Math.ceil(r.items.length / perLine);
       r.lines = lines;
       // each line of cards is as tall as its card + its longest name
-      if (caps) r.items.forEach((it) => { it._cap = captionOf(mctx, it.missing ? pretty(it.id) : String(it.name || pretty(it.id)), cw + B.GAP - 4, bodyFont); });
+      if (caps) r.items.forEach((it) => { it._cap = captionOf(mctx, capName(it), cw - 6, bodyFont, capPx); });
       r.lineH = Array.from({ length: lines }, (_, l) => ch + (caps ? CAPS.CAP_GAP + Math.max(...r.items.slice(l * perLine, (l + 1) * perLine).map((it) => it._cap.h)) : 0));
       r.h = lines ? B.ROW_PAD * 2 + r.lineH.reduce((s, h) => s + h, 0) + (lines - 1) * B.GAP : B.MIN_ROW;
     });
@@ -786,7 +790,10 @@
      ATK / HP with the deck's buffs + trait + grades (js/deckbuff.js · the game's HP green / ATK red, owner 2026-11-02). The tier list image is unchanged.
      Owner 2026-11-02 "rarity per slot": every card and support is drawn at its own slot's rarity (its rarity pill on the card,
      like the cards on the site) · the one rarity ribbon top right (paintRibbon) is gone from the deck image.
-     Owner 2026-11-02: spec.note (the user's own words, e.g. farming time) = a gold-edged box under the name, wrapped.
+     Owner 2026-11-02: spec.note (the user's own words, e.g. farming time) = a gold-edged box, wrapped · at the bottom of the
+     image (owner 2026-11-02 round 2, was under the name).
+     Owner 2026-11-02 round 2: each card's / support's name over it (one size for every slot, wrapped, was SLOT 1–4) and its
+     rarity pill under it (the card's own rarity pill colours · above the trait), in both panels.
      spec = { id, title, note?, mode, rarity: name (fallback), cards: [id|null x4], support: [id|null x4],
               cardRarity: [name x4], supRarity: [name x4], traits: [trait id|null x4], nums: [{ atk, hp }|null x4] }
      ========================================================== */
@@ -804,7 +811,35 @@
     if (out.length > NOTE.LINES) { out.length = NOTE.LINES; out[NOTE.LINES - 1] = fitText(mc, out[NOTE.LINES - 1] + " …", maxW); }
     return out;
   }
-  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10 };
+  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10,
+    NAME_FS: 17, NAME_LH: 21, NAME_LINES: 2, NAME_GAP: 8, RAR: 26, RAR_GAP: 10 };
+  // a slot's name over its card: one size for every slot, wrapped to NAME_LINES (the last line squeezed if it is longer)
+  function slotName(ctx, name, maxW, font) {
+    ctx.font = `600 ${DECKIMG.NAME_FS}px ${font}`;
+    const lines = wrapText(ctx, String(name || ""), maxW);
+    if (lines.length > DECKIMG.NAME_LINES) lines.splice(DECKIMG.NAME_LINES - 1, lines.length, fitText(ctx, lines.slice(DECKIMG.NAME_LINES - 1).join(" "), maxW));
+    return lines.map((l) => fitText(ctx, l, maxW));
+  }
+  // the rarity pill under a card: the card's own rarity pill (gcSpec · Normal = a plain dark pill)
+  function drawRarityPill(ctx, cx, y, h, rarity, pal) {
+    const sp = gcSpec(rarity), text = String(rarity || "Normal").toUpperCase(), pop = cssVar("--gc-font-pop") || pal.display;
+    ctx.save();
+    ctx.font = `italic 400 ${h * 0.68}px ${pop}`; if ("letterSpacing" in ctx) ctx.letterSpacing = "1px";
+    const w = Math.max(96, ctx.measureText(text).width + 30), x = cx - w / 2;
+    roundRect(ctx, x, y, w, h, h / 2);
+    if (sp.normal) { ctx.fillStyle = pal.void; ctx.fill(); ctx.lineWidth = 1.5; ctx.strokeStyle = pal.faint; ctx.stroke(); }
+    else {
+      const st = gradStops(sp.pill), across = /90deg/.test(sp.pill);
+      const g = across ? ctx.createLinearGradient(x, 0, x + w, 0) : ctx.createLinearGradient(0, y, 0, y + h);
+      st.forEach(([o, c]) => g.addColorStop(o, c));
+      ctx.fillStyle = st.length ? g : pal.rift; ctx.fill();
+      ctx.lineWidth = 2; ctx.strokeStyle = sp.line; ctx.stroke();
+    }
+    ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+    if (!sp.normal && !sp.flat) { ctx.lineWidth = 2.5; ctx.strokeStyle = sp.line; ctx.strokeText(text, cx, y + h / 2 + 1); }
+    ctx.fillStyle = sp.normal ? pal.dim : sp.ink; ctx.fillText(text, cx, y + h / 2 + 1);
+    ctx.restore();
+  }
 
   function drawEmptySlot(ctx, x, y, w, h, pal) {
     roundRect(ctx, x + 1, y + 1, w - 2, h - 2, 8);
@@ -862,11 +897,13 @@
     const anyTrait = traits.some(Boolean);
 
     const TR = anyTrait ? B.TRAIT_GAP + B.TRAIT : 0;
-    const P1 = 14 + 22 + 24 + B.CH + TR + 18, P2 = 14 + 22 + B.CH + 18;
+    // over each card: its name (NAME_LINES lines tall in every slot) · under it: its rarity pill, then the trait (cards)
+    const NM = B.NAME_LINES * B.NAME_LH + B.NAME_GAP, RR = B.RAR_GAP + B.RAR;
+    const P1 = 14 + 22 + NM + B.CH + RR + TR + 18, P2 = 14 + 22 + NM + B.CH + RR + 18;
     // the deck's note (owner 2026-11-02: farming time …, written by the user): a clear box under the name, wrapped
     const noteLines = deckNoteLines(spec.note, B.W - B.PAD * 2 - NOTE.PAD * 2 - NOTE.BAR);
     const NH = noteLines.length ? noteLines.length * NOTE.LH + NOTE.PAD * 2 + NOTE.GAP : 0;
-    const H = B.HEAD + NH + P1 + B.PANEL_GAP + P2 + B.FOOT;
+    const H = B.HEAD + P1 + B.PANEL_GAP + P2 + (NH ? B.PANEL_GAP + NH - NOTE.GAP : 0) + B.FOOT;
     let k = Math.min(want, Math.sqrt(MAX_PIXELS / (B.W * H)), MAX_SIDE / H, MAX_SIDE / B.W);
     k = Math.floor(k * 100) / 100;
     if (k < 0.5) throw new Error("This deck is too big for one image");
@@ -896,8 +933,8 @@
     ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
     ctx.fillStyle = pal.ink; ctx.font = `700 46px ${pal.display}`;
     ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2), B.PAD, 66);
-    if (noteLines.length) {
-      const ny = B.HEAD - 8, nh = NH - NOTE.GAP, nw = B.W - B.PAD * 2, gold = cssVar("--gold") || "#d8b45a";
+    const drawNote = (ny) => {
+      const nh = NH - NOTE.GAP, nw = B.W - B.PAD * 2, gold = cssVar("--gold") || "#d8b45a";
       ctx.save();
       roundRect(ctx, B.PAD, ny, nw, nh, 14); ctx.clip();
       ctx.fillStyle = mix(gold, "#0f1425", 0.14); ctx.fillRect(B.PAD, ny, nw, nh);   // dark panel with a gold tint
@@ -907,7 +944,7 @@
       ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.stroke();
       ctx.fillStyle = pal.ink; ctx.font = `600 ${NOTE.FS}px ${pal.body}`; ctx.textBaseline = "alphabetic";
       noteLines.forEach((l, i) => ctx.fillText(l, B.PAD + NOTE.BAR + NOTE.PAD, ny + NOTE.PAD + NOTE.FS + i * NOTE.LH - 4));
-    }
+    };
 
     // one panel per kind. Columns line up, so the support under a card sits in the same column.
     const pw = B.W - B.PAD * 2;
@@ -925,24 +962,35 @@
       ctx.fillText(label.toUpperCase(), B.PAD + 22, y + 14 + 14);
       setSpacing(ctx, 0);
     };
-    let y = B.HEAD + NH;
+    // the name over a slot (bottom line just above the card) + its rarity pill under it · empty slot = neither
+    const label = (it, i, cy, r) => {
+      if (!it) return;
+      const lines = slotName(ctx, it.missing ? pretty(it.id) : it.name || pretty(it.id), colW - 14, pal.body);
+      ctx.fillStyle = pal.ink; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+      const base = cy - B.NAME_GAP - 4 - (lines.length - 1) * B.NAME_LH;
+      lines.forEach((l, j) => ctx.fillText(l, colX(i), base + j * B.NAME_LH));
+      ctx.textAlign = "left";
+      if (!it.missing) drawRarityPill(ctx, colX(i), cy + B.CH + B.RAR_GAP, B.RAR, r, pal);
+    };
+    let y = B.HEAD;
     panel(y, P1, "Cards");
     cards.forEach((it, i) => {
-      const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + 24;
-      ctx.fillStyle = pal.dim; ctx.font = `700 12px ${pal.display}`; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; setSpacing(ctx, 1.5);
-      ctx.fillText(`SLOT ${i + 1}`, colX(i), cy - 9);
-      setSpacing(ctx, 0); ctx.textAlign = "left";
+      const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + NM;
       if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frameAt(spec.cardRarity, i), it.image ? arts.get(it.image) : null, k, pal, nums[i]);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
-      if (traits[i]) drawTrait(ctx, colX(i), cy + B.CH + B.TRAIT_GAP, B.CW, B.TRAIT, traits[i], icons.get(traits[i].id), pal);
+      label(it, i, cy, rOf(spec.cardRarity, i));
+      if (traits[i]) drawTrait(ctx, colX(i), cy + B.CH + RR + B.TRAIT_GAP, B.CW, B.TRAIT, traits[i], icons.get(traits[i].id), pal);
     });
     y += P1 + B.PANEL_GAP;
     panel(y, P2, "Support");
     sups.forEach((it, i) => {
-      const x = colX(i) - B.CW / 2, cy = y + 14 + 22;
+      const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + NM;
       if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frameAt(spec.supRarity, i), it.image ? arts.get(it.image) : null, k, pal);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
+      label(it, i, cy, rOf(spec.supRarity, i));
     });
+    // the note last, under the support panel (owner 2026-11-02 round 2)
+    if (noteLines.length) drawNote(y + P2 + B.PANEL_GAP);
 
     const blob = await new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Couldn't encode the image"))), "image/png"));
     return { blob, width: canvas.width, height: canvas.height, filename: `${slug(spec.title, "deck")}.png` };
