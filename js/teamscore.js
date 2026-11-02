@@ -5,7 +5,9 @@
 
    CBI.teamScore = {
      score(deck, modeId?)       -> { score 1–100 | null, raw, band, label, parts[5], notes[], members, mode }
-   Since the game update of 2026-10-30 a deck is 4 cards + 4 support, and the same card or support may fill several slots.
+   Since the game update of 2026-10-30 a deck is 4 cards + 4 support, and the same card or support may fill several slots
+   (owner 2026-11-02: every copy of a card counts · the same support twice doesn't stack, so a 2nd copy of a support that
+   buffs the whole deck adds nothing to Card power · js/deckbuff.js does the ATK / HP numbers).
      analyze(deck)              -> { strong{tags,cards,teams}, weak{tags,cards}, modes[], data{} }
      suggest(deck, kind, n = 3) -> [{ id, slot, gain, before, after }]   kind = "cards" | "support"
      band(score), modeConfig(id), modes(), resolveMode(id), PARTS
@@ -239,7 +241,14 @@
     {
       const b = bestOf(mode, rarity);
       const cAvg = at.reduce((a, c) => a + (c ? cardValT(deck, c, mode) : 0), 0) / SLOTS;
-      const sAvg = sat.reduce((a, s) => a + (s ? supVal(s, mode, rarity) : 0), 0) / SLOTS;
+      // owner 2026-11-02: the same support twice doesn't stack · one that reaches the whole deck (EVERY / every OTHER card)
+      // hits the same cards again, so its 2nd copy adds nothing · one for "the supported card" still helps its own column
+      const wide = new Set();
+      const sAvg = sat.reduce((a, s) => {
+        if (!s) return a;
+        if (C.deckBuff && C.deckBuff.deckWide(s)) { if (wide.has(s.id)) return a; wide.add(s.id); }
+        return a + supVal(s, mode, rarity);
+      }, 0) / SLOTS;
       const cr = clamp01(cAvg / b.card), sr = clamp01(sAvg / b.sup);
       const v = l.sups.length ? K.powerCards * cr + K.powerSupport * sr : cr;
       const avgOv = nCards ? members.reduce((a, c) => a + cardValT(deck, c, mode), 0) / nCards : 0;

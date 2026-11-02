@@ -456,7 +456,8 @@
     if (wv > room) { size = size * room / wv * 0.97; ctx.font = `${font.replace("{s}", size)}`; }
     return size;
   }
-  function drawGameCard(ctx, x, y, w, h, item, rarity, art, k, pal) {
+  // nums (deck image, 2026-11-02) = { atk, hp, upAtk, upHp }: the numbers to show instead of the rarity's (up = raised: green-gold)
+  function drawGameCard(ctx, x, y, w, h, item, rarity, art, k, pal, nums) {
     const u = w / 100, R = 3.7 * u, sp = gcSpec(rarity);
     const num = cssVar("--gc-font-num"), pop = cssVar("--gc-font-pop");
     // shadow (+ the rarity glow)
@@ -513,8 +514,11 @@
       return s;
     };
     // HP: right-aligned, left of the heart · ATK: centred between the swords
-    if (!sup) numText(C.fmtHp(C.statAt(item, "hp", r)), x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2, cssVar("--gc-hp"), cssVar("--gc-hp-line"), 1.5, 0.5, cssVar("--gc-hp-line"));
-    if (!sup) numText(C.fmtStat(C.statAt(item, "atk", r)), x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5, cssVar("--gc-atk"), cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
+    const n = nums || {}, up = (v, key) => (v ? cssVar(key) : null);
+    if (!sup) numText(C.fmtHp(n.hp != null ? n.hp : C.statAt(item, "hp", r)), x + 83.2 * u, y + 10.6 * u, "right", 12.4, 43.2,
+      up(n.upHp, "--gc-buff") || cssVar("--gc-hp"), up(n.upHp, "--gc-buff-line") || cssVar("--gc-hp-line"), 1.5, 0.5, up(n.upHp, "--gc-buff-line") || cssVar("--gc-hp-line"));
+    if (!sup) numText(C.fmtStat(n.atk != null ? n.atk : C.statAt(item, "atk", r)), x + 50.25 * u, y + 130.6 * u, "center", 14.2, 57.5,
+      up(n.upAtk, "--gc-buff") || cssVar("--gc-atk"), up(n.upAtk, "--gc-buff-line") || cssVar("--gc-atk-line"), 0.9, 0.35, "rgba(0, 0, 0, .55)");
     // pills (right edge 1.2u in from the card's right side)
     const pill = (text, top, hgt, size, min, bg, line, ink, inner, flat) => {
       const fs = fitFont(ctx, text, size * u, 36.8 * u, `italic 400 {s}px ${pop}`);
@@ -542,8 +546,8 @@
 
   /* One mini card: the game card (drawGameCard · support too, 2026-10-30), or a dashed slot when it's not in the library.
      item = card / support object, or { missing: true, id } */
-  function drawCard(ctx, x, y, w, h, item, spec, art, k, pal) {
-    if (!item.missing) { drawGameCard(ctx, x, y, w, h, item, spec.rarity, art, k, pal); return; }
+  function drawCard(ctx, x, y, w, h, item, spec, art, k, pal, nums) {
+    if (!item.missing) { drawGameCard(ctx, x, y, w, h, item, spec.rarity, art, k, pal, nums); return; }
     const R = 8;
     roundRect(ctx, x + 1, y + 1, w - 2, h - 2, R);
     ctx.fillStyle = pal.glass; ctx.fill();
@@ -776,10 +780,14 @@
   /* ==========================================================
      Image: a deck (step 10). Four card slots over four support slots (the game's decks since 2026-10-30, was five),
      drawn with the same card / frame / backdrop code.
-     spec = { id, title, mode: "Tower Infinity", rarity: name, cards: [id|null x4], support: [id|null x4] }
+     Owner 2026-11-02: only the deck's name as words (no "CARD BATTLE INFINITY", no "Deck · mode · rarity · 4/4 …" line,
+     no footer, no "4 / 4" counts) · the rarity ribbon, SLOT 1–4 and the CARDS / SUPPORT headings stay · each card's trait
+     under it · ATK / HP with the deck's buffs (js/deckbuff.js, green-gold when raised). The tier list image is unchanged.
+     spec = { id, title, mode, rarity: name, cards: [id|null x4], support: [id|null x4],
+              traits: [trait id|null x4], nums: [{ atk, hp, upAtk, upHp }|null x4] }
      ========================================================== */
   const DECK_SLOTS = 4;
-  const DECKIMG = { W: 1200, PAD: 28, HEAD: 150, FOOT: 96, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16 };
+  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10 };
 
   function drawEmptySlot(ctx, x, y, w, h, pal) {
     roundRect(ctx, x + 1, y + 1, w - 2, h - 2, 8);
@@ -791,6 +799,34 @@
     ctx.textAlign = "left";
   }
 
+  // a trait's icon (the <symbol> in index.html, as the Deck page's .dk-trait shows it) as a picture in its tier colour
+  function traitIcon(t, color) {
+    const sym = document.getElementById("tri-" + t.id) || document.getElementById("i-gem");
+    if (!sym) return Promise.resolve(null);
+    const inner = sym.innerHTML.replace(/var\(--ink\)/g, cssVar("--ink") || "#fff");
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${sym.getAttribute("viewBox") || "0 0 24 24"}" width="96" height="96" color="${color}" style="color:${color}">${inner}</svg>`;
+    return loadImg("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg));
+  }
+  // the trait pill under a card: same look as .dk-trait in css/traits.css (tier colour edge, dark tier fill, icon + name)
+  function drawTrait(ctx, cx, y, w, h, t, icon, pal) {
+    const tier = String(t.tier || "none").toLowerCase();
+    const tc = cssVar("--tr-" + tier) || pal.rift, tc2 = cssVar("--tr-" + tier + "-2") || pal.void;
+    const x = cx - w / 2;
+    ctx.save();
+    roundRect(ctx, x, y, w, h, h / 2);
+    const g = ctx.createLinearGradient(0, y, 0, y + h);
+    g.addColorStop(0, mix(tc2, pal.void, 0.7)); g.addColorStop(1, pal.void);
+    ctx.fillStyle = g; ctx.fill();
+    ctx.globalAlpha = 0.75; ctx.lineWidth = 1.5; ctx.strokeStyle = tc; ctx.stroke(); ctx.globalAlpha = 1;
+    ctx.font = `600 15px ${pal.body}`; ctx.textBaseline = "middle"; ctx.textAlign = "left";
+    const is = 18, gap = 7, name = fitText(ctx, t.name, w - 24 - (icon ? is + gap : 0));
+    const tw = ctx.measureText(name).width, all = tw + (icon ? is + gap : 0);
+    let tx = cx - all / 2;
+    if (icon) { ctx.drawImage(icon, tx, y + (h - is) / 2, is, is); tx += is + gap; }
+    ctx.fillStyle = pal.ink; ctx.fillText(name, tx, y + h / 2 + 1);
+    ctx.restore();
+  }
+
   async function deckImage(spec, { scale: want = 2 } = {}) {
     const B = DECKIMG;
     await fontsReady();
@@ -799,51 +835,53 @@
     const sups = (spec.support || []).slice(0, DECK_SLOTS).map((id) => (id ? supLib.get(id) || { missing: true, id } : null));
     while (cards.length < DECK_SLOTS) cards.push(null);
     while (sups.length < DECK_SLOTS) sups.push(null);
-    const nC = cards.filter(Boolean).length, nS = sups.filter(Boolean).length;
     const rarity = spec.rarity || "Normal";
     const frame = frameSpec(rarity);   // support too (2026-10-28): the game card, as big as the cards, at the deck's rarity
+    const traitBy = (C.traits && C.traits.byId) || (() => null);
+    const traits = cards.map((it, i) => (it && !it.missing && Array.isArray(spec.traits) ? traitBy(spec.traits[i]) : null));
+    const nums = cards.map((it, i) => (it && !it.missing && Array.isArray(spec.nums) && spec.nums[i] ? spec.nums[i] : null));
+    const anyTrait = traits.some(Boolean);
 
-    const P1 = 14 + 22 + 24 + B.CH + 18, P2 = 14 + 22 + B.CH + 18;
-    const H = B.HEAD + P1 + B.PANEL_GAP + P2 + 20 + B.FOOT;
+    const TR = anyTrait ? B.TRAIT_GAP + B.TRAIT : 0;
+    const P1 = 14 + 22 + 24 + B.CH + TR + 18, P2 = 14 + 22 + B.CH + 18;
+    const H = B.HEAD + P1 + B.PANEL_GAP + P2 + B.FOOT;
     let k = Math.min(want, Math.sqrt(MAX_PIXELS / (B.W * H)), MAX_SIDE / H, MAX_SIDE / B.W);
     k = Math.floor(k * 100) / 100;
     if (k < 0.5) throw new Error("This deck is too big for one image");
 
+    const pal = {
+      display: cssVar("--font-display"), body: cssVar("--font-body"),
+      ink: cssVar("--ink"), dim: cssVar("--ink-dim"), faint: cssVar("--ink-faint"), void: cssVar("--void"),
+      rift: cssVar("--rift"), glass: cssVar("--glass"), line: cssVar("--glass-line"),
+    };
     const arts = new Map();
     const srcs = new Set();
     [...cards, ...sups].forEach((it) => { if (it && !it.missing && it.image) srcs.add(it.image); });
-    await Promise.all([...srcs].map(async (s) => arts.set(s, await loadImg(s))));
+    const icons = new Map();
+    await Promise.all([
+      ...[...srcs].map(async (s) => arts.set(s, await loadImg(s))),
+      ...[...new Set(traits.filter(Boolean))].map(async (t) => icons.set(t.id, await traitIcon(t, cssVar("--tr-" + String(t.tier || "none").toLowerCase()) || pal.rift))),
+    ]);
 
     const canvas = document.createElement("canvas");
     canvas.width = Math.round(B.W * k); canvas.height = Math.round(H * k);
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("No canvas");
     ctx.scale(k, k);
-    const pal = {
-      display: cssVar("--font-display"), body: cssVar("--font-body"),
-      ink: cssVar("--ink"), dim: cssVar("--ink-dim"), faint: cssVar("--ink-faint"), void: cssVar("--void"),
-      rift: cssVar("--rift"), glass: cssVar("--glass"), line: cssVar("--glass-line"),
-    };
     paintBackdrop(ctx, B.W, H, pal, "deck:" + String(spec.id || spec.title || "x"));
 
-    // header
+    // header: the deck's name + the rarity ribbon, nothing else
     ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
-    ctx.fillStyle = pal.rift; ctx.font = `600 14px ${pal.display}`; setSpacing(ctx, 3);
-    ctx.fillText("CARD BATTLE INFINITY", B.PAD, 46);
-    setSpacing(ctx, 0);
     const pillW = 150;
     ctx.fillStyle = pal.ink; ctx.font = `700 46px ${pal.display}`;
-    ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2 - pillW - 20), B.PAD, 98);
-    ctx.fillStyle = pal.dim; ctx.font = `500 18px ${pal.body}`;
-    const sub = ["Deck", spec.mode || null, rarity, `${nC}/${DECK_SLOTS} cards`, `${nS}/${DECK_SLOTS} support`].filter(Boolean).join("  ·  ");
-    ctx.fillText(fitText(ctx, sub, B.W - B.PAD * 2), B.PAD, 128);
+    ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2 - pillW - 20), B.PAD, 66);
     paintRibbon(ctx, String(rarity).toUpperCase(), pillW, B.W, B.PAD, frame, pal);
 
     // one panel per kind. Columns line up, so the support under a card sits in the same column.
     const pw = B.W - B.PAD * 2;
     const colW = (pw - 2 * 24) / DECK_SLOTS;
     const colX = (i) => B.PAD + 24 + i * colW + colW / 2;
-    const panel = (y, h, label, count) => {
+    const panel = (y, h, label) => {
       ctx.save();
       roundRect(ctx, B.PAD, y, pw, h, B.R); ctx.clip();
       ctx.fillStyle = "rgba(15, 20, 37, .93)"; ctx.fillRect(B.PAD, y, pw, h);
@@ -854,28 +892,25 @@
       ctx.fillStyle = pal.rift; ctx.font = `700 13px ${pal.display}`; setSpacing(ctx, 2.5);
       ctx.fillText(label.toUpperCase(), B.PAD + 22, y + 14 + 14);
       setSpacing(ctx, 0);
-      ctx.fillStyle = pal.dim; ctx.font = `600 13px ${pal.body}`; ctx.textAlign = "right";
-      ctx.fillText(count, B.PAD + pw - 22, y + 14 + 14);
-      ctx.textAlign = "left";
     };
     let y = B.HEAD;
-    panel(y, P1, "Cards", `${nC} / ${DECK_SLOTS}`);
+    panel(y, P1, "Cards");
     cards.forEach((it, i) => {
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + 24;
-      ctx.fillStyle = pal.dim; ctx.font = `700 12px ${pal.display}`; ctx.textAlign = "center"; setSpacing(ctx, 1.5);
+      ctx.fillStyle = pal.dim; ctx.font = `700 12px ${pal.display}`; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; setSpacing(ctx, 1.5);
       ctx.fillText(`SLOT ${i + 1}`, colX(i), cy - 9);
       setSpacing(ctx, 0); ctx.textAlign = "left";
-      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal);
+      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal, nums[i]);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
+      if (traits[i]) drawTrait(ctx, colX(i), cy + B.CH + B.TRAIT_GAP, B.CW, B.TRAIT, traits[i], icons.get(traits[i].id), pal);
     });
     y += P1 + B.PANEL_GAP;
-    panel(y, P2, "Support", `${nS} / ${DECK_SLOTS}`);
+    panel(y, P2, "Support");
     sups.forEach((it, i) => {
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22;
       if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
     });
-    paintFooter(ctx, B.W, H, B.FOOT, B.PAD, pal, spec.title || "Deck");
 
     const blob = await new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Couldn't encode the image"))), "image/png"));
     return { blob, width: canvas.width, height: canvas.height, filename: `${slug(spec.title, "deck")}.png` };

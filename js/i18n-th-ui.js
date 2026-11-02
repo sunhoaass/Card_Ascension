@@ -3,6 +3,10 @@
   const MON = { Jan: "ม.ค.", Feb: "ก.พ.", Mar: "มี.ค.", Apr: "เม.ย.", May: "พ.ค.", Jun: "มิ.ย.", Jul: "ก.ค.", Aug: "ส.ค.", Sep: "ก.ย.", Oct: "ต.ค.", Nov: "พ.ย.", Dec: "ธ.ค." };
   I18N.addUI({
  "# / # · swipe ← →": "#1 / #2 · ปัด ← →",
+ "+#% from the deck": "+#1% จากเด็ค",
+ "Buffs": "บัฟ",
+ "No deck buff": "ไม่มีบัฟจากเด็ค",
+ "Deck buffs add up: ATK = base × (# + all the % together), then × the trait. Buffs that need a hit, a turn or low HP aren't counted, and the same support twice counts once.": "บัฟในเด็คบวกกัน: ATK = ค่าตั้งต้น × (#1 + % ทั้งหมดรวมกัน) แล้ว × Trait · บัฟที่ต้องโดนตี ต้องรอเทิร์น หรือต้อง HP ต่ำ ไม่นับ และซัพพอร์ตใบเดียวกันใส่ 2 ช่องนับครั้งเดียว",
  "# cards": "#1 การ์ด",
  "# decks": "#1 เด็ค",
  "# lists": "#1 ลิสต์",

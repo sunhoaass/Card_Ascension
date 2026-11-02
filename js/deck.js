@@ -7,7 +7,8 @@
        #deck/my/<id>      = the editor for one deck (each open adds a history entry, so phone Back returns to the list)
        #deck/s/<data>     = a deck someone shared (packed in the link by js/share.js), view only, with "Save a copy"
    · 1 deck = 4 card slots (Slot 1–4) + 4 support slots (the support under a card sits in the same column) since the game
-     update of 2026-10-30 (was 5). The same card or support may fill several slots (their buffs add up in the game).
+     update of 2026-10-30 (was 5). The same card or support may fill several slots (owner 2026-11-02: every copy of a card
+     buffs the others in full · the same support twice doesn't stack on one card).
      A deck saved or shared with 5: a 5th card / support moves into an empty slot of its row; one that doesn't fit is kept in
      deck.extra (never shown or scored, so nothing is thrown away). Mode: PvP · Tower Infinity · Overall (plan 2026-10-30 #6 · Story / Boss are hidden:
      a deck saved or shared in one of them keeps it, and shows / scores as Overall until another mode is picked).
@@ -23,7 +24,11 @@
      score pill on each row of My Decks. "Compare" = a dialog with two decks side by side (stacked on a phone).
    · Traits (js/traits.js): a trait button under each card slot of the editor. In the game every copy of a card has the same
      trait, so a slot's trait IS that card's trait (cbi:traits, shared with the Details sheet). The user's own decks are scored
-     with their traits (mine()); shared decks and Meta Decks are scored without. The share link and backup are unchanged.
+     with their traits (mine()); shared decks and Meta Decks are scored without. The backup is unchanged.
+   · Owner 2026-11-02: the share link carries the sharer's traits (payload t: [trait id|"" × 4], optional: older links open
+     the same) and the shared view shows them as pills (not buttons). ATK / HP on the cards of the editor, the shared view and
+     the image include the deck's buffs + the trait (js/deckbuff.js · green-gold when raised) · the buff pill under a card
+     (.dk-buff) opens where its buffs come from.
    Needs js/fx.js, js/app.js, js/teamscore.js, js/share.js, js/cards.js loaded first (C.dialog is made by later
    scripts and only used when something is tapped).
    ========================================================== */
@@ -125,7 +130,17 @@
   const modes = () => allModes().filter((m) => !m.hidden);   // the ones on the buttons
   // a deck's mode as shown and scored: hidden (Story / Boss) or unknown = Overall
   const modeOf = (id) => { const all = modes(); return all.find((m) => m.id === id && m.enabled) || all.find((m) => m.id === DEFAULT_MODE) || all[0]; };
-  const deckSpec = (d) => ({ id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice() });
+  // the image of a deck · traitOf(cardId, slot) = whose traits (the user's own, or the ones a shared link carried)
+  const deckSpec = (d, traitOf) => {
+    const t = (id, i) => (id && cardById.has(id) && traitOf ? traitOf(id, i) || null : null);
+    const res = C.deckBuff ? C.deckBuff.compute(d, { traitOf }) : [];
+    return {
+      id: d.id, title: d.name, mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice(),
+      traits: d.cards.map(t),
+      nums: d.cards.map((id, i) => { const r = res[i]; return r ? { atk: r.atk, hp: r.hp, upAtk: r.atk !== r.base.atk, upHp: r.hp !== r.base.hp } : null; }),
+    };
+  };
+  const myTraitOf = (id) => (C.traits && C.traits.of ? C.traits.of(id) : null);
   const anyCards = (d) => countOf(d.cards) + countOf(d.support) > 0;
   // the user's own deck as the team score sees it: with the user's trait per card (js/traits.js)
   const mine = (d) => ({ ...d, traits: C.traits.map() });
@@ -269,6 +284,7 @@
   function buildBoard(b, root, editable) {
     b.root = root;
     b.editable = editable;
+    b.traitOf = editable ? myTraitOf : (id, i) => (shared && shared.traits ? shared.traits[i] || null : null);
     root.innerHTML = KINDS.map((kind) => `
       <section class="dk-group" aria-label="${kind === "cards" ? "Cards" : "Support cards"}">
         <div class="dk-group__head"><h3 class="dk-group__title">${kind === "cards" ? "Cards" : "Support"}</h3><span class="dk-group__count" data-count="${kind}"></span></div>
@@ -316,6 +332,22 @@
           e.textContent = "Empty";
           slot._empty = e;
           box.appendChild(e);
+          if (kind === "cards") {                          // the sharer's trait (from the link · owner 2026-11-02): a pill, not a button
+            const t = document.createElement("span");
+            t.className = "dk-trait dk-trait--ro";
+            t.hidden = true;
+            slot._trait = t;
+            slot.appendChild(t);
+          }
+        }
+        if (kind === "cards") {                            // the deck's buffs on this card (js/deckbuff.js): tap = where they come from
+          const f = document.createElement("button");
+          f.type = "button";
+          f.className = "dk-buff fx-press";
+          f.dataset.act = "buff";
+          f.hidden = true;
+          slot._buff = f;
+          slot.appendChild(f);
         }
         row.appendChild(slot);
         b.slots[kind].push(slot);
@@ -376,7 +408,7 @@
         slot._x.hidden = !n;
         if (n) slot._x.setAttribute("aria-label", `Remove ${n.el.dataset.name} from ${kind === "cards" ? "slot" : "support slot"} ${i + 1}`);
       }
-      if (slot._trait) paintTrait(slot, n && !n.el.classList.contains("dk-item--missing") ? n.id : null);
+      if (slot._trait) paintTrait(slot, n && !n.el.classList.contains("dk-item--missing") ? n.id : null, b);
       if (slot._empty && b.editable) slot._empty.setAttribute("aria-label", `Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}`);
     });
     b.shown[kind] = next.map((n) => (n ? { id: n.id, el: n.el } : null));
@@ -395,19 +427,87 @@
   }
   const paintBoard = (b, d, opts) => KINDS.forEach((k) => paintKind(b, k, d, opts));
 
-  // trait button under a card slot: the card's trait in its tier colour, or "+ Trait"
-  function paintTrait(slot, id) {
+  // trait button under a card slot: the card's trait in its tier colour, or "+ Trait" · shared view: the sharer's, or nothing
+  function paintTrait(slot, id, b = ed) {
     const t = slot._trait;
-    t.hidden = !id;
-    if (!id) return;
-    const tr = C.traits.byId(C.traits.of(id)), name = lookup("cards", id).name;
+    const tr = id ? C.traits.byId(b.traitOf(id, Number(slot.dataset.i))) : null;
+    t.hidden = !id || (!b.editable && !tr);
+    if (t.hidden) return;
+    const name = lookup("cards", id).name;
     const key = tr ? tr.id : "";
     if (t.dataset.key === key && t.dataset.card === id) return;
     t.dataset.key = key; t.dataset.card = id;
     t.classList.toggle("dk-trait--none", !tr);
     t.style.cssText = C.traits.colorStyle(tr);
     t.innerHTML = `${C.traits.iconHTML(tr)}<span>${tr ? esc(tr.name) : "Trait"}</span>`;
-    t.setAttribute("aria-label", tr ? `${name}'s trait: ${tr.name} (${tr.tier}). Tap to change` : `Pick a trait for ${name}`);
+    if (b.editable) t.setAttribute("aria-label", tr ? `${name}'s trait: ${tr.name} (${tr.tier}). Tap to change` : `Pick a trait for ${name}`);
+    else t.setAttribute("aria-label", `${name}'s trait: ${tr.name} (${tr.tier})`);
+  }
+
+  /* ---------- Deck buffs on the cards (owner 2026-11-02 · js/deckbuff.js) ----------
+     ATK / HP = base × (1 + deck buffs %) × trait · raised numbers are green-gold (.is-buffed) · count 650 ms when on screen ·
+     the pill under the card (+45% ATK …) opens the list of where they come from */
+  const pct = (n) => "+" + Number(n.toFixed(1)) + "%";
+  function buffText(r) {
+    if (r.atkPct && r.hpPct) return r.atkPct === r.hpPct ? `${pct(r.atkPct)} ATK·HP` : `${pct(r.atkPct)} · ${pct(r.hpPct)}`;
+    return r.atkPct ? `${pct(r.atkPct)} ATK` : `${pct(r.hpPct)} HP`;
+  }
+  function paintBuffs(b, d, { animate = false } = {}) {
+    if (!C.deckBuff || !b.root) return;
+    const res = C.deckBuff.compute(d, { traitOf: b.traitOf });
+    b.buffs = res;
+    const cards = b.slots.cards.map((slot, i) => { const o = b.shown.cards[i]; return o && res[i] && o.id === res[i].id ? $(".card", o.el) : null; });
+    const seen = cards.map((el) => !!(animate && el && el.isConnected && rectVisible(el.getBoundingClientRect())));   // read all, then write
+    b.slots.cards.forEach((slot, i) => {
+      const r = res[i], card = cards[i];
+      if (card) {
+        const a = $('[data-k="atk"]', card), h = $('[data-k="hp"]', card);
+        if (Number(a.dataset.value) !== r.atk || Number(h.dataset.value) !== r.hp) C.setCardNums(card, { atk: r.atk, hp: r.hp }, { animate: seen[i] });
+        a.classList.toggle("is-buffed", r.atk !== r.base.atk);
+        h.classList.toggle("is-buffed", r.hp !== r.base.hp);
+      }
+      const f = slot._buff;
+      if (!f) return;
+      const on = !!(card && (r.atkPct || r.hpPct));
+      f.hidden = !on;
+      if (!on) { f.dataset.text = ""; return; }
+      const text = buffText(r);
+      if (f.dataset.text !== text) {
+        f.dataset.text = text;
+        const line = (lab, v) => (v ? `<span class="dk-buff__l"><i>${lab}</i> ${esc(pct(v))}</span>` : "");
+        f.innerHTML = `<svg class="dk-buff__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l7 9h-4.5v7h-5v-7H5z" fill="currentColor"/></svg>${line("ATK", r.atkPct)}${line("HP", r.hpPct)}`;
+      }
+      f.setAttribute("aria-label", `${lookup("cards", r.id).name}: deck buffs ${buffText(r)}. Tap to see where they come from`);
+    });
+  }
+  function buffDialog(btn) {
+    const slot = btn.closest(".dk-slot");
+    const b = slot && sh.root && sh.root.contains(slot) ? sh : ed;
+    const r = slot && b.buffs ? b.buffs[Number(slot.dataset.i)] : null;
+    const card = r && lookup("cards", r.id);
+    if (!card) return;
+    clearSel();
+    const kindName = { card: "Card", support: "Support", trait: "Trait" };
+    const val = (x) => (x.kind === "trait"
+      ? [x.atk !== 1 ? `×${Number(x.atk.toFixed(2))} ATK` : "", x.hp !== 1 ? `×${Number(x.hp.toFixed(2))} HP` : ""]
+      : [x.atk ? `${pct(x.atk)} ATK` : "", x.hp ? `${pct(x.hp)} HP` : ""]).filter(Boolean).join(" · ");
+    const rows = r.from.map((x) => `<li class="dk-bf__row" data-kind="${x.kind}"${x.kind === "trait" ? ` style="${C.traits.colorStyle(r.trait)}"` : ""}>
+        <span class="dk-bf__src">${esc(x.name)}${x.n > 1 ? ` <b>×${x.n}</b>` : ""}</span>
+        <span class="dk-bf__kind">${kindName[x.kind]}</span>
+        <span class="dk-bf__val">${esc(val(x))}</span></li>`).join("");
+    const stat = (label, base, v, p) => `<div class="dk-bf__stat"><span class="dk-bf__lab">${label}</span>
+        <span class="dk-bf__nums"><span>${label === "HP" ? C.fmtHp(base) : C.fmtStat(base)}</span><span aria-hidden="true">→</span><b${v !== base ? ' class="is-up"' : ""}>${label === "HP" ? C.fmtHp(v) : C.fmtStat(v)}</b></span>
+        <small>${p ? pct(p) + " from the deck" : "No deck buff"}</small></div>`;
+    dialog({
+      title: `${card.name} · Buffs`,
+      html: `<div class="dk-bf">
+          <div class="dk-bf__sum">${stat("ATK", r.base.atk, r.atk, r.atkPct)}${stat("HP", r.base.hp, r.hp, r.hpPct)}</div>
+          <ul class="dk-bf__list">${rows}</ul>
+          <p class="tm-field__note">Deck buffs add up: ATK = base × (1 + all the % together), then × the trait. Buffs that need a hit, a turn or low HP aren't counted, and the same support twice counts once.</p>
+        </div>`,
+      actions: [{ label: "Close", value: "cancel" }],
+      onMount(dlg) { FX.stagger($(".dk-bf__list", dlg), 40, { cls: "fx-up", max: 8, cleanup: true }); },
+    });
   }
   async function pickTrait(btn) {
     const slot = btn.closest(".dk-slot");
@@ -676,7 +776,9 @@
 
   // score + analysis of the deck in the editor; called after every change
   function refresh({ animate = true } = {}) {
-    if (!cur || !TS()) return;
+    if (!cur) return;
+    paintBuffs(ed, cur, { animate });                // the deck's buffs on the cards (js/deckbuff.js)
+    if (!TS()) return;
     const d = mine(cur), r = TS().score(d);
     paintScore(ui.score, r, { animate, note: r.empty ? null : `${modeOf(cur.mode).name}${r.notes.length ? " · see the notes below" : ""}` });
     paintAnalysis(ui.ana, d, r, { animate, editable: true });
@@ -780,7 +882,13 @@
     // cards and support (their values count to the new level)
     const els = KINDS.flatMap((k) => ed.shown[k].filter(Boolean).map((o) => [o.el, lookup(k, o.el.dataset.id)]));
     const seen = els.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));   // read all, then write
-    els.forEach(([el, c], i) => { const card = $(".card", el); if (c && card) C.setCardRarity(card, c, name, { animate: seen[i] }); });
+    els.forEach(([el, c], i) => {
+      const card = $(".card", el);
+      if (!c || !card) return;
+      const nums = C.isSupport(c) ? [] : [$('[data-k="atk"]', card), $('[data-k="hp"]', card)].filter(Boolean), was = nums.map((n) => n.dataset.value);
+      C.setCardRarity(card, c, name, { animate: seen[i] });
+      nums.forEach((n, j) => { n.dataset.value = was[j]; });   // the deck's buffs (refresh below) count on from what was shown
+    });
     refresh();                                     // card scores don't depend on rarity; unranked support does (its effect at this level, §10.5)
   }
 
@@ -1308,8 +1416,17 @@
      Share (step 9 tools): save as image · share link · open a shared deck · backup
      ========================================================== */
   // a deck packed for a link: ids by slot ("" = empty) · mode and rarity by name
+  // t = the user's trait per card slot (owner 2026-11-02 · only when there is one: older links stay as they were)
   function toPayload(d) {
-    return { v: 1, n: d.name, m: d.mode, r: d.rarity, c: d.cards.map((x) => x || ""), s: d.support.map((x) => x || "") };
+    const p = { v: 1, n: d.name, m: d.mode, r: d.rarity, c: d.cards.map((x) => x || ""), s: d.support.map((x) => x || "") };
+    const t = d.cards.map((x) => (x && myTraitOf(x)) || "");
+    if (t.some(Boolean)) p.t = t;
+    return p;
+  }
+  // the traits a link carried, by slot (unknown ids = none) · a link without t = no traits
+  function traitsOf(p, deck) {
+    const t = p && Array.isArray(p.t) ? p.t : [];
+    return deck.cards.map((id, i) => (id && typeof t[i] === "string" && C.traits.byId(t[i]) ? t[i] : null));
   }
   // ...and back, checking everything (a link is typed by strangers). Returns a clean deck or null.
   function fromPayload(p) {
@@ -1318,9 +1435,9 @@
     return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s), created: now(), updated: now() });
   }
 
-  async function saveImage(d, flashEl) {
+  async function saveImage(d, flashEl, traitOf = myTraitOf) {
     if (!C.share || !C.share.deckImageDialog) return;
-    await C.share.deckImageDialog(deckSpec(d), { flashEl });
+    await C.share.deckImageDialog(deckSpec(d, traitOf), { flashEl });
   }
   async function shareLink(d, flashEl) {
     if (!C.share) return;
@@ -1363,9 +1480,10 @@
     ui.shLoad.hidden = true;
     const deck = res && res.payload ? fromPayload(res.payload) : null;
     if (!deck) { showBad(!!(res && res.error === "browser")); setTitle(); return; }
-    shared = { data, deck, copyId: shCopies.get(data) || null };
+    shared = { data, deck, traits: traitsOf(res.payload, deck), copyId: shCopies.get(data) || null };
     paintSharedMeta();
     paintBoard(sh, deck, { animate: false });
+    paintBuffs(sh, deck);
     if (TS()) {
       const r = TS().score(deck);
       paintScore(ui.shScore, r, { note: r.empty ? null : modeOf(deck.mode).name });
@@ -1732,7 +1850,8 @@
       case "backup": if (C.share) C.share.backupDialog(); break;
       case "compare": compareDialog(cur ? cur.id : null); break;
       case "sh-copy": saveCopy(); break;
-      case "sh-image": if (shared) saveImage(shared.deck, sh.root); break;
+      case "sh-image": if (shared) saveImage(shared.deck, sh.root, sh.traitOf); break;
+      case "buff": buffDialog(btn); break;
       case "undo": step(-1); break;
       case "redo": step(1); break;
       case "trait": if (mode === "editor") pickTrait(btn); break;
