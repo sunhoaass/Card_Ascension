@@ -85,18 +85,14 @@
 .dkl__pip { width: 55%; max-width: 22px; height: 3px; border-radius: 2px; background: var(--glass-line); }
 .dkl__pip.is-on { background: var(--gold); box-shadow: 0 0 6px color-mix(in srgb, var(--gold) 55%, transparent); }
 
-/* ---------- One deck: top block (score ring, mode, rarity) ---------- */
-.dk-top { display: grid; gap: var(--s-2); margin-bottom: var(--s-2); }
-.dk-top__main { display: grid; gap: var(--s-2); min-width: 0; }
-.dk-mode.seg { max-width: none; margin: 0; }
-.dk-mode .seg__btn, .dk-seg .seg__btn {
+/* ---------- Mode picker (New deck dialog · the editor's top block with mode / rarity / score left 2026-11-02) ---------- */
+.dk-seg .seg__btn {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
   min-width: 0; padding: 0 4px; line-height: 1.1;
 }
-.dk-mode .seg__btn small, .dk-seg .seg__btn small { font-size: 9px; font-weight: 600; letter-spacing: .04em; color: var(--ink-faint); }
-.dk-mode .seg__btn:disabled, .dk-seg .seg__btn:disabled { cursor: not-allowed; opacity: .6; }
+.dk-seg .seg__btn small { font-size: 9px; font-weight: 600; letter-spacing: .04em; color: var(--ink-faint); }
+.dk-seg .seg__btn:disabled { cursor: not-allowed; opacity: .6; }
 .dk-seg { margin-bottom: 0; }
-.dk-rarity { margin-bottom: var(--s-2); }
 
 /* team score (step 11): a ring with the number inside · bands from tokens.css (--score-*) · CBI.deck.paintScore */
 .dk-scorebox { min-width: 0; }
@@ -202,7 +198,7 @@
   transition: scale var(--t-fast) var(--ease), translate var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
 }
 .dk-item .card { width: 100%; touch-action: manipulation; }   /* .card is pan-y: a drag must not scroll */
-.dk-item .gc__rar, .dk-tile .gc__rar { display: none; }   /* too small to read here (the deck's rarity is in its chips) */
+.dk-item .gc__rar, .dk-tile .gc__rar { display: none; }   /* too small to read here: the slot's rarity is written under the card (.dk-rar) */
 .dk-item:focus-visible { outline-offset: 3px; border-radius: var(--r-card); }
 .dk-item.is-pressing { scale: 0.95; }
 .dk-item.is-source { opacity: 0.35; }
@@ -388,8 +384,6 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
   .dk-slot .deck__pos { font-size: 10px; }
 }
 @media (min-width: 900px) {
-  .dk-top { grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); align-items: stretch; }
-  .dk-top__main { align-content: center; }
   .dk-board { max-width: 620px; }
   .dk-row { gap: 14px; }
 }
@@ -456,4 +450,52 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 
 @media (prefers-reduced-motion: reduce) {
   .dk-slot:not(.is-empty) .dk-buff { animation: none; }
+}
+
+/* ==========================================================
+   Rarity per slot (owner 2026-11-02 · deck.js paintKind / slotSheet)
+   .dk-rar = the slot's rarity under each card and support (editor + shared deck) · tap = the slot sheet (editor)
+   .dk-ss = the slot sheet: the card + numbers, Rarity chips, Grade bars (the Grade page's .gstat / .gbar), Trait chips, actions
+   ========================================================== */
+.dk-rar {
+  display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 0; margin-top: 5px;
+  font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; line-height: 1.2;
+  color: var(--ink-dim); white-space: nowrap; overflow: hidden;
+}
+.dk-rar::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sw, var(--gold)); box-shadow: 0 0 0 1px rgba(0, 0, 0, .45); }
+.dk-rar span { overflow: hidden; text-overflow: ellipsis; }
+[hidden].dk-rar { display: none; }
+@media (min-width: 720px) { .dk-rar { font-size: 11px; } }
+.dk-trait--tap { cursor: pointer; }
+
+.dk-ss-sheet { max-width: 560px; }
+.dk-ss { display: grid; gap: var(--s-4); min-width: 0; }
+.dk-ss__top { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: var(--s-4); align-items: center; }
+.dk-ss__card { width: 116px; }
+.dk-ss__card .card { width: 100%; }
+.dk-ss__card .tm-missing { aspect-ratio: 5 / 7; }
+.dk-ss__sum { display: grid; gap: 4px; min-width: 0; }
+.dk-ss__where { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.dk-ss__stat { display: flex; align-items: baseline; gap: var(--s-2); font-variant-numeric: tabular-nums; }
+.dk-ss__stat span { width: 2.6em; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--ink-dim); }
+.dk-ss__stat b { font-family: var(--font-display); font-size: var(--fs-lg); line-height: 1.15; overflow-wrap: anywhere; }
+.dk-ss__stat--atk b { color: var(--atk); }
+.dk-ss__stat--hp b { color: var(--hp); }
+.dk-ss__stat b.is-up { color: var(--gc-buff); }
+.dk-ss__buff { font-size: 11px; color: var(--ink-faint); }
+.dk-ss__fx { font-size: var(--fs-sm); color: var(--ink-dim); }
+.dk-ss__sec { display: grid; gap: var(--s-2); min-width: 0; }
+.dk-ss .rarity-picker { margin: 0; }
+.dk-ss__grades { display: grid; gap: var(--s-2); }
+.dk-ss .dk-ss__g { padding: var(--s-2) var(--s-3) 2px; }   /* .dk-ss: grade.css loads after this file */
+.dk-ss .dk-ss__g .gstat__name { font-size: var(--fs-sm); }
+.dk-ss__gv { font-family: var(--font-display); font-size: var(--fs-md); font-variant-numeric: tabular-nums; color: var(--ink); }
+.dk-ss__g[data-band="none"] .dk-ss__gv { color: var(--ink-faint); }
+.dk-ss .dk-ss__g .gbar { margin-top: 0; }
+.dk-ss__acts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
+.dk-ss__acts .tm-btn { justify-content: flex-start; min-width: 0; padding: 0 10px; }
+.dk-ss__acts .tm-btn svg { flex: none; }
+@media (min-width: 480px) { .dk-ss__grades { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) {
+  .dk-ss .gbar__seg.is-pop::before { animation: none; }
 }

@@ -781,10 +781,12 @@
      Image: a deck (step 10). Four card slots over four support slots (the game's decks since 2026-10-30, was five),
      drawn with the same card / frame / backdrop code.
      Owner 2026-11-02: only the deck's name as words (no "CARD BATTLE INFINITY", no "Deck · mode · rarity · 4/4 …" line,
-     no footer, no "4 / 4" counts) · the rarity ribbon, SLOT 1–4 and the CARDS / SUPPORT headings stay · each card's trait
-     under it · ATK / HP with the deck's buffs (js/deckbuff.js, green-gold when raised). The tier list image is unchanged.
-     spec = { id, title, mode, rarity: name, cards: [id|null x4], support: [id|null x4],
-              traits: [trait id|null x4], nums: [{ atk, hp, upAtk, upHp }|null x4] }
+     no footer, no "4 / 4" counts) · SLOT 1–4 and the CARDS / SUPPORT headings stay · each card's trait under it ·
+     ATK / HP with the deck's buffs + trait + grades (js/deckbuff.js, green-gold when raised). The tier list image is unchanged.
+     Owner 2026-11-02 "rarity per slot": every card and support is drawn at its own slot's rarity (its rarity pill on the card,
+     like the cards on the site) · the one rarity ribbon top right (paintRibbon) is gone from the deck image.
+     spec = { id, title, mode, rarity: name (fallback), cards: [id|null x4], support: [id|null x4],
+              cardRarity: [name x4], supRarity: [name x4], traits: [trait id|null x4], nums: [{ atk, hp, upAtk, upHp }|null x4] }
      ========================================================== */
   const DECK_SLOTS = 4;
   const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10 };
@@ -836,7 +838,9 @@
     while (cards.length < DECK_SLOTS) cards.push(null);
     while (sups.length < DECK_SLOTS) sups.push(null);
     const rarity = spec.rarity || "Normal";
-    const frame = frameSpec(rarity);   // support too (2026-10-28): the game card, as big as the cards, at the deck's rarity
+    // each slot's own rarity (support too: the game card, as big as the cards) · missing = the deck's
+    const rOf = (a, i) => (Array.isArray(a) && typeof a[i] === "string" && a[i] ? a[i] : rarity);
+    const frameAt = (a, i) => frameSpec(rOf(a, i));
     const traitBy = (C.traits && C.traits.byId) || (() => null);
     const traits = cards.map((it, i) => (it && !it.missing && Array.isArray(spec.traits) ? traitBy(spec.traits[i]) : null));
     const nums = cards.map((it, i) => (it && !it.missing && Array.isArray(spec.nums) && spec.nums[i] ? spec.nums[i] : null));
@@ -870,12 +874,10 @@
     ctx.scale(k, k);
     paintBackdrop(ctx, B.W, H, pal, "deck:" + String(spec.id || spec.title || "x"));
 
-    // header: the deck's name + the rarity ribbon, nothing else
+    // header: the deck's name, nothing else (each card shows its own rarity)
     ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
-    const pillW = 150;
     ctx.fillStyle = pal.ink; ctx.font = `700 46px ${pal.display}`;
-    ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2 - pillW - 20), B.PAD, 66);
-    paintRibbon(ctx, String(rarity).toUpperCase(), pillW, B.W, B.PAD, frame, pal);
+    ctx.fillText(fitText(ctx, spec.title || "Deck", B.W - B.PAD * 2), B.PAD, 66);
 
     // one panel per kind. Columns line up, so the support under a card sits in the same column.
     const pw = B.W - B.PAD * 2;
@@ -900,7 +902,7 @@
       ctx.fillStyle = pal.dim; ctx.font = `700 12px ${pal.display}`; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; setSpacing(ctx, 1.5);
       ctx.fillText(`SLOT ${i + 1}`, colX(i), cy - 9);
       setSpacing(ctx, 0); ctx.textAlign = "left";
-      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal, nums[i]);
+      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frameAt(spec.cardRarity, i), it.image ? arts.get(it.image) : null, k, pal, nums[i]);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
       if (traits[i]) drawTrait(ctx, colX(i), cy + B.CH + B.TRAIT_GAP, B.CW, B.TRAIT, traits[i], icons.get(traits[i].id), pal);
     });
@@ -908,7 +910,7 @@
     panel(y, P2, "Support");
     sups.forEach((it, i) => {
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22;
-      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frame, it.image ? arts.get(it.image) : null, k, pal);
+      if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frameAt(spec.supRarity, i), it.image ? arts.get(it.image) : null, k, pal);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
     });
 

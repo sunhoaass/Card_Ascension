@@ -2,21 +2,27 @@
    Card Battle Infinity — Deck buffs (owner 2026-11-02 · PROGRESS §3.3 `deckbuff.js`)
    The ATK / HP a card shows in a deck once the deck's buffs are in:
      ATK = base × Π(1 + %damage ÷ 100) × trait damage · HP = base × Π(1 + %HP ÷ 100) × trait HP
-   base = C.statAt(card, key, deck rarity) · every buff MULTIPLIES (checked 2026-11-02 on the owner's battle screenshot:
+   base = C.statAt(card, key, the slot's rarity) · every buff MULTIPLIES (checked 2026-11-02 on the owner's battle screenshot:
    King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying) · the trait multiplier
    (data/traits.json dmg / hp) is on top (owner 2026-11-02: the numbers include the trait).
    Grade (game 2026-11-02): all 4 grades 10 = +30% ATK and HP (× 1.3 · gradeOf(cardId) -> [atk, def, status, hp] | null).
    The +2.5% a grade in js/grade.js is NOT in these numbers: with it the owner's Witch of Envy (Ascendant ×2 · all 10) would be
    ×3.25 over base, the game shows ×2.60 = ×2 × 1.3.
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
-   (same column) gets +X% damage and max HP when the support is mutated (deck rarity above Normal).
+   (same column) gets +X% damage and max HP when the support is mutated (its slot's rarity above Normal).
+   Rarity per slot (owner 2026-11-02): deck.cardRarity[i] / deck.supRarity[i] (a name · missing or unknown = deck.rarity,
+   so decks and links from before still read the same) · the card's numbers use its slot's rarity, a support's value and
+   its mutation bonus use the support slot's rarity.
 
    Where buffs come from (only the ones with no condition: a buff that starts on a hit / a turn / under X% HP doesn't change
    the starting numbers):
-   ① Support (data/support.json effect.desc, value = C.supValAt at the deck's rarity)
+   ① Support (data/support.json effect.desc, value = C.supValAt at the support slot's rarity)
       "the supported card gets / deals {n}% more damage / max HP" -> the card in the same column (support i -> card i)
       "EVERY card in your deck …" -> every card · "every OTHER card in your deck …" -> every card but the one it supports
-      The same support in 2 slots does not stack on one card (owner 2026-11-02): a card gets each support's buff once.
+      A support for the whole deck (EVERY / every OTHER card · deckWide) counts once (owner 2026-11-02): the first copy
+      (leftmost slot) gives its buff to the deck and its mutation bonus to its own column; a 2nd, 3rd … copy gives nothing
+      at all (no buff, no mutation bonus · it used to give the card in its own column the buff again).
+      A support for "the supported card" only still helps the card in its own column, every copy (mutation bonus too).
    ② Card abilities (data/cards.json passive / skill desc) · every copy of a card counts (owner 2026-11-02), never on itself
       "Every other card in your deck gets +X% damage[ and HP]" -> every other slot
       "With NAME in the deck, both get +X% …" -> itself and each NAME card (only when a NAME card is in another slot)
@@ -25,8 +31,11 @@
    NAME / GROUP -> card ids: data/buffs.json (aliases / groups · null = not known yet: the buff is skipped, never an error)
 
    CBI.deckBuff = {
-     compute(deck, { traitOf(cardId, slot) -> trait id | null }) -> [slot × 4: null | { id, base{atk,hp}, atkPct, hpPct,
-       trait, atk, hp, from: [{ name, kind: "card"|"support"|"trait", atk, hp (% in total · trait: ×), n copies }] }]
+     compute(deck, { traitOf(cardId, slot) -> trait id | null, gradeOf(cardId, slot) -> [4 grades] | null })
+       -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct, trait, atk, hp,
+            from: [{ name, kind: "card"|"support"|"trait"|"grade", atk, hp (% in total · trait / grade: ×), n copies }] }]
+     rarityOf(deck, "cards"|"support", slot) -> the slot's rarity name (also used by js/deck.js, js/teamscore.js, js/share.js)
+     wideFirst(supports[4]) -> [bool × 4]: false = a 2nd+ copy of a whole-deck support (gives nothing)
      supportRules(s), cardRules(c), deckWide(s), report()   (report = the table for the owner, also run by tools/deckbuff_report.js)
    }
    No DOM. Works in Node too (the report) with a stand-in CBI.
@@ -123,8 +132,25 @@
   /* ---------- the deck ---------- */
   const GRADE_MAX = 10, GRADE_BONUS = 1.3;
   const fullGrade = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => Number(n) >= GRADE_MAX);
+  const known = (r) => typeof r === "string" && !!(C.state && C.state.meta && C.state.meta.rarities.some((x) => x.name === r));
+  // a slot's rarity: its own (cardRarity / supRarity) · else the deck's (decks and links from before 2026-11-02) · else Normal
+  function rarityOf(deck, kind, i) {
+    const own = deck && (kind === "support" ? deck.supRarity : deck.cardRarity);
+    if (Array.isArray(own) && known(own[i])) return own[i];
+    return deck && known(deck.rarity) ? deck.rarity : "Normal";
+  }
+  // whole-deck supports count once: the first copy (leftmost) is true, later copies false · other supports always true
+  function wideFirst(sat) {
+    const seen = new Set();
+    return sat.map((s) => {
+      if (!s || !deckWide(s)) return true;
+      if (seen.has(s.id)) return false;
+      seen.add(s.id);
+      return true;
+    });
+  }
   function compute(deck, { traitOf, gradeOf } = {}) {
-    const st = C.state, rarity = deck && st.meta && st.meta.rarities.some((r) => r.name === deck.rarity) ? deck.rarity : "Normal";
+    const st = C.state;
     const cardBy = new Map((st.cards || []).map((c) => [c.id, c])), supBy = new Map((Array.isArray(st.support) ? st.support : []).map((s) => [s.id, s]));
     const slot = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(Array.isArray(a) && typeof a[i] === "string" && a[i] ? a[i] : null); return o; };
     const ids = slot(deck && deck.cards), sids = slot(deck && deck.support);
@@ -132,12 +158,14 @@
     const got = at.map(() => []);        // per slot: [{ key, name, kind, atk, hp }]
     const add = (k, src) => { if (at[k]) got[k].push(src); };
 
-    // ① support · per target, each support id once
+    // ① support · per target, each support id once · a whole-deck support: its first copy only (wideFirst)
     const supSeen = at.map(() => new Set());
+    const first = wideFirst(sat);
     sat.forEach((s, j) => {
-      if (!s || isOff(s.id)) return;
+      if (!s || isOff(s.id) || !first[j]) return;
+      const sr = rarityOf(deck, "support", j);
       supportRules(s).rules.forEach((r) => {
-        const v = C.supValAt(s, r.i, rarity);
+        const v = C.supValAt(s, r.i, sr);
         if (!(v > 0)) return;
         for (let k = 0; k < SLOTS; k++) {
           if (r.scope === "slot" ? k !== j : r.scope === "others" ? k === j : false) continue;
@@ -147,8 +175,8 @@
           add(k, { key: "s:" + s.id, copy: s.id, name: s.name, kind: "support", atk: r.stat === "dmg" ? v : 0, hp: r.stat === "hp" ? v : 0 });
         }
       });
-      // mutation bonus: the supported card only, when the support is mutated
-      const mb = rarity !== "Normal" ? mutOf(s) : 0;
+      // mutation bonus: the supported card only, when the support is mutated (its slot above Normal)
+      const mb = sr !== "Normal" ? mutOf(s) : 0;
       if (mb > 0) add(j, { key: "m:" + s.id, copy: s.id, name: s.name + " · Mutation", kind: "support", atk: mb, hp: mb });
     });
     // ② card abilities · every copy counts, never on itself
@@ -173,6 +201,7 @@
 
     return at.map((c, k) => {
       if (!c || !c.base) return null;
+      const rarity = rarityOf(deck, "cards", k);
       const base = { atk: C.statAt(c, "atk", rarity), hp: C.statAt(c, "hp", rarity) };
       // every buff multiplies: total % = (Π(1 + p/100) − 1) × 100
       const mul = (key) => got[k].reduce((a, x) => a * (1 + x[key] / 100), 1);
@@ -193,7 +222,7 @@
       const gM = gradeOf && fullGrade(gradeOf(c.id, k)) ? GRADE_BONUS : 1;
       if (gM !== 1) from.push({ key: "g", name: "Grade 10 (all 4)", kind: "grade", atk: gM, hp: gM, n: 1 });
       return {
-        id: c.id, base, atkPct, hpPct, trait,
+        id: c.id, rarity, base, atkPct, hpPct, trait,
         atk: Math.round(base.atk * mA * tD * gM),
         hp: Math.round(base.hp * mH * tH * gM),
         from,
@@ -221,5 +250,5 @@
   }
 
   root.CBI = root.CBI || {};
-  root.CBI.deckBuff = { compute, supportRules, cardRules, deckWide, mutOf, report, SLOTS };
+  root.CBI.deckBuff = { compute, rarityOf, wideFirst, supportRules, cardRules, deckWide, mutOf, report, SLOTS };
 })(typeof window !== "undefined" ? window : globalThis);

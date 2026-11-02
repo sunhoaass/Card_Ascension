@@ -1699,3 +1699,36 @@
 - **เกรด (เจ้าของบอกเพิ่ม: Witch เกรด 10 ครบ 4 ช่อง · เกมเขียน "ครบ 10 ทั้ง 4 = +30% ATK/HP"):** `compute(deck, { traitOf, gradeOf })` · ครบ 10 = × 1.3 (ป้ายที่มา "Grade 10 (all 4)") · deck ของตัวเอง = `C.grade.get` · deck จากลิงก์แชร์ = ไม่มีเกรด · ไม่ใส่ +2.5% ต่อเกรด (ใส่แล้ว = ×3.25 เทียบเกม ×2.60) · ผล Witch = 8,603,923,043 / HP 28,819,134,018 (เกม 8,610,742,660 / 28.8B) · ทดสอบ Chromium 390×844 `#deck/my/<id>` ไม่มี error · ป้ายบัฟใต้การ์ดแสดงครบ 4 ช่อง
 - **ไฟล์:** `js/deckbuff.js` · `js/deck.js` · `js/i18n-th-ui.js` · `js/i18n-th-sk2.js` · `data/support.json` · `index.html` (`?v=55`) · `PROGRESS.md` · `HISTORY.md`
 
+
+### 2026-11-02 Deck: ตั้งระดับและเกรดทีละช่อง + Support ทั้ง deck ซ้ำไม่ให้อะไร (`?v=56`)
+- **ที่มา:** เจ้าของเลือกครบแล้ว 2026-11-02 (ตอบคำถาม (ข) ของงานแก้สูตรบัฟ) · ลิงก์แชร์ + รูปแบบ deck เปลี่ยนตามที่เจ้าของสั่ง (กฎ 11)
+- **สิ่งที่เปลี่ยน:**
+  - **Editor ของ My Decks:** เอาบรรทัด meta (`#dk-meta`) / ปุ่มโหมด (`#dk-mode`) / ปุ่มระดับทั้ง deck (`#dk-rarity`) / วงคะแนน (`#dk-score`) ออก · ข้อความแนะนำใหม่ · Meta Decks ไม่แตะ (ปุ่มระดับ + โหมด + คะแนนยังอยู่) · `mode` ยังเก็บใน deck (Score breakdown / Fits modes ใช้)
+  - **ระดับทีละช่อง:** `cardRarity[4]` / `supRarity[4]` ใน `cbi:decks` · ป้ายระดับ `.dk-rar` ใต้การ์ด/Support ทุกช่อง (editor + หน้าแชร์) · ใบใหม่ = ระดับที่ใช้ล่าสุด (`cbi:deckRarity` ใหม่ · ครั้งแรก Godly) · deck เก่า = ทุกช่องได้ `rarity` เดิม · Copy to My Decks = ทุกช่องได้ระดับที่เลือกในหน้า Meta Decks
+  - **เกรดทีละช่อง:** `grades[4]` (0–10 × ATK/DEF/Status/HP) เก็บใน deck ไม่แตะหน้า Grade · ใส่การ์ด = เกรดจาก `C.grade.get` · deck เก่าได้เกรดจากหน้า Grade ครั้งเดียว (เลขเท่าเดิม) · สูตรเดิม: ครบ 10 ทั้ง 4 = ×1.3 · ไม่ใส่ +2.5%/เกรด
+  - **แผ่นตั้งค่าช่อง** (แตะการ์ด/Support): การ์ด + ATK/HP หลังบัฟ · ระดับ 9 ปุ่ม · เกรด 4 แถบแบบหน้า Grade (แตะเกรดเดิมซ้ำ = 0) · Trait (ย้ายเข้าแผ่น · ใต้การ์ดเหลือป้าย แตะ = เปิดแผ่น) · Details / Change card / Move / Remove · "แตะแล้วแตะช่องปลายทาง" → ปุ่ม Move · กดค้างลากเหมือนเดิม · แถบล่างเหลือข้อความ + Cancel
+  - **ลิงก์แชร์:** เพิ่ม `cr` `sr` (ระดับต่อช่อง) + `g` (เกรดต่อช่อง · ใส่เมื่อมี) · ลิงก์เก่า = ระดับ `r` ทุกช่อง ไม่มีเกรด · หน้าแชร์แสดงระดับต่อใบ + เลขรวมเกรดจากลิงก์ · บรรทัด meta หน้าแชร์/หน้ารวม = ชื่อระดับ หรือ "Mixed rarity"
+  - **รูป Save image:** การ์ด/Support ทุกใบวาดที่ระดับของช่อง (ป้ายระดับบนการ์ดแบบเว็บ) · ริบบิ้นระดับมุมขวาบนเอาออก · เลข ATK/HP รวมบัฟ + Trait + เกรด (เกรดของ deck / ของลิงก์)
+  - **`js/deckbuff.js`:** `rarityOf()` ต่อช่อง (เลขการ์ด = ระดับช่องการ์ด · ค่า Support + Mutation bonus = ระดับช่อง Support) · `wideFirst()` = Support ทั้ง deck (EVERY / every OTHER) นับใบแรก (ซ้ายสุด) ใบเดียว: ใบที่ 2+ ไม่ให้บัฟ ไม่ให้ Mutation bonus · Support "the supported card" ไม่เปลี่ยน
+  - **`js/teamscore.js`:** ค่า Support คิดที่ระดับช่อง เทียบ Support ดีสุดของระดับนั้น · ใบซ้ำทั้ง deck = 0 ด้วย `wideFirst` (เดิมก็ 0 อยู่แล้ว) · deck ระดับเดียว = สูตรเท่าเดิม
+  - `js/grade.js`: `get()` โหลด `cbi:grades` เองถ้าถูกเรียกก่อน `init()` (เปิด `#deck/my/<id>` ตรงๆ หน้า Deck สร้างก่อน grade.js init)
+- **ตารางก่อน/หลัง (ATK · Witch of Envy Godly + Ascendant + เกรด 10 ทั้ง 4 · King of Conquerors Godly ×3):**
+
+  | Deck (Support ช่อง 1–4) | ช่อง | ก่อน (`?v=55`) | หลัง (`?v=56`) | เกม |
+  |---|---|---|---|---|
+  | A: Nine Tails Fox G · Charge Commander G · Guild Master Giant G · Eternal Wish Dragon **Ascended** (ก่อน = ทั้ง deck Godly ตั้ง Ascended ไม่ได้) | Witch | 8,827,983,538 | **8,603,923,043** | 8,610,742,660 |
+  | | King 2 | 20,849,755 | **20,320,574** | 20.3M |
+  | | King 3 | 26,952,263 | **26,268,196** | 26.3M |
+  | | King 4 | 21,593,043 | **21,593,043** | 21.6M |
+  | B: NTF · **Charge Commander · Charge Commander** · EWD (ทุกใบ Godly) | Witch | 8,359,832,896 | 8,359,832,896 | — |
+  | | King 2 (ใบแรก) | 22,429,282 (CC ใบที่ 2 บัฟ +13.6% เพิ่ม) | **19,744,087** (Mutation +16% ของใบแรกอย่างเดียว) | — |
+  | | King 3 (ใบที่ 2) | 22,429,282 (Mutation +16% ของใบที่ 2) | **19,335,588** (บัฟ +13.6% จากใบแรก) | — |
+  | | King 4 | 20,447,957 | 20,447,957 | — |
+  | C: **Guild Master Giant** · NTF · **Guild Master Giant** · EWD (ทุกใบ Godly) | King 2 | 38,173,026 | 38,173,026 | — |
+  | | King 3 (GMG ใบที่ 2) | 23,725,584 (Mutation +32%) | **17,973,927** (ไม่มี Mutation) | — |
+
+  - Witch ต่างเกม 0.08% (ค่า Normal ของ Support เดาจากระดับเดียว · เท่าเดิมกับรอบ `?v=55`)
+  - คะแนนทีม: deck B 31 → 31 · deck C 30 → 30 (ใบซ้ำทั้ง deck = 0 อยู่แล้ว) · Meta Decks 9 ทีม × ระดับ Normal / Cosmic / Godly: คะแนน + Fill the gaps **เท่าเดิมทุกค่า** (เทียบ HEAD กับงานนี้ใน Chromium · 54 ค่า)
+- **ทดสอบ (Chromium · Playwright · ไม่มี error ใน console):** deck เก่า (ไม่มีระดับต่อช่อง/เกรด) เปิดแล้วเลขเท่าก่อนแก้ทุกช่อง + ได้เกรด Witch จากหน้า Grade · แผ่นตั้งค่า: Eternal Wish Dragon → Ascended = King 20.32M / 26.27M / 21.59M · เกรด King ช่อง 2 = 10 ทั้ง 4 → 26,416,746 (×1.3) · หน้า Grade (`cbi:grades`) ไม่เปลี่ยน · Trait ในแผ่น → การ์ดทุกช่องที่เป็นใบนั้นเปลี่ยน · Move → แถบล่าง → แตะช่อง 4 = ย้าย (เกรด/ระดับย้ายตาม) · Undo ถูก · Remove + toast Undo · × · ลาก (ระดับ + เกรดย้ายตาม) · ใส่การ์ดจากตัวเลือก / Fill the gaps = ระดับล่าสุด + เกรดจากหน้า Grade · New deck = ระดับล่าสุด · ลิงก์ใหม่ (`cr` `sr` `g` `t`) เปิดได้ ระดับต่อใบ + เลขรวมเกรด · ลิงก์เก่า 5 ช่องระดับ Divine เปิดได้ (ทุกช่อง Divine ไม่มีเกรด) · Copy to My Decks ที่ Cosmic = ทุกช่อง Cosmic · Save as image จากเมนู ⋯ (2400 × 1700 PNG) ป้ายระดับต่อใบ ไม่มีริบบิ้น · มือถือ 390 / คอม 1280 ไม่มี scroll แนวนอน · reduced motion ไม่มี error · โหมดภาษาไทยแผ่นตั้งค่าแปลครบ
+- **ความเร็ว (§11.3 · 390×844 DPR 2.75 · CPU ×6 · เลื่อน 3 วิ · มัธยฐาน 3 รอบ · หน้า editor deck ทดสอบ):** ก่อน Normal 59.1 fps (ช้าสุด 50ms) / Ascended 58.8 (67ms) · หลัง Normal 58.3 (50ms) / Ascended 58.6 (33ms) · ไม่ช้าลง
+- **ไฟล์:** `js/deck.js` · `js/deckbuff.js` · `js/teamscore.js` · `js/share.js` · `js/grade.js` · `js/i18n-th-ui.js` · `css/deck.css` · `index.html` (`?v=56`) · `PROGRESS.md` · `HISTORY.md`

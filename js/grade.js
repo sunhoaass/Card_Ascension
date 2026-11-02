@@ -77,7 +77,10 @@
     if (any(a)) saved[id] = a.slice(); else delete saved[id];
     C.store.set(KEY, JSON.stringify(saved));
   }
-  const get = (id) => (saved[id] ? saved[id].slice() : null);
+  // the saved grades of a card · loads them first when asked before init() (the Deck page builds first when it opens from a
+  // #deck link, and old decks take these grades once · js/deck.js fillGrades)
+  let ready = false;
+  const get = (id) => { if (!ready) { saved = load(); ready = true; } return saved[id] ? saved[id].slice() : null; };
 
   /* ---------- Backup (js/share.js): everything graded goes in / comes out as one object { id: [4 grades] } ---------- */
   // merge: grades you already have stay, the backup fills in the cards you haven't graded · replace: the backup is all there is
@@ -712,6 +715,7 @@
       search: $("#grade-search"), gradedChip: $("#grade-graded"), count: $("#grade-count"), reset: $("#grade-reset"),
     });
     saved = load();
+    ready = true;
     provideBackup();
     items = state.cards.filter((c) => c && c.id && c.base).slice().sort(compare);
     items.forEach((c) => byId.set(c.id, c));
