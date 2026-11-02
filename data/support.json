@@ -3107,7 +3107,7 @@
   {
     "id": "hat-and-clogs-shopkeeper",
     "name": "Hat and Clogs Shopkeeper",
-    "image": "images/support/hat-and-clogs-shopkeeper.webp",
+    "image": "images/support/rd/hat-and-clogs-shopkeeper.webp",
     "effect": {
       "name": "Blood Mist Shield",
       "desc": "Hat and Clogs Shopkeeper's Blood Mist: the supported card blinds the enemy in front when it comes in (its next 3 attacks each have a {0}% chance to miss) and deals {1}% more damage.",

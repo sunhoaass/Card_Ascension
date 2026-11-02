@@ -3,7 +3,7 @@
     "id": "dragon-emperor-monarch",
     "name": "Dragon Emperor Monarch",
     "series": "Solo Leveling",
-    "image": "images/cards/dragon-emperor-monarch.webp",
+    "image": "images/cards/rd/dragon-emperor-monarch.webp",
     "base": {
       "atk": 1333153,
       "hp": 8887688,
@@ -120,7 +120,7 @@
     "id": "moon-eye-ghost",
     "name": "Moon Eye Ghost",
     "series": "Naruto",
-    "image": "images/cards/moon-eye-ghost.webp",
+    "image": "images/cards/rd/moon-eye-ghost.webp",
     "base": {
       "atk": 1079693,
       "hp": 7197952,
@@ -237,7 +237,7 @@
     "id": "atomic-shadow-lord",
     "name": "Atomic Shadow Lord",
     "series": "The Eminence in Shadow",
-    "image": "images/cards/atomic-shadow-lord.webp",
+    "image": "images/cards/rd/atomic-shadow-lord.webp",
     "base": {
       "atk": 969893,
       "hp": 6465954,
@@ -356,7 +356,7 @@
     "id": "beast-emperor",
     "name": "Beast Emperor",
     "series": "One Piece",
-    "image": "images/cards/beast-emperor.webp",
+    "image": "images/cards/rd/beast-emperor.webp",
     "base": {
       "atk": 937943,
       "hp": 6252952,
@@ -846,7 +846,7 @@
     "id": "long-hair-invader",
     "name": "Long Hair Invader",
     "series": "",
-    "image": "images/cards/long-hair-invader.webp",
+    "image": "images/cards/rd/long-hair-invader.webp",
     "base": {
       "atk": 233,
       "hp": 1556,
@@ -11235,7 +11235,7 @@
     "id": "black-wizard-brother",
     "name": "Black Wizard Brother",
     "series": "",
-    "image": "images/cards/black-wizard-brother.webp",
+    "image": "images/cards/rd/black-wizard-brother.webp",
     "base": {
       "atk": 377999,
       "hp": 2519996,
@@ -11331,7 +11331,7 @@
     "id": "control-devil",
     "name": "Control Devil",
     "series": "",
-    "image": "images/cards/control-devil.webp",
+    "image": "images/cards/rd/control-devil.webp",
     "base": {
       "atk": 386540,
       "hp": 2576934,
@@ -11427,7 +11427,7 @@
     "id": "demon-god-of-flame",
     "name": "Demon God of Flame",
     "series": "",
-    "image": "images/cards/demon-god-of-flame.webp",
+    "image": "images/cards/rd/demon-god-of-flame.webp",
     "base": {
       "atk": 577501,
       "hp": 3850004,
@@ -11816,7 +11816,7 @@
     "id": "golden-gate-king",
     "name": "Golden Gate King",
     "series": "",
-    "image": "images/cards/golden-gate-king.webp",
+    "image": "images/cards/rd/golden-gate-king.webp",
     "base": {
       "atk": 614885,
       "hp": 4099230,
@@ -12008,7 +12008,7 @@
     "id": "homunculus-father",
     "name": "Homunculus Father",
     "series": "",
-    "image": "images/cards/homunculus-father.webp",
+    "image": "images/cards/rd/homunculus-father.webp",
     "base": {
       "atk": 867245,
       "hp": 5781630,
@@ -12326,7 +12326,7 @@
     "id": "made-in-heaven-priest",
     "name": "Made in Heaven Priest",
     "series": "",
-    "image": "images/cards/made-in-heaven-priest.webp",
+    "image": "images/cards/rd/made-in-heaven-priest.webp",
     "base": {
       "atk": 492380,
       "hp": 3282532,
@@ -12618,7 +12618,7 @@
     "id": "pumpkin-sun-pride",
     "name": "Pumpkin Sun Pride",
     "series": "",
-    "image": "images/cards/pumpkin-sun-pride.webp",
+    "image": "images/cards/rd/pumpkin-sun-pride.webp",
     "base": {
       "atk": 622225,
       "hp": 4148164,
@@ -12809,7 +12809,7 @@
     "id": "soul-magic-father",
     "name": "Soul Magic Father",
     "series": "",
-    "image": "images/cards/soul-magic-father.webp",
+    "image": "images/cards/rd/soul-magic-father.webp",
     "base": {
       "atk": 542488,
       "hp": 3616586,
@@ -13259,7 +13259,7 @@
     "id": "destroyer-dragonoid",
     "name": "Destroyer Dragonoid",
     "series": "",
-    "image": "images/cards/destroyer-dragonoid.webp",
+    "image": "images/cards/rd/destroyer-dragonoid.webp",
     "base": {
       "atk": 1541996,
       "hp": 10279974,
@@ -13451,7 +13451,7 @@
     "id": "dragon-god",
     "name": "Dragon God",
     "series": "",
-    "image": "images/cards/dragon-god.webp",
+    "image": "images/cards/rd/dragon-god.webp",
     "base": {
       "atk": 1472899,
       "hp": 9819326,
@@ -13832,7 +13832,7 @@
     "id": "hollow-mask-reaper",
     "name": "Hollow Mask Reaper",
     "series": "",
-    "image": "images/cards/hollow-mask-reaper.webp",
+    "image": "images/cards/rd/hollow-mask-reaper.webp",
     "base": {
       "atk": 967488,
       "hp": 6449918,
@@ -13927,7 +13927,7 @@
     "id": "hypnosis-traitor",
     "name": "Hypnosis Traitor",
     "series": "",
-    "image": "images/cards/hypnosis-traitor.webp",
+    "image": "images/cards/rd/hypnosis-traitor.webp",
     "base": {
       "atk": 968887,
       "hp": 6459246,
@@ -14023,7 +14023,7 @@
     "id": "no-life-king",
     "name": "No-Life King",
     "series": "",
-    "image": "images/cards/no-life-king.webp",
+    "image": "images/cards/rd/no-life-king.webp",
     "base": {
       "atk": 1810622,
       "hp": 12070814,
@@ -14118,7 +14118,7 @@
     "id": "pirate-king",
     "name": "Pirate King",
     "series": "",
-    "image": "images/cards/pirate-king.webp",
+    "image": "images/cards/rd/pirate-king.webp",
     "base": {
       "atk": 945317,
       "hp": 6302110,
@@ -14214,7 +14214,7 @@
     "id": "primordial-butler-demon",
     "name": "Primordial Butler Demon",
     "series": "",
-    "image": "images/cards/primordial-butler-demon.webp",
+    "image": "images/cards/rd/primordial-butler-demon.webp",
     "base": {
       "atk": 1133558,
       "hp": 7557050,
@@ -14310,7 +14310,7 @@
     "id": "rabbit-goddess",
     "name": "Rabbit Goddess",
     "series": "",
-    "image": "images/cards/rabbit-goddess.webp",
+    "image": "images/cards/rd/rabbit-goddess.webp",
     "base": {
       "atk": 936939,
       "hp": 6246258,

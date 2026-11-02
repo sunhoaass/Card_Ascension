@@ -9,8 +9,10 @@ ability text, the green SUPPORT word, ×N.
 - <picture>: a game screenshot (2400×1080, with --crop) or a picture already cut to the card's inner face (600×840)
   · --crop index: the Index page, x 527–973 y 228–848 · --crop deck: the Deck page's big card, x 899–1501 y 121–959
     (sharper · supports) · any rarity works (everything is erased) but nothing may cover the card (pop-ups, stars)
-- the id says card or support (data/cards.json / data/support.json) → images/cards|support/<id>.webp (600×840, webp 88)
-  + thumb/<id>.webp (300×420) · then set "redraw": true on it in the data (this tool does not touch the JSON)
+- the id says card or support (data/cards.json / data/support.json) → images/cards|support/rd/<id>.webp (600×840, webp 88)
+  + rd/thumb/<id>.webp (300×420) · then in the data: "redraw": true + "image": "images/cards/rd/<id>.webp" (this tool does
+  not touch the JSON) · the old picture stays where it was: a page still running the old site version keeps showing it
+  (owner 2026-11-02: an old cached page showed the erased picture with nothing written on it)
 - mask: letters = bright pixels next to their own dark outline (so a white robe / gold armour under the text stays),
   coloured numbers by colour (HP green, ATK red, SUPPORT green), the ability name by its lilac colour (as wide as it goes),
   the 1 IN X pill as the white pill it is, heart / swords by shape colours · every part grown a few px for its shadow
@@ -112,7 +114,7 @@ def work(job):
     cv2.xphoto.inpaint(a, 255 - m, o, cv2.xphoto.INPAINT_FSR_FAST if fast else cv2.xphoto.INPAINT_FSR_BEST)
     res = Image.fromarray(cv2.cvtColor(o, cv2.COLOR_BGR2RGB))
     if not dry:
-        folder = outdir or os.path.join(ROOT, "images", "support" if support else "cards")
+        folder = outdir or os.path.join(ROOT, "images", "support" if support else "cards", "rd")
         os.makedirs(os.path.join(folder, "thumb"), exist_ok=True)
         res.save(os.path.join(folder, i + ".webp"), "WEBP", quality=88, method=6)
         res.resize((300, 420), Image.LANCZOS).save(os.path.join(folder, "thumb", i + ".webp"), "WEBP", quality=85, method=6)
