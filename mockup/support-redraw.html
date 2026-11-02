@@ -207,12 +207,29 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 .check .ok { color: #7fdc8a; }
 .check .no { color: #ff8a80; font-weight: 700; }
 .check tr.on td { background: #2a2216; }
+
+/* ===== support layout measured from the game (2026-11-02 · Hat and Clogs Shopkeeper, Deck view, 600×840):
+   name caps 40–62 px · skill name caps 478–515 · text first caps 543, 4 lines 38 px apart (5 lines 33) · text box x 23–577
+   · SUPPORT caps 756–807 · tops are set in fit() so each block's capital letters land on the game's line ===== */
+.card.v-over .top, .card.v-over .ab, .card.v-over .sup-word { opacity: .55; }
+.card.v-over .pills { visibility: hidden; }
+.card.sup .top { top: 0; height: auto; display: block; }
+.card.sup .name { height: auto; display: block; }
+.card.sup .name .ot { padding-top: 0; padding-bottom: 0; line-height: 1; }
+.card.sup .name .ot.two { line-height: 1.02; }
+.card.sup .ab { top: 0; bottom: auto; left: 0; right: 0; display: block; }
+.card.sup .ab .abn { position: absolute; left: calc(var(--pad) * 1cqw); font-size: 7.5cqw; line-height: 1; padding-top: 0; padding-bottom: 0; }
+.card.sup .txt { position: absolute; left: 3.85cqw; right: 3.85cqw; text-align: center; }
+.card.sup .ab .abd, .card.sup .ab .mut { line-height: 1.385; text-wrap: wrap; }
+.card.sup .sup-word { top: 0; bottom: auto; height: auto; display: block; text-align: center; }
+.card.sup .sup-word .ot { display: inline-block; font-family: "Oswald", "Arial Narrow", sans-serif; font-weight: 700; font-size: 10.3cqw; line-height: 1; letter-spacing: 0; padding: 0 .6cqw; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>Support Redraw Lab · Hat and Clogs Shopkeeper</h1>
+    <p><b>รอบ 2:</b> จัดวางเหมือนในเกม (วัดตำแหน่งจากรูปเกม: ชื่อ ชื่อสกิล คำอธิบาย คำ SUPPORT ขนาดและตำแหน่งเดียวกับเกม · คำอธิบายย่อเองเมื่อยาวขึ้นแบบเกม) · ทุกอย่างยังอยู่ในขอบการ์ด · กดปุ่ม "เทียบตำแหน่ง" ใต้การ์ดเพื่อซ้อนกับรูปเกม</p>
     <p>ตัวอย่างการ์ด Support แบบเขียนใหม่ทั้งใบ: ลบชื่อการ์ด ชื่อสกิล คำอธิบาย และคำ SUPPORT ออกจากรูป แล้วเว็บเขียนใหม่ด้วยตัวเลือกที่เลือกไว้ (Anton · ตัวเลขสีทอง · ขอบดำ + เงานุ่ม) · ค่าในคำอธิบายและ Mutation <b>คำนวณเองทุกระดับ</b> ด้วยสูตรที่หาจาก 3 ใบ + ตาราง Mutation ของเจ้าของ · ตารางใต้การ์ดเทียบกับค่าในรูปเกม</p>
     <p>รูปตัดจากหน้า Deck (การ์ดใหญ่ ภาพชัดกว่าหน้า Index)</p>
   </header>
@@ -299,17 +316,15 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
   const FONT = { '--f-name': '"Anton", "Arial Narrow", sans-serif', '--w-name': '400', '--s-name': 'normal', '--ls-name': '.02em', '--f-num': '"Anton", "Arial Narrow", sans-serif', '--w-num': '400', '--f-text': '"Oswald", "Arial Narrow", sans-serif', '--w-text': '500', '--f-pill': '"Anton", "Arial Narrow", sans-serif', '--w-pill': '400', '--s-pill': 'normal' };
   const OPTS = [
-    { id: 'lay', t: 'แถวบน (Support ไม่มี HP)', d: 'ชื่อชิดซ้ายมีช่องไฟเหมือนการ์ดโจมตี', ch: [['full', 'ชื่อเต็มแถว · ป้ายใต้ชื่อชิดขวา (แบบเกม)', 'แนะนำ'], ['half', 'ชื่อครึ่งซ้าย · ป้ายครึ่งขวาแทนที่ HP']], def: 'full' },
     { id: 'hl', t: 'ตัวเลขสีทองในคำอธิบาย', d: 'เช่น "next 3 attacks" เลข 3 ไม่เปลี่ยนตามระดับ', ch: [['lvl', 'เฉพาะค่าที่เปลี่ยนตามระดับ', 'แนะนำ'], ['all', 'ทุกตัวเลข']], def: 'lvl' },
-    { id: 'mut', t: 'บรรทัด Mutation bonus', d: 'Normal ไม่มี Mutation (เหมือนเกม)', ch: [['line', 'บรรทัดใหม่ใต้คำอธิบาย (แบบเกม)', 'แนะนำ'], ['chip', 'ป้ายทองเล็กข้างคำ SUPPORT']], def: 'line' },
     { id: 'word', t: 'สีคำ SUPPORT', d: '', ch: [['green', 'เขียวแบบเกม', 'แนะนำ'], ['rar', 'สีตามระดับ (เหมือนชื่อ)']], def: 'green' }
   ];
   const TESTS = { name: [['Hat and Clogs Shopkeeper', 'ชื่อจริง'], ['Goblin', 'สั้น'], ['Ultimate Shadow Monarch of the Endless Abyss', 'ยาวมาก']] };
 
   const state = { rar: 'godly', name: BASE_NAME, view: 'new' };
   OPTS.forEach(o => state[o.id] = o.def);
-  try { const s = JSON.parse(localStorage.getItem('cbi-sup1') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
-  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-sup1', JSON.stringify(s)); } catch (e) {} };
+  try { const s = JSON.parse(localStorage.getItem('cbi-sup2') || '{}'); OPTS.forEach(o => { if (s[o.id] && o.ch.some(c => c[0] === s[o.id])) state[o.id] = s[o.id]; }); } catch (e) {}
+  const save = () => { try { const s = {}; OPTS.forEach(o => s[o.id] = state[o.id]); localStorage.setItem('cbi-sup2', JSON.stringify(s)); } catch (e) {} };
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const rarOf = k => R.find(r => r.k === k);
@@ -328,7 +343,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
       <img class="art" src="${ARTS.best}" alt="" decoding="async">
       <div class="top"><div class="name"><span class="ot fill"></span></div></div>
       <div class="pills"><span class="pill odds"></span><span class="pill rar"></span></div>
-      <div class="ab"><div class="abn ot fill"></div><p class="abd ot"></p><p class="mut ot"></p></div>
+      <div class="ab"><div class="abn ot fill"></div><div class="txt"><p class="abd ot"></p><p class="mut ot"></p></div></div>
       <div class="sup-word"><span class="ot fill" data-t="SUPPORT">SUPPORT</span><span class="chip"></span></div>
     </div>`;
   }
@@ -336,16 +351,15 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
 
   function fill(card, r) {
     card.className = 'card sup r-' + r.k;
-    card.classList.toggle('lay-half', state.lay === 'half');
     card.classList.toggle('glow', true);
     card.classList.toggle('run', r.k !== 'normal' && !card.classList.contains('mini'));
     card.classList.toggle('name-run', r.k !== 'normal');
-    card.classList.toggle('mut-chip', state.mut === 'chip');
     card.classList.toggle('sup-rar', state.word === 'rar');
     const isMain = card.id === 'main';
     card.classList.toggle('v-bg', isMain && state.view === 'bg');
     card.classList.toggle('v-orig', isMain && state.view === 'orig');
-    const src = isMain && state.view === 'orig' ? ARTS.orig : ARTS.best;
+    card.classList.toggle('v-over', isMain && state.view === 'over');
+    const src = isMain && (state.view === 'orig' || state.view === 'over') ? ARTS.orig : ARTS.best;
     const img = card.querySelector('.art'); if (!img.src.endsWith(src)) img.src = src;
     const q = s => card.querySelector(s);
     setT(q('.name .ot'), state.name || ' ');
@@ -362,36 +376,36 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     fit(card);
   }
 
+  /* where the capital letters start inside a line box, in em (font metrics measured in Chromium: Anton ascent 1.18 / descent .33
+     / caps .86 · Oswald 1.19 / .29 / .81): (line-height − (ascent + descent)) / 2 + ascent − caps */
+  const capOff = (f, lh) => (lh - (f.a + f.d)) / 2 + f.a - f.c;
+  const ANTON = { a: 1.18, d: .33, c: .86 }, OSW = { a: 1.19, d: .29, c: .81 };
+  const G = { name: 6.67, nameFs: 4.27, abn: 79.67, abnFs: 7.5, txt: 90.5, txtFs: 4.57, txtLh: 1.385, txtH: 27.7, word: 126, wordFs: 10.3 };
+
   function fit(card) {
     const face = card.querySelector('.face'); const W = face.clientWidth; if (!W) return;
     const cq = el => el.getBoundingClientRect().width / W * 100;
     const ch = el => el.getBoundingClientRect().height / W * 100;
     card.classList.toggle('tiny', card.getBoundingClientRect().width < 170);
-    const pad = 3.6, GAP = 3, half = state.lay === 'half';
-    const room = half ? (100 - 2 * pad - GAP) / 2 : 100 - 2 * pad;
-    const nm = card.querySelector('.name .ot');
+    const pad = 3.6, room = (100 - 2 * pad - 3) / 2;          // the name keeps to the left half, like the attack cards
+    // name: the game's size, smaller when it would pass half the card, then 2 lines
+    const nm = card.querySelector('.name .ot'), top = card.querySelector('.top');
     nm.classList.remove('two'); nm.style.maxWidth = '';
-    const MAX = 10, MIN = 5;
-    nm.style.fontSize = MAX + 'cqw';
-    const w = cq(nm); let fs = MAX;
-    if (w > room) fs = Math.max(MIN, MAX * (room - 1.4) / (w - 1.4));   // 1.2cqw side padding does not scale
-    nm.style.fontSize = fs.toFixed(2) + 'cqw';
-    if (cq(nm) > room + .2) {
-      nm.classList.add('two'); nm.style.maxWidth = room + 'cqw';
-      let s = 6.4; nm.style.fontSize = s + 'cqw';
-      while (s > 2.6 && (ch(nm) > 12.3 || nm.scrollWidth > nm.clientWidth + 1)) { s -= .2; nm.style.fontSize = s.toFixed(2) + 'cqw'; }
-    }
-    // pills: when they share the top row, shrink to fit the right half
-    const pills = card.querySelector('.pills'); pills.style.transform = ''; pills.style.transformOrigin = 'right center';
-    if (half) { const pw = cq(pills); if (pw > room) pills.style.transform = `scale(${(room / pw).toFixed(3)})`; }
-    // ability text + mutation line share one size, biggest that fits above the SUPPORT word
+    let fs = G.nameFs; nm.style.fontSize = fs + 'cqw';
+    const w = cq(nm);
+    if (w > room) { fs = Math.max(3.4, G.nameFs * (room - 1.4) / (w - 1.4)); nm.style.fontSize = fs.toFixed(2) + 'cqw'; }
+    if (cq(nm) > room + .2) { nm.classList.add('two'); nm.style.maxWidth = room + 'cqw'; fs = 3.6; nm.style.fontSize = fs + 'cqw'; }
+    top.style.top = (G.name - capOff(ANTON, nm.classList.contains('two') ? 1.02 : 1) * fs).toFixed(2) + 'cqw';
+    // skill name + text: fixed tops like the game, the text shrinks until it fits its box
+    const abn = card.querySelector('.abn'); abn.style.top = (G.abn - capOff(ANTON, 1) * G.abnFs).toFixed(2) + 'cqw';
+    const txt = card.querySelector('.txt'), abd = card.querySelector('.abd'), mut = card.querySelector('.mut');
+    const setT = v => { abd.style.fontSize = mut.style.fontSize = v + 'cqw'; txt.style.top = (G.txt - capOff(OSW, G.txtLh) * v).toFixed(2) + 'cqw'; };
     if (!card.classList.contains('tiny')) {
-      const ab = card.querySelector('.ab'), abd = card.querySelector('.abd'), mut = card.querySelector('.mut');
-      const LIM = 48; let lo = 3, hi = 6.2;
-      const set = v => { abd.style.fontSize = v + 'cqw'; mut.style.fontSize = (v * .92) + 'cqw'; };
-      set(hi);
-      if (ch(ab) > LIM) { for (let i = 0; i < 9; i++) { const m = (lo + hi) / 2; set(m); if (ch(ab) > LIM) hi = m; else lo = m; } set(lo.toFixed(2)); }
+      setT(G.txtFs);
+      if (ch(txt) > G.txtH) { let lo = 2.4, hi = G.txtFs; for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; setT(m); if (ch(txt) > G.txtH) hi = m; else lo = m; } setT(lo.toFixed(3)); }
     }
+    // SUPPORT word
+    const wd = card.querySelector('.sup-word'); wd.style.top = (G.word - capOff(OSW, 1) * G.wordFs).toFixed(2) + 'cqw';
   }
 
   function renderCheck() {
@@ -428,7 +442,7 @@ section.strip > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
     seg(box.querySelector('.seg'), o.ch, state[o.id], v => { state[o.id] = v; save(); renderAll(); });
     opts.appendChild(box);
   });
-  seg(document.getElementById('view'), [['new', 'แบบใหม่'], ['bg', 'พื้นหลังที่ลบแล้ว'], ['orig', 'ต้นฉบับเกม']], state.view, v => { state.view = v; fill(main, rarOf(state.rar)); });
+  seg(document.getElementById('view'), [['new', 'แบบใหม่'], ['bg', 'พื้นหลังที่ลบแล้ว'], ['orig', 'ต้นฉบับเกม'], ['over', 'เทียบตำแหน่ง (ซ้อนรูปเกม)']], state.view, v => { state.view = v; fill(main, rarOf(state.rar)); });
   const nameIn = document.getElementById('nameIn');
   seg(document.querySelector('[data-test="name"]'), TESTS.name, state.name, v => { state.name = v; nameIn.value = v; renderAll(); });
   nameIn.addEventListener('input', () => { state.name = nameIn.value; document.querySelectorAll('[data-test="name"] button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === state.name))); renderAll(); });
