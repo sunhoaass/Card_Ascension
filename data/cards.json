@@ -842,7 +842,7 @@
     "id": "long-hair-invader",
     "name": "Long Hair Invader",
     "series": "",
-    "image": "images/cards/long-hair-invader.webp",
+    "image": "images/cards/rd/long-hair-invader.webp",
     "base": {
       "atk": 233,
       "hp": 1556,
@@ -11231,7 +11231,7 @@
     "id": "black-wizard-brother",
     "name": "Black Wizard Brother",
     "series": "",
-    "image": "images/cards/black-wizard-brother.webp",
+    "image": "images/cards/rd/black-wizard-brother.webp",
     "base": {
       "atk": 377999,
       "hp": 2519996,
@@ -11327,7 +11327,7 @@
     "id": "control-devil",
     "name": "Control Devil",
     "series": "",
-    "image": "images/cards/control-devil.webp",
+    "image": "images/cards/rd/control-devil.webp",
     "base": {
       "atk": 386540,
       "hp": 2576934,
@@ -11423,7 +11423,7 @@
     "id": "demon-god-of-flame",
     "name": "Demon God of Flame",
     "series": "",
-    "image": "images/cards/demon-god-of-flame.webp",
+    "image": "images/cards/rd/demon-god-of-flame.webp",
     "base": {
       "atk": 577501,
       "hp": 3850004,
@@ -11812,7 +11812,7 @@
     "id": "golden-gate-king",
     "name": "Golden Gate King",
     "series": "",
-    "image": "images/cards/golden-gate-king.webp",
+    "image": "images/cards/rd/golden-gate-king.webp",
     "base": {
       "atk": 614885,
       "hp": 4099230,
@@ -12004,7 +12004,7 @@
     "id": "homunculus-father",
     "name": "Homunculus Father",
     "series": "",
-    "image": "images/cards/homunculus-father.webp",
+    "image": "images/cards/rd/homunculus-father.webp",
     "base": {
       "atk": 867245,
       "hp": 5781630,
@@ -12322,7 +12322,7 @@
     "id": "made-in-heaven-priest",
     "name": "Made in Heaven Priest",
     "series": "",
-    "image": "images/cards/made-in-heaven-priest.webp",
+    "image": "images/cards/rd/made-in-heaven-priest.webp",
     "base": {
       "atk": 492380,
       "hp": 3282532,
@@ -12614,7 +12614,7 @@
     "id": "pumpkin-sun-pride",
     "name": "Pumpkin Sun Pride",
     "series": "",
-    "image": "images/cards/pumpkin-sun-pride.webp",
+    "image": "images/cards/rd/pumpkin-sun-pride.webp",
     "base": {
       "atk": 622225,
       "hp": 4148164,
@@ -12805,7 +12805,7 @@
     "id": "soul-magic-father",
     "name": "Soul Magic Father",
     "series": "",
-    "image": "images/cards/soul-magic-father.webp",
+    "image": "images/cards/rd/soul-magic-father.webp",
     "base": {
       "atk": 542488,
       "hp": 3616586,
@@ -13826,7 +13826,7 @@
     "id": "hollow-mask-reaper",
     "name": "Hollow Mask Reaper",
     "series": "",
-    "image": "images/cards/hollow-mask-reaper.webp",
+    "image": "images/cards/rd/hollow-mask-reaper.webp",
     "base": {
       "atk": 967488,
       "hp": 6449918,
@@ -14110,7 +14110,7 @@
     "id": "pirate-king",
     "name": "Pirate King",
     "series": "",
-    "image": "images/cards/pirate-king.webp",
+    "image": "images/cards/rd/pirate-king.webp",
     "base": {
       "atk": 945317,
       "hp": 6302110,
