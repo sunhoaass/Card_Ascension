@@ -134,7 +134,7 @@
     "id": "moon-breath-swordsman",
     "name": "Moon Breath Swordsman",
     "series": "",
-    "image": "images/cards/art/moon-breath-swordsman.webp",
+    "image": "images/cards/art/moon-breath-swordsman-2.webp",
     "base": {
       "atk": 867240,
       "hp": 5781602,
@@ -746,7 +746,7 @@
     "id": "octopus-teacher",
     "name": "Octopus Teacher",
     "series": "",
-    "image": "images/cards/art/octopus-teacher.webp",
+    "image": "images/cards/art/octopus-teacher-2.webp",
     "base": {
       "atk": 4527428,
       "hp": 30182850,
@@ -1701,7 +1701,7 @@
     "id": "storm-dragon",
     "name": "Storm Dragon",
     "series": "",
-    "image": "images/cards/art/storm-dragon.webp",
+    "image": "images/cards/art/storm-dragon-2.webp",
     "base": {
       "atk": 2267115,
       "hp": 15114100,
