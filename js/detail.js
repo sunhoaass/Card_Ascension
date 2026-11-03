@@ -20,7 +20,7 @@
      (that list rides in history.state.cl, see CBI.openCard). The next and previous cards are built ahead.
    · Details (W6) = phone: full screen · ≥ 768px: a full-height panel on the right (card + scene stay on the left)
      · sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team / My card
-   · Intro (dust gathering into the card) plays every time a card opens · a little faster when swiping to the next.
+   · Entrance (owner 2026-11-03 · was dust): the card flies out of the tapped tile · grows out of the wheel · slides in on a swipe.
    · W7 scene (round 2, after the owner's clip of the game's opening): the owner's cut frames (images/silver) — sky with
      the black sun + silver wings + blue roots + light fall, gold flecks, the dark city ⇄ the crystal palace + its dust,
      fog — with the sun's top + ring, the level ring, the running light and sparkles in code · a 13.5 s cycle (gold lights
@@ -817,7 +817,7 @@
   // leave the scene small with an empty strip at the bottom
   function relayoutIfResized() {
     if (!isOpen || el.root.hidden) return;
-    if (el.root.clientWidth !== LY.rw || el.root.clientHeight !== LY.rh) { layout(); if (Math.abs(LY.cw - motesCW) > 2) { buildMotes(); targetCache = null; } }
+    if (el.root.clientWidth !== LY.rw || el.root.clientHeight !== LY.rh) { layout(); if (Math.abs(LY.cw - motesCW) > 2) buildMotes(); }
   }
 
   /* ---------- labels: once the intro is over the boxes fade up one after another (once per card) ---------- */
@@ -1071,14 +1071,14 @@
     el.next.addEventListener("click", () => step(1));
   }
   function step(dir) {
-    // during the intro (introRaf) the next swipe is allowed too: §4, the user can go on while it plays
-    if (wheelOn || list.length < 2 || switching || R3.mode !== "rest" || el.fore.classList.contains("is-zoom") || !(ready || introRaf) || sheetOpen) return;
+    // during the entrance (entry) the next swipe is allowed too: §4, the user can go on while it plays
+    if (wheelOn || list.length < 2 || switching || R3.mode !== "rest" || el.fore.classList.contains("is-zoom") || !(ready || entry) || sheetOpen) return;
     const id = list[(idx + dir + list.length) % list.length];
     if (!byId.has(id)) return;
     C.swapCard(id);                // same history entry (Back still closes the detail in one step)
     switchTo(id, dir);
   }
-  // swipe → the card slides out (170 ms), then the intro plays for the next card, a little faster (owner, 2026-10-25)
+  // swipe → the card slides out (170 ms), then the next one slides in from the other side (owner 2026-11-03 · was: dust)
   function switchTo(id, dir) {
     const card = byId.get(id);
     if (!card) return;
@@ -1094,7 +1094,7 @@
       el.wrap.getAnimations().forEach((a) => a.cancel());
       show(card);
       switching = false;
-      runIntro(true);
+      runIntro({ dir }, true);
     };
     if (!visible) { next(); return; }
     const out = el.wrap.animate(rm() ? [{ opacity: 1 }, { opacity: 0 }] : [{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 48}px) scale(.94)`, opacity: 0 }],
@@ -1564,128 +1564,55 @@
   }
 
   /* ==========================================================
-     10. Intro: dust sweeps up and gathers into the card (rAF only during the ~2.6 s intro)
+     10. Entrance (owner 2026-11-03: no more dust · the card moves in the way Back moves it out, the other way round):
+         an open = it flies out of the tile that was tapped (Back at the wheel flies it home) · a card picked in the wheel
+         = it grows out of the wheel's middle slot (Back on the card shrinks it in) · a swipe = it slides in from that side
+         · no tile on screen (a direct link) = a short fade + grow
      ========================================================== */
-  let introRaf = 0, introTimers = [], targetCache = null;
-  function sampleTargets(card, cw, ch, want) {
-    const s = 2, w = Math.ceil(cw / s), h = Math.ceil(ch / s);
-    const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
-    const ctx = cv.getContext("2d");
-    ctx.save(); ctx.scale(cw / 200 / s, ch / 280 / s);
-    ctx.strokeStyle = "#fff"; ctx.fillStyle = "#fff";
-    ctx.lineWidth = 9; ctx.strokeRect(4.5, 4.5, 191, 271);
-    ctx.globalAlpha = 0.55; ctx.fillRect(10, 236, 180, 32);         // ATK row
-    ctx.globalAlpha = 0.22; ctx.fillRect(10, 10, 180, 212);
-    if (!card.image) { ctx.globalAlpha = 0.9; ctx.scale(2, 2); ctx.fill(new Path2D("M28 104V52a22 22 0 0 1 44 0v52z")); ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(50, 56, 30, 0, Math.PI * 2); ctx.stroke(); }
-    ctx.restore();
-    const base = ctx.getImageData(0, 0, w, h).data;
-    // the real picture: brighter pixels get more dust (same-origin image, so the canvas stays readable)
-    let lum = null;
-    const img = el.faceF.querySelector(".gc__art img");
-    if (card.image && img && img.complete && img.naturalWidth) {
-      try {
-        const t = document.createElement("canvas"); t.width = w; t.height = h;
-        const tc = t.getContext("2d"); tc.drawImage(img, 0, 0, w, h);   // the game card's picture fills the whole card
-        lum = tc.getImageData(0, 0, w, h).data;
-      } catch (e) { lum = null; }
-    }
-    const pts = [], r = rng(77);
-    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-      const k = (y * w + x) * 4;
-      let a = base[k + 3] / 255;
-      if (lum) { const L = (0.3 * lum[k] + 0.59 * lum[k + 1] + 0.11 * lum[k + 2]) / 255; a = Math.max(a, Math.pow(L, 1.4) * 0.95); }
-      if (a > 0 && r() < a) pts.push([(x + r()) * s, (y + r()) * s]);
-    }
-    for (let i = pts.length - 1; i > 0; i--) { const j = (r() * (i + 1)) | 0; [pts[i], pts[j]] = [pts[j], pts[i]]; }
-    return pts.slice(0, want);
-  }
+  let introTimers = [], entry = null;   // entry = the running entrance animation (a swipe may already go on meanwhile)
+  let entryHidden = null;               // the tile the card flies out of (hidden while it flies)
   function stopIntro() {
-    cancelAnimationFrame(introRaf); introRaf = 0; introTimers.forEach(clearTimeout); introTimers = [];
-    el.dust.hidden = true; el.dust.width = el.dust.height = 1; el.dust.classList.remove("is-out");
+    introTimers.forEach(clearTimeout); introTimers = [];
+    if (entry) { const a = entry; entry = null; a.cancel(); }
+    el.wrap.style.transition = "";
+    if (entryHidden) { entryHidden.style.visibility = ""; entryHidden = null; }
   }
   function reveal() {
     el.wrap.classList.add("is-in"); el.fore.classList.add("is-ready"); motesPlay(true); ready = true;
     if (leaning()) { enter3D(); kick(); }   // the mouse is already off-centre
     setOverall(cur, true);
-    // W6: once the dust has settled (intro end) the lines draw out and the boxes fade in, once per card
+    // W6: once the card is in (entrance end) the boxes fade in, once per card
     introTimers.push(setTimeout(() => { showCallouts(); introTimers.push(setTimeout(showHint, 1100)); }, rm() ? 0 : 600));
     afterShow();
     setTimeout(prebakeCoronas, 3400);
   }
-  // every open plays it (owner, 2026-10-25) · fast = swiping to the next card: the same intro at 0.75× the time
-  // keep = the palace cycle goes on (swiping · W8: a card picked in the wheel, the scene stays as it is)
-  function runIntro(fast, keep = fast) {
+  // how: { from: DOMRect } (fly / grow out of it) · { dir: ±1 } (slide in from that side) · {} = fade + grow
+  // keep = the palace cycle goes on (swiping · a card picked in the wheel: the scene stays as it is)
+  function runIntro(how = {}, keep = false) {
+    const hide = how.hide || null;
     stopIntro(); stopCard(); toggleZoom(false); closeSheet(0, true); hideCallouts();
     el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in"); motesPlay(false); ready = false;
-    if (!keep || !cycling) palaceStart();   // W7: the palace forms from dust with the card (swiping keeps its cycle going)
+    if (!keep || !cycling) palaceStart();   // W7: the palace forms from dust with the scene (swiping keeps its cycle going)
     if (rm()) { reveal(); return; }
-    const sr = el.stage.getBoundingClientRect(), wr = el.wrap.getBoundingClientRect();
-    const z = FX.zoom(), W = sr.width / z, H = sr.height / z, cw = LY.cw, ch = LY.ch, L = (wr.left - sr.left) / z, T = (wr.top - sr.top) / z;
-    const ctx = sizeCanvas(el.dust, W, H, 1);   // 1× on purpose: the dust looks the same, the layer is 7× smaller
-    el.dust.hidden = false; el.dust.classList.remove("is-out");
-    const nT = FX.lite ? 520 : 900, nS = FX.lite ? 140 : 240;    // answer (2) of §13.1: full dust, no cut
-    const key = cur.id + cw + "x" + ch + "x" + nT;
-    if (!targetCache || targetCache.key !== key) targetCache = { key, pts: sampleTargets(cur, cw, ch, nT) };
-    const targets = targetCache.pts;
-    const r = rng((Math.random() * 1e9) | 0), SP = fast ? 0.75 : 1;
-    const COLS = ["#ffffff", "#e9e6ff", "#c9c6f2", "#b7c3ff"];
-    const buckets = COLS.map(() => []);
-    const mk = (tx0, ty0, stray) => {
-      const sx = -W * 0.35 + r() * W * 0.45, sy = H * (0.86 + r() * 0.3);
-      const nxp = stray ? 0.5 : (tx0 - L) / cw, nyp = stray ? 0.5 : (ty0 - T) / ch;
-      const delay = ((nxp * 0.55 + (1 - nyp) * 0.45) * 820 + r() * 260 + (stray ? r() * 500 : 0)) * SP;
-      const dur = (950 + r() * 520) * SP;
-      const mx = lerp(sx, tx0, 0.55) + W * (0.1 + r() * 0.35), my = lerp(sy, ty0, 0.5) + (r() - 0.3) * H * 0.18;
-      return { sx, sy, mx, my, tx: tx0, ty: ty0, delay, dur, stray, size: 1.3 + r() * (stray ? 1.4 : 1.9), ph: r() * 6.28 };
+    el.wrap.style.transition = "none"; el.wrap.classList.add("is-in");   // shown at once: the move itself is the entrance
+    let a = null;
+    if (how.from) a = FX.flip(el.wrap, how.from, { duration: 400 });
+    else if (how.dir) a = el.wrap.animate([{ transform: `translateX(${how.dir * 48}px) scale(.94)`, opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 240, easing: E });
+    if (!a) a = el.wrap.animate([{ transform: "scale(.94)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 320, easing: E });
+    if (how.from && hide) { hide.style.visibility = "hidden"; entryHidden = hide; }
+    entry = a;
+    a.onfinish = () => {
+      if (entry !== a) return;
+      entry = null; el.wrap.style.transition = "";
+      if (entryHidden) { entryHidden.style.visibility = ""; entryHidden = null; }
+      reveal();
     };
-    targets.forEach((p) => buckets[(r() * 4) | 0].push(mk(L + p[0], T + p[1], false)));
-    for (let i = 0; i < nS; i++) buckets[(r() * 4) | 0].push(mk(W * (0.7 + r() * 0.6), -H * (0.05 + r() * 0.3), true));
-    const QA = [0.35, 0.68, 1], MAXN = Math.max(...buckets.map((b) => b.length));
-    const PX = new Float32Array(MAXN), PY = new Float32Array(MAXN), PS = new Float32Array(MAXN), PQ = new Int8Array(MAXN);
-    const t0 = performance.now(); let shown = false;
-    const frame = (now) => {
-      if (!isOpen) { stopIntro(); return; }
-      const t = now - t0;
-      ctx.clearRect(0, 0, W, H);
-      for (let b = 0; b < 4; b++) {
-        const a0 = buckets[b];
-        for (let i = 0; i < a0.length; i++) {
-          const p = a0[i], k = (t - p.delay) / p.dur;
-          PQ[i] = -1;
-          if (k <= 0 || (k >= 1 && p.stray)) continue;
-          let x, y, a;
-          if (k >= 1) { x = p.tx; y = p.ty; a = 0.65 + 0.35 * Math.sin(t * 0.012 + p.ph); }
-          else {
-            const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, u = 1 - e;
-            x = u * u * p.sx + 2 * u * e * p.mx + e * e * p.tx; y = u * u * p.sy + 2 * u * e * p.my + e * e * p.ty;
-            a = p.stray ? Math.sin(k * Math.PI) * 0.8 : Math.min(1, k * 3);
-          }
-          if (a < 0.12) continue;
-          PX[i] = x; PY[i] = y; PS[i] = p.size * (k < 1 ? 1.2 : 1); PQ[i] = a < 0.5 ? 0 : a < 0.84 ? 1 : 2;
-        }
-        ctx.fillStyle = COLS[b];
-        for (let qq = 0; qq < 3; qq++) {
-          ctx.globalAlpha = QA[qq]; ctx.beginPath();
-          for (let i = 0; i < a0.length; i++) if (PQ[i] === qq) { const s = PS[i]; ctx.rect(PX[i] - s / 2, PY[i] - s / 2, s, s); }
-          ctx.fill();
-        }
-      }
-      if (!shown && t > 1950 * SP) {
-        shown = true;
-        el.mat.animate([{ opacity: 0, transform: "scale(.92)" }, { opacity: 0.9, offset: 0.25 }, { opacity: 0, transform: "scale(1.08)" }], { duration: 560, easing: "ease-out" });
-        el.dust.classList.add("is-out");
-        reveal();
-      }
-      if (t < 2650 * SP) introRaf = requestAnimationFrame(frame);
-      else { introRaf = 0; ctx.clearRect(0, 0, W, H); el.dust.hidden = true; el.dust.width = el.dust.height = 1; }
-    };
-    introRaf = requestAnimationFrame(frame);
   }
 
   /* ==========================================================
      12. Card wheel (W8, from mockup/card-wheel.html): Back on the card view → every card on a cylinder over the same
          scene (it keeps playing, the palace cycle does not restart) · tap a side card = it turns to the middle · tap the
-         middle one / Enter = its dust intro · Back at the wheel = the page it was opened from.
+         middle one / Enter = it grows out of the middle slot · Back at the wheel = the page it was opened from.
          History: #card/<id> twice — {v:"wheel"} under {v:"card"} (CBI.openCard) · no new route, no new localStorage key.
          The cylinder turns on the Y axis: the card at offset d (cards from the middle) is turned d × STEP degrees ·
          wpos = the (fractional) index of the middle card · each visible card sits in a slot whose look is ONE paused Web
@@ -1962,6 +1889,7 @@
     if (wheelOn || !cur) return;
     wheelOn = true;
     const mine = ++wTok, id = cur.id;
+    el.wheel.getAnimations().forEach((a) => a.cancel());   // Back while the wheel was still fading away (leaveWheel)
     el.wrap.getAnimations().forEach((a) => a.cancel());   // a swipe's slide-out stops here (its next card never comes)
     stopIntro(); introTimers.forEach(clearTimeout); introTimers = []; switching = false;
     stopCard(); resetLean(); closeSheet(0, true); hideHint(); hideCallouts();
@@ -2003,31 +1931,27 @@
     const i = wpos; wpos = i - 0.8; wDraw(); wSpinTo(i, 400);
     setTimeout(done, 400);
   }
-  // the wheel → a card: the chosen card lifts in the middle, the wheel fades away, then the dust intro of that card
+  // the wheel → a card (Back the other way round): the chosen card grows out of the wheel's middle slot while the wheel fades
   function leaveWheel(id) {
     const card = byId.get(id);
     if (!wheelOn || !card) return;
     const mine = ++wTok;
-    wStop(); wBusy = true; el.cwQ.blur();
-    const mid = wMid(), lift = [];
-    if (!rm()) {
-      if (mid && mid.cardId === id) lift.push(mid.inner.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(-22px) scale(1.06)", opacity: 0 }], { duration: 380, easing: E, fill: "forwards" }));
-      lift.push(el.wheel.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 360, easing: E, fill: "forwards" }));
+    wStop(); wBusy = false; el.cwQ.blur();
+    const mid = wMid(), from = mid && mid.cardId === id ? mid.el.getBoundingClientRect() : null;
+    wheelOn = false;
+    el.root.classList.remove("is-wheel", "is-wheel-low", "is-wheel-in");
+    el.close.setAttribute("aria-label", "Back to the card wheel");
+    const gone = () => { if (mine !== wTok) return; el.wheel.getAnimations().forEach((a) => a.cancel()); el.wheel.hidden = true; wslots.forEach((s) => { s.inner.style.visibility = ""; }); };
+    if (rm()) gone();
+    else {
+      if (from) mid.inner.style.visibility = "hidden";
+      el.wheel.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: E, fill: "forwards" }).onfinish = gone;
     }
-    setTimeout(() => {
-      if (mine !== wTok) return;
-      lift.forEach((a) => a.cancel());
-      wBusy = false;
-      if (viewOf() === "wheel") return;   // Back again while it lifted: stay on the wheel
-      wheelOn = false; wStop();
-      el.wheel.hidden = true; el.root.classList.remove("is-wheel", "is-wheel-low", "is-wheel-in");
-      el.close.setAttribute("aria-label", "Back to the card wheel");
-      list = listFromHistory(id); idx = Math.max(0, list.indexOf(id));
-      el.root.classList.toggle("is-single", list.length < 2);
-      show(card); resetLean();
-      el.close.focus({ preventScroll: true });
-      runIntro(false, true);   // the same intro as an open · the scene and its palace cycle go on
-    }, rm() ? 0 : 240);
+    list = listFromHistory(id); idx = Math.max(0, list.indexOf(id));
+    el.root.classList.toggle("is-single", list.length < 2);
+    show(card); resetLean();
+    el.close.focus({ preventScroll: true });
+    runIntro({ from }, true);   // the scene and its palace cycle go on
   }
   // tap the middle card / Enter: the wheel entry now names that card, its card entry goes on top
   function wOpen(i) {
@@ -2137,6 +2061,9 @@
     el.root.classList.toggle("is-single", list.length < 2);
     prevFocus = document.activeElement;
 
+    // the tile the card flies out of: measured before the scene goes up (the page loses its scrollbar under it)
+    const tile = returnTarget(id), tr = tile && tile.getBoundingClientRect(), from = tr && rectVisible(tr) ? tr : null;
+
     el.root.hidden = false;
     setBackground(true);
     fades.forEach((a) => a.cancel()); fades = [];
@@ -2149,13 +2076,17 @@
     resetLean();
     el.close.focus({ preventScroll: true });
 
-    // every open = the scene fades in and the dust gathers into the card (owner, 2026-10-25 · was: fly from the tile)
-    // wait for the painting at most 1.2 s (a lite phone paints on its first open; the stand-in sky shows meanwhile)
+    // every open = the scene fades in while the card flies out of the tile that was tapped (owner 2026-11-03 · the way
+    // Back flies it home, the other way round · 2026-10-25 → 11-03 it was dust gathering into the card)
     fades = chrome().map((n) => FX.fade(n, 1, { duration: 300 }));
     hideCallouts(); el.fore.classList.remove("is-ready"); el.wrap.classList.remove("is-in");
     // W8: an open straight into the wheel (Forward from the page, a reload on the wheel) shows the wheel right away
     if (viewOf() === "wheel") { palaceStart(); showWheel(false); }
-    else Promise.race([sceneP || Promise.resolve(), new Promise((r) => setTimeout(r, 1200))]).then(() => { if (mine === token && isOpen && !wheelOn) runIntro(); });
+    else {
+      runIntro({ from, hide: tile });
+      // the scene may still be painting (a lite phone's first open): its palace cycle starts once the ground is there
+      if (sceneP && !(G && G.ground)) sceneP.then(() => { if (mine === token && isOpen && cycling && G && G.ground) palaceStart(); });
+    }
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => { if (mine === token && isOpen) settled(true); }, 520);
     // W6 fix: the size can still change right after opening (phone browser bar, fonts) → measure again
@@ -2233,10 +2164,10 @@
     (Array.isArray(state.support) ? state.support : []).forEach((x) => { if (x && x.id && !byId.has(x.id)) byId.set(x.id, x); });   // support cards open here too
     const g = (id) => document.getElementById(id);
     Object.assign(el, {
-      root: g("detail"), stage: g("bs-stage"), sky: g("bs-sky"), bg: g("bs-bg"), pulse: g("bs-pulse"), sparks: g("bs-sparks"), fog: g("bs-fog"), dust: g("bs-dust"),
+      root: g("detail"), stage: g("bs-stage"), sky: g("bs-sky"), bg: g("bs-bg"), pulse: g("bs-pulse"), sparks: g("bs-sparks"), fog: g("bs-fog"),
       skyX: g("bs-skyX"), skyY: g("bs-skyY"), sparkX: g("bs-sparkX"), sparkY: g("bs-sparkY"), fogX: g("bs-fogX"), foreX: g("bs-foreX"), foreY: g("bs-foreY"),
       top: $("#detail .bs-top"), close: g("detail-close"), name: g("bs-name"), pager: g("bs-pager"),
-      fore: g("bs-fore"), callouts: g("bs-callouts"), wrap: g("bs-wrap"), zoom: g("bs-zoom"), swirl: g("bs-swirl"), mat: g("bs-mat"),
+      fore: g("bs-fore"), callouts: g("bs-callouts"), wrap: g("bs-wrap"), zoom: g("bs-zoom"), swirl: g("bs-swirl"),
       tiltEl: g("bs-tiltEl"), rotor: g("bs-rotor"), faceF: g("bs-faceF"), faceB: g("bs-faceB"),
       ovr: g("bs-ovr"), ovrArc: g("bs-ovrArc"), ovrNum: g("bs-ovrNum"), ovrLbl: g("bs-ovrLbl"), dbtn: g("bs-details"),
       hint: g("bs-hint"), dock: g("bs-dock"), dockL: g("bs-dockL"), dockR: g("bs-dockR"), lv: g("bs-lv"), lvName: g("bs-lvName"),
@@ -2286,7 +2217,7 @@
         clearTimeout(rt2);
         setBackground(true);   // the left menu: usable ≥ 1100px only
         layout();
-        if (Math.abs(LY.cw - motesCW) > 2) { buildMotes(); targetCache = null; }
+        if (Math.abs(LY.cw - motesCW) > 2) buildMotes();
         if (stale()) buildScene();
       }, 160);
     });
