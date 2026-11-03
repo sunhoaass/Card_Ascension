@@ -1956,3 +1956,11 @@
 - **ลบ:** `#bs-dust` canvas + `#bs-mat` (index.html) · `.bs-dust` / `.bs-mat` (detail.css) · `--bs-mat` (tokens.css)
 - **ทดสอบ (Chromium · 390×844 + 1280×800 + reduced motion):** เปิดจากหน้า Cards (ช่อง x139 w111 → กลางจอ w223 ใน ~0.4 วิ) · เปิดจาก Tier List (เฟรมแรกตรงช่อง) · ลิงก์ตรง `#card/<id>` = จางเข้า · ปัด ‹ › = ออกซ้ายเข้าขวา · Back → วงล้อ → Enter = ขยายจากช่องกลาง วงล้อซ่อนหลังจาง · Back เร็วระหว่างจาง = วงล้อกลับมาชัด (opacity 1) · Back ที่วงล้อ = ปิดกลับ `#cards` · เปิดแล้วปัดทันที = ได้ใบถัดไปครบ · ขนาด/ตำแหน่งการ์ดหลังเข้าเท่าเดิมทุกกรณี (เทียบกับก่อนแก้) · ไม่มี error
 - **ไฟล์:** `index.html` (`?v=71`) · `mockup/blank-art.html` (`?v=71`) · `js/detail.js` · `css/detail.css` · `css/tokens.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 เปลี่ยนรูปว่าง 3 ใบเป็นฉบับใหม่ของเจ้าของ (ไม่แตะ CSS/JS · `?v=71` เท่าเดิม)
+- **เจ้าของสั่ง:** แนบรูป 4 รูป "แก้ไขภาพลงในเว็บไซต์"
+- **จับคู่ (เทียบรูปเดิมใน `images/cards/art/` ด้วยตา + ค่าต่าง):** Octopus Teacher · Storm Dragon · Moon Breath Swordsman = ภาพเดียวกับที่ลงเว็บแล้วแต่เป็นฉบับใหม่ (ตำแหน่ง/รายละเอียดต่างเล็กน้อย เช่น Storm Dragon ไม่มีกองหินใต้เท้า) → แทนรูปเดิม
+- **รูปที่ 3 (โครงกระดูกยักษ์ผมยาว) = ไม่ตรงการ์ด/Support ใบไหนใน `data/pending/`** (เทียบทั้ง 380 + Support · ไม่พบ) → ข้าม · เก็บไว้ที่ `inbox/blank/skeleton-unmatched.jpg` รอเจ้าของบอกชื่อการ์ด
+- **ทำ:** ย่อ 600×800 + thumb 300×400 (webp 88) ชื่อไฟล์ใหม่ `<id>-2.webp` (กันมือถือแคปรูปเก่า) · ลบไฟล์เดิม · `data/cards.json` `image` ชี้ไฟล์ใหม่ (ข้อความ/ค่าไม่เปลี่ยน)
+- **ทดสอบ (Chromium 390×844):** `#card/<id>` ทั้ง 3 ใบ + หน้า Cards ขึ้นรูปใหม่ · ไม่มี 404 / error
+- **ไฟล์:** `images/cards/art/{octopus-teacher,storm-dragon,moon-breath-swordsman}-2.webp` (+ `thumb/`) · `data/cards.json` · `inbox/blank/skeleton-unmatched.jpg` · `PROGRESS.md` · `HISTORY.md`
