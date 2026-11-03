@@ -1964,7 +1964,7 @@
 - **ทำ:** ย่อ 600×800 + thumb 300×400 (webp 88) ชื่อไฟล์ใหม่ `<id>-2.webp` (กันมือถือแคปรูปเก่า) · ลบไฟล์เดิม · `data/cards.json` `image` ชี้ไฟล์ใหม่ (ข้อความ/ค่าไม่เปลี่ยน)
 - **ทดสอบ (Chromium 390×844):** `#card/<id>` ทั้ง 3 ใบ + หน้า Cards ขึ้นรูปใหม่ · ไม่มี 404 / error
 - **ไฟล์:** `images/cards/art/{octopus-teacher,storm-dragon,moon-breath-swordsman}-2.webp` (+ `thumb/`) · `data/cards.json` · `inbox/blank/skeleton-unmatched.jpg` · `PROGRESS.md` · `HISTORY.md`
-### 2026-11-03 ความเร็ว 3 จุดที่มือถือแลค: เปิดการ์ด · เปลี่ยนระดับ · เลื่อนหน้า Cards (`?v=72` · รอเจ้าของลองบนมือถือก่อน merge)
+### 2026-11-03 ความเร็ว 3 จุดที่มือถือแลค: เปิดการ์ด · เปลี่ยนระดับ · เลื่อนหน้า Cards (`?v=72` · merge แล้ว pull request #115)
 - **เจ้าของสั่ง:** มือถือ RAM 6GB (Chrome) แลค 3 จุด → วัด §11.3 แยกทีละจุด หาสาเหตุ แก้โดยหน้าตา/อนิเมชั่นเหมือนเดิม
 - **สาเหตุที่เจอ (Profiler + trace CPU ×6):**
   - **เปิดการ์ด:** ในจังหวะแตะ Chrome คำนวณ style ใหม่ทั้งหน้า (2,612 element) เพราะ `inert` บน `.main` (inherit) + `html.is-detail .nav > *` (selector ลงท้าย `*` บนคลาสของ `<html>`) · แล้ววัดขนาดสลับกับเขียน 4–5 รอบ (`skySize` → `layout()` → `dbtn.offsetWidth` → `fitLine` → `placeInd` → FLIP) · 520ms ต่อมา `settled()` ใช้ `html.is-detail-settled .main *` = คำนวณทั้งหน้าอีก 340ms ตอนการ์ดบินจบ · ระหว่างบิน หน้า Cards ข้างใต้ (มองไม่เห็นเพราะพื้นฉากทึบ) ยังถูก layerize ทุกเฟรม · `getAnimations()` / `currentCSSZoom` บังคับคำนวณ style · แผ่น Details เติมล่วงหน้า 0.2 วิ กลางจังหวะกล่องป้ายจางเข้า
