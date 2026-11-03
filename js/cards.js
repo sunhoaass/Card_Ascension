@@ -1,9 +1,11 @@
 /* ==========================================================
    Card Battle Infinity — Cards page (step 2 · redesigned 2026-11-03)
-   · rarity bar (sticks under the top bar, wraps: no sideways scroll), search, pull-odds finder ("1 IN …"),
-     sort switch (Rarest / Overall / ATK / HP + ↑↓), series / role selects (only when the data has 2+),
-     layout switch (grid 2 · grid 3 · list, remembered in cbi:cardView), chips of the filters in use (× each) + Reset all
-   · every card sits in a cell with its tier badge under it (display only · the tier filter chips were removed 2026-11-03)
+   · top to bottom (round 2, 2026-11-03): pull-odds finder ("1 IN …" + a 1M / 1B / 1T / 1Qa dropdown inside the box),
+     rarity bar (sticks under the top bar, wraps: no sideways scroll), search box with the ↑↓ pull-odds order button in it,
+     series / role selects (only when the data has 2+), layout switch (grid 2 · grid 3 · list, remembered in cbi:cardView),
+     chips of the filters in use (× each) + Reset all
+   · cards always sort by pull odds (the Rarest / Overall / ATK / HP switch was removed in round 2)
+   · every card sits in a cell (C.cardCell · no tier badge under it since round 2 · the list view shows name + stats)
    · setRarity(): the one place that changes the rarity for the whole site (fires "cbi:rarity")
    · the card detail lives in js/detail.js (step 12)
    · Cards | Support switch at the top (owner 2026-10-28 · #cards / #support, state.kind): the Support side is js/support.js
@@ -61,13 +63,13 @@
   }
 
   const ROLE_ORDER = ["DPS", "Tank", "Support", "Hybrid"];
-  const filters = { q: "", role: "", series: "", odds: null, sort: "odds", dir: "desc" };   // rarest first (owner 2026-10-28)
+  const filters = { q: "", role: "", series: "", odds: null, dir: "desc" };   // rarest first (owner 2026-10-28) · always by pull odds (round 2)
   const VIEW_KEY = "cbi:cardView";   // "2" | "3" | "list" (2026-11-03)
   const VIEWS = ["2", "3", "list"];
   let view = (() => { const v = C.store.get(VIEW_KEY); return VIEWS.includes(v) ? v : "3"; })();
   const cardById = new Map();     // id -> card data
   const cardEls = new Map();      // id -> card element (made the first time its page shows, kept after)
-  const cellEls = new Map();      // id -> the grid cell (card + tier badge + list details)
+  const cellEls = new Map();      // id -> the grid cell (card + list details)
   const searchText = new Map();   // id -> lowercase text used by the search box
   const ui = {};
   let shown = [];                 // ids that pass the filters, in order (every page)
@@ -75,28 +77,23 @@
   let page = 0;
   let built = false;              // grid cards exist (made on the first visit to the Cards side, step 9.5)
   let shownKind = null;           // the side on screen: "cards" | "support"
-  let oddsState = "";             // "" | "ok" | "none" (no card in that unit) | "game" (unit the game doesn't have)
+  let oddsState = "";             // "" | "ok" | "none" (no card in that unit) | "game" (unit the game doesn't have) · told by the empty state
   const HEAD = {
     cards: { eyebrow: "The Archive", title: "Cards", lead: "Pick a rarity to see each card's ATK, HP and pull odds at that level. Tap a card for the full breakdown." },
     support: { eyebrow: "The Apothecary", title: "Support", lead: "Pick a rarity to see each support's effect at that level: the numbers on the card grow with it. Tap one for the full breakdown." },
   };
-  const SORT_I = { odds: 0, overall: 1, atk: 2, hp: 3 };
 
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
 
-  /* ---------- A card in a grid cell: the card + its tier badge (display only) + the list view's details ----------
-     Used by the Cards and Support grids. The badge keeps the tier colours (C.TIER_COLOR). */
-  function tierBadgeHTML(item) {
-    if (!C.isRanked(item)) return `<span class="tbadge tbadge--none">Unranked</span>`;
-    return `<span class="tbadge" style="--tc:var(${C.TIER_COLOR[item.tier] || "--t-d"})"><span class="tbadge__k">Tier</span><span class="tbadge__v">${esc(item.tier)}</span></span>`;
-  }
+  /* ---------- A card in a grid cell: the card + the list view's details ----------
+     Used by the Cards and Support grids · no tier badge under the card (owner, round 2 2026-11-03) */
   function cardCell(el, item) {
     const cell = document.createElement("div");
     cell.className = "cg-cell";
     cell.dataset.cell = item.id;
     const meta = document.createElement("div");
     meta.className = "cg-meta";
-    meta.innerHTML = tierBadgeHTML(item) + `<div class="cg-info"></div>`;
+    meta.innerHTML = `<div class="cg-info"></div>`;
     cell.append(el, meta);
     return cell;
   }
@@ -111,7 +108,7 @@
       tools: $("#cards-tools"), pager: $("#cards-pager"), grid: $("#card-grid"), none: $("#cards-none"), empty: $("#cards-empty"),
       noneTitle: $("#cards-none .empty__title"), noneText: $("#cards-none .empty__text"),
       rarity: $("#rarity-picker"), search: $("#card-search"),
-      sort: $("#card-sort"), dir: $("#card-dir"), series: $("#card-series"), seriesField: $("#series-field"),
+      dir: $("#card-dir"), series: $("#card-series"), seriesField: $("#series-field"),
       role: $("#card-role"), roleField: $("#role-field"), selects: $("#card-selects"),
       oddsForm: $("#odds-form"), oddsInput: $("#odds-input"), oddsClear: $("#odds-clear"), oddsQuick: $("#odds-quick"), oddsMsg: $("#odds-msg"),
       count: $("#card-count"), viewSw: $("#card-view"), active: $("#card-active"),
@@ -127,6 +124,7 @@
     ui.grid.innerHTML = "";
     ui.tools.hidden = !state.cards.length;
     $("#rarity-bar").hidden = !state.cards.length;
+    ui.oddsForm.hidden = !state.cards.length;
     ui.empty.hidden = state.cards.length > 0;
     if (!state.cards.length) return;
 
@@ -222,10 +220,10 @@
     ui.series.innerHTML = `<option value="">All series</option>` + series.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
     ui.seriesField.hidden = series.length < 2;
     ui.selects.hidden = ui.roleField.hidden && ui.seriesField.hidden;
-    // 1M · 1B · 1T · 1Qa (up to GAME_MAX_UNIT)
+    // the dropdown inside the odds box: 1M · 1B · 1T · 1Qa (up to GAME_MAX_UNIT) · "Pick" while none of them is in use
     const from = UNITS.findIndex((u) => u[0] === SHORTCUT_FROM);
-    ui.oddsQuick.innerHTML = UNITS.slice(from, MAX_UNIT_I + 1).map((u) =>
-      `<button type="button" class="oddsbox__q fx-press" data-odds="1${u[0]}" aria-pressed="false"><span>1 in</span> <b>1${u[0]}</b></button>`).join("");
+    ui.oddsQuick.innerHTML = `<option value="">Pick</option>` +
+      UNITS.slice(from, MAX_UNIT_I + 1).map((u) => `<option value="1${u[0]}">1${u[0]}</option>`).join("");
   }
 
   function bindTools() {
@@ -233,29 +231,15 @@
     ui.search.addEventListener("keydown", (e) => { if (e.key === "Enter") ui.search.blur(); });   // closes the phone keyboard
     ui.series.addEventListener("change", () => { filters.series = ui.series.value; apply({ animate: true }); });
     ui.role.addEventListener("change", () => { filters.role = ui.role.value; apply({ animate: true }); });
-    ui.sort.addEventListener("click", (e) => {
-      const b = e.target.closest(".seg__btn[data-sort]");
-      if (!b || b.dataset.sort === filters.sort) return;
-      filters.sort = b.dataset.sort;
-      apply({ animate: true });
-    });
-    ui.sort.addEventListener("keydown", (e) => {
-      const keys = Object.keys(SORT_I), d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-      if (!d) return;
-      e.preventDefault();
-      filters.sort = keys[(SORT_I[filters.sort] + d + keys.length) % keys.length];
-      apply({ animate: true });
-      ui.sort.querySelector(`[data-sort="${filters.sort}"]`).focus();
-    });
     ui.dir.addEventListener("click", () => {
       filters.dir = filters.dir === "desc" ? "asc" : "desc";
       apply({ animate: true });
     });
 
-    // pull odds: Enter / OK / a shortcut all go through setOdds (one rule)
+    // pull odds: Enter / OK / the dropdown all go through setOdds (one rule)
     ui.oddsForm.addEventListener("submit", (e) => { e.preventDefault(); setOdds(ui.oddsInput.value); ui.oddsInput.blur(); });
-    ui.oddsInput.addEventListener("input", () => { ui.oddsClear.hidden = !ui.oddsInput.value && !filters.odds; });
-    ui.oddsQuick.addEventListener("click", (e) => { const b = e.target.closest("[data-odds]"); if (b) setOdds(b.dataset.odds); });
+    ui.oddsInput.addEventListener("input", () => { ui.oddsClear.hidden = !ui.oddsInput.value && !filters.odds; showOddsError(""); });
+    ui.oddsQuick.addEventListener("change", () => { if (ui.oddsQuick.value) setOdds(ui.oddsQuick.value); else if (filters.odds) setOdds(""); });
     ui.oddsClear.addEventListener("click", () => { setOdds(""); ui.oddsInput.focus({ preventScroll: true }); });
 
     ui.viewSw.addEventListener("click", (e) => { const b = e.target.closest("[data-view]"); if (b) setView(b.dataset.view); });
@@ -294,6 +278,7 @@
     filters.q = filters.role = filters.series = "";
     filters.odds = null; oddsState = "";
     ui.search.value = ""; ui.series.value = ""; ui.role.value = ""; ui.oddsInput.value = "";
+    showOddsError("");
     apply({ animate: true });
   }
 
@@ -305,48 +290,33 @@
   function setOdds(raw) {
     const p = parseOdds(raw);
     if (p && p.error) {
-      ui.oddsMsg.textContent = p.error; ui.oddsMsg.dataset.tone = "bad";
+      showOddsError(p.error);
+      syncTools();   // the dropdown goes back to what is in use
       FX.flash && FX.flash(ui.oddsForm);
       return;
     }
+    showOddsError("");
     filters.odds = p;
     ui.oddsInput.value = p ? p.text : "";
     apply({ animate: true });
   }
-  function oddsMessage(maxV) {
-    const o = filters.odds, msg = ui.oddsMsg;
-    msg.dataset.tone = "";
-    if (!o) { msg.textContent = `Type odds like 300Qa, 2.5B or 1,000,000, or tap a shortcut.`; return; }
-    const u = UNITS[o.unit][0] || "", r = state.rarity;
-    const qd = u === "Qa" ? " (Qa = “Qd” on the cards)" : "";
-    if (oddsState === "game") { msg.textContent = `Not in the game: the rarest odds unit right now is ${GAME_MAX_UNIT}.`; msg.dataset.tone = "bad"; return; }
-    if (oddsState === "none") { msg.textContent = `No ${u || "such"} cards at ${r}${qd}. The rarest is 1 in ${shortOdds(maxV)}: try a higher rarity.`; msg.dataset.tone = "warn"; return; }
-    if (o.value > maxV) { msg.textContent = `Rarer than every card at ${r} (rarest: 1 in ${shortOdds(maxV)}). Showing every ${u} card${qd}.`; return; }
-    msg.textContent = `Closest to 1 in ${o.text} first · ${u ? u + " and rarer" : "every card"} at ${r}${qd}.`;
+  // the line under the odds box: only when what was typed can't be read (no help text · round 2) ·
+  // no cards in that unit / a unit the game doesn't have = the empty state under the bar says it
+  function showOddsError(text) {
+    ui.oddsMsg.textContent = text;
+    ui.oddsMsg.hidden = !text;
   }
 
-  function sortValue(c) {
-    const r = state.rarity;
-    if (filters.sort === "atk") return C.statAt(c, "atk", r);
-    if (filters.sort === "hp") return C.statAt(c, "hp", r);
-    return C.oddsAt(c, r);
-  }
+  // always by pull odds at the picked rarity · desc (default) = rarest first · odds typed = closest to them first
   function compare(a, b) {
     const dir = filters.dir === "asc" ? 1 : -1;
-    if (filters.sort === "odds" && filters.odds) {             // closest to the typed odds first (log distance)
+    const oa = C.oddsAt(a, state.rarity), ob = C.oddsAt(b, state.rarity);
+    if (filters.odds) {                                         // closest to the typed odds first (log distance)
       const t = Math.log(filters.odds.value);
-      const da = Math.abs(Math.log(C.oddsAt(a, state.rarity)) - t), db = Math.abs(Math.log(C.oddsAt(b, state.rarity)) - t);
+      const da = Math.abs(Math.log(oa) - t), db = Math.abs(Math.log(ob) - t);
       if (da !== db) return (da - db) * -dir;                  // desc (default) = closest first
-      const oa = C.oddsAt(a, state.rarity), ob = C.oddsAt(b, state.rarity);
       if (oa !== ob) return ob - oa;
-    } else if (filters.sort === "overall") {
-      const ra = C.isRanked(a), rb = C.isRanked(b);
-      if (ra !== rb) return ra ? -1 : 1;                       // unranked cards always last
-      if (ra && a.scores.overall !== b.scores.overall) return (a.scores.overall - b.scores.overall) * dir;
-    } else {
-      const va = sortValue(a), vb = sortValue(b);
-      if (va !== vb) return (va - vb) * dir;
-    }
+    } else if (oa !== ob) return (oa - ob) * dir;
     return a.name.localeCompare(b.name);
   }
 
@@ -356,7 +326,6 @@
     if (!built) return;   // the Cards side hasn't been opened yet: its cards don't exist yet
     const words = filters.q.toLowerCase().split(/\s+/).filter(Boolean);
     const r = state.rarity, o = filters.odds;
-    const maxV = state.cards.reduce((m, c) => Math.max(m, C.oddsAt(c, r)), 0);
     oddsState = !o ? "" : o.unit > MAX_UNIT_I ? "game" : "ok";
     let out = oddsState === "game" ? [] : state.cards.filter((c) => {
       if (filters.role && c.role !== filters.role) return false;
@@ -367,7 +336,6 @@
     });
     if (oddsState === "ok" && !state.cards.some((c) => unitIndex(C.oddsAt(c, r)) >= o.unit)) oddsState = "none";
     out = out.sort(compare);
-    oddsMessage(maxV);
 
     const ids = out.map((c) => c.id);
     if (ids.length !== shown.length || ids.some((id, i) => id !== shown[i])) { shown = ids; if (!keepPage) page = 0; }
@@ -384,20 +352,14 @@
   }
   // the switches show what is picked (works before the grid exists too)
   function syncTools() {
-    const near = filters.sort === "odds" && filters.odds;
-    ui.sort.style.setProperty("--i", SORT_I[filters.sort]);
-    ui.sort.querySelectorAll("[data-sort]").forEach((b) => {
-      const on = b.dataset.sort === filters.sort;
-      b.setAttribute("aria-checked", String(on)); b.tabIndex = on ? 0 : -1;
-    });
-    ui.sort.querySelector('[data-sort="odds"]').textContent = filters.odds ? "Closest" : "Rarest";
     ui.dir.dataset.dir = filters.dir;
-    ui.dir.setAttribute("aria-label", near
-      ? `Order: ${filters.dir === "desc" ? "closest first" : "farthest first"}. Tap to reverse.`
-      : `Sort order: ${filters.dir === "desc" ? "high to low" : "low to high"}. Tap to reverse.`);
+    ui.dir.setAttribute("aria-label", filters.odds
+      ? `Order: ${filters.dir === "desc" ? "closest to 1 in " + filters.odds.text + " first" : "farthest first"}. Tap to reverse.`
+      : `Pull odds: ${filters.dir === "desc" ? "rarest first" : "most common first"}. Tap to reverse.`);
     ui.oddsClear.hidden = !ui.oddsInput.value && !filters.odds;
-    ui.oddsQuick.querySelectorAll("[data-odds]").forEach((b) => b.setAttribute("aria-pressed", String(!!filters.odds && filters.odds.text === b.dataset.odds)));
-    if (!built) oddsMessage(0);
+    const q = filters.odds && [...ui.oddsQuick.options].some((o) => o.value === filters.odds.text) ? filters.odds.text : "";
+    ui.oddsQuick.value = q;
+    ui.oddsQuick.parentElement.classList.toggle("is-on", !!q);
   }
   function activeChips(hasWords) {
     const chip = (k, label) => `<span class="actchip"><span class="actchip__t">${label}</span><button type="button" class="actchip__x fx-press" data-clear="${k}" aria-label="Remove filter: ${esc(label.replace(/<[^>]+>/g, ""))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg></button></span>`;
@@ -503,7 +465,7 @@
     cardEls.forEach((el, id) => onScreen.set(id, !C.covered && el.isConnected && rectVisible(el.getBoundingClientRect())));
     const jobs = [...cardEls].map(([id, el]) => () => C.setCardRarity(el, cardById.get(id), name, { animate: onScreen.get(id) }));
     // exact game values can change the order, and typed odds depend on the rarity · no-op when nothing changes
-    if (filters.sort !== "overall" || filters.odds) jobs.push(() => apply({ keepPage: !filters.odds }));
+    jobs.push(() => apply({ keepPage: !filters.odds }));
     if (view === "list") jobs.push(() => onPage.forEach(fillInfo));
     C.later("cards", jobs);
     document.dispatchEvent(new CustomEvent("cbi:rarity", { detail: name }));   // js/tier.js, js/detail.js … listen
