@@ -156,9 +156,10 @@
   function recolor(name) {
     if (!built) return;
     const seen = new Map();
-    cardEls.forEach((el, id) => seen.set(id, el.isConnected && rectVisible(el.getBoundingClientRect())));
-    cardEls.forEach((el, id) => C.setCardRarity(el, byId.get(id), name, { animate: seen.get(id) }));
-    if (filters.sort === "effect") apply({ keepPage: true });
+    cardEls.forEach((el, id) => seen.set(id, !C.covered && el.isConnected && rectVisible(el.getBoundingClientRect())));   // C.covered: the card detail covers the page (speed 2026-11-03: no measuring, no flash, C.later)
+    const jobs = [...cardEls].map(([id, el]) => () => C.setCardRarity(el, byId.get(id), name, { animate: seen.get(id) }));
+    if (filters.sort === "effect") jobs.push(() => apply({ keepPage: true }));
+    C.later("support", jobs);
   }
 
   /* The Support side's order (filters + sort) · the detail swipes / its wheel walk it */

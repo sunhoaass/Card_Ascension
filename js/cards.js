@@ -233,11 +233,13 @@
     C.store.set(C.RARITY_KEY, name);
     document.querySelectorAll(".chip[data-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.rarity === name)));
     // read every position first, then write — mixing them forces a re-layout per card
+    // C.covered: the card detail covers the page (speed 2026-11-03) → no measuring, no flash, one card per idle moment (C.later)
     const onScreen = new Map();
-    cardEls.forEach((el, id) => onScreen.set(id, el.isConnected && rectVisible(el.getBoundingClientRect())));
-    cardEls.forEach((el, id) => C.setCardRarity(el, cardById.get(id), name, { animate: onScreen.get(id) }));
+    cardEls.forEach((el, id) => onScreen.set(id, !C.covered && el.isConnected && rectVisible(el.getBoundingClientRect())));
+    const jobs = [...cardEls].map(([id, el]) => () => C.setCardRarity(el, cardById.get(id), name, { animate: onScreen.get(id) }));
+    if (filters.sort !== "overall") jobs.push(() => apply({ keepPage: true }));   // exact game values can change the order; no-op when it doesn't
+    C.later("cards", jobs);
     document.dispatchEvent(new CustomEvent("cbi:rarity", { detail: name }));   // js/tier.js, js/detail.js … listen
-    if (filters.sort !== "overall") apply({ keepPage: true });   // exact game values can change the order; no-op when it doesn't
   }
 
   /* Cards in the order the Cards page shows them (filters + sort). Used by the detail when it was opened

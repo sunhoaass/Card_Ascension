@@ -22,7 +22,9 @@
   /* ---------- Page zoom (W3) ----------
      Screens wider than 1920px zoom the whole page (script in index.html <head>). Rects, pointer positions and scrollY are
      then in screen px, CSS lengths in page px: divide a screen distance by FX.zoom() before writing it into a style. */
-  FX.zoom = () => document.documentElement.currentCSSZoom || parseFloat(document.documentElement.style.zoom) || 1;
+  // speed 2026-11-03: read from the inline style the <head> script writes (the only zoom on the page) · currentCSSZoom
+  // brought the whole page's style up to date first (a 30 ms stall in the level-dot tap on a 6× slowed phone)
+  FX.zoom = () => parseFloat(document.documentElement.style.zoom) || 1;
 
   /* ---------- Press glow ring ---------- */
   FX.press = function (root = document) {

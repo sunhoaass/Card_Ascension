@@ -2039,8 +2039,8 @@
     const all = [];
     metaTiles.forEach((els, id) => els.forEach((el) => all.push([el, cardById.get(id)])));
     // read every position first, then write: mixing them forces a re-layout per card
-    const seen = all.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));
-    all.forEach(([el, card], i) => card && C.setCardRarity(el, card, name, { animate: seen[i] }));
+    const seen = all.map(([el]) => !C.covered && el.isConnected && rectVisible(el.getBoundingClientRect()));   // C.covered: the card detail covers the page (speed 2026-11-03: no measuring, no flash)
+    C.later("deck", all.map(([el, card], i) => () => card && C.setCardRarity(el, card, name, { animate: seen[i] })));
   }
 
   /* ==========================================================
@@ -2204,8 +2204,10 @@
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerup", onUp);
     window.addEventListener("pointercancel", onCancel);
-    // once a card is lifted, the finger must drag it instead of scrolling the page
-    document.addEventListener("touchmove", (e) => { if (drag.on && e.cancelable) e.preventDefault(); }, { passive: false });
+    // once a card is lifted, the finger must drag it instead of scrolling the page · speed 2026-11-03: on this page's root
+    // only (a drag always starts on a card in it, and a touch's moves go to where it started) — on document it made every
+    // touch scroll of every page wait for the main thread (the Cards page with 60 cards scrolled behind the finger)
+    ui.root.addEventListener("touchmove", (e) => { if (drag.on && e.cancelable) e.preventDefault(); }, { passive: false });
     ui.root.addEventListener("contextmenu", (e) => { if (drag.on || drag.p || e.target.closest(".dk-item")) e.preventDefault(); });
     ui.root.addEventListener("dragstart", (e) => { if (e.target.closest && e.target.closest(".dk-item")) e.preventDefault(); });   // images: no native drag
     document.addEventListener("keydown", onGlobalKey);
