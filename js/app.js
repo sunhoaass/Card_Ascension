@@ -93,12 +93,18 @@
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
   /* HP (owner 2026-11-02 · the whole site · ATK stays whole): the full number with commas below 100M ·
-     from 100M up short like the odds (shortNum, owner 2026-11-03 · was from 1B): M B T Qd Qi with one decimal
-     (100 and up = whole · .0 dropped) (8,887,688 · 99,999,999 · 207,406,400 -> 207M · 1,234,567,890 -> 1.2B · 45.6T) */
+     from 100M up short (owner 2026-11-03): M B T Qd Qi with ALWAYS one decimal, like the game ("409.0M", "1.9B", "2.0Qd")
+     (8,887,688 · 99,999,999 · 207,406,400 -> 207.4M · 409,000,000 -> 409.0M · 999,960,000 -> 1.0B · 45.6T) */
   function fmtHp(n) {
     n = Math.round(n);
     if (n < 1e8) return n.toLocaleString("en-US");
-    return shortNum(n);
+    for (let i = 0; i < SHORT.length; i++) {
+      const [v, u] = SHORT[i];
+      if (n < v) continue;
+      const t = (n / v).toFixed(1);
+      return Number(t) >= 1000 && i > 0 ? "1.0" + SHORT[i - 1][1] : t + u;
+    }
+    return n.toLocaleString("en-US");
   }
   const fmtKey = (k) => (k === "hp" ? fmtHp : fmtStat);
 
@@ -529,7 +535,7 @@
     const odds = sup ? (Number(item.odds) > 0 ? fmtOdds(oddsAt(item, rarity)) : "") : fmtOdds(oddsAt(item, rarity));
     const top = `<div class="rd__top"><div class="rd__name">${rdSpan("rd__nm rd-ot rd-fill", item.name)}</div>` +
       (sup ? "" : (() => { const hp = statAt(item, "hp", rarity); return `<div class="rd__hp">${rdSpan("rd__num rd-ot rd-fill", fmtHp(hp), ` data-k="hp" data-value="${hp}"`)}${RD_HEART}</div>`; })()) + `</div>`;
-    const pills = `<div class="rd__pills">${odds ? `<span class="rd__pill" data-k="odds">${esc(odds)}</span>` : ""}<span class="rd__pill rd__pill--rar" data-k="rar">${esc(rarity)}</span></div>`;
+    const pills = `<div class="rd__pills">${odds ? `<span class="rd__pill"><i data-k="odds">${esc(odds)}</i></span>` : ""}<span class="rd__pill rd__pill--rar"><i data-k="rar">${esc(rarity)}</i></span></div>`;
     const abn = ab.name ? rdSpan("rd__abn rd-ot rd-fill", ab.name) : "";
     if (sup) {
       const html = rdSupHTML(item, rarity), plain = html.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
@@ -558,11 +564,10 @@
     n.style.top = cq(top + (cap - ANTON.c * fs) / 2 - capOff(ANTON, 1) * fs);
     return fs;
   }
-  function fitRdCard(el, samples) {
-    const q = (s) => $(s, el);
-    const nm = q(".rd__nm");
-    if (nm) {   // left half only: smaller (to 80%), then 2 lines
-      const up = nm.textContent.toUpperCase(), room = RDC.mid - RDC.gap - RDC.edge - RDC.slant, base = RDC.nameCap / ANTON.c, w = capsW(up, 0);
+  // a card's / support's name: Anton slanted, the left half only · smaller (to 80%), then 2 lines
+  function fitRdName(nm, cap, top) {
+    {
+      const up = nm.textContent.toUpperCase(), room = RDC.mid - RDC.gap - RDC.edge - RDC.slant, base = cap / ANTON.c, w = capsW(up, 0);
       let fs = base, two = false;
       if (w * fs > room) {
         fs = room / w;
@@ -576,8 +581,13 @@
       nm.style.fontSize = cq(fs);
       nm.style.width = two ? cq(room + 2 * RDC.padN) : "";
       nm.style.left = cq(RDC.edge - RDC.padN);
-      nm.style.top = cq(RDC.nameTop - capOff(ANTON, two ? 0.98 : 1) * fs);
+      nm.style.top = cq(top - capOff(ANTON, two ? 0.98 : 1) * fs);
     }
+  }
+  function fitRdCard(el, samples) {
+    const q = (s) => $(s, el);
+    const nm = q(".rd__nm");
+    if (nm) fitRdName(nm, RDC.nameCap, RDC.nameTop);
     const hp = q('.rd__hp [data-k="hp"]');
     if (hp) { rdNum(hp, samples.hp || hp.textContent, RDC.hpCap, RDC.hpTop, RDC.hpRight - RDC.mid - RDC.gap); hp.style.right = cq(100 - RDC.hpRight - RDC.padNum); }
     const atk = q('.rd__bot [data-k="atk"]');
@@ -603,62 +613,38 @@
       abd.style.top = cq(RDC.txtTop - capOff(OSW, L / f) * f);
     }
   }
-  function fitRedraw(el, samples = {}) {
-    const q = (s) => $(s, el), sup = el.classList.contains("gc--sup"), half = RD.half;
-    if (!sup) { fitRdCard(el, samples); return; }
-    // name: short = big, long = smaller, then 2 lines (always in its half: the left one)
+  // a support (owner 2026-11-03 "Support Layout Lab"): measured on the game's Hat and Clogs Shopkeeper (Deck view, 600×840)
+  const RDU = { nameCap: 3.42, nameTop: 6.83, abnCap: 5.83, abnTop: 79.67, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 90.5,
+    txtPitch: 6.33 * 3.08 / 3.58, txtL: 5, txtR: 95, txtEnd: 123.5, wordCap: 8.5, wordTop: 126 };
+  function fitRdSup(el) {
+    const q = (s) => $(s, el);
     const nm = q(".rd__nm");
-    if (nm) {
-      const up = nm.textContent.toUpperCase(), w = nameW(up, RD.ls);
-      const max = sup ? RDS.nameFs : 10, min = sup ? 3.4 : 5;
-      let fs = max, two = false;
-      if (w * fs + 1.2 > half) fs = Math.max(min, (half - 1.4) / w);
-      if (w * fs + 1.2 > half + 0.2) {
-        two = true;
-        const words = wordsOf(up);
-        if (sup) fs = 3.6;
-        else {
-          fs = 6.4;
-          for (; fs > 2.6; fs -= 0.2) { const [n, wide] = rdLines(words, "n", fs, half - 1.2, RD.ls); if (n <= 2 && wide <= half - 1.2 && n * fs * 0.98 + 0.6 <= 12.3) break; }
-        }
+    if (nm) fitRdName(nm, RDU.nameCap, RDU.nameTop);
+    const abn = q(".rd__abn");
+    if (abn) {   // Anton slanted like the name (owner's pick)
+      const base = RDU.abnCap / ANTON.c, w = capsW(abn.textContent.toUpperCase(), 0), fs = w * base + RDC.slant > RDU.abnMax ? (RDU.abnMax - RDC.slant) / w : base;
+      abn.style.fontSize = cq(fs);
+      abn.style.left = cq(RDU.abnX - RDC.padN);
+      abn.style.top = cq(RDU.abnTop + (RDU.abnCap - ANTON.c * fs) / 2 - capOff(ANTON, 1) * fs);
+    }
+    const abd = q(".rd__abd"), mut = q(".rd__mut"), txt = q(".rd__txt");
+    if (abd && txt) {   // text + Mutation line: the card's size, the game's support line pitch · smaller until it ends above SUPPORT
+      const words = wordsOf(abd.textContent), mw = mut && !mut.hidden ? wordsOf(mut.textContent) : [], room = RDU.txtR - RDU.txtL;
+      let f = RDU.txtCap / OSW.c, L = RDU.txtPitch;
+      for (let i = 0; i < 16; i++) {
+        const n = rdLines(words, "t", f, room)[0] + (mw.length ? rdLines(mw, "t", f, room)[0] : 0);
+        if (RDU.txtTop + OSW.c * f + (n - 1) * L <= RDU.txtEnd) break;
+        f *= 0.95; L *= 0.95;
       }
-      nm.classList.toggle("is-two", two);
-      nm.style.fontSize = cq(fs);
-      if (sup) q(".rd__top").style.top = cq(RDS.name - capOff(BARLOW, two ? 1.02 : 1) * fs);
+      [abd, mut].forEach((n) => { if (n) { n.style.fontSize = cq(f); n.style.lineHeight = cq(L); } });
+      txt.style.top = cq(RDU.txtTop - capOff(OSW, L / f) * f);
     }
-    // HP: shrinks until number + heart fit the right half
-    const hp = q('.rd__hp [data-k="hp"]');
-    if (hp) {
-      const w = rdW("a", samples.hp || hp.textContent), room = half - 9.6 - 1.2 - 0.6;
-      hp.style.fontSize = cq(w * 10 > room ? Math.max(3, room / w * 0.98) : 10);
-    }
-    const atk = q('.rd__bot [data-k="atk"]');
-    if (atk) { const w = rdW("a", samples.atk || atk.textContent) * 12.5 + 0.6; atk.style.fontSize = cq(w > 66 ? 12.5 * 66 / w : 12.5); }
-    // pills: one line, at most 44cqw
-    el.querySelectorAll(".rd__pill").forEach((p) => { p.style.fontSize = cq(rdFitLine(p.textContent, 5.6, 44, RD.lsPill, 5.2)); });
-    // ability name: one line across the card
-    const abn = q(".rd__abn"), abnFs = abn ? rdFitLine(abn.textContent, sup ? RDS.abnFs : 7.2, sup ? 100 - 2 * RD.pad : 91.6, RD.ls, 1) : 0;
-    if (abn) { abn.style.fontSize = cq(abnFs); if (sup) abn.style.top = cq(RDS.abn - capOff(ANTON, 1) * abnFs); }
-    const abd = q(".rd__abd");
-    if (!abd) return;
-    const words = wordsOf(abd.textContent);
-    if (sup) {
-      // text + Mutation line: the game's size, smaller until both fit the box (27.7cqw tall)
-      const mut = q(".rd__mut"), mw = mut && !mut.hidden ? wordsOf(mut.textContent) : [], room = 100 - 2 * 3.85;
-      const tall = (f) => (rdLines(words, "t", f, room)[0] + (mw.length ? rdLines(mw, "t", f, room)[0] : 0)) * f * RDS.txtLh;
-      let f = RDS.txtFs;
-      if (tall(f) > RDS.txtH) { let lo = 2.4, hi = f; for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; if (tall(m) > RDS.txtH) hi = m; else lo = m; } f = lo; }
-      abd.style.fontSize = cq(f); if (mut) mut.style.fontSize = cq(f);
-      q(".rd__txt").style.top = cq(RDS.txt - capOff(OSW, RDS.txtLh) * f);
-      q(".rd__sup").style.top = cq(RDS.word - capOff(OSW, 1) * RDS.wordFs);
-      return;
-    }
-    // card: the biggest size whose name + text block fits between the art and the ATK row (44cqw)
-    const head = abn ? abnFs + 0.6 + 1.2 : 0;
-    const tall = (f) => head + rdLines(words, "t", f, 91.6)[0] * f * 1.16;
-    let f = 6.4;
-    if (tall(f) > 44) { let lo = 3, hi = f; for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; if (tall(m) > 44) hi = m; else lo = m; } f = lo; }
-    abd.style.fontSize = cq(f);
+    const word = q(".rd__sup"), ws = word && word.firstElementChild;
+    if (ws) { const fs = RDU.wordCap / OSW.c; ws.style.fontSize = cq(fs); word.style.top = cq(RDU.wordTop - capOff(OSW, 1) * fs); }
+  }
+  // samples = { hp, atk } texts to make room for while a number counts (the longer of the old and the new)
+  function fitRedraw(el, samples = {}) {
+    if (el.classList.contains("gc--sup")) fitRdSup(el); else fitRdCard(el, samples);
   }
   /* an offscreen, fitted copy of the card's text layer for js/share.js drawRedraw (sizes are read from it, nothing is
      drawn) · nums = { atk, hp } to show instead of the rarity's (the deck image's buffed numbers) */
@@ -1211,7 +1197,7 @@
     state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
-    isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, RDC, capOff, ANTON, OSW, BARLOW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
+    isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, RDC, RDU, capOff, ANTON, OSW, BARLOW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)

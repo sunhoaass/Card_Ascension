@@ -487,10 +487,9 @@
     ctx.save();
     roundRect(ctx, fx, fy, fw, fh, 3.2 * f); ctx.clip();
     ctx.fillStyle = cssVar("--gc-under") || "#0d0a14"; ctx.fillRect(fx, fy, fw, fh);
-    if (art && sup) drawCoverImage(ctx, art, fx - fw * 0.006, fy - fh * 0.006, fw * 1.012, fh * 1.012);
-    else if (art) {   // a card: the owner's 3:4 blank art at the top, a dark strip under it, the lower half darkened (css .gc--rd .gc__art)
-      ctx.fillStyle = "#101012"; ctx.fillRect(fx, fy, fw, fh);
-      drawCoverImage(ctx, art, fx, fy + 1.1 * f, fw, fw * 4 / 3);
+    if (art) {   // a card: the owner's 3:4 blank art at the top + a dark strip under it · a support: the picture fills the card · both: the lower half darkened (css .gc--rd .gc__art)
+      if (sup) drawCoverImage(ctx, art, fx - fw * 0.006, fy - fh * 0.006, fw * 1.012, fh * 1.012);
+      else { ctx.fillStyle = "#101012"; ctx.fillRect(fx, fy, fw, fh); drawCoverImage(ctx, art, fx, fy + 1.1 * f, fw, fw * 4 / 3); }
       const g = ctx.createLinearGradient(0, fy, 0, fy + fh); g.addColorStop(0.38, "rgba(0, 0, 0, 0)"); g.addColorStop(0.92, "rgba(0, 0, 0, .45)");
       ctx.fillStyle = g; ctx.fillRect(fx, fy, fw, fh);
     }
@@ -565,7 +564,7 @@
     const ink = cssVar("--rd-ink") || "#f4f1f6";
     const nameFill = (bx, by, bw, bh) => linDeg(ctx, bx, by, bw, bh, degOf(cssVar("--rd-name-" + r), 90), gradStops(cssVar("--rd-name-" + r)));
 
-    if (!sup) {   // a card: every place + size is the fitted element's (js/app.js fitRdCard · owner 2026-11-03 Card Layout Lab)
+    {   // every place + size is the fitted element's (js/app.js fitRdCard / fitRdSup · owner 2026-11-03 Card + Support Layout Lab)
       const RC = C.RDC, AN = C.ANTON, BA = C.BARLOW, OS = C.OSW, base = (m, lh) => (lh - (m.a + m.d)) / 2 + m.a;
       const at_ = (n, k2, d) => (n && parseFloat(n.style[k2])) || d;
       // name: Anton slanted -9deg (css skewX, origin = the box's bottom left) · 1 or 2 lines in the left half
@@ -577,16 +576,19 @@
       const ox = RC.padN * f, oy = (v) => (v - nbot) * f, nfill = nameFill(ox, oy(ntop), nW, nrows.length * nlh * nfs * f);
       nrows.forEach((t, i) => out(t, ox, oy(ntop + base(AN, nlh) * nfs + i * nlh * nfs), nfill, nfont));
       ctx.restore();
-      // HP (ends at the game's x 83) + heart
-      const hp = q('[data-k="hp"]'), hfs = fsOf(hp, 9.7), hfont = `400 ${hfs * f}px ${A}`, ht = hp.textContent, hw = tw(ht, hfont), htop = at_(hp, "top", 3.4);
+      // HP (ends at the game's x 83) + heart · a card
+      const hp = !sup && q('[data-k="hp"]');
+      if (hp) {
+      const hfs = fsOf(hp, 9.7), hfont = `400 ${hfs * f}px ${A}`, ht = hp.textContent, hw = tw(ht, hfont), htop = at_(hp, "top", 3.4);
       out(ht, X(RC.hpRight), Y(htop + base(AN, 1) * hfs), linDeg(ctx, X(RC.hpRight) - hw, Y(htop), hw, hfs * f, 180, gradStops(cssVar("--rd-hp"))), hfont, 0, "right");
       drawHeart(ctx, X(86), Y(3.03) - 0.432 * f, 10.8 * f, K);
-      // pills: 1 IN X (white) + the rarity (its frame colours) · Barlow Condensed 800 italic, dark letters, black edge
+      }
+      // pills: 1 IN X (white) + the rarity (its frame colours) · dark letters, black edge · card: Barlow Condensed 800 italic · support: Anton slanted
       let pTop = 16.5;
       el.querySelectorAll(".rd__pill").forEach((p) => {
         const rar = p.classList.contains("rd__pill--rar");
         if (rar && r === "normal") return;
-        const pfs = 5.57, font = `italic 800 ${pfs * f}px ${N}`, t = p.textContent.toUpperCase();
+        const pfs = sup ? 4.53 : 5.57, font = sup ? `400 ${pfs * f}px ${A}` : `italic 800 ${pfs * f}px ${N}`, t = p.textContent.toUpperCase();
         const pw = tw(t, font) + 6 * f, ph = 9 * f, ppx = X(96.4) - pw, ppy = Y(pTop), e = 0.9 * f;
         ctx.save();
         roundRect(ctx, ppx - e, ppy - e, pw + 2 * e, ph + 2 * e, ph / 2 + e);
@@ -595,92 +597,40 @@
         roundRect(ctx, ppx, ppy, pw, ph, ph / 2);
         ctx.fillStyle = rar ? gradOn(ctx, "--rd-ring-" + r, ppx, ppy, pw, ph) : cssVar("--rd-pill") || "#fff"; ctx.fill();
         ctx.font = font; if (LS) ctx.letterSpacing = "0px"; ctx.textAlign = "left"; ctx.fillStyle = cssVar("--rd-pill-ink") || "#111";
-        ctx.fillText(t, ppx + 3 * f, ppy + (1.44 + base(BA, 1) * pfs) * f);
+        const pby = ppy + (sup ? 2.26 + base(AN, 1) * pfs : 1.44 + base(BA, 1) * pfs) * f;
+        if (sup) { const cy = pby - AN.c * pfs * f / 2; ctx.translate(ppx + 3 * f, cy); ctx.transform(1, 0, Math.tan(-9 * Math.PI / 180), 1, 0, 0); ctx.fillText(t, 0, pby - cy); }
+        else ctx.fillText(t, ppx + 3 * f, pby);
         ctx.restore();
         pTop += 11.5;
       });
-      // ability name (Barlow Condensed 800 italic) + text (Oswald 500, centred, the game's line pitch)
+      // ability name (card: Barlow Condensed 800 italic · support: Anton slanted like its name) + text (Oswald 500, centred, the game's line pitch)
       const abn = q(".rd__abn");
-      if (abn) {
+      if (abn && sup) {
+        const afs = fsOf(abn, 6.8), afont = `400 ${afs * f}px ${A}`, t = abn.textContent.toUpperCase(), atop = at_(abn, "top", 77), al = at_(abn, "left", 2), abot = atop + afs;
+        ctx.save(); ctx.translate(X(al), Y(abot)); ctx.transform(1, 0, Math.tan(-9 * Math.PI / 180), 1, 0, 0);
+        out(t, RC.padN * f, (atop + base(AN, 1) * afs - abot) * f, linDeg(ctx, 0, (atop - abot) * f, tw(t, afont) + 1.6 * f, afs * f, 180, gradStops(cssVar("--rd-ab"))), afont);
+        ctx.restore();
+      } else if (abn) {
         const afs = fsOf(abn, 8.33), afont = `italic 800 ${afs * f}px ${N}`, t = abn.textContent.toUpperCase(), atop = at_(abn, "top", 77), al = at_(abn, "left", 2);
         out(t, X(al + RC.padN), Y(atop + base(BA, 1) * afs), linDeg(ctx, X(al), Y(atop), tw(t, afont) + 1.6 * f, afs * f, 180, gradStops(cssVar("--rd-ab"))), afont);
       }
       const abd = q(".rd__abd");
-      if (abd) {
-        const dfs = fsOf(abd, 3.8), L = parseFloat(abd.style.lineHeight) || 5.5, dfont = `500 ${dfs * f}px ${T}`, dtop = at_(abd, "top", 88);
-        const rows = wrap(wordsIn(abd), dfont, (RC.txtR - RC.txtL) * f, false);
+      if (abd) {   // a support: its text + the Mutation line, one block (.rd__txt)
+        const mut = sup && q(".rd__mut"), dfs = fsOf(abd, 3.8), L = parseFloat(abd.style.lineHeight) || 5.5, dfont = `500 ${dfs * f}px ${T}`, dtop = sup ? at_(q(".rd__txt"), "top", 88) : at_(abd, "top", 88);
+        const rows = wrap(wordsIn(abd), dfont, (RC.txtR - RC.txtL) * f, false).concat(mut && !mut.hidden ? wrap(wordsIn(mut), dfont, (RC.txtR - RC.txtL) * f, false) : []);
         SW = 0.68; drawRows(rows, dfont, dfs, L / dfs, Y(dtop + base(OS, L / dfs) * dfs), X(50), ink); SW = 1.1;
       }
-      // swords + ATK
+      // a support: the green SUPPORT word · a card: swords + ATK
+      if (sup) {
+        const w = q(".rd__sup"), wfs = fsOf(w && w.firstElementChild, 10.5), wfont = `600 ${wfs * f}px ${T}`, wt = at_(w, "top", 124), ww = tw("SUPPORT", wfont);
+        out("SUPPORT", X(50), Y(wt + base(OS, 1) * wfs), linDeg(ctx, X(50) - ww / 2, Y(wt), ww, wfs * f, 180, gradStops(cssVar("--rd-sup"))), wfont, 0, "center");
+      } else {
       const atk = q('[data-k="atk"]'), tfs = fsOf(atk, 11.4), tfont = `400 ${tfs * f}px ${A}`, tt = atk.textContent, aw = tw(tt, tfont), atop = at_(atk, "top", 124), aleft = at_(atk, "left", 24) + RC.padNum;
       out(tt, X(aleft), Y(atop + base(AN, 1) * tfs), linDeg(ctx, X(aleft), Y(atop), aw, tfs * f, 180, gradStops(cssVar("--rd-atk"))), tfont);
       drawSwords(ctx, X(3.3), Y(123.3), 13.4 * f);
+      }
       if (LS) ctx.letterSpacing = "0px";
       ctx.restore();
-      return;
-    }
-
-    // name (left half · 1 or 2 lines)
-    const nm = q(".rd__nm"), nfs = fsOf(nm, 10), two = nm.classList.contains("is-two"), up = nm.textContent.toUpperCase();
-    const nfont = `italic 800 ${nfs * f}px ${N}`, nls = 0.02 * nfs * f;
-    const nrows = two ? wrap(up.split(/\s+/).filter(Boolean).map((t) => ({ t, parts: [{ t }] })), nfont, 43.7 * f, false).map((row) => row.map((x) => x.t).join(" ")) : [up];
-    const nlh = two ? (sup ? 1.02 : 0.98) : 1;
-    let nTop;
-    if (sup) nTop = parseFloat(q(".rd__top").style.top) || 6;
-    else nTop = 3 + 6.25 - (nrows.length * nlh * nfs + 0.6) / 2 + 0.4;
-    const nBase0 = nTop + ((nlh - 1.2) / 2 + 1) * nfs;   // Barlow Condensed: ascent 1 + descent .2 in a line box nlh tall
-    const nW = Math.max(...nrows.map((t) => tw(t, nfont, nls)));
-    nrows.forEach((t, i) => out(t, X(3.6 + 0.6), Y(nBase0 + i * nlh * nfs), nameFill(X(3.6), Y(nTop), nW + 1.2 * f, nrows.length * nlh * nfs * f), nfont, nls));
-
-    // pills (odds + rarity) at the top right
-    let pTop = 17;
-    el.querySelectorAll(".rd__pill").forEach((p) => {
-      const rar = p.classList.contains("rd__pill--rar");
-      if (rar && r === "normal") return;
-      const pfs = fsOf(p, 5.6), font = `400 ${pfs * f}px ${A}`, ls = 0.03 * pfs * f, t = p.textContent.toUpperCase();
-      const pw = tw(t, font, ls) + 5.2 * f, ph = 7.4 * f, px = X(96.4) - pw, py = Y(pTop);
-      ctx.save();
-      roundRect(ctx, px, py, pw, ph, ph / 2);
-      ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 2 * f * K; ctx.shadowOffsetY = 0.6 * f * K;
-      ctx.fillStyle = rar ? gradOn(ctx, "--rd-pill-" + r, px, py, pw, ph) : cssVar("--rd-pill") || "#fff"; ctx.fill();
-      ctx.shadowColor = "transparent";
-      ctx.lineWidth = 1.1 * f; ctx.strokeStyle = cssVar("--rd-pill-line") || "#0b0b0d"; ctx.stroke();
-      roundRect(ctx, px + (rar ? 0.45 : 0.55) * f, py + (rar ? 0.45 : 0.55) * f, pw - (rar ? 0.9 : 1.1) * f, ph - (rar ? 0.9 : 1.1) * f, ph / 2);
-      ctx.lineWidth = (rar ? 0.45 : 0.55) * f; ctx.strokeStyle = rar ? "rgba(255, 255, 255, .35)" : cssVar("--rd-pill-inner") || "#c9c9cf"; ctx.stroke();
-      ctx.font = font; if (LS) ctx.letterSpacing = ls + "px"; ctx.textAlign = "center";
-      ctx.fillStyle = rar ? cssVar("--rd-pill-ink-" + r) || "#111" : cssVar("--rd-pill-ink") || "#111";
-      ctx.fillText(t, px + pw / 2 + ls / 2, py + ((7.4 - pfs) / 2 + 0.925 * pfs) * f);
-      ctx.restore();
-      pTop += 7.4 + 1.6;
-    });
-
-    // ability name + text
-    const abn = q(".rd__abn"), afs = fsOf(abn, sup ? 7.5 : 7.2), afont = `400 ${afs * f}px ${A}`, als = 0.02 * afs * f;
-    const abd = q(".rd__abd"), dfs = fsOf(abd, sup ? 4.57 : 5), dfont = `500 ${dfs * f}px ${T}`;
-    const dwords = abd ? wordsIn(abd) : [];
-    if (!sup) {
-      const rows = wrap(dwords, dfont, 91.6 * f, true);
-      const blockH = (abn ? afs + 0.6 + 1.2 : 0) + rows.length * dfs * 1.16, top = FH - 17.5 - blockH;
-      if (abn) { const t = abn.textContent.toUpperCase(); out(t, X(4.2 + 0.5), Y(top + 0.3 + 0.925 * afs), linDeg(ctx, X(4.2), Y(top), tw(t, afont, als) + f, (afs + 0.6) * f, 180, gradStops(cssVar("--rd-ab"))), afont, als); }
-      drawRows(rows, dfont, dfs, 1.16, Y(top + (abn ? afs + 0.6 + 1.2 : 0) + 1.03 * dfs), X(50), ink);
-      // HP + heart (top right) · swords + ATK (bottom)
-      const hp = q('[data-k="hp"]'), hfs = fsOf(hp, 10), hfont = `400 ${hfs * f}px ${A}`, ht = hp.textContent;
-      const hy = 3 + 6.25 - (hfs + 0.6) / 2, hw = tw(ht, hfont);
-      out(ht, X(96.4 - 9.6 - 1.2 - 0.3) - hw, Y(hy + 0.3 + 0.925 * hfs), linDeg(ctx, X(96.4 - 10.8) - hw, Y(hy), hw, (hfs + 0.6) * f, 180, gradStops(cssVar("--rd-hp"))), hfont);
-      drawHeart(ctx, X(96.4 - 9.6), Y(9.25 - 4.8), 9.6 * f, K);
-      const at = q('[data-k="atk"]'), tfs = fsOf(at, 12.5), tfont = `400 ${tfs * f}px ${A}`, tt = at.textContent, ty = FH - 3 - 6.25 - (tfs + 0.6) / 2, aw = tw(tt, tfont);
-      out(tt, X(50), Y(ty + 0.3 + 0.925 * tfs), linDeg(ctx, X(50) - aw / 2, Y(ty), aw, (tfs + 0.6) * f, 180, gradStops(cssVar("--rd-atk"))), tfont, 0, "center");
-      drawSwords(ctx, X(3.6 + 0.25), Y(FH - 3 - 6.25 - 6), 12 * f);
-    } else {
-      if (abn) { const t = abn.textContent.toUpperCase(), top = parseFloat(abn.style.top) || 79; out(t, X(3.6 + 0.5), Y(top + 0.925 * afs), linDeg(ctx, X(3.6), Y(top), tw(t, afont, als) + f, afs * f, 180, gradStops(cssVar("--rd-ab"))), afont, als); }
-      {
-        const top = parseFloat(q(".rd__txt").style.top) || 88, room = 92.3 * f;
-        const rows = wrap(dwords, dfont, room, false), mut = q(".rd__mut");
-        const mrows = mut && !mut.hidden ? wrap(wordsIn(mut), dfont, room, false) : [];
-        drawRows(rows.concat(mrows), dfont, dfs, 1.385, Y(top + 1.1425 * dfs), X(50), ink);
-      }
-      const wfs = 10.3, wfont = `700 ${wfs * f}px ${T}`, wt = parseFloat(q(".rd__sup").style.top) || 124.5, ww = tw("SUPPORT", wfont);
-      out("SUPPORT", X(50), Y(wt + 0.95 * wfs), linDeg(ctx, X(50) - ww / 2, Y(wt), ww, wfs * f, 180, gradStops(cssVar("--rd-sup"))), wfont, 0, "center");
     }
     if (LS) ctx.letterSpacing = "0px";
     ctx.restore();

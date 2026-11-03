@@ -385,13 +385,6 @@
 .gc--rd:not(.gc--sup) .rd__nm.is-two { max-width: none; line-height: .98; }
 .gc--rd:not(.gc--sup) .rd__num { position: absolute; padding: 0 .3cqw; }
 .gc--rd:not(.gc--sup) .rd__heart { position: absolute; left: 86cqw; top: 3cqw; width: 10.8cqw; height: 10cqw; }
-.gc--rd:not(.gc--sup) .rd__pills { top: 16.5cqw; right: 3.6cqw; gap: 2.5cqw; }
-.gc--rd:not(.gc--sup) .rd__pill {
-  display: block; height: 9cqw; padding: 1.44cqw 3cqw 0; font-family: var(--rd-font-name); font-weight: 800; font-style: italic; font-size: 5.57cqw;
-  letter-spacing: 0; color: var(--rd-pill-ink); background: var(--rd-pill); box-shadow: 0 0 0 .9cqw var(--rd-stroke), 0 .6cqw 1cqw rgba(0, 0, 0, .45);
-}
-.gc--rd:not(.gc--sup) .rd__pill--rar { color: var(--rd-pill-ink); background: var(--rd-ring); }
-.gc--rd:not(.gc--sup)[data-rarity="Normal"] .rd__pill--rar { display: none; }
 .gc--rd:not(.gc--sup) .rd__abn { position: absolute; font-family: var(--rd-font-name); font-weight: 800; font-style: italic; letter-spacing: 0; padding: 0 .8cqw; }
 .gc--rd:not(.gc--sup) .rd__abd { position: absolute; left: 5cqw; right: 5cqw; text-wrap: wrap; --rd-sw: .68cqw; }
 .gc--rd:not(.gc--sup) .rd__bot { inset: 0; height: auto; display: block; }
@@ -412,6 +405,33 @@
 .rd__mut b { font-weight: inherit; color: var(--rd-num); }
 .rd__sup { position: absolute; left: 0; right: 0; text-align: center; }
 .rd__sup .rd-ot { display: inline-block; font-family: var(--rd-font-text); font-weight: 700; font-size: 10.3cqw; line-height: 1; padding: 0 .6cqw; --fill: var(--rd-sup); }
+
+/* support · owner 2026-11-03 "Support Layout Lab": places measured on the game's Hat and Clogs Shopkeeper (Deck view) ·
+   js fitRdSup sets the tops/sizes (capOff) · name + ability name + pills = Anton slanted · text + Mutation line = Oswald 500 at
+   the card's size, the game's support line pitch, gold = the values that change with the rarity · SUPPORT = Oswald 600 ·
+   the same frame, pills, black edge and darkened lower half as a card (the picture still fills the card: no support blank art yet) */
+.gc--sup.gc--rd { --rd-sw: 1.1cqw; }
+.gc--sup.gc--rd .gc__art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, .45) 92%); }
+.gc--sup.gc--rd .rd__top { inset: 0; }
+.gc--sup.gc--rd .rd__name { display: contents; }
+.gc--sup.gc--rd .rd__nm, .gc--sup.gc--rd .rd__abn {
+  position: absolute; font-family: var(--rd-font); font-weight: 400; font-style: normal; letter-spacing: 0; padding: 0 .8cqw;
+  transform: skewX(-9deg); transform-origin: 0 100%;
+}
+.gc--sup.gc--rd .rd__nm.is-two { max-width: none; line-height: .98; }
+.gc--sup.gc--rd .rd__txt { left: 5cqw; right: 5cqw; }
+.gc--sup.gc--rd .rd__txt .rd__abd, .gc--sup.gc--rd .rd__mut { --rd-sw: .68cqw; }
+.gc--sup.gc--rd .rd__sup .rd-ot { font-weight: 600; }
+.gc--rd .rd__pill > i { font-style: inherit; }
+.gc--rd .rd__pills { top: 16.5cqw; right: 3.6cqw; gap: 2.5cqw; }
+.gc--rd .rd__pill {
+  display: block; height: 9cqw; padding: 1.44cqw 3cqw 0; font-family: var(--rd-font-name); font-weight: 800; font-style: italic; font-size: 5.57cqw;
+  letter-spacing: 0; color: var(--rd-pill-ink); background: var(--rd-pill); box-shadow: 0 0 0 .9cqw var(--rd-stroke), 0 .6cqw 1cqw rgba(0, 0, 0, .45);
+}
+.gc--rd .rd__pill--rar { color: var(--rd-pill-ink); background: var(--rd-ring); }
+.gc--rd[data-rarity="Normal"] .rd__pill--rar { display: none; }
+.gc--sup.gc--rd .rd__pill { font-family: var(--rd-font); font-weight: 400; font-style: normal; padding-top: 2.26cqw; font-size: 4.53cqw; }
+.gc--sup.gc--rd .rd__pill > i { display: inline-block; transform: skewX(-9deg); }
 
 /* name colour runs (Shiny and up) · only on the card in the detail scene: it repaints the name every frame (not a transform),
    60 redrawn Ascended cards in the Cards grid fell from 46 to 23 fps with it (CPU ×6) · the text shows at every card size,
