@@ -74,18 +74,18 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=75">
-  <link rel="stylesheet" href="css/base.css?v=75">
-  <link rel="stylesheet" href="css/fx.css?v=75">
-  <link rel="stylesheet" href="css/cards.css?v=75">
-  <link rel="stylesheet" href="css/tier.css?v=75">
-  <link rel="stylesheet" href="css/deck.css?v=75">
-  <link rel="stylesheet" href="css/support.css?v=75">
-  <link rel="stylesheet" href="css/grade.css?v=75">
-  <link rel="stylesheet" href="css/tiermaker.css?v=75">
-  <link rel="stylesheet" href="css/detail.css?v=75">
-  <link rel="stylesheet" href="css/traits.css?v=75">
-  <link rel="stylesheet" href="css/home.css?v=75">
+  <link rel="stylesheet" href="css/tokens.css?v=76">
+  <link rel="stylesheet" href="css/base.css?v=76">
+  <link rel="stylesheet" href="css/fx.css?v=76">
+  <link rel="stylesheet" href="css/cards.css?v=76">
+  <link rel="stylesheet" href="css/tier.css?v=76">
+  <link rel="stylesheet" href="css/deck.css?v=76">
+  <link rel="stylesheet" href="css/support.css?v=76">
+  <link rel="stylesheet" href="css/grade.css?v=76">
+  <link rel="stylesheet" href="css/tiermaker.css?v=76">
+  <link rel="stylesheet" href="css/detail.css?v=76">
+  <link rel="stylesheet" href="css/traits.css?v=76">
+  <link rel="stylesheet" href="css/home.css?v=76">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -549,35 +549,65 @@
       </div>
 
       <div id="cards-view" role="tabpanel" aria-labelledby="cards-tab-cards">
-      <div id="cards-tools" class="tools" hidden>
-        <div id="rarity-picker" class="rarity-picker" role="group" aria-label="Rarity"></div>
-        <div class="tools__main">
-          <label class="field field--search">
-            <span class="sr-only">Search cards</span>
-            <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-            <input id="card-search" type="search" placeholder="Search name, series or ability" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
-          </label>
-          <div class="tools__row">
-            <label class="field">
-              <span class="sr-only">Sort by</span>
-              <select id="card-sort">
-                <option value="odds" selected>Sort: Rarest</option>
-                <option value="overall">Sort: Overall</option>
-                <option value="atk">Sort: ATK</option>
-                <option value="hp">Sort: HP</option>
-              </select>
-            </label>
-            <button id="card-dir" class="iconbtn glass fx-press" type="button" data-dir="desc" aria-label="Sort order: high to low. Tap to reverse.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+      <!-- Rarity bar (2026-11-03): sticks under the top bar while the grid scrolls (a child of the whole side, so it stays
+           stuck down to the pager) · wraps, no sideways scroll -->
+      <div class="rarity-bar" id="rarity-bar" hidden>
+        <div id="rarity-picker" class="rarity-picker rarity-picker--wrap" role="group" aria-label="Rarity"></div>
+      </div>
+      <div id="cards-tools" class="tools ctools" hidden>
+        <label class="field field--search">
+          <span class="sr-only">Search cards</span>
+          <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="card-search" type="search" placeholder="Search name, series or ability" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+        </label>
+
+        <!-- Pull odds finder (2026-11-03 · js/cards.js ODDS): type "1 IN …" (300Qa · 2.5B · 1,000,000) or tap a shortcut -->
+        <form id="odds-form" class="oddsbox panel" autocomplete="off" novalidate>
+          <label class="oddsbox__label" for="odds-input">Pull odds</label>
+          <div class="oddsbox__row">
+            <span class="oddsbox__pre" aria-hidden="true">1 IN</span>
+            <input id="odds-input" class="oddsbox__input" type="text" inputmode="text" enterkeyhint="done" placeholder="e.g. 300Qa, 2.5B, 1,000,000" autocapitalize="off" spellcheck="false" maxlength="40" aria-describedby="odds-msg">
+            <button id="odds-clear" class="oddsbox__x fx-press" type="button" aria-label="Clear pull odds" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
             </button>
-            <label class="field" id="series-field" hidden>
-              <span class="sr-only">Series</span>
-              <select id="card-series"></select>
-            </label>
+            <button class="oddsbox__go fx-press" type="submit">OK</button>
+          </div>
+          <div id="odds-quick" class="oddsbox__quick" role="group" aria-label="Pull odds shortcuts"></div>
+          <p id="odds-msg" class="oddsbox__msg" aria-live="polite"></p>
+        </form>
+
+        <div class="ctools__row">
+          <div id="card-sort" class="seg glass seg--sort" role="radiogroup" aria-label="Sort by" style="--n:4;--i:0">
+            <span class="seg__ind" aria-hidden="true"></span>
+            <button class="seg__btn fx-press" type="button" role="radio" data-sort="odds" aria-checked="true">Rarest</button>
+            <button class="seg__btn fx-press" type="button" role="radio" data-sort="overall" aria-checked="false">Overall</button>
+            <button class="seg__btn fx-press" type="button" role="radio" data-sort="atk" aria-checked="false">ATK</button>
+            <button class="seg__btn fx-press" type="button" role="radio" data-sort="hp" aria-checked="false">HP</button>
+          </div>
+          <button id="card-dir" class="iconbtn glass fx-press" type="button" data-dir="desc" aria-label="Sort order: high to low. Tap to reverse.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+          </button>
+        </div>
+        <div class="tools__row" id="card-selects" hidden>
+          <label class="field" id="series-field" hidden>
+            <span class="sr-only">Series</span>
+            <select id="card-series"></select>
+          </label>
+          <label class="field" id="role-field" hidden>
+            <span class="sr-only">Role</span>
+            <select id="card-role"></select>
+          </label>
+        </div>
+
+        <div class="ctools__bar">
+          <p class="ctools__count"><span id="card-count" aria-live="polite"></span></p>
+          <div id="card-view" class="viewsw glass" role="radiogroup" aria-label="Layout">
+            <button class="viewsw__btn fx-press" type="button" role="radio" data-view="2" aria-checked="false" aria-label="Grid, 2 columns"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.5"/></svg></button>
+            <button class="viewsw__btn fx-press" type="button" role="radio" data-view="3" aria-checked="true" aria-label="Grid, 3 columns"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="4.6" height="7.5" rx="1"/><rect x="9.7" y="3.5" width="4.6" height="7.5" rx="1"/><rect x="16.4" y="3.5" width="4.6" height="7.5" rx="1"/><rect x="3" y="13" width="4.6" height="7.5" rx="1"/><rect x="9.7" y="13" width="4.6" height="7.5" rx="1"/><rect x="16.4" y="13" width="4.6" height="7.5" rx="1"/></svg></button>
+            <button class="viewsw__btn fx-press" type="button" role="radio" data-view="list" aria-checked="false" aria-label="List"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="5" height="6.5" rx="1"/><rect x="3" y="13.5" width="5" height="6.5" rx="1"/><path d="M10.5 6h10M10.5 9h6.5M10.5 15.5h10M10.5 18.5h6.5" fill="none" stroke-width="1.8" stroke-linecap="round"/></svg></button>
           </div>
         </div>
-        <div id="card-filters" class="chip-row" role="group" aria-label="Filter by tier or role"></div>
-        <p class="tools__count"><span id="card-count" aria-live="polite"></span><button id="card-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
+        <div id="card-active" class="actchips" aria-label="Filters in use" hidden></div>
       </div>
 
       <div id="card-grid" class="card-grid" data-card-list="cards"></div>
@@ -599,8 +629,10 @@
 
       <!-- Support side (#support): the same game-card grid, built the first time it shows (js/support.js) -->
       <div id="support-view" role="tabpanel" aria-labelledby="cards-tab-support" hidden>
+        <div class="rarity-bar" id="support-rarity-bar" hidden>
+          <div id="support-rarity" class="rarity-picker rarity-picker--wrap" role="group" aria-label="Rarity: effect values at this level"></div>
+        </div>
         <div id="support-tools" class="tools" hidden>
-          <div id="support-rarity" class="rarity-picker" role="group" aria-label="Rarity: effect values at this level"></div>
           <div class="tools__main">
             <label class="field field--search">
               <span class="sr-only">Search support cards</span>
@@ -621,7 +653,6 @@
               </button>
             </div>
           </div>
-          <div id="support-filters" class="chip-row" role="group" aria-label="Filter by tier"></div>
           <p class="tools__count"><span id="support-count" aria-live="polite"></span><button id="support-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
         </div>
 
@@ -861,24 +892,24 @@
     </section>
   </div>
 
-  <script src="js/i18n.js?v=75"></script>
-  <script src="js/i18n-th-ui.js?v=75"></script>
-  <script src="js/i18n-th-sk1.js?v=75"></script>
-  <script src="js/i18n-th-sk2.js?v=75"></script>
-  <script src="js/fx.js?v=75"></script>
-  <script src="js/app.js?v=75"></script>
-  <script src="js/deckbuff.js?v=75"></script>
-  <script src="js/teamscore.js?v=75"></script>
-  <script src="js/share.js?v=75"></script>
-  <script src="js/cards.js?v=75"></script>
-  <script src="js/detail.js?v=75"></script>
-  <script src="js/tier.js?v=75"></script>
-  <script src="js/deck.js?v=75"></script>
-  <script src="js/support.js?v=75"></script>
-  <script src="js/grade.js?v=75"></script>
-  <script src="js/traits.js?v=75"></script>
-  <script src="js/home.js?v=75"></script>
-  <script src="js/tiermaker.js?v=75"></script>
+  <script src="js/i18n.js?v=76"></script>
+  <script src="js/i18n-th-ui.js?v=76"></script>
+  <script src="js/i18n-th-sk1.js?v=76"></script>
+  <script src="js/i18n-th-sk2.js?v=76"></script>
+  <script src="js/fx.js?v=76"></script>
+  <script src="js/app.js?v=76"></script>
+  <script src="js/deckbuff.js?v=76"></script>
+  <script src="js/teamscore.js?v=76"></script>
+  <script src="js/share.js?v=76"></script>
+  <script src="js/cards.js?v=76"></script>
+  <script src="js/detail.js?v=76"></script>
+  <script src="js/tier.js?v=76"></script>
+  <script src="js/deck.js?v=76"></script>
+  <script src="js/support.js?v=76"></script>
+  <script src="js/grade.js?v=76"></script>
+  <script src="js/traits.js?v=76"></script>
+  <script src="js/home.js?v=76"></script>
+  <script src="js/tiermaker.js?v=76"></script>
 </body>
 </html>
 

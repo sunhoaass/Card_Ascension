@@ -224,3 +224,163 @@
 
 .detail__foot { padding: 0 var(--s-2); color: var(--ink-faint); font-size: var(--fs-xs); overflow-wrap: anywhere; }
 .detail__foot p + p { margin-top: 4px; }
+
+/* ==========================================================
+   Cards page redesign (2026-11-03 · js/cards.js)
+   rarity bar (sticky, wraps) · pull-odds finder · sort switch · layout switch · chips of the filters in use ·
+   cells (card + tier badge) · list view. Mobile first: nothing here scrolls sideways.
+   ========================================================== */
+.ctools { gap: var(--s-3); }
+
+/* rarity bar: sticks under the top bar (no top bar ≥ 1100px) · solid fill + gold line only while stuck */
+.rarity-bar__mark { display: block; height: 0; }
+.rarity-bar {
+  position: sticky; top: var(--header-h); z-index: 15;
+  margin: 0 calc(var(--gutter) * -1); padding: 6px var(--gutter);
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--t-med) var(--ease), border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
+}
+.rarity-bar[hidden] { display: none; }
+#cards-view > .rarity-bar, #support-view > .rarity-bar { margin-bottom: var(--s-3); }
+.rarity-bar.is-stuck {
+  background-color: var(--glass-under);
+  border-bottom-color: var(--glass-line);
+  box-shadow: 0 10px 18px -10px rgba(0, 0, 0, .7);
+}
+@media (min-width: 1100px) { .rarity-bar { top: 0; } }
+.rarity-picker--wrap {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin: 0; padding: 0; overflow: visible; scroll-snap-type: none;
+}
+.rarity-picker--wrap .chip {
+  flex: 1 1 calc(20% - 6px); justify-content: center; gap: 5px;
+  min-width: 0; min-height: 40px; padding: 0 4px;
+  font-size: 12px; letter-spacing: 0; white-space: nowrap;
+}
+.rarity-picker--wrap .chip__swatch { width: 8px; height: 8px; flex: none; }
+@media (max-width: 359px) { .rarity-picker--wrap .chip { font-size: 11px; } .rarity-picker--wrap .chip__swatch { display: none; } }
+@media (min-width: 760px) { .rarity-picker--wrap .chip { flex: 1 1 0; font-size: 13px; } }
+
+/* pull-odds finder */
+.oddsbox { display: grid; gap: var(--s-2); padding: var(--s-4); --orn-s: 13px; }
+.oddsbox__label {
+  font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--gold);
+}
+.oddsbox__row {
+  display: flex; align-items: center; gap: var(--s-2); min-width: 0;
+  padding-left: 12px; border-radius: var(--r-chip);
+  border: 1px solid var(--glass-line); background-color: var(--glass-under);
+  transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
+}
+.oddsbox__row:focus-within { border-color: var(--gold); box-shadow: var(--rift-glow); }
+.oddsbox__pre { flex: none; font-family: var(--gc-font-pop); font-size: 20px; letter-spacing: .04em; line-height: 1; color: var(--gold-hi); }
+.oddsbox__input {
+  flex: 1; min-width: 0; height: 44px; padding: 0 2px;
+  border: 0; background: none; color: var(--ink); outline: none;
+  font: inherit; font-size: var(--fs-md); font-variant-numeric: tabular-nums;   /* 16px: no iOS zoom */
+}
+.oddsbox__input::placeholder { color: var(--ink-faint); font-size: var(--fs-sm); }
+.oddsbox__x { flex: none; width: 40px; height: 44px; display: grid; place-items: center; color: var(--ink-dim); }
+.oddsbox__x[hidden] { display: none; }
+.oddsbox__x svg { width: 16px; height: 16px; }
+.oddsbox__go {
+  flex: none; align-self: stretch; min-width: 56px; padding: 0 14px;
+  border-radius: 0 calc(var(--r-chip) - 1px) calc(var(--r-chip) - 1px) 0;
+  background-image: var(--brass-gold); color: var(--on-gold);
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); letter-spacing: .08em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 240, .5);
+}
+.oddsbox__quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 6px; }
+.oddsbox__q {
+  min-height: 40px; padding: 0 6px; border-radius: var(--r-pill);
+  border: 1px solid var(--gold-lo); background-image: var(--brass); color: var(--gold-hi);
+  font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .04em; white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 230, 170, .14);
+  transition: color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+.oddsbox__q b { font-family: var(--gc-font-num); font-weight: 600; font-size: 15px; letter-spacing: .02em; }
+.oddsbox__q span { font-family: var(--font-body); font-size: 10px; font-weight: 600; color: var(--ink-faint); letter-spacing: 0; }
+.oddsbox__q[aria-pressed="true"] { background-image: var(--brass-gold); border-color: var(--gold-hi); color: var(--on-gold); }
+.oddsbox__q[aria-pressed="true"] span { color: var(--on-gold); }
+.oddsbox__msg { margin: 0; min-height: 1.4em; font-size: var(--fs-xs); line-height: 1.45; color: var(--ink-dim); overflow-wrap: anywhere; }
+.oddsbox__msg[data-tone="bad"] { color: var(--bad); font-weight: 600; }
+.oddsbox__msg[data-tone="warn"] { color: var(--gold-hi); }
+
+/* sort switch (Rarest / Overall / ATK / HP · "Closest" while odds are typed) + ↑↓ */
+.ctools__row { display: flex; gap: var(--s-2); align-items: stretch; min-width: 0; }
+.seg--sort { flex: 1; min-width: 0; max-width: none; margin-bottom: 0; }
+.seg--sort .seg__btn { min-width: 0; padding: 0 4px; font-size: 12px; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.seg__btn[aria-checked="true"] { color: var(--on-gold); }
+
+/* count + layout switch (grid 2 · grid 3 · list) */
+.ctools__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-width: 0; }
+.ctools__count { margin: 0; min-width: 0; font-size: var(--fs-sm); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.viewsw { display: inline-flex; flex: none; padding: 3px; gap: 2px; border-radius: var(--r-chip); background-color: var(--glass-under); }
+.viewsw__btn {
+  width: 40px; height: 40px; display: grid; place-items: center; border-radius: 4px; color: var(--ink-dim);
+  transition: color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
+}
+.viewsw__btn svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 0; }
+.viewsw__btn svg path { stroke-width: 1.8; }
+.viewsw__btn[aria-checked="true"] { color: var(--on-gold); background-image: var(--brass-gold); box-shadow: inset 0 1px 0 rgba(255, 255, 240, .5); }
+
+/* chips of the filters in use (× each) + Reset all */
+.actchips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-width: 0; }
+.actchips[hidden] { display: none; }
+.actchip {
+  display: inline-flex; align-items: center; max-width: 100%; min-height: 40px; padding-left: 12px;
+  border-radius: var(--r-pill); border: 1px solid var(--gold-lo); background-image: var(--brass);
+  color: var(--gold-hi); font-size: 13px; font-weight: 600;
+  animation: fx-fade var(--t-med) var(--ease) both;
+}
+.actchip__t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.actchip__x { flex: none; width: 40px; height: 38px; display: grid; place-items: center; color: var(--gold); }
+.actchip__x svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.actchips__reset { min-height: 40px; padding: 0 10px; color: var(--rift); font-size: var(--fs-sm); font-weight: 600; }
+
+/* a grid cell: the card + its tier badge under it (the Cards and Support grids · C.cardCell) */
+.cg-cell { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.cg-meta { display: flex; justify-content: center; min-width: 0; cursor: pointer; }
+.cg-info { display: none; }
+.tbadge {
+  display: inline-flex; align-items: center; gap: 5px; max-width: 100%;
+  min-height: 22px; padding: 0 3px 0 9px; border-radius: var(--r-pill);
+  border: 1px solid color-mix(in srgb, var(--tc) 60%, transparent);
+  background: color-mix(in srgb, var(--tc) 16%, var(--void));
+  color: var(--tc); line-height: 1;
+}
+.tbadge__k { font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; opacity: .85; }
+.tbadge__v {
+  display: inline-grid; place-items: center; min-width: 22px; height: 16px; padding: 0 5px; border-radius: var(--r-pill);
+  font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: .02em; color: var(--ink);
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tc) 70%, var(--ink)), var(--tc) 45%, color-mix(in srgb, var(--tc) 55%, var(--void)));
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .45);
+}
+.tbadge--none { --tc: var(--t-d); padding: 0 9px; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+
+/* layouts (js/cards.js setView · cbi:cardView) · grid 3 = the site's columns (--grid-cols on <html>) */
+#card-grid[data-view="2"] { --grid-cols: 2; }
+@media (min-width: 600px) { #card-grid[data-view="2"] { --grid-cols: 3; } }
+@media (min-width: 1000px) { #card-grid[data-view="2"] { --grid-cols: 4; } }
+@media (min-width: 1600px) { #card-grid[data-view="2"] { --grid-cols: 5; } }
+#card-grid[data-view="list"] { --grid-cols: 1; gap: var(--s-2); }
+@media (min-width: 900px) { #card-grid[data-view="list"] { --grid-cols: 2; gap: var(--s-3); } }
+#card-grid[data-view="list"] .cg-cell {
+  flex-direction: row; align-items: center; gap: var(--s-3);
+  padding: var(--s-2); border-radius: var(--r-panel);
+  border: 1px solid var(--glass-line); background: var(--panel-fill);
+}
+#card-grid[data-view="list"] .cg-cell > .card { width: 92px; flex: none; }
+#card-grid[data-view="list"] .cg-meta { flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; flex: 1; align-self: stretch; }
+#card-grid[data-view="list"] .cg-meta .tbadge { order: 2; }
+#card-grid[data-view="list"] .cg-info { display: contents; }
+.cg-info__name { order: 1; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; letter-spacing: .03em; color: var(--gold-hi); overflow-wrap: anywhere; }
+.cg-info__sub { order: 1; margin-top: -4px; font-size: var(--fs-xs); font-style: italic; color: var(--ink-faint); }
+.cg-info__stats { order: 3; display: grid; gap: 2px; width: 100%; }
+.cg-stat { display: flex; justify-content: space-between; gap: var(--s-2); font-family: var(--gc-font-num); font-weight: 600; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; color: var(--ink); }
+.cg-stat b { font-family: var(--font-body); font-weight: 600; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); align-self: center; }
+.cg-stat--odds { color: var(--gold-hi); }
+.cg-stat--atk { color: var(--atk); }
+.cg-stat--hp { color: var(--hp); }
+@media (min-width: 900px) { #card-grid[data-view="list"] .cg-cell > .card { width: 110px; } }
