@@ -383,13 +383,10 @@
 .rd__sup .rd-ot { display: inline-block; font-family: var(--rd-font-text); font-weight: 700; font-size: 10.3cqw; line-height: 1; padding: 0 .6cqw; --fill: var(--rd-sup); }
 
 /* name colour runs (Shiny and up) · only on the card in the detail scene: it repaints the name every frame (not a transform),
-   60 redrawn Ascended cards in the Cards grid fell from 46 to 23 fps with it (CPU ×6) · a card under 170px hides the text */
+   60 redrawn Ascended cards in the Cards grid fell from 46 to 23 fps with it (CPU ×6) · the text shows at every card size,
+   like the old cards (owner 2026-11-03: the Cards grid must read like the detail card) */
 @keyframes rd-run { from { background-position: 0% 0; } to { background-position: 200% 0; } }
 #detail .gc--rd.is-live:not(.gc--mini):not([data-rarity="Normal"]) .rd__nm::after { background-size: 200% 100%; animation: rd-run 4s linear infinite; }
-@container gc (width < 170px) {
-  .rd__abd, .rd__mut { display: none; }
-  .gc--rd:not(.gc--sup) .rd__ab { bottom: 16cqw; }
-}
 
 /* ---------- Toast (FX.toast) ---------- */
 .fx-toast {
