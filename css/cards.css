@@ -227,8 +227,8 @@
 
 /* ==========================================================
    Cards page redesign (2026-11-03 · js/cards.js)
-   rarity bar (sticky, wraps) · pull-odds finder · sort switch · layout switch · chips of the filters in use ·
-   cells (card + tier badge) · list view. Mobile first: nothing here scrolls sideways.
+   pull-odds finder (+ 1M…1Qa dropdown in the box) · rarity bar (sticky, wraps) · search box with the ↑↓ button in it ·
+   layout switch · chips of the filters in use · cells (card only · list view adds name + stats). Mobile first: nothing here scrolls sideways.
    ========================================================== */
 .ctools { gap: var(--s-3); }
 
@@ -242,6 +242,8 @@
 }
 .rarity-bar[hidden] { display: none; }
 #cards-view > .rarity-bar, #support-view > .rarity-bar { margin-bottom: var(--s-3); }
+#cards-view > .oddsbox { margin-bottom: var(--s-3); }
+.oddsbox[hidden] { display: none; }
 .rarity-bar.is-stuck {
   background-color: var(--glass-under);
   border-bottom-color: var(--glass-line);
@@ -290,28 +292,46 @@
   font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); letter-spacing: .08em;
   box-shadow: inset 0 1px 0 rgba(255, 255, 240, .5);
 }
-.oddsbox__quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 6px; }
-.oddsbox__q {
-  min-height: 40px; padding: 0 6px; border-radius: var(--r-pill);
-  border: 1px solid var(--gold-lo); background-image: var(--brass); color: var(--gold-hi);
-  font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .04em; white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 230, 170, .14);
-  transition: color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+/* the 1M / 1B / 1T / 1Qa dropdown inside the box, between the typed value and OK (round 2) · gold while one is in use */
+.oddsbox__pick { position: relative; flex: none; align-self: stretch; display: flex; align-items: center; border-left: 1px solid var(--glass-line); }
+.oddsbox__pick select {
+  -webkit-appearance: none; appearance: none; color-scheme: dark;
+  height: 100%; min-height: 44px; width: 80px; padding: 0 24px 0 12px;
+  border: 0; background-color: transparent; color: var(--gold-hi); cursor: pointer;
+  font-family: var(--gc-font-num); font-weight: 600; font-size: var(--fs-md); letter-spacing: .02em;   /* 16px: no iOS zoom */
+  text-overflow: ellipsis; white-space: nowrap;
+  /* chevron: data URIs can't read CSS variables, colour is --gold (#d8b46a) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8b46a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 7px center; background-size: 13px;
+  transition: color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
 }
-.oddsbox__q b { font-family: var(--gc-font-num); font-weight: 600; font-size: 15px; letter-spacing: .02em; }
-.oddsbox__q span { font-family: var(--font-body); font-size: 10px; font-weight: 600; color: var(--ink-faint); letter-spacing: 0; }
-.oddsbox__q[aria-pressed="true"] { background-image: var(--brass-gold); border-color: var(--gold-hi); color: var(--on-gold); }
-.oddsbox__q[aria-pressed="true"] span { color: var(--on-gold); }
-.oddsbox__msg { margin: 0; min-height: 1.4em; font-size: var(--fs-xs); line-height: 1.45; color: var(--ink-dim); overflow-wrap: anywhere; }
-.oddsbox__msg[data-tone="bad"] { color: var(--bad); font-weight: 600; }
-.oddsbox__msg[data-tone="warn"] { color: var(--gold-hi); }
+.oddsbox__pick select:focus { outline: none; }
+.oddsbox__pick:focus-within { box-shadow: inset 0 0 0 2px var(--gold); }
+.oddsbox__pick select option { background: var(--void-2); color: var(--ink); }
+.oddsbox__pick.is-on select { background-color: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold-hi); }
+.oddsbox__msg[hidden] { display: none; }
+.oddsbox__msg { margin: 0; font-size: var(--fs-xs); line-height: 1.45; color: var(--bad); font-weight: 600; overflow-wrap: anywhere; }
 
-/* sort switch (Rarest / Overall / ATK / HP · "Closest" while odds are typed) + ↑↓ */
-.ctools__row { display: flex; gap: var(--s-2); align-items: stretch; min-width: 0; }
-.seg--sort { flex: 1; min-width: 0; max-width: none; margin-bottom: 0; }
-.seg--sort .seg__btn { min-width: 0; padding: 0 4px; font-size: 12px; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.seg__btn[aria-checked="true"] { color: var(--on-gold); }
+/* search box with the ↑↓ pull-odds order button inside it, on the right (round 2) */
+.sbox {
+  display: flex; align-items: stretch; min-width: 0;
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background-color: rgba(14, 18, 34, .92);
+  transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
+}
+.sbox:focus-within { border-color: var(--gold); box-shadow: var(--rift-glow); }
+.sbox__field { position: relative; display: block; flex: 1; min-width: 0; }
+.sbox__input {
+  width: 100%; height: 44px; padding: 0 8px 0 40px; border: 0; background: none; outline: none;
+  color: var(--ink); font: inherit; font-size: var(--fs-md);   /* 16px: no iOS zoom */
+}
+.sbox__input::placeholder { color: var(--ink-faint); }
+.sbox__dir {
+  flex: none; width: 48px; display: grid; place-items: center; color: var(--gold-hi);
+  border-left: 1px solid var(--gold-lo); border-radius: 0 calc(var(--r-chip) - 1px) calc(var(--r-chip) - 1px) 0;
+  background-image: var(--brass); box-shadow: inset 0 1px 0 rgba(255, 230, 170, .14);
+}
+.sbox__dir svg { width: 20px; height: 20px; transition: transform var(--t-med) var(--ease); }
+.sbox__dir[data-dir="asc"] svg { transform: rotate(180deg); }
 
 /* count + layout switch (grid 2 · grid 3 · list) */
 .ctools__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-width: 0; }
@@ -339,25 +359,10 @@
 .actchip__x svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
 .actchips__reset { min-height: 40px; padding: 0 10px; color: var(--rift); font-size: var(--fs-sm); font-weight: 600; }
 
-/* a grid cell: the card + its tier badge under it (the Cards and Support grids · C.cardCell) */
-.cg-cell { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.cg-meta { display: flex; justify-content: center; min-width: 0; cursor: pointer; }
+/* a grid cell: the card (no tier badge since round 2) · the list view adds name + stats beside it (C.cardCell) */
+.cg-cell { display: flex; flex-direction: column; min-width: 0; }
+.cg-meta { display: none; min-width: 0; cursor: pointer; }
 .cg-info { display: none; }
-.tbadge {
-  display: inline-flex; align-items: center; gap: 5px; max-width: 100%;
-  min-height: 22px; padding: 0 3px 0 9px; border-radius: var(--r-pill);
-  border: 1px solid color-mix(in srgb, var(--tc) 60%, transparent);
-  background: color-mix(in srgb, var(--tc) 16%, var(--void));
-  color: var(--tc); line-height: 1;
-}
-.tbadge__k { font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; opacity: .85; }
-.tbadge__v {
-  display: inline-grid; place-items: center; min-width: 22px; height: 16px; padding: 0 5px; border-radius: var(--r-pill);
-  font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: .02em; color: var(--ink);
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tc) 70%, var(--ink)), var(--tc) 45%, color-mix(in srgb, var(--tc) 55%, var(--void)));
-  text-shadow: 0 1px 0 rgba(0, 0, 0, .45);
-}
-.tbadge--none { --tc: var(--t-d); padding: 0 9px; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
 
 /* layouts (js/cards.js setView · cbi:cardView) · grid 3 = the site's columns (--grid-cols on <html>) */
 #card-grid[data-view="2"] { --grid-cols: 2; }
@@ -372,8 +377,7 @@
   border: 1px solid var(--glass-line); background: var(--panel-fill);
 }
 #card-grid[data-view="list"] .cg-cell > .card { width: 92px; flex: none; }
-#card-grid[data-view="list"] .cg-meta { flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; flex: 1; align-self: stretch; }
-#card-grid[data-view="list"] .cg-meta .tbadge { order: 2; }
+#card-grid[data-view="list"] .cg-meta { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; flex: 1; align-self: stretch; }
 #card-grid[data-view="list"] .cg-info { display: contents; }
 .cg-info__name { order: 1; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; letter-spacing: .03em; color: var(--gold-hi); overflow-wrap: anywhere; }
 .cg-info__sub { order: 1; margin-top: -4px; font-size: var(--fs-xs); font-style: italic; color: var(--ink-faint); }
