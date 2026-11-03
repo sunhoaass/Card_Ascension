@@ -2050,7 +2050,7 @@
 - **ยังไม่ได้วัด:** fps แบบ §11.3 (ไม่ได้แตะการ์ด/อนิเมชั่นการ์ด · แถบติดบนใช้ IntersectionObserver ไม่มี scroll listener)
 - **ไฟล์:** `index.html` · `js/cards.js` · `js/support.js` · `js/app.js` · `js/detail.js` · `js/deck.js` · `js/deckbuff.js` · `js/teamscore.js` · `js/share.js` · `css/cards.css` · `css/base.css` · `css/deck.css` · `css/detail.css` · `css/tokens.css` · `docs/archive-grade-traits.md` (ใหม่) · `PROGRESS.md` · `HISTORY.md` · ลบ 9 ไฟล์ตามข้อ B
 
-### 2026-11-03 หน้า Cards รอบ 2: จัดเครื่องมือใหม่ (`?v=78`)
+### 2026-11-03 หน้า Cards รอบ 2: จัดเครื่องมือใหม่ (`?v=78` · merge pull request #122)
 - **เจ้าของสั่ง (แคปมือถือ 2 รูป):** แถบระดับไว้ใต้ช่อง 1 IN · ปุ่มลัด 1B 1T ไว้ในช่อง 1 IN ข้างขวาแบบกดเลือก + ไม่มีคำอธิบายใต้ช่อง · เอาสวิตช์ Rarest/Overall/ATK/HP ออก ปุ่มลูกศรเรียงโอกาสออกไปไว้ในช่องค้นหา · เอาป้าย Tier ใต้การ์ดออก
 - **ที่ทำ:** ลำดับใหม่ ช่อง 1 IN → แถบระดับ (ติดบนเหมือนเดิม) → ช่องค้นหา + ↑↓ ในกล่องเดียว · ปุ่มลัด → `<select>` (`#odds-quick`) ในแถวเดียวกับช่องพิมพ์ ระหว่าง × กับ OK · ตัวอักษรตัวเลือกใช้ Oswald (`--gc-font-num`) เพราะฟอนต์หัวข้อทำ "1Qa" เป็น "IQA" · ข้อความใต้ช่องเหลือเฉพาะพิมพ์ผิด · เรียงตามโอกาสออกอย่างเดียว (`compare` ลบ Overall/ATK/HP) · `cardCell` ไม่ใส่ `.tbadge` (มีผลฝั่ง Support ด้วยเพราะใช้ตัวเดียวกัน) · CSS ลบ `.seg--sort` `.ctools__row` `.oddsbox__quick/__q` `.tbadge*` · เพิ่ม `.sbox*` `.oddsbox__pick`
 - **สมมติฐาน:** "ลูกศรขึ้น" ในคำสั่ง = ปุ่มลูกศรเรียงที่มีอยู่ (ทิศเดิม: ↓ = หายากก่อน · กด = ↑ ทั่วไปก่อน) · ป้ายหัว "Pull odds" ในกล่องยังอยู่ (ไม่ได้สั่งเอาออก) · ฝั่ง Support ยังใช้ dropdown Sort แบบเดิม
