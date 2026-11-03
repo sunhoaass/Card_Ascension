@@ -487,7 +487,13 @@
     ctx.save();
     roundRect(ctx, fx, fy, fw, fh, 3.2 * f); ctx.clip();
     ctx.fillStyle = cssVar("--gc-under") || "#0d0a14"; ctx.fillRect(fx, fy, fw, fh);
-    if (art) drawCoverImage(ctx, art, fx - fw * 0.006, fy - fh * 0.006, fw * 1.012, fh * 1.012);
+    if (art && sup) drawCoverImage(ctx, art, fx - fw * 0.006, fy - fh * 0.006, fw * 1.012, fh * 1.012);
+    else if (art) {   // a card: the owner's 3:4 blank art at the top, a dark strip under it, the lower half darkened (css .gc--rd .gc__art)
+      ctx.fillStyle = "#101012"; ctx.fillRect(fx, fy, fw, fh);
+      drawCoverImage(ctx, art, fx, fy + 1.1 * f, fw, fw * 4 / 3);
+      const g = ctx.createLinearGradient(0, fy, 0, fy + fh); g.addColorStop(0.38, "rgba(0, 0, 0, 0)"); g.addColorStop(0.92, "rgba(0, 0, 0, .45)");
+      ctx.fillStyle = g; ctx.fillRect(fx, fy, fw, fh);
+    }
     ctx.restore();
     ctx.save();
     roundRect(ctx, x, y, w, h, R); ctx.lineWidth = 0.35 * u; ctx.strokeStyle = "rgba(0, 0, 0, .6)"; ctx.stroke();
@@ -499,8 +505,9 @@
     ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
     const X = (v) => fx + v * f, Y = (v) => fy + v * f;
     // one outlined word / line: black edge + soft shadow under it, then the fill (a colour or a gradient over its box)
+    let SW = sup ? 1.5 : 1.1;   // the black edge (cqw · css --rd-sw)
     const edge = (t, tx, ty) => {
-      ctx.strokeStyle = stroke; ctx.lineWidth = 1.5 * f;
+      ctx.strokeStyle = stroke; ctx.lineWidth = SW * f;
       ctx.shadowColor = "rgba(0, 0, 0, .85)"; ctx.shadowBlur = 1.6 * f * K; ctx.strokeText(t, tx, ty);
       ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 3.2 * f * K; ctx.strokeText(t, tx, ty);
       ctx.shadowColor = "transparent"; ctx.shadowBlur = 0;
@@ -557,6 +564,61 @@
     };
     const ink = cssVar("--rd-ink") || "#f4f1f6";
     const nameFill = (bx, by, bw, bh) => linDeg(ctx, bx, by, bw, bh, degOf(cssVar("--rd-name-" + r), 90), gradStops(cssVar("--rd-name-" + r)));
+
+    if (!sup) {   // a card: every place + size is the fitted element's (js/app.js fitRdCard · owner 2026-11-03 Card Layout Lab)
+      const RC = C.RDC, AN = C.ANTON, BA = C.BARLOW, OS = C.OSW, base = (m, lh) => (lh - (m.a + m.d)) / 2 + m.a;
+      const at_ = (n, k2, d) => (n && parseFloat(n.style[k2])) || d;
+      // name: Anton slanted -9deg (css skewX, origin = the box's bottom left) · 1 or 2 lines in the left half
+      const nm = q(".rd__nm"), nfs = fsOf(nm, 6), two = nm.classList.contains("is-two"), nlh = two ? 0.98 : 1, up = nm.textContent.toUpperCase();
+      const nfont = `400 ${nfs * f}px ${A}`, nleft = at_(nm, "left", 2.2), ntop = at_(nm, "top", 3), room = (parseFloat(nm.style.width) || 0) - 2 * RC.padN;
+      const nrows = two ? wrap(up.split(/\s+/).filter(Boolean).map((t) => ({ t, parts: [{ t }] })), nfont, room * f, false).map((row) => row.map((x) => x.t).join(" ")) : [up];
+      const nbot = ntop + nrows.length * nlh * nfs, nW = Math.max(...nrows.map((t) => tw(t, nfont)));
+      ctx.save(); ctx.translate(X(nleft), Y(nbot)); ctx.transform(1, 0, Math.tan(-9 * Math.PI / 180), 1, 0, 0);
+      const ox = RC.padN * f, oy = (v) => (v - nbot) * f, nfill = nameFill(ox, oy(ntop), nW, nrows.length * nlh * nfs * f);
+      nrows.forEach((t, i) => out(t, ox, oy(ntop + base(AN, nlh) * nfs + i * nlh * nfs), nfill, nfont));
+      ctx.restore();
+      // HP (ends at the game's x 83) + heart
+      const hp = q('[data-k="hp"]'), hfs = fsOf(hp, 9.7), hfont = `400 ${hfs * f}px ${A}`, ht = hp.textContent, hw = tw(ht, hfont), htop = at_(hp, "top", 3.4);
+      out(ht, X(RC.hpRight), Y(htop + base(AN, 1) * hfs), linDeg(ctx, X(RC.hpRight) - hw, Y(htop), hw, hfs * f, 180, gradStops(cssVar("--rd-hp"))), hfont, 0, "right");
+      drawHeart(ctx, X(86), Y(3.03) - 0.432 * f, 10.8 * f, K);
+      // pills: 1 IN X (white) + the rarity (its frame colours) · Barlow Condensed 800 italic, dark letters, black edge
+      let pTop = 16.5;
+      el.querySelectorAll(".rd__pill").forEach((p) => {
+        const rar = p.classList.contains("rd__pill--rar");
+        if (rar && r === "normal") return;
+        const pfs = 5.57, font = `italic 800 ${pfs * f}px ${N}`, t = p.textContent.toUpperCase();
+        const pw = tw(t, font) + 6 * f, ph = 9 * f, ppx = X(96.4) - pw, ppy = Y(pTop), e = 0.9 * f;
+        ctx.save();
+        roundRect(ctx, ppx - e, ppy - e, pw + 2 * e, ph + 2 * e, ph / 2 + e);
+        ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 2 * f * K; ctx.shadowOffsetY = 0.6 * f * K;
+        ctx.fillStyle = stroke; ctx.fill(); ctx.shadowColor = "transparent";
+        roundRect(ctx, ppx, ppy, pw, ph, ph / 2);
+        ctx.fillStyle = rar ? gradOn(ctx, "--rd-ring-" + r, ppx, ppy, pw, ph) : cssVar("--rd-pill") || "#fff"; ctx.fill();
+        ctx.font = font; if (LS) ctx.letterSpacing = "0px"; ctx.textAlign = "left"; ctx.fillStyle = cssVar("--rd-pill-ink") || "#111";
+        ctx.fillText(t, ppx + 3 * f, ppy + (1.44 + base(BA, 1) * pfs) * f);
+        ctx.restore();
+        pTop += 11.5;
+      });
+      // ability name (Barlow Condensed 800 italic) + text (Oswald 500, centred, the game's line pitch)
+      const abn = q(".rd__abn");
+      if (abn) {
+        const afs = fsOf(abn, 8.33), afont = `italic 800 ${afs * f}px ${N}`, t = abn.textContent.toUpperCase(), atop = at_(abn, "top", 77), al = at_(abn, "left", 2);
+        out(t, X(al + RC.padN), Y(atop + base(BA, 1) * afs), linDeg(ctx, X(al), Y(atop), tw(t, afont) + 1.6 * f, afs * f, 180, gradStops(cssVar("--rd-ab"))), afont);
+      }
+      const abd = q(".rd__abd");
+      if (abd) {
+        const dfs = fsOf(abd, 3.8), L = parseFloat(abd.style.lineHeight) || 5.5, dfont = `500 ${dfs * f}px ${T}`, dtop = at_(abd, "top", 88);
+        const rows = wrap(wordsIn(abd), dfont, (RC.txtR - RC.txtL) * f, false);
+        SW = 0.68; drawRows(rows, dfont, dfs, L / dfs, Y(dtop + base(OS, L / dfs) * dfs), X(50), ink); SW = 1.1;
+      }
+      // swords + ATK
+      const atk = q('[data-k="atk"]'), tfs = fsOf(atk, 11.4), tfont = `400 ${tfs * f}px ${A}`, tt = atk.textContent, aw = tw(tt, tfont), atop = at_(atk, "top", 124), aleft = at_(atk, "left", 24) + RC.padNum;
+      out(tt, X(aleft), Y(atop + base(AN, 1) * tfs), linDeg(ctx, X(aleft), Y(atop), aw, tfs * f, 180, gradStops(cssVar("--rd-atk"))), tfont);
+      drawSwords(ctx, X(3.3), Y(123.3), 13.4 * f);
+      if (LS) ctx.letterSpacing = "0px";
+      ctx.restore();
+      return;
+    }
 
     // name (left half · 1 or 2 lines)
     const nm = q(".rd__nm"), nfs = fsOf(nm, 10), two = nm.classList.contains("is-two"), up = nm.textContent.toUpperCase();

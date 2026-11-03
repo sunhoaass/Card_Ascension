@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "one-punch-caped-hero",
+    "name": "One Punch Caped Hero",
+    "series": "",
+    "image": "images/cards/art/one-punch-caped-hero.webp",
+    "base": {
+      "atk": 3111096,
+      "hp": 20740640,
+      "def": 0,
+      "status": 0,
+      "odds": 109300000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Serious Punch",
+      "desc": "One Punch Caped Hero ends fights in one punch. Its first hit on each new enemy does 3.68x damage. Ignores the enemy's shields, dodges and barriers. Can't be stunned, frozen, paralyzed, confused, sealed or weakened. +15% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 85.4,
+      "hp": 85.4,
+      "passive": 66,
+      "skill": 66,
+      "matchup": 82.0,
+      "team": 60,
+      "overall": 73.7
+    },
+    "tier": "S",
+    "updated": "2026-11-03",
+    "beats": [
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king"
+    ],
+    "prevTier": "A",
+    "team": {
+      "bestSupport": [
+        "flower-healer-captain",
+        "gentle-priest",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    },
+    "redraw": true
+  }
+]
