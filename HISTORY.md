@@ -2015,3 +2015,9 @@
 - **mockup:** `mockup/card-34.html` เพิ่ม Destroyer God + Cyborg Sister (สั้นสุด) · หมายเหตุใหม่
 - **ทดสอบ (Chromium 390×844 · Godly):** Destroyer God 3.80cqw (= ขนาดเกม ไม่เปลี่ยน) · Cyborg Sister 6.08cqw (1.6 เท่า) · Octopus Teacher 4.86cqw · Storm Dragon 3.38cqw · ขอบล่างตัวพิมพ์ใหญ่ทุกใบอยู่ที่เส้นเดียวกัน · ไม่มี error / 404
 - **ไฟล์:** `js/app.js` · `index.html` · `mockup/blank-art.html` · `mockup/card-34.html` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 ชื่อสกิลติดคำอธิบาย (`?v=75`)
+- **เจ้าของสั่ง:** ชื่อสกิลให้อยู่ติดคำอธิบาย ระยะแบบเกม (แคป Six Paths Fox Sage)
+- **แก้ `js/app.js` `fitRdCard`:** จัดคำอธิบายก่อน แล้ววางชื่อสกิลเหนือบรรทัดแรก `abnGap` 4.2cqw (ขอบล่างตัวพิมพ์ใหญ่ชื่อสกิล → ขอบบนตัวพิมพ์ใหญ่บรรทัดแรก · วัดจากเกม ~20px บนหน้าการ์ด ~495px) · `txtTop` 84.67 → 83.86 (= abnTop + abnCap + abnGap → ชื่อสกิลไม่ขึ้นเหนือ 73.83)
+- **ทดสอบ (Chromium 390×844 · Godly · mockup/card-34.html):** ชื่อสกิล top Destroyer God 72.24 · Cyborg Sister 75.53 · Storm Dragon 75.73 · Octopus Teacher 72.29cqw · ระยะถึงคำอธิบายเท่ากันทุกใบ · คำอธิบายยังจบที่เส้นเดิม · ไม่มี error
+- **ไฟล์:** `js/app.js` · `index.html` · `mockup/blank-art.html` · `mockup/card-34.html` · `PROGRESS.md` · `HISTORY.md`
