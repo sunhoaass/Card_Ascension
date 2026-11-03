@@ -1,26 +1,24 @@
 /* ==========================================================
    Card Battle Infinity — app core
-   Router (6 tabs + card detail hash) · data loading · shared card renderer
+   Router (4 tabs + card detail hash) · data loading · shared card renderer
    The Cards page (search / filters / sort) lives in js/cards.js · the card detail ("Black Sun" scene) in js/detail.js
    The Tier List page (Global cards / support + My Lists) lives in js/tier.js
    The Deck page (Meta Decks, later the deck builder) lives in js/deck.js
    Support cards (owner 2026-10-28): a Cards | Support switch on the Cards page (#cards / #support) · the Support grid lives in
    js/support.js · a support opens the same card detail as a card (#card/<id>) · renderCard() draws both kinds
-   The Grade page (card picker + #grade/<id>/<grades> grader) lives in js/grade.js
-   The Traits page (13 traits + calculator, the user's trait per card) lives in js/traits.js
+   The Grade and Traits pages + the Thai switch were removed 2026-11-03 (docs/archive-grade-traits.md · old #grade / #traits
+   links land on the Cards page, #grade/<id>/… opens that card)
    The Home page (game updates, codes, new cards, new systems from data/news.json + data/pool.json) lives in js/home.js
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
-  const PAGES = ["home", "tier", "cards", "deck", "grade", "traits"];   // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
+  const PAGES = ["home", "tier", "cards", "deck"];   // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
   const PAGE_TITLES = {
     home: "Card Battle Infinity — Tier List & Card Database",
     tier: "Tier List — Card Battle Infinity",
     cards: "Cards — Card Battle Infinity",
     support: "Support — Card Battle Infinity",
     deck: "Deck — Card Battle Infinity",
-    grade: "Card Grader — Card Battle Infinity",
-    traits: "Traits — Card Battle Infinity",
   };
   const STORE_KEY = "cbi:lastPage";
   const RARITY_KEY = "cbi:rarity";
@@ -38,7 +36,7 @@
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
   // kind: the Cards page's side ("cards" | "support", #cards / #support)
   // pool: data/pool.json (every card + support with its round and the date it was added · NEW badge, Home's new cards)
-  const state = { meta: null, cards: [], support: [], teams: [], traits: null, pool: null, rarity: "Normal", page: null, kind: "cards", loaded: false, origin: null };
+  const state = { meta: null, cards: [], support: [], teams: [], pool: null, rarity: "Normal", page: null, kind: "cards", loaded: false, origin: null };
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -187,7 +185,7 @@
     const m = mutAt(s, rarity);
     return m ? (t ? t + " " : "") + mutLine(m) : t;
   };
-  const supText = (s, text, rarity) => I18N.desc(mutText(s, text, rarity)).replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
+  const supText = (s, text, rarity) => String(mutText(s, text, rarity) || "").replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
   /* NEW badge (plan 2026-10-30 item 5): a card / support added to the site in the last NEW_DAYS days (x.added from
@@ -472,7 +470,7 @@
       return textHTML(String(text || "").replace(MUT_RE, ""), s, rarity, false) +
         `<span class="gc__mut"${m ? "" : " hidden"}> ${m ? mutHTML(m) : ""}</span>`;
     }
-    return I18N.desc(String(text || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).map((part, i) => {
+    return String(text || "").split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).map((part, i) => {
       if (!(i % 2)) return esc(part);
       const m = /^\{(\d)\}(%?)$/.exec(part);
       if (m && s && supVals(s)[+m[1]] != null) {
@@ -541,7 +539,7 @@
   const rdSpan = (cls, text, attrs = "") => `<span class="${cls}"${attrs} data-t="${esc(text)}">${esc(text)}</span>`;
   // a support's text: only the values that change with the rarity are gold (owner 2026-11-02 · "next 3 attacks" stays white)
   function rdSupHTML(s, rarity) {
-    const text = I18N.desc(String((s.effect && s.effect.desc) || "").replace(MUT_RE, ""));
+    const text = String((s.effect && s.effect.desc) || "").replace(MUT_RE, "");
     return text.split(/(\{\d\}%?)/).map((part, i) => {
       if (!(i % 2)) return esc(part);
       const m = /^\{(\d)\}(%?)$/.exec(part);
@@ -550,7 +548,7 @@
       return `<b class="gc__dv" data-sv="${m[1]}" data-pct="${m[2]}" data-value="${v}">${v}${m[2]}</b>`;
     }).join("");
   }
-  const mutHTML = (m) => esc(I18N.desc(mutLine(m))).replace(`+${m}%`, `<b>+${m}%</b>`);
+  const mutHTML = (m) => esc(mutLine(m)).replace(`+${m}%`, `<b>+${m}%</b>`);
   function setMut(el, s, rarity) {
     const p = $(".rd__mut", el);
     if (!p) return;
@@ -571,10 +569,10 @@
       const html = rdSupHTML(item, rarity), plain = html.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
       const m = mutAt(item, rarity);
       return top + pills + `<div class="rd__ab">${abn}<div class="rd__txt"><p class="rd__abd rd-ot" data-t="${esc(plain)}">${html}</p>` +
-        `<p class="rd__mut rd-ot"${m ? "" : " hidden"} data-t="${m ? esc(I18N.desc(mutLine(m))) : ""}">${m ? mutHTML(m) : ""}</p></div></div>` +
+        `<p class="rd__mut rd-ot"${m ? "" : " hidden"} data-t="${m ? esc(mutLine(m)) : ""}">${m ? mutHTML(m) : ""}</p></div></div>` +
         `<div class="rd__sup">${rdSpan("rd-ot rd-fill", "SUPPORT")}</div>`;
     }
-    const atk = statAt(item, "atk", rarity), desc = I18N.desc(String(ab.desc || ""));
+    const atk = statAt(item, "atk", rarity), desc = String(ab.desc || "");
     return top + pills +
       `<div class="rd__ab">${abn}<p class="rd__abd rd-ot" data-t="${esc(desc)}">${textHTML(ab.desc, null, rarity)}</p></div>` +
       `<div class="rd__bot">${RD_SWORDS}${rdSpan("rd__num rd-ot rd-fill", fmtStat(atk), ` data-k="atk" data-value="${atk}"`)}</div>`;
@@ -1025,10 +1023,10 @@
   }
 
   /* ---------- Router ----------
-     #home #tier #cards #deck #grade #traits -> tabs (no hash = Home, always · owner 2026-10-30) · #support = the Cards tab, Support side
+     #home #tier #cards #deck -> tabs (no hash = Home, always · owner 2026-10-30) · #support = the Cards tab, Support side
      #card/<id>                    -> card (or support) detail, laid over whichever tab is underneath
      #support/<id> (old links)     -> the Support side + that support's detail
-     #grade/<id>/<grades>          -> the grader inside the Grade tab */
+     #grade… #traits (old links, pages removed 2026-11-03) -> the Cards tab · #grade/<id>/… -> that card's detail */
   function showPage(page, { scroll = false } = {}) {
     if (!PAGES.includes(page)) page = "home";
     const changed = state.page !== page;
@@ -1088,6 +1086,17 @@
       if ((state.support || []).some((x) => x && x.id === decodeURIComponent(sm[1]))) openCard(decodeURIComponent(sm[1]), null, { list: CBI.support.order() });
       return;
     }
+    // old #grade, #grade/<id>/<grades>, #traits links (Grade + Traits removed 2026-11-03): the Cards tab · a card id = its detail
+    const old = location.hash.match(/^#\/?(grade|traits)(?:\/([^/?#]+))?/);
+    if (old) {
+      if (!state.loaded) { showPage("cards"); return; }   // route() runs again once the data is in
+      try { history.replaceState(null, "", "#cards"); } catch {}
+      state.kind = "cards";
+      route();
+      const id = old[1] === "grade" && old[2] ? decodeURIComponent(old[2]) : "";
+      if (id && state.cards.some((c) => c.id === id)) openCard(id, null, { list: CBI.cards.order() });
+      return;
+    }
     if (state.loaded) CBI.detail.close();
     const first = "home";   // opening the site with no hash = Home every time (owner 2026-10-30 · cbi:lastPage is not read)
     const k = kindFromHash();
@@ -1095,9 +1104,6 @@
     showPage(pageFromHash() || first);
     if (state.loaded) CBI.tier.show(tierViewFromHash());
     if (state.loaded) CBI.deck.show();   // #deck = My Decks · #deck/meta · #deck/my/<id> = the editor · #deck/s/<data> = a shared deck
-    // #grade/<id>[/<atk>-<def>-<status>-<hp>] = grader inside the Grade tab · any other hash = back to the card picker
-    const gm = location.hash.match(/^#\/?grade\/([^/?#]+)(?:\/([0-9-]+))?/);
-    if (state.loaded) CBI.grade.show(gm ? decodeURIComponent(gm[1]) : null, gm ? gm[2] : null);
   }
 
   // Tab buttons: no history entries, same as before · tapping a tab always lands on its list (Tier List = Global)
@@ -1112,7 +1118,7 @@
     if (depth > 1) { leaveTo = h; history.go(1 - depth); }
     else if (location.hash !== "#" + h) history.replaceState(null, "", "#" + h);
     if (fromCard && state.loaded) CBI.detail.close();
-    if (state.loaded) { CBI.grade.show(null, null, { restore: false }); CBI.tier.show("global"); CBI.deck.show(); }
+    if (state.loaded) { CBI.tier.show("global"); CBI.deck.show(); }
   }
 
   /* Card detail: each open pushes history entries so the phone's Back button walks out of it.
@@ -1168,16 +1174,15 @@
     route();
 
     try {
-      const [meta, cards, support, teams, traits, pool, buffs] = await Promise.all([
+      const [meta, cards, support, teams, pool, buffs] = await Promise.all([
         loadJSON("data/meta.json"),
         loadJSON("data/cards.json"),
         loadJSON("data/support.json").catch(() => []),   // support cards (step 4); the page copes without it
         loadJSON("data/teams.json").catch(() => []),     // Meta Decks; the page copes without it
-        loadJSON("data/traits.json").catch(() => null),  // Trait Shop (js/traits.js); the site copes without it
         loadJSON("data/pool.json").catch(() => null),    // dates added (NEW badge, Home); the site copes without it
         loadJSON("data/buffs.json").catch(() => null),   // names in ability texts -> card ids (js/deckbuff.js); the site copes without it
       ]);
-      state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.traits = traits; state.buffs = buffs;
+      state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.buffs = buffs;
       state.pool = pool && Array.isArray(pool.items) ? pool : null;
       if (Array.isArray(support)) support.forEach((x) => { if (x && x.id) { x.kind = "support"; if (!x.name) x.name = x.id.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); } });
       if (state.pool) {   // the date each card / support was added (pool.json "added") rides on the object: C.isNew(x)
@@ -1204,15 +1209,13 @@
     });
 
     state.loaded = true;
-    CBI.traits.init();   // first: the deck list's team scores read the user's traits
     CBI.tier.init();
     CBI.deck.init();
     CBI.cards.init();
     CBI.detail.init();
     CBI.support.init();
-    CBI.grade.init();
     CBI.home.init();
-    route();   // opens a #card/<id>, #support/<id> or #grade/<id> deep link now that the data is here
+    route();   // opens a #card/<id> or #support/<id> deep link (or an old #grade/<id>) now that the data is here
     hideBoot();
     setTimeout(FX.probe, 800);   // lite mode check: 2 s of frames once the first page has settled (step 9.5)
     setTimeout(() => CBI.detail.prewarm(), 3600);   // paint the detail scene while idle, after the probe (step 12)
@@ -1239,15 +1242,13 @@
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
     covered: false, later, flushCovered,   // speed 2026-11-03: the card detail covers the page (js/detail.js settled) · its deferred work
-    get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)
+    get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support grids (2026-10-28 · box 2026-10-29)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
     tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
     deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
     support: { init() {}, order() { return []; }, open() {} },   // replaced by js/support.js
-    grade: { init() {}, show() {}, panelHTML() { return ""; }, supPanelHTML() { return ""; }, mountSlabs() {} },   // replaced by js/grade.js
     home: { init() {} },   // replaced by js/home.js
-    traits: { init() {}, of() { return null; }, map() { return {}; }, power() { return 0; }, panelHTML() { return ""; }, mountPanel() {} },   // replaced by js/traits.js
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

@@ -15,7 +15,7 @@
     })();
   </script>
   <title>Card Battle Infinity — Tier List &amp; Card Database</title>
-  <meta name="description" content="Tier list, card stats for all 7 rarities, support rankings, meta decks and a card grader for the Roblox card battle game.">
+  <meta name="description" content="Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.">
   <meta name="theme-color" content="#0b1020">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow, max-image-preview:large">
@@ -60,8 +60,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@500;600;700&display=swap"></noscript>
   <!-- W3: screens wider than 1920px show the 1920px layout zoomed up (text, cards, buttons grow with the screen) · ≤ 1920 = normal layout -->
   <script>
     (function () {
@@ -74,18 +74,16 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=76">
-  <link rel="stylesheet" href="css/base.css?v=76">
-  <link rel="stylesheet" href="css/fx.css?v=76">
-  <link rel="stylesheet" href="css/cards.css?v=76">
-  <link rel="stylesheet" href="css/tier.css?v=76">
-  <link rel="stylesheet" href="css/deck.css?v=76">
-  <link rel="stylesheet" href="css/support.css?v=76">
-  <link rel="stylesheet" href="css/grade.css?v=76">
-  <link rel="stylesheet" href="css/tiermaker.css?v=76">
-  <link rel="stylesheet" href="css/detail.css?v=76">
-  <link rel="stylesheet" href="css/traits.css?v=76">
-  <link rel="stylesheet" href="css/home.css?v=76">
+  <link rel="stylesheet" href="css/tokens.css?v=77">
+  <link rel="stylesheet" href="css/base.css?v=77">
+  <link rel="stylesheet" href="css/fx.css?v=77">
+  <link rel="stylesheet" href="css/cards.css?v=77">
+  <link rel="stylesheet" href="css/tier.css?v=77">
+  <link rel="stylesheet" href="css/deck.css?v=77">
+  <link rel="stylesheet" href="css/support.css?v=77">
+  <link rel="stylesheet" href="css/tiermaker.css?v=77">
+  <link rel="stylesheet" href="css/detail.css?v=77">
+  <link rel="stylesheet" href="css/home.css?v=77">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -119,27 +117,10 @@
       <symbol id="i-potion" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M9.5 3h5M10.2 3v4.6L5.8 14a6.6 6.6 0 1 0 12.4 0l-4.4-6.4V3"/><path d="M6.6 14.5h10.8"/><circle cx="10.5" cy="17" r=".9" fill="currentColor"/><circle cx="13.7" cy="18.3" r=".6" fill="currentColor"/></g></symbol>
       <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H18v14H5.5c-.8 0-1.5.7-1.5 1.5z"/><path d="M4 19.5C4 20.3 4.7 21 5.5 21H19"/><path d="M8 8h6M8 11h4"/><path d="M15 4v5l1.5-1 1.5 1V4" stroke-width="1.2"/></g></symbol>
       <symbol id="i-lens" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3.6" stroke-width=".8" stroke-dasharray="1.6 1.6"/><path d="M14.5 14.5 20.5 20.5" stroke-width="2.6"/><path d="M7.5 7.8a3.4 3.4 0 0 1 2.5-1.3"/></g></symbol>
-      <symbol id="i-trait" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 7h10l3.5 4.5L12 21 3.5 11.5z"/><path d="M3.5 11.5h17M9.5 7 12 11.5 14.5 7M8 11.5 12 21l4-9.5" stroke-width="1"/><path d="M19 1.8v3.4M17.3 3.5h3.4M4.6 2.4v2.2M3.5 3.5h2.2" stroke-width="1.2"/></g></symbol>
       <!-- Card detail label icons (W6): Tier = i-crown · Passive / Skill = star · Strongest = sword · Weakness = cracked shield -->
       <symbol id="i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="m12 3.2 2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/><path d="M12 7.6v5.2M9.6 10.6h4.8" stroke-width="1"/></g></symbol>
       <symbol id="i-sword" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M19.5 3.5h1v1L10 15l-1-1z"/><path d="M17.8 5.2 9.5 13.5" stroke-width="1"/><path d="m6.2 12.8 5 5M8.2 15.8l-3.6 3.6"/><circle cx="4" cy="20" r="1.1" fill="currentColor"/></g></symbol>
       <symbol id="i-shield-broken" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3 4.5 5.8v5.6c0 4.6 3.1 8 7.5 9.6 4.4-1.6 7.5-5 7.5-9.6V5.8z"/><path d="m12.6 3.3-1.9 4.6 2.7 2.2-2.4 3.6 1.6 2.3-.9 3.4"/></g></symbol>
-      <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 4h12l4.5 5.5L12 21.5 1.5 9.5z" fill="currentColor" fill-opacity=".28" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M1.5 9.5h21M9 4l3 5.5L15 4M7 9.5l5 12 5-12" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/><path d="M7.4 6.2 5.6 8.6" style="stroke:var(--ink)" stroke-opacity=".8" stroke-width="1.2" stroke-linecap="round"/></symbol>
-      <!-- Trait icons (W5): one glyph per trait, drawn for this site (shapes like the game's, no game art) · tinted by the trait tier (--tc) via currentColor -->
-      <symbol id="tri-ascendant" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 6.6l1.2 3.1 3.3.2-2.6 2.1.9 3.2L12 13.4l-2.8 1.8.9-3.2-2.6-2.1 3.3-.2z" fill="currentColor" fill-opacity=".45"/><path d="M16.8 10.6c1.9-1.4 3.7-2.8 5.7-4.2-.5 2.9-2 4.9-4.4 6M17.4 13.3c1.4-.2 2.9-.8 3.9-1.8-.7 2.2-2.2 3.4-4.4 3.6M7.2 10.6C5.3 9.2 3.5 7.8 1.5 6.4c.5 2.9 2 4.9 4.4 6M6.6 13.3c-1.4-.2-2.9-.8-3.9-1.8.7 2.2 2.2 3.4 4.4 3.6" fill="none"/><path d="M12 2.6v2.2M10.2 18.4 12 20.6l1.8-2.2" fill="none" stroke-width="1.1"/></g></symbol>
-      <symbol id="tri-limitless" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-2-3-3.5-4-5.5-4a4 4 0 0 0 0 8c2 0 3.5-1 5.5-4s3.5-4 5.5-4a4 4 0 0 1 0 8c-2 0-3.5-1-5.5-4z" stroke-width="2"/><circle cx="6.5" cy="12" r="1.6" fill="currentColor" fill-opacity=".45" stroke="none"/><circle cx="17.5" cy="12" r="1.6" fill="currentColor" fill-opacity=".45" stroke="none"/><path d="M19.5 2.6v2.8M18.1 4h2.8" stroke-width="1.1"/></g></symbol>
-      <symbol id="tri-sage-mode" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M1.8 12C5 7.2 8.4 5.2 12 5.2s7 2 10.2 6.8C19 16.8 15.6 18.8 12 18.8S5 16.8 1.8 12z" fill="none"/><circle cx="12" cy="12" r="4" fill="currentColor" fill-opacity=".3"/><rect x="9.3" y="11.1" width="5.4" height="1.8" rx=".4" fill="currentColor"/><path d="M4.5 6.2 6 7.6M19.5 6.2 18 7.6" fill="none" stroke-linecap="round" stroke-width="1.1"/></g></symbol>
-      <symbol id="tri-awakened" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M4 14c2.6-3.6 5.2-5 8-5s5.4 1.4 8 5c-2.6 3.6-5.2 5-8 5s-5.4-1.4-8-5z" fill="none"/><circle cx="12" cy="14" r="2.6" fill="currentColor" fill-opacity=".45"/><circle cx="12" cy="14" r=".9" fill="currentColor" stroke="none"/><path d="M12 2.3v3.3M6 4.2l1.7 2.6M18 4.2l-1.7 2.6M1.8 8.6l2.8 1.3M22.2 8.6l-2.8 1.3" fill="none" stroke-width="1.3"/></g></symbol>
-      <symbol id="tri-undying" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M19 3.2c1.9 3.4.7 8-3.4 11.4-2.6 2.2-5.6 2.9-7.6 2.3-.5-3 .6-6.7 3.3-9.4 2.4-2.4 5-3.9 7.7-4.3z" fill="currentColor" fill-opacity=".28"/><path d="M4 21 17.6 5.4" fill="none"/><path d="M11.2 13.6l3.2-.3M12.6 10.8l3.4-.4M9.6 16.1l2.6.2" fill="none" stroke-width="1"/></g></symbol>
-      <symbol id="tri-prodigy" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M16 3l1.2 3.3 3.6.2-2.8 2.2 1 3.4L16 10.1l-3 2 1-3.4-2.8-2.2 3.6-.2z" fill="currentColor" fill-opacity=".45"/><path d="M3 21l7.6-7.6M2.4 16.4l5.2-4.2M7.6 21.6l4.2-5.2" fill="none"/><path d="M2.2 12.2h0M11.8 21.8h0" stroke-width="2"/></g></symbol>
-      <symbol id="tri-keen-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3" fill="currentColor" fill-opacity=".3"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/><circle cx="12" cy="12" r=".9" fill="currentColor" stroke="none"/></g></symbol>
-      <symbol id="tri-bloodlust" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.5S5.5 10 5.5 14.6a6.5 6.5 0 0 0 13 0C18.5 10 12 2.5 12 2.5z" fill="currentColor" fill-opacity=".35"/><path d="M8.7 15.2a3.3 3.3 0 0 0 2.6 3" fill="none" stroke-width="1.2"/><path d="M19.6 4.2c0 .8-.6 1.5-1.2 1.5s-1.2-.7-1.2-1.5S18.4 2 18.4 2s1.2 1.4 1.2 2.2z" fill="currentColor" stroke-width=".9"/></g></symbol>
-      <symbol id="tri-iron-body" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.6l7.5 3v6c0 4.4-3.2 7.9-7.5 9.9-4.3-2-7.5-5.5-7.5-9.9v-6z" fill="currentColor" fill-opacity=".25"/><path d="M12 2.6v18.9M4.5 10.6h15" fill="none" stroke-width=".9"/></g></symbol>
-      <symbol id="tri-spirited" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2c1 4 5.6 6 5.6 11.6a5.6 5.6 0 0 1-11.2 0c0-3 1.8-4.6 2.6-6.6 1 2 1.6 3 2.6 3.6C11.6 7.6 11 5 12 2z" fill="currentColor" fill-opacity=".25"/><path d="M12 21a2.8 2.8 0 0 1-2.8-2.8c0-2 1.6-2.8 2.4-4.8 1.4 1.6 3.2 2.7 3.2 4.8A2.8 2.8 0 0 1 12 21z" fill="currentColor" fill-opacity=".6"/></g></symbol>
-      <symbol id="tri-nimble" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M3 18.5C6 10.5 12 5.2 21.2 4.2c-1.5 3-3.5 4.6-6 5.6 2.5.1 4-.3 5-.7-1.5 2.7-4 4.2-7 4.7 2 .3 3.5.1 4.5-.2-2 2.7-5.5 4.3-9.5 4.3-2 0-3.5.3-5.2.6z" fill="currentColor" fill-opacity=".25"/><path d="M6.5 15.2c3.2-3.8 6.8-6.6 11-8.6" fill="none" stroke-width="1"/></g></symbol>
-      <symbol id="tri-sharp" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M20.6 3.4l-.8 4.2-9.6 9.6-3.4-3.4 9.6-9.6z" fill="currentColor" fill-opacity=".3"/><path d="M18.6 5.4 9 15" fill="none" stroke-width=".9"/><path d="M4.8 12.4l6.8 6.8M7.2 16.8l-3 3" fill="none" stroke-width="1.8"/><circle cx="3.4" cy="20.6" r="1.1" fill="currentColor"/></g></symbol>
-      <symbol id="tri-tough" viewBox="0 0 24 24"><g stroke="currentColor" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2l8.5 3v6.6c0 5-3.5 8.6-8.5 10.6-5-2-8.5-5.6-8.5-10.6V5z" fill="none" stroke-width="1.8"/><path d="M12 5.4l5.5 2v4.3c0 3.3-2.3 5.8-5.5 7.2-3.2-1.4-5.5-3.9-5.5-7.2V7.4z" fill="currentColor" fill-opacity=".35" stroke-width="1.3"/><circle cx="6" cy="6.9" r=".7" fill="currentColor" stroke="none"/><circle cx="18" cy="6.9" r=".7" fill="currentColor" stroke="none"/></g></symbol>
-      <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></g></symbol>
       <symbol id="i-flourish" viewBox="0 0 60 20"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M30 4l5 6-5 6-5-6z" fill="currentColor" fill-opacity=".25"/><path d="M25 10c-6 0-8-5-14-5-4 0-6 3-4 5M35 10c6 0 8-5 14-5 4 0 6 3 4 5"/><path d="M25 10C19 10 17 15 11 15c-4 0-6-3-4-5M35 10c6 0 8 5 14 5 4 0 6-3 4-5" stroke-width=".7"/></g></symbol>
       <symbol id="i-crest" viewBox="0 0 120 128">
         <circle cx="60" cy="64" r="56" fill="#121830" stroke="#d8b46a" stroke-width="2.5"/>
@@ -187,9 +168,6 @@
         <span id="updated" class="brand__date" data-updated>Loading…</span>
       </span>
     </a>
-    <button class="lang js-lang fx-press" type="button" aria-label="Switch language" hidden>
-      <span class="lang__code" aria-hidden="true">ไทย</span>
-    </button>
   </header>
 
   <nav class="nav glass" aria-label="Main">
@@ -197,19 +175,14 @@
       <svg class="brand__crest" aria-hidden="true"><use href="#i-crest"/></svg>
       <span class="brand__name">Card Battle Infinity</span>
     </a>
-    <ul class="nav__list" style="--n:6">
+    <ul class="nav__list" style="--n:4">
       <li aria-hidden="true" class="nav__indicator"></li>
       <li><button class="nav__btn fx-press" data-page="home" type="button"><svg aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></button></li>
       <li><button class="nav__btn fx-press" data-page="tier" type="button"><svg aria-hidden="true"><use href="#i-crown"/></svg><span>Tier List</span></button></li>
       <li><button class="nav__btn fx-press" data-page="cards" type="button"><svg aria-hidden="true"><use href="#i-fan"/></svg><span>Cards</span></button></li>
       <li><button class="nav__btn fx-press" data-page="deck" type="button"><svg aria-hidden="true"><use href="#i-book"/></svg><span>Deck</span></button></li>
-      <li><button class="nav__btn fx-press" data-page="grade" type="button"><svg aria-hidden="true"><use href="#i-lens"/></svg><span>Grade</span></button></li>
-      <li><button class="nav__btn fx-press" data-page="traits" type="button"><svg aria-hidden="true"><use href="#i-trait"/></svg><span>Traits</span></button></li>
     </ul>
     <div class="nav__foot">
-      <button class="lang js-lang fx-press" type="button" aria-label="Switch language" hidden>
-        <svg aria-hidden="true"><use href="#i-globe"/></svg><span class="lang__label">ภาษาไทย</span>
-      </button>
       <span class="brand__date" data-updated>Loading…</span>
     </div>
   </nav>
@@ -496,7 +469,7 @@
               <button id="dk-redo" class="iconbtn glass fx-press" type="button" data-act="redo" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"/></svg></button>
               <button class="iconbtn glass fx-press" type="button" data-act="menu" aria-label="Deck options"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
             </div>
-            <!-- 2026-11-02: no mode / deck rarity / score ring here any more: tap a card = its slot sheet (rarity, grade, trait) -->
+            <!-- 2026-11-02: no mode / deck rarity / score ring here any more: tap a card = its slot sheet (rarity) -->
             <!-- the deck's note, shown on its image (farming time …): tap = edit -->
             <button id="dk-note" class="dk-note fx-press" type="button" data-act="note"></button>
             <p id="dk-hint" class="tm-hint"></p>
@@ -675,105 +648,6 @@
       </div>
     </section>
 
-    <!-- Grade: card picker + #grade/<id>/<grades> grader, both in js/grade.js -->
-    <section id="page-grade" class="page" hidden aria-labelledby="grade-title">
-      <div id="grade-list-view">
-        <div class="page__head">
-          <p class="page__eyebrow">The Appraiser</p>
-          <h1 id="grade-title" class="page__title">Card Grader</h1>
-          <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-          <p class="page__lead">Pick a card and set its Basic Attack, Defense, Status Damage and HP grades from 1 to 10. Each grade adds +2.5% to that stat. Your grades are saved on this device and can be shared as a link.</p>
-        </div>
-
-        <div id="grade-tools" class="tools" hidden>
-          <label class="field field--search">
-            <span class="sr-only">Search cards</span>
-            <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-            <input id="grade-search" type="search" placeholder="Search name or series" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
-          </label>
-          <div class="chip-row">
-            <button id="grade-graded" class="chip glass fx-press" type="button" aria-pressed="false">My graded cards <span class="chip__n" data-n>0</span></button>
-          </div>
-          <p class="tools__count"><span id="grade-count" aria-live="polite"></span><button id="grade-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
-        </div>
-
-        <div id="grade-grid" class="card-grid grade-grid" data-no-detail></div>
-        <nav id="grade-pager" class="pager" aria-label="Card pages" hidden></nav>
-
-        <div id="grade-none" class="panel glass empty" hidden>
-          <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <h2 class="empty__title">No cards match</h2>
-          <p id="grade-none-text" class="empty__text">Try a different search or clear the filters.</p>
-          <button id="grade-none-reset" class="chip glass fx-press empty__btn" type="button">Reset filters</button>
-        </div>
-
-        <div id="grade-empty" class="panel glass empty" hidden>
-          <svg class="empty__icon" aria-hidden="true"><use href="#i-lens"/></svg>
-          <h2 class="empty__title">No cards to grade yet</h2>
-          <p class="empty__text">The card library is being filled in. Once cards are added you can grade them here.</p>
-        </div>
-      </div>
-
-      <div id="grade-detail-view" class="gdetail" hidden></div>
-    </section>
-
-    <!-- Traits (W5): search + card grid like the Grade page | the chosen card's Trait Shop (js/traits.js) -->
-    <section id="page-traits" class="page" hidden aria-labelledby="traits-title">
-      <div class="page__head">
-        <p class="page__eyebrow">The Bloodline</p>
-        <h1 id="traits-title" class="page__title">Traits</h1>
-        <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead">Pick a card, then tap + to open its Trait Shop: set the trait you rolled and see its final ATK and HP. One roll costs 5 Shards, every copy of a card shares the same trait, and traits never change a card's Overall score or tier.</p>
-      </div>
-
-      <div id="trw" class="trw">
-        <div class="trw__pick">
-          <div id="trw-tools" class="tools" hidden>
-            <label class="field field--search">
-              <span class="sr-only">Search cards</span>
-              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-              <input id="trw-search" type="search" placeholder="Search name or series" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
-            </label>
-            <div class="chip-row">
-              <button id="trw-mine" class="chip glass fx-press" type="button" aria-pressed="false">Cards with a trait <span class="chip__n" data-n>0</span></button>
-            </div>
-            <p class="tools__count"><span id="trw-count" aria-live="polite"></span><button id="trw-reset" class="linkbtn" type="button" hidden>Reset filters</button></p>
-          </div>
-
-          <div id="trw-grid" class="card-grid grade-grid trw__grid" data-no-detail><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
-          <nav id="trw-pager" class="pager" aria-label="Card pages" hidden></nav>
-
-          <div id="trw-none" class="panel glass empty" hidden>
-            <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-            <h2 class="empty__title">No cards match</h2>
-            <p id="trw-none-text" class="empty__text">Try a different search or clear the filters.</p>
-            <button id="trw-none-reset" class="chip glass fx-press empty__btn" type="button">Reset filters</button>
-          </div>
-
-          <div id="trw-empty" class="panel glass empty" hidden>
-            <svg class="empty__icon" aria-hidden="true"><use href="#i-fan"/></svg>
-            <h2 class="empty__title">No cards yet</h2>
-            <p class="empty__text">Once cards are added you can set their traits here.</p>
-          </div>
-        </div>
-
-        <div id="trw-shop" class="trw__shop">
-          <div class="trs__backbar">
-            <button id="trs-back" class="detail__back fx-press" type="button" aria-label="Back to all cards">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-              <span>All cards</span>
-            </button>
-          </div>
-          <div id="trs-head" class="panel glass trs" aria-live="polite"><div class="skeleton trs__skel"></div></div>
-        </div>
-      </div>
-
-      <div id="tr-empty" class="panel glass empty" hidden>
-        <svg class="empty__icon" aria-hidden="true"><use href="#i-trait"/></svg>
-        <h2 class="empty__title">No traits yet</h2>
-        <p class="empty__text">The Trait Shop list didn't load. Check your connection and refresh the page.</p>
-      </div>
-    </section>
   </main>
 
   <!-- Card detail: the "Black Sun" scene (opens over any page, see js/detail.js + css/detail.css) -->
@@ -885,31 +759,24 @@
           <button class="seg__btn" type="button" role="tab" id="bs-tab-overview" data-tab="overview" aria-controls="bs-pane-overview" aria-selected="true">Overview</button>
           <button class="seg__btn" type="button" role="tab" id="bs-tab-score" data-tab="score" aria-controls="bs-pane-score" aria-selected="false" tabindex="-1">Score</button>
           <button class="seg__btn" type="button" role="tab" id="bs-tab-team" data-tab="team" aria-controls="bs-pane-team" aria-selected="false" tabindex="-1">Team</button>
-          <button class="seg__btn" type="button" role="tab" id="bs-tab-mine" data-tab="mine" aria-controls="bs-pane-mine" aria-selected="false" tabindex="-1">My card</button>
         </div>
       </div>
       <div class="bs-sheet__body" id="bs-sheetBody"></div>
     </section>
   </div>
 
-  <script src="js/i18n.js?v=76"></script>
-  <script src="js/i18n-th-ui.js?v=76"></script>
-  <script src="js/i18n-th-sk1.js?v=76"></script>
-  <script src="js/i18n-th-sk2.js?v=76"></script>
-  <script src="js/fx.js?v=76"></script>
-  <script src="js/app.js?v=76"></script>
-  <script src="js/deckbuff.js?v=76"></script>
-  <script src="js/teamscore.js?v=76"></script>
-  <script src="js/share.js?v=76"></script>
-  <script src="js/cards.js?v=76"></script>
-  <script src="js/detail.js?v=76"></script>
-  <script src="js/tier.js?v=76"></script>
-  <script src="js/deck.js?v=76"></script>
-  <script src="js/support.js?v=76"></script>
-  <script src="js/grade.js?v=76"></script>
-  <script src="js/traits.js?v=76"></script>
-  <script src="js/home.js?v=76"></script>
-  <script src="js/tiermaker.js?v=76"></script>
+  <script src="js/fx.js?v=77"></script>
+  <script src="js/app.js?v=77"></script>
+  <script src="js/deckbuff.js?v=77"></script>
+  <script src="js/teamscore.js?v=77"></script>
+  <script src="js/share.js?v=77"></script>
+  <script src="js/cards.js?v=77"></script>
+  <script src="js/detail.js?v=77"></script>
+  <script src="js/tier.js?v=77"></script>
+  <script src="js/deck.js?v=77"></script>
+  <script src="js/support.js?v=77"></script>
+  <script src="js/home.js?v=77"></script>
+  <script src="js/tiermaker.js?v=77"></script>
 </body>
 </html>
 

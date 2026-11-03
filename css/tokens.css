@@ -54,17 +54,6 @@
   --r-godlike: #fffaf0;  --r-godlike-2: #e9c877;   /* 2026-10-28: from the game's Godlike / Godly cards */
   --r-godly: #f06a92;    --r-godly-2: #ffcf6a;
 
-  /* ---- Trait tiers (Trait Shop, js/traits.js): main colour + dark partner for the card gradient ---- */
-  --tr-common: #a9afba;     --tr-common-2: #3b404b;
-  --tr-uncommon: #7cc98a;   --tr-uncommon-2: #1d4628;
-  --tr-rare: #64acdf;       --tr-rare-2: #173a5c;
-  --tr-epic: #b58ae6;       --tr-epic-2: #3e2463;
-  --tr-legendary: #efb54e;  --tr-legendary-2: #6b4410;
-  --tr-mythic: #f0704e;     --tr-mythic-2: #6a1d10;
-  --tr-divine: #fff2cf;     --tr-divine-2: #b58a3c;
-  --tr-secret: #ff4d68;     --tr-secret-2: #12030a;
-  --tr-none: #7d7563;       --tr-none-2: #1a2238;
-
   /* ---- Game card (step 13, §3.5): the in-game look drawn over the cleaned picture (css/fx.css .gc, js/share.js gcSpec) ----
      Rarity frames above Normal are guesses until there are in-game pictures (owner's answer §3.5.4 item 2). */
   --gc-font-num: "Oswald", "TeX Gyre Heros Cn", "Arial Narrow", "Roboto Condensed", sans-serif;   /* HP / ATK */
@@ -164,17 +153,6 @@
   --rd-name-godly: linear-gradient(90deg, #f7b36f, #e06e83 35%, #f4c49b 65%, #e98a74, #f7b36f);
   --rd-pill-godly: linear-gradient(90deg, #e2507f, #f19a62, #ffd56e);   --rd-pill-ink-godly: #140608;
 
-  /* ---- Graded case (.slab, step 13 · card detail sheet + Grade page, css/grade.css) ---- */
-  --slab-plastic: linear-gradient(155deg, rgba(255, 255, 255, .26), rgba(255, 255, 255, .07) 32%, rgba(255, 255, 255, .03) 60%, rgba(255, 255, 255, .14));
-  --slab-edge: rgba(255, 255, 255, .5);
-  --slab-label: linear-gradient(180deg, #fbf8f0, #efe8d7);   /* ivory paper */
-  --slab-ink: #1c1914;
-  --slab-ink-2: #3b352a;
-  --slab-ink-3: #6a5a3a;
-  --slab-atk: #b5291f;
-  --slab-hp: #2e7d33;
-  --slab-g10: linear-gradient(90deg, #d83a5a, #e08a2a, #b8a020, #3aa060, #2f86c0, #6a52d0, #c040a0);   /* grade 10 number */
-
   /* ---- Signal colors (stats, strengths / weaknesses) ---- */
   --atk: #e99a7f;
   --hp: #94d4a9;
@@ -199,16 +177,8 @@
   --t-x-violet: #b08ad8;
   --t-x-white: #e9e2d0;
 
-  /* ---- Grade palette (step 6) · 1–3 bronze · 4–6 silver · 7–9 gold · 10 rainbow ---- */
-  --g-bronze: #c98a52;
-  --g-bronze-2: #6e3f1c;
-  --g-silver: #e5e9f1;
-  --g-silver-2: #848da2;
-  --g-gold: #f0cf6e;
-  --g-gold-2: #a8791a;
-  --g-rainbow: var(--r-rainbow);
-  --g-rainbow-line: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0);   /* grade-10 bar, spread across the 10 segments */
-  --g-empty: rgba(216, 180, 106, 0.14);   /* unfilled bar segment / no grade yet */
+  /* ---- Rainbow line (was the grade-10 bar · Grade removed 2026-11-03) · the Deck score's "Perfect" label ---- */
+  --g-rainbow-line: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0);
 
   /* ---- Team score bands (step 11 · Deck page) · 1–49 red · 50–79 yellow · 80–99 green · 100 rainbow ---- */
   --score-bad: #e0687a;

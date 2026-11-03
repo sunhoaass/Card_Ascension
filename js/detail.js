@@ -19,7 +19,7 @@
    · Swipe left / right (outside the card), ‹ › or the arrow keys = the next card of the list it was opened from
      (that list rides in history.state.cl, see CBI.openCard). The next and previous cards are built ahead.
    · Details (W6) = phone: full screen · ≥ 768px: a full-height panel on the right (card + scene stay on the left)
-     · sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team / My card
+     · sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team
    · Entrance (owner 2026-11-03 · was dust): the card flies out of the tapped tile · grows out of the wheel · slides in on a swipe.
    · W7 scene (round 2, after the owner's clip of the game's opening): the owner's cut frames (images/silver) — sky with
      the black sun + silver wings + blue roots + light fall, gold flecks, the dark city ⇄ the crystal palace + its dust,
@@ -31,7 +31,7 @@
      screens use the owner's portrait frames (images/silver/*-p.webp) stacked: sky on top, the city / palace below
    · Support cards (owner 2026-10-28) open here too, same scene / labels / Details / case / swipe: the card shows its
      ability values (they grow with the level) instead of ATK / HP · labels Tier / Effect / Avoid / Best with ·
-     ring = Value · Details: Overview (effect + values) / Score (Value) / Team (cards, decks) / My card (the case)
+     ring = Value · Details: Overview (effect + values) / Score (Value) / Team (cards, decks)
    Rules (PROGRESS §4.1, §11): rAF only while something moves (intro ~2.6 s, card physics, parallax) ·
    per-frame changes = paused Web Animations, never style.transform · auras only on screen (.is-live).
    ========================================================== */
@@ -610,7 +610,7 @@
   function abilities(card) {
     return [["Passive", card.passive], ["Skill", card.skill]].map(([kind, a]) => {
       a = a || {};
-      const n = String(a.name || "").trim(), d = I18N.desc(String(a.desc || "").trim());
+      const n = String(a.name || "").trim(), d = String(a.desc || "").trim();
       return n || d ? { kind, n, d } : null;
     }).filter(Boolean);
   }
@@ -1139,7 +1139,7 @@
 
   /* ==========================================================
      8. Details (W6): phone = full screen · ≥ 768 = a full-height panel on the right (the card + scene stay on the left)
-        sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team / My card
+        sticky head (picture, name, tier, level, obtain + level dots) · tabs Overview / Score / Team
      ========================================================== */
   // Passive + Skill (15 % + 15 %) = one "Passive / Skill" row of 30 % (the card has one ability slot) · Overall unchanged
   const SCORE_ROWS = [["atk", "ATK", 12.5], ["hp", "HP", 12.5], ["ability", "Passive / Skill", 30], ["matchup", "Matchup", 25], ["team", "Team", 20]];
@@ -1153,7 +1153,7 @@
     if (/^\d+\s*[-–]\s*\d+$/.test(t)) return "Slots " + t.replace(/\s*[-–]\s*/, "–");
     return t;
   };
-  const TABS = ["overview", "score", "team", "mine"];
+  const TABS = ["overview", "score", "team"];   // "mine" (My card: Trait + Grade) removed 2026-11-03 · docs/archive-grade-traits.md
   const modesOf = (card) => (card.modes && typeof card.modes === "object" ? Object.entries(card.modes) : [])
     .map(([id, v]) => [id, Number(v)]).filter(([id, v]) => liveMode(id) && Number.isFinite(v)).sort((a, b) => b[1] - a[1]);
   const bar = (label, v, i, extra = "") => `
@@ -1162,7 +1162,7 @@
           <span class="score__num" data-value="${Math.round(pct(v))}">${Math.round(pct(v))}</span>
           <span class="score__track"><i></i></span>
         </div>`;
-  // support (2026-10-28): the same four tabs · Overview = effect + its values at this level · Score = Value · Team = cards / decks
+  // support (2026-10-28): the same three tabs · Overview = effect + its values at this level · Score = Value · Team = cards / decks
   const SUP_ROWS = [["effect", "Effect power", 40], ["reliability", "Reliability", 20], ["flexibility", "Flexibility", 20], ["synergy", "Peak synergy", 20]];
   function supSheetHTML(sp) {
     const ranked = C.isRanked(sp), sc = sp.scores || {}, e = C.support.effect(sp);
@@ -1215,7 +1215,7 @@
           <h3 class="dpanel__title" id="d-t-modes">Modes</h3>
           ${modes.length ? `<div class="scores">${modes.map(([id, v], i) => bar(esc(modeName(id)), v, i)).join("")}</div>` : `<p class="muted">Not analyzed yet</p>`}
         </section>`;
-    return pane("overview", overview) + pane("score", score) + pane("team", teamHTML) + pane("mine", C.grade.supPanelHTML(sp));
+    return pane("overview", overview) + pane("score", score) + pane("team", teamHTML);
   }
   function sheetHTML(card) {
     if (isSup(card)) return supSheetHTML(card);
@@ -1289,8 +1289,7 @@
           <h3 class="dpanel__title" id="d-t-modes">Modes</h3>
           ${modes.length ? `<div class="scores">${modes.map(([id, v], i) => bar(esc(modeName(id)), v, i)).join("")}</div>` : `<p class="muted">Not analyzed yet</p>`}
         </section>`;
-    return pane("overview", overview) + pane("score", score) + pane("team", teamHTML) +
-      pane("mine", C.traits.panelHTML(card) + C.grade.panelHTML(card));
+    return pane("overview", overview) + pane("score", score) + pane("team", teamHTML);
   }
   const q = (k) => el.sheetBody.querySelector(`[data-d="${k}"]`);
   const setNum = (n, v, fmt, anim) => { if (!n) return; if (anim) FX.countTo(n, v, { format: fmt }); else { n.dataset.value = v; n.textContent = fmt(v); } };
@@ -1338,8 +1337,6 @@
     el.shThumb.innerHTML = card.image ? C.artImg(card.image, true) : C.placeholderArt(card);
     if (card.image) C.bindArt(el.shThumb, card);
     el.sheetBody.innerHTML = sheetHTML(card);
-    C.grade.mountSlabs(el.sheetBody);   // step 13: the graded case in the Grade panel (only when this card has grades)
-    C.traits.mountPanel(el.sheetBody, card);   // Trait panel: recommended trait + the user's trait + boosted stats
     const rows = isSup(card) ? [["#d-with", card.bestWith], ["#d-avoid", card.avoidWith]] : [["#d-beats", card.beats], ["#d-loses", card.losesTo], ["#d-with", card.team && card.team.bestWith]];
     rows.forEach(([sel, ids]) => {
       const rowEl = $(sel, el.sheetBody);
@@ -1436,7 +1433,7 @@
       const k = { ArrowRight: 1, ArrowLeft: -1, Home: -9, End: 9 }[e.key];
       if (!k) return;
       e.preventDefault(); e.stopPropagation();
-      const i = clamp(Math.abs(k) === 9 ? (k > 0 ? 3 : 0) : TABS.indexOf(tab) + k, 0, 3);
+      const i = clamp(Math.abs(k) === 9 ? (k > 0 ? TABS.length - 1 : 0) : TABS.indexOf(tab) + k, 0, TABS.length - 1);
       setTab(TABS[i], { animate: true });
       el.tabs.querySelector(`[data-tab="${TABS[i]}"]`).focus();
     });
@@ -1542,7 +1539,7 @@
     glowA = el.glow.animate([{ opacity: 0, transform: "scale(.94)" }, { opacity: 0.85, transform: "scale(1.02)", offset: 0.35 }, { opacity: 0, transform: "scale(1.08)" }],
       { duration: 640, delay: WAVE_HIT - 80, easing: "ease-out" });
   }
-  // the rarity changed anywhere (dots here, the Traits page, the Cards page…): update the scene
+  // the rarity changed anywhere (dots here, the Cards page…): update the scene
   let faceTimer = 0;
   function onRarity() {
     const hit = isOpen && ready && !rm() && !el.root.hidden;
@@ -2234,7 +2231,7 @@
 
   /* ---------- tapping any card on the site opens this ---------- */
   function activate(n) {
-    // [data-no-detail]: places that use cards for something else (Grade picker + grader hero, Tier Maker, deck editor)
+    // [data-no-detail]: places that use cards for something else (Tier Maker, deck editor)
     if (n.closest(".bs-wrap, [data-no-detail]") || !n.closest(".main, #detail")) return;
     if (isOpen && cur && cur.id === n.dataset.id) return;
     C.openCard(n.dataset.id, n);

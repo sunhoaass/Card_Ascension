@@ -4,7 +4,7 @@
                       looks the same on every device · rarity frames, watermark, wide lists wrap to several lines
    · Share link     — the list is packed into the URL hash (deflate-raw through CompressionStream, then base64url).
                       Nothing is uploaded. #tier/s/<data> opens a view-only copy with a "Save a copy" button
-   · Backup         — Export / Import everything as one .json file (tier lists, grades, decks)
+   · Backup         — Export / Import everything as one .json file (tier lists, decks)
    Loaded after app.js and before the page scripts. The dialogs use C.dialog (made in js/tiermaker.js).
 
    API (window.CBI.share)
@@ -392,7 +392,7 @@
     }
     // ability text: words (numbers bold gold) wrapped in 90u, font from 5u down until it fits
     const words = [];
-    I18N.desc(sup && C.mutText ? C.mutText(item, ab.desc, rarity) : String(ab.desc || "")).split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).forEach((part, i) => {
+    String((sup && C.mutText ? C.mutText(item, ab.desc, rarity) : ab.desc) || "").split(/(\{\d\}%?|[+-]?\d+(?:[.,]\d+)*(?:%|x)?(?![\dA-Za-z]))/).forEach((part, i) => {
       if (i % 2) { const m = /^\{(\d)\}(%?)$/.exec(part); words.push([m && sup ? C.supValAt(item, +m[1], rarity) + m[2] : part, true, true]); return; }
       part.split(/(\s+)/).forEach((p) => { if (/^\s+$/.test(p)) words.push([" ", false, false]); else if (p) words.push([p, false, true]); });
     });
@@ -994,16 +994,17 @@
      Image: a deck (step 10). Four card slots over four support slots (the game's decks since 2026-10-30, was five),
      drawn with the same card / frame / backdrop code.
      Owner 2026-11-02: only the deck's name as words (no "CARD BATTLE INFINITY", no "Deck · mode · rarity · 4/4 …" line,
-     no footer, no "4 / 4" counts) · SLOT 1–4 and the CARDS / SUPPORT headings stay · each card's trait under it ·
-     ATK / HP with the deck's buffs + trait + grades (js/deckbuff.js · the game's HP green / ATK red, owner 2026-11-02). The tier list image is unchanged.
+     no footer, no "4 / 4" counts) · SLOT 1–4 and the CARDS / SUPPORT headings stay ·
+     ATK / HP with the deck's buffs (js/deckbuff.js · the game's HP green / ATK red, owner 2026-11-02). The tier list image is unchanged.
      Owner 2026-11-02 "rarity per slot": every card and support is drawn at its own slot's rarity (its rarity pill on the card,
      like the cards on the site) · the one rarity ribbon top right (paintRibbon) is gone from the deck image.
      Owner 2026-11-02: spec.note (the user's own words, e.g. farming time) = a gold-edged box, wrapped · at the bottom of the
      image (owner 2026-11-02 round 2, was under the name).
      Owner 2026-11-02 round 2: each card's / support's name over it (one size for every slot, wrapped, was SLOT 1–4) and its
-     rarity pill under it (the card's own rarity pill colours · above the trait), in both panels.
+     rarity pill under it (the card's own rarity pill colours), in both panels. (The trait pill under each card went with the
+     Traits system 2026-11-03 · docs/archive-grade-traits.md)
      spec = { id, title, note?, mode, rarity: name (fallback), cards: [id|null x4], support: [id|null x4],
-              cardRarity: [name x4], supRarity: [name x4], traits: [trait id|null x4], nums: [{ atk, hp }|null x4] }
+              cardRarity: [name x4], supRarity: [name x4], nums: [{ atk, hp }|null x4] }
      ========================================================== */
   const DECK_SLOTS = 4;
   const NOTE = { FS: 30, LH: 40, PAD: 18, BAR: 8, GAP: 18, LINES: 6 };
@@ -1019,7 +1020,7 @@
     if (out.length > NOTE.LINES) { out.length = NOTE.LINES; out[NOTE.LINES - 1] = fitText(mc, out[NOTE.LINES - 1] + " …", maxW); }
     return out;
   }
-  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 253, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10,
+  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 253, PANEL_GAP: 14, R: 16,
     NAME_FS: 17, NAME_LH: 21, NAME_LINES: 2, NAME_GAP: 8, RAR: 26, RAR_GAP: 10 };
   // a slot's name over its card: one size for every slot, wrapped to NAME_LINES (the last line squeezed if it is longer)
   function slotName(ctx, name, maxW, font) {
@@ -1059,34 +1060,6 @@
     ctx.textAlign = "left";
   }
 
-  // a trait's icon (the <symbol> in index.html, as the Deck page's .dk-trait shows it) as a picture in its tier colour
-  function traitIcon(t, color) {
-    const sym = document.getElementById("tri-" + t.id) || document.getElementById("i-gem");
-    if (!sym) return Promise.resolve(null);
-    const inner = sym.innerHTML.replace(/var\(--ink\)/g, cssVar("--ink") || "#fff");
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${sym.getAttribute("viewBox") || "0 0 24 24"}" width="96" height="96" color="${color}" style="color:${color}">${inner}</svg>`;
-    return loadImg("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg));
-  }
-  // the trait pill under a card: same look as .dk-trait in css/traits.css (tier colour edge, dark tier fill, icon + name)
-  function drawTrait(ctx, cx, y, w, h, t, icon, pal) {
-    const tier = String(t.tier || "none").toLowerCase();
-    const tc = cssVar("--tr-" + tier) || pal.rift, tc2 = cssVar("--tr-" + tier + "-2") || pal.void;
-    const x = cx - w / 2;
-    ctx.save();
-    roundRect(ctx, x, y, w, h, h / 2);
-    const g = ctx.createLinearGradient(0, y, 0, y + h);
-    g.addColorStop(0, mix(tc2, pal.void, 0.7)); g.addColorStop(1, pal.void);
-    ctx.fillStyle = g; ctx.fill();
-    ctx.globalAlpha = 0.75; ctx.lineWidth = 1.5; ctx.strokeStyle = tc; ctx.stroke(); ctx.globalAlpha = 1;
-    ctx.font = `600 15px ${pal.body}`; ctx.textBaseline = "middle"; ctx.textAlign = "left";
-    const is = 18, gap = 7, name = fitText(ctx, t.name, w - 24 - (icon ? is + gap : 0));
-    const tw = ctx.measureText(name).width, all = tw + (icon ? is + gap : 0);
-    let tx = cx - all / 2;
-    if (icon) { ctx.drawImage(icon, tx, y + (h - is) / 2, is, is); tx += is + gap; }
-    ctx.fillStyle = pal.ink; ctx.fillText(name, tx, y + h / 2 + 1);
-    ctx.restore();
-  }
-
   async function deckImage(spec, { scale: want = 2 } = {}) {
     const B = DECKIMG;
     await fontsReady();
@@ -1099,15 +1072,11 @@
     // each slot's own rarity (support too: the game card, as big as the cards) · missing = the deck's
     const rOf = (a, i) => (Array.isArray(a) && typeof a[i] === "string" && a[i] ? a[i] : rarity);
     const frameAt = (a, i) => frameSpec(rOf(a, i));
-    const traitBy = (C.traits && C.traits.byId) || (() => null);
-    const traits = cards.map((it, i) => (it && !it.missing && Array.isArray(spec.traits) ? traitBy(spec.traits[i]) : null));
     const nums = cards.map((it, i) => (it && !it.missing && Array.isArray(spec.nums) && spec.nums[i] ? spec.nums[i] : null));
-    const anyTrait = traits.some(Boolean);
 
-    const TR = anyTrait ? B.TRAIT_GAP + B.TRAIT : 0;
-    // over each card: its name (NAME_LINES lines tall in every slot) · under it: its rarity pill, then the trait (cards)
+    // over each card: its name (NAME_LINES lines tall in every slot) · under it: its rarity pill
     const NM = B.NAME_LINES * B.NAME_LH + B.NAME_GAP, RR = B.RAR_GAP + B.RAR;
-    const P1 = 14 + 22 + NM + B.CH + RR + TR + 18, P2 = 14 + 22 + NM + B.CH + RR + 18;
+    const P1 = 14 + 22 + NM + B.CH + RR + 18, P2 = 14 + 22 + NM + B.CH + RR + 18;
     // the deck's note (owner 2026-11-02: farming time …, written by the user): a clear box under the name, wrapped
     const noteLines = deckNoteLines(spec.note, B.W - B.PAD * 2 - NOTE.PAD * 2 - NOTE.BAR);
     const NH = noteLines.length ? noteLines.length * NOTE.LH + NOTE.PAD * 2 + NOTE.GAP : 0;
@@ -1124,11 +1093,7 @@
     const arts = new Map();
     const srcs = new Set();
     [...cards, ...sups].forEach((it) => { if (it && !it.missing && it.image) srcs.add(it.image); });
-    const icons = new Map();
-    await Promise.all([
-      ...[...srcs].map(async (s) => arts.set(s, await loadImg(s))),
-      ...[...new Set(traits.filter(Boolean))].map(async (t) => icons.set(t.id, await traitIcon(t, cssVar("--tr-" + String(t.tier || "none").toLowerCase()) || pal.rift))),
-    ]);
+    await Promise.all([...srcs].map(async (s) => arts.set(s, await loadImg(s))));
 
     const canvas = document.createElement("canvas");
     canvas.width = Math.round(B.W * k); canvas.height = Math.round(H * k);
@@ -1187,7 +1152,6 @@
       if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frameAt(spec.cardRarity, i), it.image ? arts.get(it.image) : null, k, pal, nums[i]);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
       label(it, i, cy, rOf(spec.cardRarity, i));
-      if (traits[i]) drawTrait(ctx, colX(i), cy + B.CH + RR + B.TRAIT_GAP, B.CW, B.TRAIT, traits[i], icons.get(traits[i].id), pal);
     });
     y += P1 + B.PANEL_GAP;
     panel(y, P2, "Support");
@@ -1358,7 +1322,7 @@
     const have = snap.filter((s) => s.n > 0);
     const res = await C.dialog({
       title: "Backup & restore",
-      html: `<p class="tm-dlg__text">Save your tier lists, grades and decks to a file you keep, or restore them from one. Nothing is uploaded; it all stays on your device.</p>
+      html: `<p class="tm-dlg__text">Save your tier lists and decks to a file you keep, or restore them from one. Nothing is uploaded; it all stays on your device.</p>
         <p class="tm-dlg__sum">${have.length ? "On this device: " + esc(have.map((s) => s.p.noun(s.n)).join(" · ")) : "Nothing saved on this device yet."}</p>
         <div class="tm-dlg__pair">
           <button type="button" class="tm-btn tm-btn--primary fx-press" data-dlg="export"${have.length ? "" : " disabled"}>${ICON.download}Export</button>

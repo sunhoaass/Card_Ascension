@@ -116,7 +116,7 @@
    Card detail
    ========================================================== */
 /* The card detail itself is the "Black Sun" scene (css/detail.css, step 12).
-   The pieces below are shared: the support detail page (js/support.js), the grader (js/grade.js)
+   The pieces below are shared: the support detail page (js/support.js)
    and the Details sheet of the scene all use them. */
 .detail__back {
   display: inline-flex; align-items: center; gap: 2px;

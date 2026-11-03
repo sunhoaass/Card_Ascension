@@ -152,27 +152,6 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 }
 .brand__date { font-size: 11px; color: var(--ink-faint); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Thai: Cinzel / Oswald / Bangers have no Thai letters → Noto Sans Thai sits behind them (only the Thai letters fall through to it) */
-html.is-th {
-  --font-display: "Cinzel", "Noto Sans Thai", Georgia, serif;
-  --font-body: "Inter", "Noto Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --gc-font-text: "Oswald", "Noto Sans Thai", "TeX Gyre Heros Cn", "Arial Narrow", sans-serif;
-  --gc-font-pop: "Bangers", "Noto Sans Thai", "TeX Gyre Heros Cn", sans-serif;
-}
-
-/* ---------- Language button (js/i18n.js): "ไทย" / "EN" on phones, globe + name in the PC menu rail ---------- */
-.lang {
-  position: relative; flex: none; min-width: 44px; height: 44px; padding: 0 10px; display: grid; place-items: center;
-  border-radius: 22px; border: 1px solid var(--gold-lo); background: var(--brass); color: var(--gold-hi);
-  box-shadow: inset 0 1px 0 rgba(255, 230, 170, .15);
-  font-family: var(--font-body); font-weight: 700; font-size: 14px; line-height: 1;
-  transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
-}
-.lang[hidden] { display: none; }
-.lang:hover { border-color: var(--gold); }
-.lang svg { width: 20px; height: 20px; }
-.lang__label { display: none; }
-
 /* ==========================================================
    Menu: brass bar at the bottom (phones / tablets) · left rail on PC (≥ 1100px)
    ========================================================== */
@@ -391,10 +370,6 @@ html.is-th {
   .nav__btn:hover { color: var(--ink); }
   .nav__btn[aria-current="page"]:hover { color: var(--gold-hi); }
   .nav__foot { display: grid; gap: var(--s-3); margin-top: auto; padding-top: var(--s-5); border-top: 1px solid var(--glass-line); }
-  .nav__foot .lang { width: 100%; height: 46px; border-radius: var(--r-chip); display: flex; justify-content: flex-start; gap: var(--s-3); padding: 0 var(--s-4); }
-  .nav__foot .lang[hidden] { display: none; }
-  .nav__foot .lang__label { display: block; font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .08em; }
-  .nav__foot .lang__code { display: none; }
   .nav__foot .brand__date { text-align: center; }
   .main {
     max-width: none; margin: 0 0 0 var(--side-w);

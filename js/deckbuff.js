@@ -1,13 +1,11 @@
 /* ==========================================================
    Card Battle Infinity — Deck buffs (owner 2026-11-02 · PROGRESS §3.3 `deckbuff.js`)
    The ATK / HP a card shows in a deck once the deck's buffs are in:
-     ATK = base × Π(1 + %damage ÷ 100) × trait damage · HP = base × Π(1 + %HP ÷ 100) × trait HP
+     ATK = base × Π(1 + %damage ÷ 100) · HP = base × Π(1 + %HP ÷ 100)
    base = C.statAt(card, key, the slot's rarity) · every buff MULTIPLIES (checked 2026-11-02 on the owner's battle screenshot:
-   King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying) · the trait multiplier
-   (data/traits.json dmg / hp) is on top (owner 2026-11-02: the numbers include the trait).
-   Grade (game 2026-11-02): all 4 grades 10 = +30% ATK and HP (× 1.3 · gradeOf(cardId) -> [atk, def, status, hp] | null).
-   The +2.5% a grade in js/grade.js is NOT in these numbers: with it the owner's Witch of Envy (Ascendant ×2 · all 10) would be
-   ×3.25 over base, the game shows ×2.60 = ×2 × 1.3.
+   King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying).
+   The trait multiplier and the "all 4 grades 10 = × 1.3" bonus were removed with the Grade + Traits systems 2026-11-03
+   (docs/archive-grade-traits.md §1.2 / §2.3 has the old rules).
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
    (same column) gets +X% damage and max HP when the support is mutated (its slot's rarity above Normal) · X = the owner's
    table by the support's odds at the slot's rarity (C.mutAt · 2026-11-02) · every support has one (owner 2026-11-02).
@@ -32,9 +30,9 @@
    NAME / GROUP -> card ids: data/buffs.json (aliases / groups · null = not known yet: the buff is skipped, never an error)
 
    CBI.deckBuff = {
-     compute(deck, { traitOf(cardId, slot) -> trait id | null, gradeOf(cardId, slot) -> [4 grades] | null })
-       -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct, trait, atk, hp,
-            from: [{ name, kind: "card"|"support"|"trait"|"grade", atk, hp (% in total · trait / grade: ×), n copies }] }]
+     compute(deck)
+       -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct, atk, hp,
+            from: [{ name, kind: "card"|"support", atk, hp (% in total), n copies }] }]
      rarityOf(deck, "cards"|"support", slot) -> the slot's rarity name (also used by js/deck.js, js/teamscore.js, js/share.js)
      wideFirst(supports[4]) -> [bool × 4]: false = a 2nd+ copy of a whole-deck support (gives nothing)
      supportRules(s), cardRules(c), deckWide(s), report()   (report = the table for the owner, also run by tools/deckbuff_report.js)
@@ -131,8 +129,6 @@
   const round = (n) => Math.round(n * 100) / 100;
 
   /* ---------- the deck ---------- */
-  const GRADE_MAX = 10, GRADE_BONUS = 1.3;
-  const fullGrade = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => Number(n) >= GRADE_MAX);
   const known = (r) => typeof r === "string" && !!(C.state && C.state.meta && C.state.meta.rarities.some((x) => x.name === r));
   // a slot's rarity: its own (cardRarity / supRarity) · else the deck's (decks and links from before 2026-11-02) · else Normal
   function rarityOf(deck, kind, i) {
@@ -150,7 +146,7 @@
       return true;
     });
   }
-  function compute(deck, { traitOf, gradeOf } = {}) {
+  function compute(deck) {
     const st = C.state;
     const cardBy = new Map((st.cards || []).map((c) => [c.id, c])), supBy = new Map((Array.isArray(st.support) ? st.support : []).map((s) => [s.id, s]));
     const slot = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(Array.isArray(a) && typeof a[i] === "string" && a[i] ? a[i] : null); return o; };
@@ -208,9 +204,6 @@
       const mul = (key) => got[k].reduce((a, x) => a * (1 + x[key] / 100), 1);
       const mA = mul("atk"), mH = mul("hp");
       const atkPct = round((mA - 1) * 100), hpPct = round((mH - 1) * 100);
-      const tid = traitOf ? traitOf(c.id, k) : null;
-      const trait = tid && C.traits && C.traits.byId ? C.traits.byId(tid) : null;
-      const tD = trait && trait.dmg > 0 ? trait.dmg : 1, tH = trait && trait.hp > 0 ? trait.hp : 1;
       // one line per source: its ATK and HP together, every copy multiplied (King of Conquerors ×3 = 1.15³ = +52.09%, n = 3)
       const from = [];
       got[k].forEach((x) => {
@@ -219,13 +212,10 @@
         f.atk = round(((1 + f.atk / 100) * (1 + x.atk / 100) - 1) * 100); f.hp = round(((1 + f.hp / 100) * (1 + x.hp / 100) - 1) * 100); f.copies.add(x.copy);
       });
       from.forEach((f) => { f.n = f.copies.size; delete f.copies; });
-      if (trait && (tD !== 1 || tH !== 1)) from.push({ key: "t:" + trait.id, name: trait.name, kind: "trait", atk: tD, hp: tH, n: 1, tier: trait.tier });
-      const gM = gradeOf && fullGrade(gradeOf(c.id, k)) ? GRADE_BONUS : 1;
-      if (gM !== 1) from.push({ key: "g", name: "Grade 10 (all 4)", kind: "grade", atk: gM, hp: gM, n: 1 });
       return {
-        id: c.id, rarity, base, atkPct, hpPct, trait,
-        atk: Math.round(base.atk * mA * tD * gM),
-        hp: Math.round(base.hp * mH * tH * gM),
+        id: c.id, rarity, base, atkPct, hpPct,
+        atk: Math.round(base.atk * mA),
+        hp: Math.round(base.hp * mH),
         from,
       };
     });

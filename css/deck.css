@@ -406,8 +406,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 
 /* ==========================================================
    Deck buffs (owner 2026-11-02 · js/deckbuff.js · deck.js paintBuffs / buffDialog)
-   .dk-buff = the pill under a card when the deck raises its ATK / HP (tap = where it comes from) · same size as .dk-trait
-   .dk-trait--ro = the sharer's trait in a shared deck (a pill, not a button)
+   .dk-buff = the pill under a card when the deck raises its ATK / HP (tap = where it comes from)
    ========================================================== */
 .dk-buff {
   position: relative; margin-top: 6px; min-height: 30px; min-width: 0;
@@ -424,8 +423,6 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-slot:not(.is-empty) .dk-buff { animation: fx-up var(--t-med) var(--ease) backwards; }
 @media (max-width: 479px) { .dk-buff__ic { display: none; } }
 @media (min-width: 720px) { .dk-buff { font-size: 11px; min-height: 32px; } .dk-buff__ic { width: 11px; height: 11px; } }
-.dk-trait--ro { cursor: default; }
-.dk-trait--ro::after { content: none; }
 
 .dk-bf { display: grid; gap: var(--s-3); }
 .dk-bf__sum { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
@@ -441,12 +438,10 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
   align-items: center; min-height: 44px; padding: 6px var(--s-3); border-radius: var(--r-chip);
   border: 1px solid var(--glass-line); background: var(--glass);
 }
-.dk-bf__row[data-kind="trait"] { border-color: color-mix(in srgb, var(--tc) 55%, transparent); }
 .dk-bf__src { grid-area: src; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--ink); }
 .dk-bf__src b { color: var(--gold-hi); }
 .dk-bf__kind { grid-area: kind; font-size: 11px; color: var(--ink-faint); }
 .dk-bf__val { grid-area: val; font-weight: 700; color: var(--gc-buff); font-variant-numeric: tabular-nums; text-align: right; }
-.dk-bf__row[data-kind="trait"] .dk-bf__val { color: var(--tc); }
 
 @media (prefers-reduced-motion: reduce) {
   .dk-slot:not(.is-empty) .dk-buff { animation: none; }
@@ -455,7 +450,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 /* ==========================================================
    Rarity per slot (owner 2026-11-02 · deck.js paintKind / slotSheet)
    .dk-rar = the slot's rarity under each card and support (editor + shared deck) · tap = the slot sheet (editor)
-   .dk-ss = the slot sheet: the card + numbers, Rarity chips, Grade bars (the Grade page's .gstat / .gbar), Trait chips, actions
+   .dk-ss = the slot sheet: the card + numbers, Rarity chips, actions
    ========================================================== */
 .dk-rar {
   display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 0; margin-top: 5px;
@@ -466,7 +461,6 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-rar span { overflow: hidden; text-overflow: ellipsis; }
 [hidden].dk-rar { display: none; }
 @media (min-width: 720px) { .dk-rar { font-size: 11px; } }
-.dk-trait--tap { cursor: pointer; }
 
 .dk-ss-sheet { max-width: 560px; }
 .dk-ss { display: grid; gap: var(--s-4); min-width: 0; }
@@ -485,19 +479,9 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-ss__fx { font-size: var(--fs-sm); color: var(--ink-dim); }
 .dk-ss__sec { display: grid; gap: var(--s-2); min-width: 0; }
 .dk-ss .rarity-picker { margin: 0; }
-.dk-ss__grades { display: grid; gap: var(--s-2); }
-.dk-ss .dk-ss__g { padding: var(--s-2) var(--s-3) 2px; }   /* .dk-ss: grade.css loads after this file */
-.dk-ss .dk-ss__g .gstat__name { font-size: var(--fs-sm); }
-.dk-ss__gv { font-family: var(--font-display); font-size: var(--fs-md); font-variant-numeric: tabular-nums; color: var(--ink); }
-.dk-ss__g[data-band="none"] .dk-ss__gv { color: var(--ink-faint); }
-.dk-ss .dk-ss__g .gbar { margin-top: 0; }
 .dk-ss__acts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
 .dk-ss__acts .tm-btn { justify-content: flex-start; min-width: 0; padding: 0 10px; }
 .dk-ss__acts .tm-btn svg { flex: none; }
-@media (min-width: 480px) { .dk-ss__grades { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (prefers-reduced-motion: reduce) {
-  .dk-ss .gbar__seg.is-pop::before { animation: none; }
-}
 
 /* ==========================================================
    The deck's note (owner 2026-11-02 · deck.js paintNote / editNote): the user's own words, also on the image
