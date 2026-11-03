@@ -585,7 +585,7 @@
   /* a card (not a support) · owner 2026-11-03 "Card Layout Lab": the game's places measured on One Punch Caped Hero (Deck view,
      600×840 = the face) · caps = the height of the capital letters, top = where they start (cqw of the face) */
   const RDC = { edge: 3, mid: 50, gap: 1.5, slant: 1, nameCap: 5.17, nameTop: 5.67, hpCap: 8.33, hpTop: 4.83, hpRight: 83,
-    abnCap: 5.83, abnTop: 73.83, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 84.67, txtPitch: 5.5, txtL: 5, txtR: 95, txtEnd: 109.75, txtGrow: 1.6,
+    abnCap: 5.83, abnTop: 73.83, abnGap: 4.2, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 83.86, txtPitch: 5.5, txtL: 5, txtR: 95, txtEnd: 109.75, txtGrow: 1.6,
     atkCap: 9.83, atkTop: 120.17, atkX: 50, atkMax: 64, padN: 0.8, padNum: 0.3 };
   // one line of Anton at the game's cap height, smaller (centred on the same line) when wider than `room`
   function rdNum(n, text, cap, top, room) {
@@ -622,16 +622,12 @@
     if (hp) { rdNum(hp, samples.hp || hp.textContent, RDC.hpCap, RDC.hpTop, RDC.hpRight - RDC.mid - RDC.gap); hp.style.right = cq(100 - RDC.hpRight - RDC.padNum); }
     const atk = q('.rd__bot [data-k="atk"]');
     if (atk) rdNum(atk, samples.atk || atk.textContent, RDC.atkCap, RDC.atkTop, RDC.atkMax);   // centred by css (left 50% · owner 2026-11-03)
-    const abn = q(".rd__abn");
-    if (abn) {
-      const base = RDC.abnCap / BARLOW.c, w = nameW(abn.textContent.toUpperCase(), 0), fs = w * base > RDC.abnMax ? RDC.abnMax / w : base;
-      abn.style.fontSize = cq(fs);
-      abn.style.left = cq(RDC.abnX - RDC.padN);
-      abn.style.top = cq(RDC.abnTop + (RDC.abnCap - BARLOW.c * fs) / 2 - capOff(BARLOW, 1) * fs);
-    }
+    // owner 2026-11-03: the last line of the text always ends on RDC.txtEnd (= Destroyer God's "damage." → the gap to ATK is fixed)
+    // short text grows (up to txtGrow × the game's size), long text shrinks · the ability name sits RDC.abnGap above the text's first
+    // line (like the game's Six Paths Fox Sage), so the highest it goes is abnTop (the text then starts at txtTop)
     const abd = q(".rd__abd");
-    if (abd) {   // owner 2026-11-03: the last line always ends on RDC.txtEnd (= Destroyer God's "damage." → the gap to ATK is fixed)
-      // short text grows (up to txtGrow × the game's size), long text shrinks · the block never starts above txtTop (under the ability name)
+    let capTop = RDC.txtTop;
+    if (abd) {
       const words = wordsOf(abd.textContent), f0 = RDC.txtCap / OSW.c, k = RDC.txtPitch / f0;
       let f = f0 * RDC.txtGrow, n = 1;
       for (let i = 0; i < 300; i++) {
@@ -639,10 +635,19 @@
         if (RDC.txtTop + OSW.c * f + (n - 1) * k * f <= RDC.txtEnd) break;
         f *= 0.995;
       }
-      const L = k * f, capTop = RDC.txtEnd - OSW.c * f - (n - 1) * L;   // bottom-anchored: the last line's capitals end on txtEnd
+      const L = k * f;
+      capTop = RDC.txtEnd - OSW.c * f - (n - 1) * L;   // bottom-anchored: the last line's capitals end on txtEnd
       abd.style.fontSize = cq(f);
       abd.style.lineHeight = cq(L);
       abd.style.top = cq(capTop - capOff(OSW, L / f) * f);
+    }
+    const abn = q(".rd__abn");
+    if (abn) {
+      const base = RDC.abnCap / BARLOW.c, w = nameW(abn.textContent.toUpperCase(), 0), fs = w * base > RDC.abnMax ? RDC.abnMax / w : base;
+      const top = capTop - RDC.abnGap - RDC.abnCap;
+      abn.style.fontSize = cq(fs);
+      abn.style.left = cq(RDC.abnX - RDC.padN);
+      abn.style.top = cq(top + (RDC.abnCap - BARLOW.c * fs) / 2 - capOff(BARLOW, 1) * fs);
     }
   }
   // a support (owner 2026-11-03 "Support Layout Lab"): measured on the game's Hat and Clogs Shopkeeper (Deck view, 600×840)
