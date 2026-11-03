@@ -476,7 +476,7 @@
     const el = C.redrawEl(item, rarity, nums || {}), q = (s) => el.querySelector(s);
     const fsOf = (n, d) => (n && parseFloat(n.style.fontSize)) || d;
     const A = cssVar("--rd-font") || "sans-serif", T = cssVar("--rd-font-text") || "sans-serif", stroke = cssVar("--rd-stroke") || "#07050a";
-    const LS = "letterSpacing" in ctx, big = w >= 170, K = k || 1;   // a card under 170px hides its text, like the page · shadows are in device px (× k)
+    const LS = "letterSpacing" in ctx, K = k || 1;   // the text shows at every size, like the page · shadows are in device px (× k)
     // glow + frame + picture
     ctx.save();
     roundRect(ctx, x, y, w, h, R);
@@ -599,7 +599,7 @@
       const rows = wrap(dwords, dfont, 91.6 * f, true);
       const blockH = (abn ? afs + 0.6 + 1.2 : 0) + rows.length * dfs * 1.16, top = FH - 17.5 - blockH;
       if (abn) { const t = abn.textContent.toUpperCase(); out(t, X(4.2 + 0.5), Y(top + 0.3 + 0.925 * afs), linDeg(ctx, X(4.2), Y(top), tw(t, afont, als) + f, (afs + 0.6) * f, 180, gradStops(cssVar("--rd-ab"))), afont, als); }
-      if (big) drawRows(rows, dfont, dfs, 1.16, Y(top + (abn ? afs + 0.6 + 1.2 : 0) + 1.03 * dfs), X(50), ink);
+      drawRows(rows, dfont, dfs, 1.16, Y(top + (abn ? afs + 0.6 + 1.2 : 0) + 1.03 * dfs), X(50), ink);
       // HP + heart (top right) · swords + ATK (bottom)
       const hp = q('[data-k="hp"]'), hfs = fsOf(hp, 10), hfont = `400 ${hfs * f}px ${A}`, ht = hp.textContent;
       const hy = 3 + 6.25 - (hfs + 0.6) / 2, hw = tw(ht, hfont);
@@ -610,7 +610,7 @@
       drawSwords(ctx, X(3.6 + 0.25), Y(FH - 3 - 6.25 - 6), 12 * f);
     } else {
       if (abn) { const t = abn.textContent.toUpperCase(), top = parseFloat(abn.style.top) || 79; out(t, X(3.6 + 0.5), Y(top + 0.925 * afs), linDeg(ctx, X(3.6), Y(top), tw(t, afont, als) + f, afs * f, 180, gradStops(cssVar("--rd-ab"))), afont, als); }
-      if (big) {
+      {
         const top = parseFloat(q(".rd__txt").style.top) || 88, room = 92.3 * f;
         const rows = wrap(dwords, dfont, room, false), mut = q(".rd__mut");
         const mrows = mut && !mut.hidden ? wrap(wordsIn(mut), dfont, room, false) : [];
