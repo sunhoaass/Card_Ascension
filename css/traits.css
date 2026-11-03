@@ -96,7 +96,7 @@
 .trs__hero { width: 100%; max-width: 220px; }
 .trs__hero .card { width: 100%; }
 .trs__slot {
-  aspect-ratio: 5 / 7; width: 100%; max-width: 220px;
+  aspect-ratio: var(--card-ratio); width: 100%; max-width: 220px;
   display: grid; place-items: center;
   border: 1.5px dashed var(--glass-line); border-radius: var(--r-card);
   color: var(--ink-faint);

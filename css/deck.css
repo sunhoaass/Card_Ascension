@@ -473,7 +473,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-ss__top { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: var(--s-4); align-items: center; }
 .dk-ss__card { width: 116px; }
 .dk-ss__card .card { width: 100%; }
-.dk-ss__card .tm-missing { aspect-ratio: 5 / 7; }
+.dk-ss__card .tm-missing { aspect-ratio: var(--card-ratio); }
 .dk-ss__sum { display: grid; gap: 4px; min-width: 0; }
 .dk-ss__where { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
 .dk-ss__stat { display: flex; align-items: baseline; gap: var(--s-2); font-variant-numeric: tabular-nums; }

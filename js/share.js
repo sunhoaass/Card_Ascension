@@ -163,7 +163,7 @@
      ========================================================== */
   const BOARD = {
     W: 1200, PAD: 28, LABEL: 132, GAP: 10, ROW_PAD: 12, ROW_GAP: 10, R: 16,
-    CARD_W: 114, CARD_H: 160, HEAD: 150, FOOT: 96, MIN_ROW: 100,
+    CARD_W: 114, CARD_H: 152, HEAD: 150, FOOT: 96, MIN_ROW: 100,
   };
   // captions (Global): W 1080 · 5 a line · names 26px (2 lines; 3 at 22px for a long one) under the card
   const CAPS = { W: 1080, LABEL: 112, GAP: 14, PER_LINE: 5, CAP_GAP: 8, CAP: 26, CAP_MIN: 22, CAP_LINES: 3 };
@@ -487,9 +487,9 @@
     ctx.save();
     roundRect(ctx, fx, fy, fw, fh, 3.2 * f); ctx.clip();
     ctx.fillStyle = cssVar("--gc-under") || "#0d0a14"; ctx.fillRect(fx, fy, fw, fh);
-    if (art) {   // a card: the owner's 3:4 blank art at the top + a dark strip under it · a support: the picture fills the card · both: the lower half darkened (css .gc--rd .gc__art)
+    if (art) {   // a card: the owner's 3:4 blank art fills the 3:4 card · a support: the picture fills the card · both: the lower half darkened (css .gc--rd .gc__art)
       if (sup) drawCoverImage(ctx, art, fx - fw * 0.006, fy - fh * 0.006, fw * 1.012, fh * 1.012);
-      else { ctx.fillStyle = "#101012"; ctx.fillRect(fx, fy, fw, fh); drawCoverImage(ctx, art, fx, fy + 1.1 * f, fw, fw * 4 / 3); }
+      else drawCoverImage(ctx, art, fx, fy, fw, fh);   // 3:4 card: the art fills it (owner 2026-11-03)
       const g = ctx.createLinearGradient(0, fy, 0, fy + fh); g.addColorStop(0.38, "rgba(0, 0, 0, 0)"); g.addColorStop(0.92, "rgba(0, 0, 0, .45)");
       ctx.fillStyle = g; ctx.fillRect(fx, fy, fw, fh);
     }
@@ -625,9 +625,9 @@
         const w = q(".rd__sup"), wfs = fsOf(w && w.firstElementChild, 10.5), wfont = `600 ${wfs * f}px ${T}`, wt = at_(w, "top", 124), ww = tw("SUPPORT", wfont);
         out("SUPPORT", X(50), Y(wt + base(OS, 1) * wfs), linDeg(ctx, X(50) - ww / 2, Y(wt), ww, wfs * f, 180, gradStops(cssVar("--rd-sup"))), wfont, 0, "center");
       } else {
-      const atk = q('[data-k="atk"]'), tfs = fsOf(atk, 11.4), tfont = `400 ${tfs * f}px ${A}`, tt = atk.textContent, aw = tw(tt, tfont), atop = at_(atk, "top", 124), aleft = at_(atk, "left", 24) + RC.padNum;
-      out(tt, X(aleft), Y(atop + base(AN, 1) * tfs), linDeg(ctx, X(aleft), Y(atop), aw, tfs * f, 180, gradStops(cssVar("--rd-atk"))), tfont);
-      drawSwords(ctx, X(3.3), Y(123.3), 13.4 * f);
+      const atk = q('[data-k="atk"]'), tfs = fsOf(atk, 11.4), tfont = `400 ${tfs * f}px ${A}`, tt = atk.textContent, aw = tw(tt, tfont), atop = at_(atk, "top", 118.5);   // centred (owner 2026-11-03)
+      out(tt, X(50), Y(atop + base(AN, 1) * tfs), linDeg(ctx, X(50) - aw / 2, Y(atop), aw, tfs * f, 180, gradStops(cssVar("--rd-atk"))), tfont, 0, "center");
+      drawSwords(ctx, X(3.3), Y(117.8), 13.4 * f);
       }
       if (LS) ctx.letterSpacing = "0px";
       ctx.restore();
@@ -1019,7 +1019,7 @@
     if (out.length > NOTE.LINES) { out.length = NOTE.LINES; out[NOTE.LINES - 1] = fitText(mc, out[NOTE.LINES - 1] + " …", maxW); }
     return out;
   }
-  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 266, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10,
+  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 253, PANEL_GAP: 14, R: 16, TRAIT: 34, TRAIT_GAP: 10,
     NAME_FS: 17, NAME_LH: 21, NAME_LINES: 2, NAME_GAP: 8, RAR: 26, RAR_GAP: 10 };
   // a slot's name over its card: one size for every slot, wrapped to NAME_LINES (the last line squeezed if it is longer)
   function slotName(ctx, name, maxW, font) {

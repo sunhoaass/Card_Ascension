@@ -258,7 +258,7 @@
      cards next to it. loading="lazy" made Chrome keep checking every picture not seen yet on every scroll frame. */
   const thumbOf = (src) => { const i = src.lastIndexOf("/"); return src.slice(0, i + 1) + "thumb/" + src.slice(i + 1); };
   function artImg(src, small = false, defer = false) {
-    const [w, h] = small ? [300, 420] : [600, 840];
+    const [w, h] = small ? [300, 400] : [600, 800];
     const url = esc(small ? thumbOf(src) : src);
     return `<img ${defer ? "data-src" : "src"}="${url}"${small ? ` data-full="${esc(src)}"` : ""} alt="" width="${w}" height="${h}"${defer ? "" : ` loading="lazy"`} decoding="async">`;
   }
@@ -555,8 +555,8 @@
   /* a card (not a support) · owner 2026-11-03 "Card Layout Lab": the game's places measured on One Punch Caped Hero (Deck view,
      600×840 = the face) · caps = the height of the capital letters, top = where they start (cqw of the face) */
   const RDC = { edge: 3, mid: 50, gap: 1.5, slant: 1, nameCap: 5.17, nameTop: 5.67, hpCap: 8.33, hpTop: 4.83, hpRight: 83,
-    abnCap: 5.83, abnTop: 79.33, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 90.17, txtPitch: 5.5, txtL: 5, txtR: 95, txtEnd: 121.5,
-    atkCap: 9.83, atkTop: 125.67, atkX: 24.33, atkMax: 72, padN: 0.8, padNum: 0.3 };
+    abnCap: 5.83, abnTop: 73.83, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 84.67, txtPitch: 5.5, txtL: 5, txtR: 95, txtEnd: 116,
+    atkCap: 9.83, atkTop: 120.17, atkX: 50, atkMax: 64, padN: 0.8, padNum: 0.3 };
   // one line of Anton at the game's cap height, smaller (centred on the same line) when wider than `room`
   function rdNum(n, text, cap, top, room) {
     const w = rdW("a", text), base = cap / ANTON.c, fs = w * base > room ? room / w : base;
@@ -591,7 +591,7 @@
     const hp = q('.rd__hp [data-k="hp"]');
     if (hp) { rdNum(hp, samples.hp || hp.textContent, RDC.hpCap, RDC.hpTop, RDC.hpRight - RDC.mid - RDC.gap); hp.style.right = cq(100 - RDC.hpRight - RDC.padNum); }
     const atk = q('.rd__bot [data-k="atk"]');
-    if (atk) { rdNum(atk, samples.atk || atk.textContent, RDC.atkCap, RDC.atkTop, RDC.atkMax); atk.style.left = cq(RDC.atkX - RDC.padNum); }
+    if (atk) rdNum(atk, samples.atk || atk.textContent, RDC.atkCap, RDC.atkTop, RDC.atkMax);   // centred by css (left 50% · owner 2026-11-03)
     const abn = q(".rd__abn");
     if (abn) {
       const base = RDC.abnCap / BARLOW.c, w = nameW(abn.textContent.toUpperCase(), 0), fs = w * base > RDC.abnMax ? RDC.abnMax / w : base;
@@ -614,8 +614,8 @@
     }
   }
   // a support (owner 2026-11-03 "Support Layout Lab"): measured on the game's Hat and Clogs Shopkeeper (Deck view, 600×840)
-  const RDU = { nameCap: 3.42, nameTop: 6.83, abnCap: 5.83, abnTop: 79.67, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 90.5,
-    txtPitch: 6.33 * 3.08 / 3.58, txtL: 5, txtR: 95, txtEnd: 123.5, wordCap: 8.5, wordTop: 126 };
+  const RDU = { nameCap: 3.42, nameTop: 6.83, abnCap: 5.83, abnTop: 74.17, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 85,
+    txtPitch: 6.33 * 3.08 / 3.58, txtL: 5, txtR: 95, txtEnd: 118, wordCap: 8.5, wordTop: 120.5 };   // 3:4 card: the lower block 5.5cqw higher (owner 2026-11-03)
   function fitRdSup(el) {
     const q = (s) => $(s, el);
     const nm = q(".rd__nm");

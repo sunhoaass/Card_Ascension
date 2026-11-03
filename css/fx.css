@@ -374,7 +374,7 @@
    the picture = the owner's blank art (3:4, no frame) at the top, a dark strip under it, the lower half darkened like the game */
 .gc--rd:not(.gc--sup) { --rd-sw: 1.1cqw; }
 .gc--rd:not(.gc--sup) .gc__art { background: #101012; }
-.gc--rd:not(.gc--sup) .gc__art img { position: absolute; left: 0; top: 1.06cqw; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; transform: none; }
+.gc--rd:not(.gc--sup) .gc__art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: none; }   /* 3:4 card = the 3:4 art fills it, no dark strip (owner 2026-11-03) */
 .gc--rd:not(.gc--sup) .gc__art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, .45) 92%); }
 .gc--rd:not(.gc--sup) .rd__top, .gc--rd:not(.gc--sup) .rd__ab { inset: 0; height: auto; display: block; }
 .gc--rd:not(.gc--sup) .rd__name, .gc--rd:not(.gc--sup) .rd__hp { display: contents; }
@@ -388,8 +388,8 @@
 .gc--rd:not(.gc--sup) .rd__abn { position: absolute; font-family: var(--rd-font-name); font-weight: 800; font-style: italic; letter-spacing: 0; padding: 0 .8cqw; }
 .gc--rd:not(.gc--sup) .rd__abd { position: absolute; left: 5cqw; right: 5cqw; text-wrap: wrap; --rd-sw: .68cqw; }
 .gc--rd:not(.gc--sup) .rd__bot { inset: 0; height: auto; display: block; }
-.gc--rd:not(.gc--sup) .rd__swords { position: absolute; left: 3.3cqw; top: 123.3cqw; width: 13.4cqw; height: 13.4cqw; }
-.gc--rd:not(.gc--sup) .rd__bot .rd__num { justify-self: auto; }
+.gc--rd:not(.gc--sup) .rd__swords { position: absolute; left: 3.3cqw; top: 117.8cqw; width: 13.4cqw; height: 13.4cqw; }
+.gc--rd:not(.gc--sup) .rd__bot .rd__num { justify-self: auto; left: 50%; transform: translateX(-50%); }   /* ATK always centred (owner 2026-11-03) */
 
 /* support (game layout measured on Hat and Clogs Shopkeeper, Deck view 600×840): the tops are set by js so the capital
    letters of each block land on the game's line (fitRedraw · capOff) */

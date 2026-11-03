@@ -1964,3 +1964,10 @@
 - **ทำ:** ย่อ 600×800 + thumb 300×400 (webp 88) ชื่อไฟล์ใหม่ `<id>-2.webp` (กันมือถือแคปรูปเก่า) · ลบไฟล์เดิม · `data/cards.json` `image` ชี้ไฟล์ใหม่ (ข้อความ/ค่าไม่เปลี่ยน)
 - **ทดสอบ (Chromium 390×844):** `#card/<id>` ทั้ง 3 ใบ + หน้า Cards ขึ้นรูปใหม่ · ไม่มี 404 / error
 - **ไฟล์:** `images/cards/art/{octopus-teacher,storm-dragon,moon-breath-swordsman}-2.webp` (+ `thumb/`) · `data/cards.json` · `inbox/blank/skeleton-unmatched.jpg` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 การ์ด 3:4 ไม่มีแถบดำ + ATK กลางล่าง (`?v=72`)
+- **เจ้าของสั่ง:** ลบแถบดำใต้รูปการ์ด → การ์ด 3:4 · ทำ mockup ใหม่ · ตัวเลข ATK อยู่กลางล่างเสมอ ไม่ชิดซ้าย
+- **แก้:** `css/tokens.css` `--card-ratio: 3 / 4` + `--gc-corner` · `css/fx.css` รูปเต็มหน้าการ์ด (`inset: 0` cover) · ดาบ top 117.8cqw · ATK `left: 50%` + `translateX(-50%)` · `js/app.js` `RDC` (abnTop 73.83 · txtTop 84.67 · txtEnd 116 · atkTop 120.17 · atkMax 64) + `RDU` (ขึ้น 5.5) · `artImg` 600×800 / 300×400 · `js/detail.js` `CR = 4 / 3` แทน 1.4 · `css/detail.css` `--ch` · `css/deck.css` / `css/traits.css` ใช้ `--card-ratio` · `js/share.js` การ์ดแชร์ 114×152 / 190×253 + รูปเต็มการ์ด + ATK กลาง + ดาบใหม่
+- **mockup:** `mockup/card-34.html` (เลือกได้ 4 ใบ + ทุกระดับ + ขนาดในหน้า Cards/Deck · ใส่ sprite หัวใจ/ดาบแล้ว)
+- **ทดสอบ (Chromium 390×844 + 1280×800):** การ์ด 281×374.7 (= 4:3) · รูปพอดีหน้าการ์ดบน-ล่าง · ATK กลางเป๊ะ (ต่าง 0px) · เลขยาว 1,480,468,956 (Godly) ไม่ทับดาบ · หน้า Cards / Deck / หน้าดูการ์ดไม่มี error / 404 · ยังไม่ได้ทดสอบรูปแชร์ด้วยตา
+- **ไฟล์:** `index.html` · `mockup/blank-art.html` · `mockup/card-34.html` · `css/tokens.css` · `css/fx.css` · `css/detail.css` · `css/deck.css` · `css/traits.css` · `js/app.js` · `js/detail.js` · `js/share.js` · `PROGRESS.md` · `HISTORY.md`
