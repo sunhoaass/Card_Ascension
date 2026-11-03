@@ -1929,3 +1929,8 @@
 - **ทดสอบ:** 99,999,999 → 99,999,999 · 100,000,000 → 100M · 207,406,400 → 207M · 999,960,000 → 1B · 1,234,567,890 → 1.2B · One Punch Ascended 1.9B · โอกาส 109B / 5.5Qd เหมือนเดิม · หน้าดูการ์ดไม่มี error
 - **ไฟล์:** `index.html` (`?v=68`) · `mockup/blank-art.html` · `js/app.js` · `PROGRESS.md` · `HISTORY.md`
 
+### 2026-11-03 ลบไฟล์ PDF ที่ root + mockup Support
+- **ลบ** `Image to PDF 20261103 15.36.09_compressed (1).pdf` (เจ้าของสั่ง · 24MB · ข้างในเป็นแคปเกมหน้า Deck 398 หน้า = การ์ดโจมตี ไม่มี Support · ยังกู้ได้จาก git history commit `76b9fb3` ถ้าต้องใช้อ่านข้อความเกม)
+- **mockup Support** (artifact Support Layout Lab · https://claude.ai/artifact/R4XPvdWGR2JxUv3hZv1joH): ตำแหน่งวัดจากรูปเกม Hat and Clogs Shopkeeper (หน้า Deck 600×840): ชื่อ caps y 6.83 สูง 3.42 · ชื่อสกิล 79.67 สูง 5.83 x 2.83 · คำอธิบาย caps 90.5 สูง 3.58 บรรทัดห่าง 6.33 · SUPPORT caps 126 สูง 8.5 กึ่งกลาง · ค่าเริ่มต้น = ฟอนต์ที่เจ้าของเลือกให้การ์ด · รูปแทนชั่วคราว = รูปที่เครื่องมือลบไว้ (มีรอยเลอะ) จนกว่าเจ้าของส่งรูปว่าง Support · **รอเจ้าของเลือก · ยังไม่แก้เว็บ**
+- **ไฟล์:** PDF (ลบ) · `HISTORY.md`
+
