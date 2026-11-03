@@ -1864,3 +1864,7 @@
 - **คำแปลไทย:** เพิ่ม 16 ประโยคใน `js/i18n-th-sk2.js` (รวม Stun "(it skips those turns)" ที่รอบถัดไปใช้) · เช็คทุกประโยคของ 10 ใบด้วย `I18N.desc` ของเว็บ (node): ไม่มีประโยคไหนขาด
 - **ทดสอบ (Chromium 390×844):** หน้าดูการ์ด 10 ใบ × EN/TH × Normal/Godly: ตัวอักษรไม่ล้นการ์ด (ป้ายระดับ Normal = `display: none` เหมือนการ์ดเดิม) · ไม่มี error · ชื่อยาว (Legendary Berserker) ขึ้น 2 บรรทัด · HP Godly ≥ 1B ย่อ (1.3B / 1B)
 - **ไฟล์:** `index.html` (`?v=64`) · `js/i18n-th-sk2.js` · `tools/matchup_sim.py` · `data/cards.json` · `data/buffs.json` · `images/cards/rd/` + `rd/thumb/` 10 ใบ (รูปเดิมไม่แตะ) · `inbox/redraw/` ลบ 9 รูป + text.json เดิม · เพิ่ม 19 รูป + `text.json` ใหม่ · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 กฎทำงานข้อ 12: งานการ์ดเสร็จ = merge เองเลย
+- **เจ้าของสั่ง:** ทำการ์ดเสร็จให้ merge เลย → `PROGRESS.md` กฎทำงานข้อ 12 (รอบเขียนใหม่ / batch / แคปใหม่ / ข้อมูลการ์ด-Support: ผ่านทดสอบแล้วเปิด pull request + merge เข้า `main` เอง · งานหน้าตา/ระบบยังรอเจ้าของ) + ขั้นตอนท้ายรอบใน ▶️ "เขียนใหม่ทั้งใบ" · รอบเขียนใหม่ 3 merge ตามกฎนี้
+- **ไฟล์:** `PROGRESS.md` · `HISTORY.md`
