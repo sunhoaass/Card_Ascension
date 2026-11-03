@@ -1894,3 +1894,9 @@
 - **แก้:** `css/tokens.css` `--rd-font-name` (ใหม่ · Oswald) · `css/fx.css` `.rd__nm` / `.rd__num` = `--rd-font-name` 700 · `js/app.js` วัดขนาดชื่อ/HP/ATK ด้วย Oswald 700 (`rdW` ชนิด `n` · `nameW`) · ตำแหน่งชื่อ Support ใช้ metric Oswald · `js/share.js` `drawRedraw` (รูป Save image) ชื่อ/HP/ATK เป็น Oswald 700 + เส้นฐานตาม metric Oswald · Support ชื่อการ์ดก็เปลี่ยนด้วย (ชื่อใช้ชิ้นเดียวกัน)
 - **ทดสอบ (Chromium 390×844):** หน้าดูการ์ด 5 การ์ด + 2 Support × EN/TH × Normal/Godly: ไม่มีตัวอักษรล้น · ไม่มี error · ชื่อยาว (Primordial Butler Demon, Made in Heaven Priest) ขึ้น 2 บรรทัด · รูป Save image ของ Deck ชื่อ/ตัวเลขเป็น Oswald ตรงหน้าเว็บ
 - **ไฟล์:** `index.html` (`?v=65`) · `css/tokens.css` · `css/fx.css` · `js/app.js` · `js/share.js` · `mockup/blank-art.html` (`?v=65`) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 ลบรูปจากเครื่องมือลบออกจากเว็บทั้งหมด (เว็บไม่มีการ์ดจนกว่ารูปเจ้าของมา)
+- **เจ้าของยืนยัน:** "ลบรูปออกจากเว็บให้หมดก่อน" (กฎใหม่: เจ้าของส่งรูปว่าง Claude ใส่ข้อความอย่างเดียว)
+- **ทำ:** `git rm` `images/cards/rd/` (38 + thumb · รวม `rabbit-goddess-2`) + `images/support/rd/` (4 + thumb) · การ์ด 38 + Support 4 ย้ายไป `data/pending/` (ลบ `redraw` · `image` = รูปเดิม `images/<kind>/<id>.webp` ที่ยังอยู่) · `data/cards.json` / `support.json` = `[]` · pending = การ์ด 400 + Support 100 · ข้อความเกมที่แก้ไว้แล้ว (`passive.desc` ฯลฯ) อยู่ครบใน pending · `mockup/blank-art.html` อ่าน Homunculus Father จาก pending + เลิกเทียบรูปเดิม (ลบแล้ว)
+- **ทดสอบ (Chromium 390×844):** Home / Cards / Support / Tier / Deck (My Decks + Meta Decks) / Grade / Traits / ลิงก์ `#card/<id>` / deck เก่าในเครื่อง: ไม่มี error · ทุกหน้าขึ้นข้อความว่างของตัวเอง ("No cards yet" ฯลฯ) · Meta Decks = ช่องว่าง · mockup ขึ้นปกติ
+- **ไฟล์:** `data/cards.json` · `data/support.json` · `data/pending/cards.json` · `data/pending/support.json` · `images/cards/rd/` (ลบ) · `images/support/rd/` (ลบ) · `mockup/blank-art.html` · `PROGRESS.md` · `HISTORY.md`
