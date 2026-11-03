@@ -1875,3 +1875,9 @@
 - **ผลกระทบ:** Meta Decks / deck ของผู้ใช้ / Tier List ของผู้ใช้ ที่มีใบที่ย้ายออก = ช่องว่าง (localStorage ไม่แตะ) · Tier List Global ชั้น Meta ว่าง (Meta ทั้งหมดยังไม่ได้ทำ) · ลิงก์ `#card/<id>` ของใบที่ย้ายออก = ไม่เปิดหน้าดูการ์ด · `deckbuff_report.js` ชื่อที่ไม่รู้จัก 0 · `matchup_sim.py --parse` ไม่มี unknown
 - **ทดสอบ (Chromium 390×844):** Home / Cards (38 ใบ) / Support (4 ใบ) / Tier / Deck (My Decks + Meta Decks) / Grade / Traits / หน้าดูการ์ด + deck และ tier list เก่าในเครื่องที่มีใบที่ย้ายออก: ไม่มี error
 - **ไฟล์:** `data/cards.json` · `data/support.json` · `data/pending/cards.json` (ใหม่) · `data/pending/support.json` (ใหม่) · `tools/restore_pending.py` (ใหม่) · `PROGRESS.md` · `HISTORY.md` (ไม่ได้แก้ CSS/JS ของเว็บ → ไม่เปลี่ยน `?v=`)
+
+### 2026-11-03 หน้าเบลอตอน HP ย่อ: ตรวจ 38 ใบ + แก้ Rabbit Goddess จากรูปย่อหน้า Deck
+- **เจ้าของถาม:** การ์ดไหนหน้าหายตอน HP ย่อ · ตรวจในเว็บที่ Godly (HP ≥ 1B ย่อ 27 ใบ): หน้าเบลอชัด 7 ใบ (Dragon God, Demon God of Flame, Homunculus Father, Hypnosis Traitor, Primordial Butler Demon, Rabbit Goddess, Witch of Envy) · เล็กน้อย 2 ใบ (Infinity Sorcerer, Moon Eye Ghost) · หน้าเบลอแต่ HP ไม่ถึง 1B = ยังโดนบัง (Control Devil, Demon Progenitor, Otsutsuki Vessel, Six Paths Fox Sage)
+- **เจ้าของเสนอ:** ใช้รูปย่อ (หน้า Deck ของเกม · ไม่มีตัวเลขทับหน้า) → `tools/tile_patch.py` (ใหม่): SIFT จับรูปย่อเข้ากับรูป rd (Rabbit Goddess 25 คู่ · ตรง 23 · ขยาย 2.61×) · unsharp เบาๆ · ปรับสีตามวงรอบ · วงรีหัว + ขอบนุ่ม · ไม่เอาป้าย ×20 / เพชร / โอกาส · ผล: หน้า + ตาที่สาม + เขากลับมา (นุ่มกว่ารูปหลักเล็กน้อย) · เขาข้างขวาบนสุดอยู่นอกรูปย่อ (ไม่ได้คืน)
+- **ไฟล์:** `images/cards/rd/rabbit-goddess-2.webp` + `thumb/` (ชื่อใหม่ กันมือถือใช้รูปเก่าในแคช · รูปเดิมไม่ลบ) · `data/cards.json` (`image`) · `tools/tile_patch.py` · `PROGRESS.md` · `HISTORY.md`
+- **ทดสอบ:** หน้าดูการ์ด Godly (HP 2B) เห็นหน้าเต็มระหว่างชื่อกับ HP
