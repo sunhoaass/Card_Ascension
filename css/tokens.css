@@ -125,8 +125,8 @@
   /* ---- Redrawn card (owner 2026-11-02 · PROGRESS ▶️ "เขียนใหม่ทั้งใบ" · mockup/card-redraw.html + support-redraw.html) ----
      everything on the card is real text over an erased picture (data "redraw": true · css/fx.css .gc--rd · js/app.js renderRedraw)
      frame / glow / name colour / rarity pill: sampled from the owner's 9 in-game screenshots (2026-11-02) */
-  --rd-font: "Anton", "Oswald", "Arial Narrow", sans-serif;          /* HP, ATK, pills, ability name */
-  --rd-font-name: "Barlow Condensed", "Arial Narrow", sans-serif;    /* card name: 800 italic (owner 2026-11-03 · Card Style Lab) */
+  --rd-font: "Anton", "Oswald", "Arial Narrow", sans-serif;          /* HP, ATK · a card's name (slanted -9deg) · a support's pills + ability name */
+  --rd-font-name: "Barlow Condensed", "Arial Narrow", sans-serif;    /* 800 italic: a card's ability name + pills · a support's name (owner 2026-11-03 · Card Layout Lab) */
   --rd-font-text: "Oswald", "Arial Narrow", sans-serif;              /* ability text (500) · SUPPORT (700) */
   --rd-ink: #f4f1f6;            /* ability text */
   --rd-num: #ffcf5a;            /* numbers in the ability text (gold · owner's pick) */

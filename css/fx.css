@@ -322,7 +322,7 @@
   content: attr(data-t); position: absolute; inset: 0; padding: inherit; box-sizing: border-box;
   white-space: inherit; text-align: inherit; pointer-events: none;
 }
-.rd-ot::before { z-index: -1; color: var(--rd-stroke); -webkit-text-stroke: 1.5cqw var(--rd-stroke); text-shadow: var(--rd-soft); }
+.rd-ot::before { z-index: -1; color: var(--rd-stroke); -webkit-text-stroke: var(--rd-sw, 1.5cqw) var(--rd-stroke); text-shadow: var(--rd-soft); }
 .rd-fill { color: transparent; }
 .rd-fill::after { background: var(--fill); background-size: 100% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 
@@ -366,6 +366,37 @@
 }
 .rd__swords { width: 12cqw; height: 12cqw; filter: drop-shadow(0 .5cqw .4cqw rgba(0, 0, 0, .6)); }
 .rd__bot .rd__num { justify-self: center; font-size: 12.5cqw; --fill: var(--rd-atk); }
+
+/* card (not support) · owner 2026-11-03 "Card Layout Lab": every place + size measured on the game's One Punch Caped Hero
+   (Deck view, card 600×840 inside the gold frame = the face) · js fitRedraw sets the tops/sizes so the capital letters land
+   on the game's lines (capOff) · name = Anton slanted, left half only · HP + heart right half only · 1 IN X + rarity pills ·
+   ability name + pills = Barlow Condensed 800 italic · text = Oswald 500 centred, the game's line pitch · swords + ATK ·
+   the picture = the owner's blank art (3:4, no frame) at the top, a dark strip under it, the lower half darkened like the game */
+.gc--rd:not(.gc--sup) { --rd-sw: 1.1cqw; }
+.gc--rd:not(.gc--sup) .gc__art { background: #101012; }
+.gc--rd:not(.gc--sup) .gc__art img { position: absolute; left: 0; top: 1.06cqw; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; transform: none; }
+.gc--rd:not(.gc--sup) .gc__art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, .45) 92%); }
+.gc--rd:not(.gc--sup) .rd__top, .gc--rd:not(.gc--sup) .rd__ab { inset: 0; height: auto; display: block; }
+.gc--rd:not(.gc--sup) .rd__name, .gc--rd:not(.gc--sup) .rd__hp { display: contents; }
+.gc--rd:not(.gc--sup) .rd__nm {
+  position: absolute; font-family: var(--rd-font); font-weight: 400; font-style: normal; letter-spacing: 0; padding: 0 .8cqw;
+  transform: skewX(-9deg); transform-origin: 0 100%;
+}
+.gc--rd:not(.gc--sup) .rd__nm.is-two { max-width: none; line-height: .98; }
+.gc--rd:not(.gc--sup) .rd__num { position: absolute; padding: 0 .3cqw; }
+.gc--rd:not(.gc--sup) .rd__heart { position: absolute; left: 86cqw; top: 3cqw; width: 10.8cqw; height: 10cqw; }
+.gc--rd:not(.gc--sup) .rd__pills { top: 16.5cqw; right: 3.6cqw; gap: 2.5cqw; }
+.gc--rd:not(.gc--sup) .rd__pill {
+  display: block; height: 9cqw; padding: 1.44cqw 3cqw 0; font-family: var(--rd-font-name); font-weight: 800; font-style: italic; font-size: 5.57cqw;
+  letter-spacing: 0; color: var(--rd-pill-ink); background: var(--rd-pill); box-shadow: 0 0 0 .9cqw var(--rd-stroke), 0 .6cqw 1cqw rgba(0, 0, 0, .45);
+}
+.gc--rd:not(.gc--sup) .rd__pill--rar { color: var(--rd-pill-ink); background: var(--rd-ring); }
+.gc--rd:not(.gc--sup)[data-rarity="Normal"] .rd__pill--rar { display: none; }
+.gc--rd:not(.gc--sup) .rd__abn { position: absolute; font-family: var(--rd-font-name); font-weight: 800; font-style: italic; letter-spacing: 0; padding: 0 .8cqw; }
+.gc--rd:not(.gc--sup) .rd__abd { position: absolute; left: 5cqw; right: 5cqw; text-wrap: wrap; --rd-sw: .68cqw; }
+.gc--rd:not(.gc--sup) .rd__bot { inset: 0; height: auto; display: block; }
+.gc--rd:not(.gc--sup) .rd__swords { position: absolute; left: 3.3cqw; top: 123.3cqw; width: 13.4cqw; height: 13.4cqw; }
+.gc--rd:not(.gc--sup) .rd__bot .rd__num { justify-self: auto; }
 
 /* support (game layout measured on Hat and Clogs Shopkeeper, Deck view 600×840): the tops are set by js so the capital
    letters of each block land on the game's line (fitRedraw · capOff) */

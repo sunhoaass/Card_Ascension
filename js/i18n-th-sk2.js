@@ -26,6 +26,7 @@ I18N.addSK({
  "Ryuk drops his Death Note.": "Ryuk ทำ Death Note หล่น",
  "Sagiri reads the flow of Tao.": "Sagiri อ่านกระแส Tao",
  "Saitama ends fights in one punch.": "Saitama จบการต่อสู้ด้วยหมัดเดียว",
+ "One Punch Caped Hero ends fights in one punch.": "One Punch Caped Hero จบการต่อสู้ด้วยหมัดเดียว",
  "Sakamoto turns anything into a weapon.": "Sakamoto เปลี่ยนทุกสิ่งเป็นอาวุธ",
  "Sanemi's rare blood makes demons drunk.": "เลือดหายากของ Sanemi ทำให้ปีศาจเมา",
  "Sango's giant boomerang comes back around: every other attack, the supported card hits again for #% of the damage.": "บูมเมอแรงยักษ์ของ Sango วนกลับมา: ทุกการโจมตีเว้นครั้ง การ์ดที่ซัพพอร์ตจะตีซ้ำด้วย #1% ของดาเมจ",
