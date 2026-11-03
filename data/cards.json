@@ -3107,7 +3107,7 @@
     "id": "rabbit-goddess",
     "name": "Rabbit Goddess",
     "series": "",
-    "image": "images/cards/rd/rabbit-goddess.webp",
+    "image": "images/cards/rd/rabbit-goddess-2.webp",
     "base": {
       "atk": 936939,
       "hp": 6246258,
@@ -3135,7 +3135,7 @@
       "overall": 53.2
     },
     "tier": "B",
-    "updated": "2026-11-02",
+    "updated": "2026-11-03",
     "beats": [
       "moon-eye-ghost",
       "atomic-shadow-lord",
