@@ -11912,8 +11912,7 @@
     "id": "hero-number-one",
     "name": "Hero Number One",
     "series": "",
-    "image": "images/cards/hero-number-one.webp",
-    "cleanArt": true,
+    "image": "images/cards/rd/hero-number-one.webp",
     "base": {
       "atk": 493403,
       "hp": 3289350,
@@ -11941,7 +11940,7 @@
       "overall": 42.4
     },
     "tier": "D",
-    "updated": "2026-10-30",
+    "updated": "2026-11-03",
     "beats": [
       "pumpkin-sun-pride",
       "demon-god-of-flame",
@@ -12002,7 +12001,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "homunculus-father",
@@ -12422,7 +12422,7 @@
     "id": "monk-of-names",
     "name": "Monk of Names",
     "series": "",
-    "image": "images/cards/monk-of-names.webp",
+    "image": "images/cards/rd/monk-of-names.webp",
     "base": {
       "atk": 474446,
       "hp": 3162976,
@@ -12434,7 +12434,7 @@
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "Futen Taisatsuryo",
-      "desc": "Ichibe takes away the enemy's name. Its first hit on each new enemy Seals its ability for 2 turns. Every 2nd attack also hits the card behind for 35%. Every enemy card starts with 8.4% less damage. Survives its first killing blow with 1 HP."
+      "desc": "Monk of Names takes away the enemy's name. Its first hit on each new enemy Seals that card's ability for 2 turns. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Every enemy card starts with 8.4% less damage. Survives its first killing blow with 1 HP."
     },
     "skill": {
       "name": "",
@@ -12450,7 +12450,7 @@
       "overall": 40.5
     },
     "tier": "D",
-    "updated": "2026-10-30",
+    "updated": "2026-11-03",
     "beats": [],
     "losesTo": [
       "founding-titan",
@@ -12509,7 +12509,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "moon-breath-swordsman",
@@ -12973,8 +12974,7 @@
     "id": "undead-overlord-king",
     "name": "Undead Overlord King",
     "series": "",
-    "image": "images/cards/undead-overlord-king.webp",
-    "cleanArt": true,
+    "image": "images/cards/rd/undead-overlord-king.webp",
     "base": {
       "atk": 318294,
       "hp": 2121958,
@@ -13002,7 +13002,7 @@
       "overall": 46.9
     },
     "tier": "C",
-    "updated": "2026-10-30",
+    "updated": "2026-11-03",
     "beats": [
       "pumpkin-sun-pride",
       "infinity-sorcerer",
@@ -13062,14 +13062,14 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "white-hawk-godhand",
     "name": "White Hawk Godhand",
     "series": "",
-    "image": "images/cards/white-hawk-godhand.webp",
-    "cleanArt": true,
+    "image": "images/cards/rd/white-hawk-godhand.webp",
     "base": {
       "atk": 711153,
       "hp": 4741018,
@@ -13097,7 +13097,7 @@
       "overall": 49.4
     },
     "tier": "B",
-    "updated": "2026-10-30",
+    "updated": "2026-11-03",
     "beats": [
       "pumpkin-sun-pride",
       "golden-gate-king",
@@ -13158,7 +13158,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "wood-god-hokage",
@@ -13355,8 +13356,7 @@
     "id": "destroyer-god",
     "name": "Destroyer God",
     "series": "",
-    "image": "images/cards/destroyer-god.webp",
-    "cleanArt": true,
+    "image": "images/cards/rd/destroyer-god.webp",
     "base": {
       "atk": 2267115,
       "hp": 15114100,
@@ -13384,7 +13384,7 @@
       "overall": 71.3
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-11-03",
     "beats": [
       "golden-wind-boss",
       "storm-dragon",
@@ -13445,7 +13445,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "dragon-god",
@@ -14500,8 +14501,7 @@
     "id": "storm-dragon",
     "name": "Storm Dragon",
     "series": "",
-    "image": "images/cards/storm-dragon.webp",
-    "cleanArt": true,
+    "image": "images/cards/rd/storm-dragon.webp",
     "base": {
       "atk": 2267115,
       "hp": 15114100,
@@ -14529,7 +14529,7 @@
       "overall": 76.6
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-11-03",
     "beats": [
       "dragon-king-of-ruin",
       "spiral-drill-king",
@@ -14590,13 +14590,14 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "witch-of-envy",
     "name": "Witch of Envy",
     "series": "",
-    "image": "images/cards/witch-of-envy.webp",
+    "image": "images/cards/rd/witch-of-envy.webp",
     "base": {
       "atk": 2267115,
       "hp": 15114100,
@@ -14624,7 +14625,7 @@
       "overall": 77.9
     },
     "tier": "SS",
-    "updated": "2026-10-30",
+    "updated": "2026-11-03",
     "beats": [
       "storm-dragon",
       "dragon-king-of-ruin",
@@ -14685,7 +14686,8 @@
       ],
       "position": "",
       "bestWith": []
-    }
+    },
+    "redraw": true
   },
   {
     "id": "ant-king",

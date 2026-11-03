@@ -3432,8 +3432,7 @@
   {
     "id": "angel-attendant",
     "name": "Angel Attendant",
-    "image": "images/support/angel-attendant.webp",
-    "cleanArt": true,
+    "image": "images/support/rd/angel-attendant.webp",
     "effect": {
       "name": "Angel's Grace",
       "desc": "Angel Attendant moves like an angel: the supported card dodges {0}% of hits and gets {1}% more damage and {2}% more max HP.",
@@ -3442,19 +3441,7 @@
         12.5,
         12.5
       ],
-      "type": "dodge",
-      "pos": [
-        {
-          "i": 0,
-          "x": 70.17,
-          "y": 100.17,
-          "w": 13.17,
-          "h": 6.17,
-          "cap": 6.17,
-          "gl": 2.17,
-          "gr": 2.33
-        }
-      ]
+      "type": "dodge"
     },
     "odds": 1900000000,
     "obtain": "Rolls anywhere",
@@ -3466,36 +3453,24 @@
       "value": 80.9
     },
     "tier": "SS",
-    "updated": "2026-10-31",
+    "updated": "2026-11-03",
     "prevTier": "S",
     "bestDeck": [
       "pvp-doom-opener"
-    ]
+    ],
+    "redraw": true
   },
   {
     "id": "first-master-fairy",
     "name": "First Master Fairy",
-    "image": "images/support/first-master-fairy.webp",
-    "cleanArt": true,
+    "image": "images/support/rd/first-master-fairy.webp",
     "effect": {
       "name": "Fairy Law",
       "desc": "First Master Fairy casts Fairy Law: the supported card blasts every enemy card for {0}% of its max HP with its first hit (once per fight; bench cards keep 1 HP).",
       "vals": [
         11
       ],
-      "type": "splash",
-      "pos": [
-        {
-          "i": 0,
-          "x": 47.83,
-          "y": 105.83,
-          "w": 8.17,
-          "h": 5.0,
-          "cap": 5.0,
-          "gl": 2.0,
-          "gr": 1.67
-        }
-      ]
+      "type": "splash"
     },
     "odds": 2200000000,
     "obtain": "Rolls anywhere",
@@ -3507,15 +3482,15 @@
       "value": 72.4
     },
     "tier": "SS",
-    "updated": "2026-10-31",
+    "updated": "2026-11-03",
     "prevTier": "",
-    "bestDeck": []
+    "bestDeck": [],
+    "redraw": true
   },
   {
     "id": "nine-tails-fox",
     "name": "Nine Tails Fox",
-    "image": "images/support/nine-tails-fox.webp",
-    "cleanArt": true,
+    "image": "images/support/rd/nine-tails-fox.webp",
     "effect": {
       "name": "Nine-Tails Chakra Mode",
       "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage. Mutation bonus: +40% damage and max HP.",
@@ -3528,18 +3503,6 @@
         30
       ],
       "type": "dmg",
-      "pos": [
-        {
-          "i": 0,
-          "x": 63.83,
-          "y": 100.0,
-          "w": 13.33,
-          "h": 6.33,
-          "cap": 6.17,
-          "gl": 2.0,
-          "gr": 2.33
-        }
-      ],
       "knee": [
         35,
         35,
@@ -3556,9 +3519,10 @@
       "value": 88.4
     },
     "tier": "Meta",
-    "updated": "2026-11-02",
+    "updated": "2026-11-03",
     "prevTier": "S",
-    "bestDeck": []
+    "bestDeck": [],
+    "redraw": true
   },
   {
     "id": "wish-granter",

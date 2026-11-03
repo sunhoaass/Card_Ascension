@@ -1,0 +1,92 @@
+{
+  "demon-progenitor": {
+    "hp": 2990686,
+    "atk": 448603,
+    "odds": "669.0M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Progenitor of All Demons",
+      "desc": "Demon Progenitor: Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Each hit adds 3 Poison stacks (each stack: 0.8% of the enemy's max HP per turn, max 4 stacks, 3 turns). Heals 4.7% of its max HP every turn. Comes back once with 16% HP. Takes 2x damage from Sun cards."
+    }
+  },
+  "infinity-sorcerer": {
+    "hp": 3915430,
+    "atk": 587315,
+    "odds": "617.9M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Limitless: Infinity",
+      "desc": "Nothing touches Infinity Sorcerer. Takes 36% less damage until it has been hit 4 times. 15% chance to dodge each hit. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. With Curse Manipulator in your deck, both get +7.6% damage and HP."
+    }
+  },
+  "king-of-curses": {
+    "hp": 2890800,
+    "atk": 433620,
+    "odds": "570.8M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Malevolent Shrine",
+      "desc": "King of Curses's Dismantle and Cleave shred everything. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Each hit adds 2 Bleed stacks (each stack: 1.3% of the enemy's max HP per turn, max 4 stacks, 3 turns). Ignores the enemy's shields, dodges and barriers. Instantly kills enemies under 9% HP (not bosses)."
+    }
+  },
+  "wood-god-hokage": {
+    "hp": 3173980,
+    "atk": 476097,
+    "odds": "527.2M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Wood Release: True Several Thousand Hands",
+      "desc": "Wood God Hokage: Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Heals 4.8% of its max HP every turn. 18% chance per hit to Stun the enemy for 1 turn (it skips that turn). With Moon Eye Ghost in your deck, both get +15% damage and HP."
+    }
+  },
+  "otsutsuki-vessel": {
+    "hp": 2100012,
+    "atk": 315002,
+    "odds": "486.9M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sukunahikona",
+      "desc": "Otsutsuki Vessel shrinks and expands anything. 34% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Each hit crushes the enemy: 8.5% of its max HP per turn for 2 turns. Takes 17% less damage. Heals 21% of the damage it deals."
+    }
+  },
+  "six-paths-fox-sage": {
+    "hp": 2172838,
+    "atk": 325926,
+    "odds": "449.8M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Baryon Mode",
+      "desc": "Six Paths Fox Sage burns his own life force into raw power. Hits set black flames on the enemy: 1.5% of its max HP every turn for the rest of the fight. +39% damage. Every other card in your deck gets +9.7% damage. Survives its first killing blow with 1 HP."
+    }
+  },
+  "fist-hero-vice-admiral": {
+    "hp": 2382628,
+    "atk": 357394,
+    "odds": "415.4M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Galaxy Impact",
+      "desc": "Fist Hero Vice Admiral: Ignores the enemy's shields, dodges and barriers. Every 3rd attack does 3x damage. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). With Pirate King in your deck, both get +20% damage and HP."
+    }
+  },
+  "soul-queen-emperor": {
+    "hp": 2000304,
+    "atk": 300046,
+    "odds": "383.7M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Soul Pocus",
+      "desc": "Soul Queen Emperor steals lifespans. Each hit also deals 10% of the enemy's max HP. Heals 30% of the damage it deals. Takes 25% less damage. Can't be stunned, frozen, paralyzed, confused, sealed or weakened."
+    }
+  },
+  "earthquake-emperor": {
+    "hp": 2693626,
+    "atk": 404044,
+    "odds": "354.4M",
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Gura Gura no Mi",
+      "desc": "Earthquake Emperor cracks the air. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. Survives its first killing blow with 1 HP. Under 21% HP: +40% damage. When Fire Fist Brother falls: +34% damage."
+    }
+  }
+}

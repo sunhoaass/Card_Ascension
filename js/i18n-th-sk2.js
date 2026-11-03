@@ -342,5 +342,6 @@ I18N.addSK({
  "Primordial Butler Demon's world of temptation.": "โลกแห่งการล่อลวงของ Primordial Butler Demon",
  "Hypnosis Traitor's perfect hypnosis.": "การสะกดจิตอันสมบูรณ์แบบของ Hypnosis Traitor",
  "Beast Emperor can't die.": "Beast Emperor ตายไม่ได้",
- "Rabbit Goddess is the origin of chakra.": "Rabbit Goddess คือต้นกำเนิดของจักระ"
+ "Rabbit Goddess is the origin of chakra.": "Rabbit Goddess คือต้นกำเนิดของจักระ",
+ "Monk of Names takes away the enemy's name.": "Monk of Names พรากชื่อของศัตรู"
 });
