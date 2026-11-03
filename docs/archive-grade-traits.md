@@ -12,7 +12,7 @@
 | `8884a56` | branch `claude/tier-list-ui-grade-traits-a1d1gp` | หน้า Cards แบบใหม่ (ป้ายระดับ, ช่อง 1 IN, ฯลฯ) + Grade/Traits/ภาษาไทยยังอยู่ครบ (`?v=76`) |
 | `5231806` | branch เดียวกัน | **commit ที่ลบ** ("Remove Grade + Traits systems and the Thai translation") · `git show 5231806` = ทุกจุดที่ลบ |
 
-> `db23c9c` อยู่บน `main` แล้ว = ไม่หายแน่นอน · `8884a56` / `5231806` อยู่ถาวรถ้า merge แบบ merge commit (ถ้า squash ให้ใช้ `db23c9c` แทน)
+> ทั้ง 3 commit อยู่บน `main` แล้ว (merge commit `614620c` · 2026-11-03) = ไม่หาย
 
 ```bash
 # ดูไฟล์เก่าไฟล์เดียว
