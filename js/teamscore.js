@@ -12,12 +12,12 @@
      suggest(deck, kind, n = 3) -> [{ id, slot, gain, before, after }]   kind = "cards" | "support"
      band(score), modeConfig(id), modes(), resolveMode(id), PARTS
    }
-   deck = { mode, rarity?, cards: [4 ids | null], support: [4 ids | null], cardRarity?: [4 names], supRarity?: [4 names],
-            traits?: { "<card id>": "<trait id>" } } (the shape of cbi:decks; traits = the user's trait per card from js/traits.js,
-          added by js/deck.js for the user's own decks only · a slot without its own rarity uses deck.rarity, owner 2026-11-02)
+   deck = { mode, rarity?, cards: [4 ids | null], support: [4 ids | null], cardRarity?: [4 names], supRarity?: [4 names] }
+          (the shape of cbi:decks · a slot without its own rarity uses deck.rarity, owner 2026-11-02 · the trait bonus was
+          removed with the Traits system 2026-11-03: docs/archive-grade-traits.md §2.3)
 
    The 5 parts (weights per mode from data/meta.json -> modes[].weights; default 30 / 25 / 20 / 15 / 10):
-     power     card Overall (unranked = from ATK × HP) + its trait bonus vs the best card in the library 4 times (no traits)
+     power     card Overall (unranked = from ATK × HP) vs the best card in the library 4 times
                · support Value (unranked = from its effect value at the deck's rarity) vs the best support
      synergy   cards with a partner from team.bestWith · support that fits the card above it · minus avoidWith clashes
      coverage  share of Meta cards (Meta/SS) the team beats (beats) · minus every weakTo tag shared by 3+ cards
@@ -60,7 +60,6 @@
     strongMin: 2,                         // "Strong vs": beaten by 2+ cards
     rolesNeed: 0.8, rolesAny: 0.2,        // roles: the mode's needs / every card has a role
     posNear: 0.5,                         // position: one slot away from its best slot
-    traitPts: 20,                         // card power: the strongest trait (Ascendant) adds this many points to a card's value
     threatTiers: ["Meta", "SS"],         // Meta cards (owner 2026-10-24: tier Meta (was GOD) + SS)
     unrMin: 10, unrMax: 60,               // an unranked card / support is worth unrMin … unrMax (2026-10-28 · PROGRESS §10.5)
     unrSupNoData: 0.5,                    // unranked support with no effect value (or no other support of its type): this share of the level's range
@@ -194,10 +193,6 @@
     const mv = s.modes && typeof s.modes === "object" ? num(s.modes[mode]) : null;
     return mv == null ? v : (v + clamp01(mv / 100) * 100) / 2;
   }
-  // trait bonus (PROGRESS §10.5): K.traitPts × power of the card's trait (0 no trait … 1 Ascendant), capped at 100
-  const traitOf = (deck, c) => (deck && deck.traits && typeof deck.traits === "object" && typeof deck.traits[c.id] === "string" ? deck.traits[c.id] : null);
-  const traitBonus = (deck, c) => { const id = traitOf(deck, c); return id && C.traits && C.traits.power ? K.traitPts * C.traits.power(id) : 0; };
-  const cardValT = (deck, c, mode) => Math.min(100, cardVal(c, mode) + traitBonus(deck, c));
   // the best possible deck in this mode at this rarity: the best card in every slot (cards may repeat since 2026-10-30;
   // an empty library = 50) and the best support in every slot (support may repeat)
   function bestOf(mode, rarity) {
@@ -243,7 +238,7 @@
     /* Card power */
     {
       const b = bestOf(mode, rarity);
-      const cAvg = at.reduce((a, c) => a + (c ? cardValT(deck, c, mode) : 0), 0) / SLOTS;
+      const cAvg = at.reduce((a, c) => a + (c ? cardVal(c, mode) : 0), 0) / SLOTS;
       // owner 2026-11-02: the same support twice doesn't stack · one that reaches the whole deck (EVERY / every OTHER card)
       // counts once: its 2nd, 3rd … copy adds nothing (js/deckbuff.js wideFirst, same rule as the ATK / HP numbers) · one for
       // "the supported card" still helps its own column · each support at its own slot's rarity, against the best support at
@@ -256,12 +251,11 @@
       }, 0) / SLOTS;
       const cr = clamp01(cAvg / b.card), sr = clamp01(sAvg);
       const v = l.sups.length ? K.powerCards * cr + K.powerSupport * sr : cr;
-      const avgOv = nCards ? members.reduce((a, c) => a + cardValT(deck, c, mode), 0) / nCards : 0;
-      const tb = members.reduce((a, c) => a + cardValT(deck, c, mode) - cardVal(c, mode), 0), nTr = members.filter((c) => traitBonus(deck, c) > 0).length;
+      const avgOv = nCards ? members.reduce((a, c) => a + cardVal(c, mode), 0) / nCards : 0;
       parts.power = {
-        v, noData: false, traits: nTr, traitPts: tb,
+        v, noData: false,
         note: nCards || nSup
-          ? `Cards ${Math.round(cr * 100)}% of the strongest team${nCards ? ` (avg ${fmt(avgOv)})` : ""}${nTr ? ` · ${nTr} with a trait (+${fmt(tb / nCards)} avg)` : ""}${l.sups.length ? ` · support ${Math.round(sr * 100)}%` : ""}`
+          ? `Cards ${Math.round(cr * 100)}% of the strongest team${nCards ? ` (avg ${fmt(avgOv)})` : ""}${l.sups.length ? ` · support ${Math.round(sr * 100)}%` : ""}`
           : "Add cards to build power",
       };
     }
@@ -455,7 +449,7 @@
       });
       if (best && best.raw > base.raw + EPS) out.push({ ...best, gain: best.raw - base.raw, before: base.score });
     });
-    const val = (x) => (key === "cards" ? cardValT(deck, l.cardById.get(x.id), base.mode) : supVal(l.supById.get(x.id), base.mode, supRarityAt(deck, x.slot)));
+    const val = (x) => (key === "cards" ? cardVal(l.cardById.get(x.id), base.mode) : supVal(l.supById.get(x.id), base.mode, supRarityAt(deck, x.slot)));
     return out.sort((a, b) => b.gain - a.gain || val(b) - val(a) || a.id.localeCompare(b.id)).slice(0, n);
   }
 

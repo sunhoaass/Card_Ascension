@@ -387,7 +387,7 @@ html.is-detail, html.is-detail body { overflow: hidden; overscroll-behavior: non
 .bs-sheet__lv { display: flex; align-items: center; gap: 6px; margin: 8px -6px 0; overflow: hidden; }
 .bs-sheet__lv .bs-lv { flex: none; }
 .bs-sheet__lvname { min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: .14em; color: var(--gold-hi); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bs-tabs { --n: 4; max-width: none; margin: 8px 0 0; }
+.bs-tabs { --n: 3; max-width: none; margin: 8px 0 0; }
 .bs-tabs .seg__btn { min-height: 44px; padding: 0 4px; font-family: var(--font-body); font-size: 16px; font-weight: 600; letter-spacing: 0; }
 .bs-tabs .seg__btn:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: -2px; }
 /* short screens (a phone on its side): a slimmer head so the content keeps most of the height */
@@ -410,9 +410,6 @@ html.is-detail, html.is-detail body { overflow: hidden; overscroll-behavior: non
 .bs-sheet__body .pc li, .bs-sheet__body .pc__title, .bs-sheet__body .group__title, .bs-sheet__body .ability__desc, .bs-sheet__body .ability__kind,
 .bs-sheet__body .unranked, .bs-sheet__body .overall__max, .bs-sheet__body .overall__tier small, .bs-sheet__body .detail__foot,
 .bs-sheet__body .badge, .bs-sheet__body .supchip, .bs-sheet__body .chip { font-size: 16px; }
-/* the My card tab reuses the Trait + Grade panels: same rule there */
-.bs-sheet__body :is(.trrec__k, .trrec__note, .trrec__more, .trp__name, .trp__tier, .trres__k, .trres__row small, .trres__cap, .trres__fx, .gsum__overall small, .gsum__list li) { font-size: 16px; }
-.bs-sheet__body .trres__v { font-size: 22px; }
 .bs-sheet__body .ability__name { font-size: 19px; }
 .bs-sheet__body .dpanel__title + *, .bs-sheet__body .dpanel__sub + * { margin-top: 14px; }
 .dpanel__note { margin: 0 0 var(--s-3); font-size: 16px; color: var(--bs-text); line-height: 1.55; }
