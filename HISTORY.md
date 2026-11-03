@@ -1881,3 +1881,22 @@
 - **เจ้าของเสนอ:** ใช้รูปย่อ (หน้า Deck ของเกม · ไม่มีตัวเลขทับหน้า) → `tools/tile_patch.py` (ใหม่): SIFT จับรูปย่อเข้ากับรูป rd (Rabbit Goddess 25 คู่ · ตรง 23 · ขยาย 2.61×) · unsharp เบาๆ · ปรับสีตามวงรอบ · วงรีหัว + ขอบนุ่ม · ไม่เอาป้าย ×20 / เพชร / โอกาส · ผล: หน้า + ตาที่สาม + เขากลับมา (นุ่มกว่ารูปหลักเล็กน้อย) · เขาข้างขวาบนสุดอยู่นอกรูปย่อ (ไม่ได้คืน)
 - **ไฟล์:** `images/cards/rd/rabbit-goddess-2.webp` + `thumb/` (ชื่อใหม่ กันมือถือใช้รูปเก่าในแคช · รูปเดิมไม่ลบ) · `data/cards.json` (`image`) · `tools/tile_patch.py` · `PROGRESS.md` · `HISTORY.md`
 - **ทดสอบ:** หน้าดูการ์ด Godly (HP 2B) เห็นหน้าเต็มระหว่างชื่อกับ HP
+
+### 2026-11-03 กฎใหม่: เจ้าของส่งรูปว่าง Claude ใส่ข้อความอย่างเดียว + mockup `mockup/blank-art.html`
+- **เจ้าของสั่ง:** เจ้าของลบตัวหนังสือออกจากรูปเองแล้วส่งรูปว่างมา · Claude ไม่ตัดต่อ/ลบอะไรในรูป · ใส่ข้อความอย่างเดียว · ลบรูปที่ทำแล้วออกให้หมด · ตัวอย่างแรกทำเป็น mockup ก่อน ยังไม่ใส่เว็บ
+- **mockup:** `mockup/blank-art.html` วาดการ์ดด้วย `CBI.renderCard` ของเว็บจริง (โหลด CSS/JS ของเว็บ · `boot()` ของเว็บหยุดเองเพราะหน้านี้ไม่มีแท็บ · ซ่อน error นั้น) · รูปเจ้าของ (Homunculus Father 880×1190) เทียบรูปเดิมด้วย SIFT: กรอบเดียวกัน + ขอบเกินด้านละ ~20px → ตัด x 20–841 y 20–1161 ย่อ 600×840 → `mockup/blank-art/homunculus-father.webp` (+ thumb) · หน้า: ปุ่ม 9 ระดับ, EN/ไทย, รูปเจ้าของ vs รูปเดิม, ขนาด 111/150/200px
+- **ทดสอบ (Chromium 390 + 1100px):** ไม่มี error · Godly HP 1.9B หน้าคมไม่เบลอ · ไทยขึ้นครบ
+- **ยังไม่ทำ:** ลบรูปที่ทำแล้ว (การ์ด 38 + Support 4) → รอเจ้าของยืนยันเวลา (ลบตอนนี้เว็บไม่เหลือการ์ด)
+- **ไฟล์:** `mockup/blank-art.html` · `mockup/blank-art/` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 การ์ดเขียนใหม่: ชื่อการ์ด + HP + ATK เป็น Oswald 700 (`?v=65`)
+- **เจ้าของเลือก** (หน้า Card Font Picks · artifact): ชื่อการ์ด Oswald 700 · HP/ATK Oswald 700 · ชื่อสกิล Anton · คำอธิบาย Oswald 500 · ป้าย 1 IN X / ระดับ Anton · ไทย Noto Sans Thai 500 (4 อย่างหลัง = เหมือนเดิม) · ไม่ต้องโหลดไฟล์ฟอนต์ (เว็บใช้ Google Fonts · Oswald 700 อยู่ในลิงก์ฟอนต์ของ `index.html` แล้ว)
+- **แก้:** `css/tokens.css` `--rd-font-name` (ใหม่ · Oswald) · `css/fx.css` `.rd__nm` / `.rd__num` = `--rd-font-name` 700 · `js/app.js` วัดขนาดชื่อ/HP/ATK ด้วย Oswald 700 (`rdW` ชนิด `n` · `nameW`) · ตำแหน่งชื่อ Support ใช้ metric Oswald · `js/share.js` `drawRedraw` (รูป Save image) ชื่อ/HP/ATK เป็น Oswald 700 + เส้นฐานตาม metric Oswald · Support ชื่อการ์ดก็เปลี่ยนด้วย (ชื่อใช้ชิ้นเดียวกัน)
+- **ทดสอบ (Chromium 390×844):** หน้าดูการ์ด 5 การ์ด + 2 Support × EN/TH × Normal/Godly: ไม่มีตัวอักษรล้น · ไม่มี error · ชื่อยาว (Primordial Butler Demon, Made in Heaven Priest) ขึ้น 2 บรรทัด · รูป Save image ของ Deck ชื่อ/ตัวเลขเป็น Oswald ตรงหน้าเว็บ
+- **ไฟล์:** `index.html` (`?v=65`) · `css/tokens.css` · `css/fx.css` · `js/app.js` · `js/share.js` · `mockup/blank-art.html` (`?v=65`) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 ลบรูปจากเครื่องมือลบออกจากเว็บทั้งหมด (เว็บไม่มีการ์ดจนกว่ารูปเจ้าของมา)
+- **เจ้าของยืนยัน:** "ลบรูปออกจากเว็บให้หมดก่อน" (กฎใหม่: เจ้าของส่งรูปว่าง Claude ใส่ข้อความอย่างเดียว)
+- **ทำ:** `git rm` `images/cards/rd/` (38 + thumb · รวม `rabbit-goddess-2`) + `images/support/rd/` (4 + thumb) · การ์ด 38 + Support 4 ย้ายไป `data/pending/` (ลบ `redraw` · `image` = รูปเดิม `images/<kind>/<id>.webp` ที่ยังอยู่) · `data/cards.json` / `support.json` = `[]` · pending = การ์ด 400 + Support 100 · ข้อความเกมที่แก้ไว้แล้ว (`passive.desc` ฯลฯ) อยู่ครบใน pending · `mockup/blank-art.html` อ่าน Homunculus Father จาก pending + เลิกเทียบรูปเดิม (ลบแล้ว)
+- **ทดสอบ (Chromium 390×844):** Home / Cards / Support / Tier / Deck (My Decks + Meta Decks) / Grade / Traits / ลิงก์ `#card/<id>` / deck เก่าในเครื่อง: ไม่มี error · ทุกหน้าขึ้นข้อความว่างของตัวเอง ("No cards yet" ฯลฯ) · Meta Decks = ช่องว่าง · mockup ขึ้นปกติ
+- **ไฟล์:** `data/cards.json` · `data/support.json` · `data/pending/cards.json` · `data/pending/support.json` · `images/cards/rd/` (ลบ) · `images/support/rd/` (ลบ) · `mockup/blank-art.html` · `PROGRESS.md` · `HISTORY.md`

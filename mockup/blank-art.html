@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blank Art Sample</title>
+<!-- Mockup (owner 2026-11-03): the owner sends a picture with every word already removed, the site only writes the text.
+     Sample = Homunculus Father · the card is drawn by the site's own code (js/app.js renderRedraw), so it looks exactly
+     like the live site would · not linked from the site. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../css/tokens.css?v=65">
+<link rel="stylesheet" href="../css/base.css?v=65">
+<link rel="stylesheet" href="../css/fx.css?v=65">
+<link rel="stylesheet" href="../css/cards.css?v=65">
+<style>
+  body { background: var(--bg, #0e0b12); color: var(--ink, #ece6f2); margin: 0; font-family: "Noto Sans Thai", "Inter", system-ui, sans-serif; }
+  .lab { max-width: 980px; margin: 0 auto; padding: 20px 16px 48px; }
+  .lab h1 { font-family: "Cinzel", Georgia, serif; font-size: 24px; margin: 0 0 4px; letter-spacing: .04em; }
+  .lab p.sub { margin: 0 0 18px; color: #a49cb1; font-size: 14px; line-height: 1.6; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .chip { font: 600 13px/1 "Inter", system-ui, sans-serif; padding: 9px 13px; border-radius: 999px; border: 1px solid #3a3146; background: #1f1a27; color: #ece6f2; cursor: pointer; min-height: 36px; }
+  .chip[aria-pressed="true"] { background: #d8b46a; color: #1a1306; border-color: #d8b46a; }
+  .stage { display: grid; grid-template-columns: minmax(0, 380px); gap: 16px; align-items: start; }
+  .slot h2 { font: 600 14px/1.4 "Noto Sans Thai", system-ui, sans-serif; margin: 0 0 8px; color: #d8b46a; }
+  .slot .card { width: 100%; max-width: 380px; }
+  .sizes { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-top: 22px; }
+  .sizes .card { flex: none; }
+  .note { margin-top: 22px; padding: 14px 16px; border: 1px solid #2e2738; border-radius: 12px; background: #17131d; font-size: 14px; line-height: 1.7; color: #cfc7da; }
+  .note b { color: #f3dca0; }
+  @media (max-width: 560px) { .stage { grid-template-columns: 1fr; } .slot .card { max-width: none; } }
+</style>
+</head>
+<body>
+<main class="lab">
+  <h1>Blank Art Sample</h1>
+  <p class="sub">รูปที่เจ้าของลบตัวหนังสือเอง (Homunculus Father) · เว็บเขียนชื่อ, HP, ป้ายโอกาส, ระดับ, ชื่อสกิล, คำอธิบาย, ATK เองทั้งหมด ด้วยโค้ดเดียวกับเว็บจริง · รูปเดิมที่เครื่องมือลบไว้ถูกลบออกจากเว็บแล้ว (เจ้าของสั่ง 2026-11-03)</p>
+  <div class="row" id="rar" role="group" aria-label="Rarity"></div>
+  <div class="row" id="lang" role="group" aria-label="Language">
+    <button class="chip" data-lang="en">English</button><button class="chip" data-lang="th">ไทย</button>
+  </div>
+  <div class="stage">
+    <section class="slot"><h2>รูปของเจ้าของ (ไม่มีตัวหนังสือ)</h2><div id="mine"></div></section>
+  </div>
+  <h2 style="font: 600 14px/1.4 'Noto Sans Thai', system-ui; color:#d8b46a; margin: 26px 0 0">ขนาดในหน้า Cards / Deck (รูปของเจ้าของ)</h2>
+  <div class="sizes" id="sizes"></div>
+  <div class="note">
+    <b>รูปที่ส่งมา:</b> 880×1190 ตำแหน่งตรงกับรูปเดิมพอดี (ขอบเกินมาด้านละ ~20px) → ตัดขอบแล้วย่อเป็น 600×840 ขนาดเดียวกับเว็บ ไม่ต้องจัดเอง ·
+    <b>ระดับ:</b> กดเปลี่ยนด้านบน (HP ตั้งแต่ 1B ย่อเป็น B — Homunculus Father ถึง 1B ที่ระดับสูง หน้าไม่เบลอเพราะรูปไม่มีอะไรถูกลบ) ·
+    หน้านี้เป็น mockup เท่านั้น ยังไม่ได้ใส่ในเว็บจริง
+  </div>
+</main>
+<!-- the site's renderer · its boot() looks for the site's page parts and stops early here (no tabs on this page), which is fine -->
+<script>addEventListener("unhandledrejection", (e) => e.preventDefault());   // the site's boot() stopping early (see above)</script>
+<script src="../js/i18n.js?v=65"></script>
+<script src="../js/i18n-th-sk1.js?v=65"></script>
+<script src="../js/i18n-th-sk2.js?v=65"></script>
+<script src="../js/fx.js?v=65"></script>
+<script src="../js/app.js?v=65"></script>
+<script>
+(async () => {
+  const C = window.CBI;
+  const get = (u) => fetch(u).then((r) => r.json());
+  // every card waits in data/pending/ until its text-free picture arrives (owner 2026-11-03)
+  const [meta, live, wait] = await Promise.all([get("../data/meta.json?v=65"), get("../data/cards.json?v=65"), get("../data/pending/cards.json?v=65")]);
+  const cards = [...live, ...wait];
+  C.state.meta = meta; C.state.cards = cards;
+  const base = cards.find((c) => c.id === "homunculus-father");
+  const mine = { ...base, redraw: true, image: "blank-art/homunculus-father.webp" };
+  const RAR = meta.rarities.map((r) => r.name);
+  let lang = "en";
+  try { lang = localStorage.getItem("cbi:lang") === "th" ? "th" : "en"; } catch {}
+  let rar = "Godly";
+  try { const r = new URLSearchParams(location.search).get("r"); if (RAR.includes(r)) rar = r; } catch {}
+  const box = (id) => document.getElementById(id);
+  function draw() {
+    box("mine").replaceChildren(C.renderCard(mine, rar));
+    box("sizes").replaceChildren(...[111, 150, 200].map((w) => { const el = C.renderCard(mine, rar, { mini: w < 170 }); el.style.width = w + "px"; return el; }));
+    document.querySelectorAll("#rar .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.r === rar)));
+    document.querySelectorAll("#lang .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    // the site loads pictures when they scroll into view (data-src) · here: right away
+    document.querySelectorAll("img[data-src]").forEach((i) => { i.src = i.dataset.src; i.removeAttribute("data-src"); });
+  }
+  box("rar").innerHTML = RAR.map((r) => `<button class="chip" data-r="${r}">${r}</button>`).join("");
+  box("rar").addEventListener("click", (e) => { const b = e.target.closest("[data-r]"); if (b) { rar = b.dataset.r; draw(); } });
+  box("lang").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lang]"); if (!b || b.dataset.lang === lang) return;
+    try { localStorage.setItem("cbi:lang", b.dataset.lang); } catch {}
+    location.reload();   // the site's language switch reloads too (js/i18n.js)
+  });
+  draw();
+  if (document.fonts) document.fonts.ready.then(draw);   // measure again with the real fonts
+})();
+</script>
+</body>
+</html>

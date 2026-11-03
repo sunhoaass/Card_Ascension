@@ -3870,5 +3870,128 @@
       "pvp-beerus-squad",
       "overall-beerus-squad"
     ]
+  },
+  {
+    "id": "hat-and-clogs-shopkeeper",
+    "name": "Hat and Clogs Shopkeeper",
+    "image": "images/support/hat-and-clogs-shopkeeper.webp",
+    "effect": {
+      "name": "Blood Mist Shield",
+      "desc": "Hat and Clogs Shopkeeper's Blood Mist: the supported card blinds the enemy in front when it comes in (its next 3 attacks each have a {0}% chance to miss) and deals {1}% more damage.",
+      "vals": [
+        58,
+        10
+      ],
+      "type": "dodge",
+      "knee": [
+        90,
+        35
+      ]
+    },
+    "odds": 15700000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 16.9,
+      "reliability": 69.7,
+      "flexibility": 47.9,
+      "synergy": 21.0,
+      "value": 34.5
+    },
+    "tier": "B",
+    "updated": "2026-11-02",
+    "prevTier": "",
+    "bestDeck": []
+  },
+  {
+    "id": "angel-attendant",
+    "name": "Angel Attendant",
+    "image": "images/support/angel-attendant.webp",
+    "effect": {
+      "name": "Angel's Grace",
+      "desc": "Angel Attendant moves like an angel: the supported card dodges {0}% of hits and gets {1}% more damage and {2}% more max HP.",
+      "vals": [
+        37,
+        12.5,
+        12.5
+      ],
+      "type": "dodge"
+    },
+    "odds": 1900000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 84.0,
+      "reliability": 86.2,
+      "flexibility": 58.3,
+      "synergy": 92.1,
+      "value": 80.9
+    },
+    "tier": "SS",
+    "updated": "2026-11-03",
+    "prevTier": "S",
+    "bestDeck": [
+      "pvp-doom-opener"
+    ]
+  },
+  {
+    "id": "first-master-fairy",
+    "name": "First Master Fairy",
+    "image": "images/support/first-master-fairy.webp",
+    "effect": {
+      "name": "Fairy Law",
+      "desc": "First Master Fairy casts Fairy Law: the supported card blasts every enemy card for {0}% of its max HP with its first hit (once per fight; bench cards keep 1 HP).",
+      "vals": [
+        11
+      ],
+      "type": "splash"
+    },
+    "odds": 2200000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 64.4,
+      "reliability": 90.4,
+      "flexibility": 100.0,
+      "synergy": 42.6,
+      "value": 72.4
+    },
+    "tier": "SS",
+    "updated": "2026-11-03",
+    "prevTier": "",
+    "bestDeck": []
+  },
+  {
+    "id": "nine-tails-fox",
+    "name": "Nine Tails Fox",
+    "image": "images/support/nine-tails-fox.webp",
+    "effect": {
+      "name": "Nine-Tails Chakra Mode",
+      "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage. Mutation bonus: +40% damage and max HP.",
+      "vals": [
+        30,
+        30,
+        15
+      ],
+      "real": [
+        30
+      ],
+      "type": "dmg",
+      "knee": [
+        35,
+        35,
+        40
+      ]
+    },
+    "odds": 2033000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 99.5,
+      "reliability": 90.3,
+      "flexibility": 56.2,
+      "synergy": 96.7,
+      "value": 88.4
+    },
+    "tier": "Meta",
+    "updated": "2026-11-03",
+    "prevTier": "S",
+    "bestDeck": []
   }
 ]
