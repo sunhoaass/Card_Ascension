@@ -333,12 +333,12 @@
 }
 .rd__name { min-width: 0; display: flex; align-items: center; height: 100%; }
 .rd__nm {
-  flex: none; display: inline-block; white-space: nowrap; font-family: var(--rd-font-name); font-weight: 700; font-size: 10cqw;
+  flex: none; display: inline-block; white-space: nowrap; font-family: var(--rd-font-name); font-weight: 800; font-style: italic; font-size: 10cqw;
   letter-spacing: .02em; line-height: 1; text-transform: uppercase; padding: .4cqw .6cqw .2cqw; --fill: var(--rd-name);
 }
 .rd__nm.is-two { white-space: normal; line-height: .98; max-width: 44.9cqw; }
 .rd__hp { min-width: 0; justify-self: end; display: flex; align-items: center; gap: 1.2cqw; }
-.rd__num { font-family: var(--rd-font-name); font-weight: 700; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; padding: .3cqw; }
+.rd__num { font-family: var(--rd-font); font-weight: 400; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; padding: .3cqw; }
 .rd__hp .rd__num { font-size: 10cqw; --fill: var(--rd-hp); }
 .rd__heart { width: 9.6cqw; height: 9.6cqw; flex: none; filter: drop-shadow(0 .5cqw .4cqw rgba(0, 0, 0, .6)); }
 

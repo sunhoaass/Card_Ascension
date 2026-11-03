@@ -459,26 +459,26 @@
   const isRedraw = (x) => !!(x && x.redraw && x.image);
   const RD = { pad: 3.6, half: (100 - 2 * 3.6 - 3) / 2, ls: 0.02, lsPill: 0.03 };
   // where the capital letters start inside a line box, in em (Chromium metrics: Anton ascent 1.18 / descent .33 / caps .86 ·
-  // Oswald 1.19 / .29 / .81 · the card name + HP + ATK are Oswald 700 since 2026-11-03, pills + ability name stay Anton) · support tops: the game's cap lines measured on Hat and Clogs Shopkeeper (Deck view, 600×840)
+  // Oswald 1.19 / .29 / .81 · Barlow Condensed 1.0 / .2 / .7 = the card name, 800 italic, owner 2026-11-03 · HP, ATK, pills, ability name = Anton) · support tops: the game's cap lines measured on Hat and Clogs Shopkeeper (Deck view, 600×840)
   const capOff = (f, lh) => (lh - (f.a + f.d)) / 2 + f.a - f.c;
-  const ANTON = { a: 1.18, d: 0.33, c: 0.86 }, OSW = { a: 1.19, d: 0.29, c: 0.81 };
+  const ANTON = { a: 1.18, d: 0.33, c: 0.86 }, OSW = { a: 1.19, d: 0.29, c: 0.81 }, BARLOW = { a: 1, d: 0.2, c: 0.7 };
   const RDS = { name: 6.67, nameFs: 4.27, abn: 79.67, abnFs: 7.5, txt: 90.5, txtFs: 4.57, txtLh: 1.385, txtH: 27.7, word: 126, wordFs: 10.3 };
   let rdFonts = null;
-  function rdW(kind, text) {                       // width at font-size 1 (em) · a = Anton · t = Oswald 500 · s = Oswald 700 · n = name / HP / ATK font (700)
+  function rdW(kind, text) {                       // width at font-size 1 (em) · a = Anton · t = Oswald 500 · s = Oswald 700 · n = the card name (Barlow Condensed 800 italic)
     const key = "rd" + kind + "|" + text;
     let w = fitCache.get(key);
     if (w !== undefined) return w;
     if (!fitCtx) { const cv = document.createElement("canvas"); fitCtx = cv.getContext && cv.getContext("2d"); }
     if (!fitCtx) return 0;
     if (!rdFonts) { const cs = getComputedStyle(document.documentElement); rdFonts = { a: cs.getPropertyValue("--rd-font").trim() || "sans-serif", t: cs.getPropertyValue("--rd-font-text").trim() || "sans-serif", n: cs.getPropertyValue("--rd-font-name").trim() || "sans-serif" }; }
-    fitCtx.font = kind === "a" ? `400 100px ${rdFonts.a}` : kind === "n" ? `700 100px ${rdFonts.n}` : `${kind === "s" ? 700 : 500} 100px ${rdFonts.t}`;
+    fitCtx.font = kind === "a" ? `400 100px ${rdFonts.a}` : kind === "n" ? `italic 800 100px ${rdFonts.n}` : `${kind === "s" ? 700 : 500} 100px ${rdFonts.t}`;
     w = fitCtx.measureText(text).width / 100;
     if (fitCache.size > 4000) fitCache.clear();
     fitCache.set(key, w);
     return w;
   }
   const capsW = (t, ls) => rdW("a", t) + ls * t.length;            // Anton capitals + letter-spacing (em)
-  const nameW = (t, ls) => rdW("n", t) + ls * t.length;            // the card name's capitals (Oswald 700) + letter-spacing
+  const nameW = (t, ls) => rdW("n", t) + ls * t.length;            // the card name's capitals (Barlow Condensed 800 italic) + letter-spacing
   // lines a text needs at font size fs in `room` cqw (word wrap like the page) · [lines, widest word]
   function rdLines(words, kind, fs, room, ls = 0) {
     const sp = rdW(kind, " ") * fs;
@@ -560,16 +560,16 @@
       }
       nm.classList.toggle("is-two", two);
       nm.style.fontSize = cq(fs);
-      if (sup) q(".rd__top").style.top = cq(RDS.name - capOff(OSW, two ? 1.02 : 1) * fs);
+      if (sup) q(".rd__top").style.top = cq(RDS.name - capOff(BARLOW, two ? 1.02 : 1) * fs);
     }
     // HP: shrinks until number + heart fit the right half
     const hp = q('.rd__hp [data-k="hp"]');
     if (hp) {
-      const w = rdW("n", samples.hp || hp.textContent), room = half - 9.6 - 1.2 - 0.6;
+      const w = rdW("a", samples.hp || hp.textContent), room = half - 9.6 - 1.2 - 0.6;
       hp.style.fontSize = cq(w * 10 > room ? Math.max(3, room / w * 0.98) : 10);
     }
     const atk = q('.rd__bot [data-k="atk"]');
-    if (atk) { const w = rdW("n", samples.atk || atk.textContent) * 12.5 + 0.6; atk.style.fontSize = cq(w > 66 ? 12.5 * 66 / w : 12.5); }
+    if (atk) { const w = rdW("a", samples.atk || atk.textContent) * 12.5 + 0.6; atk.style.fontSize = cq(w > 66 ? 12.5 * 66 / w : 12.5); }
     // pills: one line, at most 44cqw
     el.querySelectorAll(".rd__pill").forEach((p) => { p.style.fontSize = cq(rdFitLine(p.textContent, 5.6, 44, RD.lsPill, 5.2)); });
     // ability name: one line across the card
