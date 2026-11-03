@@ -281,7 +281,6 @@
   --bs-spark-sv: #f4f6ff;                     /* W7: silver motes among the gold ones */
   --bs-spark-sv-glow: 0 0 6px 2px rgba(200, 212, 255, .75), 0 0 14px 4px rgba(170, 190, 255, .25);
   --bs-fall: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(205, 220, 255, .45) 45%, rgba(190, 205, 255, 0));   /* W7: light running down the light fall */
-  --bs-mat: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(225, 230, 255, .55) 55%, transparent);
   --bs-rainbow-lvl: #f0b6d0;                  /* label / line colour per level (the two prismatic levels use a tint) */
   --bs-ascended-lvl: #e6dcff;
   --bs-godlike-lvl: #fff0c4;

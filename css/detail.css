@@ -86,8 +86,6 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-fog { position: absolute; left: 0; top: 0; height: 100%; width: 200%; display: flex; animation: bs-fog 46s linear infinite; }
 .bs-fog img { width: 50%; height: 100%; flex: none; display: block; }
 @keyframes bs-fog { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.bs-dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; transition: opacity 600ms var(--ease); }
-.bs-dust.is-out { opacity: 0; }
 
 /* W7 round 2 (after the owner's clip): gold flecks · the ground = dark city ⇄ crystal palace + its dust · light running
    down the light fall · js places them in sky coordinates and runs the cycle · Low = one still picture (.bs-still) */
@@ -180,7 +178,6 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-wrap[data-lvl="Ascended"] { --edge: linear-gradient(180deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2); }
 .bs-wrap[data-lvl="Godlike"] { --edge: linear-gradient(90deg, var(--r-godlike-2), var(--r-godlike) 50%, var(--r-godlike-2)); }
 .bs-wrap[data-lvl="Godly"] { --edge: linear-gradient(180deg, var(--r-godly-2), var(--r-godly) 50%, var(--r-godly-2)); }
-.bs-mat { position: absolute; inset: -14px; border-radius: 16px; pointer-events: none; opacity: 0; background: var(--bs-mat); }
 .bs-glow { position: absolute; inset: -16%; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--lvl) 60%, transparent), color-mix(in srgb, var(--lvl) 22%, transparent) 60%, transparent); }   /* soft glow when the level wave reaches the card */
 
