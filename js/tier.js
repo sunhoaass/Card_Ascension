@@ -243,8 +243,8 @@
   function recolor(name) {
     const all = tiles;
     // read every position first, then write: mixing them forces a re-layout per card
-    const seen = all.map(([el]) => el.isConnected && rectVisible(el.getBoundingClientRect()));
-    all.forEach(([el, card], i) => { if (card) { C.setCardRarity(el, card, name, { animate: seen[i] }); labelMove(el, card); } });   // setCardRarity rewrites the label
+    const seen = all.map(([el]) => !C.covered && el.isConnected && rectVisible(el.getBoundingClientRect()));   // C.covered: the card detail covers the page (speed 2026-11-03: no measuring, no flash)
+    C.later("tier", all.map(([el, card], i) => () => { if (card) { C.setCardRarity(el, card, name, { animate: seen[i] }); labelMove(el, card); } }));   // setCardRarity rewrites the label
   }
 
   /* Called by the router when the Tier List tab becomes the current page.

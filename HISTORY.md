@@ -1964,8 +1964,45 @@
 - **ทำ:** ย่อ 600×800 + thumb 300×400 (webp 88) ชื่อไฟล์ใหม่ `<id>-2.webp` (กันมือถือแคปรูปเก่า) · ลบไฟล์เดิม · `data/cards.json` `image` ชี้ไฟล์ใหม่ (ข้อความ/ค่าไม่เปลี่ยน)
 - **ทดสอบ (Chromium 390×844):** `#card/<id>` ทั้ง 3 ใบ + หน้า Cards ขึ้นรูปใหม่ · ไม่มี 404 / error
 - **ไฟล์:** `images/cards/art/{octopus-teacher,storm-dragon,moon-breath-swordsman}-2.webp` (+ `thumb/`) · `data/cards.json` · `inbox/blank/skeleton-unmatched.jpg` · `PROGRESS.md` · `HISTORY.md`
+### 2026-11-03 ความเร็ว 3 จุดที่มือถือแลค: เปิดการ์ด · เปลี่ยนระดับ · เลื่อนหน้า Cards (`?v=72` · merge แล้ว pull request #115)
+- **เจ้าของสั่ง:** มือถือ RAM 6GB (Chrome) แลค 3 จุด → วัด §11.3 แยกทีละจุด หาสาเหตุ แก้โดยหน้าตา/อนิเมชั่นเหมือนเดิม
+- **สาเหตุที่เจอ (Profiler + trace CPU ×6):**
+  - **เปิดการ์ด:** ในจังหวะแตะ Chrome คำนวณ style ใหม่ทั้งหน้า (2,612 element) เพราะ `inert` บน `.main` (inherit) + `html.is-detail .nav > *` (selector ลงท้าย `*` บนคลาสของ `<html>`) · แล้ววัดขนาดสลับกับเขียน 4–5 รอบ (`skySize` → `layout()` → `dbtn.offsetWidth` → `fitLine` → `placeInd` → FLIP) · 520ms ต่อมา `settled()` ใช้ `html.is-detail-settled .main *` = คำนวณทั้งหน้าอีก 340ms ตอนการ์ดบินจบ · ระหว่างบิน หน้า Cards ข้างใต้ (มองไม่เห็นเพราะพื้นฉากทึบ) ยังถูก layerize ทุกเฟรม · `getAnimations()` / `currentCSSZoom` บังคับคำนวณ style · แผ่น Details เติมล่วงหน้า 0.2 วิ กลางจังหวะกล่องป้ายจางเข้า
+  - **เปลี่ยนระดับ:** `placeInd` อ่าน `offsetWidth` หลังการ์ดทุกใบในหน้าข้างใต้ถูกเปลี่ยนระดับ = คำนวณทั้งหน้า 470ms · วาดวงแหวนระดับ (canvas) ในจังหวะแตะ · `data-lvl` บนฉาก/การ์ด = คำนวณ style ทั้งฉาก + การ์ด 2 หน้า + แผ่น Details · ตอนคลื่นถึงการ์ด เปลี่ยนระดับการ์ดข้างๆ + แผ่น Details ที่ปิดอยู่ทั้งหมดในงานเดียว
+  - **เลื่อนหน้า Cards:** `deck.js` + `tiermaker.js` ติด `touchmove` แบบ `passive: false` ที่ `document` = นิ้วเลื่อนทุกหน้าต้องรอ main thread (วัดด้วยเครื่องทดสอบไม่ได้ · Chrome เตือนเรื่องนี้) · ระดับ Shiny ขึ้นไป แสงวิ่งบนการ์ดเขียนใหม่ (`.gc--rd … .gc__sweep::before`) ถูกคำนวณ style + layerize ทุกเฟรมที่มี main frame (ปิดอนิเมชั่นทั้งหมด = 58 fps)
+- **ที่แก้:** (ของกลางใหม่ = PROGRESS §3.3 "ของกลางด้านความเร็ว" ข้อ 2026-11-03)
+  - `js/detail.js`: `setBackground` ไม่ใส่ `inert` บน `.main` · `.nav.is-dim` แทน `html.is-detail .nav > *` · `settled(true)` ตั้งแต่จังหวะแตะ → `.main.is-covered` (`content-visibility: hidden` + `contain-intrinsic-size` = ความสูงเดิม) + `#backdrop.is-covered` + `C.covered` · `open()` เขียนทั้งหมดก่อน (`put()` แยกจาก `show()`) แล้ววัดครั้งเดียว · focus ปุ่ม Back หลังวัด (reduced motion = ลองใหม่ทุกเฟรมจนติด เพราะ transition 1ms ของ visibility) · `layout()` วัดชื่อการ์ด + ปุ่ม Details ก่อนเขียน (`dbW` เก็บไว้) · `placeInd` = `translateX(n×100%)` ไม่วัด · `wave()` วัดก่อนเขียนอย่างอื่น + เก็บ Animation ไว้ (`waveA` `glowA` `moteA`) แทน `getAnimations()` · `data-lvl` เฉพาะ `#bs-pulse #bs-tint #bs-wave #bs-glow #bs-swirl .bs-edge` (+ แผ่น Details ตอนเปิด) · วงแหวนทุกระดับวาดตอนว่างหลังฉากเสร็จ (`calm`) · ตอนคลื่นถึง: เปลี่ยนเฉพาะการ์ดที่แสดง ใบข้างๆ ตอนว่าง · แผ่น Details ที่ปิดอยู่ตามระดับตอนว่าง/ตอนเปิด (`sheetLevel`) · เติมแผ่น Details ล่วงหน้าหลังเปิด 1.3 วิ · `prewarm()` วัดฉาก + สร้างละอองไว้ตอนว่าง (ทุกเครื่องรวม lite) · `wReset` ไม่เรียก `getAnimations()` ตอนวงล้อซ่อนอยู่
+  - `css/detail.css`: `.bs[hidden]` = `content-visibility: hidden` + `visibility: hidden` + `pointer-events: none` (แทน `display: none`) · `.main.is-covered` / `#backdrop.is-covered` แทน `html.is-detail-settled …` · callout `… .bs-co` แทน `… *` · `.bs-tint[data-lvl="Normal"]` · `--edge` บน `.bs-edge[data-lvl]`
+  - `css/base.css`: `.nav.is-dim > *` · `js/fx.js`: `FX.zoom()` อ่าน inline style · `js/app.js`: `C.covered` / `C.later(key, jobs)` / `C.flushCovered()` · `revealChip` ข้ามแถวใน `.main` ตอน covered · `js/cards.js` `support.js` `home.js` `tier.js` `deck.js` `grade.js`: เปลี่ยนระดับการ์ดในหน้าผ่าน `C.later` + ไม่วัด/ไม่แฟลชตอน covered · `js/deck.js` `js/tiermaker.js`: `touchmove` ติดที่ `ui.root` (`#dk` / `#tm`)
+- **ผลวัด §11.3** (CPU ×6 · 390×844 DPR 2.75 · มัธยฐาน 3 รอบ · fps / เฟรมช้าสุด · การ์ดทดสอบ 60 ใบ = การ์ดจริง 20 ใบวนซ้ำ · กราฟิก High · เดิม = HEAD `0b60317` บนเครื่องเดียวกัน วัดสลับกัน · เปิดการ์ด/เปลี่ยนระดับ = 1 วิหลังแตะ · วิธีวัด: PROGRESS §11.3 ข้อ "วัดหน้าดูการ์ด"):
 
-### 2026-11-03 การ์ด 3:4 ไม่มีแถบดำ + ATK กลางล่าง (`?v=72`)
+  | กรณี | เดิม | ใหม่ |
+  |---|---|---|
+  | เลื่อน `#cards` 20 ใบ Normal | 59.2 / 50ms | 59.2 / 50ms |
+  | เลื่อน `#cards` 20 ใบ Ascended | 51.5 / 67ms | 52.5 / 67ms |
+  | เลื่อน `#cards` 60 ใบ Normal | 59.0 / 50ms | 59.0 / 67ms |
+  | เลื่อน `#cards` 60 ใบ Ascended | 47.6 / 67ms | 47.6 / 83ms |
+  | **เปิดการ์ด** 20 ใบ Normal | 13.8 / 683ms | **37.1** / 250ms |
+  | เปิดการ์ด 20 ใบ Ascended | 12.6 / 650ms | **37.7** / 250ms |
+  | เปิดการ์ด 60 ใบ Normal | 8.7 / 783ms | **33.3** / 333ms |
+  | เปิดการ์ด 60 ใบ Ascended | 14.5 / 617ms | **37.7** / 283ms |
+  | เปิดการ์ดครั้งที่ 2 · 60 Normal | 24.0 / 483ms | **46.5** / 167ms |
+  | เปิดการ์ดครั้งที่ 2 · 60 Ascended | 18.7 / 483ms | **43.5** / 217ms |
+  | **เปลี่ยนระดับ** 20 ใบ Normal → Ascended | 20.0 / 450ms | **36.8** / 100ms |
+  | เปลี่ยนระดับ 20 ใบ Ascended → Normal | 15.7 / 500ms | **43.3** / 83ms |
+  | เปลี่ยนระดับ 60 ใบ Normal → Ascended | 12.8 / 550ms | **39.7** / 117ms |
+  | เปลี่ยนระดับ 60 ใบ Ascended → Normal | 19.4 / 533ms | **45.5** / 83ms |
+  | lite (`deviceMemory 4`) เปิดการ์ด 60 Normal | 14.5 / 667ms | **24.2** / 417ms |
+  | lite เปลี่ยนระดับ 60 Normal | 14.5 / 567ms | **41.0** / 83ms |
+  | หน้าดูการ์ดอยู่เฉยๆ 60 Normal | 60.0 / 17ms | 59.7 / 33ms |
+
+  - **เฟรมทีละเฟรม (ใหม่):** หลังเฟรมที่แตะ การ์ดบิน + ฉากจางเข้า = 17ms ทุกเฟรม (60 fps · เดิม 33–117ms) · เปลี่ยนระดับ: คลื่นแสงส่วนใหญ่ 17ms มี 33–50ms บางเฟรม (เครื่องทดสอบไม่มี GPU ต้องวาดวงแสงใหญ่ด้วย CPU)
+  - **ยังไม่ถึงเกณฑ์ (บอกตรงๆ):** (1) **เฟรมที่แตะเปิดการ์ด** 150–330ms = สร้าง + จัดวางการ์ดใบใหม่ในฉาก (ตัวหนังสือ/ตัวเลข/container query ของการ์ดเขียนใหม่) ต้องทำในเฟรมนั้นอย่างน้อย 1 ครั้ง ลดจาก 2–5 ครั้งเหลือ 1 แล้ว · lite เปิดครั้งแรกยังวาดฉากระหว่างบิน (ตั้งใจไว้ตั้งแต่ W4: เครื่อง RAM น้อยไม่วาดล่วงหน้า) (2) **เปลี่ยนระดับ** เฟรมแตะ ~70–120ms (รวมวาดวงแสง/สีฉากใหม่ด้วย CPU) (3) **เลื่อน `#cards` ระดับ Shiny ขึ้นไป** 47–52 fps เท่าเดิม = แสงวิ่งบนการ์ดทุกใบ (ปิดอนิเมชั่นหมด = 58) · ทดลองแล้วไม่ช่วย: `content-visibility: auto` ให้การ์ด (27 fps · แย่ลง) · `will-change` / เอา `overflow` / easing ตายตัว (±2) · ให้การ์ดเล่นต่อไม่หยุดเมื่อออกนอกจอ (51) · ทางที่เหลือ = หยุดแสงวิ่งชั่วคราวระหว่างเลื่อน = ลดเอฟเฟกต์ → ถามเจ้าของ (W4 เคยตอบไม่) · **มือถือจริง:** มี GPU + `touchmove` ไม่บล็อกแล้ว ควรลื่นกว่าตัวเลขเครื่องทดสอบ
+- **ทดสอบ (Chromium · 390×844 + 1280×800 + reduced motion):** เทียบเดิม/ใหม่ด้วย flow เดียวกัน: หน้า Cards เลื่อน 600px → แตะการ์ด → Ascended → Details (ค่า + การ์ดในแผ่นตามระดับ) → ปิด → Godly ตอนแผ่นปิด → เปิดแผ่น (ตามระดับครบ) → ปัด › → Back (วงล้อ) → Back → `#cards` ตำแหน่งเลื่อน 600 เดิม การ์ดในหน้าเป็นระดับใหม่ครบ ชิประดับถูก ไม่มี inert ค้าง · เปิดซ้ำใบเดิม · ค่าที่วัดได้ (ขนาด/ตำแหน่งการ์ด `46,216,281,393`, วงทองตรงจุด, สี `--lvl` / `--edge` / tint, โฟกัส Back, หน้าข้างใต้โฟกัสไม่ได้) **ตรงกันทุกข้อ** · **แคปก่อน/หลัง** (หยุดอนิเมชั่นตอนแคป · ฉากเฟส calm) มือถือ + คอม ต่างกัน 0 พิกเซล (เกิน 24 ระดับสี) ทุกหน้า ยกเว้นจุดที่เปลี่ยนตามเวลา (วังทองตามรอบ 13.5 วิ · reduced motion แคปเดิมกับเดิมก็ต่างเท่ากัน) · ทุกหน้า (Home, Tier, My Lists, Cards, Support, Deck, Meta, Grade, Traits) โหลดได้ไม่มี error · ชิประดับหน้า Cards (ไม่ได้เปิดการ์ด) = เปลี่ยนทันที + แฟลชเหมือนเดิม · ลิงก์ตรง `#card/<id>` · ไม่มี rAF วน · ไม่เพิ่ม `backdrop-filter`
+- **Claude ตัดสินใจเอง (ค้านได้):** (1) หน้าข้างใต้หยุดวาดตั้งแต่แตะ (เดิม 520ms) เพราะพื้นฉากทึบตั้งแต่เฟรมแรก (แคปยืนยัน) (2) `.main` ไม่มี `inert` แล้ว: ระหว่างเปิดการ์ด `content-visibility: hidden` ทำให้หน้าข้างใต้โฟกัส/อ่านด้วย screen reader ไม่ได้อยู่แล้ว (ช่วงการ์ดบินกลับ 320ms ยังโฟกัสได้) (3) แผ่น Details เติมล่วงหน้าช้าลงเป็น 1.3 วิหลังเปิด (แตะ Details ก่อนนั้น = เติมตอนเปิดแบบเดิม) (4) แสงวิ่งระหว่างเลื่อนไม่แตะ (รอเจ้าของ)
+- **ไฟล์:** `index.html` + `mockup/blank-art.html` (`?v=72`) · `js/detail.js` `js/app.js` `js/fx.js` `js/cards.js` `js/support.js` `js/home.js` `js/tier.js` `js/deck.js` `js/grade.js` `js/tiermaker.js` · `css/detail.css` `css/base.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 การ์ด 3:4 ไม่มีแถบดำ + ATK กลางล่าง (`?v=73` · ชนกับ #115 ที่ใช้ 72 · merge #117)
 - **เจ้าของสั่ง:** ลบแถบดำใต้รูปการ์ด → การ์ด 3:4 · ทำ mockup ใหม่ · ตัวเลข ATK อยู่กลางล่างเสมอ ไม่ชิดซ้าย
 - **แก้:** `css/tokens.css` `--card-ratio: 3 / 4` + `--gc-corner` · `css/fx.css` รูปเต็มหน้าการ์ด (`inset: 0` cover) · ดาบ top 117.8cqw · ATK `left: 50%` + `translateX(-50%)` · `js/app.js` `RDC` (abnTop 73.83 · txtTop 84.67 · txtEnd 116 · atkTop 120.17 · atkMax 64) + `RDU` (ขึ้น 5.5) · `artImg` 600×800 / 300×400 · `js/detail.js` `CR = 4 / 3` แทน 1.4 · `css/detail.css` `--ch` · `css/deck.css` / `css/traits.css` ใช้ `--card-ratio` · `js/share.js` การ์ดแชร์ 114×152 / 190×253 + รูปเต็มการ์ด + ATK กลาง + ดาบใหม่
 - **mockup:** `mockup/card-34.html` (เลือกได้ 4 ใบ + ทุกระดับ + ขนาดในหน้า Cards/Deck · ใส่ sprite หัวใจ/ดาบแล้ว)

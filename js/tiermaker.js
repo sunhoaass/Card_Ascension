@@ -1553,8 +1553,10 @@
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerup", onUp);
     window.addEventListener("pointercancel", onCancel);
-    // once a card is lifted, the finger must drag it instead of scrolling the page
-    document.addEventListener("touchmove", (e) => { if (drag.on && e.cancelable) e.preventDefault(); }, { passive: false });
+    // once a card is lifted, the finger must drag it instead of scrolling the page · speed 2026-11-03: on this page's root
+    // only (a drag always starts on a card in it, and a touch's moves go to where it started) — on document it made every
+    // touch scroll of every page wait for the main thread (the Cards page with 60 cards scrolled behind the finger)
+    ui.root.addEventListener("touchmove", (e) => { if (drag.on && e.cancelable) e.preventDefault(); }, { passive: false });
     ui.root.addEventListener("contextmenu", (e) => { if (drag.on || drag.p || e.target.closest(".tm-item")) e.preventDefault(); });
     ui.root.addEventListener("dragstart", (e) => { if (e.target.closest && e.target.closest(".tm-item")) e.preventDefault(); });   // images: no native drag
     document.addEventListener("keydown", onGlobalKey);

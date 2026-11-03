@@ -23,18 +23,22 @@
   touch-action: none;   /* no pan / pinch anywhere in the scene (a pan on a label used to scroll the page under it on phones:
                            the browser bar collapsed, the scene resized and the card moved down) · scrollers below allow pan-y */
 }
-.bs[hidden] { display: none; }
+/* closed (speed 2026-11-03): kept laid out but skipped (not drawn, styled or laid out again, not focusable or read out)
+   instead of display: none, so opening a card doesn't rebuild the whole scene's boxes in the tap (23 → 3 ms, 6× slowed) */
+.bs[hidden] { display: block; content-visibility: hidden; visibility: hidden; pointer-events: none; }
 .bs.is-side { --bs-dock-h: 64px; }
 @media (min-width: 1100px) { .bs { left: var(--side-w); } }
 html.is-detail, html.is-detail body { overflow: hidden; overscroll-behavior: none; }
-/* while the scene is fully up, nothing underneath needs drawing (it is fully covered) */
-html.is-detail-settled .main { visibility: hidden; }
-html.is-detail-settled .main *, html.is-detail-settled .main *::before, html.is-detail-settled .main *::after,
-html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
+/* while the scene is fully up, nothing underneath needs drawing (it is fully covered) · js settled() · speed 2026-11-03:
+   content-visibility skips the page's style / layout / paint (and its loops) without restyling every card under it,
+   which "html.x .main *" did (340 ms on a 6× slowed phone) · js keeps its height (contain-intrinsic-size) */
+.main.is-covered { content-visibility: hidden; }
+#backdrop.is-covered * { animation-play-state: paused !important; }
 /* phones / tablets: the night city is fully covered too (≥ 1100px it stays: the left menu's blur shows it) */
-@media (max-width: 1099px) { html.is-detail-settled #backdrop { visibility: hidden; } }
+@media (max-width: 1099px) { #backdrop.is-covered { visibility: hidden; } }
 
-/* level colour for labels, lines, motes (set on the parts that use it, never on <html>: whole-page repaint) */
+/* level colour for the running light, tint, wave, glow, motes, card edges, Details thumb (js paintDock / openSheet set data-lvl
+   on exactly those parts: never on <html> = whole-page repaint · speed 2026-11-03: nor on the stage / foreground / card) */
 [data-lvl="Normal"] { --lvl: var(--r-normal); }
 [data-lvl="Shiny"] { --lvl: var(--r-shiny); }
 [data-lvl="Rainbow"] { --lvl: var(--bs-rainbow-lvl); }
@@ -70,7 +74,7 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 /* W6 level colour: a faint tint over the whole painting + a one-shot light wave from the sun on a level change (js wave()) */
 .bs-tint { position: absolute; inset: 0; pointer-events: none; opacity: .22;
   background: radial-gradient(120% 75% at 50% 18%, color-mix(in srgb, var(--lvl) 70%, transparent), color-mix(in srgb, var(--lvl) 25%, transparent) 55%, transparent 85%); }
-.bs-stage[data-lvl="Normal"] .bs-tint { opacity: 0; }
+.bs-tint[data-lvl="Normal"] { opacity: 0; }
 .bs-wave { position: absolute; left: 0; top: 0; width: 0; height: 0; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(circle, transparent 60%, color-mix(in srgb, var(--lvl) 22%, transparent) 76%, color-mix(in srgb, var(--lvl) 55%, transparent) 88%, color-mix(in srgb, var(--lvl) 80%, #fff) 94%, transparent 100%); }
 .bs-sparks { position: absolute; inset: -26px; pointer-events: none; }
@@ -169,15 +173,15 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 .bs-edge--r { top: 7px; bottom: 7px; right: calc(var(--th) / -2); width: var(--th); transform: rotateY(90deg); }
 .bs-edge--t { left: 7px; right: 7px; top: calc(var(--th) / -2); height: var(--th); transform: rotateX(90deg); }
 .bs-edge--b { left: 7px; right: 7px; bottom: calc(var(--th) / -2); height: var(--th); transform: rotateX(-90deg); }
-.bs-wrap[data-lvl="Normal"] { --edge: linear-gradient(90deg, var(--r-normal-2), var(--r-normal) 50%, var(--r-normal-2)); }
-.bs-wrap[data-lvl="Shiny"] { --edge: linear-gradient(90deg, var(--r-shiny-2), var(--r-shiny) 50%, var(--r-shiny-2)); }
-.bs-wrap[data-lvl="Rainbow"] { --edge: linear-gradient(180deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0); }
-.bs-wrap[data-lvl="Secret"] { --edge: linear-gradient(90deg, var(--r-secret-2), var(--r-secret) 50%, var(--r-secret-2)); }
-.bs-wrap[data-lvl="Divine"] { --edge: linear-gradient(90deg, var(--r-divine-2), var(--r-divine) 50%, var(--r-divine-2)); }
-.bs-wrap[data-lvl="Cosmic"] { --edge: linear-gradient(90deg, #14184a, #a796ff 50%, #14184a); }
-.bs-wrap[data-lvl="Ascended"] { --edge: linear-gradient(180deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2); }
-.bs-wrap[data-lvl="Godlike"] { --edge: linear-gradient(90deg, var(--r-godlike-2), var(--r-godlike) 50%, var(--r-godlike-2)); }
-.bs-wrap[data-lvl="Godly"] { --edge: linear-gradient(180deg, var(--r-godly-2), var(--r-godly) 50%, var(--r-godly-2)); }
+.bs-edge[data-lvl="Normal"] { --edge: linear-gradient(90deg, var(--r-normal-2), var(--r-normal) 50%, var(--r-normal-2)); }
+.bs-edge[data-lvl="Shiny"] { --edge: linear-gradient(90deg, var(--r-shiny-2), var(--r-shiny) 50%, var(--r-shiny-2)); }
+.bs-edge[data-lvl="Rainbow"] { --edge: linear-gradient(180deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0); }
+.bs-edge[data-lvl="Secret"] { --edge: linear-gradient(90deg, var(--r-secret-2), var(--r-secret) 50%, var(--r-secret-2)); }
+.bs-edge[data-lvl="Divine"] { --edge: linear-gradient(90deg, var(--r-divine-2), var(--r-divine) 50%, var(--r-divine-2)); }
+.bs-edge[data-lvl="Cosmic"] { --edge: linear-gradient(90deg, #14184a, #a796ff 50%, #14184a); }
+.bs-edge[data-lvl="Ascended"] { --edge: linear-gradient(180deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2); }
+.bs-edge[data-lvl="Godlike"] { --edge: linear-gradient(90deg, var(--r-godlike-2), var(--r-godlike) 50%, var(--r-godlike-2)); }
+.bs-edge[data-lvl="Godly"] { --edge: linear-gradient(180deg, var(--r-godly-2), var(--r-godly) 50%, var(--r-godly-2)); }
 .bs-glow { position: absolute; inset: -16%; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--lvl) 60%, transparent), color-mix(in srgb, var(--lvl) 22%, transparent) 60%, transparent); }   /* soft glow when the level wave reaches the card */
 
@@ -204,7 +208,9 @@ html.is-detail-settled #backdrop * { animation-play-state: paused !important; }
 /* ---------------- Labels (W6): dark glass boxes (no pointer lines: owner, W6 round 2) ---------------- */
 .bs-callouts { position: absolute; inset: 0; pointer-events: none; transition: opacity var(--t-med) var(--ease); }
 .bs-fore.is-zoom .bs-callouts, .bs-fore:not(.is-ready) .bs-callouts, .bs.is-sheet .bs-callouts { opacity: 0; }
-.bs-fore.is-zoom .bs-callouts *, .bs-fore:not(.is-ready) .bs-callouts *, .bs.is-sheet .bs-callouts * { pointer-events: none !important; }
+/* the label boxes are the only things in there that take taps (pointer-events: auto) · speed 2026-11-03: named, not "*"
+   (a "… *" rule restyled the whole foreground with the card's face each time .is-ready / .is-zoom / .is-sheet changed) */
+.bs-fore.is-zoom .bs-callouts .bs-co, .bs-fore:not(.is-ready) .bs-callouts .bs-co, .bs.is-sheet .bs-callouts .bs-co { pointer-events: none !important; }
 /* icon + title on the first row, the short line and obtain under them at full box width · every line stays on one line and
    is never cut: js fitLines() shrinks a line that doesn't fit */
 .bs-co {

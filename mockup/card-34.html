@@ -10,10 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
-<link rel="stylesheet" href="../css/tokens.css?v=72">
-<link rel="stylesheet" href="../css/base.css?v=72">
-<link rel="stylesheet" href="../css/fx.css?v=72">
-<link rel="stylesheet" href="../css/cards.css?v=72">
+<link rel="stylesheet" href="../css/tokens.css?v=73">
+<link rel="stylesheet" href="../css/base.css?v=73">
+<link rel="stylesheet" href="../css/fx.css?v=73">
+<link rel="stylesheet" href="../css/cards.css?v=73">
 <style>
   body { background: var(--bg, #0e0b12); color: var(--ink, #ece6f2); margin: 0; font-family: "Noto Sans Thai", "Inter", system-ui, sans-serif; }
   .lab { max-width: 980px; margin: 0 auto; padding: 20px 16px 48px; }
@@ -118,17 +118,17 @@
 </main>
 <!-- the site's renderer · its boot() looks for the site's page parts and stops early here (no tabs on this page), which is fine -->
 <script>addEventListener("unhandledrejection", (e) => e.preventDefault());   // the site's boot() stopping early (see above)</script>
-<script src="../js/i18n.js?v=72"></script>
-<script src="../js/i18n-th-sk1.js?v=72"></script>
-<script src="../js/i18n-th-sk2.js?v=72"></script>
-<script src="../js/fx.js?v=72"></script>
-<script src="../js/app.js?v=72"></script>
+<script src="../js/i18n.js?v=73"></script>
+<script src="../js/i18n-th-sk1.js?v=73"></script>
+<script src="../js/i18n-th-sk2.js?v=73"></script>
+<script src="../js/fx.js?v=73"></script>
+<script src="../js/app.js?v=73"></script>
 <script>
 (async () => {
   const C = window.CBI, esc = C.esc;
   const get = (u) => fetch(u).then((r) => r.json());
   // every card waits in data/pending/ until its text-free picture arrives (owner 2026-11-03)
-  const [meta, live, wait] = await Promise.all([get("../data/meta.json?v=72"), get("../data/cards.json?v=72"), get("../data/pending/cards.json?v=72")]);
+  const [meta, live, wait] = await Promise.all([get("../data/meta.json?v=73"), get("../data/cards.json?v=73"), get("../data/pending/cards.json?v=73")]);
   const cards = [...live, ...wait];
   C.state.meta = meta; C.state.cards = cards;
   const IDS = ["octopus-teacher", "one-punch-caped-hero", "storm-dragon", "moon-breath-swordsman"];

@@ -222,7 +222,7 @@ html.is-th {
 .nav__btn[aria-current="page"] { color: var(--gold-hi); }
 .nav__btn[aria-current="page"] svg { transform: translateY(-1px); }
 @media (max-width: 359px) { .nav__btn span { font-size: 9px; letter-spacing: 0; } }   /* 5 labels still fit on a 320px phone */
-html.is-detail .nav > * { opacity: .5; }   /* the menu is inert while a card detail is open (js/cards.js): dim its content, keep its fill */
+.nav.is-dim > * { opacity: .5; }   /* the menu is inert while a card detail is open (js/detail.js setBackground): dim its content, keep its fill · speed 2026-11-03: the class sits on .nav (an "html.x … > *" rule restyled the whole page at every open / close) */
 .nav > * { transition: opacity var(--t-med) var(--ease); }
 
 /* ==========================================================
