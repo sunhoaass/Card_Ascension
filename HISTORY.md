@@ -2008,3 +2008,10 @@
 - **mockup:** `mockup/card-34.html` (เลือกได้ 4 ใบ + ทุกระดับ + ขนาดในหน้า Cards/Deck · ใส่ sprite หัวใจ/ดาบแล้ว)
 - **ทดสอบ (Chromium 390×844 + 1280×800):** การ์ด 281×374.7 (= 4:3) · รูปพอดีหน้าการ์ดบน-ล่าง · ATK กลางเป๊ะ (ต่าง 0px) · เลขยาว 1,480,468,956 (Godly) ไม่ทับดาบ · หน้า Cards / Deck / หน้าดูการ์ดไม่มี error / 404 · ยังไม่ได้ทดสอบรูปแชร์ด้วยตา
 - **ไฟล์:** `index.html` · `mockup/blank-art.html` · `mockup/card-34.html` · `css/tokens.css` · `css/fx.css` · `css/detail.css` · `css/deck.css` · `css/traits.css` · `js/app.js` · `js/detail.js` · `js/share.js` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 คำอธิบายการ์ดจบที่เส้นเดียวกัน (ระยะถึง ATK คงที่) (`?v=74`)
+- **เจ้าของสั่ง:** ระยะจากคำอธิบายถึง ATK ให้เท่ากับ Destroyer God ("damage." → 741,346,605) ทุกใบ · ข้อความสั้นขยายให้เต็มระยะ · ยาวย่อไม่ให้เกิน
+- **แก้ `js/app.js` `fitRdCard`:** `RDC.txtEnd` 116 → 109.75 (= ขอบล่างตัวพิมพ์ใหญ่บรรทัดที่ 5 ของ Destroyer God ที่ขนาดเกม) · เริ่มที่ 1.6 เท่า (`txtGrow`) แล้วย่อทีละ 0.5% จนพอดี · วางชิดล่าง (บรรทัดสุดท้ายจบที่เส้นพอดี) · ระยะบรรทัดตามสัดส่วนเกม
+- **mockup:** `mockup/card-34.html` เพิ่ม Destroyer God + Cyborg Sister (สั้นสุด) · หมายเหตุใหม่
+- **ทดสอบ (Chromium 390×844 · Godly):** Destroyer God 3.80cqw (= ขนาดเกม ไม่เปลี่ยน) · Cyborg Sister 6.08cqw (1.6 เท่า) · Octopus Teacher 4.86cqw · Storm Dragon 3.38cqw · ขอบล่างตัวพิมพ์ใหญ่ทุกใบอยู่ที่เส้นเดียวกัน · ไม่มี error / 404
+- **ไฟล์:** `js/app.js` · `index.html` · `mockup/blank-art.html` · `mockup/card-34.html` · `PROGRESS.md` · `HISTORY.md`
