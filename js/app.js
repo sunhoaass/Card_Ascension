@@ -83,16 +83,22 @@
   function shortNum(n) {
     if (Math.round(n) < 1e4) return Math.round(n).toLocaleString("en-US");
     if (Math.round(n / 1e3) < 1000) return Math.round(n / 1e3) + "K";
-    for (const [v, s] of SHORT) if (n >= v || v === 1e6) { const x = n / v; return (x >= 100 ? Math.round(x) : Number(x.toFixed(1))) + s; }
+    for (let i = 0; i < SHORT.length; i++) {
+      const [v, s] = SHORT[i];
+      if (n < v && v !== 1e6) continue;
+      const x = n / v, r = x >= 100 ? Math.round(x) : Number(x.toFixed(1));
+      return r >= 1000 && i > 0 ? "1" + SHORT[i - 1][1] : r + s;   // 999,960,000 -> 1B (not 1000M)
+    }
   }
   const fmtOdds = (n) => "1 in " + shortNum(n);
   const fmtStat = (n) => Math.round(n).toLocaleString("en-US");
-  /* HP (owner 2026-11-02 · the whole site · ATK stays whole): the full number with commas below 1B, like the game ·
-     from 1B up short like the odds (shortNum): B T Qd Qi with one decimal (100 and up = whole · .0 dropped)
-     (8,887,688 · 999,999,999 · 1,234,567,890 -> 1.2B · 45.6T) */
+  /* HP (owner 2026-11-02 · the whole site · ATK stays whole): the full number with commas below 100M ·
+     from 100M up short like the odds (shortNum, owner 2026-11-03 · was from 1B): M B T Qd Qi with one decimal
+     (100 and up = whole · .0 dropped) (8,887,688 · 99,999,999 · 207,406,400 -> 207M · 1,234,567,890 -> 1.2B · 45.6T) */
   function fmtHp(n) {
     n = Math.round(n);
-    return n < 1e9 ? n.toLocaleString("en-US") : shortNum(n);
+    if (n < 1e8) return n.toLocaleString("en-US");
+    return shortNum(n);
   }
   const fmtKey = (k) => (k === "hp" ? fmtHp : fmtStat);
 

@@ -1923,3 +1923,9 @@
 - **ทดสอบ (Chromium 390×844):** หน้า Cards · หน้าดูการ์ด EN/TH × Normal/Ascended/Godly · ขนาด 111/150/200px · รูป Save image ของ Deck (Ascended) ตรงหน้าเว็บ · ไม่มี error · ระดับ Normal ไม่มีป้ายระดับ · ชื่อ One Punch Caped Hero อยู่ในครึ่งซ้าย (3.6–48.5) · HP 20,740,640 เริ่มที่ 51.5
 - **ไฟล์:** `index.html` (`?v=67`) · `css/fx.css` · `css/tokens.css` · `js/app.js` · `js/share.js` · `js/i18n-th-sk2.js` · `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` (ใหม่) · `mockup/blank-art.html` · `mockup/blank-art/` (ลบ) · `PROGRESS.md` · `HISTORY.md`
 
+### 2026-11-03 HP ย่อตั้งแต่ 100M + กฎ merge ทุก 20 ใบ (`?v=68`)
+- **เจ้าของสั่ง:** HP ย่อตั้งแต่ 100M (เดิมตั้งแต่ 1B) · ทำการ์ดครบ 20 ใบ = merge ทันทีทุกครั้ง
+- **แก้:** `js/app.js` `fmtHp` เกณฑ์ 1e9 → 1e8 (ทั้งเว็บ) · `shortNum` ปัดแล้วถึง 1000 = ขึ้นหน่วยถัดไป (999,960,000 → 1B ไม่ใช่ 1000M · ใช้กับโอกาสด้วย) · PROGRESS กฎข้อ 12 + prompt รอบรูปว่าง + กติกา HP (▶️ + §3.5.1)
+- **ทดสอบ:** 99,999,999 → 99,999,999 · 100,000,000 → 100M · 207,406,400 → 207M · 999,960,000 → 1B · 1,234,567,890 → 1.2B · One Punch Ascended 1.9B · โอกาส 109B / 5.5Qd เหมือนเดิม · หน้าดูการ์ดไม่มี error
+- **ไฟล์:** `index.html` (`?v=68`) · `mockup/blank-art.html` · `js/app.js` · `PROGRESS.md` · `HISTORY.md`
+
