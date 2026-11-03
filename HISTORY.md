@@ -1934,3 +1934,9 @@
 - **mockup Support** (artifact Support Layout Lab · https://claude.ai/artifact/R4XPvdWGR2JxUv3hZv1joH): ตำแหน่งวัดจากรูปเกม Hat and Clogs Shopkeeper (หน้า Deck 600×840): ชื่อ caps y 6.83 สูง 3.42 · ชื่อสกิล 79.67 สูง 5.83 x 2.83 · คำอธิบาย caps 90.5 สูง 3.58 บรรทัดห่าง 6.33 · SUPPORT caps 126 สูง 8.5 กึ่งกลาง · ค่าเริ่มต้น = ฟอนต์ที่เจ้าของเลือกให้การ์ด · รูปแทนชั่วคราว = รูปที่เครื่องมือลบไว้ (มีรอยเลอะ) จนกว่าเจ้าของส่งรูปว่าง Support · **รอเจ้าของเลือก · ยังไม่แก้เว็บ**
 - **ไฟล์:** PDF (ลบ) · `HISTORY.md`
 
+### 2026-11-03 Support แบบรูปว่างตามที่เจ้าของเลือก + HP "409.0M" แบบเกม (`?v=69`)
+- **เจ้าของเลือก** (Support Layout Lab): ชื่อ Anton เอียง ขนาดเท่าเกม Support ครึ่งการ์ด ห่างขอบ 3.0 · ชื่อสกิล + ป้าย Anton เอียง · คำอธิบาย + Mutation Oswald 500 ขนาดเท่าการ์ด · SUPPORT Oswald หนา (600) · ช่องไฟปกติ · ป้ายโอกาสออก + ระดับ · Mutation ขาว + เลขทอง · ขอบดำเท่าเกม · **HP แบบเกม "409.0M"** (ทศนิยม 1 เสมอ · จากแคปเกมใน PDF)
+- **แก้:** `js/app.js` `RDU` + `fitRdSup` (แทนโค้ด fit support เดิม) · `fitRdName` ใช้ร่วมการ์ด/Support · ป้าย: `data-k` ย้ายไป `<i>` ข้างใน (Support เอียงแค่ตัวอักษร ไม่เอียงป้าย) · `fmtHp` ทศนิยม 1 เสมอ (999.96M → 1.0B) · `css/fx.css` บล็อก Support ใหม่ + ป้ายใช้ร่วมการ์ด/Support · `js/share.js` `drawRedraw` บล็อกเดียวทั้งการ์ดและ Support (อ่านตำแหน่งจาก element) · ครึ่งล่างมืดลงทั้งสองแบบ
+- **ทดสอบ (Chromium · Hat and Clogs Shopkeeper จาก pending + รูปที่เครื่องมือลบไว้ ชั่วคราวในเครื่อง ไม่ commit):** Normal / Godly / Ascended ขนาดเล็ก · One Punch Godlike HP 3.8B · รูป Save image ของ Deck (การ์ด + Support Godly) ตรงหน้าเว็บ · fmtHp: 99,999,999 · 100.0M · 207.4M · 409.0M · 1.0B · 2.0Qd · ไม่มี error
+- **ไฟล์:** `index.html` (`?v=69`) · `mockup/blank-art.html` · `css/fx.css` · `js/app.js` · `js/share.js` · `PROGRESS.md` · `HISTORY.md`
+
