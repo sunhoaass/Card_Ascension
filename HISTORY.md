@@ -1868,3 +1868,10 @@
 ### 2026-11-03 กฎทำงานข้อ 12: งานการ์ดเสร็จ = merge เองเลย
 - **เจ้าของสั่ง:** ทำการ์ดเสร็จให้ merge เลย → `PROGRESS.md` กฎทำงานข้อ 12 (รอบเขียนใหม่ / batch / แคปใหม่ / ข้อมูลการ์ด-Support: ผ่านทดสอบแล้วเปิด pull request + merge เข้า `main` เอง · งานหน้าตา/ระบบยังรอเจ้าของ) + ขั้นตอนท้ายรอบใน ▶️ "เขียนใหม่ทั้งใบ" · รอบเขียนใหม่ 3 merge ตามกฎนี้
 - **ไฟล์:** `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 เว็บแสดงเฉพาะการ์ดที่ทำแบบเขียนใหม่แล้ว
+- **เจ้าของสั่ง:** ลบการ์ดที่ยังไม่ได้ทำแบบเขียนใหม่ออก จะได้เห็นง่ายว่าใบไหนยังไม่ทำ (ถามก่อนแล้ว · เจ้าของยืนยัน "ลบออกไปก่อนเลย")
+- **ทำ:** การ์ด 362 + Support 96 ใบที่ไม่มี `redraw` ย้ายจาก `data/cards.json` / `support.json` ไป `data/pending/cards.json` / `support.json` (เว็บไม่โหลด · ข้อมูลครบ คะแนน/Tier/ผลวิเคราะห์อยู่ครบ) · เว็บเหลือการ์ด 38 + Support 4 · `tools/restore_pending.py <id> …` = ย้ายกลับ (รอบเขียนใหม่ใช้ตอนต้นรอบ · ทดสอบย้ายกลับ 1 ใบแล้วคืนค่า)
+- **ผลกระทบ:** Meta Decks / deck ของผู้ใช้ / Tier List ของผู้ใช้ ที่มีใบที่ย้ายออก = ช่องว่าง (localStorage ไม่แตะ) · Tier List Global ชั้น Meta ว่าง (Meta ทั้งหมดยังไม่ได้ทำ) · ลิงก์ `#card/<id>` ของใบที่ย้ายออก = ไม่เปิดหน้าดูการ์ด · `deckbuff_report.js` ชื่อที่ไม่รู้จัก 0 · `matchup_sim.py --parse` ไม่มี unknown
+- **ทดสอบ (Chromium 390×844):** Home / Cards (38 ใบ) / Support (4 ใบ) / Tier / Deck (My Decks + Meta Decks) / Grade / Traits / หน้าดูการ์ด + deck และ tier list เก่าในเครื่องที่มีใบที่ย้ายออก: ไม่มี error
+- **ไฟล์:** `data/cards.json` · `data/support.json` · `data/pending/cards.json` (ใหม่) · `data/pending/support.json` (ใหม่) · `tools/restore_pending.py` (ใหม่) · `PROGRESS.md` · `HISTORY.md` (ไม่ได้แก้ CSS/JS ของเว็บ → ไม่เปลี่ยน `?v=`)
