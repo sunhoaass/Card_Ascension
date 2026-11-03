@@ -1906,3 +1906,9 @@
 - **แก้:** `css/tokens.css` `--rd-font-name` = Barlow Condensed (ชื่อการ์ด) · `--rd-font` (Anton) = HP, ATK, ป้าย, ชื่อสกิล · `css/fx.css` `.rd__nm` 800 italic · `.rd__num` กลับเป็น Anton · `js/app.js` metric `BARLOW` (ascent 1 · descent .2 · caps .7 วัดใน Chromium) · `rdW("n")` = italic 800 · HP/ATK วัดด้วย Anton · ตำแหน่งชื่อ Support ใช้ `BARLOW` · `js/share.js` รูป Save image: ชื่อ = Barlow italic 800 + เส้นฐานตาม metric · HP/ATK = Anton · `fontsReady` โหลด Anton + Barlow italic 800 ก่อนวาด · `index.html` + `mockup/blank-art.html` ลิงก์ Google Fonts เพิ่ม `Barlow+Condensed:ital,wght@1,800`
 - **ทดสอบ (Chromium 390×844 · เอาการ์ด 6 + Support 2 กลับมาชั่วคราวในเครื่อง ไม่ commit):** หน้าดูการ์ด EN/TH × Normal/Godly ไม่มีตัวอักษรล้น · ไม่มี error · รูป Save image ของ Deck ตรงหน้าเว็บ
 - **ไฟล์:** `index.html` (`?v=66`) · `css/tokens.css` · `css/fx.css` · `js/app.js` · `js/share.js` · `mockup/blank-art.html` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 · เปลี่ยนกฎรอบรูปว่าง (เจ้าของสั่ง · แก้แค่เอกสาร)
+- **รอบละ 20 ใบ** (เดิม ≤ 10)
+- **ยกเลิกการเติม/แก้หน้าตัวละครใต้เลข HP** (`tools/tile_patch.py` + แคปรูปย่อหน้า Deck) · ข้อเดิมใน PROGRESS ▶️ "หน้าเบลอตอน HP ย่อ": ตรวจแล้ว 7 ใบ (Dragon God · Demon God of Flame · Homunculus Father · Hypnosis Traitor · Primordial Butler Demon · Rabbit Goddess · Witch of Envy) · ทำแล้ว Rabbit Goddess · ที่เหลือไม่ทำแล้ว
+- **รูปว่างของเจ้าของ = ภาพล้วน ไม่มีข้อความ ตัวเลข ไอคอน** · Claude จับคู่เองกับรูปเก่า `images/<kind>/<id>.webp` แล้วใช้ข้อมูลเก่าทั้งหมด (ชื่อ, สกิล, โอกาส, HP/ATK, ระดับ) · ไม่แน่ใจ = ข้ามแล้วบอกเจ้าของ · รูปเข้าที่ `inbox/blank/` · prompt ใหม่ (Opus 5.5 / high) อยู่ใน PROGRESS ▶️ ข้อ "กฎใหม่"
+- **ไฟล์:** `PROGRESS.md` · `HISTORY.md`
