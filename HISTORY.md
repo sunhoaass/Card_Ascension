@@ -1888,3 +1888,9 @@
 - **ทดสอบ (Chromium 390 + 1100px):** ไม่มี error · Godly HP 1.9B หน้าคมไม่เบลอ · ไทยขึ้นครบ
 - **ยังไม่ทำ:** ลบรูปที่ทำแล้ว (การ์ด 38 + Support 4) → รอเจ้าของยืนยันเวลา (ลบตอนนี้เว็บไม่เหลือการ์ด)
 - **ไฟล์:** `mockup/blank-art.html` · `mockup/blank-art/` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-03 การ์ดเขียนใหม่: ชื่อการ์ด + HP + ATK เป็น Oswald 700 (`?v=65`)
+- **เจ้าของเลือก** (หน้า Card Font Picks · artifact): ชื่อการ์ด Oswald 700 · HP/ATK Oswald 700 · ชื่อสกิล Anton · คำอธิบาย Oswald 500 · ป้าย 1 IN X / ระดับ Anton · ไทย Noto Sans Thai 500 (4 อย่างหลัง = เหมือนเดิม) · ไม่ต้องโหลดไฟล์ฟอนต์ (เว็บใช้ Google Fonts · Oswald 700 อยู่ในลิงก์ฟอนต์ของ `index.html` แล้ว)
+- **แก้:** `css/tokens.css` `--rd-font-name` (ใหม่ · Oswald) · `css/fx.css` `.rd__nm` / `.rd__num` = `--rd-font-name` 700 · `js/app.js` วัดขนาดชื่อ/HP/ATK ด้วย Oswald 700 (`rdW` ชนิด `n` · `nameW`) · ตำแหน่งชื่อ Support ใช้ metric Oswald · `js/share.js` `drawRedraw` (รูป Save image) ชื่อ/HP/ATK เป็น Oswald 700 + เส้นฐานตาม metric Oswald · Support ชื่อการ์ดก็เปลี่ยนด้วย (ชื่อใช้ชิ้นเดียวกัน)
+- **ทดสอบ (Chromium 390×844):** หน้าดูการ์ด 5 การ์ด + 2 Support × EN/TH × Normal/Godly: ไม่มีตัวอักษรล้น · ไม่มี error · ชื่อยาว (Primordial Butler Demon, Made in Heaven Priest) ขึ้น 2 บรรทัด · รูป Save image ของ Deck ชื่อ/ตัวเลขเป็น Oswald ตรงหน้าเว็บ
+- **ไฟล์:** `index.html` (`?v=65`) · `css/tokens.css` · `css/fx.css` · `js/app.js` · `js/share.js` · `mockup/blank-art.html` (`?v=65`) · `PROGRESS.md` · `HISTORY.md`

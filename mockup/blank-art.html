@@ -10,10 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
-<link rel="stylesheet" href="../css/tokens.css?v=64">
-<link rel="stylesheet" href="../css/base.css?v=64">
-<link rel="stylesheet" href="../css/fx.css?v=64">
-<link rel="stylesheet" href="../css/cards.css?v=64">
+<link rel="stylesheet" href="../css/tokens.css?v=65">
+<link rel="stylesheet" href="../css/base.css?v=65">
+<link rel="stylesheet" href="../css/fx.css?v=65">
+<link rel="stylesheet" href="../css/cards.css?v=65">
 <style>
   body { background: var(--bg, #0e0b12); color: var(--ink, #ece6f2); margin: 0; font-family: "Noto Sans Thai", "Inter", system-ui, sans-serif; }
   .lab { max-width: 980px; margin: 0 auto; padding: 20px 16px 48px; }
@@ -54,16 +54,16 @@
 </main>
 <!-- the site's renderer · its boot() looks for the site's page parts and stops early here (no tabs on this page), which is fine -->
 <script>addEventListener("unhandledrejection", (e) => e.preventDefault());   // the site's boot() stopping early (see above)</script>
-<script src="../js/i18n.js?v=64"></script>
-<script src="../js/i18n-th-sk1.js?v=64"></script>
-<script src="../js/i18n-th-sk2.js?v=64"></script>
-<script src="../js/fx.js?v=64"></script>
-<script src="../js/app.js?v=64"></script>
+<script src="../js/i18n.js?v=65"></script>
+<script src="../js/i18n-th-sk1.js?v=65"></script>
+<script src="../js/i18n-th-sk2.js?v=65"></script>
+<script src="../js/fx.js?v=65"></script>
+<script src="../js/app.js?v=65"></script>
 <script>
 (async () => {
   const C = window.CBI;
   const get = (u) => fetch(u).then((r) => r.json());
-  const [meta, cards] = await Promise.all([get("../data/meta.json?v=64"), get("../data/cards.json?v=64")]);
+  const [meta, cards] = await Promise.all([get("../data/meta.json?v=65"), get("../data/cards.json?v=65")]);
   C.state.meta = meta; C.state.cards = cards;
   const base = cards.find((c) => c.id === "homunculus-father");
   const mine = { ...base, image: "blank-art/homunculus-father.webp" };
