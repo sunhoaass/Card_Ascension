@@ -360,5 +360,6 @@ I18N.addSK({
  "Soul Queen Emperor steals lifespans.": "Soul Queen Emperor ขโมยอายุขัย",
  "Earthquake Emperor cracks the air.": "Earthquake Emperor ทำให้อากาศแตกร้าว",
  "When Fire Fist Brother falls": "เมื่อ Fire Fist Brother ล้ม",
- "Legendary Berserker's power has no ceiling.": "พลังของ Legendary Berserker ไม่มีเพดาน"
+ "Legendary Berserker's power has no ceiling.": "พลังของ Legendary Berserker ไม่มีเพดาน",
+ "Moon Breath Swordsman's moon blades fill the air.": "ดาบจันทราของ Moon Breath Swordsman เต็มอากาศ"
 });

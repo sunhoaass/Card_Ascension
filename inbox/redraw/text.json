@@ -179,16 +179,6 @@
   },
   "note": "new wording of the 12% part (data: 'Takes 12% less from an attack each time it has seen it (up to 4 times)') → tools/matchup_sim.py --parse shows it as unknown (was adapt (0.12, 4)): add a regex"
  },
- "moon-breath-swordsman": {
-  "hp": 5781602,
-  "atk": 867240,
-  "odds": "91.7M",
-  "obtain": "Weather card: only drops during a Solar Eclipse",
-  "passive": {
-   "name": "Moon Breathing",
-   "desc": "Moon Breath Swordsman's moon blades fill the air. Every 2nd attack also hits the card behind for 50% of its normal hit (no crits or bonuses). Heals 8% of its max HP every turn. 40% chance to crit for 2.5x damage. Takes 2x damage from Sun cards."
-  }
- },
  "wrath-shield-hero": {
   "hp": 691860,
   "atk": 103779,
