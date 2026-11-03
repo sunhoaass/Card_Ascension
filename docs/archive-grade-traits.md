@@ -10,19 +10,20 @@
 |---|---|---|
 | **`db23c9c`** (Merge pull request #121) | `main` | **จุดกู้คืนหลัก** · เว็บก่อนรอบนี้ทั้งหมด: Grade + Traits + ภาษาไทย ครบ (`?v=75`) |
 | `8884a56` | branch `claude/tier-list-ui-grade-traits-a1d1gp` | หน้า Cards แบบใหม่ (ป้ายระดับ, ช่อง 1 IN, ฯลฯ) + Grade/Traits/ภาษาไทยยังอยู่ครบ (`?v=76`) |
+| `5231806` | branch เดียวกัน | **commit ที่ลบ** ("Remove Grade + Traits systems and the Thai translation") · `git show 5231806` = ทุกจุดที่ลบ |
 
-commit ถัดจาก `8884a56` บน branch เดียวกัน = commit ที่ลบ (ข้อความขึ้นต้น "Remove Grade + Traits systems")
+> `db23c9c` อยู่บน `main` แล้ว = ไม่หายแน่นอน · `8884a56` / `5231806` อยู่ถาวรถ้า merge แบบ merge commit (ถ้า squash ให้ใช้ `db23c9c` แทน)
 
 ```bash
 # ดูไฟล์เก่าไฟล์เดียว
 git show db23c9c:js/grade.js
 git show db23c9c:js/traits.js
 git show db23c9c:data/traits.json
-# เอาไฟล์เก่ากลับมาทั้งชุด (แล้วต้องต่อสายในไฟล์อื่นตามหัวข้อ 4 + 5 เอง)
+# เอาไฟล์เก่ากลับมาทั้งชุด (แล้วต้องต่อสายในไฟล์อื่นเองตามรายการในหัวข้อ 1.5 + 2.7 + 3 + 4)
 git checkout db23c9c -- js/grade.js js/traits.js css/grade.css css/traits.css data/traits.json
 git checkout db23c9c -- js/i18n.js js/i18n-th-ui.js js/i18n-th-sk1.js js/i18n-th-sk2.js   # ภาษาไทย
 # ดูทุกจุดที่ลบในไฟล์อื่น
-git diff 8884a56 <commit ที่ลบ> -- js/ css/ index.html
+git show 5231806 -- js/ css/ index.html
 ```
 
 **ข้อมูลในเครื่องผู้ใช้ไม่ได้ถูกลบ:** `localStorage` key `cbi:grades`, `cbi:traits`, `cbi:lang` ยังค้างอยู่ในเบราว์เซอร์ของผู้ใช้ (เว็บแค่ไม่อ่านแล้ว) · deck ใน `cbi:decks` ยังเก็บช่อง `grades` ของเดิมไว้ (`clean()` ไม่ลบ) → ระบบใหม่อ่านต่อได้ถ้ารูปแบบเดิม
