@@ -14,7 +14,7 @@
   --bs-top-h: 44px;                         /* = TOP_H in js/detail.js (the sun is placed under it) */
   --bs-dock-h: 84px;
   --cw: 226px;                              /* card width: set by js/detail.js layout() */
-  --ch: calc(var(--cw) * 1.4);
+  --ch: calc(var(--cw) * 4 / 3);   /* 3:4 card (owner 2026-11-03) */
   --th: max(4px, calc(var(--cw) * .024));   /* card thickness (only drawn while it turns) */
   --lvl: var(--r-shiny);
   position: fixed; inset: 0; z-index: 40;

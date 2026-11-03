@@ -43,6 +43,7 @@
   /* ---------- small helpers ---------- */
   const lerp = (a, b, t) => a + (b - a) * t;
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const CR = 4 / 3;   // card height ÷ width (3:4 card · owner 2026-11-03 · = --card-ratio)
   const f1 = (n) => n.toFixed(1), f2 = (n) => n.toFixed(2);
   const arr = (a) => (Array.isArray(a) ? a.filter(Boolean) : []);
   const pretty = (id) => String(id).replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -773,8 +774,8 @@
       // W9: the first-time hint always floats over the bottom bar (it took a 38px row under the ring: the card gets it)
       el.root.classList.add("is-short");
       const STRIP = 56, rowY0 = fh - 6 - 60, stripY0 = rowY0 - 10 - STRIP, cb = stripY0 - 12;
-      const pl = stand(Math.max(8, sunB), cb, Math.min(fw * 0.72, 720) * 1.4, clamp(rh * 0.04, 20, 60), clamp(rh * 0.06, 24, 120), 154);
-      cw = Math.round(pl.h / 1.4); ch = Math.round(cw * 1.4);
+      const pl = stand(Math.max(8, sunB), cb, Math.min(fw * 0.72, 720) * CR, clamp(rh * 0.04, 20, 60), clamp(rh * 0.06, 24, 120), 154);
+      cw = Math.round(pl.h / CR); ch = Math.round(cw * CR);
       moveHud(false);
       L = Math.round((fw - cw) / 2);
       T = pl.T;
@@ -797,8 +798,8 @@
       const big = matchMedia("(min-height: 560px)").matches;   // = the CSS big boxes (a phone on its side keeps small ones, W7 round 3)
       const gap = big ? 32 : 28, wMin = big ? 190 : 150, wMax = big ? 380 : 260;
       const cap = Math.min(560, fw * 0.42, fw - 2 * (wMin + gap + 14));
-      const pl = stand(Math.max(8, sunB), fh - 14, Math.min(cap * 1.4, rh * 0.55), 24, clamp(rh * 0.11, 24, 150), 140);
-      cw = Math.round(pl.h / 1.4); ch = Math.round(cw * 1.4);
+      const pl = stand(Math.max(8, sunB), fh - 14, Math.min(cap * CR, rh * 0.55), 24, clamp(rh * 0.11, 24, 150), 140);
+      cw = Math.round(pl.h / CR); ch = Math.round(cw * CR);
       el.root.style.setProperty("--cw", cw + "px");
       moveHud(true);
       L = Math.round((fw - cw) / 2);
@@ -1708,9 +1709,9 @@
     el.root.classList.toggle("is-wheel-low", low);
     const toolsY = (kb < foreB - 24 ? kb - 12 : low ? rh - 8 : foreB - 8) - 44, nameY = toolsY - 10 - 40;
     // owner 2026-10-26: PC 25.5 % of the height · phones 30.6 % of the width · always under the black sun
-    let ch = side ? clamp(rh * 0.255, 128, 323) : clamp(rw * 0.306, 82, 162) * 1.4;
+    let ch = side ? clamp(rh * 0.255, 128, 323) : clamp(rw * 0.306, 82, 162) * CR;
     ch = Math.round(Math.max(110, Math.min(ch, nameY - 10 - (TOP_H + 8), nameY - 10 - (sunB + 10))));
-    const cw = Math.round(ch / 1.4);
+    const cw = Math.round(ch / CR);
     const step = rm() ? 0 : (side ? 20 : 25);            // degrees per card (reduced motion: a flat row)
     const vis = side ? (rw >= 1200 ? 3 : 2.6) : 2;       // cards each side that still show (PC 5–7 · phones 3–5)
     const gap = cw * (side ? 0.92 : 0.82);               // middle-to-next distance on screen

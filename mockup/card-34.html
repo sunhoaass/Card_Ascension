@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3:4 Card Sample</title>
+<!-- Mockup (owner 2026-11-03): the owner sends a picture with every word already removed, the site only writes the text.
+     Sample = Homunculus Father · the card is drawn by the site's own code (js/app.js renderRedraw), so it looks exactly
+     like the live site would · not linked from the site. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../css/tokens.css?v=73">
+<link rel="stylesheet" href="../css/base.css?v=73">
+<link rel="stylesheet" href="../css/fx.css?v=73">
+<link rel="stylesheet" href="../css/cards.css?v=73">
+<style>
+  body { background: var(--bg, #0e0b12); color: var(--ink, #ece6f2); margin: 0; font-family: "Noto Sans Thai", "Inter", system-ui, sans-serif; }
+  .lab { max-width: 980px; margin: 0 auto; padding: 20px 16px 48px; }
+  .lab h1 { font-family: "Cinzel", Georgia, serif; font-size: 24px; margin: 0 0 4px; letter-spacing: .04em; }
+  .lab p.sub { margin: 0 0 18px; color: #a49cb1; font-size: 14px; line-height: 1.6; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .chip { font: 600 13px/1 "Inter", system-ui, sans-serif; padding: 9px 13px; border-radius: 999px; border: 1px solid #3a3146; background: #1f1a27; color: #ece6f2; cursor: pointer; min-height: 36px; }
+  .chip[aria-pressed="true"] { background: #d8b46a; color: #1a1306; border-color: #d8b46a; }
+  .stage { display: grid; grid-template-columns: minmax(0, 380px); gap: 16px; align-items: start; }
+  .slot h2 { font: 600 14px/1.4 "Noto Sans Thai", system-ui, sans-serif; margin: 0 0 8px; color: #d8b46a; }
+  .slot .card { width: 100%; max-width: 380px; }
+  .sizes { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-top: 22px; }
+  .sizes .card { flex: none; }
+  .note { margin-top: 22px; padding: 14px 16px; border: 1px solid #2e2738; border-radius: 12px; background: #17131d; font-size: 14px; line-height: 1.7; color: #cfc7da; }
+  .note b { color: #f3dca0; }
+  @media (max-width: 560px) { .stage { grid-template-columns: 1fr; } .slot .card { max-width: none; } }
+</style>
+</head>
+<body>
+<svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Redrawn card (owner 2026-11-02 · css/fx.css .gc--rd · js/share.js drawRedraw draws the same shapes): heart beside HP, crossed swords beside ATK -->
+      <linearGradient id="rd-g-heart" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b6b"/><stop offset=".55" stop-color="#e3222c"/><stop offset="1" stop-color="#a50f1a"/></linearGradient>
+      <linearGradient id="rd-g-blade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#dfe5ee"/><stop offset=".51" stop-color="#9aa6b8"/><stop offset="1" stop-color="#c3ccd8"/></linearGradient>
+      <linearGradient id="rd-g-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#c08a2a"/></linearGradient>
+      <linearGradient id="rd-g-grip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e2453f"/><stop offset="1" stop-color="#8e1414"/></linearGradient>
+      <symbol id="rd-heart" viewBox="0 0 100 92">
+        <path d="M50 88 C20 66 4 50 4 29 C4 14 16 4 29 4 C39 4 46 9 50 17 C54 9 61 4 71 4 C84 4 96 14 96 29 C96 50 80 66 50 88 Z" fill="url(#rd-g-heart)" stroke="#1a0306" stroke-width="5" stroke-linejoin="round"/>
+        <ellipse cx="29" cy="24" rx="12" ry="8" fill="#fff" opacity=".75" transform="rotate(-30 29 24)"/>
+      </symbol>
+      <symbol id="rd-sword" viewBox="0 0 100 100">
+        <g stroke="#14161c" stroke-width="2.6" stroke-linejoin="round">
+          <path d="M50 4 L55 13 L55 64 L45 64 L45 13 Z" fill="url(#rd-g-blade)"/>
+          <rect x="34" y="63" width="32" height="7" rx="3.5" fill="url(#rd-g-gold)"/>
+          <rect x="45.5" y="70" width="9" height="17" rx="2" fill="url(#rd-g-grip)"/>
+          <circle cx="50" cy="91" r="5" fill="url(#rd-g-gold)"/>
+        </g>
+      </symbol>
+      <symbol id="rd-swords" viewBox="0 0 100 100">
+        <use href="#rd-sword" width="100" height="100" transform="rotate(-135 50 50)"/>
+        <use href="#rd-sword" width="100" height="100" transform="rotate(135 50 50)"/>
+      </symbol>
+      <!-- Home (plan 2026-10-30 item 5): a gabled townhouse with a chimney and an arched door -->
+      <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M2.8 11.6 12 3.8l9.2 7.8"/><path d="M5.4 9.6V20.2h13.2V9.6"/><path d="M10 20.2v-4.4a2 2 0 0 1 4 0v4.4"/><path d="M16.2 7V3.8h2.2v5"/><circle cx="12" cy="10.6" r="1.4" stroke-width="1.1"/><path d="M3.6 20.2h16.8"/></g></symbol>
+      <symbol id="i-crown" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M3.5 8.5 7.5 12 12 5l4.5 7 4-3.5-1.8 9.5H5.3z"/><path d="M5.3 20h13.4"/><circle cx="12" cy="4.2" r=".9" fill="currentColor"/><circle cx="3.4" cy="7.8" r=".8" fill="currentColor"/><circle cx="20.6" cy="7.8" r=".8" fill="currentColor"/></g></symbol>
+      <symbol id="i-fan" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="#0f1428"><rect x="5" y="5" width="9" height="13" rx="1.2" transform="rotate(-20 12 20)"/><rect x="7.5" y="4" width="9" height="13" rx="1.2" transform="rotate(20 12 20)"/><rect x="7.5" y="4.5" width="9" height="13.5" rx="1.2"/><path d="M12 8.6l2 2.6-2 2.6-2-2.6z" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="i-potion" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M9.5 3h5M10.2 3v4.6L5.8 14a6.6 6.6 0 1 0 12.4 0l-4.4-6.4V3"/><path d="M6.6 14.5h10.8"/><circle cx="10.5" cy="17" r=".9" fill="currentColor"/><circle cx="13.7" cy="18.3" r=".6" fill="currentColor"/></g></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H18v14H5.5c-.8 0-1.5.7-1.5 1.5z"/><path d="M4 19.5C4 20.3 4.7 21 5.5 21H19"/><path d="M8 8h6M8 11h4"/><path d="M15 4v5l1.5-1 1.5 1V4" stroke-width="1.2"/></g></symbol>
+      <symbol id="i-lens" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3.6" stroke-width=".8" stroke-dasharray="1.6 1.6"/><path d="M14.5 14.5 20.5 20.5" stroke-width="2.6"/><path d="M7.5 7.8a3.4 3.4 0 0 1 2.5-1.3"/></g></symbol>
+      <symbol id="i-trait" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 7h10l3.5 4.5L12 21 3.5 11.5z"/><path d="M3.5 11.5h17M9.5 7 12 11.5 14.5 7M8 11.5 12 21l4-9.5" stroke-width="1"/><path d="M19 1.8v3.4M17.3 3.5h3.4M4.6 2.4v2.2M3.5 3.5h2.2" stroke-width="1.2"/></g></symbol>
+      <!-- Card detail label icons (W6): Tier = i-crown · Passive / Skill = star · Strongest = sword · Weakness = cracked shield -->
+      <symbol id="i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="m12 3.2 2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/><path d="M12 7.6v5.2M9.6 10.6h4.8" stroke-width="1"/></g></symbol>
+      <symbol id="i-sword" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M19.5 3.5h1v1L10 15l-1-1z"/><path d="M17.8 5.2 9.5 13.5" stroke-width="1"/><path d="m6.2 12.8 5 5M8.2 15.8l-3.6 3.6"/><circle cx="4" cy="20" r="1.1" fill="currentColor"/></g></symbol>
+      <symbol id="i-shield-broken" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3 4.5 5.8v5.6c0 4.6 3.1 8 7.5 9.6 4.4-1.6 7.5-5 7.5-9.6V5.8z"/><path d="m12.6 3.3-1.9 4.6 2.7 2.2-2.4 3.6 1.6 2.3-.9 3.4"/></g></symbol>
+      <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 4h12l4.5 5.5L12 21.5 1.5 9.5z" fill="currentColor" fill-opacity=".28" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M1.5 9.5h21M9 4l3 5.5L15 4M7 9.5l5 12 5-12" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/><path d="M7.4 6.2 5.6 8.6" style="stroke:var(--ink)" stroke-opacity=".8" stroke-width="1.2" stroke-linecap="round"/></symbol>
+      <!-- Trait icons (W5): one glyph per trait, drawn for this site (shapes like the game's, no game art) · tinted by the trait tier (--tc) via currentColor -->
+      <symbol id="tri-ascendant" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 6.6l1.2 3.1 3.3.2-2.6 2.1.9 3.2L12 13.4l-2.8 1.8.9-3.2-2.6-2.1 3.3-.2z" fill="currentColor" fill-opacity=".45"/><path d="M16.8 10.6c1.9-1.4 3.7-2.8 5.7-4.2-.5 2.9-2 4.9-4.4 6M17.4 13.3c1.4-.2 2.9-.8 3.9-1.8-.7 2.2-2.2 3.4-4.4 3.6M7.2 10.6C5.3 9.2 3.5 7.8 1.5 6.4c.5 2.9 2 4.9 4.4 6M6.6 13.3c-1.4-.2-2.9-.8-3.9-1.8.7 2.2 2.2 3.4 4.4 3.6" fill="none"/><path d="M12 2.6v2.2M10.2 18.4 12 20.6l1.8-2.2" fill="none" stroke-width="1.1"/></g></symbol>
+      <symbol id="tri-limitless" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-2-3-3.5-4-5.5-4a4 4 0 0 0 0 8c2 0 3.5-1 5.5-4s3.5-4 5.5-4a4 4 0 0 1 0 8c-2 0-3.5-1-5.5-4z" stroke-width="2"/><circle cx="6.5" cy="12" r="1.6" fill="currentColor" fill-opacity=".45" stroke="none"/><circle cx="17.5" cy="12" r="1.6" fill="currentColor" fill-opacity=".45" stroke="none"/><path d="M19.5 2.6v2.8M18.1 4h2.8" stroke-width="1.1"/></g></symbol>
+      <symbol id="tri-sage-mode" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M1.8 12C5 7.2 8.4 5.2 12 5.2s7 2 10.2 6.8C19 16.8 15.6 18.8 12 18.8S5 16.8 1.8 12z" fill="none"/><circle cx="12" cy="12" r="4" fill="currentColor" fill-opacity=".3"/><rect x="9.3" y="11.1" width="5.4" height="1.8" rx=".4" fill="currentColor"/><path d="M4.5 6.2 6 7.6M19.5 6.2 18 7.6" fill="none" stroke-linecap="round" stroke-width="1.1"/></g></symbol>
+      <symbol id="tri-awakened" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M4 14c2.6-3.6 5.2-5 8-5s5.4 1.4 8 5c-2.6 3.6-5.2 5-8 5s-5.4-1.4-8-5z" fill="none"/><circle cx="12" cy="14" r="2.6" fill="currentColor" fill-opacity=".45"/><circle cx="12" cy="14" r=".9" fill="currentColor" stroke="none"/><path d="M12 2.3v3.3M6 4.2l1.7 2.6M18 4.2l-1.7 2.6M1.8 8.6l2.8 1.3M22.2 8.6l-2.8 1.3" fill="none" stroke-width="1.3"/></g></symbol>
+      <symbol id="tri-undying" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M19 3.2c1.9 3.4.7 8-3.4 11.4-2.6 2.2-5.6 2.9-7.6 2.3-.5-3 .6-6.7 3.3-9.4 2.4-2.4 5-3.9 7.7-4.3z" fill="currentColor" fill-opacity=".28"/><path d="M4 21 17.6 5.4" fill="none"/><path d="M11.2 13.6l3.2-.3M12.6 10.8l3.4-.4M9.6 16.1l2.6.2" fill="none" stroke-width="1"/></g></symbol>
+      <symbol id="tri-prodigy" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M16 3l1.2 3.3 3.6.2-2.8 2.2 1 3.4L16 10.1l-3 2 1-3.4-2.8-2.2 3.6-.2z" fill="currentColor" fill-opacity=".45"/><path d="M3 21l7.6-7.6M2.4 16.4l5.2-4.2M7.6 21.6l4.2-5.2" fill="none"/><path d="M2.2 12.2h0M11.8 21.8h0" stroke-width="2"/></g></symbol>
+      <symbol id="tri-keen-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3" fill="currentColor" fill-opacity=".3"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/><circle cx="12" cy="12" r=".9" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="tri-bloodlust" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.5S5.5 10 5.5 14.6a6.5 6.5 0 0 0 13 0C18.5 10 12 2.5 12 2.5z" fill="currentColor" fill-opacity=".35"/><path d="M8.7 15.2a3.3 3.3 0 0 0 2.6 3" fill="none" stroke-width="1.2"/><path d="M19.6 4.2c0 .8-.6 1.5-1.2 1.5s-1.2-.7-1.2-1.5S18.4 2 18.4 2s1.2 1.4 1.2 2.2z" fill="currentColor" stroke-width=".9"/></g></symbol>
+      <symbol id="tri-iron-body" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.6l7.5 3v6c0 4.4-3.2 7.9-7.5 9.9-4.3-2-7.5-5.5-7.5-9.9v-6z" fill="currentColor" fill-opacity=".25"/><path d="M12 2.6v18.9M4.5 10.6h15" fill="none" stroke-width=".9"/></g></symbol>
+      <symbol id="tri-spirited" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2c1 4 5.6 6 5.6 11.6a5.6 5.6 0 0 1-11.2 0c0-3 1.8-4.6 2.6-6.6 1 2 1.6 3 2.6 3.6C11.6 7.6 11 5 12 2z" fill="currentColor" fill-opacity=".25"/><path d="M12 21a2.8 2.8 0 0 1-2.8-2.8c0-2 1.6-2.8 2.4-4.8 1.4 1.6 3.2 2.7 3.2 4.8A2.8 2.8 0 0 1 12 21z" fill="currentColor" fill-opacity=".6"/></g></symbol>
+      <symbol id="tri-nimble" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M3 18.5C6 10.5 12 5.2 21.2 4.2c-1.5 3-3.5 4.6-6 5.6 2.5.1 4-.3 5-.7-1.5 2.7-4 4.2-7 4.7 2 .3 3.5.1 4.5-.2-2 2.7-5.5 4.3-9.5 4.3-2 0-3.5.3-5.2.6z" fill="currentColor" fill-opacity=".25"/><path d="M6.5 15.2c3.2-3.8 6.8-6.6 11-8.6" fill="none" stroke-width="1"/></g></symbol>
+      <symbol id="tri-sharp" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M20.6 3.4l-.8 4.2-9.6 9.6-3.4-3.4 9.6-9.6z" fill="currentColor" fill-opacity=".3"/><path d="M18.6 5.4 9 15" fill="none" stroke-width=".9"/><path d="M4.8 12.4l6.8 6.8M7.2 16.8l-3 3" fill="none" stroke-width="1.8"/><circle cx="3.4" cy="20.6" r="1.1" fill="currentColor"/></g></symbol>
+      <symbol id="tri-tough" viewBox="0 0 24 24"><g stroke="currentColor" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2l8.5 3v6.6c0 5-3.5 8.6-8.5 10.6-5-2-8.5-5.6-8.5-10.6V5z" fill="none" stroke-width="1.8"/><path d="M12 5.4l5.5 2v4.3c0 3.3-2.3 5.8-5.5 7.2-3.2-1.4-5.5-3.9-5.5-7.2V7.4z" fill="currentColor" fill-opacity=".35" stroke-width="1.3"/><circle cx="6" cy="6.9" r=".7" fill="currentColor" stroke="none"/><circle cx="18" cy="6.9" r=".7" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></g></symbol>
+      <symbol id="i-flourish" viewBox="0 0 60 20"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M30 4l5 6-5 6-5-6z" fill="currentColor" fill-opacity=".25"/><path d="M25 10c-6 0-8-5-14-5-4 0-6 3-4 5M35 10c6 0 8-5 14-5 4 0 6 3 4 5"/><path d="M25 10C19 10 17 15 11 15c-4 0-6-3-4-5M35 10c6 0 8 5 14 5 4 0 6-3 4-5" stroke-width=".7"/></g></symbol>
+      <symbol id="i-crest" viewBox="0 0 120 128">
+        <circle cx="60" cy="64" r="56" fill="#121830" stroke="#d8b46a" stroke-width="2.5"/>
+        <circle cx="60" cy="64" r="49" fill="none" stroke="#8a6a32" stroke-width="1"/>
+        <circle cx="60" cy="64" r="44" fill="none" stroke="#d8b46a" stroke-width=".8" stroke-dasharray="2 3.5"/>
+        <path d="M60 10v6M60 112v6M6 64h6M108 64h6" stroke="#d8b46a" stroke-width="2"/>
+        <path d="M60 30 74 56 60 98 46 56z" fill="#1d2542" stroke="#d8b46a" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M60 30v68M46 56h28" stroke="#d8b46a" stroke-width=".8" opacity=".7"/>
+        <path d="M40 40c-6 6-7 16-3 24M80 40c6 6 7 16 3 24M40 88c4 4 10 6 20 6s16-2 20-6" fill="none" stroke="#f3dca0" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="60" cy="56" r="4" fill="#f3dca0"/>
+      </symbol>
+    </defs>
+  </svg>
+<main class="lab">
+  <h1>3:4 Card Sample</h1>
+  <p class="sub">การ์ดแบบใหม่ (เจ้าของสั่ง 2026-11-03): การ์ด 3:4 = รูปว่าง 3:4 เต็มการ์ด ไม่มีแถบดำด้านล่าง · ชื่อสกิล/คำอธิบาย/ATK ขยับขึ้น 5.5cqw · ATK อยู่กลางล่างเสมอ · วาดด้วยโค้ดเดียวกับเว็บจริง</p>
+  <div class="row" id="pick" role="group" aria-label="Card"></div>
+  <div class="row" id="rar" role="group" aria-label="Rarity"></div>
+  <div class="row" id="lang" role="group" aria-label="Language">
+    <button class="chip" data-lang="en">English</button><button class="chip" data-lang="th">ไทย</button>
+  </div>
+  <div class="stage">
+    <section class="slot"><h2 id="cname"></h2><div id="mine"></div></section>
+  </div>
+  <h2 style="font: 600 14px/1.4 'Noto Sans Thai', system-ui; color:#d8b46a; margin: 26px 0 0">ขนาดในหน้า Cards / Deck</h2>
+  <div class="sizes" id="sizes"></div>
+  <div class="note">
+    <b>การ์ด:</b> 3:4 (เดิม 5:7) · รูปว่าง 600×800 เต็มการ์ดพอดี ไม่มีแถบดำ ·
+    <b>ATK:</b> อยู่กลางการ์ดเสมอ (เดิมชิดซ้ายถัดจากดาบ) · ดาบยังอยู่มุมซ้ายล่าง · เลขยาวย่อลงจนไม่ทับดาบ ·
+    <b>ทุกหน้า</b> (Cards, Deck, Tier, หน้าดูการ์ด, รูปแชร์) ใช้การ์ด 3:4 เหมือนกัน
+  </div>
+</main>
+<!-- the site's renderer · its boot() looks for the site's page parts and stops early here (no tabs on this page), which is fine -->
+<script>addEventListener("unhandledrejection", (e) => e.preventDefault());   // the site's boot() stopping early (see above)</script>
+<script src="../js/i18n.js?v=73"></script>
+<script src="../js/i18n-th-sk1.js?v=73"></script>
+<script src="../js/i18n-th-sk2.js?v=73"></script>
+<script src="../js/fx.js?v=73"></script>
+<script src="../js/app.js?v=73"></script>
+<script>
+(async () => {
+  const C = window.CBI, esc = C.esc;
+  const get = (u) => fetch(u).then((r) => r.json());
+  // every card waits in data/pending/ until its text-free picture arrives (owner 2026-11-03)
+  const [meta, live, wait] = await Promise.all([get("../data/meta.json?v=73"), get("../data/cards.json?v=73"), get("../data/pending/cards.json?v=73")]);
+  const cards = [...live, ...wait];
+  C.state.meta = meta; C.state.cards = cards;
+  const IDS = ["octopus-teacher", "one-punch-caped-hero", "storm-dragon", "moon-breath-swordsman"];
+  let cid = IDS[0];
+  const pick = () => { const b = cards.find((c) => c.id === cid); return { ...b, image: "../" + b.image }; };
+  const RAR = meta.rarities.map((r) => r.name);
+  let lang = "en";
+  try { lang = localStorage.getItem("cbi:lang") === "th" ? "th" : "en"; } catch {}
+  let rar = "Godly";
+  try { const r = new URLSearchParams(location.search).get("r"); if (RAR.includes(r)) rar = r; } catch {}
+  const box = (id) => document.getElementById(id);
+  function draw() {
+    const mine = pick();
+    box("cname").textContent = mine.name;
+    document.querySelectorAll("#pick .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === cid)));
+    box("mine").replaceChildren(C.renderCard(mine, rar));
+    box("sizes").replaceChildren(...[111, 150, 200].map((w) => { const el = C.renderCard(mine, rar, { mini: w < 170 }); el.style.width = w + "px"; return el; }));
+    document.querySelectorAll("#rar .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.r === rar)));
+    document.querySelectorAll("#lang .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    // the site loads pictures when they scroll into view (data-src) · here: right away
+    document.querySelectorAll("img[data-src]").forEach((i) => { i.src = i.dataset.src; i.removeAttribute("data-src"); });
+  }
+  box("pick").innerHTML = IDS.map((id) => `<button class="chip" data-id="${id}">${esc(cards.find((c) => c.id === id).name)}</button>`).join("");
+  box("pick").addEventListener("click", (e) => { const b = e.target.closest("[data-id]"); if (b) { cid = b.dataset.id; draw(); } });
+  box("rar").innerHTML = RAR.map((r) => `<button class="chip" data-r="${r}">${r}</button>`).join("");
+  box("rar").addEventListener("click", (e) => { const b = e.target.closest("[data-r]"); if (b) { rar = b.dataset.r; draw(); } });
+  box("lang").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lang]"); if (!b || b.dataset.lang === lang) return;
+    try { localStorage.setItem("cbi:lang", b.dataset.lang); } catch {}
+    location.reload();   // the site's language switch reloads too (js/i18n.js)
+  });
+  draw();
+  if (document.fonts) document.fonts.ready.then(draw);   // measure again with the real fonts
+})();
+</script>
+</body>
+</html>
