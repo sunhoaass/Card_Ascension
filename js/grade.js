@@ -605,7 +605,7 @@
     if (c.classList.contains("is-live")) C.flashCard(c);
   }
   function recolor(name) {
-    tiles.forEach((el, id) => C.setCardRarity(el, byId.get(id), name, { animate: false }));
+    C.later("grade", [...tiles].map(([id, el]) => () => C.setCardRarity(el, byId.get(id), name, { animate: false })));   // C.later: speed 2026-11-03
     sheetSlabs.forEach((x) => {
       if (!x.s.isConnected) { sheetSlabs.delete(x); return; }
       if (x.sup) {
@@ -619,10 +619,12 @@
       paintSlab(x.s, x.card, name, get(x.card.id) || ZERO());
       if (x.s.getBoundingClientRect().height) sheen(x.s);
     });
-    if (!cur || !hero) return;
-    swapRarity(hero, byId.get(cur), name);
-    paintHero({ glare: true });
-    STATS.forEach((_, i) => paintRow(i));
+    C.later("gradeHero", [() => {
+      if (!cur || !hero) return;
+      swapRarity(hero, byId.get(cur), name);
+      paintHero({ glare: true });
+      STATS.forEach((_, i) => paintRow(i));
+    }]);
   }
 
   function rarityChips(container) {

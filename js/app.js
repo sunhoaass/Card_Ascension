@@ -332,6 +332,36 @@
     for (const ref of watched) { const el = ref.deref(); if (el) liveIO.observe(el); else watched.delete(ref); }
   }
 
+  /* ---------- Work for the hidden page (speed 2026-11-03) ----------
+     While the card detail covers the page (CBI.covered, js/detail.js settled), a level change does not repaint the page's
+     cards in the tap: later(key, jobs) keeps the list of small jobs (one card each) and runs them a few at a time
+     while the phone is idle · a newer list with the same key replaces the old one (the newest level wins) · a closing
+     detail runs what is left first (flushCovered), so the page is right before it shows again. Not covered = run now. */
+  const coverQ = new Map();
+  let coverIdle = 0;
+  const ric = (f) => (window.requestIdleCallback ? requestIdleCallback(f, { timeout: 4000 }) : setTimeout(f, 200));
+  function later(key, jobs) {
+    if (!CBI.covered) { jobs.forEach((f) => f()); return; }
+    coverQ.set(key, jobs.slice());
+    if (!coverIdle) coverIdle = ric(runCovered);
+  }
+  function runCovered(dl) {
+    coverIdle = 0;
+    const more = () => !dl || !dl.timeRemaining || dl.didTimeout || dl.timeRemaining() > 4;
+    for (const [key, jobs] of coverQ) {
+      while (jobs.length && more()) jobs.shift()();
+      if (jobs.length) break;
+      coverQ.delete(key);
+      if (!more()) break;
+    }
+    if (coverQ.size) coverIdle = ric(runCovered);
+  }
+  function flushCovered() {
+    if (coverIdle) { if (window.cancelIdleCallback) cancelIdleCallback(coverIdle); clearTimeout(coverIdle); coverIdle = 0; }
+    for (const jobs of coverQ.values()) jobs.forEach((f) => f());
+    coverQ.clear();
+  }
+
   /* ---------- Lazy tabs (step 9.5) ----------
      lazy(page, fn): run fn the first time that tab is showing (right now if it already is).
      Pages build their cards in it, so no cards are made for a tab nobody has opened. */
@@ -898,6 +928,7 @@
   /* 9 rarities don't fit a phone: the chip rows scroll sideways · keep the picked chip in view (owner 2026-10-28) */
   function revealChip(root = document) {
     root.querySelectorAll(".rarity-picker").forEach((row) => {
+      if (CBI.covered && row.closest(".main")) return;   // the card detail covers the page (measuring its hidden rows: 0.2 s)
       const b = row.querySelector('[aria-pressed="true"]');
       if (!b || !row.clientWidth || row.scrollWidth <= row.clientWidth) return;
       const rr = row.getBoundingClientRect(), br = b.getBoundingClientRect();
@@ -1200,6 +1231,7 @@
     isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, RDC, RDU, capOff, ANTON, OSW, BARLOW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
     openCard, closeCard, swapCard, route,
     lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
+    covered: false, later, flushCovered,   // speed 2026-11-03: the card detail covers the page (js/detail.js settled) · its deferred work
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support / Grade / Traits grids (2026-10-28 · box 2026-10-29)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js
     detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js

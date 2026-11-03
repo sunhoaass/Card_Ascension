@@ -322,8 +322,8 @@
   function prebakeCoronas() {
     if (prebaked || !G) return; prebaked = true;
     const todo = Object.keys(LEVELS).filter((n) => !coronaCache.has(n));
-    const next = () => { const n = todo.shift(); if (!n || !G) return; getCorona(n).then(() => idle(next, 1500)); };
-    idle(next, 1500);
+    const next = () => { const n = todo.shift(); if (!n || !G) return; getCorona(n).then(() => calm(next, 1500)); };
+    calm(next, 1500);
   }
 
   function buildSparks() {
@@ -464,6 +464,9 @@
       .then(([s, g, c, p]) => Object.assign(g0, { skyImg: s, goldImg: g, cityImg: c, palImg: p }));
     const steps = [pics, () => paint(), () => showCorona(state.rarity, true), () => makeMask(), () => { buildSparks(); buildFog(); }, () => buildGround(), () => (gfx === "low" ? bakeStill() : null)];
     sceneP = steps.reduce((p, f) => p.then(() => new Promise((res) => calm(() => (G === g0 ? Promise.resolve(f()) : Promise.resolve()).then(res, res), 400))), Promise.resolve());
+    // speed 2026-11-03: the other levels' rings are baked as soon as the scene is there (was 3.4 s after a card opened:
+    // a level dot tapped before that drew its ring in the tap)
+    sceneP.then(() => { if (G === g0) prebakeCoronas(); });
     return sceneP;
   }
 
@@ -479,7 +482,13 @@
   }
   // paint ahead while idle so the first open is instant · lite devices (≤ 4 GB / ≤ 4 cores / slow probe) paint on
   // the first open instead (a stand-in sky shows meanwhile), so no long painting task lands while they scroll
-  function prewarm() { if (!G && byId.size && !FX.lite) calm(() => { if (!G && !FX.lite) buildScene(); }, 3000); }
+  function prewarm() {
+    if (!byId.size) return;
+    // the card's size + motes, measured on the closed scene once its pieces are there (lite phones: right away, no painting)
+    const warm = () => calm(() => { if (el.root.hidden && !LY.cw) { layout(true); buildMotes(); motesPlay(false); } }, 3000);
+    if (!G && !FX.lite) calm(() => { if (!G && !FX.lite) buildScene().then(warm); else warm(); }, 3000);
+    else warm();
+  }
 
   /* ==========================================================
      2. Parallax: paused Web Animations driven by finger / mouse
@@ -723,14 +732,22 @@
     const fs = Math.min(...ds.map((n) => parseFloat(getComputedStyle(n).fontSize)));
     ds.forEach((n) => { n.style.fontSize = fs + "px"; });
   }
-  function layout() {
-    if (el.root.hidden) return;
+  let dbW = 0;   // the Details button's width (0 = measure again: fonts arrived, language changed)
+  // warm = measure the closed scene while the phone is idle (prewarm): the first open then finds the card's size set
+  // and lays it out once in the tap, not twice (speed 2026-11-03)
+  function layout(warm) {
+    if (el.root.hidden && !warm) return;
     const rw = el.root.clientWidth, rh = el.root.clientHeight;
     if (!rw || !rh) return;
     // side = labels left / right (landscape, ≥ 768) · otherwise stacked: a label strip under the card (phones, portrait tablets)
     side = (rw >= 768 && rw >= rh * 0.95) || (rw >= 600 && rw > rh * 1.15);
     el.root.classList.toggle("is-side", side);
+    // the card's name in the top bar: smaller before it would be cut (only a very long name still ends in "…") · speed
+    // 2026-11-03: fitted before the card is sized (reading it after --cw changed laid the new card out once more in the tap)
+    fitLine(el.name, 10.5);   // too long even then: 2 lines (CSS .is-wrap)
     const fw = el.fore.clientWidth, fh = el.fore.clientHeight;
+    // the Details button's width (phones: the ring + button row is centred) · read here, before anything is written
+    if (!side && !dbW) dbW = el.dbtn.offsetWidth;
     const topH = el.fore.offsetTop;
     const [W, H] = skySize(), sun = sunOf(W, H);
     const sunB = Math.round(sun.sy + sun.R - 26 - topH + 12);   // just under the black sun, in foreground coordinates
@@ -767,7 +784,7 @@
       el.wrap.style.left = L + "px"; el.wrap.style.top = T + "px";
       const stripY = B + 12, ry = stripY + STRIP + 10;
       el.callouts.style.top = stripY + "px";
-      const dbw = el.dbtn.offsetWidth || 120, rowW = 60 + 14 + dbw, rx = Math.round((fw - rowW) / 2);
+      const dbw = dbW || 120, rowW = 60 + 14 + dbw, rx = Math.round((fw - rowW) / 2);
       el.ovr.style.left = rx + "px"; el.ovr.style.top = ry + "px";
       el.dbtn.style.left = (rx + 74) + "px"; el.dbtn.style.top = (ry + 6) + "px";
       el.root.style.removeProperty("--hint-w");
@@ -807,8 +824,6 @@
     const zs = Math.min(1.7, (fh - 16) / ch, (fw - 24) / cw);
     el.zoom.style.setProperty("--zs", zs.toFixed(3)); el.zoom.style.setProperty("--zy", Math.round(fh / 2 - (T + ch / 2)) + "px");
     el.pager.textContent = list.length > 1 ? `${idx + 1} / ${list.length}${side ? "" : " · swipe ← →"}` : "";
-    // the card's name in the top bar: smaller before it would be cut (only a very long name still ends in "…")
-    fitLine(el.name, 10.5);   // too long even then: 2 lines (CSS .is-wrap)
     placeInd(el.lv, true);    // W9: the dots' size follows the layout (side = bigger)
     if (sheetOpen) sheetSide();
     if (wheelOn) layoutWheel();
@@ -863,7 +878,7 @@
   let motesCW = 0;
   function buildMotes() {
     const box = el.swirl;
-    box.querySelectorAll(".bs-mote").forEach((m) => m.getAnimations().forEach((x) => x.cancel()));
+    moteA.forEach((x) => x.cancel()); moteA = [];
     box.textContent = "";
     const n = FX.lite ? 7 : 14, r = rng(31), cw = LY.cw, ch = LY.ch;
     motesCW = cw;
@@ -874,18 +889,19 @@
       m.style.left = f1(cw / 2 + Math.cos(a) * rx) + "px"; m.style.top = f1(ch / 2 + Math.sin(a) * ry) + "px";
       box.appendChild(m);
       if (rm()) { m.style.opacity = ".6"; continue; }
-      m.animate([
+      moteA.push(m.animate([
         { transform: "translate(0,0) scale(.5)", opacity: 0 },
         { transform: `translate(${d()}px,${d()}px) scale(1)`, opacity: 0.95, offset: 0.25 },
         { transform: `translate(${d()}px,${d()}px) scale(.8)`, opacity: 0.5, offset: 0.5 },
         { transform: `translate(${d()}px,${d()}px) scale(1)`, opacity: 0.9, offset: 0.75 },
         { transform: "translate(0,0) scale(.5)", opacity: 0 },
-      ], { duration: 5200 + r() * 3800, iterations: Infinity, delay: -r() * 6000, easing: "ease-in-out" });
+      ], { duration: 5200 + r() * 3800, iterations: Infinity, delay: -r() * 6000, easing: "ease-in-out" }));
     }
     moteColors();
   }
-  const moteAnims = () => [...el.swirl.querySelectorAll(".bs-mote")].flatMap((m) => m.getAnimations());
-  function motesPlay(on) { on = on && gfx !== "low" && !hushed; moteAnims().forEach((x) => (on ? x.play() : x.pause())); }
+  // speed 2026-11-03: the motes' animations are kept in moteA (getAnimations() restyled the page in every open)
+  let moteA = [];
+  function motesPlay(on) { on = on && gfx !== "low" && !hushed; moteA.forEach((x) => (on ? x.play() : x.pause())); }
   function moteColors() {
     const lv = lvOf(state.rarity), ms = el.swirl.children;
     for (let i = 0; i < ms.length; i++) ms[i].style.setProperty("--c", lv.byAngle ? lv.pal[i % lv.pal.length] : lv.pal[i % 2 ? 0 : 1]);
@@ -1104,6 +1120,12 @@
   }
   // put a card in the scene (faces, texts, layout) without any animation
   function show(card) {
+    put(card);
+    layout();
+    if (Math.abs(LY.cw - motesCW) > 2) buildMotes();
+  }
+  // the DOM part of show() (no measuring): open() writes all of it before its first read · speed 2026-11-03
+  function put(card) {
     cur = card;
     mountFaces(card);
     fillCallouts(card);
@@ -1111,8 +1133,6 @@
     document.title = `${card.name} — ${baseTitle}`;
     el.root.setAttribute("aria-label", `${card.name} details`);
     sheetKey = "";
-    layout();
-    if (Math.abs(LY.cw - motesCW) > 2) buildMotes();
   }
   function afterShow() { prefillSheet(); prepNeighbours(); }
 
@@ -1304,7 +1324,9 @@
       (ob ? `<span class="bs-sheet__obtain">${esc(ob)}</span>` : "");
   }
   let sheetOpen = false, shAnims = [], SD = null, sheetKey = "", tab = "overview";
-  function prefillSheet() { setTimeout(() => idle(() => { if (isOpen && !sheetOpen) fillSheet(); }), 0); }
+  // speed 2026-11-03: after the entrance (the labels fade in at 0.6–1.2 s and the Overall ring counts): building + laying out
+  // the Details was one ≈ 0.2 s task right in the middle of it on a 6× slowed phone · opening them sooner fills them at once
+  function prefillSheet() { const k = token; setTimeout(() => idle(() => { if (isOpen && k === token && !sheetOpen) fillSheet(); }, 2500), 1300); }
   function fillSheet() {
     const card = cur;
     if (!card || sheetKey === card.id) return;
@@ -1383,6 +1405,8 @@
   function openSheet(name, to) {
     if (!ready || !cur || wheelOn) return;
     if (sheetOpen) { setTab(name || tab, { animate: true, to }); return; }
+    el.sheet.dataset.lvl = state.rarity;   // the level colour (paintDock leaves the closed sheet alone)
+    if (sheetLevel) sheetLevel();          // a level change made while they were closed (onRarity)
     fillSheet(); hideHint(); stopCard(); toggleZoom(false);
     setTab(name || "overview", { to });
     el.sheet.inert = false; el.sheet.classList.add("is-open"); sheetOpen = true;
@@ -1475,11 +1499,15 @@
   }
   const lvIndex = () => Math.max(0, state.meta.rarities.findIndex((r) => r.name === state.rarity));
   // the gold ring moves by the real button size (W9: the bottom bar's dots are bigger on a PC, the Details head keeps 40px)
+  // speed 2026-11-03: the ring is always as wide as a dot (detail.css), so it moves by its own width in % — nothing is
+  // measured (offsetWidth here restyled + laid out the whole page in the tap on a level dot) · instant = no slide: the
+  // transition comes back two frames later (once the new place has been drawn)
   function placeInd(box, instant) {
-    const ind = box.querySelector(".bs-lv__ind"), b = box.querySelector("button");
-    if (instant) ind.style.transition = "none";
-    ind.style.transform = `translateX(${lvIndex() * ((b && b.offsetWidth) || 40)}px)`;
-    if (instant) { void ind.offsetWidth; ind.style.transition = ""; }
+    const ind = box.querySelector(".bs-lv__ind");
+    cancelAnimationFrame(ind._raf);
+    ind.style.transition = instant ? "none" : "";
+    ind.style.transform = `translateX(${lvIndex() * 100}%)`;
+    if (instant) ind._raf = requestAnimationFrame(() => { ind._raf = requestAnimationFrame(() => { ind.style.transition = ""; }); });
   }
   function paintDock(instant) {
     const i = lvIndex();
@@ -1489,11 +1517,15 @@
       name.textContent = state.rarity;
       if (!instant && !rm()) name.animate([{ opacity: 0, transform: "translateY(3px)" }, { opacity: 1, transform: "none" }], { duration: 220, easing: E });
     });
-    [el.stage, el.fore, el.dock, el.sheet, el.wrap, el.hint].forEach((x) => { x.dataset.lvl = state.rarity; });
+    // speed 2026-11-03: the level colour (--lvl / --edge, detail.css) goes only on the parts that use it: on the stage /
+    // foreground / card it restyled the whole scene and both card faces in the tap · the closed Details take it when they open
+    [el.pulse, el.tint, el.wave, el.glow, el.swirl, ...el.edges].forEach((x) => { x.dataset.lvl = state.rarity; });
+    if (sheetOpen) el.sheet.dataset.lvl = state.rarity;
   }
   /* the light wave: a ring of the level's colour runs from the black sun down to the card (one-shot, transform /
      opacity only), then the card glows softly · never a white full-screen flash */
   const WAVE_HIT = 380;
+  let waveA = null, glowA = null;   // speed 2026-11-03: kept, not looked up with getAnimations() (it restyles the page first)
   function wave() {
     if (!G || el.root.hidden) return;
     const w = el.wave, z = FX.zoom();
@@ -1502,42 +1534,55 @@
     const cx = (fr.left - sr.left) / z + LY.L + LY.cw / 2 + 26, cy = (fr.top - sr.top) / z + LY.B + 26;
     const r = Math.round(Math.max(120, Math.hypot(cx - G.sx, cy - G.sy)));
     Object.assign(w.style, { left: G.sx + "px", top: G.sy + "px", width: 2 * r + "px", height: 2 * r + "px", margin: `${-r}px 0 0 ${-r}px` });
-    w.getAnimations().forEach((a) => a.cancel());
-    w.animate([{ transform: "scale(.06)", opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 0.9, offset: 0.62 }, { transform: "scale(1)", opacity: 0 }],
+    if (waveA) waveA.cancel();
+    waveA = w.animate([{ transform: "scale(.06)", opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 0.9, offset: 0.62 }, { transform: "scale(1)", opacity: 0 }],
       { duration: 700, easing: "cubic-bezier(.35,.55,.45,1)" });
-    el.glow.getAnimations().forEach((a) => a.cancel());
-    el.glow.animate([{ opacity: 0, transform: "scale(.94)" }, { opacity: 0.85, transform: "scale(1.02)", offset: 0.35 }, { opacity: 0, transform: "scale(1.08)" }],
+    if (glowA) glowA.cancel();
+    glowA = el.glow.animate([{ opacity: 0, transform: "scale(.94)" }, { opacity: 0.85, transform: "scale(1.02)", offset: 0.35 }, { opacity: 0, transform: "scale(1.08)" }],
       { duration: 640, delay: WAVE_HIT - 80, easing: "ease-out" });
   }
   // the rarity changed anywhere (dots here, the Traits page, the Cards page…): update the scene
   let faceTimer = 0;
   function onRarity() {
     const hit = isOpen && ready && !rm() && !el.root.hidden;
+    // speed 2026-11-03: the shown card when the wave reaches it · the next / previous cards built ahead after that, while idle
+    // (they also catch up in faces() if one is shown first) — all of them in the wave used to make one long task
+    const set = (id, fc) => {
+      const card = byId.get(id); if (!card) return;
+      if (fc.f.dataset.rarity !== state.rarity) C.setCardRarity(fc.f, card, state.rarity, { animate: isOpen && fc.f.isConnected });
+      if (fc.b.dataset.rarity !== state.rarity) C.setCardRarity(fc.b, card, state.rarity, { animate: false });
+    };
     const apply = () => {
-      for (const [id, fc] of faceCache) {
-        const card = byId.get(id); if (!card) continue;
-        if (fc.f.dataset.rarity !== state.rarity) C.setCardRarity(fc.f, card, state.rarity, { animate: isOpen && fc.f.isConnected });
-        if (fc.b.dataset.rarity !== state.rarity) C.setCardRarity(fc.b, card, state.rarity, { animate: false });
-      }
+      const now = cur && faceCache.get(cur.id);
+      if (now) set(cur.id, now);
+      idle(() => { for (const [id, fc] of faceCache) set(id, fc); });
     };
     clearTimeout(faceTimer);
     if (hit) faceTimer = setTimeout(apply, WAVE_HIT); else apply();   // the card changes when the wave reaches it
     if (!isOpen) return;
+    if (hit) wave();   // speed 2026-11-03: first — it measures the scene before anything here is written
     wRarity();   // W8: the wheel's cards
     paintDock(false);
     moteColors();
     showCorona(state.rarity, false);
-    if (hit) wave();
     if (cur) {
       el.wrap.setAttribute("aria-label", wrapLabel(cur));
       if (isSup(cur)) { fillCallouts(cur); if (!wheelOn) { layout(); if (ready) for (const o of coEls) o.el.style.opacity = 1; } }   // its Effect line shows the new values
       if (sheetKey === cur.id) {
-        el.shSub.innerHTML = sheetSub(cur);
-        fillStats(cur, sheetOpen);
-        el.sheetBody.querySelectorAll(".card[data-id]").forEach((c) => { const d = byId.get(c.dataset.id); if (d) C.setCardRarity(c, d, state.rarity, { animate: sheetOpen }); });
+        // speed 2026-11-03: closed Details catch up while idle (or when they open: openSheet) instead of in the tap
+        const card = cur;
+        sheetLevel = () => {
+          sheetLevel = null;
+          if (sheetKey !== card.id) return;
+          el.shSub.innerHTML = sheetSub(card);
+          fillStats(card, sheetOpen);
+          el.sheetBody.querySelectorAll(".card[data-id]").forEach((c) => { const d = byId.get(c.dataset.id); if (d) C.setCardRarity(c, d, state.rarity, { animate: sheetOpen }); });
+        };
+        if (sheetOpen) sheetLevel(); else idle(() => { if (sheetLevel) sheetLevel(); });
       }
     }
   }
+  let sheetLevel = null;   // the closed Details' level change, waiting for an idle moment
 
   /* ---------- graphics quality Low / High (W6) · Low = no running light, still sparks / fog / motes, no parallax ---------- */
   const GFX_KEY = "cbi:gfx";
@@ -1971,7 +2016,8 @@
   function wReset() {
     wStop(); wTok++; wheelOn = false; wBusy = false; clearTimeout(wFiltT);
     if (!el.wheel) return;
-    el.wheel.getAnimations().forEach((a) => a.cancel());
+    // speed 2026-11-03: only a shown wheel can still be fading (getAnimations() restyles the page first: every open ran it)
+    if (!el.wheel.hidden) el.wheel.getAnimations().forEach((a) => a.cancel());
     el.wheel.hidden = true; el.root.classList.remove("is-wheel", "is-wheel-low", "is-wheel-in");
     el.close.setAttribute("aria-label", "Back to the card wheel");
     wQ = ""; el.cwQ.value = ""; el.cwClear.hidden = true;
@@ -2020,16 +2066,20 @@
   }
   // the page underneath can't be reached while the scene is up · ≥ 1100px the left menu stays usable (W6: a tab closes the card)
   const wideNav = () => matchMedia("(min-width: 1100px)").matches;
+  // speed (2026-11-03): .main gets no inert — inert is inherited, so setting / clearing it restyled every card under it in
+  // the tap (150–340 ms on a 6× slowed phone, the card's first frames froze) · the scene covers it, and once settled it
+  // is content-visibility: hidden (not drawn, not focusable, not read out)
   function setBackground(on) {
     document.documentElement.classList.toggle("is-detail", on);
-    [".topbar", ".nav", ".main"].forEach((sel) => {
+    const nav = $(".nav"); if (nav) nav.classList.toggle("is-dim", on);
+    [".topbar", ".nav"].forEach((sel) => {
       const n = $(sel); if (!n) return;
       if (on && !(sel === ".nav" && wideNav())) n.setAttribute("inert", ""); else n.removeAttribute("inert");
     });
   }
   // fade with the scene (the labels, ring and Details button follow .is-ready on the foreground through CSS)
   const chrome = () => [el.stage, el.top, el.dock, el.wheel];
-  let settleTimer = 0, fades = [], pagerTimer = 0;
+  let fades = [], pagerTimer = 0;
   function open(id) {
     const card = byId.get(id);
     if (!card) { C.closeCard(); return; }        // unknown id in the link -> back to the page
@@ -2063,18 +2113,35 @@
 
     // the tile the card flies out of: measured before the scene goes up (the page loses its scrollbar under it)
     const tile = returnTarget(id), tr = tile && tile.getBoundingClientRect(), from = tr && rectVisible(tr) ? tr : null;
+    // speed 2026-11-03: the scene's night fill covers the page from the first frame, so the page stops being drawn right
+    // away (was 520 ms later: its cards were drawn and layerized under the scene during the whole flight)
+    settled(true);
 
     el.root.hidden = false;
     setBackground(true);
     fades.forEach((a) => a.cancel()); fades = [];
-    ensureScene();
+    // speed 2026-11-03: every write first (dots, card faces, labels), then one measuring pass (ensureScene, layout):
+    // each read between writes laid the whole scene out again in the tap (≈ 0.6 s on a 6× slowed phone)
     paintDock(true);
-    if (coronaFront && G) showCorona(state.rarity, true);
-    show(card);
+    put(card);
     idx = Math.max(0, list.indexOf(id));
+    ensureScene();
+    el.close.focus({ preventScroll: true });   // here: right after the first measuring pass (focus needs a fresh layout)
+    // reduced motion: every property gets a 1 ms transition (fx.css), so the scene's visibility (closed = hidden, detail.css)
+    // stays "hidden" for a few frames → try again each frame until it takes (a few frames at most)
+    if (document.activeElement !== el.close) {
+      let tries = 10;
+      const again = () => {
+        if (!isOpen || mine !== token || el.root.contains(document.activeElement)) return;
+        el.close.focus({ preventScroll: true });
+        if (document.activeElement !== el.close && --tries) requestAnimationFrame(again);
+      };
+      requestAnimationFrame(again);
+    }
+    if (coronaFront && G) showCorona(state.rarity, true);
     layout();
+    if (Math.abs(LY.cw - motesCW) > 2) buildMotes();
     resetLean();
-    el.close.focus({ preventScroll: true });
 
     // every open = the scene fades in while the card flies out of the tile that was tapped (owner 2026-11-03 · the way
     // Back flies it home, the other way round · 2026-10-25 → 11-03 it was dust gathering into the card)
@@ -2087,8 +2154,6 @@
       // the scene may still be painting (a lite phone's first open): its palace cycle starts once the ground is there
       if (sceneP && !(G && G.ground)) sceneP.then(() => { if (mine === token && isOpen && cycling && G && G.ground) palaceStart(); });
     }
-    clearTimeout(settleTimer);
-    settleTimer = setTimeout(() => { if (mine === token && isOpen) settled(true); }, 520);
     // W6 fix: the size can still change right after opening (phone browser bar, fonts) → measure again
     requestAnimationFrame(() => requestAnimationFrame(relayoutIfResized));
     setTimeout(relayoutIfResized, 600);
@@ -2101,9 +2166,26 @@
   }
 
   // the scene fully covers the page: stop drawing / checking what is underneath (it comes back before the card flies home)
+  // · from the tap on (speed 2026-11-03: the scene's night fill is opaque from its first frame)
+  // speed (2026-11-03): the classes sit on .main / #backdrop themselves (a class on <html> with "… *" rules restyled the whole
+  // page: 340 ms on a 6× slowed phone, right at the end of the card's flight) · .main keeps its height while hidden (the
+  // page's scroll position), so nothing underneath moves
+  let coverH = "";
   function settled(on) {
     if (window.__bsNoOpt) on = false;   // test switch for before/after measurements
-    document.documentElement.classList.toggle("is-detail-settled", on);
+    if (!on) C.flushCovered();   // the page's cards catch up with a level change made here (js/app.js later)
+    const main = $(".main"), bd = $("#backdrop");
+    if (main && on !== main.classList.contains("is-covered")) {
+      if (on) {
+        const cs = getComputedStyle(main);
+        coverH = Math.max(0, main.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)) + "px";
+        main.style.containIntrinsicSize = "none " + coverH;
+      }
+      main.classList.toggle("is-covered", on);
+      if (!on) main.style.containIntrinsicSize = "";
+    }
+    if (bd) bd.classList.toggle("is-covered", on);
+    C.covered = on;
     C.livePause(on);
   }
   function close() {
@@ -2112,7 +2194,6 @@
     const id = cur && cur.id, inWheel = wheelOn;
     const mine = ++token;
     wStop(); wTok++;
-    clearTimeout(settleTimer);
     settled(false);
     stopIntro(); stopCard(); closeSheet(0, true); toggleZoom(false); hideHint();
     palaceStop(); cycling = false;
@@ -2172,6 +2253,7 @@
       ovr: g("bs-ovr"), ovrArc: g("bs-ovrArc"), ovrNum: g("bs-ovrNum"), ovrLbl: g("bs-ovrLbl"), dbtn: g("bs-details"),
       hint: g("bs-hint"), dock: g("bs-dock"), dockL: g("bs-dockL"), dockR: g("bs-dockR"), lv: g("bs-lv"), lvName: g("bs-lvName"),
       prev: g("bs-prev"), next: g("bs-next"), gfx: g("bs-gfx"), tint: g("bs-tint"), wave: g("bs-wave"), glow: g("bs-glow"),
+      edges: [...document.querySelectorAll("#bs-rotor .bs-edge")],
       wheel: g("bs-wheel"), cw: g("bs-cw"), cwName: g("bs-cwName"), cwTools: g("bs-cwTools"), cwQ: g("bs-cwQ"), cwClear: g("bs-cwClear"), cwEmpty: g("bs-cwEmpty"), cwClear2: g("bs-cwClear2"),
       palace: g("bs-palace"), palaceImg: g("bs-palaceImg"), pdust: [g("bs-pdust0"), g("bs-pdust1")], gold: g("bs-gold"), city: g("bs-city"), still: g("bs-still"), fall: g("bs-fall"),
       scrim: g("bs-scrim"), sheet: g("bs-sheet"), sheetHead: g("bs-sheetHead"), shThumb: g("bs-shThumb"), shTitle: g("bs-shTitle"), shSub: g("bs-shSub"), sheetX: g("bs-sheetX"), sheetBody: g("bs-sheetBody"),
@@ -2211,6 +2293,7 @@
     if (window.visualViewport) visualViewport.addEventListener("resize", () => { if (!wheelOn) return; clearTimeout(rt3); rt3 = setTimeout(() => { if (wheelOn) layoutWheel(); }, 60); });
     addEventListener("orientationchange", () => setTimeout(relayoutIfResized, 350));
     addEventListener("resize", () => {
+      dbW = 0;
       clearTimeout(rt);
       rt = setTimeout(() => {
         if (!isOpen) return;
@@ -2221,7 +2304,8 @@
         if (stale()) buildScene();
       }, 160);
     });
-    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { if (isOpen) layout(); });
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { dbW = 0; if (isOpen) layout(); });
+    if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", () => { dbW = 0; });
   }
 
   C.detail = { init, open, close, prewarm, listFor };

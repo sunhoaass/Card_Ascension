@@ -129,8 +129,8 @@
   }
   function recolor(name) {
     const all = [...cardEls.values()].filter(([el]) => el.isConnected);
-    const seen = all.map(([el]) => rectVisible(el.getBoundingClientRect()));   // read first, then write
-    all.forEach(([el, x], i) => C.setCardRarity(el, x, name, { animate: seen[i] && state.page === "home" }));
+    const seen = all.map(([el]) => !C.covered && rectVisible(el.getBoundingClientRect()));   // read first, then write · C.covered: the card detail covers the page (speed 2026-11-03)
+    C.later("home", all.map(([el, x], i) => () => C.setCardRarity(el, x, name, { animate: seen[i] && state.page === "home" })));
   }
 
   /* ---------- New systems ---------- */
