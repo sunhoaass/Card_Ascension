@@ -51,9 +51,9 @@ def parse(desc):
     a = {"unknown": []}
     sents = re.split(r"(?<!\bMr\.)(?<!\bDr\.)(?<=\.)\s+", desc.strip())  # "Mr. Satan" is one sentence
     for i, s0 in enumerate(sents):
-        prefixed = not re.match(r"When \w+ falls", s0)  # "When Ace falls: +34%" is a deck link, not a flat buff
+        prefixed = not re.match(r"When [A-Z][\w' -]*? falls", s0)  # "When Ace / Fire Fist Brother falls: +34%" is a deck link, not a flat buff
         if not one(a, s0) and not (prefixed and one(a, re.sub(r"^[A-Z][\w' .-]*: ", "", s0))):  # "Madara: Every enemy…"
-            if re.search(r"in the deck|in your deck|takes the killing blow for|When \w+ falls|brings \w+ back", s0):
+            if re.search(r"in the deck|in your deck|takes the killing blow for|When [A-Z][\w' -]*? falls|brings \w+ back", s0):
                 a.setdefault("team_link", []).append(s0)
             elif i == 0 and not re.search(r"\d", s0): a["flavor"] = s0
             else: a["unknown"].append(s0)
@@ -110,7 +110,7 @@ def one(a, s):
         elif g(F + r"% chance to attack twice \(each hit does " + F + r"x damage\)"): a["double"] = (float(m[1]) / 100, float(m[2]))
         elif g(F + r"% chance to attack twice"): a["double"] = (float(m[1]) / 100, 1.0)
         elif g(r"Always attacks twice \(each hit does " + F + r"x damage\)"): a["double"] = (1.0, float(m[1]))
-        elif g(F + r"% chance per hit to Stun the enemy for (\d+) turns?"): a["stun"] = (float(m[1]) / 100, int(m[2]))
+        elif g(F + r"% chance per hit to Stun the enemy for (\d+) turns?( \(it skips (that|those) turns?\))?"): a["stun"] = (float(m[1]) / 100, int(m[2]))
         elif g(F + r"% chance per hit to Paralyze the enemy for (\d+) turns \(50% chance to lose each turn\)"): a["paralyze"] = (float(m[1]) / 100, int(m[2]))
         elif g(F + r"% chance per hit to Freeze the enemy for (\d+) turns? \(frozen cards take 25% more damage\)"): a["freeze"] = (float(m[1]) / 100, int(m[2]))
         elif g(F + r"x damage against frozen enemies"): a["vs_frozen"] = float(m[1])
@@ -125,8 +125,8 @@ def one(a, s):
         elif g(r"Each hit adds (\d+) (Burn|Poison|Bleed) stacks? \(each stack: " + F + r"% of the enemy's max HP per turn, max (\d+) stacks, (\d+) turns\)"):
             a.setdefault("dots", []).append((m[2].lower(), int(m[1]), float(m[3]) / 100, int(m[4]), int(m[5])))
         elif g(r"Each hit also deals " + F + "% of the enemy's max HP"): a["maxhp_hit"] = float(m[1]) / 100
-        elif g(r"Hits set black flames on the enemy: " + F + "% of its max HP every turn, forever"): a["black_flame"] = float(m[1]) / 100
-        elif g(r"Each hit crushes the enemy for " + F + r"% of its max HP per turn for (\d+) turns"): a["crush"] = (float(m[1]) / 100, int(m[2]))
+        elif g(r"Hits set black flames on the enemy: " + F + "% of its max HP every turn(, forever| for the rest of the fight)"): a["black_flame"] = float(m[1]) / 100
+        elif g(r"Each hit crushes the enemy(:| for) " + F + r"% of its max HP per turn for (\d+) turns"): a["crush"] = (float(m[2]) / 100, int(m[3]))  # game text 2026-11: "crushes the enemy: 8.5% …"
         elif g(r"When it comes in, the strongest enemy card dies after (\d+) turns unless this card falls first \(bosses lose 30% HP( instead)?\)"): a["doom"] = int(m[1])
         elif g(r"When it comes in, every weaker enemy card loses its first turn \(not bosses\)"): a["skip_weaker"] = True
         elif g(r"When it comes in, every enemy card with less power than it loses its next turn"): a["skip_weaker"] = True

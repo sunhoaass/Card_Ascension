@@ -343,5 +343,21 @@ I18N.addSK({
  "Hypnosis Traitor's perfect hypnosis.": "การสะกดจิตอันสมบูรณ์แบบของ Hypnosis Traitor",
  "Beast Emperor can't die.": "Beast Emperor ตายไม่ได้",
  "Rabbit Goddess is the origin of chakra.": "Rabbit Goddess คือต้นกำเนิดของจักระ",
- "Monk of Names takes away the enemy's name.": "Monk of Names พรากชื่อของศัตรู"
+ "Monk of Names takes away the enemy's name.": "Monk of Names พรากชื่อของศัตรู",
+ "Each hit adds # Poison stacks (each stack: #% of the enemy's max HP per turn, max # stacks, # turns).": "ทุกครั้งที่ตีเพิ่ม Poison #1 สแตก (สแตกละ #2% ของ HP สูงสุดศัตรูต่อตา สูงสุด #3 สแตก นาน #4 ตา)",
+ "Nothing touches Infinity Sorcerer.": "ไม่มีอะไรแตะต้อง Infinity Sorcerer ได้",
+ "With Curse Manipulator in your deck, both get +#% damage and HP.": "เมื่อมี Curse Manipulator ในเด็คของคุณ ทั้งคู่ได้ +#1% ดาเมจและ HP",
+ "King of Curses's Dismantle and Cleave shred everything.": "Dismantle and Cleave ของ King of Curses ฉีกทุกสิ่ง",
+ "#% chance per hit to Stun the enemy for # turn (it skips that turn).": "โอกาส #1% ต่อการตีที่จะสตันศัตรู #2 ตา (ศัตรูข้ามตานั้น)",
+ "#% chance per hit to Stun the enemy for # turns (it skips those turns).": "โอกาส #1% ต่อการตีที่จะสตันศัตรู #2 ตา (ศัตรูข้ามตาเหล่านั้น)",
+ "With Moon Eye Ghost in your deck, both get +#% damage and HP.": "เมื่อมี Moon Eye Ghost ในเด็คของคุณ ทั้งคู่ได้ +#1% ดาเมจและ HP",
+ "Otsutsuki Vessel shrinks and expands anything.": "Otsutsuki Vessel ย่อและขยายได้ทุกสิ่ง",
+ "Each hit crushes the enemy: #% of its max HP per turn for # turns.": "ทุกครั้งที่ตีจะบดขยี้ศัตรู #1% ของ HP สูงสุดต่อตา นาน #2 ตา",
+ "Six Paths Fox Sage burns his own life force into raw power.": "Six Paths Fox Sage เผาพลังชีวิตของตัวเองเป็นพลังดิบ",
+ "Hits set black flames on the enemy: #% of its max HP every turn for the rest of the fight.": "การตีจุดไฟสีดำใส่ศัตรู: #1% ของ HP สูงสุดทุกตา จนจบการต่อสู้",
+ "With Pirate King in your deck, both get +#% damage and HP.": "เมื่อมี Pirate King ในเด็คของคุณ ทั้งคู่ได้ +#1% ดาเมจและ HP",
+ "Soul Queen Emperor steals lifespans.": "Soul Queen Emperor ขโมยอายุขัย",
+ "Earthquake Emperor cracks the air.": "Earthquake Emperor ทำให้อากาศแตกร้าว",
+ "When Fire Fist Brother falls": "เมื่อ Fire Fist Brother ล้ม",
+ "Legendary Berserker's power has no ceiling.": "พลังของ Legendary Berserker ไม่มีเพดาน"
 });

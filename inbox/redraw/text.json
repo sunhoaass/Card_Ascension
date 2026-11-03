@@ -1,92 +1,213 @@
 {
-  "demon-progenitor": {
-    "hp": 2990686,
-    "atk": 448603,
-    "odds": "669.0M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Progenitor of All Demons",
-      "desc": "Demon Progenitor: Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Each hit adds 3 Poison stacks (each stack: 0.8% of the enemy's max HP per turn, max 4 stacks, 3 turns). Heals 4.7% of its max HP every turn. Comes back once with 16% HP. Takes 2x damage from Sun cards."
-    }
-  },
-  "infinity-sorcerer": {
-    "hp": 3915430,
-    "atk": 587315,
-    "odds": "617.9M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Limitless: Infinity",
-      "desc": "Nothing touches Infinity Sorcerer. Takes 36% less damage until it has been hit 4 times. 15% chance to dodge each hit. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. With Curse Manipulator in your deck, both get +7.6% damage and HP."
-    }
-  },
-  "king-of-curses": {
-    "hp": 2890800,
-    "atk": 433620,
-    "odds": "570.8M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Malevolent Shrine",
-      "desc": "King of Curses's Dismantle and Cleave shred everything. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Each hit adds 2 Bleed stacks (each stack: 1.3% of the enemy's max HP per turn, max 4 stacks, 3 turns). Ignores the enemy's shields, dodges and barriers. Instantly kills enemies under 9% HP (not bosses)."
-    }
-  },
-  "wood-god-hokage": {
-    "hp": 3173980,
-    "atk": 476097,
-    "odds": "527.2M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Wood Release: True Several Thousand Hands",
-      "desc": "Wood God Hokage: Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Heals 4.8% of its max HP every turn. 18% chance per hit to Stun the enemy for 1 turn (it skips that turn). With Moon Eye Ghost in your deck, both get +15% damage and HP."
-    }
-  },
-  "otsutsuki-vessel": {
-    "hp": 2100012,
-    "atk": 315002,
-    "odds": "486.9M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Sukunahikona",
-      "desc": "Otsutsuki Vessel shrinks and expands anything. 34% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Each hit crushes the enemy: 8.5% of its max HP per turn for 2 turns. Takes 17% less damage. Heals 21% of the damage it deals."
-    }
-  },
-  "six-paths-fox-sage": {
-    "hp": 2172838,
-    "atk": 325926,
-    "odds": "449.8M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Baryon Mode",
-      "desc": "Six Paths Fox Sage burns his own life force into raw power. Hits set black flames on the enemy: 1.5% of its max HP every turn for the rest of the fight. +39% damage. Every other card in your deck gets +9.7% damage. Survives its first killing blow with 1 HP."
-    }
-  },
-  "fist-hero-vice-admiral": {
-    "hp": 2382628,
-    "atk": 357394,
-    "odds": "415.4M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Galaxy Impact",
-      "desc": "Fist Hero Vice Admiral: Ignores the enemy's shields, dodges and barriers. Every 3rd attack does 3x damage. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). With Pirate King in your deck, both get +20% damage and HP."
-    }
-  },
-  "soul-queen-emperor": {
-    "hp": 2000304,
-    "atk": 300046,
-    "odds": "383.7M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Soul Pocus",
-      "desc": "Soul Queen Emperor steals lifespans. Each hit also deals 10% of the enemy's max HP. Heals 30% of the damage it deals. Takes 25% less damage. Can't be stunned, frozen, paralyzed, confused, sealed or weakened."
-    }
-  },
-  "earthquake-emperor": {
-    "hp": 2693626,
-    "atk": 404044,
-    "odds": "354.4M",
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Gura Gura no Mi",
-      "desc": "Earthquake Emperor cracks the air. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. Survives its first killing blow with 1 HP. Under 21% HP: +40% damage. When Fire Fist Brother falls: +34% damage."
-    }
+ "potara-fusion-warrior": {
+  "hp": 2234886,
+  "atk": 335233,
+  "odds": "302.4M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Final Kamehameha",
+   "desc": "Potara Fusion Warrior: Every 2nd attack also hits the card behind for 40% of its normal hit (no crits or bonuses). 24% chance to dodge each hit. 20% chance to crit for 2x damage. Every 3rd attack does 2.01x damage."
   }
+ },
+ "fusion-dance-warrior": {
+  "hp": 3005314,
+  "atk": 450797,
+  "odds": "279.3M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Stardust Breaker",
+   "desc": "Fusion Dance Warrior: 62% chance per hit to Seal the enemy's ability for 2 turns (bosses: 1 turn). Ignores the enemy's shields, dodges and barriers. Its first hit on each new enemy does 1.31x damage. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses)."
+  }
+ },
+ "ultra-ego-prince": {
+  "hp": 1678284,
+  "atk": 251743,
+  "odds": "258.0M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Ultra Ego",
+   "desc": "Ultra Ego Prince: +15% damage every time it is hit. Under 40% HP: +100% damage. Survives its first killing blow with 1 HP. With Ultra Instinct Saiyan in your deck, both get +25% damage and HP."
+  },
+  "note": "small game star bottom-right next to ×545 (erase it like Storm Dragon's) · data/buffs.json needs alias \"Ultra Instinct Saiyan\""
+ },
+ "galactic-tyrant": {
+  "hp": 1671616,
+  "atk": 250742,
+  "odds": "238.3M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Black Tyrant Form",
+   "desc": "Galactic Tyrant: Ignores the enemy's shields, dodges and barriers. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Every enemy card starts with 9.7% less damage. Instantly kills enemies under 15% HP (not bosses)."
+  },
+  "note": "ability NAME changed in the game: data says \"Black Frieza\" → \"Black Tyrant Form\" · tiny game star in the bottom-right corner"
+ },
+ "chainsaw-pup-devil": {
+  "support": true,
+  "odds": "220.4M",
+  "obtain": "Rolls anywhere",
+  "effect": {
+   "name": "Chainsaw Heart",
+   "desc": "Chainsaw Pup Devil gives his heart: the supported card has an {0}% chance to come back once with {1}% HP.",
+   "normal": [
+    80,
+    61
+   ],
+   "text": "Chainsaw Pup Devil gives his heart: the supported card has an 80% chance to come back once with 61% HP."
+  },
+  "note": "game buffed it: data vals [53, 40] → [80, 61] at Normal (1 in 220.4M) · 80% at Normal is above the default chance knee 75 → needs effect.knee (or the owner's all-rarity screenshots) or Normal shows 79.5% · Tier/Value were made with the old values"
+ },
+ "rewind-girl": {
+  "support": true,
+  "odds": "204.1M",
+  "obtain": "Rolls anywhere",
+  "effect": {
+   "name": "Rewind",
+   "desc": "Rewind Girl rewinds the supported card's body: it heals {0}% of its max HP the first time it drops under 20% HP.",
+   "normal": [
+    57
+   ],
+   "text": "Rewind Girl rewinds the supported card's body: it heals 57% of its max HP the first time it drops under 20% HP."
+  },
+  "note": "game buffed it: data vals [24] → [57] at Normal (1 in 204.1M) · small game star above the text (right of REWIND) · the screenshot had the Index list showing through the panel: look at the sheet that the card picture itself is clean · Tier/Value were made with the old value"
+ },
+ "flower-healer-captain": {
+  "support": true,
+  "odds": "189.0M",
+  "obtain": "Rolls anywhere",
+  "effect": {
+   "name": "Minazuki",
+   "desc": "Flower Healer Captain's Minazuki swallows the wounds: the supported card has a {0}% chance each turn to heal {1}% of its max HP.",
+   "normal": [
+    69,
+    22
+   ],
+   "text": "Flower Healer Captain's Minazuki swallows the wounds: the supported card has a 69% chance each turn to heal 22% of its max HP."
+  },
+  "note": "the new text PROGRESS ▶️ 'ค่า Support ตามระดับ' was waiting for (⏳ FHC): data vals [35, 15] → [69, 22] (knee 69 / 22 as measured) · Tier/Value were made with the old values"
+ },
+ "skull-knight": {
+  "hp": 1712280,
+  "atk": 256842,
+  "odds": "175.1M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Sword of Beherit",
+   "desc": "Skull Knight cuts through dimensions. +60% damage against Apostle cards. Ignores the enemy's shields, dodges and barriers. Every 2nd attack also hits the card behind for 50% of its normal hit (no crits or bonuses). 30% chance to dodge each hit."
+  }
+ },
+ "great-mage-founder": {
+  "hp": 927364,
+  "atk": 139105,
+  "odds": "162.1M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Every Spell There Is",
+   "desc": "Great Mage Founder knows every spell. Copies the ability of every new enemy card it faces. Blocks the first 2 hits completely. 2.6% chance to dodge each hit. Every hit also hits the whole enemy bench for 8.7% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers."
+  }
+ },
+ "one-eyed-ghoul": {
+  "hp": 1466190,
+  "atk": 219929,
+  "odds": "150.2M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Dragon: One-Eyed King",
+   "desc": "One-Eyed Ghoul's dragon kakuja devours everything. Each kill gives it 15% of the defeated card's damage and HP. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Heals 5% of its max HP every turn. Survives its first killing blow with 1 HP."
+  }
+ },
+ "time-stop-vampire": {
+  "hp": 956678,
+  "atk": 143502,
+  "odds": "139.1M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "ZA WARUDO",
+   "desc": "Time Stop Vampire stops time. 26% chance per hit to Stun the enemy for 2 turns (it skips those turns). 32% chance to attack twice. Heals 20% of the damage it deals. Heals 5.2% of its max HP every turn. Takes 2x damage from Hamon cards."
+  }
+ },
+ "demon-kings-executioner": {
+  "hp": 1013674,
+  "atk": 152051,
+  "odds": "128.8M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Ruler",
+   "desc": "Demon King's Executioner: Sends 40% of the damage it takes back at the attacker. Its first hit on each new enemy does 2x damage. Heals 25% of the damage it deals. Takes 15% less damage."
+  },
+  "note": "small game star at the right edge beside the text (erase it)"
+ },
+ "time-wizard-king": {
+  "hp": 841054,
+  "atk": 126158,
+  "odds": "119.3M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Time Magic: Chrono Stasis",
+   "desc": "Time Wizard King stops time. 29% chance per hit to Stun the enemy for 2 turns (it skips those turns). 29% chance to attack twice. Comes back once with 36% HP. 18% chance to dodge each hit."
+  },
+  "note": "small game star at the right edge above ×916 (erase it)"
+ },
+ "spirit-gun-delinquent": {
+  "hp": 872588,
+  "atk": 130888,
+  "odds": "110.5M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Spirit Gun Mega",
+   "desc": "Spirit Gun Delinquent's demon blood awakens. Every 3rd attack does 1.89x damage. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Under 18% HP: +32% damage. Comes back once with 22% HP. Spirit Detective cards in your deck get +6.7% damage."
+  },
+  "note": "small game star at the bottom next to ×998 (erase it)"
+ },
+ "excalibur-king": {
+  "hp": 1518646,
+  "atk": 227797,
+  "odds": "102.3M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Excalibur",
+   "desc": "Excalibur King: Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. Heals 4.4% of its max HP every turn. 11% chance to dodge each hit."
+  }
+ },
+ "twelve-labors-giant": {
+  "hp": 717666,
+  "atk": 107650,
+  "odds": "94.7M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "God Hand",
+   "desc": "Twelve Labors Giant's twelve lives. Comes back once with 79% HP. Survives its first killing blow with 1 HP. Each time an enemy card's attack hits it, that attack does 12% less to it next time (up to 48% less). +32% damage."
+  },
+  "note": "new wording of the 12% part (data: 'Takes 12% less from an attack each time it has seen it (up to 4 times)') → tools/matchup_sim.py --parse shows it as unknown (was adapt (0.12, 4)): add a regex"
+ },
+ "moon-breath-swordsman": {
+  "hp": 5781602,
+  "atk": 867240,
+  "odds": "91.7M",
+  "obtain": "Weather card: only drops during a Solar Eclipse",
+  "passive": {
+   "name": "Moon Breathing",
+   "desc": "Moon Breath Swordsman's moon blades fill the air. Every 2nd attack also hits the card behind for 50% of its normal hit (no crits or bonuses). Heals 8% of its max HP every turn. 40% chance to crit for 2.5x damage. Takes 2x damage from Sun cards."
+  }
+ },
+ "wrath-shield-hero": {
+  "hp": 691860,
+  "atk": 103779,
+  "odds": "87.7M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Wrath Shield: Blood Sacrifice",
+   "desc": "Wrath Shield Hero is the ultimate defender. Takes 28% less damage. Whoever hits it gets 2 Burn stacks (each stack: 2.1% of their max HP per turn, max 4 stacks, 3 turns). Sends 17% of the damage it takes back at the attacker. Every other card in your deck gets +7% damage."
+  },
+  "note": "Burn now 'each stack: … of their max HP per turn, max 4 stacks, 3 turns' → tools/matchup_sim.py --parse shows it as unknown (was thorns burn): add a regex"
+ },
+ "bloody-valkyrie": {
+  "hp": 666982,
+  "atk": 100047,
+  "odds": "81.3M",
+  "obtain": "Rolls anywhere",
+  "passive": {
+   "name": "Einherjar",
+   "desc": "Bloody Valkyrie's blood frenzy. Heals 26% of the damage it deals. 35% chance to attack twice. Under 44% HP: +53% damage. Comes back once with 35% HP."
+  }
+ }
 }
