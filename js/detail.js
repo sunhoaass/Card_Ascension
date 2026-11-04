@@ -1694,7 +1694,37 @@
     all.forEach((c) => { if (c && c.id && !seen.has(c.id)) o.push(c.id); });
     return o;
   }
-  const wMatch = (c) => { const q = wQ.trim().toLowerCase(); return !q || String(c.name || "").toLowerCase().includes(q) || String(c.series || "").toLowerCase().includes(q) || (isSup(c) && String((c.effect && c.effect.name) || "").toLowerCase().includes(q)); };
+  /* search (owner 2026-11-04: same as the Cards page box): a number with an optional unit (100 · 2.5B · 100Qa · "1 in
+     100Qa") = pull odds at the picked rarity → only cards in that unit or rarer, the closest to the value first · anything
+     else = words, each must be in the name / series / role / ability text (C.ODDS from cards.js) */
+  const wHay = new Map();
+  function wText(c) {
+    let h = wHay.get(c.id);
+    if (h == null) {
+      const p = c.passive || {}, s = c.skill || {}, f = c.effect || {};
+      h = [c.name, c.series, c.role, p.name, p.desc, s.name, s.desc, f.name, f.desc].filter((x) => typeof x === "string").join(" ").toLowerCase();
+      wHay.set(c.id, h);
+    }
+    return h;
+  }
+  function wQuery() {
+    const raw = wQ.trim(), O = C.ODDS;
+    const o = O && /\d/.test(raw) ? O.parseOdds(raw) : null;
+    if (o && !o.error) return { odds: o, words: [] };
+    return { odds: null, words: raw.toLowerCase().split(/\s+/).filter(Boolean) };
+  }
+  function wList() {
+    const q = wQuery(), o = q.odds, r = state.rarity, ids = wOrder();
+    if (o) {
+      const O = C.ODDS, maxU = O.UNITS.findIndex((u) => u[0] === O.GAME_MAX_UNIT), t = Math.log(o.value);
+      if (o.unit > maxU) return [];
+      const odd = new Map();
+      ids.forEach((id) => { const v = C.oddsAt(byId.get(id), r); if (v > 0 && O.unitIndex(v) >= o.unit) odd.set(id, Math.abs(Math.log(v) - t)); });
+      return ids.filter((id) => odd.has(id)).sort((a, b) => odd.get(a) - odd.get(b));   // stable: ties keep the page order
+    }
+    if (!q.words.length) return ids;
+    return ids.filter((id) => { const h = wText(byId.get(id)); return q.words.every((w) => h.includes(w)); });
+  }
 
   function wheelGeom() {
     const rw = el.root.clientWidth, rh = el.root.clientHeight, z = FX.zoom();
@@ -1720,8 +1750,10 @@
     const out = [], n = Math.round(WK.dend * 8);
     for (let i = 0; i <= n; i++) {
       const d = -WK.dend + (2 * WK.dend * i) / n, ad = Math.abs(d);
-      // owner 2026-10-26: see-through so the scene shows · middle 75 % → 25 % at the last card that shows → gone just after it
-      const op = ad <= WK.vis ? 0.75 - 0.5 * (ad / WK.vis) : Math.max(0, 0.25 * (1 - (ad - WK.vis) / (WK.dend - WK.vis)));
+      // owner 2026-10-26: see-through so the scene shows · 75 % → 25 % at the last card that shows → gone just after it
+      // owner 2026-11-04: the middle card is solid (100 %) → the next card's 75 % look by one card out
+      const o1 = 0.75 - 0.5 / WK.vis;
+      const op = ad <= 1 ? 1 - (1 - o1) * ad : ad <= WK.vis ? 0.75 - 0.5 * (ad / WK.vis) : Math.max(0, 0.25 * (1 - (ad - WK.vis) / (WK.dend - WK.vis)));
       const sc = 1 - 0.07 * Math.min(ad, WK.dend);
       const transform = WK.step
         ? `perspective(${WK.P}px) translateZ(${-WK.R}px) rotateY(${d * WK.step}deg) translateZ(${WK.R}px) scale(${sc})`
@@ -1798,12 +1830,23 @@
     }
     const c = wCenterIdx();
     if (c !== wCenter) { wCenter = c; wShowName(true); }
+    if (!wSpin && !wDrag && wN) wSharp(wl[c]);
+  }
+  // owner 2026-11-04: the middle card is sharp → once the wheel stops on it, its small picture (thumb) is swapped for the
+  // big one (loaded first, so it never blinks) · it keeps the big picture while it stays in the cache
+  function wSharp(id) {
+    const c = wcache.get(id), img = c && c.querySelector(".gc__art img[data-full]");
+    if (!img || img.dataset.sharp) return;
+    img.dataset.sharp = "1";
+    const full = img.dataset.full, pre = new Image();
+    pre.decoding = "async"; pre.src = full;
+    pre.decode().then(() => { if (img.dataset.full === full) { img.removeAttribute("data-full"); img.src = full; } }).catch(() => {});
   }
   function wShowName(animate) {
     const card = wN ? byId.get(wl[wCenterIdx()]) : null;
     const b = el.cwName.firstElementChild, sp = el.cwName.lastElementChild;
     b.textContent = card ? card.name : "";
-    sp.textContent = card ? [C.isRanked(card) ? "Tier " + card.tier : "Unranked", isSup(card) ? "Support" : card.series || ""].filter(Boolean).join(" · ") : "";
+    sp.textContent = card ? (isSup(card) ? "Support" : card.series || "") : "";   // no tier here (owner 2026-11-04)
     if (animate && card && !rm()) el.cwName.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 150, easing: E });
   }
 
@@ -1914,8 +1957,14 @@
     } else { wpos = i; wDraw(true); }
   }
   function wFilter() {
-    const ids = wOrder().filter((id) => wMatch(byId.get(id)));
+    const ids = wList();
     el.cwClear.hidden = !wQ;
+    if (!ids.length) {   // like the Cards page: say why an odds search is empty
+      const o = wQuery().odds, O = C.ODDS;
+      el.cwEmpty.firstElementChild.textContent = !o ? "No cards found"
+        : o.unit > O.UNITS.findIndex((x) => x[0] === O.GAME_MAX_UNIT) ? "Not in the game"
+        : `No ${O.UNITS[o.unit][0] || "1 in " + o.text} cards at ${state.rarity}`;
+    }
     const keep = wN ? wl[wCenterIdx()] : null;
     const first = ids.includes(keep) && !wQ ? keep : ids[0];
     clearTimeout(wFiltT);
@@ -1946,7 +1995,7 @@
     try { history.replaceState({ ...(history.state || {}) }, "", wUrl(id)); } catch (e) {}   // the card last looked at
     el.wheel.hidden = false;
     layoutWheel();
-    let ids = wOrder().filter((x) => wMatch(byId.get(x)));
+    let ids = wList();
     if (!ids.includes(id)) { wQ = ""; el.cwQ.value = ""; ids = wOrder(); }
     el.cwClear.hidden = !wQ;
     wSetList(ids, id, false);
@@ -2010,6 +2059,7 @@
   // the level changed while the wheel shows: its cards follow (flash + numbers count on the ones in view)
   function wRarity() {
     for (const [id, c] of wcache) { const card = byId.get(id); if (card && c.dataset.rarity !== state.rarity) C.setCardRarity(c, card, state.rarity, { animate: wheelOn && c.isConnected && !rm() }); }
+    if (wheelOn && wQuery().odds) wFilter();   // typed odds are read at the picked rarity
   }
   function wReset() {
     wStop(); wTok++; wheelOn = false; wBusy = false; clearTimeout(wFiltT);

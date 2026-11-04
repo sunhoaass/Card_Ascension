@@ -2158,3 +2158,11 @@
 - **เจ้าของ:** "เพิ่มแถว Support ขนาดเล็กในรายการด้วยครับ" → `stripCol(d, kind, i, buffs)` ใช้ได้ทั้งการ์ดและ Support · แถว `.dkl__strip--sup` ใต้แถวการ์ด (คอลัมน์ตรงกัน) · การ์ด Support กว้าง 72% · ป้ายระดับ + Mutation % · ไม่มี Support เลย = ไม่มีแถว
 - **ทดสอบ (Playwright Pixel 7 + 1280):** deck ที่มี Support 1 ใบ (ช่องว่างเส้นประ) + deck ที่มีครบ 4 (Godly 13% / Cosmic 7% / Shiny 1% / Normal ไม่มี) · แตะ = เปิด deck · console error 0
 - **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 วงล้อการ์ด: ค้นหาแบบหน้า Cards + ใบกลางทึบ + เอา Tier ออก (`?v=95`)
+- **เจ้าของ:** "ช่องค้นหาให้เหมือนกับช่องค้นหาการ์ดที่สามารถค้นชื่อและโอกาสออก 100Qa · การ์ดตรงกลางให้ทำให้ชัดเจนเลยเข้มเลย · เอา tier list ออก · เสร็จแล้ว merge เลย"
+- **ค้นหา:** `wMatch` (ชื่อ/ซีรีส์ข้อความเดียว) → `wQuery()` + `wList()` ใช้ `C.ODDS.parseOdds` / `unitIndex` ของหน้า Cards · โอกาส = ใบที่หน่วยเท่าหรือหายากกว่า เรียงใกล้ค่าที่พิมพ์ก่อน (log) · ข้อความ = ทุกคำต้องอยู่ในชื่อ / ซีรีส์ / role / passive / skill / effect · `wRarity()` กรองใหม่เมื่อค้นโอกาสอยู่ · ข้อความว่าง: "No Qa cards at Normal" / "Not in the game" · placeholder = "Name, ability or odds (100Qa)" (เหมือนหน้า Cards)
+- **ใบกลาง:** `wFrames()` ใบกลาง opacity 1 → ค่าเดิมที่ห่าง 1 ใบ (ใบข้างโปร่งเท่าเดิม) · `wSharp()` สลับรูป thumb 300×420 ของใบกลางเป็นรูปใหญ่หลังหยุดหมุน (โหลด + decode ก่อน)
+- **Tier:** บรรทัดใต้ชื่อเหลือซีรีส์ (Support = "Support")
+- **ทดสอบ (Playwright Pixel 7):** ใบกลาง opacity 1 + รูป `images/cards/art/…` · `100Qa` ที่ Normal = ว่าง "No Qa cards at Normal" → กด Godly = Shadow Monarch + 5 ใบ · `5Qi` = "Not in the game" · `2.5B` = Dragon King of Ruin · `octopus` = 1 ใบ · `dodge twice` = Octopus Teacher · console error 0
+- **ไฟล์:** `index.html` · `js/detail.js` · `PROGRESS.md` · `HISTORY.md`
