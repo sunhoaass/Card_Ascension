@@ -2127,3 +2127,11 @@
 - **เจ้าของ:** "Traits ทำมาแบบเป็นกล่องเลือกเลื่อนขึ้นลงแทน ประหยัดพื้นที่" → ตาราง 13 ปุ่ม (5 แถว) → กล่องเลื่อน `.dk-tl` สูง 214px (เห็น ~3½ แถว) · แถว: ไอคอน 40px · ชื่อ · ผล (`traitFx`) · ระดับ · เอาบรรทัดผลใต้ตารางออก (อยู่ในแถวแล้ว) · เปิดแผ่น = `scrollTop` ไปแถวที่เลือก
 - **ทดสอบ:** deck ที่ใส่ Tough → เปิดแผ่น กล่องเลื่อนลงถึง Tough (scrollTop 586) · แตะ Sage Mode → บันทึก + กรอบทอง · console error 0
 - **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 แก้บัค Trait (กล่องเห็น 3 แถว) + mockup ช่องการ์ด/รูป Save (`?v=90`)
+- **เจ้าของ:** "แก้บัค Traits แล้วให้เห็นแค่ 3 อันแรกแล้วค่อยเลื่อนขึ้นลง" (แคป: แถว Ascendant ที่เลือก ข้อความล้นทับแถว Limitless) + หน้า Deck: ชื่อการ์ดเห็นครบ, ใต้การ์ด 3 แถว ระดับ/Grade/Trait, ป้ายในการ์ดเล็กลง, Support ใต้การ์ด ระดับ + Mutation %, รูป Save มาตรฐานเดียวกัน → **ทำ mockup ก่อน**
+- **สาเหตุบัค:** `.dk-tl` เป็น grid + max-height → แถวที่เลือก (ข้อความเต็ม) โดนบีบเหลือ 56px ทั้งที่เนื้อหา 70px → ข้อความล้นลงแถวถัดไป
+- **แก้:** `.dk-tl` = flex column · ทุกแถวสูง 64px เท่ากัน (`flex: 0 0`, ไม่หด) · ทุกแถว 2 บรรทัด … (แถวที่เลือกไม่ขยายแล้ว) · กล่องสูง = 3 แถวพอดี (212px) · scroll-snap · ข้อความเต็มของ Trait ที่เลือกขึ้นใต้กล่อง (`.dk-tl__fx` / `data-ss-tfx`) · เปิดแผ่น = เลื่อนให้ Trait ที่ใส่อยู่เป็นแถวบนสุด
+- **ทดสอบ (Playwright Pixel 7):** กล่อง clientHeight 212 · แถว offsetHeight 64 / scrollHeight 62 (ไม่ล้น) · Ascendant ที่เลือก = 2 บรรทัด + ข้อความเต็มใต้กล่อง · deck ที่ใส่ Bloodlust (แถว 8) → เปิดแผ่นแล้ว Bloodlust อยู่แถวบน · console error 0
+- **Mockup:** `mockup/deck-slot-info.html` + รูป `mockup/deck-slot/` (การ์ดแคปจากเว็บจริง ป้าย `--s` 0.92) · https://claude.ai/artifact/S4oSVxsSYsGXVNBkVZweqD · 5 ข้อให้เลือก (ชื่อยาว, ขนาดป้าย, ช่องที่ยังไม่ตั้ง, Grade 4 ค่าย่อยในรูป Save, ป้ายบัฟ Deck)
+- **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `mockup/deck-slot-info.html` + `mockup/deck-slot/` · `PROGRESS.md` · `HISTORY.md`
