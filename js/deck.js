@@ -21,7 +21,8 @@
      starts at the rarity used last (cbi:deckRarity, first time Godly). The editor has no mode buttons, deck rarity buttons,
      meta line or score ring any more (deck.mode is still saved and used by the analysis). Decks saved before: every slot =
      the deck's old rarity. Links carry cr / sr (older links: the deck's rarity).
-   · Grade (4 per card slot: Basic Attack, Defense, Status Damage, HP · all 4 at 10 = +30% ATK and HP) + Trait per card slot
+   · Grade (4 per card slot: Basic Attack, Defense, Status Damage, HP · +2.5% a point on its own stat · all 4 at 10 = +30%
+     more on every stat = +55%) + Trait per card slot
      (owner 2026-11-04): set in the slot sheet, shown on the card only when set, in the numbers (js/deckbuff.js) · links g / t.
    · Undo / Redo: 50 steps per deck (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
    · Step 9 tools (js/share.js) are reused: Save as image (C.share.deckImageDialog), Share link (#deck/s/<data>),
@@ -151,7 +152,8 @@
   };
   /* ---------- Rarity per slot (owner 2026-11-02) ----------
      deck.cardRarity / deck.supRarity = [rarity name × 4] · deck.grades = [[atk, def, status, hp] | null × 4] (0–10 each, like the
-     game: Basic Attack, Defense, Status Damage, HP · owner 2026-11-04: 1–9 add nothing, all 4 at 10 = +30% ATK and HP, js/deckbuff.js) */
+     game: Basic Attack, Defense, Status Damage, HP · owner 2026-11-04 rule 2: +2.5% a point on its own stat, all 4 at 10 = +30%
+     more on every stat (+55%) · Basic Attack -> ATK, HP -> HP · js/deckbuff.js gradePct) */
   const LAST_KEY = "cbi:deckRarity", FIRST_RARITY = "Godly", GRADE_MAX = 10;
   const RKEY = { cards: "cardRarity", support: "supRarity" };
   const isRarity = (r) => typeof r === "string" && state.meta.rarities.some((x) => x.name === r);
@@ -183,6 +185,9 @@
   const overallOf = (g) => (Array.isArray(g) && g.some((n) => n > 0) ? Math.floor(g.reduce((a, n) => a + n, 0) / 4 + 0.5) : 0);
   const fullOf = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => n >= GRADE_MAX);
   const GSTATS = ["Basic Attack", "Defense", "Status Damage", "HP"];
+  // the Card Grader's line (owner 2026-11-04 rule 2 · js/deckbuff.js gradePct)
+  const GSUM = "Each point gives +2.5% to its own stat. A 10 MINT (all four at 10) adds +30% more to every stat.";
+  const GSUM_FULL = "10 MINT: +25% + 30% = +55% to every stat.";
   // a grade's colour in the Card Grader rows (the game: 1–2 grey · 5 green · 7 purple · guessed in between) · 10 = rainbow
   const gradeTone = (v) => (v >= 10 ? "mint" : v >= 9 ? "gold" : v >= 6 ? "purple" : v >= 3 ? "green" : v >= 1 ? "grey" : "none");
   // a card / support put in a slot: the last rarity (a deck's old grades for that slot are cleared)
@@ -598,7 +603,7 @@
   }
 
   /* ---------- Deck buffs on the cards (owner 2026-11-02 · js/deckbuff.js) ----------
-     ATK / HP = base × (1 + deck buffs %) · in the game's colours (owner 2026-11-02: no green-gold) · count 650 ms when on screen ·
+     ATK / HP = base × (1 + deck buffs %) × trait × grade · the pill = all of it (r.atkPct / r.hpPct) · in the game's colours (owner 2026-11-02: no green-gold) · count 650 ms when on screen ·
      the pill under the card (+45% ATK …) opens the list of where they come from */
   const pct = (n) => "+" + Number(n.toFixed(1)) + "%";
   function buffText(r) {
@@ -639,8 +644,10 @@
     if (!card) return;
     clearSel();
     const kindName = { card: "Card", support: "Support", trait: "Trait", grade: "Grade" };
-    const val = (x) => (x.kind === "trait" || x.kind === "grade"
+    // trait = ×N · grade = +x% (Basic Attack -> ATK, HP -> HP · js/deckbuff.js gradePct) · the rest = +x%
+    const val = (x) => (x.kind === "trait"
       ? (x.mA === x.mH ? `×${x.mA} ATK·HP` : [x.mA !== 1 ? `×${x.mA} ATK` : "", x.mH !== 1 ? `×${x.mH} HP` : ""].filter(Boolean).join(" · "))
+      : x.kind === "grade" && x.atk === x.hp ? `${pct(x.atk)} ATK·HP`
       : [x.atk ? `${pct(x.atk)} ATK` : "", x.hp ? `${pct(x.hp)} HP` : ""].filter(Boolean).join(" · "));
     const rows = r.from.map((x) => `<li class="dk-bf__row" data-kind="${x.kind}">
         <span class="dk-bf__src">${esc(x.name)}${x.n > 1 ? ` <b>×${x.n}</b>` : ""}</span>
@@ -1165,7 +1172,7 @@
     const rm = (what) => `<button type="button" class="dk-ss__rm fx-press" data-ss-rm="${what}" hidden>${ICON.x}Remove</button>`;
     return `<section class="dk-ss__sec" aria-label="Grade">
         <div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><b class="dk-g4__total" data-ss-gt></b></div>
-        <p class="dk-g4__sum" data-ss-gsum>A 10 MINT (all four at 10) gives +30% to every stat.</p>
+        <p class="dk-g4__sum" data-ss-gsum>${GSUM}</p>
         <div class="dk-g4">${grades}</div>
         <div class="dk-g4__acts"><button type="button" class="dk-ss__rm dk-ss__all fx-press" data-ss-all>All 10</button>${rm("grade")}</div>
       </section>
@@ -1217,10 +1224,12 @@
             });
             root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
             root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
-            root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = g4[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number((v * 2.5).toFixed(1))}%` : ""; });
+            // "+x%" = what the card really gets (js/deckbuff.js gradePct: 2.5% a point · +30% more when all 4 are 10)
+            const gp = C.deckBuff.gradePct(g4), gpv = [gp.atk, gp.def, gp.status, gp.hp];
+            root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = gpv[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number(v.toFixed(1))}%` : ""; });
             const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
             if (gt) { gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g); }
-            if (gsum) { gsum.textContent = full ? "10 MINT: +30% to every stat." : "A 10 MINT (all four at 10) gives +30% to every stat."; gsum.classList.toggle("is-full", full); }
+            if (gsum) { gsum.textContent = full ? GSUM_FULL : GSUM; gsum.classList.toggle("is-full", full); }
             if (all) all.hidden = full;
             root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
             const rmG = $('[data-ss-rm="grade"]', root), rmT = $('[data-ss-rm="trait"]', root), tfx = $("[data-ss-tfx]", root);
@@ -1233,7 +1242,7 @@
               C.setCardNums(art, { atk: b.atk, hp: b.hp }, { animate });
               const sa = $("[data-ss-atk]", root), sh2 = $("[data-ss-hp]", root);
               sa.textContent = C.fmtStat(b.atk); sh2.textContent = C.fmtHp(b.hp);
-              $("[data-ss-buff]", root).innerHTML = b.atkPct || b.hpPct ? `<span>Deck</span> <b>${esc(buffText(b))}</b>` : "";
+              $("[data-ss-buff]", root).innerHTML = b.atkPct || b.hpPct ? `<span>Buffs</span> <b>${esc(buffText(b))}</b>` : "";
               if (animate) { FX.flash(sa.parentNode); FX.flash(sh2.parentNode); }
             }
           } else {

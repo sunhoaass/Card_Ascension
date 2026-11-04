@@ -56,6 +56,8 @@
 
   /* ---------- Grade + Trait helpers (copies of js/deck.js) ---------- */
   const GSTATS = ["Basic Attack", "Defense", "Status Damage", "HP"];
+  const GSUM = "Each point gives +2.5% to its own stat. A 10 MINT (all four at 10) adds +30% more to every stat.";
+  const GSUM_FULL = "10 MINT: +25% + 30% = +55% to every stat.";
   const overallOf = (g) => (Array.isArray(g) && g.some((n) => n > 0) ? Math.floor(g.reduce((a, n) => a + n, 0) / 4 + 0.5) : 0);
   const fullOf = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => n >= GRADE_MAX);
   const gradeTone = (v) => (v >= 10 ? "mint" : v >= 9 ? "gold" : v >= 6 ? "purple" : v >= 3 ? "green" : v >= 1 ? "grey" : "none");
@@ -136,7 +138,7 @@
   const T = {
     boss: team(["divergent-fist-vessel", "sword-saint", "octopus-teacher", "shadow-monarch"], ["gate-healer", "cafe-owner-owl", "plant-healer", "spirit-sidekick"],
       ["Godlike", "Ascended", "Godlike", "Godlike"], ["Godly", "Divine", "Cosmic", "Ascended"], ["limitless", "awakened", "sage-mode", "undying"], [G10, G10, [7, 6, 8, 7], G10],
-      [{ atk: 2673635400, hp: 9461075983 }, null, null, null]),   // DFV: the owner's in-game card (2026-11-04)
+      [{ atk: 2661922940, hp: 9461075983 }, null, null, null]),   // DFV: the owner's in-game card (2026-11-04 · ATK × 0.93 = the clip's 2,475,588,334)
     a: team(["divergent-fist-vessel", "sword-saint", "octopus-teacher", "shadow-monarch"], ["gate-healer", "cafe-owner-owl", "plant-healer", "spirit-sidekick"],
       ["Godlike", "Ascended", "Godlike", "Godlike"], ["Godly", "Divine", "Cosmic", "Ascended"], ["limitless", "awakened", "sage-mode", "undying"], [G10, G10, [7, 6, 8, 7], G10]),
     b: team(["founding-titan", "ant-king", "slime-demon-lord", "golden-wind-boss"], ["portal-playboy", "crow-banker", "navigation-pixie", "pig-captain"],
@@ -232,8 +234,9 @@
     const r = stats(key)[i], card = r && lookup("cards", r.id);
     if (!card) return;
     const kindName = { card: "Card", support: "Support", trait: "Trait", grade: "Grade" };
-    const val = (x) => (x.kind === "trait" || x.kind === "grade"
+    const val = (x) => (x.kind === "trait"
       ? (x.mA === x.mH ? `×${x.mA} ATK·HP` : [x.mA !== 1 ? `×${x.mA} ATK` : "", x.mH !== 1 ? `×${x.mH} HP` : ""].filter(Boolean).join(" · "))
+      : x.kind === "grade" && x.atk === x.hp ? `${pctTxt(x.atk)} ATK·HP`
       : [x.atk ? `${pctTxt(x.atk)} ATK` : "", x.hp ? `${pctTxt(x.hp)} HP` : ""].filter(Boolean).join(" · "));
     const rows = r.from.map((x) => `<li class="dk-bf__row" data-kind="${x.kind}"><span class="dk-bf__src">${esc(x.name)}${x.n > 1 ? ` <b>×${x.n}</b>` : ""}</span><span class="dk-bf__kind">${kindName[x.kind]}</span><span class="dk-bf__val">${esc(val(x))}</span></li>`).join("");
     const stat = (label, base, v) => `<div class="dk-bf__stat"><span class="dk-bf__lab">${label}</span>
@@ -270,13 +273,16 @@
   }
   function tgSheetHTML() {
     const seg = (k, g) => `<button type="button" class="dk-g4__seg" style="--i:${g - 1}" data-ss-gk="${k}" data-ss-grade="${g}" aria-pressed="false" aria-label="${GSTATS[k]} grade ${g}"></button>`;
-    const grades = GSTATS.map((name, k) => `<div class="dk-g4__row" data-ss-grow="${k}"><p class="dk-g4__name">${name}</p><span class="dk-g4__pct" data-ss-gp="${k}"></span>
+    // Status Damage isn't confirmed by a clip yet (owner 2026-11-04) · tag on its row
+    const unconf = (k) => (k === 2 && !STATUS_OK ? ` <span class="bt-new bt-new--warn">Unconfirmed</span>` : "");
+    const grades = GSTATS.map((name, k) => `<div class="dk-g4__row" data-ss-grow="${k}"><p class="dk-g4__name">${name}${unconf(k)}</p><span class="dk-g4__pct" data-ss-gp="${k}"></span>
         <div class="dk-g4__bar" role="group" aria-label="${name} grade">${Array.from({ length: GRADE_MAX }, (_, j) => seg(k, j + 1)).join("")}</div><b class="dk-g4__box" data-ss-gv="${k}"></b></div>`).join("");
     const traits = traitList().map((t) => `<button type="button" class="dk-tl__row" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">
         ${traitIcon(t, "dk-tl__ic")}<span class="dk-tl__txt"><b class="dk-tl__n">${esc(t.name)}</b><small>${traitFx(t).map(esc).join(" · ")}</small></span><span class="dk-tl__tier">${esc(t.tier)}</span></button>`).join("");
     const rm = (what) => `<button type="button" class="dk-ss__rm fx-press" data-ss-rm="${what}" hidden>${ICON.x}Remove</button>`;
     return `<section class="dk-ss__sec" aria-label="Grade"><div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><b class="dk-g4__total" data-ss-gt></b></div>
-        <p class="dk-g4__sum" data-ss-gsum>A 10 MINT (all four at 10) gives +30% to every stat.</p><div class="dk-g4">${grades}</div>
+        <p class="dk-g4__sum" data-ss-gsum>${GSUM}</p><div class="dk-g4">${grades}</div>
+        <p class="tm-field__note bt-gfx" data-ss-gbt></p>
         <div class="dk-g4__acts"><button type="button" class="dk-ss__rm dk-ss__all fx-press" data-ss-all>All 10</button>${rm("grade")}</div></section>
       <section class="dk-ss__sec" aria-label="Trait"><div class="dk-ss__h"><h3 class="tm-field__label">Trait</h3>${rm("trait")}</div>
         <div class="dk-tl" role="group" aria-label="Trait">${traits}</div><p class="dk-tl__fx" data-ss-tfx hidden></p></section>`;
@@ -313,10 +319,15 @@
           root.querySelectorAll("[data-ss-grade]").forEach((b) => { const v = g4[Number(b.dataset.ssGk)], n = Number(b.dataset.ssGrade); b.setAttribute("aria-pressed", String(n === v)); b.classList.toggle("is-on", n <= v); });
           root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
           root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
-          root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = g4[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number((v * 2.5).toFixed(1))}%` : ""; });
+          // "+x%" = what the card really gets (js/deckbuff.js gradePct) · the line under = what Defense / Status Damage do in a fight
+          const gp = C.deckBuff.gradePct(g4), gpv = [gp.atk, gp.def, gp.status, gp.hp];
+          root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = gpv[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number(v.toFixed(1))}%` : ""; });
+          const gbt = $("[data-ss-gbt]", root);
+          gbt.textContent = gp.def || gp.status ? `In battle: ${[gp.def ? `${Number((gp.def * DEF_K).toFixed(1))}% less damage taken (Defense × 0.2)` : "", gp.status ? `+${Number(gp.status.toFixed(1))}% burn / poison / bleed damage${STATUS_OK ? "" : " (unconfirmed)"}` : ""].filter(Boolean).join(" · ")}.` : "";
+          gbt.hidden = !gbt.textContent;
           const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
           gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g);
-          gsum.textContent = full ? "10 MINT: +30% to every stat." : "A 10 MINT (all four at 10) gives +30% to every stat."; gsum.classList.toggle("is-full", full);
+          gsum.textContent = full ? GSUM_FULL : GSUM; gsum.classList.toggle("is-full", full);
           all.hidden = full;
           root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
           $('[data-ss-rm="grade"]', root).hidden = !g; $('[data-ss-rm="trait"]', root).hidden = !tId;
@@ -327,7 +338,7 @@
             C.setCardNums(art, { atk: s.atk, hp: s.hp }, { animate });
             const sa = $("[data-ss-atk]", root), sh = $("[data-ss-hp]", root);
             sa.textContent = C.fmtStat(s.atk); sh.textContent = C.fmtHp(s.hp);
-            $("[data-ss-buff]", root).innerHTML = (s.atkPct || s.hpPct ? `<span>Deck</span> <b>${esc(buffText(s))}</b>` : "") + (cus ? ` <span class="bt-cus__tag">Custom</span>` : "");
+            $("[data-ss-buff]", root).innerHTML = (s.atkPct || s.hpPct ? `<span>Buffs</span> <b>${esc(buffText(s))}</b>` : "") + (cus ? ` <span class="bt-cus__tag">Custom</span>` : "");
             if (animate && !reduced()) { FX.flash(sa.parentNode); FX.flash(sh.parentNode); }
             [["atk", s.real.atk], ["hp", s.real.hp]].forEach(([k, realV]) => {
               const inp = $(`[data-ss-cus="${k}"]`, root); if (document.activeElement === inp) return;
@@ -435,21 +446,35 @@
     "divergent-fist-vessel": { bf: { p: .15, per: .10, max: 3, m: 2.5 }, ignore: 1, survive: 1, onHitAtk: .08 },
     "sword-saint": { revive: .53, ignore: 1, first: 1.8 },
     "octopus-teacher": { dodge: .38, double: { p: .69, m: .8 }, regen: .069, survive: 1 },
-    "founding-titan": { splash: .2, weakenDiv: 1 / (1 - .077), dr: .091 },
+    "founding-titan": { splash: .2, weaken: 1 - .077, dr: .091 },
     "ant-king": { killGain: .25, adapt: .12, regen: .041, perTurn: { v: .049, n: 10 } },
     "slime-demon-lord": { copy: 1, killGain: .11, dodge: .14 },
     "golden-wind-boss": { reflect: .31, early: { dr: .44, n: 3 }, lifesteal: .19, killGain: .12 },
-    "quirk-thief-overlord": { copy: 1, killGain: .11, weakenDiv: 1.08 },   // "7.4% less damage" = ÷ 1.08 (owner's card 2,673,635,400 → clip 2,475,588,334)
+    // "7.4% less damage" on the card = ATK × 0.93 in the clip (owner 2026-11-04: DFV 2,661,922,940 → 2,475,588,334 · the old
+    // "÷ 1.08" was wrong: 2,673,635,400 is the clip's number AFTER the 1st hit, 2,475,588,334 + 8%)
+    "quirk-thief-overlord": { copy: 1, killGain: .11, weaken: .93 },
   };
+  /* Measured on the owner's Guild Boss clip (12 fights · owner 2026-11-04):
+     · every hit rolls ±12% around ATK (seen 0.88–1.11 · mean 1.00) -> ROLL
+     · Grade Defense cuts damage taken by Defense% × 0.2 (Defense 10 + all four = 55% -> 11% less · DFV Limitless + Defense took
+       0.80 of the boss's ATK on average) -> DEF_K
+     · Grade Status Damage = more damage from statuses (burn / poison / bleed) by its % · NOT confirmed by a clip yet
+     · Spirit Wave Master: every 2nd attack hits again for 189.34% of the 1st hit (the clip's rarity, assumed Godly: ask q9) ·
+       other rarities = the value on the card (C.supValAt) */
+  const ROLL = .12, DEF_K = .2, ECHO_CLIP = { rarity: "Godly", v: 189.34 };
+  const STATUS_OK = false;   // Status Damage not confirmed by a clip yet (the slot sheet says "Unconfirmed")
   const TRAITFX = { ascendant: { crit: [.2, 2.5], revive: .5 }, limitless: { dodge: .12, dr: .10 }, "sage-mode": { lifesteal: .12, shield: .15 }, awakened: { crit: [.15, 2] },
     undying: { revive: .3 }, prodigy: { firstAll: .3 }, "keen-eye": { crit: [.12, 2] }, bloodlust: { lifesteal: .08 }, "iron-body": { dr: .06 }, nimble: { dodge: .05 } };
   // support effects that need a hit / a turn: value = the support's own value at its slot's rarity (C.supValAt)
-  const SUPFX = { "gate-healer": "teamHeal", "cafe-owner-owl": "lifesteal", "plant-healer": "hitHeal", "spirit-sidekick": "onHitAtk", "portal-playboy": "dodge", "crow-banker": "mark", "pig-captain": "lucky" };
+  const SUPFX = { "gate-healer": "teamHeal", "cafe-owner-owl": "lifesteal", "plant-healer": "hitHeal", "spirit-sidekick": "onHitAtk", "portal-playboy": "dodge", "crow-banker": "mark", "pig-captain": "lucky",
+    "spirit-wave-master": "echo" };
   function supFx(d, i) {
     const id = d.support[i], s = id && lookup("support", id), k = id && SUPFX[id];
     if (!s || !k) return null;
-    let v = Number(C.supValAt(s, 0, rarityOf(d, "support", i))) / 100;
+    const sr = rarityOf(d, "support", i);
+    let v = Number(C.supValAt(s, 0, sr)) / 100;
     if (id === "gate-healer" && d.custom.some(Boolean)) v = .06;   // mockup: the clip's heal +567,664,559 ≈ 6% of DFV's 9.5B (source still unknown)
+    if (k === "echo" && sr === ECHO_CLIP.rarity) v = ECHO_CLIP.v / 100;   // measured in the clip (189.34% of the 1st hit)
     return { name: s.name, eff: s.effect.name, b: { [k]: v } };
   }
   function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -459,12 +484,15 @@
       const x = id && lookup("cards", id); if (!x || !st[i]) return;
       const b = SKILL[id], t = d.trait[i] ? traitById(d.trait[i]) : null, tfx = t ? TRAITFX[t.id] || {} : {};
       out.push(mkUnit({ id, x, side, idx: out.length, slot: i, rar: rarityOf(d, "cards", i), trait: t ? { ...t, fx: tfx } : null, grade: overallOf(d.grades[i]),
-        sup: supFx(d, i), b, atk: st[i].atk, hp: st[i].hp }));
+        sup: supFx(d, i), b, atk: st[i].atk, hp: st[i].hp,
+        // Grade in battle (js/deckbuff.js gradePct): Defense% × 0.2 less damage taken · Status Damage% more status damage
+        gdef: (st[i].grade.def / 100) * DEF_K, gstatus: 1 + st[i].grade.status / 100 }));
     });
     return out;
   }
   function mkUnit(o) {
     return { ...o, name: o.x.name, skill: o.x.passive ? o.x.passive.name : "", sim: !!o.b, inf: !!o.inf, kBase: o.b ? { ...o.b } : {}, k: o.b ? { ...o.b } : {},
+      gdef: o.gdef || 0, gstatus: o.gstatus || 1, dots: {},
       atk0: o.atk, atk: o.atk, max: o.hp, hp: o.hp, zone: 0, alive: true, used: {}, seen: new Set(), firstOn: new Set(), adaptMap: new Map(), hitsTaken: 0, turns: 0,
       shield: o.trait && o.trait.fx.shield ? o.hp * o.trait.fx.shield : 0, marked: 0, copied: null,
       st: { dmg: 0, hits: 0, crit: 0, heal: 0, taken: 0, sup: 0, kills: 0, died: 0, procs: {} } };
@@ -487,7 +515,8 @@
     start() {
       for (const side of ["a", "b"]) {
         const foe = side === "a" ? "b" : "a";
-        for (const u of this[side]) if (u.k.weakenDiv) { for (const f of this[foe]) { f.atk /= u.k.weakenDiv; f.atk0 = f.atk; } this.ev("shout", this.front(foe), "-" + ((1 - 1 / u.k.weakenDiv) * 100).toFixed(1) + "% DMG", { k: "debuff" }); }
+        // "starts with X% less damage": the enemy team's ATK × weaken (the clip: × 0.93)
+        for (const u of this[side]) if (u.k.weaken) { for (const f of this[foe]) { f.atk *= u.k.weaken; f.atk0 = f.atk; } this.ev("shout", this.front(foe), "-" + ((1 - u.k.weaken) * 100).toFixed(1) + "% DMG", { k: "debuff" }); }
       }
       this.ev("nums", this.front("a")); this.ev("nums", this.front("b"));
     }
@@ -501,6 +530,27 @@
         for (const x of this[u.side]) if (x.alive && !x.inf && x.hp < x.max) { const h = Math.min(Math.round(x.max * u.sup.b.teamHeal), x.max - x.hp); x.hp += h; u.st.heal += h; if (x === u) this.ev("heal", u, h, { src: "sup" }); any = true; }
         if (any) this.ev("shout", u, u.sup.eff.toUpperCase(), { k: "heal", y: "88%" });
       }
+      // statuses on this card tick at the start of its turn (burn / poison / bleed: % of its max HP per stack × the giver's
+      // Grade Status Damage · an infinite-HP boss: not known yet, nothing)
+      for (const [kind, s] of Object.entries(u.dots)) {
+        if (!u.inf) { const v = Math.max(1, Math.round(u.max * s.pct * s.stacks * s.mult)); u.hp -= v; u.st.taken += v; if (s.src) s.src.st.dmg += v; this.ev("dmg", u, v, { status: kind }); }
+        if (--s.left <= 0) delete u.dots[kind];
+      }
+    }
+    // a status from a skill (field dot: { kind, add, pct, max, turns }) · stacks up to max, every new stack resets the turns
+    addDot(a, d, dot) {
+      const s = d.dots[dot.kind] || (d.dots[dot.kind] = { stacks: 0, pct: dot.pct, left: 0, mult: 1, src: a });
+      s.stacks = Math.min(dot.max, s.stacks + (dot.add || 1)); s.left = dot.turns; s.mult = a.gstatus; s.src = a;
+      this.ev("shout", d, dot.kind.toUpperCase() + " x" + s.stacks, { k: "debuff", y: "70%" });
+    }
+    // Spirit Wave Master (support · echo): the supported card's every 2nd attack hits again for v × the 1st hit
+    echo(a, d, first) {
+      if (!(first > 0) || !d.alive) return;
+      const v = Math.max(1, Math.round(first * a.sup.b.echo));
+      a.st.dmg += v; a.st.sup++; d.st.taken += v;
+      if (!d.inf) { let left = v; if (d.shield > 0) { const s = Math.min(d.shield, left); d.shield -= s; left -= s; } d.hp -= left; }
+      this.ev("shout", a, a.sup.eff.toUpperCase() + "!", { k: "extra", y: "26%" });
+      this.ev("dmg", d, v, { extra: true });
     }
     hit(a, d, m0, extra) {
       const R = this.R;
@@ -523,8 +573,10 @@
       if (tc) { const ok = R() < tc[0]; this.proc(a, a.trait.name + " crit", ok, tc[0]); if (ok) { m *= tc[1]; crit = true; this.ev("shout", a, "CRIT!", { k: "crit", y: "30%" }); } }
       if (a.k.first && !a.firstOn.has(d)) { a.firstOn.add(d); m *= a.k.first; heavy = true; this.ev("shout", a, a.skill.toUpperCase() + "!", { k: "skill" }); }
       if (a.trait && a.trait.fx.firstAll && !a.used.firstAll) { a.used.firstAll = 1; m *= 1 + a.trait.fx.firstAll; }
-      let dmg = a.atk * m * (1 + d.marked);
-      let dr = (d.k.dr || 0) + ((d.trait && d.trait.fx.dr) || 0);
+      // every hit rolls ±12% around ATK (the clip: 0.88–1.11, mean 1.00)
+      let dmg = a.atk * m * (1 + d.marked) * (1 - ROLL + R() * 2 * ROLL);
+      // damage cut: skill + trait + Grade Defense (Defense% × 0.2) · they add up
+      let dr = (d.k.dr || 0) + ((d.trait && d.trait.fx.dr) || 0) + d.gdef;
       if (d.k.early && d.hitsTaken < d.k.early.n) dr += d.k.early.dr;
       if (d.k.adapt) { const seen = d.adaptMap.get(a) || 0; dr += Math.min(3, seen) * d.k.adapt; d.adaptMap.set(a, seen + 1); }
       dmg = Math.max(1, Math.round(dmg * Math.max(0, 1 - dr)));
@@ -537,8 +589,9 @@
       if (d.k.onHitAtk) { const g = d.atk0 * d.k.onHitAtk; d.atk += g; this.ev("buff", d, g); }
       if (d.sup && d.sup.b.onHitAtk) { const g = d.atk0 * d.sup.b.onHitAtk; d.atk += g; d.st.sup++; if (!d.k.onHitAtk) this.ev("buff", d, g); }
       if (d.sup && d.sup.b.hitHeal && !d.inf && d.hp > 0) { d.st.sup++; this.heal(d, dmg * d.sup.b.hitHeal, "sup"); }
+      if (a.k.dot && !d.inf) this.addDot(a, d, a.k.dot);
       if (d.k.copy && a.sim && !d.seen.has(a.id)) {
-        d.seen.add(a.id); const keep = { copy: 1, killGain: d.kBase.killGain, weakenDiv: d.kBase.weakenDiv };
+        d.seen.add(a.id); const keep = { copy: 1, killGain: d.kBase.killGain, weaken: d.kBase.weaken };
         d.k = { ...a.kBase, ...keep }; d.copied = a.skill; d.zone = 0; this.ev("shout", d, "COPIED " + a.skill.toUpperCase() + "!", { k: "copy", y: "24%" }); this.ev("copy", d);
       }
       if (d.k.reflect && !a.inf) { const r = Math.round(dmg * d.k.reflect); a.hp -= r; a.st.taken += r; this.ev("dmg", a, r, { reflect: 1 }); }
@@ -565,7 +618,17 @@
       if (this.done) return true;
       const side = this.turn, foe = side === "a" ? "b" : "a", a = this.front(side), d = this.front(foe);
       if (a && d) {
-        this.startTurn(a); this.ev("atk", a); this.hit(a, d, 1, false);
+        this.startTurn(a);
+        // a status can finish the attacker before it swings: the next card comes in, the turn passes
+        if (this.checkDeath(a, (Object.values(a.dots)[0] || {}).src || d)) {
+          if (this.front(side)) this.ev("enter", this.front(side));
+          if (!this.front(side)) return this.finish();
+          if (side === "b") { this.round++; if (this.round > 30) { this.round = 30; return this.finish(); } this.ev("round", null, this.round); }
+          this.turn = foe; return false;
+        }
+        this.ev("atk", a);
+        const first = this.hit(a, d, 1, false);
+        if (a.sup && a.sup.b.echo && a.turns % 2 === 0) this.echo(a, d, first);
         let dDead = this.checkDeath(d, a), aDead = this.checkDeath(a, d);
         const dbl = a.k.double;
         if (dbl && a.alive && d.alive) { const ok = this.R() < dbl.p; this.proc(a, (a.copied || a.skill) + " extra hit", ok, dbl.p);
@@ -875,7 +938,7 @@
     { id: "q6", q: "ตัวเลขเด้งตอนสู้", o: [["เลขเต็มไม่มีจุลภาค แบบคลิป (+567664559)", 1], ["มีจุลภาค (+567,664,559)", 0], ["แบบย่อ (+567.7M)", 0]] },
     { id: "q7", q: "การ์ดตอนสู้: ป้าย 1 IN X (โอกาส) ซ่อนไหม", o: [["ซ่อน แบบในเกม", 1], ["แสดง", 0]] },
     { id: "q8", q: "ทีมศัตรูในหน้า Arena", o: [["จัดเองแบบหน้า Deck (+ Load from My Decks)", 1], ["เลือกจาก Meta Decks ด้วย (ตอนเปิดแท็บ Meta กลับมา)", 0]] },
-    { id: "q9", q: "Grade 1–9 ในการต่อสู้", o: [["ไม่มีผล (ครบ 10 ทั้ง 4 ค่า = +30%) เหมือนหน้า Deck", 1], ["ใช้ +2.5%/เกรด ตามป้ายในเกม", 0]] },
+    { id: "q9", q: "Spirit Wave Master ในคลิป (ตีซ้ำ 189.34%) ตั้งระดับไหน · ตอนนี้เดาว่า Godly (ระดับอื่นใช้ค่าบนการ์ด เช่น Godly บนการ์ด = 135%)", o: [["Godly", 1], ["ต่ำกว่า Godly (บอกระดับในแชท)", 0], ["ไม่แน่ใจ เดี๋ยวแคปให้", 0]] },
   ];
   const askState = {};
   function paintAsk() {
@@ -1008,5 +1071,7 @@
     if (!viewFromHash()) history.replaceState(null, "", "#battle");
     showBattle();
   }
+  // for checks in the browser console / tests (mockup only)
+  C.battleMock = { Battle, T, SKILL, stats, ROLL, DEF_K, ECHO_CLIP };
   const wait = setInterval(() => { if (state.loaded && C.dialog && C.deckBuff) { clearInterval(wait); start(); } }, 50);
 })();
