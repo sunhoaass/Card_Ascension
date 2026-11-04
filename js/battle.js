@@ -234,8 +234,7 @@
       title: `${card.name} · Buffs`,
       html: `<div class="dk-bf"><div class="dk-bf__sum">${stat("ATK", r.base.atk, r.real.atk)}${stat("HP", r.base.hp, r.real.hp)}</div>
           <ul class="dk-bf__list">${rows}</ul>
-          ${cus ? `<p class="tm-field__note bt-note--cus">Custom for battle: ${cus.atk != null ? "ATK " + C.fmtStat(cus.atk) : ""}${cus.atk != null && cus.hp != null ? " · " : ""}${cus.hp != null ? "HP " + C.fmtHp(cus.hp) : ""} (used instead of the numbers above).</p>` : ""}
-          <p class="tm-field__note">Every buff multiplies. Buffs that need a hit, a turn or low HP aren't counted.</p></div>`,
+          ${cus ? `<p class="tm-field__note bt-note--cus">Custom for battle: ${cus.atk != null ? "ATK " + C.fmtStat(cus.atk) : ""}${cus.atk != null && cus.hp != null ? " · " : ""}${cus.hp != null ? "HP " + C.fmtHp(cus.hp) : ""} (used instead of the numbers above).</p>` : ""}</div>`,
       actions: [{ label: "Close", value: "cancel" }],
       onMount(dlg) { FX.stagger($(".dk-bf__list", dlg), 40, { cls: "fx-up", max: 8, cleanup: true }); },
     });
@@ -262,7 +261,6 @@
   function cusHTML() {
     return `<section class="dk-ss__sec bt-cus" aria-label="Custom HP and ATK">
         <div class="dk-ss__h"><h3 class="tm-field__label">Custom HP / ATK <span class="bt-new">Battle only</span></h3><button type="button" class="dk-ss__rm fx-press" data-ss-cusrm hidden>${ICON.reset}Real value</button></div>
-        <p class="tm-field__note">Any number, no limit. Leave empty to use the real number with the deck's buffs.</p>
         <div class="bt-cus__row">
           <label class="tm-field"><span class="tm-field__label">ATK</span><input class="tm-input bt-cus__in bt-cus__in--atk" id="bt-cus-atk" data-ss-cus="atk" inputmode="numeric" autocomplete="off" enterkeyhint="done"></label>
           <label class="tm-field"><span class="tm-field__label">HP</span><input class="tm-input bt-cus__in bt-cus__in--hp" id="bt-cus-hp" data-ss-cus="hp" inputmode="numeric" autocomplete="off" enterkeyhint="done"></label>
@@ -369,7 +367,7 @@
         <span class="bt-dl__txt"><b>${esc(d.name || "Deck")}</b><small>${d.cards.filter(Boolean).length} cards · ${(d.support || []).filter(Boolean).length} support</small></span></button>`).join("");
     const res = await dialog({
       title: "Load from My Decks",
-      html: decks.length ? `<p class="tm-field__note">Copies the deck's cards, support, rarity, grade and trait. Your saved deck doesn't change.</p><div class="bt-dl">${rows}</div>`
+      html: decks.length ? `<div class="bt-dl">${rows}</div>`
         : `<div class="empty"><p class="empty__title">No decks yet</p><p class="empty__text">Make a team on the Deck page first, then load it here.</p></div>`,
       actions: decks.length ? [{ label: "Cancel", value: "cancel" }] : [{ label: "Open Deck", value: "deck", cls: "tm-btn--primary" }, { label: "Close", value: "cancel" }],
       onMount(dlg, finish) { dlg.addEventListener("click", (e) => { const b = e.target.closest("[data-deck]"); if (b) finish({ action: "load", n: Number(b.dataset.deck) }); }); },
@@ -948,7 +946,7 @@
     const best = FIGHTS.slice().sort((x, y) => y.dmg - x.dmg).slice(0, 3);
     const when = (t) => { const d = Math.floor((Date.now() - t) / 864e5); return d <= 0 ? "Today" : d === 1 ? "Yesterday" : d + " days ago"; };
     $("#bt-best").innerHTML = best.length ? best.map((f, i) => `<li><span class="bt-rk">${i + 1}</span><span>${when(f.at)} <span class="bt-faint">· Stage ${f.stage}</span></span><b>${fmtS(f.dmg)}</b></li>`).join("")
-      : `<li class="bt-list__empty"><span class="empty__text">No fights yet. Tap FIGHT: your best three show here.</span></li>`;
+      : `<li class="bt-list__empty"><span class="empty__text">No fights yet.</span></li>`;
     $("#bt-mine").textContent = fmtS(FIGHTS.reduce((x, f) => x + f.dmg, 0));
     $("#bt-nfights").textContent = String(FIGHTS.length);
   }

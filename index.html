@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=99">
-  <link rel="stylesheet" href="css/base.css?v=99">
-  <link rel="stylesheet" href="css/fx.css?v=99">
-  <link rel="stylesheet" href="css/cards.css?v=99">
-  <link rel="stylesheet" href="css/tier.css?v=99">
-  <link rel="stylesheet" href="css/deck.css?v=99">
-  <link rel="stylesheet" href="css/support.css?v=99">
-  <link rel="stylesheet" href="css/tiermaker.css?v=99">
-  <link rel="stylesheet" href="css/detail.css?v=99">
-  <link rel="stylesheet" href="css/home.css?v=99">
-  <link rel="stylesheet" href="css/battle.css?v=99">
+  <link rel="stylesheet" href="css/tokens.css?v=100">
+  <link rel="stylesheet" href="css/base.css?v=100">
+  <link rel="stylesheet" href="css/fx.css?v=100">
+  <link rel="stylesheet" href="css/cards.css?v=100">
+  <link rel="stylesheet" href="css/tier.css?v=100">
+  <link rel="stylesheet" href="css/deck.css?v=100">
+  <link rel="stylesheet" href="css/support.css?v=100">
+  <link rel="stylesheet" href="css/tiermaker.css?v=100">
+  <link rel="stylesheet" href="css/detail.css?v=100">
+  <link rel="stylesheet" href="css/home.css?v=100">
+  <link rel="stylesheet" href="css/battle.css?v=100">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -199,7 +199,6 @@
         <p class="page__eyebrow">The Gazette</p>
         <h1 id="home-title" class="page__title">Home</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead">The latest from the game: updates, codes to redeem, cards just added to the site and new systems.</p>
       </div>
 
       <div class="home">
@@ -243,7 +242,6 @@
         <p class="page__eyebrow">The Gallery</p>
         <h1 id="tier-title" class="page__title">Tier List</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p id="tier-lead" class="page__lead"></p>
       </div>
 
       <div id="tier-tabs" class="seg glass" role="tablist" aria-label="Tier list type" style="--n:2;--i:0">
@@ -336,7 +334,6 @@
               <button id="tm-sh-copy" class="tm-btn tm-btn--primary fx-press" type="button" data-act="sh-copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span id="tm-sh-copy-text">Save a copy</span></button>
               <button class="tm-btn fx-press" type="button" data-act="sh-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Save image</button>
             </div>
-            <p class="tm-hint">Tap a card to see its details.</p>
             <div id="tm-sh-rows" class="tm-rows"></div>
             <p id="tm-sh-note" class="tm-hint" hidden></p>
           </div>
@@ -355,7 +352,6 @@
               <button id="tm-compare" class="tm-switch fx-press" type="button" role="switch" aria-checked="false" data-act="compare"><span class="tm-switch__track" aria-hidden="true"><span class="tm-switch__dot"></span></span>Compare with Global</button>
             </div>
             <div id="tm-rarity" class="rarity-picker" role="group" aria-label="Rarity for this list"></div>
-            <p id="tm-hint" class="tm-hint"></p>
 
             <div id="tm-rows" class="tm-rows"></div>
             <button id="tm-addrow" class="tm-addrow fx-press" type="button" data-act="add-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span id="tm-addrow-text">Add row</span></button>
@@ -396,7 +392,6 @@
         <p class="page__eyebrow">The Casebook</p>
         <h1 id="deck-title" class="page__title">Deck</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p id="deck-lead" class="page__lead">Four cards, a support under each. Saved on this device.</p>
       </div>
 
       <!-- Meta Decks tab hidden 2026-11-04 (owner) · #deck/meta -> My Decks · put back: remove hidden + META_OFF in js/deck.js -->
@@ -425,7 +420,6 @@
             <div id="dk-empty" class="panel glass empty" hidden>
               <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="4.5" height="14" rx="1"/><rect x="7.5" y="5" width="4.5" height="14" rx="1"/><rect x="13" y="5" width="4.5" height="14" rx="1"/><rect x="18.5" y="5" width="3" height="14" rx="1"/></svg>
               <h2 class="empty__title">No decks yet</h2>
-              <p class="empty__text">Four cards, a support under each.</p>
               <div class="tm-empty__btns">
                 <button class="tm-btn tm-btn--primary fx-press" type="button" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New deck</button>
                 <button class="tm-btn fx-press" type="button" data-act="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>Restore from backup</button>
@@ -456,7 +450,6 @@
               <button class="tm-btn fx-press" type="button" data-act="sh-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Save image</button>
             </div>
             <div id="dk-sh-score" class="dk-scorebox dk-scorebox--shared" role="img" aria-label="Team score" hidden></div>
-            <p class="tm-hint">Tap a card to see its details.</p>
             <div id="dk-sh-board" class="dk-board"></div>
             <p id="dk-sh-note" class="tm-hint" hidden></p>
             <!-- Step 11: the team score, read only -->
@@ -475,7 +468,6 @@
             <!-- 2026-11-02: no mode / deck rarity / score ring here any more: tap a card = its slot sheet (rarity) -->
             <!-- the deck's note, shown on its image (farming time …): tap = edit -->
             <button id="dk-note" class="dk-note fx-press" type="button" data-act="note"></button>
-            <p id="dk-hint" class="tm-hint"></p>
             <div id="dk-board" class="dk-board"></div>
 
             <!-- Step 11 team score: off since 2026-11-04 (owner) · js/deck.js TS() = null -->
@@ -515,7 +507,6 @@
         <p class="page__eyebrow" id="cards-eyebrow">The Archive</p>
         <h1 id="cards-title" class="page__title">Cards</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead" id="cards-lead">Pick a rarity to see each card's ATK, HP and pull odds at that level. Tap a card for the full breakdown.</p>
       </div>
 
       <div id="cards-kind" class="seg glass" role="tablist" aria-label="Show cards or support" style="--n:2;--i:0">
@@ -635,7 +626,6 @@
         <p class="page__eyebrow">The Colosseum</p>
         <h1 id="bt-title" class="page__title">Battle</h1>
         <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-        <p class="page__lead">Build a team like a deck, then fight the Guild Boss or another team.</p>
       </div>
 
       <div id="bt-tabs" class="seg glass" role="tablist" aria-label="Battle mode" style="--n:2;--i:0">
@@ -650,12 +640,11 @@
       <div class="bt-view bt-view--boss" data-bt-view="boss" hidden>
         <div class="bt-col">
           <section class="panel">
-            <div class="bt-h"><h2>Guild Boss</h2><small>HP: infinite · no support</small></div>
+            <div class="bt-h"><h2>Guild Boss</h2></div>
             <div class="bt-boss">
               <div class="bt-boss__card" id="bt-boss-card"></div>
               <div>
                 <h3 class="bt-boss__name" id="bt-boss-name">Guild Boss</h3>
-                <p class="bt-boss__tag">Gets stronger every stage!</p>
                 <dl class="bt-kv">
                   <dt>HP</dt><dd class="inf">INFINITE</dd>
                   <dt>ATK (card)</dt><dd class="atk" id="bt-boss-card-atk">0</dd>
@@ -669,17 +658,16 @@
             <div class="bt-stage__top"><span class="bt-stage__n"><span id="bt-stage-n">448</span> <small>/ 1,500</small></span>
               <label class="tm-field bt-stage__in"><span class="tm-field__label">Your stage</span><input class="tm-input" id="bt-stage" type="number" inputmode="numeric" min="1" max="1500" value="448"></label></div>
             <span class="bt-bar"><i id="bt-stage-bar" style="--p:.3"></i></span>
-            <p class="bt-faint bt-stage__note">The boss's ATK by stage is a guess until we have 2–3 stages from the game.</p>
             <div class="bt-stats"><div class="bt-stat"><span>Your damage</span><b id="bt-mine">0</b></div><div class="bt-stat"><span>Fights</span><b id="bt-nfights">0</b></div></div>
           </section>
           <section class="panel">
-            <div class="bt-h"><h3>Best fights</h3><small>Saved on this device</small></div>
+            <div class="bt-h"><h3>Best fights</h3></div>
             <ol class="bt-list" id="bt-best"></ol>
           </section>
         </div>
         <div class="bt-col">
           <section class="panel">
-            <div class="bt-h"><h2>Your team</h2><small>Tap a card: rarity, grade, trait, HP / ATK</small></div>
+            <div class="bt-h"><h2>Your team</h2></div>
             <div class="bt-team__bar"><span class="bt-team__from" data-team-from="boss"></span><button type="button" class="tm-btn fx-press" data-bt="load" data-team="boss">Load from My Decks</button></div>
             <div class="dk-board" data-board="boss"></div>
           </section>
@@ -690,28 +678,24 @@
       <!-- Arena -->
       <div class="bt-view bt-view--arena" data-bt-view="arena" hidden>
         <section class="panel">
-          <div class="bt-h"><h2>Your team</h2><small>Order = who fights first</small></div>
+          <div class="bt-h"><h2>Your team</h2></div>
           <div class="bt-team__bar"><span class="bt-team__from" data-team-from="a"></span><button type="button" class="tm-btn fx-press" data-bt="load" data-team="a">Load from My Decks</button></div>
           <div class="dk-board" data-board="a"></div>
         </section>
         <div class="bt-vs"><span>VS</span></div>
         <section class="panel">
-          <div class="bt-h"><h2>Enemy team</h2><small>The team you face</small></div>
+          <div class="bt-h"><h2>Enemy team</h2></div>
           <div class="bt-team__bar"><span class="bt-team__from" data-team-from="b"></span><button type="button" class="tm-btn fx-press" data-bt="load" data-team="b">Load from My Decks</button></div>
           <div class="dk-board" data-board="b"></div>
         </section>
         <section class="panel bt-sim">
-          <div class="bt-h"><h2>Win chance</h2><small>Same rules as a real fight</small></div>
-          <ul class="bt-rules">
-            <li>You attack first · 1 round = you hit, then they hit · max 30 rounds</li>
-            <li>No team wiped after 30 rounds: more cards alive wins → then team HP % → then HP % of the card fighting</li>
-          </ul>
+          <div class="bt-h"><h2>Win chance</h2></div>
           <div class="bt-sim__ctl">
             <div class="seg glass" style="--n:3;--i:1"><span class="seg__ind" aria-hidden="true"></span><button type="button" class="seg__btn fx-press" data-bt="simn" data-n="100" aria-pressed="false">100</button><button type="button" class="seg__btn fx-press" data-bt="simn" data-n="500" aria-pressed="true">500</button><button type="button" class="seg__btn fx-press" data-bt="simn" data-n="1000" aria-pressed="false">1000</button></div>
             <button type="button" class="tm-btn tm-btn--primary fx-press" data-bt="sim">Simulate</button>
           </div>
           <button type="button" class="tm-btn fx-press bt-watch" data-bt="fight" data-mode="arena">Watch one fight</button>
-          <div id="bt-sim-out"><div class="empty bt-sim__empty"><p class="empty__title">How often do you win?</p><p class="empty__text">Pick how many fights, then tap Simulate: win / lose / draw %, who carries, how luck changes it and a better order to try.</p></div></div>
+          <div id="bt-sim-out"><div class="empty bt-sim__empty"><p class="empty__title">How often do you win?</p></div></div>
         </section>
       </div>
 
@@ -856,19 +840,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=99"></script>
-  <script src="js/app.js?v=99"></script>
-  <script src="js/deckbuff.js?v=99"></script>
-  <script src="js/teamscore.js?v=99"></script>
-  <script src="js/share.js?v=99"></script>
-  <script src="js/cards.js?v=99"></script>
-  <script src="js/detail.js?v=99"></script>
-  <script src="js/tier.js?v=99"></script>
-  <script src="js/deck.js?v=99"></script>
-  <script src="js/support.js?v=99"></script>
-  <script src="js/home.js?v=99"></script>
-  <script src="js/tiermaker.js?v=99"></script>
-  <script src="js/battle.js?v=99"></script>
+  <script src="js/fx.js?v=100"></script>
+  <script src="js/app.js?v=100"></script>
+  <script src="js/deckbuff.js?v=100"></script>
+  <script src="js/teamscore.js?v=100"></script>
+  <script src="js/share.js?v=100"></script>
+  <script src="js/cards.js?v=100"></script>
+  <script src="js/detail.js?v=100"></script>
+  <script src="js/tier.js?v=100"></script>
+  <script src="js/deck.js?v=100"></script>
+  <script src="js/support.js?v=100"></script>
+  <script src="js/home.js?v=100"></script>
+  <script src="js/tiermaker.js?v=100"></script>
+  <script src="js/battle.js?v=100"></script>
 </body>
 </html>
 

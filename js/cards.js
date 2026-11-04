@@ -168,7 +168,7 @@
     ui.cardsView.hidden = kind !== "cards";
     ui.supView.hidden = kind !== "support";
     const h = HEAD[kind];
-    ui.eyebrow.textContent = h.eyebrow; ui.title.textContent = h.title; ui.lead.textContent = h.lead;
+    ui.eyebrow.textContent = h.eyebrow; ui.title.textContent = h.title; if (ui.lead) ui.lead.textContent = h.lead;
     if (kind === "cards") build(); else C.support.build();
     if (!changed || !animate) return;
     const box = kind === "cards" ? ui.cardsView : ui.supView;

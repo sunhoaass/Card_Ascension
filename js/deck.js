@@ -672,7 +672,6 @@
       html: `<div class="dk-bf">
           <div class="dk-bf__sum">${stat("ATK", r.base.atk, r.atk, r.atkPct)}${stat("HP", r.base.hp, r.hp, r.hpPct)}</div>
           <ul class="dk-bf__list">${rows}</ul>
-          <p class="tm-field__note">Every buff multiplies. Buffs that need a hit, a turn or low HP aren't counted.</p>
         </div>`,
       actions: [{ label: "Close", value: "cancel" }],
       onMount(dlg) { FX.stagger($(".dk-bf__list", dlg), 40, { cls: "fx-up", max: 8, cleanup: true }); },
@@ -1011,7 +1010,7 @@
     ui.nameText.textContent = cur.name;
     ui.name.setAttribute("aria-label", `Deck name: ${cur.name}. Tap to rename.`);
     paintNote(ui.note, cur.note, true);
-    ui.hint.textContent = fine.matches ? "Click a card: rarity, grade, trait. Drag to move." : "Tap a card: rarity, grade, trait. Hold to move.";
+    if (ui.hint) ui.hint.textContent = fine.matches ? "Click a card: rarity, grade, trait. Drag to move." : "Tap a card: rarity, grade, trait. Hold to move.";
   }
   function setMode(id) {
     if (!cur || mode !== "editor" || modeOf(cur.mode).id === id || !modes().some((m) => m.id === id && m.enabled)) return;
@@ -1634,8 +1633,7 @@
       html: `${nameInput(auto)}
         <div class="tm-field"><span class="tm-field__label" id="dk-l-mode">Mode</span>
           <div class="seg glass tm-pick dk-seg" data-pick="mode" role="group" aria-labelledby="dk-l-mode" style="--n:${all.length};--i:${def}"><span class="seg__ind" aria-hidden="true"></span>
-            ${all.map((m, k) => `<button type="button" class="seg__btn fx-press" data-v="${esc(m.id)}" aria-pressed="${k === def}"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`).join("")}</div>
-          <p class="tm-field__note">You can change the mode later.</p></div>`,
+            ${all.map((m, k) => `<button type="button" class="seg__btn fx-press" data-v="${esc(m.id)}" aria-pressed="${k === def}"${m.enabled ? "" : ' disabled title="Coming soon"'} aria-label="${esc(m.name)}${m.enabled ? "" : ", coming soon"}">${esc(m.short)}${m.enabled ? "" : "<small>Soon</small>"}</button>`).join("")}</div></div>`,
       actions: [{ label: "Cancel", value: "cancel" }, { label: "Create", value: "ok", submit: true, cls: "tm-btn--primary" }],
       onMount(d) {
         bindPick(d);
@@ -2162,7 +2160,7 @@
       : "My Decks — Card Battle Infinity";
   }
   function setLead() {
-    ui.lead.textContent = view === "meta" ? LEADS.meta : mode === "shared" ? LEADS.shared : LEADS.my;
+    if (ui.lead) ui.lead.textContent = view === "meta" ? LEADS.meta : mode === "shared" ? LEADS.shared : LEADS.my;
   }
   function apply(t) {
     const next = t.view === "meta" ? "meta" : "my";
