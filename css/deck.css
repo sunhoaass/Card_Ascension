@@ -69,21 +69,39 @@
    ========================================================== */
 .dk { min-width: 0; }
 
-/* ---------- All decks: rows are the Tier Maker's .tml; this adds the five-card strip ---------- */
-.dkl__open { align-items: stretch; }
+/* ---------- All decks: rows are the Tier Maker's .tml · the strip = the 4 cards as small game cards (Grade / Trait badges,
+   the deck's ATK / HP) with their rarity · grade · trait pills (owner 2026-11-04) · full width, Duplicate / Delete top right ---------- */
+.tml.dkl { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: start; }   /* .tml (tiermaker.css) is a flex row */
+.dkl__open { grid-column: 1 / -1; grid-row: 1; align-items: stretch; width: 100%; }
+.dkl__dup, .dkl__del { grid-row: 1; align-self: start; position: relative; z-index: 1; }
+.dkl__dup { grid-column: 2; }
+.dkl__del { grid-column: 3; }
 .dkl .tml__text { width: 100%; gap: 3px; }
+.dkl .tml__name, .dkl .tml__meta { padding-right: 86px; }
 .dkl .tml__meta { white-space: normal; }
-.dkl__strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; max-width: 210px; margin: 3px 0 2px; }
-.dkl__col { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
-.dkl__c {
-  position: relative; width: 100%; aspect-ratio: var(--card-ratio); overflow: hidden;
-  border-radius: 3px; border: 1px solid var(--gold-lo); background: #0d1020;
+.dkl__strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; align-items: start; width: 100%; margin: 8px 0 4px; }
+.dkl__col { display: flex; flex-direction: column; align-items: stretch; min-width: 0; }
+.dkl__c { position: relative; display: block; width: 100%; aspect-ratio: var(--card-ratio); border-radius: var(--r-card); }
+.dkl__c .card { width: 100%; pointer-events: none; }
+.dkl__c.is-empty { border: 1px dashed var(--glass-line); }
+.dkl__c.is-missing { display: grid; place-items: center; padding: 4px; border: 1px dashed var(--ink-faint); }
+.dkl__miss { font-size: 9px; line-height: 1.2; text-align: center; color: var(--ink-faint); overflow-wrap: anywhere; }
+.dkl .tg { --s: .92; }
+.dkl__info { gap: 3px; margin-top: 5px; }
+.dkl__info .dk-pill { height: 16px; padding: 0 4px; border-width: 1px; font-size: 8.5px; gap: 2px; }
+.dkl__info .dk-pill--rar > span { font-size: 9px; letter-spacing: .06em; }
+.dkl__info .dk-pill--rar:not([data-r="Normal"]):not([data-r="Godly"]):not([data-r="Godlike"]) > span { -webkit-text-stroke-width: 2px; }
+.dkl__info .dk-pill--gr:not([data-off]) > span { font-size: 8.5px; letter-spacing: .06em; }
+.dkl__info .dk-pill--gr b { font-size: 10.5px; }
+.dkl__info .dk-pill__ic { width: 12px; height: 12px; }
+@media (min-width: 720px) {
+  .dkl__strip { gap: 10px; max-width: 560px; }
+  .dkl__info .dk-pill { height: 19px; font-size: 10px; }
+  .dkl__info .dk-pill--rar > span { font-size: 11px; }
+  .dkl__info .dk-pill--gr:not([data-off]) > span { font-size: 10px; }
+  .dkl__info .dk-pill--gr b { font-size: 12.5px; }
+  .dkl__info .dk-pill__ic { width: 15px; height: 15px; }
 }
-.dkl__c img, .dkl__c svg { display: block; width: 100%; height: 100%; object-fit: cover; }
-.dkl__c.is-empty { border: 1px dashed var(--glass-line); background: transparent; }
-.dkl__c.is-missing { border: 1px dashed var(--ink-faint); background: transparent; }
-.dkl__pip { width: 55%; max-width: 22px; height: 3px; border-radius: 2px; background: var(--glass-line); }
-.dkl__pip.is-on { background: var(--gold); box-shadow: 0 0 6px color-mix(in srgb, var(--gold) 55%, transparent); }
 
 /* ---------- Mode picker (New deck dialog · the editor's top block with mode / rarity / score left 2026-11-02) ---------- */
 .dk-seg .seg__btn {
