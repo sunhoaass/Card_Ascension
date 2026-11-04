@@ -534,7 +534,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .tg__ring b {
   position: relative; display: block;
   font-family: var(--gc-font-num); font-style: normal; font-weight: 700; font-size: calc(7.1cqw * var(--s)); line-height: 1; letter-spacing: 0;
-  transform: translateY(calc(-1.1cqw * var(--s)));   /* the middle of the ring's part above the pill, like the game */
+  transform: translateY(calc(-.5cqw * var(--s)));   /* owner 2026-11-04: the same room above and below the number */
   font-variant-numeric: tabular-nums lining-nums; color: var(--tg-ink); -webkit-text-stroke: calc(1.2cqw * var(--s)) var(--tg-ink);
 }
 .tg__ring b::after {
