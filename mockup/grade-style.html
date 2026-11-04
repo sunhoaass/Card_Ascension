@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--ART-->
+<title>Grade Badge Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
+<style>
+/* Layout: one column, sticky deck row (4 grade colours at once), then the big card, then the choices · the site's dark look only */
+:root {
+  color-scheme: dark;
+  --bg: #0b1020; --bg-2: #131a2e; --line: rgba(232, 196, 120, .22); --line-2: rgba(255, 255, 255, .1);
+  --ink: #efe6d2; --ink-dim: #b9b09c; --ink-faint: #8a8372; --gold: #e8c478; --on-gold: #1b1408; --pick: rgba(232, 196, 120, .16);
+  --font-display: "Cinzel", Georgia, serif; --font-body: "Inter", "Noto Sans Thai", system-ui, sans-serif; --font-pop: "Bangers", "Arial Narrow", sans-serif;
+  --tg-rainbow: linear-gradient(90deg, #ff6b8b, #ffb35c, #ffe873, #7ff0a0, #5fd0ff, #9a8cff, #f27ce0);
+  --tg-ink: #1b0f24; --tg-core: #2a1838;
+  --m-bronze: linear-gradient(160deg, #ffe0bf 0%, #e19a62 38%, #a8602f 70%, #ffcf9e 100%);
+  --m-silver: linear-gradient(160deg, #ffffff 0%, #d5dbe6 38%, #8e98aa 70%, #f2f5fa 100%);
+  --m-gold:   linear-gradient(160deg, #fff7cf 0%, #f4c64f 38%, #b27a1a 70%, #ffe895 100%);
+  --m-rainbow: linear-gradient(160deg, #ff8aa2, #ffc070, #fff08a, #8af5ae, #6fd6ff, #a99bff, #f58ae6);
+  --c-bronze: #e6a06a; --c-silver: #dfe4ee; --c-gold: #f6cb55; --c-rainbow: #c9b8ff;
+  --num-font: "Oswald", "Arial Narrow", sans-serif; --num-w: 600;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(120% 60% at 50% 0%, var(--bg-2), var(--bg) 60%) fixed, var(--bg); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 20px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px; }
+h1, h2 { font-family: var(--font-display); font-weight: 700; color: var(--gold); margin: 0; text-wrap: balance; }
+h1 { font-size: 28px; line-height: 1.15; }
+h2 { font-size: 16px; letter-spacing: .08em; }
+.eyebrow { margin: 0 0 4px; font: 700 11px/1 var(--font-display); letter-spacing: .28em; color: var(--ink-faint); text-transform: uppercase; }
+.lead { margin: 8px 0 0; color: var(--ink-dim); }
+.note { margin: 0; font-size: 13px; color: var(--ink-faint); }
+section { display: grid; gap: 12px; min-width: 0; }
+.deckbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; margin-inline: -4px; padding: 10px 4px 12px; background: linear-gradient(180deg, var(--bg) 84%, rgba(11, 16, 32, 0)); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.gc { position: relative; width: 100%; aspect-ratio: 3 / 4; container-type: inline-size; border-radius: 4.5cqw; }
+.gc > img.art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: inherit; }
+.big { width: min(100%, 340px); justify-self: center; }
+
+/* ---------- badges: both columns the same height, emblems the same size, labels on one line ---------- */
+.tg { position: absolute; inset: 0; z-index: 5; pointer-events: none; --s: 1; --e: calc(13cqw * var(--s)); }
+.deck .tg { --s: 1.3; }
+.col { position: absolute; top: calc(50cqw - 6cqw * (var(--s) - 1)); display: flex; flex-direction: column; align-items: center; }
+.col--tr { left: 4.5cqw; width: calc(26cqw * var(--s)); }
+.col--gr { right: 4.5cqw; width: calc(17cqw * var(--s)); }
+.emb { width: var(--e); height: var(--e); display: grid; place-items: center; position: relative; z-index: 1; }
+.emb img { width: 100%; height: 100%; display: block; filter: drop-shadow(0 .4cqw .6cqw rgba(0, 0, 0, .5)); }
+.lab {
+  display: block; max-width: 100%; margin-top: calc(-1.3cqw * var(--s)); padding: calc(.55cqw * var(--s)) calc(1.8cqw * var(--s));
+  border-radius: 99px; border: calc(.45cqw * var(--s)) solid var(--tg-ink); box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .45);
+  font-family: var(--font-pop); font-style: italic; font-size: calc(3.5cqw * var(--s)); line-height: 1; letter-spacing: .02em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; paint-order: stroke fill; -webkit-text-stroke: calc(.55cqw * var(--s)) var(--tg-ink);
+}
+.col--tr .lab { background: var(--tg-rainbow); }
+/* the GRADE label: upright, the same height as the trait label */
+.col--gr .lab { background: var(--metal); color: var(--tg-ink); -webkit-text-stroke: 0; font-family: var(--num-font); font-style: normal; font-weight: 700; font-size: calc(3.1cqw * var(--s)); line-height: calc(3.5cqw * var(--s) / (3.1cqw * var(--s))); letter-spacing: .12em; padding-inline: calc(1.6cqw * var(--s)) calc(1.3cqw * var(--s)); }
+.lab-none .col--gr .lab { visibility: hidden; }
+.lab-text .col--gr .lab { background: none; border-color: transparent; box-shadow: none; color: var(--c); paint-order: stroke fill; -webkit-text-stroke: calc(.5cqw * var(--s)) var(--tg-ink); }
+
+[data-band="bronze"]  { --metal: var(--m-bronze);  --c: var(--c-bronze); }
+[data-band="silver"]  { --metal: var(--m-silver);  --c: var(--c-silver); }
+[data-band="gold"]    { --metal: var(--m-gold);    --c: var(--c-gold); }
+[data-band="rainbow"] { --metal: var(--m-rainbow); --c: var(--c-rainbow); }
+
+/* the number: upright, centred on the emblem's middle (optical: nudged down a hair for the cap height) */
+.num { position: relative; font-family: var(--num-font); font-weight: var(--num-w); font-style: normal; font-size: calc(var(--e) * .52); line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums lining-nums; transform: translateY(.03em); }
+.num.ten { font-size: calc(var(--e) * .46); letter-spacing: -.04em; }
+.f-anton { --num-font: "Anton", "Arial Narrow", sans-serif; --num-w: 400; }
+.f-cinzel { --num-font: "Cinzel", Georgia, serif; --num-w: 800; }
+.f-cinzel .num { transform: translateY(-.02em); }
+.f-inter { --num-font: "Inter", system-ui, sans-serif; --num-w: 700; }
+
+/* A · ring: metal ring, dark middle, the number in the metal colour with a dark outline */
+.st-ring .emb { border-radius: 50%; background: var(--metal); box-shadow: 0 0 0 calc(.45cqw * var(--s)) var(--tg-ink), 0 .5cqw 1cqw rgba(0, 0, 0, .5); }
+.st-ring .emb::before { content: ""; position: absolute; inset: 11%; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #3d2650, var(--tg-core)); box-shadow: inset 0 0 0 calc(.35cqw * var(--s)) var(--tg-ink); }
+.st-ring .num { color: var(--c); paint-order: stroke fill; -webkit-text-stroke: calc(.45cqw * var(--s)) var(--tg-ink); }
+.st-ring [data-band="rainbow"] .num { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 0; filter: drop-shadow(0 0 .25cqw var(--tg-ink)) drop-shadow(0 0 .25cqw var(--tg-ink)); }
+/* B · coin: solid metal disc, dark engraved number */
+.st-coin .emb { border-radius: 50%; background: var(--metal); box-shadow: 0 0 0 calc(.45cqw * var(--s)) var(--tg-ink), inset 0 0 0 calc(.9cqw * var(--s)) rgba(255, 255, 255, .35), inset 0 calc(-1cqw * var(--s)) calc(1.4cqw * var(--s)) rgba(0, 0, 0, .25), 0 .5cqw 1cqw rgba(0, 0, 0, .5); }
+.st-coin .num { color: var(--tg-ink); text-shadow: 0 .25cqw 0 rgba(255, 255, 255, .45); }
+/* C · diamond: the same shape as the trait icon, so both sides match */
+.st-dia .emb::before { content: ""; position: absolute; inset: 14.6%; border-radius: 18%; transform: rotate(45deg); background: var(--metal); box-shadow: 0 0 0 calc(.45cqw * var(--s)) var(--tg-ink), 0 .5cqw 1cqw rgba(0, 0, 0, .5); }
+.st-dia .emb::after { content: ""; position: absolute; inset: 24%; border-radius: 16%; transform: rotate(45deg); background: radial-gradient(circle at 50% 35%, #3d2650, var(--tg-core)); box-shadow: inset 0 0 0 calc(.3cqw * var(--s)) var(--tg-ink); }
+.st-dia .num { z-index: 1; color: var(--c); paint-order: stroke fill; -webkit-text-stroke: calc(.4cqw * var(--s)) var(--tg-ink); font-size: calc(var(--e) * .4); }
+.st-dia .num.ten { font-size: calc(var(--e) * .36); }
+.st-dia [data-band="rainbow"] .num { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 0; filter: drop-shadow(0 0 .25cqw var(--tg-ink)) drop-shadow(0 0 .25cqw var(--tg-ink)); }
+/* D · shield: a crest with the number, flat top */
+.st-shield .emb::before { content: ""; position: absolute; inset: 4% 10% 0; background: var(--tg-ink); clip-path: polygon(0 0, 100% 0, 100% 58%, 50% 100%, 0 58%); }
+.st-shield .emb::after { content: ""; position: absolute; inset: 8% 14% 6%; background: var(--metal); clip-path: polygon(0 0, 100% 0, 100% 58%, 50% 100%, 0 58%); }
+.st-shield .num { z-index: 1; color: var(--tg-ink); font-size: calc(var(--e) * .44); transform: translateY(-.1em); text-shadow: 0 .25cqw 0 rgba(255, 255, 255, .4); }
+.st-shield .num.ten { font-size: calc(var(--e) * .38); }
+
+/* ---------- controls ---------- */
+.panel { display: grid; gap: 10px; padding: 14px; border-radius: 14px; background: rgba(22, 29, 51, .7); border: 1px solid var(--line-2); min-width: 0; }
+.qt { display: flex; align-items: baseline; gap: 8px; margin: 0; font-weight: 700; font-size: 15px; }
+.qt .n { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); color: var(--on-gold); font: 700 12px/1 var(--font-body); }
+.opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.opt { display: grid; gap: 1px; min-height: 40px; padding: 7px 12px; border-radius: 10px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .03); color: var(--ink); font: 600 13.5px/1.25 var(--font-body); text-align: left; cursor: pointer; }
+.opt small { font-weight: 400; font-size: 11.5px; color: var(--ink-faint); }
+.opt[aria-pressed="true"] { border-color: var(--gold); background: var(--pick); box-shadow: inset 0 0 0 1px var(--gold); }
+.opt:focus-visible, .copy:focus-visible, .pk button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.rec { display: inline-block; margin-left: 4px; padding: 0 5px; border-radius: 4px; background: rgba(232, 196, 120, .16); color: var(--gold); font-size: 10px; font-weight: 700; vertical-align: 1px; }
+
+/* the slot sheet's grade picker, 4 ways */
+.sheet { display: grid; gap: 10px; padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: #0f1528; }
+.sheet__h { display: flex; justify-content: space-between; align-items: center; }
+.sheet__h h4 { margin: 0; font: 700 11px/1 var(--font-display); letter-spacing: .16em; color: var(--ink-faint); text-transform: uppercase; }
+.rm { height: 28px; padding: 0 10px; border-radius: 99px; border: 1px solid var(--line-2); background: transparent; color: var(--ink-dim); font: 600 12px/1 var(--font-body); }
+.pk button { cursor: pointer; font-family: var(--num-font); font-weight: var(--num-w); font-style: normal; font-variant-numeric: tabular-nums; }
+/* 1 · circles in band groups */
+.pk1 { display: grid; grid-template-columns: 3fr 3fr 3fr 1fr; gap: 5px; }
+.pk1 .grp { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; padding: 3px; border-radius: 99px; background: rgba(255, 255, 255, .04); min-width: 0; }
+.pk1 button { width: 100%; max-width: 34px; aspect-ratio: 1; justify-self: center; padding: 0; border-radius: 50%; border: 2px solid var(--c); background: transparent; color: var(--c); font-size: 15px; line-height: 1; }
+.pk1 button[data-band="rainbow"] { border-color: transparent; background: linear-gradient(#0f1528, #0f1528) padding-box, var(--tg-rainbow) border-box; }
+.pk1 button[aria-pressed="true"] { background: var(--metal); color: var(--tg-ink); border-color: transparent; box-shadow: 0 0 0 2px #0f1528, 0 0 0 4px var(--gold); }
+/* 2 · bands as labelled boxes */
+.pk2 { display: grid; grid-template-columns: 3fr 3fr 3fr 1.25fr; gap: 6px; }
+.pk2 .grp { display: grid; gap: 4px; padding: 6px 4px 4px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); background: color-mix(in srgb, var(--c) 7%, transparent); }
+.pk2 .grp > span { font: 600 10px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--c); text-align: center; }
+.pk2 .btns { display: grid; grid-auto-flow: column; gap: 3px; }
+.pk2 button { height: 34px; padding: 0; border-radius: 7px; border: 0; background: rgba(255, 255, 255, .06); color: var(--ink); font-size: 16px; }
+.pk2 button[aria-pressed="true"] { background: var(--metal); color: var(--tg-ink); }
+/* 3 · two rows of five, the badge itself */
+.pk3 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.pk3 button { aspect-ratio: 1; padding: 0; border-radius: 14px; border: 1.5px solid var(--line-2); background: rgba(255, 255, 255, .03); display: grid; place-items: center; container-type: inline-size; }
+.pk3 .gc-mini { width: 74%; aspect-ratio: 1; container-type: inline-size; position: relative; }
+.pk3 .gc-mini .tg { position: absolute; inset: 0; --e: 100cqw; --s: 1; }
+.pk3 .gc-mini .col { position: static; width: 100%; }
+.pk3 .gc-mini .lab { display: none; }
+.pk3 button[aria-pressed="true"] { border-color: var(--gold); background: var(--pick); box-shadow: inset 0 0 0 1px var(--gold); }
+/* 4 · stepper */
+.pk4 { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; gap: 10px; }
+.pk4 .step { height: 48px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .05); color: var(--ink); font: 600 24px/1 var(--font-body); }
+.pk4 .mid { display: grid; justify-items: center; gap: 8px; }
+.pk4 .gc-mini { width: 64px; aspect-ratio: 1; container-type: inline-size; position: relative; }
+.pk4 .gc-mini .tg { position: absolute; inset: 0; --e: 100cqw; --s: 1; }
+.pk4 .gc-mini .col { position: static; width: 100%; }
+.pk4 .gc-mini .lab { display: none; }
+.pk4 .dots { display: flex; gap: 5px; }
+.pk4 .dots button { width: 14px; height: 14px; padding: 0; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .14); }
+.pk4 .dots button.on { background: var(--metal); }
+.pk4 .cap { font-size: 12px; color: var(--ink-dim); }
+
+.answer textarea { width: 100%; min-height: 120px; padding: 10px; border-radius: 10px; border: 1px solid var(--line-2); background: #0f1528; color: var(--ink); font: 13px/1.5 var(--font-body); resize: vertical; }
+.copy { height: 42px; padding: 0 18px; border-radius: 10px; border: 0; background: linear-gradient(180deg, #f3d48e, #c99a45); color: var(--on-gold); font: 700 14px/1 var(--font-body); cursor: pointer; }
+.copied { font-size: 13px; color: #9be79b; }
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+  <header>
+    <p class="eyebrow">Mockup · Grade</p>
+    <h1>Grade แบบตัวตรง สมดุล</h1>
+    <p class="lead">ตัวเลขไม่เอียงแล้ว ป้าย Trait กับ Grade ขนาดเท่ากัน ป้ายชื่ออยู่บรรทัดเดียวกัน · เลือกแบบตราบนการ์ด, ตัวเลข, ป้าย GRADE และหน้าเลือก แล้วกด "คัดลอกคำตอบ" · <span class="rec">แนะนำ</span> = ที่ผมเลือกเป็นค่าเริ่มต้น</p>
+  </header>
+
+  <div class="deckbar"><div class="row deck" id="deck"></div></div>
+
+  <section>
+    <h2>การ์ดใหญ่ (หน้าต่างตั้งค่า)</h2>
+    <div class="big" id="big"></div>
+    <p class="note">ช่อง 1–4 = บรอนซ์ 3 · เงิน 5 · ทอง 8 · รุ้ง 10 · การ์ดใหญ่ใช้ Grade ที่เลือกในหน้าเลือกด้านล่าง</p>
+  </section>
+
+  <div id="qs" style="display:grid;gap:12px"></div>
+
+  <section class="panel">
+    <p class="qt"><span class="n">5</span>หน้าเลือก Grade (ลองกดได้)</p>
+    <div class="opts" data-q="pk"></div>
+    <div class="sheet"><div class="sheet__h"><h4>Grade</h4><button type="button" class="rm" id="rm">✕ Remove</button></div><div class="pk" id="pk"></div></div>
+  </section>
+
+  <section class="panel answer">
+    <p class="qt"><span class="n">✓</span>คำตอบของคุณ</p>
+    <textarea id="ans" readonly aria-label="คำตอบ"></textarea>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="copy" id="copy" type="button">คัดลอกคำตอบ</button><span class="copied" id="copied" hidden>คัดลอกแล้ว</span></div>
+  </section>
+</div>
+<script>
+(function () {
+  const IMG = { cards: "deck-tg/", traits: "../images/traits/" };
+  const SLOTS = [
+    { id: "divergent-fist-vessel", trait: "limitless", name: "Limitless", grade: 3 },
+    { id: "destroyer-god", trait: "ascendant", name: "Ascendant", grade: 5 },
+    { id: "storm-dragon", trait: "limitless", name: "Limitless", grade: 8 },
+    { id: "one-punch-caped-hero", trait: "ascendant", name: "Ascendant", grade: 10 },
+  ];
+  const band = (g) => (g >= 10 ? "rainbow" : g >= 7 ? "gold" : g >= 4 ? "silver" : g >= 1 ? "bronze" : "none");
+  const BAND_TH = { bronze: "บรอนซ์", silver: "เงิน", gold: "ทอง", rainbow: "รุ้ง" };
+  const Q = [
+    { key: "st", title: "ตรา Grade บนการ์ด", opts: [["ring", "A · วงแหวน", "แบบเดิม แต่ตัวตรง จัดกลาง", true], ["coin", "B · เหรียญ", "แผ่นโลหะเต็ม เลขสีเข้ม"], ["dia", "C · ข้าวหลามตัด", "ทรงเดียวกับไอคอน Trait"], ["shield", "D · โล่", "ตราแบบเหรียญรางวัล"]] },
+    { key: "f", title: "ตัวเลข", opts: [["oswald", "Oswald", "แบบเลข ATK/HP บนการ์ด", true], ["anton", "Anton", "หนา แคบ"], ["cinzel", "Cinzel", "แบบหัวข้อเว็บ"], ["inter", "Inter", "เรียบ อ่านง่าย"]] },
+    { key: "lab", title: "ป้าย GRADE ใต้ตรา", opts: [["pill", "ป้ายสีโลหะ", "ตัวตรง สูงเท่าป้าย Trait", true], ["text", "ตัวอักษรอย่างเดียว", "ไม่มีกรอบ"], ["none", "ไม่มี", "เหลือแค่ตรา"]] },
+    { key: "sz", title: "ขนาดตราในช่อง Deck", opts: [["1", "1×", "เท่าเกม"], ["1.3", "1.3×", "แบบตอนนี้", true], ["1.6", "1.6×", "ใหญ่ อ่านง่าย"]] },
+  ];
+  const PK = [["1", "1 · วงกลมแบ่งกลุ่มสี", "แถวเดียว 10 ปุ่ม เว้นช่องระหว่างสี", true], ["2", "2 · กล่องตามสี", "มีชื่อ Bronze/Silver/Gold/Rainbow"], ["3", "3 · 2 แถว × 5", "ปุ่มใหญ่ เป็นตราจริง"], ["4", "4 · − ตรา +", "กดเพิ่ม/ลด ทีละ 1"]];
+  const st = { st: "ring", f: "oswald", lab: "pill", sz: "1.3", pk: "1", g: 10 };
+  try { const s = JSON.parse(localStorage.getItem("cbi-mock-grade") || "null"); if (s) Object.assign(st, s); } catch (e) {}
+
+  const gradeCol = (g) => g > 0 ? `<span class="col col--gr" data-band="${band(g)}"><span class="emb"><span class="num${g >= 10 ? " ten" : ""}">${g}</span></span><span class="lab">Grade</span></span>` : "";
+  const badges = (s, g) => `<span class="tg"><span class="col col--tr"><span class="emb"><img src="${IMG.traits}${s.trait}.webp" alt=""></span><span class="lab">${s.name}</span></span>${gradeCol(g)}</span>`;
+  const card = (s, g) => `<div class="gc"><img class="art" src="${IMG.cards}${s.id}.webp" alt="">${badges(s, g)}</div>`;
+  const mini = (g) => `<span class="gc-mini"><span class="tg">${gradeCol(g)}</span></span>`;
+
+  function picker() {
+    const btn = (g, inner) => `<button type="button" data-g="${g}" data-band="${band(g)}" aria-pressed="${g === st.g}" aria-label="Grade ${g}">${inner == null ? g : inner}</button>`;
+    const groups = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]];
+    if (st.pk === "1") return `<div class="pk1">${groups.map((gr) => `<div class="grp" data-band="${band(gr[0])}">${gr.map((g) => btn(g)).join("")}</div>`).join("")}</div>`;
+    if (st.pk === "2") return `<div class="pk2">${groups.map((gr) => `<div class="grp" data-band="${band(gr[0])}"><span>${band(gr[0])}</span><div class="btns">${gr.map((g) => btn(g)).join("")}</div></div>`).join("")}</div>`;
+    if (st.pk === "3") return `<div class="pk3">${Array.from({ length: 10 }, (_, k) => btn(k + 1, mini(k + 1))).join("")}</div>`;
+    const g = st.g;
+    return `<div class="pk4"><button type="button" class="step" data-step="-1" aria-label="ลด">−</button><div class="mid">${g ? mini(g) : '<span class="cap">ไม่มี Grade</span>'}<div class="dots">${Array.from({ length: 10 }, (_, k) => `<button type="button" data-g="${k + 1}" data-band="${band(k + 1)}" class="${k + 1 <= g ? "on" : ""}" aria-label="Grade ${k + 1}"></button>`).join("")}</div><span class="cap">${g ? `Grade ${g} · ${BAND_TH[band(g)]}` : ""}</span></div><button type="button" class="step" data-step="1" aria-label="เพิ่ม">+</button></div>`;
+  }
+
+  function paint() {
+    const root = document.getElementById("root");
+    root.className = `wrap st-${st.st} f-${st.f} lab-${st.lab}`;
+    document.getElementById("deck").innerHTML = SLOTS.map((s) => card(s, s.grade)).join("");
+    document.querySelectorAll(".deck .tg").forEach((t) => t.style.setProperty("--s", st.sz));
+    document.getElementById("big").innerHTML = card(SLOTS[0], st.g);
+    document.getElementById("pk").innerHTML = picker();
+    document.querySelectorAll(".opts").forEach((box) => box.querySelectorAll(".opt").forEach((b) => b.setAttribute("aria-pressed", String(st[box.dataset.q] === b.dataset.v))));
+    const lab = (list, k) => (list.find((o) => o[0] === st[k]) || [])[1];
+    document.getElementById("ans").value = ["Mockup Grade — คำตอบ:", ...Q.map((q, i) => `${i + 1}. ${q.title}: ${lab(q.opts, q.key)}`), `5. หน้าเลือก Grade: ${lab(PK, "pk")}`].join("\n");
+    try { localStorage.setItem("cbi-mock-grade", JSON.stringify(st)); } catch (e) {}
+  }
+  const optsHTML = (list) => list.map(([v, l, sub, rec]) => `<button type="button" class="opt" data-v="${v}" aria-pressed="false"><span>${l}${rec ? '<span class="rec">แนะนำ</span>' : ""}</span><small>${sub}</small></button>`).join("");
+  document.getElementById("qs").innerHTML = Q.map((q, i) => `<section class="panel"><p class="qt"><span class="n">${i + 1}</span>${q.title}</p><div class="opts" data-q="${q.key}">${optsHTML(q.opts)}</div></section>`).join("");
+  document.querySelector('.opts[data-q="pk"]').innerHTML = optsHTML(PK);
+  document.addEventListener("click", (e) => {
+    const o = e.target.closest(".opt");
+    if (o) { st[o.parentNode.dataset.q] = o.dataset.v; paint(); return; }
+    const g = e.target.closest("[data-g]");
+    if (g) { const n = Number(g.dataset.g); st.g = st.g === n ? 0 : n; paint(); return; }
+    const s = e.target.closest("[data-step]");
+    if (s) { st.g = Math.max(0, Math.min(10, st.g + Number(s.dataset.step))); paint(); return; }
+    if (e.target.closest("#rm")) { st.g = 0; paint(); }
+  });
+  document.getElementById("copy").addEventListener("click", () => {
+    const ta = document.getElementById("ans");
+    try { navigator.clipboard.writeText(ta.value).then(() => { document.getElementById("copied").hidden = false; }, () => { ta.focus(); ta.select(); }); } catch (e) { ta.focus(); ta.select(); }
+  });
+  paint();
+})();
+</script>
+</body>
+</html>
