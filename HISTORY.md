@@ -2115,3 +2115,10 @@
 - **ที่ทำ:** `js/deck.js` ใช้ `deck.grades` (4 ค่าต่อช่อง · field เดิม) แทน `deck.grade` (เลขเดียว · `clean()` แปลงเป็น 4 ค่าเท่ากัน) · `overallOf` (เฉลี่ยปัด .5 ขึ้น → ตรา) · `fullOf` · แผ่นตั้งค่า 4 แถว `.dk-g4` + All 10 + Remove + สรุป · กดค่าเดิมซ้ำ = 0 · ลิงก์แชร์ `g` · `js/deckbuff.js` `fullGrade` → ×`GRADE_BONUS` 1.3 เฉพาะครบ 10 ทั้ง 4 · `css/deck.css` `.dk-g4*` `.dk-ss__all`
 - **ทดสอบ (Playwright 412×915):** deck เก่า `grade: [10, 5, 0, 0]` → `[[10×4], [5×4], null, null]` ตรา 10 / 5 · Divergent Fist Vessel Limitless + 10 ทุกค่า ATK 1,075,122,153 ✓ · Storm Dragon 7/3/9/6 → ตรา 6, ATK 414,882,045 (ไม่บัฟ) · All 10 → ตรา 10, ATK 539,346,659 (= ×1.3 ✓) · HP 10 → 0 → บัฟหาย · Remove → ไม่มีตรา · ลิงก์แชร์ → "LIMITLESS 10 GRADE", "5 GRADE" · console error 0
 - **ไฟล์:** `index.html` · `js/deck.js` · `js/deckbuff.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 Grade แบบ Card Grader ในเกม (`?v=88`)
+- **เจ้าของ:** ส่งแคป Card Grader ในเกม (Divergent Fist Vessel Godlike · Basic Attack 5 +12.5% · Defense 1 +2.5% · Status Damage 7 +17.5% · HP 2 +5% · GRADE 4) → "ทำแบบนี้"
+- **ที่ทำ:** แผ่นตั้งค่าช่องส่วน Grade เขียนใหม่ (`tgSheetHTML` + paint ใน `js/deck.js` · `.dk-g4*` `css/deck.css` · `--gr-*` `css/tokens.css`): หัว GRADE N · บรรทัด 10 MINT · กล่องต่อค่า (ชื่อ, +x%, แถบ 10 ขั้นแตะได้, กล่องเลข) · สีตามเลข · All 10 / Remove ด้านล่าง · 10 ทุกค่า = แถบ/กรอบรุ้ง + "GRADE 10" รุ้ง
+- **ทดสอบ:** 5/1/7/2 → GRADE 4 (= เกม ✓ เฉลี่ย 3.75 ปัดขึ้น) · +12.5% / +2.5% / +17.5% / +5% ตรงเกม · All 10 → ATK ×1.3 · ลด HP → บัฟหาย · Remove · ลิงก์แชร์ · console error 0
+- **ข้อสังเกต (ถามเจ้าของ):** ในแคป ATK บนการ์ด 547,290,749 = ATK Godlike 486,480,612 × 1.125 (+12.5% ของ Basic Attack 5) และ HP 3.4B ≈ 3.243B × 1.05 (+5% ของ HP 2) → ในหน้า Card Grader เกมนับ +2.5%/เกรด · เว็บตอนนี้ทำตามที่เจ้าของบอก (1–9 ไม่บัฟใน Deck) · ต้องให้เจ้าของยืนยันว่าในการต่อสู้/Deck นับหรือไม่
+- **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `css/tokens.css` · `PROGRESS.md` · `HISTORY.md`

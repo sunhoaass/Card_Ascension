@@ -178,6 +178,8 @@
   const overallOf = (g) => (Array.isArray(g) && g.some((n) => n > 0) ? Math.floor(g.reduce((a, n) => a + n, 0) / 4 + 0.5) : 0);
   const fullOf = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => n >= GRADE_MAX);
   const GSTATS = ["Basic Attack", "Defense", "Status Damage", "HP"];
+  // a grade's colour in the Card Grader rows (the game: 1–2 grey · 5 green · 7 purple · guessed in between) · 10 = rainbow
+  const gradeTone = (v) => (v >= 10 ? "mint" : v >= 9 ? "gold" : v >= 6 ? "purple" : v >= 3 ? "green" : v >= 1 ? "grey" : "none");
   // a card / support put in a slot: the last rarity (a deck's old grades for that slot are cleared)
   function place(d, kind, i, id) {
     d[kind][i] = id;
@@ -1102,16 +1104,22 @@
     // 4 grades like the game (Basic Attack, Defense, Status Damage, HP), each 1–10 grouped by colour (owner 2026-11-04):
     // bronze 1–3 | silver 4–6 | gold 7–9 | rainbow 10 · upright numbers · "All 10" sets the four at once
     const gb = (k, g) => `<button type="button" class="dk-gp__b fx-press" data-ss-gk="${k}" data-ss-grade="${g}" data-band="${gradeBand(g)}" aria-pressed="false" aria-label="${GSTATS[k]} grade ${g}">${g}</button>`;
-    const grades = GSTATS.map((name, k) => `<div class="dk-g4__row">
-        <p class="dk-g4__name">${name}<b data-ss-gv="${k}"></b></p>
-        <div class="dk-gp" role="group" aria-label="${name} grade">${[[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]].map((grp) => `<span class="dk-gp__grp" data-band="${gradeBand(grp[0])}">${grp.map((g) => gb(k, g)).join("")}</span>`).join("")}</div>
+    // like the game's Card Grader (owner 2026-11-04): a panel per stat · NAME + "+x%" (2.5% a grade, the game's label) ·
+    // a 10-step bar (tap a step = that grade, the same step again = 0) · the grade in a box on the right
+    const seg = (k, g) => `<button type="button" class="dk-g4__seg" style="--i:${g - 1}" data-ss-gk="${k}" data-ss-grade="${g}" aria-pressed="false" aria-label="${GSTATS[k]} grade ${g}"></button>`;
+    const grades = GSTATS.map((name, k) => `<div class="dk-g4__row" data-ss-grow="${k}">
+        <p class="dk-g4__name">${name}</p>
+        <span class="dk-g4__pct" data-ss-gp="${k}"></span>
+        <div class="dk-g4__bar" role="group" aria-label="${name} grade">${Array.from({ length: GRADE_MAX }, (_, j) => seg(k, j + 1)).join("")}</div>
+        <b class="dk-g4__box" data-ss-gv="${k}"></b>
       </div>`).join("");
     const traits = traitList().map((t) => `<button type="button" class="dk-tp__b fx-press" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">${traitIcon(t, "dk-tp__ic")}<span class="dk-tp__n">${esc(t.name)}</span></button>`).join("");
     const rm = (what) => `<button type="button" class="dk-ss__rm fx-press" data-ss-rm="${what}" hidden>${ICON.x}Remove</button>`;
     return `<section class="dk-ss__sec" aria-label="Grade">
-        <div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><span class="dk-ss__hb"><button type="button" class="dk-ss__rm dk-ss__all fx-press" data-ss-all>All 10</button>${rm("grade")}</span></div>
+        <div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><b class="dk-g4__total" data-ss-gt></b></div>
+        <p class="dk-g4__sum" data-ss-gsum>A 10 MINT (all four at 10) gives +30% to every stat.</p>
         <div class="dk-g4">${grades}</div>
-        <p class="dk-g4__sum" data-ss-gsum></p>
+        <div class="dk-g4__acts"><button type="button" class="dk-ss__rm dk-ss__all fx-press" data-ss-all>All 10</button>${rm("grade")}</div>
       </section>
       ${traitList().length ? `<section class="dk-ss__sec" aria-label="Trait">
         <div class="dk-ss__h"><h3 class="tm-field__label">Trait</h3>${rm("trait")}</div>
@@ -1154,11 +1162,17 @@
           if (isCard) {
             const tId = cur.trait[i], g4 = cur.grades[i] || [0, 0, 0, 0], g = overallOf(g4), full = fullOf(g4);
             paintTG(art, tId, g, animate);
-            root.querySelectorAll("[data-ss-grade]").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.ssGrade) === g4[Number(b.dataset.ssGk)])));
+            root.querySelectorAll("[data-ss-grade]").forEach((b) => {
+              const v = g4[Number(b.dataset.ssGk)], n = Number(b.dataset.ssGrade);
+              b.setAttribute("aria-pressed", String(n === v));
+              b.classList.toggle("is-on", n <= v);
+            });
+            root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
             root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
-            const gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
-            if (gsum) gsum.innerHTML = full ? `<b>All 10</b> · +30% ATK and HP` : g ? `Card grade <b>${g}</b> · all 4 at 10 = +30% ATK and HP` : "All 4 at 10 = +30% ATK and HP";
-            if (gsum) gsum.classList.toggle("is-full", full);
+            root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = g4[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number((v * 2.5).toFixed(1))}%` : ""; });
+            const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
+            if (gt) { gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g); }
+            if (gsum) { gsum.textContent = full ? "10 MINT: +30% to every stat." : "A 10 MINT (all four at 10) gives +30% to every stat."; gsum.classList.toggle("is-full", full); }
             if (all) all.hidden = full;
             root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
             const rmG = $('[data-ss-rm="grade"]', root), rmT = $('[data-ss-rm="trait"]', root), tfx = $("[data-ss-tfx]", root);
