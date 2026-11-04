@@ -1113,7 +1113,9 @@
         <div class="dk-g4__bar" role="group" aria-label="${name} grade">${Array.from({ length: GRADE_MAX }, (_, j) => seg(k, j + 1)).join("")}</div>
         <b class="dk-g4__box" data-ss-gv="${k}"></b>
       </div>`).join("");
-    const traits = traitList().map((t) => `<button type="button" class="dk-tp__b fx-press" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">${traitIcon(t, "dk-tp__ic")}<span class="dk-tp__n">${esc(t.name)}</span></button>`).join("");
+    // Trait: one scrolling box (owner 2026-11-04: saves room) · a row per trait like the game's Trait Shop: icon · name · what it does · tier
+    const traits = traitList().map((t) => `<button type="button" class="dk-tl__row" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">
+        ${traitIcon(t, "dk-tl__ic")}<span class="dk-tl__txt"><b class="dk-tl__n">${esc(t.name)}</b><small>${traitFx(t).map(esc).join(" · ")}</small></span><span class="dk-tl__tier">${esc(t.tier)}</span></button>`).join("");
     const rm = (what) => `<button type="button" class="dk-ss__rm fx-press" data-ss-rm="${what}" hidden>${ICON.x}Remove</button>`;
     return `<section class="dk-ss__sec" aria-label="Grade">
         <div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><b class="dk-g4__total" data-ss-gt></b></div>
@@ -1123,8 +1125,7 @@
       </section>
       ${traitList().length ? `<section class="dk-ss__sec" aria-label="Trait">
         <div class="dk-ss__h"><h3 class="tm-field__label">Trait</h3>${rm("trait")}</div>
-        <div class="dk-tp" role="group" aria-label="Trait">${traits}</div>
-        <p class="dk-tp__fx" data-ss-tfx hidden></p>
+        <div class="dk-tl" role="group" aria-label="Trait">${traits}</div>
       </section>` : ""}`;
   }
   const traitFx = (t) => [t.dmg ? `x${t.dmg} Damage` : "", t.hp ? `x${t.hp} Health` : "", ...(Array.isArray(t.lines) ? t.lines : [])].filter(Boolean);
@@ -1195,6 +1196,7 @@
         };
         sheet = { kind, i, id, root, paint };
         paint(false);
+        { const on = $('.dk-tl [aria-pressed="true"]', root); if (on) on.parentNode.scrollTop = on.offsetTop - 6; }   // the chosen trait shows in its box
         requestAnimationFrame(() => root.querySelectorAll(".rarity-picker").forEach((p) => C.revealChip(p.parentNode)));
         root.addEventListener("click", (e) => {
           if (!alive()) return;
