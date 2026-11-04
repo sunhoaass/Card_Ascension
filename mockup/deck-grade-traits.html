@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--ART-->
+<title>Deck Grade Traits Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one column (phone first) · sticky deck row on top so every choice shows at once · options below as button rows
+   Look: the site's "Gilded Nocturne" (ink-blue night, old gold) · one look only (the site is dark) */
+:root {
+  color-scheme: dark;
+  --bg: #0b1020; --bg-2: #131a2e; --surface: #161d33; --line: rgba(232, 196, 120, .22); --line-2: rgba(255, 255, 255, .1);
+  --ink: #efe6d2; --ink-dim: #b9b09c; --ink-faint: #8a8372; --gold: #e8c478; --on-gold: #1b1408; --pick: rgba(232, 196, 120, .16);
+  --font-display: "Cinzel", Georgia, serif; --font-body: "Inter", "Noto Sans Thai", system-ui, sans-serif; --font-pop: "Bangers", "Arial Narrow", sans-serif;
+  /* badges (same as css/tokens.css --tg-*) */
+  --tg-rainbow: linear-gradient(90deg, #ff6b8b, #ffb35c, #ffe873, #7ff0a0, #5fd0ff, #9a8cff, #f27ce0);
+  --tg-rainbow-ring: conic-gradient(from 200deg, #ff6b8b, #ffb35c, #ffe873, #7ff0a0, #5fd0ff, #9a8cff, #f27ce0, #ff6b8b);
+  --tg-ink: #1b0f24; --tg-core: #3a1f4c; --tg-lab-ink: #ffffff;
+  --tg-bronze: linear-gradient(180deg, #ffd9b0, #d98b52 55%, #8e4f25); --tg-bronze-ring: conic-gradient(from 200deg, #ffd9b0, #c87a44, #8e4f25, #e8a676, #ffd9b0);
+  --tg-silver: linear-gradient(180deg, #ffffff, #c9d0dc 55%, #7f8899); --tg-silver-ring: conic-gradient(from 200deg, #ffffff, #b8c0cd, #7f8899, #e3e8ef, #ffffff);
+  --tg-gold: linear-gradient(180deg, #fff6c2, #f6c64a 55%, #a8701a); --tg-gold-ring: conic-gradient(from 200deg, #fff6c2, #f2bd3e, #a8701a, #ffe28a, #fff6c2);
+  --flat-bronze: #c98552; --flat-silver: #c4cad6; --flat-gold: #f2c14e;
+  --t-common: #d4d7e2; --t-uncommon: #7ce07c; --t-rare: #6eb0ff; --t-epic: #b98cff; --t-legendary: #ffb347; --t-mythic: #ff7a5c;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: radial-gradient(120% 60% at 50% 0%, var(--bg-2), var(--bg) 60%) fixed, var(--bg); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 20px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px; }
+h1, h2 { font-family: var(--font-display); font-weight: 700; color: var(--gold); margin: 0; text-wrap: balance; letter-spacing: .02em; }
+h1 { font-size: 30px; line-height: 1.1; }
+h2 { font-size: 17px; letter-spacing: .08em; }
+.eyebrow { margin: 0 0 4px; font: 700 11px/1 var(--font-display); letter-spacing: .28em; color: var(--ink-faint); text-transform: uppercase; }
+.lead { margin: 8px 0 0; color: var(--ink-dim); max-width: 62ch; }
+.note { margin: 0; font-size: 13px; color: var(--ink-faint); }
+section { display: grid; gap: 12px; min-width: 0; }
+
+/* sticky deck row */
+.deckbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; margin-inline: -4px; padding: 10px 4px 12px; background: linear-gradient(180deg, var(--bg) 82%, rgba(11, 16, 32, 0)); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.slot { display: grid; gap: 5px; justify-items: center; min-width: 0; }
+.pos { max-width: 100%; height: 18px; padding: 0 6px; border-radius: 3px; background: linear-gradient(180deg, #f3d48e, #c99a45); color: var(--on-gold); font: 700 10px/18px var(--font-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.name-2 .pos { height: auto; min-height: 18px; white-space: normal; line-height: 1.15; padding-block: 2px; text-align: center; }
+.name-under .pos { display: none; }
+.under { display: none; font-size: 10.5px; font-weight: 700; line-height: 1.2; text-align: center; color: var(--ink); }
+.name-under .under { display: block; }
+.rar { font-size: 10px; letter-spacing: .06em; color: var(--ink-dim); }
+
+/* the card picture (rendered from the site) + its badges */
+.gc { position: relative; width: 100%; aspect-ratio: 3 / 4; container-type: inline-size; border-radius: 4.5cqw; }
+.gc > img.art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: inherit; }
+.big { width: min(100%, 340px); justify-self: center; }
+
+.tg { position: absolute; inset: 0; z-index: 5; pointer-events: none; --tg-s: 1; }
+.deck .tg { --tg-s: var(--deck-s, 1.3); }
+.tg__tr, .tg__gr { position: absolute; top: calc(50cqw - 6cqw * (var(--tg-s) - 1)); display: flex; flex-direction: column; align-items: center; }
+.tg__tr { left: 4.5cqw; width: calc(26cqw * var(--tg-s)); }
+.tg__gr { right: 4.5cqw; width: calc(16cqw * var(--tg-s)); }
+.tg__ic { display: block; width: calc(12cqw * var(--tg-s)); height: auto; filter: drop-shadow(0 .4cqw .6cqw rgba(0, 0, 0, .5)); position: relative; z-index: 1; }
+.tg__lab {
+  display: block; max-width: 100%; margin-top: calc(-1.4cqw * var(--tg-s)); padding: calc(.5cqw * var(--tg-s)) calc(1.8cqw * var(--tg-s));
+  border-radius: 99px; border: calc(.45cqw * var(--tg-s)) solid var(--tg-ink); background: var(--tc, #d4d7e2);
+  font-family: var(--font-pop); font-style: italic; font-size: calc(3.5cqw * var(--tg-s)); line-height: 1; letter-spacing: .02em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--tg-lab-ink);
+  paint-order: stroke fill; -webkit-text-stroke: calc(.55cqw * var(--tg-s)) var(--tg-ink); box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .45);
+}
+.tg__tr[data-c="rainbow"] .tg__lab { background: var(--tg-rainbow); }
+.tg__ring { position: relative; display: grid; place-items: center; width: calc(14cqw * var(--tg-s)); aspect-ratio: 1; border-radius: 50%;
+  background: var(--tg-ring); box-shadow: 0 0 0 calc(.45cqw * var(--tg-s)) var(--tg-ink), 0 .5cqw 1cqw rgba(0, 0, 0, .5); }
+.tg__ring::before { content: ""; position: absolute; inset: calc(1.4cqw * var(--tg-s)); border-radius: 50%; background: var(--tg-core); box-shadow: inset 0 0 0 calc(.35cqw * var(--tg-s)) var(--tg-ink); }
+.tg__ring b { position: relative; font-family: var(--font-pop); font-style: italic; font-weight: 400; font-size: calc(7.4cqw * var(--tg-s)); line-height: 1; padding-right: .06em;
+  color: transparent; background-image: var(--tg-fill); -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 0 .3cqw var(--tg-ink)) drop-shadow(0 0 .3cqw var(--tg-ink)); }
+.tg__gr .tg__lab { margin-top: calc(-1.2cqw * var(--tg-s)); padding-inline: calc(1.2cqw * var(--tg-s)); background: var(--tg-fill); font-size: calc(3.4cqw * var(--tg-s)); }
+[data-band="bronze"]  { --tg-ring: var(--tg-bronze-ring);  --tg-fill: var(--tg-bronze); }
+[data-band="silver"]  { --tg-ring: var(--tg-silver-ring);  --tg-fill: var(--tg-silver); }
+[data-band="gold"]    { --tg-ring: var(--tg-gold-ring);    --tg-fill: var(--tg-gold); }
+[data-band="rainbow"] { --tg-ring: var(--tg-rainbow-ring); --tg-fill: var(--tg-rainbow); }
+/* grade colour styles */
+.gs-flat [data-band="bronze"]  { --tg-ring: var(--flat-bronze); --tg-fill: linear-gradient(var(--flat-bronze), var(--flat-bronze)); }
+.gs-flat [data-band="silver"]  { --tg-ring: var(--flat-silver); --tg-fill: linear-gradient(var(--flat-silver), var(--flat-silver)); }
+.gs-flat [data-band="gold"]    { --tg-ring: var(--flat-gold);   --tg-fill: linear-gradient(var(--flat-gold), var(--flat-gold)); }
+.gs-glow .tg__gr[data-band="bronze"] .tg__ring { box-shadow: 0 0 0 calc(.45cqw * var(--tg-s)) var(--tg-ink), 0 0 3cqw #ff9a52; }
+.gs-glow .tg__gr[data-band="silver"] .tg__ring { box-shadow: 0 0 0 calc(.45cqw * var(--tg-s)) var(--tg-ink), 0 0 3cqw #dfe8ff; }
+.gs-glow .tg__gr[data-band="gold"] .tg__ring   { box-shadow: 0 0 0 calc(.45cqw * var(--tg-s)) var(--tg-ink), 0 0 3.4cqw #ffd45a; }
+.gs-glow .tg__gr[data-band="rainbow"] .tg__ring { box-shadow: 0 0 0 calc(.45cqw * var(--tg-s)) var(--tg-ink), 0 0 4cqw #b98cff; animation: spin 3s linear infinite; }
+.gs-glow .tg__gr[data-band="rainbow"] .tg__ring b { animation: spin 3s linear infinite reverse; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .gs-glow .tg__ring, .gs-glow .tg__ring b { animation: none !important; } }
+
+/* layout B: small, top left under the name, no labels · D: game spots, no labels */
+.lay-b .tg__tr, .lay-b .tg__gr { top: 10cqw; }
+.lay-b .tg__tr { left: 3.5cqw; width: auto; }
+.lay-b .tg__gr { left: calc(4.5cqw + 13cqw * var(--tg-s)); right: auto; width: auto; }
+.lay-b .tg__ic { width: calc(11cqw * var(--tg-s)); }
+.lay-b .tg__ring { width: calc(11cqw * var(--tg-s)); }
+.lay-b .tg__ring b { font-size: calc(6cqw * var(--tg-s)); }
+.lay-b .tg__lab, .lay-d .tg__lab { display: none; }
+.lay-d .tg__ic { width: calc(14cqw * var(--tg-s)); }
+/* layout C: a strip under the card instead of on the picture */
+.lay-c .tg { display: none; }
+.strip { display: none; }
+.lay-c .strip { display: flex; }
+.strip { width: 100%; align-items: center; justify-content: space-between; gap: 4px; min-height: 22px; padding: 3px 5px; border-radius: 8px; background: rgba(255, 255, 255, .05); border: 1px solid var(--line-2); container-type: inline-size; }
+.strip:empty { visibility: hidden; }
+.strip__tr { display: flex; align-items: center; gap: 4px; min-width: 0; font: 700 11px/1.1 var(--font-body); color: var(--tc, var(--ink)); }
+.strip__tr[data-c="rainbow"] span { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.strip__tr span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.strip img { width: 18px; height: 18px; flex: none; }
+.strip__gr { flex: none; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--tg-ring); position: relative; }
+.strip__gr::before { content: ""; position: absolute; inset: 2.5px; border-radius: 50%; background: var(--tg-core); }
+.strip__gr b { position: relative; font: italic 400 12px/1 var(--font-pop); color: transparent; background-image: var(--tg-fill); -webkit-background-clip: text; background-clip: text; }
+.big .strip { min-height: 40px; padding: 6px 10px; }
+.big .strip__tr { font-size: 15px; }
+.big .strip img { width: 30px; height: 30px; }
+.big .strip__gr { width: 34px; height: 34px; }
+.big .strip__gr b { font-size: 20px; }
+.bigwrap { display: grid; gap: 8px; justify-items: center; }
+.bigwrap .strip { width: min(100%, 340px); }
+.lay-c .tg-cut { display: none; }
+
+/* controls */
+.panel { display: grid; gap: 10px; padding: 14px; border-radius: 14px; background: rgba(22, 29, 51, .7); border: 1px solid var(--line-2); min-width: 0; }
+.qt { display: flex; align-items: baseline; gap: 8px; margin: 0; font-weight: 700; font-size: 15px; }
+.qt .n { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); color: var(--on-gold); font: 700 12px/1 var(--font-body); }
+.opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.opt { display: grid; gap: 1px; min-height: 40px; padding: 7px 12px; border-radius: 10px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .03); color: var(--ink); font: 600 13.5px/1.25 var(--font-body); text-align: left; cursor: pointer; transition: background-color .16s, border-color .16s, transform .16s; }
+.opt small { font-weight: 400; font-size: 11.5px; color: var(--ink-faint); }
+.opt[aria-pressed="true"] { border-color: var(--gold); background: var(--pick); box-shadow: inset 0 0 0 1px var(--gold); }
+.opt:active { transform: scale(.97); }
+.opt:focus-visible, .chip:focus-visible, .gbtn:focus-visible, .copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.now { display: inline-block; margin-left: 4px; padding: 0 5px; border-radius: 4px; background: rgba(124, 224, 124, .14); color: #9be79b; font-size: 10px; font-weight: 700; letter-spacing: .04em; vertical-align: 1px; }
+
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 6px; }
+.chip { display: flex; align-items: center; gap: 5px; height: 42px; min-width: 0; padding: 0 6px 0 4px; border-radius: 10px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .03); color: var(--tc, var(--ink)); font: 700 12px/1.15 var(--font-body); cursor: pointer; text-align: left; }
+.chip img { width: 30px; height: 30px; flex: none; }
+.chip[data-c="rainbow"] span { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.chip[aria-pressed="true"] { border-color: var(--gold); background: var(--pick); box-shadow: inset 0 0 0 1px var(--gold); }
+.chip--none { justify-content: center; color: var(--ink-dim); font-weight: 600; }
+.grades { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px; }
+.gbtn { aspect-ratio: 1; width: 100%; max-width: 42px; justify-self: center; padding: 0; border-radius: 50%; border: 0; background: var(--tg-fill, rgba(255,255,255,.08)); color: var(--tg-ink); font: italic 400 16px/1 var(--font-pop); cursor: pointer; opacity: .55; }
+.gbtn[data-band="none"] { color: var(--ink-dim); font: 600 11px/1 var(--font-body); }
+.gs-flat .gbtn[data-band="bronze"] { background: var(--flat-bronze); } .gs-flat .gbtn[data-band="silver"] { background: var(--flat-silver); } .gs-flat .gbtn[data-band="gold"] { background: var(--flat-gold); }
+.gbtn[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 2px var(--tg-ink), 0 0 0 4px var(--gold); }
+.fx { margin: 0; font-size: 13px; color: var(--ink-dim); }
+.fx b { color: var(--ink); }
+
+/* sheet previews */
+.sheet { display: grid; gap: 10px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: #0f1528; }
+.sheet h4 { margin: 0; font: 700 11px/1 var(--font-display); letter-spacing: .16em; color: var(--ink-faint); text-transform: uppercase; }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 3px; border-radius: 10px; border: 1px solid var(--line-2); }
+.tab { height: 34px; border: 0; border-radius: 8px; background: transparent; color: var(--ink-dim); font: 700 12.5px/1 var(--font-body); cursor: pointer; }
+.tab[aria-selected="true"] { background: linear-gradient(180deg, #f3d48e, #c99a45); color: var(--on-gold); }
+.shop { display: grid; gap: 6px; max-height: 380px; overflow-y: auto; padding-right: 2px; }
+.shoprow { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 6px 8px; border-radius: 12px; border: 1.5px solid color-mix(in srgb, var(--tc, #9aa) 55%, transparent); background: color-mix(in srgb, var(--tc, #9aa) 9%, #0f1528); cursor: pointer; text-align: left; color: var(--ink); font: inherit; }
+.shoprow[data-c="rainbow"] { border-color: #b98cff; }
+.shoprow img { width: 46px; height: 46px; }
+.shoprow b { display: block; font: 700 14px/1.2 var(--font-body); color: var(--tc, var(--ink)); }
+.shoprow[data-c="rainbow"] b { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.shoprow small { display: block; font-size: 11.5px; line-height: 1.35; color: var(--ink-dim); }
+.shoprow .tier { font: 700 10px/1 var(--font-body); letter-spacing: .06em; color: var(--ink-faint); text-transform: uppercase; }
+.shoprow[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--gold); }
+.rarline { display: flex; gap: 6px; overflow: hidden; }
+.rarline span { flex: none; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-2); font-size: 12px; color: var(--ink-dim); }
+.rarline span.on { background: linear-gradient(180deg, #f3d48e, #c99a45); color: var(--on-gold); border-color: transparent; }
+
+.answer { display: grid; gap: 8px; }
+.answer textarea { width: 100%; min-height: 150px; padding: 10px; border-radius: 10px; border: 1px solid var(--line-2); background: #0f1528; color: var(--ink); font: 13px/1.5 var(--font-body); resize: vertical; }
+.copy { justify-self: start; height: 42px; padding: 0 18px; border-radius: 10px; border: 0; background: linear-gradient(180deg, #f3d48e, #c99a45); color: var(--on-gold); font: 700 14px/1 var(--font-body); cursor: pointer; }
+.copied { font-size: 13px; color: #9be79b; }
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+  <header>
+    <p class="eyebrow">Mockup · Deck</p>
+    <h1>Grade + Trait บนการ์ด</h1>
+    <p class="lead">กดเลือกแต่ละข้อ แถว Deck ด้านบนกับการ์ดใหญ่เปลี่ยนตามทันที เสร็จแล้วกด "คัดลอกคำตอบ" ด้านล่าง ส่งมาในแชทได้เลย · ข้อที่มีป้าย <span class="now">ตอนนี้</span> = ที่ทำไว้ในเว็บแล้ว (ยังไม่ merge)</p>
+  </header>
+
+  <div class="deckbar" aria-label="แถว Deck ตัวอย่าง">
+    <div class="row deck" id="deck"></div>
+  </div>
+
+  <section aria-labelledby="s-big">
+    <h2 id="s-big">การ์ดในหน้าต่างตั้งค่า (ใหญ่)</h2>
+    <div class="bigwrap" id="bigwrap"></div>
+    <p class="note">ตัวเลข ATK ในรูปตัวอย่างไม่ได้คูณ Trait/Grade (ในเว็บจริงคูณแล้ว) · การ์ดช่อง 2–4 ตั้งไว้ให้เห็นสี Grade ครบ 4 สี</p>
+  </section>
+
+  <section class="panel" aria-labelledby="q-tr">
+    <p class="qt" id="q-tr"><span class="n">★</span>ลองใส่ Trait (ช่อง 1)</p>
+    <div class="chips" id="traits"></div>
+    <p class="fx" id="trfx"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="q-gr">
+    <p class="qt" id="q-gr"><span class="n">★</span>ลองใส่ Grade (ช่อง 1)</p>
+    <div class="grades" id="grades"></div>
+  </section>
+
+  <h2>เลือกแบบ</h2>
+  <div id="choices" style="display:grid;gap:12px"></div>
+
+  <section class="panel" aria-labelledby="q-sheet">
+    <p class="qt" id="q-sheet"><span class="n">6</span>หน้าต่างตอนแตะการ์ดในช่อง</p>
+    <div class="opts" data-q="sheet"></div>
+    <div class="sheet" id="sheet"></div>
+  </section>
+
+  <h2>ข้อเสนอ (กดเลือก)</h2>
+  <div id="props" style="display:grid;gap:12px"></div>
+
+  <section class="panel answer" aria-labelledby="q-ans">
+    <p class="qt" id="q-ans"><span class="n">✓</span>คำตอบของคุณ</p>
+    <textarea id="ans" readonly aria-label="คำตอบที่จะส่งให้ Claude"></textarea>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="copy" id="copy" type="button">คัดลอกคำตอบ</button><span class="copied" id="copied" hidden>คัดลอกแล้ว ไปวางในแชทได้เลย</span></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const IMG = { cards: "deck-tg/", traits: "../images/traits/" };
+  const TRAITS = [
+    { id: "ascendant", name: "Ascendant", tier: "Secret", chance: "0.02%", color: "rainbow", fx: ["x2 Damage", "x2 Health", "20% chance to crit for x2.5 damage", "Comes back once with 50% HP"] },
+    { id: "limitless", name: "Limitless", tier: "Divine", chance: "0.07%", color: "rainbow", fx: ["x1.7 Damage", "x1.7 Health", "12% chance to dodge a hit", "Takes 10% less damage"] },
+    { id: "sage-mode", name: "Sage Mode", tier: "Mythic", chance: "0.2%", color: "#ff8a5c", fx: ["x1.5 Damage", "x1.5 Health", "Heals 12% of the damage it deals", "Starts every fight with a 15% HP shield"] },
+    { id: "awakened", name: "Awakened", tier: "Legendary", chance: "0.5%", color: "#ffb347", fx: ["x1.35 Damage", "x1.35 Health", "15% chance to crit for x2 damage"] },
+    { id: "undying", name: "Undying", tier: "Epic", chance: "1.2%", color: "#ff8fd8", fx: ["x1.25 Health", "Comes back once with 30% HP"] },
+    { id: "prodigy", name: "Prodigy", tier: "Epic", chance: "2%", color: "#b98cff", fx: ["x1.25 Damage", "x1.25 Health", "First attack does 30% more damage"] },
+    { id: "keen-eye", name: "Keen Eye", tier: "Rare", chance: "4%", color: "#ffd34d", fx: ["x1.12 Damage", "12% chance to crit for x2 damage"] },
+    { id: "bloodlust", name: "Bloodlust", tier: "Rare", chance: "5%", color: "#ff6b6b", fx: ["x1.2 Damage", "Heals 8% of the damage it deals"] },
+    { id: "iron-body", name: "Iron Body", tier: "Rare", chance: "6%", color: "#6eb0ff", fx: ["x1.2 Health", "Takes 6% less damage"] },
+    { id: "spirited", name: "Spirited", tier: "Uncommon", chance: "10%", color: "#5fe0b0", fx: ["x1.12 Damage", "x1.12 Health"] },
+    { id: "nimble", name: "Nimble", tier: "Uncommon", chance: "15%", color: "#7ce07c", fx: ["x1.05 Damage", "x1.05 Health", "5% chance to dodge a hit"] },
+    { id: "sharp", name: "Sharp", tier: "Common", chance: "26%", color: "#d4d7e2", fx: ["x1.08 Damage"] },
+    { id: "tough", name: "Tough", tier: "Common", chance: "30%", color: "#d4d7e2", fx: ["x1.08 Health"] },
+  ];
+  const TIER_COLOR = { Common: "var(--t-common)", Uncommon: "var(--t-uncommon)", Rare: "var(--t-rare)", Epic: "var(--t-epic)", Legendary: "var(--t-legendary)", Mythic: "var(--t-mythic)", Divine: "rainbow", Secret: "rainbow" };
+  const byId = (id) => TRAITS.find((t) => t.id === id) || null;
+  const band = (g) => (g >= 10 ? "rainbow" : g >= 7 ? "gold" : g >= 4 ? "silver" : g >= 1 ? "bronze" : "none");
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // the deck row: slot 1 follows the pickers, 2–4 show the other grade colours
+  const SLOTS = [
+    { id: "divergent-fist-vessel", name: "Divergent Fist Vessel", trait: "limitless", grade: 10 },
+    { id: "destroyer-god", name: "Destroyer God", trait: "sage-mode", grade: 5 },
+    { id: "storm-dragon", name: "Storm Dragon", trait: "bloodlust", grade: 8 },
+    { id: "one-punch-caped-hero", name: "One Punch Caped Hero", trait: "tough", grade: 2 },
+  ];
+
+  const Q = [
+    { key: "lay", title: "ตำแหน่งป้ายบนการ์ด", opts: [
+      ["a", "A · เหมือนเกม", "Trait ซ้าย + Grade ขวา กลางการ์ด", true],
+      ["d", "B · เหมือนเกม ไม่มีป้ายชื่อ", "ไอคอน + วงเลข ใหญ่ขึ้น อ่านง่ายตอนการ์ดเล็ก"],
+      ["b", "C · มุมซ้ายบน", "เล็ก ไม่บังรูป"],
+      ["c", "D · แถบใต้การ์ด", "ไม่ทับรูปเลย"],
+    ] },
+    { key: "size", title: "ขนาดป้ายในช่อง Deck (การ์ดเล็ก)", opts: [
+      ["1", "1× เท่าเกม", "สัดส่วนตรงรูปเกม"], ["1.3", "1.3×", "ใหญ่ขึ้นนิด", true], ["1.6", "1.6×", "อ่านง่ายบนมือถือ"],
+    ] },
+    { key: "gs", title: "สี Grade (บรอนซ์ 1–3 · เงิน 4–6 · ทอง 7–9 · รุ้ง 10)", opts: [
+      ["metal", "โลหะไล่สี", "เงาแบบเหรียญ", true], ["flat", "สีเรียบ", "สีเดียว (10 ยังรุ้ง)"], ["glow", "โลหะ + เรืองแสง", "เกรด 10 วงรุ้งหมุน"],
+    ] },
+    { key: "tc", title: "สีป้ายชื่อ Trait", opts: [
+      ["trait", "สีของแต่ละ Trait", "ตามสีชื่อในร้านเกม", true], ["tier", "สีตามระดับ", "Common เทา · Rare ฟ้า · Epic ม่วง …"],
+    ] },
+    { key: "nm", title: "ชื่อการ์ดบนช่อง (แทน Slot 1)", opts: [
+      ["cut", "บรรทัดเดียว ตัด …", "Divergent Fist …", true], ["two", "ได้ 2 บรรทัด", "เห็นชื่อเต็ม"], ["under", "ใต้การ์ด", "ไม่มีป้ายทองด้านบน"],
+    ] },
+  ];
+  const SHEET = [["a", "A · หน้าเดียว", "Rarity + Grade + Trait ในหน้าเดียว เลื่อนลง", true], ["b", "B · แท็บ", "Rarity | Grade | Trait"], ["c", "C · แบบร้าน Trait ในเกม", "รายการเต็ม มีผลทุกบรรทัด + %"]];
+  const PROPS = [
+    { key: "per", title: "Trait ตั้งต่ออะไร", opts: [["slot", "ต่อช่องใน Deck", "แต่ละ Deck ตั้งแยกกัน", true], ["card", "ต่อการ์ด (เหมือนเกม)", "ทุกใบซ้ำได้ Trait เดียวกัน ตั้งครั้งเดียว ทุก Deck ตาม"]] },
+    { key: "geff", title: "Grade 1–9 มีผลกับ ATK/HP ไหม", opts: [["none", "ไม่มีผล", "เฉพาะ 10 = ×1.3 แบบกฎเดิม", true], ["step", "+2.5% ต่อเกรด", "10 = +25%"], ["ask", "ไม่แน่ใจ", "ผมจะส่งคลิป/แคปให้"]] },
+    { key: "img", title: "รูป Save image ใส่ป้าย Trait/Grade", opts: [["yes", "ใส่", ""], ["no", "ไม่ใส่", "", true]] },
+    { key: "keep", title: "กด Change card แล้ว Trait/Grade", opts: [["clear", "ล้างออก", "การ์ดใหม่เริ่มว่าง", true], ["keep", "เก็บไว้ที่ช่อง", "เปลี่ยนการ์ดแต่ Trait/Grade อยู่ต่อ"]] },
+    { key: "extra", title: "ผลพิเศษของ Trait (Crit, Dodge, ฟื้น…) ในหน้า Deck", opts: [["sheet", "แค่ในหน้าต่างตั้งค่า", "", true], ["under", "บรรทัดเล็กใต้การ์ดด้วย", "เช่น Crit 20% · Revive 50%"]] },
+    { key: "tap", title: "แตะป้ายบนการ์ด", opts: [["sheet", "เปิดหน้าต่างตั้งค่าเหมือนแตะการ์ด", "", true], ["quick", "เปิดเลือก Trait/Grade ตรงนั้นเลย", "ลัดขึ้น 1 ขั้น"]] },
+  ];
+
+  const st = { trait: "limitless", grade: 10, lay: "a", size: "1.3", gs: "metal", tc: "trait", nm: "cut", sheet: "a", per: "slot", geff: "none", img: "no", keep: "clear", extra: "sheet", tap: "sheet", tab: "grade" };
+  try { const saved = JSON.parse(localStorage.getItem("cbi-mock-tg") || "null"); if (saved && typeof saved === "object") Object.assign(st, saved); } catch (e) {}
+  const save = () => { try { localStorage.setItem("cbi-mock-tg", JSON.stringify(st)); } catch (e) {} };
+
+  const colorOf = (t) => (st.tc === "tier" ? TIER_COLOR[t.tier] : t.color);
+  const tcStyle = (t) => { const c = colorOf(t); return c === "rainbow" ? "" : `--tc:${c}`; };
+  const cAttr = (t) => (colorOf(t) === "rainbow" ? "rainbow" : "solid");
+
+  function badges(t, g) {
+    const tr = t ? `<span class="tg__tr" data-c="${cAttr(t)}" style="${tcStyle(t)}"><img class="tg__ic" src="${IMG.traits}${t.id}.webp" alt=""><span class="tg__lab">${esc(t.name)}</span></span>` : "";
+    const gr = g > 0 ? `<span class="tg__gr" data-band="${band(g)}"><span class="tg__ring"><b>${g}</b></span><span class="tg__lab">Grade</span></span>` : "";
+    return `<span class="tg">${tr}${gr}</span>`;
+  }
+  function strip(t, g) {
+    return `<div class="strip">${t ? `<span class="strip__tr" data-c="${cAttr(t)}" style="${tcStyle(t)}"><img src="${IMG.traits}${t.id}.webp" alt=""><span>${esc(t.name)}</span></span>` : "<span></span>"}${g > 0 ? `<span class="strip__gr" data-band="${band(g)}"><b>${g}</b></span>` : ""}</div>`;
+  }
+  const card = (s, t, g) => `<div class="gc"><img class="art" src="${IMG.cards}${s.id}.webp" alt="${esc(s.name)}">${badges(t, g)}</div>`;
+  const extraLine = (t) => {
+    if (st.extra !== "under" || !t) return "";
+    const x = t.fx.filter((f) => !/^x[\d.]+ (Damage|Health)$/.test(f)).map((f) => f.replace(/(\d+)% chance to crit for x([\d.]+) damage/, "Crit $1% ×$2").replace(/(\d+)% chance to dodge a hit/, "Dodge $1%").replace(/Comes back once with (\d+)% HP/, "Revive $1%").replace(/Takes (\d+)% less damage/, "−$1% dmg taken").replace(/Heals (\d+)% of the damage it deals/, "Lifesteal $1%").replace(/Starts every fight with a (\d+)% HP shield/, "Shield $1%").replace(/First attack does (\d+)% more damage/, "1st hit +$1%"));
+    return x.length ? `<span class="rar" style="color:var(--ink)">${esc(x.join(" · "))}</span>` : "";
+  };
+
+  function paint() {
+    const root = document.getElementById("root");
+    root.className = `wrap lay-${st.lay} gs-${st.gs} name-${st.nm === "cut" ? "cut" : st.nm === "two" ? "2" : "under"}`;
+    root.style.setProperty("--deck-s", st.size);
+    const slots = SLOTS.map((s, i) => (i === 0 ? { ...s, trait: st.trait, grade: st.grade } : s));
+    document.getElementById("deck").innerHTML = slots.map((s) => {
+      const t = byId(s.trait);
+      return `<div class="slot"><span class="pos" title="${esc(s.name)}">${esc(s.name)}</span>${card(s, t, s.grade)}${strip(t, s.grade)}<span class="under">${esc(s.name)}</span><span class="rar">● GODLIKE</span>${extraLine(t)}</div>`;
+    }).join("");
+    const t = byId(st.trait);
+    document.getElementById("bigwrap").innerHTML = `<div class="big">${card(SLOTS[0], t, st.grade)}</div>${strip(t, st.grade)}`;
+    document.querySelectorAll("#traits .chip").forEach((b) => b.setAttribute("aria-pressed", String((b.dataset.t || null) === (st.trait || null))));
+    document.querySelectorAll("#grades .gbtn").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.g) === st.grade)));
+    document.getElementById("trfx").innerHTML = t ? `<b>${esc(t.name)}</b> · ${esc(t.tier)} · ${t.fx.map(esc).join(" · ")}` : "ไม่มี Trait";
+    document.querySelectorAll(".opts").forEach((box) => box.querySelectorAll(".opt").forEach((b) => b.setAttribute("aria-pressed", String(st[box.dataset.q] === b.dataset.v))));
+    paintSheet();
+    paintAnswer();
+    save();
+  }
+
+  function gradeRow() {
+    return `<div class="grades">${Array.from({ length: 11 }, (_, g) => `<button type="button" class="gbtn" data-g="${g}" data-band="${band(g)}" aria-pressed="${g === st.grade}" style="${g ? `--tg-fill:var(--tg-${band(g) === "rainbow" ? "rainbow" : band(g)})` : ""}" aria-label="${g ? "Grade " + g : "ไม่มี Grade"}">${g || "ไม่มี"}</button>`).join("")}</div>`;
+  }
+  function traitGrid() { return `<div class="chips">${chipHTML()}</div>`; }
+  function chipHTML() {
+    return `<button type="button" class="chip chip--none" data-t="">ไม่มี</button>` + TRAITS.map((t) => `<button type="button" class="chip" data-t="${t.id}" data-c="${cAttr(t)}" style="${tcStyle(t)}"><img src="${IMG.traits}${t.id}.webp" alt=""><span>${esc(t.name)}</span></button>`).join("");
+  }
+  function shopList() {
+    return `<div class="shop">${TRAITS.map((t) => `<button type="button" class="shoprow" data-t="${t.id}" data-c="${cAttr(t)}" style="${tcStyle(t) || "--tc:#b98cff"}" aria-pressed="${t.id === st.trait}"><img src="${IMG.traits}${t.id}.webp" alt=""><span><b>${esc(t.name)}</b><small>${t.fx.map(esc).join("<br>")}</small></span><span class="tier">${esc(t.tier)}<br>${t.chance}</span></button>`).join("")}</div>`;
+  }
+  const rarLine = `<div class="rarline"><span>Cosmic</span><span>Ascended</span><span class="on">Godlike</span><span>Godly</span></div>`;
+  function paintSheet() {
+    const el = document.getElementById("sheet");
+    const fix = (h) => h.replace(/aria-pressed="[^"]*"/g, "");
+    if (st.sheet === "a") el.innerHTML = `<h4>Rarity</h4>${rarLine}<h4>Grade</h4>${fix(gradeRow())}<h4>Trait</h4>${fix(traitGrid())}`;
+    else if (st.sheet === "b") el.innerHTML = `<div class="tabs" role="tablist">${[["rar", "Rarity"], ["grade", "Grade"], ["trait", "Trait"]].map(([k, l]) => `<button type="button" class="tab" role="tab" data-tab="${k}" aria-selected="${st.tab === k}">${l}</button>`).join("")}</div>${st.tab === "rar" ? rarLine : st.tab === "grade" ? fix(gradeRow()) : fix(traitGrid())}`;
+    else el.innerHTML = `<h4>Rarity</h4>${rarLine}<h4>Grade</h4>${fix(gradeRow())}<h4>Trait</h4>${shopList()}`;
+    el.querySelectorAll(".chip").forEach((b) => b.setAttribute("aria-pressed", String((b.dataset.t || null) === (st.trait || null))));
+    el.querySelectorAll(".gbtn").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.g) === st.grade)));
+  }
+
+  function label(list, key) { const q = list.find((x) => x.key === key); const o = q.opts.find((x) => x[0] === st[key]); return o ? o[1] : ""; }
+  function paintAnswer() {
+    const lines = ["Mockup Deck Grade/Trait — คำตอบ:"];
+    Q.forEach((q, i) => lines.push(`${i + 1}. ${q.title}: ${label(Q, q.key)}`));
+    lines.push(`6. หน้าต่างตอนแตะการ์ด: ${(SHEET.find((x) => x[0] === st.sheet) || [])[1]}`);
+    lines.push("ข้อเสนอ:");
+    PROPS.forEach((q, i) => lines.push(`P${i + 1}. ${q.title}: ${label(PROPS, q.key)}`));
+    document.getElementById("ans").value = lines.join("\n");
+  }
+
+  function optsHTML(q, key) { return q.map(([v, l, sub, now]) => `<button type="button" class="opt" data-v="${v}" aria-pressed="false"><span>${esc(l)}${now ? '<span class="now">ตอนนี้</span>' : ""}</span>${sub ? `<small>${esc(sub)}</small>` : ""}</button>`).join(""); }
+  function build() {
+    document.getElementById("traits").innerHTML = chipHTML();
+    document.getElementById("grades").outerHTML = gradeRow().replace('<div class="grades">', '<div class="grades" id="grades">');
+    document.getElementById("choices").innerHTML = Q.map((q, i) => `<section class="panel"><p class="qt"><span class="n">${i + 1}</span>${esc(q.title)}</p><div class="opts" data-q="${q.key}">${optsHTML(q.opts)}</div></section>`).join("");
+    document.querySelector('.opts[data-q="sheet"]').innerHTML = optsHTML(SHEET);
+    document.getElementById("props").innerHTML = PROPS.map((q, i) => `<section class="panel"><p class="qt"><span class="n">P${i + 1}</span>${esc(q.title)}</p><div class="opts" data-q="${q.key}">${optsHTML(q.opts)}</div></section>`).join("");
+  }
+  build();
+  // the chip / grade colours in the pickers follow the "trait colour" choice: rebuild them when it changes
+  document.addEventListener("click", (e) => {
+    const o = e.target.closest(".opt");
+    if (o) { const k = o.parentNode.dataset.q; st[k] = o.dataset.v; if (k === "tc") document.getElementById("traits").innerHTML = chipHTML(); paint(); return; }
+    const c = e.target.closest(".chip, .shoprow");
+    if (c) { st.trait = c.dataset.t || null; paint(); return; }
+    const g = e.target.closest(".gbtn");
+    if (g) { st.grade = Number(g.dataset.g); paint(); return; }
+    const tb = e.target.closest(".tab");
+    if (tb) { st.tab = tb.dataset.tab; paint(); return; }
+  });
+  document.getElementById("copy").addEventListener("click", () => {
+    const ta = document.getElementById("ans"), ok = () => { document.getElementById("copied").hidden = false; };
+    try { navigator.clipboard.writeText(ta.value).then(ok, () => { ta.focus(); ta.select(); }); } catch (e) { ta.focus(); ta.select(); }
+  });
+  paint();
+})();
+</script>
+</body>
+</html>

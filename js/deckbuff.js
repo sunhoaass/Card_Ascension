@@ -4,8 +4,10 @@
      ATK = base × Π(1 + %damage ÷ 100) · HP = base × Π(1 + %HP ÷ 100)
    base = C.statAt(card, key, the slot's rarity) · every buff MULTIPLIES (checked 2026-11-02 on the owner's battle screenshot:
    King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying).
-   The trait multiplier and the "all 4 grades 10 = × 1.3" bonus were removed with the Grade + Traits systems 2026-11-03
-   (docs/archive-grade-traits.md §1.2 / §2.3 has the old rules).
+   Trait + Grade per card slot (owner 2026-11-04 · back in the Deck only): after the deck's buffs, ATK × the trait's dmg and
+   HP × its hp (data/traits.json · deck.trait[i] = trait id | null) · Grade (deck.grade[i] = 0–10, 0 = none): grade 10 =
+   ATK and HP × 1.3 (the old "all 4 grades 10" rule, docs/archive-grade-traits.md §1.2 · grades 1–9 add nothing until the
+   owner says what they do: GRADE_MULT). The deck's buffs themselves are unchanged.
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
    (same column) gets +X% damage and max HP when the support is mutated (its slot's rarity above Normal) · X = the owner's
    table by the support's odds at the slot's rarity (C.mutAt · 2026-11-02) · every support has one (owner 2026-11-02).
@@ -31,8 +33,8 @@
 
    CBI.deckBuff = {
      compute(deck)
-       -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct, atk, hp,
-            from: [{ name, kind: "card"|"support", atk, hp (% in total), n copies }] }]
+       -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct (deck buffs only), trait, grade, atk, hp (all in),
+            from: [{ name, kind: "card"|"support"|"trait"|"grade", atk, hp (% in total), mA, mH (trait / grade: ×), n copies }] }]
      rarityOf(deck, "cards"|"support", slot) -> the slot's rarity name (also used by js/deck.js, js/teamscore.js, js/share.js)
      wideFirst(supports[4]) -> [bool × 4]: false = a 2nd+ copy of a whole-deck support (gives nothing)
      supportRules(s), cardRules(c), deckWide(s), report()   (report = the table for the owner, also run by tools/deckbuff_report.js)
@@ -146,6 +148,15 @@
       return true;
     });
   }
+  // Grade: 0–10 per card slot · what each grade multiplies ATK and HP by (only 10 is known: × 1.3)
+  const GRADE_MAX = 10;
+  const GRADE_MULT = (g) => (g >= GRADE_MAX ? 1.3 : 1);
+  const gradeAt = (deck, k) => { const g = deck && Array.isArray(deck.grade) ? Math.round(Number(deck.grade[k]) || 0) : 0; return Math.max(0, Math.min(GRADE_MAX, g)); };
+  const traitAt = (deck, k) => {
+    const id = deck && Array.isArray(deck.trait) ? deck.trait[k] : null;
+    return id ? (Array.isArray(C.state.traits) ? C.state.traits : []).find((t) => t.id === id) || null : null;
+  };
+
   function compute(deck) {
     const st = C.state;
     const cardBy = new Map((st.cards || []).map((c) => [c.id, c])), supBy = new Map((Array.isArray(st.support) ? st.support : []).map((s) => [s.id, s]));
@@ -212,10 +223,16 @@
         f.atk = round(((1 + f.atk / 100) * (1 + x.atk / 100) - 1) * 100); f.hp = round(((1 + f.hp / 100) * (1 + x.hp / 100) - 1) * 100); f.copies.add(x.copy);
       });
       from.forEach((f) => { f.n = f.copies.size; delete f.copies; });
+      // then the slot's trait and grade multiply (shown as ×N rows in the buff list)
+      const t = traitAt(deck, k), g = gradeAt(deck, k), gm = GRADE_MULT(g);
+      const tA = t && t.dmg > 0 ? t.dmg : 1, tH = t && t.hp > 0 ? t.hp : 1;
+      if (t && (tA !== 1 || tH !== 1)) from.push({ key: "t:" + t.id, name: t.name, kind: "trait", atk: round((tA - 1) * 100), hp: round((tH - 1) * 100), mA: tA, mH: tH, n: 1 });
+      if (gm !== 1) from.push({ key: "g:" + g, name: `Grade ${g}`, kind: "grade", atk: round((gm - 1) * 100), hp: round((gm - 1) * 100), mA: gm, mH: gm, n: 1 });
       return {
         id: c.id, rarity, base, atkPct, hpPct,
-        atk: Math.round(base.atk * mA),
-        hp: Math.round(base.hp * mH),
+        trait: t ? t.id : null, grade: g,
+        atk: Math.round(base.atk * mA * tA * gm),
+        hp: Math.round(base.hp * mH * tH * gm),
         from,
       };
     });
@@ -241,5 +258,5 @@
   }
 
   root.CBI = root.CBI || {};
-  root.CBI.deckBuff = { compute, rarityOf, wideFirst, supportRules, cardRules, deckWide, mutOf, report, SLOTS };
+  root.CBI.deckBuff = { compute, rarityOf, wideFirst, supportRules, cardRules, deckWide, mutOf, report, SLOTS, GRADE_MAX, GRADE_MULT };
 })(typeof window !== "undefined" ? window : globalThis);

@@ -1,0 +1,20 @@
+{
+  "updated": "2026-11-04",
+  "note": "Trait Shop from the owner's screenshots 2026-11-04 · icons images/traits/<id>.webp (cut from the screenshots, tools/cut_trait_icons.py) · color = the name colour in the shop (rainbow = a rainbow pill) · dmg / hp = multipliers on the card's ATK / HP in a deck · the rest only shows as text (battle system later)",
+  "tiers": ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic", "Divine", "Secret"],
+  "traits": [
+    { "id": "ascendant", "name": "Ascendant", "tier": "Secret", "chance": 0.02, "pity": 6000, "color": "rainbow", "dmg": 2, "hp": 2, "lines": ["20% chance to crit for x2.5 damage", "Comes back once with 50% HP"] },
+    { "id": "limitless", "name": "Limitless", "tier": "Divine", "chance": 0.07, "pity": 2500, "color": "rainbow", "dmg": 1.7, "hp": 1.7, "lines": ["12% chance to dodge a hit", "Takes 10% less damage"] },
+    { "id": "sage-mode", "name": "Sage Mode", "tier": "Mythic", "chance": 0.2, "pity": 1000, "color": "#ff8a5c", "dmg": 1.5, "hp": 1.5, "lines": ["Heals 12% of the damage it deals", "Starts every fight with a 15% HP shield"] },
+    { "id": "awakened", "name": "Awakened", "tier": "Legendary", "chance": 0.5, "pity": 400, "color": "#ffb347", "dmg": 1.35, "hp": 1.35, "lines": ["15% chance to crit for x2 damage"] },
+    { "id": "undying", "name": "Undying", "tier": "Epic", "chance": 1.2, "pity": 150, "color": "#ff8fd8", "hp": 1.25, "lines": ["Comes back once with 30% HP"] },
+    { "id": "prodigy", "name": "Prodigy", "tier": "Epic", "chance": 2, "pity": 100, "color": "#b98cff", "dmg": 1.25, "hp": 1.25, "lines": ["First attack does 30% more damage"] },
+    { "id": "keen-eye", "name": "Keen Eye", "tier": "Rare", "chance": 4, "color": "#ffd34d", "dmg": 1.12, "lines": ["12% chance to crit for x2 damage"] },
+    { "id": "bloodlust", "name": "Bloodlust", "tier": "Rare", "chance": 5, "color": "#ff6b6b", "dmg": 1.2, "lines": ["Heals 8% of the damage it deals"] },
+    { "id": "iron-body", "name": "Iron Body", "tier": "Rare", "chance": 6, "color": "#6eb0ff", "hp": 1.2, "lines": ["Takes 6% less damage"] },
+    { "id": "spirited", "name": "Spirited", "tier": "Uncommon", "chance": 10, "color": "#5fe0b0", "dmg": 1.12, "hp": 1.12, "lines": [] },
+    { "id": "nimble", "name": "Nimble", "tier": "Uncommon", "chance": 15, "color": "#7ce07c", "dmg": 1.05, "hp": 1.05, "lines": ["5% chance to dodge a hit"] },
+    { "id": "sharp", "name": "Sharp", "tier": "Common", "chance": 26, "color": "#d4d7e2", "dmg": 1.08, "lines": [] },
+    { "id": "tough", "name": "Tough", "tier": "Common", "chance": 30, "color": "#d4d7e2", "hp": 1.08, "lines": [] }
+  ]
+}
