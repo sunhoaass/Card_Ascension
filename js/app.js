@@ -946,16 +946,16 @@
      pages comes from the list's length, so it grows by itself as cards are added · bindPager(box, go): ‹ › and the
      typed page number call go(i) (0-based, already inside 0…pages-1) · pageTop(grid): scroll back up to the grid's
      tools after a page change */
-  /* Cards per page follow the screen so every page fills whole rows (owner 2026-10-30): phone 3 × 10 = 30 · tablet 4 × 8 = 32 ·
-     laptop 6 × 6 = 36 · big screen 8 × 5 = 40 · the four grids share the column count (--grid-cols on <html>, css/base.css) ·
-     turning the phone / resizing the window fires "cbi:pagesize": each grid shows the page that has its first card on it again */
-  const PAGE = { cols: 3, rows: 10, size: 30 };
-  const PAGE_STEPS = [[600, 3, 10], [1000, 4, 8], [1600, 6, 6], [Infinity, 8, 5]];   // [screen width below, columns, rows]
+  /* One layout (owner 2026-11-04): 50 cards a page on every screen · phone / tablet 3 a row · computer / big screen
+     (≥ PAGE_WIDE px) 5 a row = 10 rows · the grids share the column count (--grid-cols on <html>, css/base.css) ·
+     crossing PAGE_WIDE (turning a tablet / resizing the window) fires "cbi:pagesize": each grid shows the page that has its first card on it again */
+  const PAGE_WIDE = 900;
+  const PAGE = { cols: 3, size: 50 };
   function pageLayout() {
     const w = window.innerWidth || document.documentElement.clientWidth;
-    const [, cols, rows] = PAGE_STEPS.find((s) => w < s[0]);
-    if (cols === PAGE.cols && rows === PAGE.rows) return;
-    PAGE.cols = cols; PAGE.rows = rows; PAGE.size = cols * rows;
+    const cols = w >= PAGE_WIDE ? 5 : 3;
+    if (cols === PAGE.cols && document.documentElement.style.getPropertyValue("--grid-cols")) return;
+    PAGE.cols = cols;
     document.documentElement.style.setProperty("--grid-cols", cols);
     document.dispatchEvent(new CustomEvent("cbi:pagesize"));
   }

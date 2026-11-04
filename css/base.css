@@ -297,7 +297,7 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 /* ---------- Card grid ---------- */
 .card-grid {
   display: grid; gap: var(--s-4) var(--s-3);
-  grid-template-columns: repeat(var(--grid-cols, 3), minmax(0, 1fr));   /* --grid-cols: 3 / 4 / 6 / 8 by screen width, set by app.js with the page size */
+  grid-template-columns: repeat(var(--grid-cols, 3), minmax(0, 1fr));   /* --grid-cols: 3 (phone) / 5 (≥ 900px), set by app.js (2026-11-04) */
 }
 @media (min-width: 1000px) { .card-grid { gap: var(--s-6) var(--s-5); } }
 
