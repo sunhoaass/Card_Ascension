@@ -507,7 +507,12 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-pill--tr > span { margin: 0 auto; }
 .dk-pill__ic { flex: none; width: 15px; height: 15px; }
 /* support: Mutation +x% */
-.dk-pill--mut:not([data-off]) { border-color: color-mix(in srgb, var(--gr-green) 60%, transparent); background: color-mix(in srgb, var(--gr-green) 12%, var(--gr-box)); color: var(--gr-green); }
+.dk-pill--mut:not([data-off]) { border-color: color-mix(in srgb, var(--gr-green) 60%, transparent); background: color-mix(in srgb, var(--gr-green) 12%, var(--gr-box)); color: var(--gr-green); gap: 4px; padding: 0 4px; }
+/* owner 2026-11-04: the % always shows (it never shrinks) · the word = the GRADE pill's face · MUT on a phone, MUTATION when there's room */
+.dk-pill--mut:not([data-off]) > span { flex: 0 1 auto; font-family: var(--gc-font-num); font-weight: 600; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.dk-pill--mut i { font-style: normal; }
+.dk-pill--mut .dk-pill__long { display: none; }
+.dk-pill--mut b { flex: none; font-family: var(--gc-font-num); font-weight: 700; font-size: 12.5px; letter-spacing: .01em; }
 @media (min-width: 720px) {
   .dk-slot { --nm-h: 32px; }
   .dk-nm span { font-size: 13px; }
@@ -516,7 +521,14 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
   .dk-pill--rar > span { font-size: 13px; }
   .dk-pill--gr b { font-size: 15px; }
   .dk-pill__ic { width: 18px; height: 18px; }
+  .dk-pill--mut b { font-size: 14px; }
+  .dk-pill--mut .dk-pill__long { display: inline; }
+  .dk-pill--mut .dk-pill__short { display: none; }
+  .dkl__info .dk-pill--mut .dk-pill__long { display: none; }   /* the deck list's small pills keep MUT */
+  .dkl__info .dk-pill--mut .dk-pill__short { display: inline; }
 }
+.dkl__info .dk-pill--mut > span { font-size: 8.5px; }
+.dkl__info .dk-pill--mut b { font-size: 10px; }
 
 .dk-ss-sheet { max-width: 560px; }
 .dk-ss { display: grid; gap: var(--s-4); min-width: 0; }
