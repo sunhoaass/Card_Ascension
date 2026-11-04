@@ -2073,3 +2073,10 @@
 ### 2026-11-04 กฎรอบรูปว่างใหม่ (เอกสารอย่างเดียว)
 - **ที่ทำ:** PROGRESS ▶️ "เขียนใหม่ทั้งใบ" กฎเพิ่ม (2): เดิม "จับคู่รูปว่าง → id แล้วหยุดรอเจ้าของยืนยัน" → **ทำจบในรอบเดียว (จับคู่ → ใส่ข้อมูล → ทดสอบ → pull request → merge เอง)** · เพิ่ม (2.1) **ยังไม่ต้องจัด Tier List** (ไม่ทำงาน B · ใบใหม่ unranked) · prompt รอบรูปว่าง + กฎทำงานข้อ 12 แก้ตาม
 - **ไฟล์:** `PROGRESS.md` · `HISTORY.md` (ไม่แตะโค้ด · ไม่เปลี่ยน `?v=`)
+
+### 2026-11-04 เอาหน้า Tier List + แท็บ Meta Decks ออก (ชั่วคราว · `?v=81`)
+- **เจ้าของสั่ง:** หน้า Deck จะรวมระบบ Grade + Traits (ระบบต่อสู้) ทีหลัง · ตอนนี้เอา Meta Decks ออก + เอาหน้า Tier List ที่จัดอยู่ออก จะจัดใหม่ทีเดียว · แล้ว merge
+- **ที่ทำ:** เมนูล่าง/เมนูคอมเหลือ Home / Cards / Deck (`index.html` `--n:3` · `js/app.js` `PAGES` ไม่มี `tier` · `pageFromHash` เจอ `#tier…` = replaceState `#home`) · หน้า Deck: `#deck-tabs` ใส่ `hidden` · `js/deck.js` `META_OFF = true` → `#deck/meta` = replaceState `#deck` แล้วเปิด My Decks · ข้อความกล่อง "No decks yet" ตัด "or copy a Meta Deck and make it yours" · `?v=80` → `81` ทุกบรรทัด
+- **ไม่ได้ลบ:** `#page-tier`, `js/tier.js`, `js/tiermaker.js` (สร้าง `C.dialog` ที่ Deck/แชร์ใช้), `css/tier.css`, `css/tiermaker.css`, `#deck-meta`, `data/teams.json` · ข้อมูล Tier Maker ในเครื่องผู้ใช้ไม่แตะ
+- **ทดสอบ (Playwright 412×900):** `#home` `#tier` `#tier/my` `#deck` `#deck/meta` `#cards` → เมนู 3 ปุ่มทุกหน้า · `#tier`/`#tier/my` = Home (hash `#home`) · `#deck/meta` = My Decks (hash `#deck`) · แถบ Meta Decks ไม่แสดง · กดเมนู Cards → Home ปกติ · console error 0
+- **ไฟล์:** `index.html` · `js/app.js` · `js/deck.js` · `PROGRESS.md` · `HISTORY.md`

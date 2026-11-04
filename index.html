@@ -74,16 +74,16 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=80">
-  <link rel="stylesheet" href="css/base.css?v=80">
-  <link rel="stylesheet" href="css/fx.css?v=80">
-  <link rel="stylesheet" href="css/cards.css?v=80">
-  <link rel="stylesheet" href="css/tier.css?v=80">
-  <link rel="stylesheet" href="css/deck.css?v=80">
-  <link rel="stylesheet" href="css/support.css?v=80">
-  <link rel="stylesheet" href="css/tiermaker.css?v=80">
-  <link rel="stylesheet" href="css/detail.css?v=80">
-  <link rel="stylesheet" href="css/home.css?v=80">
+  <link rel="stylesheet" href="css/tokens.css?v=81">
+  <link rel="stylesheet" href="css/base.css?v=81">
+  <link rel="stylesheet" href="css/fx.css?v=81">
+  <link rel="stylesheet" href="css/cards.css?v=81">
+  <link rel="stylesheet" href="css/tier.css?v=81">
+  <link rel="stylesheet" href="css/deck.css?v=81">
+  <link rel="stylesheet" href="css/support.css?v=81">
+  <link rel="stylesheet" href="css/tiermaker.css?v=81">
+  <link rel="stylesheet" href="css/detail.css?v=81">
+  <link rel="stylesheet" href="css/home.css?v=81">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -175,10 +175,10 @@
       <svg class="brand__crest" aria-hidden="true"><use href="#i-crest"/></svg>
       <span class="brand__name">Card Battle Infinity</span>
     </a>
-    <ul class="nav__list" style="--n:4">
+    <ul class="nav__list" style="--n:3">
       <li aria-hidden="true" class="nav__indicator"></li>
       <li><button class="nav__btn fx-press" data-page="home" type="button"><svg aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></button></li>
-      <li><button class="nav__btn fx-press" data-page="tier" type="button"><svg aria-hidden="true"><use href="#i-crown"/></svg><span>Tier List</span></button></li>
+      <!-- Tier List menu button removed 2026-11-04 (owner: rank everything again later) · put back: data-page="tier" + "tier" in PAGES (js/app.js) + --n:4 -->
       <li><button class="nav__btn fx-press" data-page="cards" type="button"><svg aria-hidden="true"><use href="#i-fan"/></svg><span>Cards</span></button></li>
       <li><button class="nav__btn fx-press" data-page="deck" type="button"><svg aria-hidden="true"><use href="#i-book"/></svg><span>Deck</span></button></li>
     </ul>
@@ -234,7 +234,7 @@
       </div>
     </section>
 
-    <!-- Tier List: Global (Cards | Support) + My Lists, in js/tier.js -->
+    <!-- Tier List: Global (Cards | Support) + My Lists, in js/tier.js · not reachable since 2026-11-04 (no menu button, #tier -> Home) · kept because js/tiermaker.js makes C.dialog for Deck/share -->
     <section id="page-tier" class="page" hidden aria-labelledby="tier-title">
       <div class="page__head">
         <p class="page__eyebrow">The Gallery</p>
@@ -396,7 +396,8 @@
         <p id="deck-lead" class="page__lead">Build your own four-card decks, with a support under each card. A card or support can fill more than one slot. Pick a mode and a rarity, then tap a slot to add a card. The team score updates as you build. Decks are saved on this device.</p>
       </div>
 
-      <div id="deck-tabs" class="seg glass" role="tablist" aria-label="Deck type" style="--n:2;--i:0">
+      <!-- Meta Decks tab hidden 2026-11-04 (owner) · #deck/meta -> My Decks · put back: remove hidden + META_OFF in js/deck.js -->
+      <div id="deck-tabs" class="seg glass" role="tablist" aria-label="Deck type" style="--n:2;--i:0" hidden>
         <span class="seg__ind" aria-hidden="true"></span>
         <button id="deck-tab-my" class="seg__btn fx-press" type="button" role="tab" data-tab="my" aria-selected="true" aria-controls="deck-my">My Decks</button>
         <button id="deck-tab-meta" class="seg__btn fx-press" type="button" role="tab" data-tab="meta" aria-selected="false" aria-controls="deck-meta" tabindex="-1">Meta Decks</button>
@@ -422,7 +423,7 @@
             <div id="dk-empty" class="panel glass empty" hidden>
               <svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="4.5" height="14" rx="1"/><rect x="7.5" y="5" width="4.5" height="14" rx="1"/><rect x="13" y="5" width="4.5" height="14" rx="1"/><rect x="18.5" y="5" width="3" height="14" rx="1"/></svg>
               <h2 class="empty__title">No decks yet</h2>
-              <p class="empty__text">Build a team of four cards with a support under each one. Start from scratch, or copy a Meta Deck and make it yours. Decks are saved on this device.</p>
+              <p class="empty__text">Build a team of four cards with a support under each one. Decks are saved on this device.</p>
               <div class="tm-empty__btns">
                 <button class="tm-btn tm-btn--primary fx-press" type="button" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>New deck</button>
                 <button class="tm-btn fx-press" type="button" data-act="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>Restore from backup</button>
@@ -742,18 +743,18 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=80"></script>
-  <script src="js/app.js?v=80"></script>
-  <script src="js/deckbuff.js?v=80"></script>
-  <script src="js/teamscore.js?v=80"></script>
-  <script src="js/share.js?v=80"></script>
-  <script src="js/cards.js?v=80"></script>
-  <script src="js/detail.js?v=80"></script>
-  <script src="js/tier.js?v=80"></script>
-  <script src="js/deck.js?v=80"></script>
-  <script src="js/support.js?v=80"></script>
-  <script src="js/home.js?v=80"></script>
-  <script src="js/tiermaker.js?v=80"></script>
+  <script src="js/fx.js?v=81"></script>
+  <script src="js/app.js?v=81"></script>
+  <script src="js/deckbuff.js?v=81"></script>
+  <script src="js/teamscore.js?v=81"></script>
+  <script src="js/share.js?v=81"></script>
+  <script src="js/cards.js?v=81"></script>
+  <script src="js/detail.js?v=81"></script>
+  <script src="js/tier.js?v=81"></script>
+  <script src="js/deck.js?v=81"></script>
+  <script src="js/support.js?v=81"></script>
+  <script src="js/home.js?v=81"></script>
+  <script src="js/tiermaker.js?v=81"></script>
 </body>
 </html>
 
