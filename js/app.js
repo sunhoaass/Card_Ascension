@@ -12,7 +12,8 @@
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
-  const PAGES = ["home", "cards", "deck"];   // "tier" removed 2026-11-04 (owner: Tier List page out until everything is ranked again · #tier -> Home)
+  const PAGES = ["home", "cards", "deck", "battle"];   // "battle" added 2026-11-04 (js/battle.js · PROGRESS §14)
+  // "tier" removed 2026-11-04 (owner: Tier List page out until everything is ranked again · #tier -> Home)
   // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
   const PAGE_TITLES = {
     home: "Card Battle Infinity — Tier List & Card Database",
@@ -20,6 +21,7 @@
     cards: "Cards — Card Battle Infinity",
     support: "Support — Card Battle Infinity",
     deck: "Deck — Card Battle Infinity",
+    battle: "Battle — Card Battle Infinity",
   };
   const STORE_KEY = "cbi:lastPage";
   const RARITY_KEY = "cbi:rarity";
@@ -1105,6 +1107,7 @@
     if (k) state.kind = k;
     showPage(pageFromHash() || first);
     if (state.loaded) CBI.tier.show(tierViewFromHash());
+    if (state.loaded && CBI.battle) CBI.battle.show();   // #battle = Guild Boss · #battle/arena · #battle/result · #battle/fight (js/battle.js)
     if (state.loaded) CBI.deck.show();   // #deck = My Decks · #deck/meta · #deck/my/<id> = the editor · #deck/s/<data> = a shared deck
   }
 
@@ -1120,7 +1123,7 @@
     if (depth > 1) { leaveTo = h; history.go(1 - depth); }
     else if (location.hash !== "#" + h) history.replaceState(null, "", "#" + h);
     if (fromCard && state.loaded) CBI.detail.close();
-    if (state.loaded) { CBI.tier.show("global"); CBI.deck.show(); }
+    if (state.loaded) { CBI.tier.show("global"); CBI.deck.show(); if (CBI.battle) CBI.battle.show(); }
   }
 
   /* Card detail: each open pushes history entries so the phone's Back button walks out of it.

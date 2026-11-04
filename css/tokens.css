@@ -289,6 +289,67 @@
   --bs-glass: rgba(8, 11, 30, .74);                 /* dark glass (no blur: §4.1) */
   --bs-glass-line: color-mix(in srgb, var(--gold) 55%, transparent);
   --bs-sheet-head: linear-gradient(180deg, rgba(18, 22, 44, .98), rgba(14, 17, 36, .98));
+  /* Battle (PROGRESS §14 · js/battle.js · css/battle.css · from the mockup 2026-11-04) */
+  --bt-dmg: #ff5a4e; --bt-dmg-line: #3a0503;      /* damage numbers */
+  --bt-heal: #6ff07c; --bt-heal-line: #032a08;    /* heal numbers */
+  --bt-buff: var(--gc-buff); --bt-buff-line: var(--gc-buff-line);
+  --bt-shout: #fff3c4; --bt-shout-line: #2b1a00;  /* skill shouts */
+  --bt-crit: #ffcf5a; --bt-spark: #8fd8ff;
+  --bt-bar-hi: linear-gradient(180deg, #8ff08a, #46b04e 55%, #2f8a3a);
+  --bt-bar-mid: linear-gradient(180deg, #ffe27a, #f2c94a 55%, #c89a1d);
+  --bt-bar-lo: linear-gradient(180deg, #ff8a74, #ec453b 55%, #b8231d);
+  --bt-bar-bg: #1d2a24; --bt-line: #0b0b0d;
+  --bt-low: rgba(255, 70, 70, .38);
+  --bt-win: #7ff0a0; --bt-lose: #ff7a7a; --bt-draw: var(--ink-dim);
+  --bt-cus: var(--flux);                          /* custom HP / ATK (blue) */
+  --bt-k: 1;                                      /* fight speed: 1x = 1 · 2x = .5 · 3x = .333 */
+  /* Battle page colours (css/battle.css · were in the mockup CSS) */
+  --bt-wash-03: rgba(255, 255, 255, .03);
+  --bt-wash-06: rgba(255, 255, 255, .06);
+  --bt-wash-07: rgba(255, 255, 255, .07);
+  --bt-wash-08: rgba(255, 255, 255, .08);
+  --bt-wash-12: rgba(255, 255, 255, .12);
+  --bt-wash-22: rgba(255, 255, 255, .22);
+  --bt-wash-25: rgba(255, 255, 255, .25);
+  --bt-shine: rgba(255, 255, 255, .55);
+  --bt-shade-55: rgba(0, 0, 0, .55);
+  --bt-shade-60: rgba(0, 0, 0, .6);
+  --bt-shade-70: rgba(0, 0, 0, .7);
+  --bt-well: rgba(5, 8, 30, .45);
+  --bt-warn-ink: #ffc7b5;
+  --bt-warn-line: rgba(255, 140, 110, .7);
+  --bt-warn-bg: rgba(255, 120, 90, .14);
+  --bt-warn-card: rgba(40, 12, 20, .88);
+  --bt-warn-ring: rgba(255, 140, 110, .8);
+  --bt-vs-ring: rgba(15, 22, 56, .9);
+  --bt-wdl-ink: #0d1430;
+  --bt-tip-bg: rgba(127, 240, 160, .06);
+  --bt-tip-line: rgba(127, 240, 160, .25);
+  --bt-win-line: #04260d;
+  --bt-dim-line: #141a3a;
+  --bt-inf-a: #6fe07a;
+  --bt-inf-b: #3fae55;
+  --bt-hp-ink: #fff;
+  --bt-zone-bg: rgba(40, 4, 14, .8);
+  --bt-zone-ring: #ff8fa3;
+  --bt-zone-ink: #ffb3c1;
+  --bt-zone-on: #ff4d6d;
+  --bt-copy-ink: #e9e1ff;
+  --bt-copy-bg: rgba(40, 24, 90, .88);
+  --bt-copy-ring: #c8b4ff;
+  --bt-flash-core: rgba(255, 240, 190, .95);
+  --bt-skull: #f6f0ff;
+  --bt-skill: #f3c6ff;
+  --bt-skill-line: #2c0838;
+  --bt-copy-line: #160a3a;
+  --bt-zone-line: #3b0510;
+  --bt-crit-line: #3b2400;
+  --bt-extra: #a9e4ff;
+  --bt-extra-line: #04243a;
+  --bt-dodge: #e6ecff;
+  --bt-arrow-glow: rgba(212, 232, 92, .8);
+  --bt-lose-ink: #ffb0b0;
+  --bt-lose-line: #3a0505;
 }
 @media (min-width: 1100px) {
   :root {

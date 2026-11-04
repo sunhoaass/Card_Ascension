@@ -1,114 +1,116 @@
 /* ==========================================================
-   Battle mockup (PROGRESS ▶️ "⚔️ ระบบต่อสู้" · step ① round 3 · owner 2026-11-04)
-   Runs ON the real site (mockup/battle.html = index.html + <base href="../"> + a 4th menu button "Battle"):
-   cards are C.renderCard (the real game card) · Trait / Grade badges + pills + the slot sheet are copies of js/deck.js
-   (same classes, css/deck.css) · deck buffs = the real js/deckbuff.js (C.deckBuff.compute) · plus, for battle only:
-   Custom HP / ATK in the slot sheet · Load from My Decks (cbi:decks) · the fight engine (§14) · fight / result / win %.
-   Routes: #battle (Guild Boss) · #battle/arena · #battle/fight · #battle/result · #battle/ask (questions for the owner).
-   Nothing here changes a file of the real site; step ② moves the parts into js/battle.js + shared deck parts.
+   Card Battle Infinity — Battle (PROGRESS ▶️ "⚔️ ระบบต่อสู้" + §14 · step ② · from mockup/battle 2026-11-04)
+   Menu "Battle" (4th) · 2 tabs: Guild Boss | Arena · routes (js/app.js PAGES "battle"):
+     #battle = Guild Boss · #battle/arena · #battle/fight (the fight, over the site) · #battle/result
+   Teams are built like a deck: the Deck page's parts (C.deckParts in js/deck.js: pills, Trait / Grade badges, the
+   slot sheet's Grade + Trait) + battle-only Custom HP / ATK · numbers = js/deckbuff.js (deck buffs + trait + grade).
+   Supports: the live list + data/pending/support.json (the engine needs all 100 · §14) · read only here, never added
+   to C.state.support (the Cards page still shows only the finished ones).
+   Skills: data/battle.json (cards / support / traits / groups / the clip's numbers) · a card not in it fights with
+   ATK / HP only ("Skill not simulated yet").
+   Saved on this device: cbi:battle { v, teams { boss, a, b }, stage, fights [{ dmg, stage, at }] } · cbi:battleMute
+   CBI.battle = { init, show, Battle (engine, also for tests), teams }
    ========================================================== */
 (function () {
   "use strict";
-  // mockup/battle.html has <base href="../">: a "#hash" given to pushState / replaceState (here and in app.js) would point at
-  // the site's index.html · keep it on this page
-  if (document.baseURI !== location.href.split("#")[0]) ["pushState", "replaceState"].forEach((k) => {
-    const o = history[k].bind(history);
-    history[k] = (st, t, url) => o(st, t, typeof url === "string" && url.startsWith("#") ? location.pathname + location.search + url : url);
-  });
   const C = window.CBI, { state, $, esc } = C;
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const P = () => C.deckParts;        // js/deck.js (loaded before this file)
   const SLOTS = 4, KINDS = ["cards", "support"], RKEY = { cards: "cardRarity", support: "supRarity" }, GRADE_MAX = 10;
-  const EASE = "cubic-bezier(.2,.8,.2,1)";
+  const SAVE_KEY = "cbi:battle", MUTE_KEY = "cbi:battleMute";
   const reduced = () => !!(window.FX && FX.reduced);
-  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } } };
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } } };
   const svg = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
-  const ICON = {   // same paths as js/deck.js ICON
-    plus: svg('<path d="M5 12h14"/><path d="M12 5v14"/>'),
-    x: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
-    info: svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'),
-    swap: svg('<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>'),
-    move: svg('<path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/>'),
-    trash: svg('<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>'),
-    book: svg('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>'),
+  const ICON = {
     reset: svg('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>'),
     sound: svg('<path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>'),
     mute: svg('<path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/>'),
-    eye: svg('<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
-    dice: svg('<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/>'),
-    copy: svg('<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>'),
   };
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
   const fmtS = (n) => { const a = Math.abs(n); for (const [v, u] of [[1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]]) if (a >= v) return (n / v).toFixed(a / v >= 100 ? 0 : a / v >= 10 ? 1 : 2) + u; return String(Math.round(n)); };
   const pct = (x, d = 0) => (x * 100).toFixed(d) + "%";
-  const raw = (n) => String(Math.round(n));   // floating numbers like the clip: +567664559 (no commas)
+  const raw = (n) => String(Math.round(n));   // floating numbers like the game's clip: +567664559 (no commas)
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const dialog = (o) => C.dialog(o);
 
   /* ==========================================================
-     Data · live cards (data/cards.json) · supports from data/pending/support.json (the live list is still empty)
+     Data
      ========================================================== */
-  const lookup = (kind, id) => (kind === "cards" ? state.cards : state.support || []).find((x) => x && x.id === id) || null;
-  const traitList = () => (Array.isArray(state.traits) ? state.traits : []);
-  const traitById = (id) => traitList().find((t) => t.id === id) || null;
+  let BD = { clip: {}, boss: {}, cards: {}, support: {}, traits: {}, groups: {} };   // data/battle.json
+  let SUP = [];                                                                       // live + pending supports
+  let ready = false, loading = null;
+  const lookup = (kind, id) => (kind === "cards" ? state.cards : SUP).find((x) => x && x.id === id) || null;
+  const isLive = (kind, id) => (kind === "cards" ? state.cards : state.support || []).some((x) => x && x.id === id);
   const rarityOf = (d, kind, i) => C.deckBuff.rarityOf(d, kind, i);
   const rarities = () => state.meta.rarities.map((r) => r.name);
   const thumbOf = (kind, x) => (!x ? "" : kind === "cards" ? String(x.image || "").replace("/art/", "/art/thumb/") : String(x.image || "").replace("images/support/", "images/support/thumb/"));
+  const traitById = (id) => P().traitById(id);
+  const inGroup = (id, g) => { const a = BD.groups && BD.groups[g]; return Array.isArray(a) && a.includes(id); };
+  const clip = () => BD.clip || {};
+  const ROLL = () => Number(clip().roll) || 0.12;
+  const DEF_K = () => Number(clip().defK) || 0.2;
+  const statusOk = () => !!clip().statusConfirmed;
 
-  /* ---------- Grade + Trait helpers (copies of js/deck.js) ---------- */
-  const GSTATS = ["Basic Attack", "Defense", "Status Damage", "HP"];
-  const GSUM = "Each point gives +2.5% to its own stat. A 10 MINT (all four at 10) adds +30% more to every stat.";
-  const GSUM_FULL = "10 MINT: +25% + 30% = +55% to every stat.";
-  const overallOf = (g) => (Array.isArray(g) && g.some((n) => n > 0) ? Math.floor(g.reduce((a, n) => a + n, 0) / 4 + 0.5) : 0);
-  const fullOf = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => n >= GRADE_MAX);
-  const gradeTone = (v) => (v >= 10 ? "mint" : v >= 9 ? "gold" : v >= 6 ? "purple" : v >= 3 ? "green" : v >= 1 ? "grey" : "none");
-  const gradeBand = (g) => (g >= 10 ? "rainbow" : g >= 7 ? "gold" : g >= 4 ? "silver" : g >= 1 ? "bronze" : "none");
-  const traitColor = (t) => (t && t.color && t.color !== "rainbow" ? `--tc:${esc(t.color)}` : "");
-  const traitIcon = (t, cls) => `<img class="${cls}" src="images/traits/${esc(t.id)}.webp" alt="" width="96" height="96" decoding="async" draggable="false">`;
-  const traitFx = (t) => [t.dmg ? `x${t.dmg} Damage` : "", t.hp ? `x${t.hp} Health` : "", ...(Array.isArray(t.lines) ? t.lines : [])].filter(Boolean);
-  function tgHTML(t, g) {
-    return `${t ? `<span class="tg__tr" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}">${traitIcon(t, "tg__ic")}<span class="tg__lab">${esc(t.name)}</span></span>` : ""}`
-      + `${g > 0 ? `<span class="tg__gr" data-band="${gradeBand(g)}"><span class="tg__ring"><b data-n="${g}">${g}</b></span><span class="tg__lab">Grade</span></span>` : ""}`;
+  /* ==========================================================
+     Teams (deck-shaped so js/deckbuff.js reads them) · custom[i] = { atk?, hp? } replaces the final number (battle only)
+     ========================================================== */
+  const emptyTeam = () => ({ name: "", rarity: "Godly", cards: [null, null, null, null], support: [null, null, null, null],
+    cardRarity: [null, null, null, null], supRarity: [null, null, null, null], trait: [null, null, null, null], grades: [null, null, null, null], custom: [null, null, null, null], from: "" });
+  const T = { boss: emptyTeam(), a: emptyTeam(), b: emptyTeam() };
+  let STAGE = 448, FIGHTS = [];
+  const four = (a, f) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(f(Array.isArray(a) ? a[i] : null)); return o; };
+  const idOr = (v) => (typeof v === "string" && /^[a-z0-9-]{1,80}$/.test(v) ? v : null);
+  const rarOr = (v) => (typeof v === "string" && rarities().includes(v) ? v : null);
+  const gradeOr = (g) => (Array.isArray(g) && g.length >= 4 ? (() => { const n = g.slice(0, 4).map((x) => Math.max(0, Math.min(GRADE_MAX, Math.round(Number(x) || 0)))); return n.some((x) => x > 0) ? n : null; })() : null);
+  const cusOr = (c) => { if (!c || typeof c !== "object") return null; const o = {}; ["atk", "hp"].forEach((k) => { const v = Math.round(Number(c[k])); if (v >= 1 && Number.isFinite(v)) o[k] = v; }); return Object.keys(o).length ? o : null; };
+  function cleanTeam(t) {
+    const d = emptyTeam();
+    if (!t || typeof t !== "object") return d;
+    d.cards = four(t.cards, idOr); d.support = four(t.support, idOr);
+    d.cardRarity = four(t.cardRarity, rarOr); d.supRarity = four(t.supRarity, rarOr);
+    d.trait = four(t.trait, idOr); d.grades = four(t.grades, gradeOr); d.custom = four(t.custom, cusOr);
+    d.from = typeof t.from === "string" ? t.from.slice(0, 120) : "";
+    return d;
   }
-  function paintTG(card, traitId, grade) {
-    if (!card) return;
-    const t = traitId ? traitById(traitId) : null, g = grade > 0 ? grade : 0;
-    let el = $(".tg", card);
-    if (!t && !g) { if (el) el.remove(); return; }
-    if (!el) { el = document.createElement("span"); el.className = "tg"; el.setAttribute("aria-hidden", "true"); card.appendChild(el); }
-    el.innerHTML = tgHTML(t, g);
+  function save() {
+    const ok = store.set(SAVE_KEY, JSON.stringify({ v: 1, teams: T, stage: STAGE, fights: FIGHTS.slice(-200) }));
+    if (!ok && !save.warned) { save.warned = true; FX.toast("Can't save on this device (private mode?) · teams last until you close the page"); }
   }
-  // pills under a card (copy of js/deck.js pillSpecs) + "Custom" (battle only)
-  function pillsHTML(kind, d, i, id) {
-    const x = lookup(kind, id), r = rarityOf(d, kind, i), lr = String(r).toLowerCase();
-    const one = (p, html, attrs) => `<span class="dk-pill dk-pill--${p}"${Object.entries(attrs).filter(([, v]) => v != null).map(([a, v]) => ` ${a}="${esc(v)}"`).join("")}>${html}</span>`;
-    let h = one("rar", `<span>${esc(r)}</span>`, { "data-r": r, style: r === "Normal" ? null : `--rar-bg:var(--gc-rar-${lr});--rar-line:var(--gc-rar-${lr}-line);--rar-ink:var(--gc-rar-${lr}-ink,#fff)` });
-    if (kind === "cards") {
-      const g = overallOf(d.grades[i]), t = d.trait[i] ? traitById(d.trait[i]) : null;
-      h += one("gr", g ? `<span>Grade</span><b>${g}</b>` : `<span>No grade</span>`, { "data-band": gradeBand(g), "data-off": g ? null : "" });
-      h += one("tr", t ? `${traitIcon(t, "dk-pill__ic")}<span>${esc(t.name)}</span>` : `<span>No trait</span>`, { "data-c": t ? (t.color === "rainbow" ? "rainbow" : "solid") : null, "data-off": t ? null : "", style: t ? traitColor(t) || null : null });
-      if (d.custom[i]) h += `<span class="dk-pill bt-pill--cus" title="Custom ${[d.custom[i].atk != null ? "ATK" : "", d.custom[i].hp != null ? "HP" : ""].filter(Boolean).join(" + ")}"><span>Custom</span></span>`;
-    } else {
-      const m = x && C.mutAt ? C.mutAt(x, r) : 0;
-      h += one("mut", m ? `<span>Mutation +${m}%</span>` : `<span>No mutation</span>`, { "data-off": m ? null : "" });
+  function myDecks() { try { const a = JSON.parse(localStorage.getItem("cbi:decks") || "[]"); return Array.isArray(a) ? a.filter((d) => d && Array.isArray(d.cards)) : []; } catch (e) { return []; } }
+  function copyDeck(src, d) {
+    for (let i = 0; i < SLOTS; i++) {
+      d.cards[i] = idOr(src.cards[i]); d.support[i] = idOr((src.support || [])[i]);
+      d.cardRarity[i] = C.deckBuff.rarityOf(src, "cards", i); d.supRarity[i] = C.deckBuff.rarityOf(src, "support", i);
+      d.trait[i] = Array.isArray(src.trait) ? idOr(src.trait[i]) : null;
+      d.grades[i] = Array.isArray(src.grades) ? gradeOr(src.grades[i]) : null;
+      d.custom[i] = null;
     }
-    return h;
+    d.from = "From My Decks: " + (src.name || "Deck");
   }
-  function fitName(el) {   // copy of js/deck.js fitName
-    const box = el.parentNode;
-    el.style.fontSize = ""; box.classList.remove("is-clamp");
-    if (!el.textContent || !box.clientHeight) return;
-    let f = parseFloat(getComputedStyle(el).fontSize) || 11;
-    while (el.offsetHeight > box.clientHeight + 0.5 && f > 8) { f -= 0.5; el.style.fontSize = f + "px"; }
-    if (el.offsetHeight > box.clientHeight + 0.5) box.classList.add("is-clamp");
+  function loadSaved() {
+    let s = null;
+    try { s = JSON.parse(store.get(SAVE_KEY) || "null"); } catch (e) { s = null; }
+    if (s && s.teams) {
+      ["boss", "a", "b"].forEach((k) => { T[k] = cleanTeam(s.teams[k]); });
+      const st = Math.round(Number(s.stage)); if (st >= 1 && st <= 1500) STAGE = st;
+      FIGHTS = Array.isArray(s.fights) ? s.fights.filter((f) => f && Number(f.dmg) > 0).map((f) => ({ dmg: Number(f.dmg), stage: Math.round(Number(f.stage)) || 0, at: Number(f.at) || 0 })) : [];
+      return;
+    }
+    // first visit: the first saved deck in both of your teams (a copy) · none = empty teams
+    STAGE = Number(BD.boss.stage) || 448;
+    const d0 = myDecks()[0];
+    if (d0) { copyDeck(d0, T.boss); copyDeck(d0, T.a); }
   }
-  const pctTxt = (n) => "+" + Number(n.toFixed(1)) + "%";
-  function buffText(r) {
-    if (r.atkPct && r.hpPct) return r.atkPct === r.hpPct ? `${pctTxt(r.atkPct)} ATK·HP` : `${pctTxt(r.atkPct)} · ${pctTxt(r.hpPct)}`;
-    return r.atkPct ? `${pctTxt(r.atkPct)} ATK` : `${pctTxt(r.hpPct)} HP`;
+
+  // final numbers of a team: deck buffs + trait + grade (js/deckbuff.js) · then custom
+  function stats(key) {
+    const d = T[key], res = C.deckBuff.compute(d, { support: SUP });
+    return res.map((r, i) => (r ? { ...r, real: { atk: r.atk, hp: r.hp }, atk: d.custom[i] && d.custom[i].atk != null ? d.custom[i].atk : r.atk, hp: d.custom[i] && d.custom[i].hp != null ? d.custom[i].hp : r.hp } : null));
   }
+  const bossAtk = (st) => (Number(BD.boss.atk) || 460425250) * Math.pow(1 + (Number(BD.boss.perStage) || 0.006), st - (Number(BD.boss.stage) || 448));   // a guess until the owner sends 2–3 stages
 
   /* ---------- Card scaler: the card is laid out 300px wide and scaled to its box, so small type never hits a phone's
-     minimum font size (the owner's phone, round 2: the card text spilled out of the small team cards) ---------- */
+     minimum font size (the owner's phone, mockup round 2: the card text spilled out of the small team cards) ---------- */
   const DESIGN_W = 300;
   const scaleRO = typeof ResizeObserver === "function" ? new ResizeObserver((es) => es.forEach((e) => fitScale(e.target))) : null;
   function fitScale(sc) {
@@ -131,30 +133,6 @@
   }
 
   /* ==========================================================
-     Teams (deck-shaped so js/deckbuff.js reads them) · custom[i] = { atk?, hp? } replaces the final number (battle only)
-     ========================================================== */
-  const team = (cards, support, cr, sr, trait, grades, custom) => ({ name: "", rarity: cr[0], cards, support, cardRarity: cr, supRarity: sr, trait, grades, custom: custom || [null, null, null, null], from: "" });
-  const G10 = [10, 10, 10, 10];
-  const T = {
-    boss: team(["divergent-fist-vessel", "sword-saint", "octopus-teacher", "shadow-monarch"], ["gate-healer", "cafe-owner-owl", "plant-healer", "spirit-sidekick"],
-      ["Godlike", "Ascended", "Godlike", "Godlike"], ["Godly", "Divine", "Cosmic", "Ascended"], ["limitless", "awakened", "sage-mode", "undying"], [G10, G10, [7, 6, 8, 7], G10],
-      [{ atk: 2661922940, hp: 9461075983 }, null, null, null]),   // DFV: the owner's in-game card (2026-11-04 · ATK × 0.93 = the clip's 2,475,588,334)
-    a: team(["divergent-fist-vessel", "sword-saint", "octopus-teacher", "shadow-monarch"], ["gate-healer", "cafe-owner-owl", "plant-healer", "spirit-sidekick"],
-      ["Godlike", "Ascended", "Godlike", "Godlike"], ["Godly", "Divine", "Cosmic", "Ascended"], ["limitless", "awakened", "sage-mode", "undying"], [G10, G10, [7, 6, 8, 7], G10]),
-    b: team(["founding-titan", "ant-king", "slime-demon-lord", "golden-wind-boss"], ["portal-playboy", "crow-banker", "navigation-pixie", "pig-captain"],
-      ["Ascended", "Godlike", "Ascended", "Godlike"], ["Divine", "Godly", "Cosmic", "Divine"], ["ascendant", "limitless", "awakened", "sage-mode"], [G10, [8, 8, 8, 8], G10, G10]),
-  };
-  T.boss.from = "Guild Boss team"; T.a.from = "Arena team"; T.b.from = "Rival team";
-  let STAGE = 448;
-  const BOSS_ID = "quirk-thief-overlord", BOSS_ATK_448 = 460425250;
-  const bossAtk = (st) => BOSS_ATK_448 * Math.pow(1.006, st - 448);   // placeholder until the owner sends 2–3 stages
-  // final numbers of a team: deck buffs + trait + grade (js/deckbuff.js) · then custom
-  function stats(key) {
-    const d = T[key], res = C.deckBuff.compute(d);
-    return res.map((r, i) => (r ? { ...r, real: { atk: r.atk, hp: r.hp }, atk: d.custom[i] && d.custom[i].atk != null ? d.custom[i].atk : r.atk, hp: d.custom[i] && d.custom[i].hp != null ? d.custom[i].hp : r.hp } : null));
-  }
-
-  /* ==========================================================
      Board (same DOM + classes as the Deck editor's .dk-board)
      ========================================================== */
   let sel = null;   // { key, kind, i } while moving a card
@@ -168,10 +146,11 @@
       const row = $(`.dk-row[data-kind="${kind}"]`, root);
       for (let i = 0; i < SLOTS; i++) row.appendChild(slotEl(key, kind, i, st));
     });
-    requestAnimationFrame(() => root.querySelectorAll(".dk-nm span").forEach(fitName));
+    requestAnimationFrame(() => root.querySelectorAll(".dk-nm span").forEach(P().fitName));
     const fromEl = $(`[data-team-from="${key}"]`); if (fromEl) fromEl.textContent = d.from;
     if (flash) { const el = $(`.dk-slot[data-kind="${flash.kind}"][data-i="${flash.i}"]`, root); if (el && !reduced()) FX.flash(el); }
     if (key === "a" || key === "b") clearSim();
+    save();
   }
   function slotEl(key, kind, i, st) {
     const d = T[key], id = d[kind][i], x = id ? lookup(kind, id) : null, r = rarityOf(d, kind, i);
@@ -179,36 +158,41 @@
     slot.className = "dk-slot" + (id ? "" : " is-empty");
     slot.dataset.kind = kind; slot.dataset.i = i; slot.dataset.team = key;
     const nm = id ? (x ? x.name : id) : kind === "cards" ? `Slot ${i + 1}` : "";
-    slot.innerHTML = `<div class="dk-nm${id ? " is-name" : ""}"><span>${esc(nm)}</span></div><div class="dk-slot__box"></div><div class="dk-info"${id ? "" : " hidden"}>${id ? pillsHTML(kind, d, i, id) : ""}</div>`;
+    const cus = kind === "cards" && d.custom[i] ? `<span class="dk-pill bt-pill--cus" title="Custom ${[d.custom[i].atk != null ? "ATK" : "", d.custom[i].hp != null ? "HP" : ""].filter(Boolean).join(" + ")}"><span>Custom</span></span>` : "";
+    slot.innerHTML = `<div class="dk-nm${id ? " is-name" : ""}"><span>${esc(nm)}</span></div><div class="dk-slot__box"></div><div class="dk-info"${id ? "" : " hidden"}>${id && x ? P().pillsHTML(kind, d, i, id, x) + cus : ""}</div>`;
     const box = $(".dk-slot__box", slot);
     if (id && x) {
       const item = document.createElement("div");
       item.className = "dk-item" + (sel && sel.key === key && sel.kind === kind && sel.i === i ? " is-selected" : "");
       item.tabIndex = 0; item.setAttribute("role", "button"); item.dataset.id = id;
-      item.setAttribute("aria-label", `${x.name}, ${kind === "cards" ? "slot" : "support"} ${i + 1}`);
+      item.setAttribute("aria-label", `${x.name}, ${kind === "cards" ? "slot" : "support"} ${i + 1}. Tap to set it up`);
       const card = cardEl(kind, x, r);
       if (kind === "cards") {
-        paintTG(card, d.trait[i], overallOf(d.grades[i]));
+        P().paintTG(card, d.trait[i], P().overallOf(d.grades[i]), false);
         if (st[i]) C.setCardNums(card, { atk: st[i].atk, hp: st[i].hp }, { animate: false });
       }
       item.appendChild(scaled(card));
       box.appendChild(item);
       const xb = document.createElement("button");
       xb.type = "button"; xb.className = "dk-x fx-press"; xb.dataset.bt = "clear"; xb.setAttribute("aria-label", `Remove ${x.name}`);
-      xb.innerHTML = `<span class="dk-x__dot">${ICON.x}</span>`;
+      xb.innerHTML = `<span class="dk-x__dot">${P().ICON.x}</span>`;
       slot.appendChild(xb);
       if (kind === "cards" && st[i] && (st[i].atkPct || st[i].hpPct)) {
         const f = document.createElement("button");
         f.type = "button"; f.className = "dk-buff fx-press"; f.dataset.bt = "buff";
-        const line = (lab, v) => (v ? `<span class="dk-buff__l"><i>${lab}</i> ${esc(pctTxt(v))}</span>` : "");
+        const line = (lab, v) => (v ? `<span class="dk-buff__l"><i>${lab}</i> ${esc("+" + Number(v.toFixed(1)) + "%")}</span>` : "");
         f.innerHTML = `<svg class="dk-buff__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l7 9h-4.5v7h-5v-7H5z" fill="currentColor"/></svg>${line("ATK", st[i].atkPct)}${line("HP", st[i].hpPct)}`;
-        f.setAttribute("aria-label", `${x.name}: deck buffs ${buffText(st[i])}. Tap to see where they come from`);
+        f.setAttribute("aria-label", `${x.name}: buffs ${P().buffText(st[i])}. Tap to see where they come from`);
         slot.appendChild(f);
       }
     } else if (id) {
       box.innerHTML = `<div class="dk-item dk-item--missing"><span class="tm-missing"><span>${esc(id)}</span><small>Not in the library</small></span></div>`;
+      const xb = document.createElement("button");
+      xb.type = "button"; xb.className = "dk-x fx-press"; xb.dataset.bt = "clear"; xb.setAttribute("aria-label", "Remove");
+      xb.innerHTML = `<span class="dk-x__dot">${P().ICON.x}</span>`;
+      slot.appendChild(xb);
     } else {
-      box.innerHTML = `<button type="button" class="dk-add fx-press" data-bt="add" aria-label="Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}">${ICON.plus}<span>Add</span></button>`;
+      box.innerHTML = `<button type="button" class="dk-add fx-press" data-bt="add" aria-label="Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}">${P().ICON.plus}<span>Add</span></button>`;
     }
     return slot;
   }
@@ -224,20 +208,23 @@
     if (kind === "cards") { sw(d.trait); sw(d.grades); sw(d.custom); }
   }
   function clearSlot(key, kind, i) {
-    const d = T[key]; d[kind][i] = null;
+    const d = T[key], was = JSON.stringify(d);
+    d[kind][i] = null;
     if (kind === "cards") { d.trait[i] = null; d.grades[i] = null; d.custom[i] = null; }
-    paintBoard(key); FX.toast("Removed");
+    paintBoard(key);
+    FX.toast("Removed", { action: { label: "Undo", fn: () => { T[key] = cleanTeam(JSON.parse(was)); paintBoard(key, { flash: { kind, i } }); } } });
   }
 
-  /* ---------- Buff list (copy of js/deck.js buffDialog) ---------- */
+  /* ---------- Buff list (like js/deck.js buffDialog) + the custom numbers ---------- */
   function buffDialog(key, i) {
     const r = stats(key)[i], card = r && lookup("cards", r.id);
     if (!card) return;
     const kindName = { card: "Card", support: "Support", trait: "Trait", grade: "Grade" };
+    const pc = (n) => "+" + Number(n.toFixed(1)) + "%";
     const val = (x) => (x.kind === "trait"
       ? (x.mA === x.mH ? `×${x.mA} ATK·HP` : [x.mA !== 1 ? `×${x.mA} ATK` : "", x.mH !== 1 ? `×${x.mH} HP` : ""].filter(Boolean).join(" · "))
-      : x.kind === "grade" && x.atk === x.hp ? `${pctTxt(x.atk)} ATK·HP`
-      : [x.atk ? `${pctTxt(x.atk)} ATK` : "", x.hp ? `${pctTxt(x.hp)} HP` : ""].filter(Boolean).join(" · "));
+      : x.kind === "grade" && x.atk === x.hp ? `${pc(x.atk)} ATK·HP`
+      : [x.atk ? `${pc(x.atk)} ATK` : "", x.hp ? `${pc(x.hp)} HP` : ""].filter(Boolean).join(" · "));
     const rows = r.from.map((x) => `<li class="dk-bf__row" data-kind="${x.kind}"><span class="dk-bf__src">${esc(x.name)}${x.n > 1 ? ` <b>×${x.n}</b>` : ""}</span><span class="dk-bf__kind">${kindName[x.kind]}</span><span class="dk-bf__val">${esc(val(x))}</span></li>`).join("");
     const stat = (label, base, v) => `<div class="dk-bf__stat"><span class="dk-bf__lab">${label}</span>
         <span class="dk-bf__nums"><span>${label === "HP" ? C.fmtHp(base) : C.fmtStat(base)}</span><span aria-hidden="true">→</span><b${v !== base ? ' class="is-up"' : ""}>${label === "HP" ? C.fmtHp(v) : C.fmtStat(v)}</b></span>
@@ -255,10 +242,10 @@
   }
 
   /* ==========================================================
-     Slot sheet = js/deck.js slotSheet (Rarity · Grade 4 · Trait) + Custom HP / ATK (battle only)
+     Slot sheet = the Deck page's (Rarity · Grade 4 · Trait · C.deckParts) + Custom HP / ATK (battle only)
      ========================================================== */
   function sheetHTML(key, kind, i) {
-    const d = T[key], isCard = kind === "cards", id = d[kind][i], x = lookup(kind, id), r = rarityOf(d, kind, i);
+    const d = T[key], isCard = kind === "cards", id = d[kind][i], r = rarityOf(d, kind, i), I = P().ICON;
     const chips = rarities().map((q) => `<button type="button" class="chip glass fx-press" data-ss-rarity="${esc(q)}" aria-pressed="${q === r}" style="--sw:${C.RARITY_SWATCH[q] || "var(--r-normal)"}"><span class="chip__swatch"></span>${esc(q)}</button>`).join("");
     const btn = (act, icon, label, cls = "") => `<button type="button" class="tm-btn fx-press ${cls}" data-dlg="${act}">${icon}${label}</button>`;
     return `<div class="dk-ss" data-kind="${kind}">
@@ -267,27 +254,11 @@
             ${isCard ? `<p class="dk-ss__stat dk-ss__stat--atk"><span>ATK</span><b data-ss-atk></b></p><p class="dk-ss__stat dk-ss__stat--hp"><span>HP</span><b data-ss-hp></b></p><p class="dk-ss__buff" data-ss-buff></p>` : `<p class="dk-ss__fx" data-ss-fx></p>`}
           </div></div>
         <section class="dk-ss__sec" aria-label="Rarity"><h3 class="tm-field__label">Rarity</h3><div class="rarity-picker dk-ss__rar" role="group">${chips}</div></section>
-        ${isCard ? tgSheetHTML() + cusHTML() : ""}
-        <div class="dk-ss__acts">${btn("details", ICON.info, "Details")}${btn("replace", ICON.swap, isCard ? "Change card" : "Change support")}${btn("move", ICON.move, "Move")}${btn("remove", ICON.trash, "Remove", "tm-btn--danger")}</div>
+        ${isCard ? P().tgSheetHTML() + cusHTML() : ""}
+        <div class="dk-ss__acts">${isLive(kind, id) ? btn("details", I.info, "Details") : ""}${btn("replace", I.swap, isCard ? "Change card" : "Change support")}${btn("move", I.move, "Move")}${btn("remove", I.trash, "Remove", "tm-btn--danger")}</div>
       </div>`;
   }
-  function tgSheetHTML() {
-    const seg = (k, g) => `<button type="button" class="dk-g4__seg" style="--i:${g - 1}" data-ss-gk="${k}" data-ss-grade="${g}" aria-pressed="false" aria-label="${GSTATS[k]} grade ${g}"></button>`;
-    // Status Damage isn't confirmed by a clip yet (owner 2026-11-04) · tag on its row
-    const unconf = (k) => (k === 2 && !STATUS_OK ? ` <span class="bt-new bt-new--warn">Unconfirmed</span>` : "");
-    const grades = GSTATS.map((name, k) => `<div class="dk-g4__row" data-ss-grow="${k}"><p class="dk-g4__name">${name}${unconf(k)}</p><span class="dk-g4__pct" data-ss-gp="${k}"></span>
-        <div class="dk-g4__bar" role="group" aria-label="${name} grade">${Array.from({ length: GRADE_MAX }, (_, j) => seg(k, j + 1)).join("")}</div><b class="dk-g4__box" data-ss-gv="${k}"></b></div>`).join("");
-    const traits = traitList().map((t) => `<button type="button" class="dk-tl__row" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">
-        ${traitIcon(t, "dk-tl__ic")}<span class="dk-tl__txt"><b class="dk-tl__n">${esc(t.name)}</b><small>${traitFx(t).map(esc).join(" · ")}</small></span><span class="dk-tl__tier">${esc(t.tier)}</span></button>`).join("");
-    const rm = (what) => `<button type="button" class="dk-ss__rm fx-press" data-ss-rm="${what}" hidden>${ICON.x}Remove</button>`;
-    return `<section class="dk-ss__sec" aria-label="Grade"><div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><b class="dk-g4__total" data-ss-gt></b></div>
-        <p class="dk-g4__sum" data-ss-gsum>${GSUM}</p><div class="dk-g4">${grades}</div>
-        <p class="tm-field__note bt-gfx" data-ss-gbt></p>
-        <div class="dk-g4__acts"><button type="button" class="dk-ss__rm dk-ss__all fx-press" data-ss-all>All 10</button>${rm("grade")}</div></section>
-      <section class="dk-ss__sec" aria-label="Trait"><div class="dk-ss__h"><h3 class="tm-field__label">Trait</h3>${rm("trait")}</div>
-        <div class="dk-tl" role="group" aria-label="Trait">${traits}</div><p class="dk-tl__fx" data-ss-tfx hidden></p></section>`;
-  }
-  // NEW (battle only): type the HP / ATK yourself, any size · empty = the real number with the deck's buffs
+  // battle only: type the HP / ATK yourself, any size · empty = the real number with the deck's buffs
   function cusHTML() {
     return `<section class="dk-ss__sec bt-cus" aria-label="Custom HP and ATK">
         <div class="dk-ss__h"><h3 class="tm-field__label">Custom HP / ATK <span class="bt-new">Battle only</span></h3><button type="button" class="dk-ss__rm fx-press" data-ss-cusrm hidden>${ICON.reset}Real value</button></div>
@@ -295,7 +266,7 @@
         <div class="bt-cus__row">
           <label class="tm-field"><span class="tm-field__label">ATK</span><input class="tm-input bt-cus__in bt-cus__in--atk" id="bt-cus-atk" data-ss-cus="atk" inputmode="numeric" autocomplete="off" enterkeyhint="done"></label>
           <label class="tm-field"><span class="tm-field__label">HP</span><input class="tm-input bt-cus__in bt-cus__in--hp" id="bt-cus-hp" data-ss-cus="hp" inputmode="numeric" autocomplete="off" enterkeyhint="done"></label>
-        </div><p class="bt-cus__err" data-ss-cuserr hidden>Type a whole number above 0, e.g. 2,673,635,400.</p></section>`;
+        </div><p class="bt-cus__err" data-ss-cuserr hidden>Type a whole number above 0, e.g. 2,661,922,940.</p></section>`;
   }
   let sheetOpen = false;
   async function slotSheet(key, kind, i) {
@@ -309,36 +280,30 @@
         const root = $(".dk-ss", dlg), art = cardEl(kind, x, rarityOf(d, kind, i));
         art._r = rarityOf(d, kind, i);
         $("[data-ss-card]", root).appendChild(art);
+        if (isCard) {
+          // Grade in a fight: Status Damage isn't confirmed by a clip yet · the line under the 4 grades says what Defense / Status do
+          if (!statusOk()) { const nm = $$(".dk-g4__name", root)[2]; if (nm) nm.insertAdjacentHTML("beforeend", ` <span class="bt-new bt-new--warn">Unconfirmed</span>`); }
+          const g4box = $(".dk-g4", root); if (g4box) g4box.insertAdjacentHTML("afterend", `<p class="tm-field__note bt-gfx" data-ss-gbt hidden></p>`);
+        }
         const paint = (animate) => {
           const r = rarityOf(d, kind, i);
           root.querySelectorAll("[data-ss-rarity]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssRarity === r)));
           if (art._r !== r) { C.setCardRarity(art, x, r, { animate }); art._r = r; }
           if (!isCard) { const fx = $("[data-ss-fx]", root); if (fx) fx.textContent = x.effect && x.effect.desc ? C.supText(x, x.effect.desc, r) : ""; return; }
-          const tId = d.trait[i], g4 = d.grades[i] || [0, 0, 0, 0], g = overallOf(g4), full = fullOf(g4);
-          paintTG(art, tId, g);
-          root.querySelectorAll("[data-ss-grade]").forEach((b) => { const v = g4[Number(b.dataset.ssGk)], n = Number(b.dataset.ssGrade); b.setAttribute("aria-pressed", String(n === v)); b.classList.toggle("is-on", n <= v); });
-          root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
-          root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
-          // "+x%" = what the card really gets (js/deckbuff.js gradePct) · the line under = what Defense / Status Damage do in a fight
-          const gp = C.deckBuff.gradePct(g4), gpv = [gp.atk, gp.def, gp.status, gp.hp];
-          root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = gpv[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number(v.toFixed(1))}%` : ""; });
-          const gbt = $("[data-ss-gbt]", root);
-          gbt.textContent = gp.def || gp.status ? `In battle: ${[gp.def ? `${Number((gp.def * DEF_K).toFixed(1))}% less damage taken (Defense × 0.2)` : "", gp.status ? `+${Number(gp.status.toFixed(1))}% burn / poison / bleed damage${STATUS_OK ? "" : " (unconfirmed)"}` : ""].filter(Boolean).join(" · ")}.` : "";
-          gbt.hidden = !gbt.textContent;
-          const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
-          gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g);
-          gsum.textContent = full ? GSUM_FULL : GSUM; gsum.classList.toggle("is-full", full);
-          all.hidden = full;
-          root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
-          $('[data-ss-rm="grade"]', root).hidden = !g; $('[data-ss-rm="trait"]', root).hidden = !tId;
-          const t = tId ? traitById(tId) : null, tfx = $("[data-ss-tfx]", root);
-          tfx.hidden = !t; tfx.innerHTML = t ? `<b>${esc(t.name)}</b> <span>${esc(t.tier)}</span> · ${traitFx(t).map(esc).join(" · ")}` : "";
+          const tId = d.trait[i], g4 = d.grades[i] || [0, 0, 0, 0];
+          P().paintTG(art, tId, P().overallOf(g4), animate);
+          P().paintTGSheet(root, g4, tId);
+          const gp = C.deckBuff.gradePct(g4), gbt = $("[data-ss-gbt]", root);
+          if (gbt) {
+            gbt.textContent = gp.def || gp.status ? `In battle: ${[gp.def ? `${Number((gp.def * DEF_K()).toFixed(1))}% less damage taken (Defense × ${DEF_K()})` : "", gp.status ? `+${Number(gp.status.toFixed(1))}% burn / poison / bleed damage${statusOk() ? "" : " (unconfirmed)"}` : ""].filter(Boolean).join(" · ")}.` : "";
+            gbt.hidden = !gbt.textContent;
+          }
           const s = stats(key)[i], cus = d.custom[i];
           if (s) {
             C.setCardNums(art, { atk: s.atk, hp: s.hp }, { animate });
             const sa = $("[data-ss-atk]", root), sh = $("[data-ss-hp]", root);
             sa.textContent = C.fmtStat(s.atk); sh.textContent = C.fmtHp(s.hp);
-            $("[data-ss-buff]", root).innerHTML = (s.atkPct || s.hpPct ? `<span>Buffs</span> <b>${esc(buffText(s))}</b>` : "") + (cus ? ` <span class="bt-cus__tag">Custom</span>` : "");
+            $("[data-ss-buff]", root).innerHTML = (s.atkPct || s.hpPct ? `<span>Buffs</span> <b>${esc(P().buffText(s))}</b>` : "") + (cus ? ` <span class="bt-cus__tag">Custom</span>` : "");
             if (animate && !reduced()) { FX.flash(sa.parentNode); FX.flash(sh.parentNode); }
             [["atk", s.real.atk], ["hp", s.real.hp]].forEach(([k, realV]) => {
               const inp = $(`[data-ss-cus="${k}"]`, root); if (document.activeElement === inp) return;
@@ -357,12 +322,8 @@
           if (rb) { const r = rb.dataset.ssRarity; if (r !== rarityOf(d, kind, i)) commit((dd) => { dd[RKEY[kind]][i] = r; }); return; }
           if (!isCard) return;
           const gb = e.target.closest("[data-ss-grade]"), tb = e.target.closest("[data-ss-trait]"), rm = e.target.closest("[data-ss-rm]"), al = e.target.closest("[data-ss-all]"), cr = e.target.closest("[data-ss-cusrm]");
-          if (al) commit((dd) => { dd.grades[i] = [10, 10, 10, 10]; });
-          else if (gb || (rm && rm.dataset.ssRm === "grade")) commit((dd) => {
-            if (!gb) { dd.grades[i] = null; return; }
-            const k = Number(gb.dataset.ssGk), g = Number(gb.dataset.ssGrade), g4 = (dd.grades[i] || [0, 0, 0, 0]).slice();
-            g4[k] = g4[k] === g ? 0 : g; dd.grades[i] = g4.some((n) => n > 0) ? g4 : null;
-          });
+          if (al) commit((dd) => { dd.grades[i] = [GRADE_MAX, GRADE_MAX, GRADE_MAX, GRADE_MAX]; });
+          else if (gb || (rm && rm.dataset.ssRm === "grade")) commit((dd) => { dd.grades[i] = gb ? P().gradeTap(dd.grades[i], Number(gb.dataset.ssGk), Number(gb.dataset.ssGrade)) : null; });
           else if (tb || (rm && rm.dataset.ssRm === "trait")) { const t = tb ? tb.dataset.ssTrait : null; commit((dd) => { dd.trait[i] = dd.trait[i] === t ? null : t; }); }
           else if (cr) { commit((dd) => { dd.custom[i] = null; }); FX.toast("Back to the real value"); }
         });
@@ -382,22 +343,24 @@
     });
     sheetOpen = false;
     if (!res) return;
-    if (res.action === "details") C.openCard(id, null);
+    if (res.action === "details") { const el = $(`.dk-slot[data-team="${key}"][data-kind="${kind}"][data-i="${i}"] .card`); C.openCard(id, el || null, { list: T[key][kind].filter((v) => v && isLive(kind, v)) }); }
     else if (res.action === "replace") openPicker(key, kind, i);
     else if (res.action === "move") { sel = { key, kind, i }; paintBoard(key); FX.toast("Tap the slot to move it to"); }
     else if (res.action === "remove") clearSlot(key, kind, i);
   }
 
-  /* ---------- Picker (cards: the live list · support: data/pending/support.json) ---------- */
+  /* ---------- Picker (cards: the live list · support: live + data/pending/support.json) ---------- */
   async function openPicker(key, kind, i) {
-    const list = kind === "cards" ? state.cards : state.support;
+    const list = kind === "cards" ? state.cards : SUP;
     const tiles = list.map((x) => `<button type="button" class="bt-pk__t fx-press" data-pick="${esc(x.id)}" data-q="${esc(x.name.toLowerCase())}"><img src="${esc(thumbOf(kind, x))}" alt="" loading="lazy" decoding="async"><span>${esc(x.name)}</span></button>`).join("");
     const res = await dialog({
       title: kind === "cards" ? "Pick a card" : "Pick a support",
-      html: `<label class="tm-field"><span class="tm-field__label">Search</span><input class="tm-input" id="bt-pk-q" data-pk-q placeholder="Name" autocomplete="off"></label><div class="bt-pk" data-pk-grid>${tiles}</div>`,
+      html: list.length ? `<label class="tm-field"><span class="tm-field__label">Search</span><input class="tm-input" id="bt-pk-q" data-pk-q placeholder="Name" autocomplete="off"></label><div class="bt-pk" data-pk-grid>${tiles}</div><p class="empty__text" data-pk-none hidden>No match.</p>`
+        : `<div class="empty"><p class="empty__title">Nothing here yet</p><p class="empty__text">No ${kind === "cards" ? "cards" : "support cards"} to pick from yet.</p></div>`,
       actions: [{ label: "Cancel", value: "cancel" }],
       onMount(dlg, finish) {
-        $("[data-pk-q]", dlg).addEventListener("input", (e) => { const q = e.target.value.trim().toLowerCase(); $$("[data-pick]", dlg).forEach((b) => { b.hidden = q && !b.dataset.q.includes(q); }); });
+        const q = $("[data-pk-q]", dlg); if (!q) return;
+        q.addEventListener("input", (e) => { const v = e.target.value.trim().toLowerCase(); let n = 0; $$("[data-pick]", dlg).forEach((b) => { b.hidden = !!v && !b.dataset.q.includes(v); if (!b.hidden) n++; }); $("[data-pk-none]", dlg).hidden = n > 0; });
         $("[data-pk-grid]", dlg).addEventListener("click", (e) => { const b = e.target.closest("[data-pick]"); if (b) finish({ action: "pick", id: b.dataset.pick }); });
       },
     });
@@ -406,8 +369,7 @@
     paintBoard(key, { flash: { kind, i } });
   }
 
-  /* ---------- Load from My Decks (the owner, round 3: use a team made on the Deck page) ---------- */
-  function myDecks() { try { const a = JSON.parse(localStorage.getItem("cbi:decks") || "[]"); return Array.isArray(a) ? a.filter((d) => d && Array.isArray(d.cards)) : []; } catch (e) { return []; } }
+  /* ---------- Load from My Decks (copies a deck from the Deck page · the deck doesn't change) ---------- */
   async function loadDeck(key) {
     const decks = myDecks();
     const rows = decks.map((d, n) => `<button type="button" class="bt-dl__row fx-press" data-deck="${n}">
@@ -421,91 +383,61 @@
       onMount(dlg, finish) { dlg.addEventListener("click", (e) => { const b = e.target.closest("[data-deck]"); if (b) finish({ action: "load", n: Number(b.dataset.deck) }); }); },
     });
     if (!res) return;
-    if (res.action === "deck") { location.hash = "deck"; return; }
+    if (res.action === "deck") { $('.nav__btn[data-page="deck"]').click(); return; }
     const src = decks[res.n]; if (!src) return;
-    const d = T[key];
-    for (let i = 0; i < SLOTS; i++) {
-      d.cards[i] = src.cards[i] || null; d.support[i] = (src.support || [])[i] || null;
-      d.cardRarity[i] = C.deckBuff.rarityOf(src, "cards", i); d.supRarity[i] = C.deckBuff.rarityOf(src, "support", i);
-      d.trait[i] = Array.isArray(src.trait) ? src.trait[i] || null : null;
-      const g = Array.isArray(src.grades) ? src.grades[i] : null; d.grades[i] = Array.isArray(g) && g.some((n) => n > 0) ? g.slice(0, 4) : null;
-      d.custom[i] = null;
-    }
-    d.from = "From My Decks: " + (src.name || "Deck");
+    copyDeck(src, T[key]);
     paintBoard(key);
     if (!reduced()) FX.flash($(`[data-board="${key}"]`));
     FX.toast(`Loaded “${src.name || "Deck"}”`);
   }
 
   /* ==========================================================
-     ENGINE (demo of step ② js/battle.js) — §14 rules: we hit first · 30 rounds · tie-break cards alive → team HP → front HP
-     Start numbers = stats() (real deck buffs + trait + grade, or custom). Skills: demo data for 8 cards + the boss.
-     Supports: only effects that need a hit / a turn (the ones without a condition are already in deckbuff's numbers).
+     ENGINE — §14 rules: we hit first · 30 rounds · tie-break cards alive → team HP → front HP
+     Start numbers = stats() (deck buffs + trait + grade, or custom). Skills: data/battle.json.
+     From the owner's Guild Boss clip (12 fights · 2026-11-04): every hit rolls ±12% (clip.roll) · Grade Defense cuts damage
+     taken by Defense% × 0.2 (clip.defK) · Grade Status Damage = status damage × (1 + %) (not confirmed yet) · Spirit Wave
+     Master hits again for 189.34% at the clip's rarity (clip.echo) · "starts with 7.4% less damage" = ATK × 0.93.
+     Supports: only what needs a hit / a turn (the buffs with no condition are already in deckbuff's numbers).
      ========================================================== */
-  const SKILL = {
-    "divergent-fist-vessel": { bf: { p: .15, per: .10, max: 3, m: 2.5 }, ignore: 1, survive: 1, onHitAtk: .08 },
-    "sword-saint": { revive: .53, ignore: 1, first: 1.8 },
-    "octopus-teacher": { dodge: .38, double: { p: .69, m: .8 }, regen: .069, survive: 1 },
-    "founding-titan": { splash: .2, weaken: 1 - .077, dr: .091 },
-    "ant-king": { killGain: .25, adapt: .12, regen: .041, perTurn: { v: .049, n: 10 } },
-    "slime-demon-lord": { copy: 1, killGain: .11, dodge: .14 },
-    "golden-wind-boss": { reflect: .31, early: { dr: .44, n: 3 }, lifesteal: .19, killGain: .12 },
-    // "7.4% less damage" on the card = ATK × 0.93 in the clip (owner 2026-11-04: DFV 2,661,922,940 → 2,475,588,334 · the old
-    // "÷ 1.08" was wrong: 2,673,635,400 is the clip's number AFTER the 1st hit, 2,475,588,334 + 8%)
-    "quirk-thief-overlord": { copy: 1, killGain: .11, weaken: .93 },
-  };
-  /* Measured on the owner's Guild Boss clip (12 fights · owner 2026-11-04):
-     · every hit rolls ±12% around ATK (seen 0.88–1.11 · mean 1.00) -> ROLL
-     · Grade Defense cuts damage taken by Defense% × 0.2 (Defense 10 + all four = 55% -> 11% less · DFV Limitless + Defense took
-       0.80 of the boss's ATK on average) -> DEF_K
-     · Grade Status Damage = more damage from statuses (burn / poison / bleed) by its % · NOT confirmed by a clip yet
-     · Spirit Wave Master: every 2nd attack hits again for 189.34% of the 1st hit (the clip's rarity, assumed Godly: ask q9) ·
-       other rarities = the value on the card (C.supValAt) */
-  const ROLL = .12, DEF_K = .2, ECHO_CLIP = { rarity: "Godly", v: 189.34 };
-  const STATUS_OK = false;   // Status Damage not confirmed by a clip yet (the slot sheet says "Unconfirmed")
-  const TRAITFX = { ascendant: { crit: [.2, 2.5], revive: .5 }, limitless: { dodge: .12, dr: .10 }, "sage-mode": { lifesteal: .12, shield: .15 }, awakened: { crit: [.15, 2] },
-    undying: { revive: .3 }, prodigy: { firstAll: .3 }, "keen-eye": { crit: [.12, 2] }, bloodlust: { lifesteal: .08 }, "iron-body": { dr: .06 }, nimble: { dodge: .05 } };
-  // support effects that need a hit / a turn: value = the support's own value at its slot's rarity (C.supValAt)
-  const SUPFX = { "gate-healer": "teamHeal", "cafe-owner-owl": "lifesteal", "plant-healer": "hitHeal", "spirit-sidekick": "onHitAtk", "portal-playboy": "dodge", "crow-banker": "mark", "pig-captain": "lucky",
-    "spirit-wave-master": "echo" };
   function supFx(d, i) {
-    const id = d.support[i], s = id && lookup("support", id), k = id && SUPFX[id];
+    const id = d.support[i], s = id && lookup("support", id), k = id && BD.support[id];
     if (!s || !k) return null;
-    const sr = rarityOf(d, "support", i);
+    const sr = rarityOf(d, "support", i), ec = clip().echo;
     let v = Number(C.supValAt(s, 0, sr)) / 100;
-    if (id === "gate-healer" && d.custom.some(Boolean)) v = .06;   // mockup: the clip's heal +567,664,559 ≈ 6% of DFV's 9.5B (source still unknown)
-    if (k === "echo" && sr === ECHO_CLIP.rarity) v = ECHO_CLIP.v / 100;   // measured in the clip (189.34% of the 1st hit)
-    return { name: s.name, eff: s.effect.name, b: { [k]: v } };
+    if (k === "echo" && ec && sr === ec.rarity) v = Number(ec.v) / 100;   // measured in the clip
+    return { name: s.name, eff: (s.effect && s.effect.name) || s.name, b: { [k]: v } };
   }
   function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function mkTeamUnits(key, side) {
     const d = T[key], st = stats(key), out = [];
     d.cards.forEach((id, i) => {
       const x = id && lookup("cards", id); if (!x || !st[i]) return;
-      const b = SKILL[id], t = d.trait[i] ? traitById(d.trait[i]) : null, tfx = t ? TRAITFX[t.id] || {} : {};
-      out.push(mkUnit({ id, x, side, idx: out.length, slot: i, rar: rarityOf(d, "cards", i), trait: t ? { ...t, fx: tfx } : null, grade: overallOf(d.grades[i]),
+      const b = BD.cards[id], t = d.trait[i] ? traitById(d.trait[i]) : null, tfx = t ? BD.traits[t.id] || {} : {};
+      out.push(mkUnit({ id, x, side, idx: out.length, slot: i, rar: rarityOf(d, "cards", i), trait: t ? { ...t, fx: tfx } : null, grade: P().overallOf(d.grades[i]),
         sup: supFx(d, i), b, atk: st[i].atk, hp: st[i].hp,
         // Grade in battle (js/deckbuff.js gradePct): Defense% × 0.2 less damage taken · Status Damage% more status damage
-        gdef: (st[i].grade.def / 100) * DEF_K, gstatus: 1 + st[i].grade.status / 100 }));
+        gdef: (st[i].grade.def / 100) * DEF_K(), gstatus: 1 + st[i].grade.status / 100 }));
     });
     return out;
   }
   function mkUnit(o) {
     return { ...o, name: o.x.name, skill: o.x.passive ? o.x.passive.name : "", sim: !!o.b, inf: !!o.inf, kBase: o.b ? { ...o.b } : {}, k: o.b ? { ...o.b } : {},
-      gdef: o.gdef || 0, gstatus: o.gstatus || 1, dots: {},
+      gdef: o.gdef || 0, gstatus: o.gstatus || 1, dots: {}, cc: null,
       atk0: o.atk, atk: o.atk, max: o.hp, hp: o.hp, zone: 0, alive: true, used: {}, seen: new Set(), firstOn: new Set(), adaptMap: new Map(), hitsTaken: 0, turns: 0,
       shield: o.trait && o.trait.fx.shield ? o.hp * o.trait.fx.shield : 0, marked: 0, copied: null,
       st: { dmg: 0, hits: 0, crit: 0, heal: 0, taken: 0, sup: 0, kills: 0, died: 0, procs: {} } };
   }
   function bossUnit() {
-    const x = lookup("cards", BOSS_ID);
-    return mkUnit({ id: BOSS_ID, x, side: "b", idx: 0, slot: 0, rar: "Normal", trait: null, grade: 0, sup: null, b: SKILL[BOSS_ID], atk: bossAtk(STAGE), hp: Infinity, inf: true });
+    const id = BD.boss.id || "quirk-thief-overlord", x = lookup("cards", id);
+    if (!x) return null;
+    return mkUnit({ id, x, side: "b", idx: 0, slot: 0, rar: "Normal", trait: null, grade: 0, sup: null, b: BD.cards[id], atk: bossAtk(STAGE), hp: Infinity, inf: true });
   }
   class Battle {
     constructor(aKey, bKey, opt = {}) {
       this.R = rng(opt.seed || 1); this.E = opt.log || null; this.boss = !!opt.boss;
       this.a = mkTeamUnits(aKey, "a");
-      this.b = this.boss ? [bossUnit()] : mkTeamUnits(bKey, "b");
+      const bu = this.boss ? bossUnit() : null;
+      this.b = this.boss ? (bu ? [bu] : []) : mkTeamUnits(bKey, "b");
       this.round = 1; this.turn = "a"; this.done = false; this.why = "";
     }
     ev(t, u, v, o) { if (this.E) this.E({ t, u, v, o }); }
@@ -515,12 +447,14 @@
     start() {
       for (const side of ["a", "b"]) {
         const foe = side === "a" ? "b" : "a";
-        // "starts with X% less damage": the enemy team's ATK × weaken (the clip: × 0.93)
+        // "every enemy card starts with X% less damage": the enemy team's ATK × weaken (the clip: × 0.93)
         for (const u of this[side]) if (u.k.weaken) { for (const f of this[foe]) { f.atk *= u.k.weaken; f.atk0 = f.atk; } this.ev("shout", this.front(foe), "-" + ((1 - u.k.weaken) * 100).toFixed(1) + "% DMG", { k: "debuff" }); }
       }
       this.ev("nums", this.front("a")); this.ev("nums", this.front("b"));
     }
     heal(u, v, src) { if (u.inf || !u.alive || v <= 0) return 0; const h = Math.min(Math.round(v), u.max - u.hp); if (h <= 0) return 0; u.hp += h; u.st.heal += h; this.ev("heal", u, h, { src }); return h; }
+    // damage that isn't an attack (bench splash, echo, status): shield first (unless the attacker ignores it)
+    take(u, v, a) { u.st.taken += v; if (u.inf) return; let left = v; if (u.shield > 0 && !(a && a.k.ignore)) { const s = Math.min(u.shield, left); u.shield -= s; left -= s; } u.hp -= left; }
     startTurn(u) {
       u.turns++;
       if (u.k.regen) this.heal(u, u.max * u.k.regen, "skill");
@@ -530,7 +464,7 @@
         for (const x of this[u.side]) if (x.alive && !x.inf && x.hp < x.max) { const h = Math.min(Math.round(x.max * u.sup.b.teamHeal), x.max - x.hp); x.hp += h; u.st.heal += h; if (x === u) this.ev("heal", u, h, { src: "sup" }); any = true; }
         if (any) this.ev("shout", u, u.sup.eff.toUpperCase(), { k: "heal", y: "88%" });
       }
-      // statuses on this card tick at the start of its turn (burn / poison / bleed: % of its max HP per stack × the giver's
+      // statuses tick at the start of the card's turn (burn / poison / bleed: % of its max HP per stack × the giver's
       // Grade Status Damage · an infinite-HP boss: not known yet, nothing)
       for (const [kind, s] of Object.entries(u.dots)) {
         if (!u.inf) { const v = Math.max(1, Math.round(u.max * s.pct * s.stacks * s.mult)); u.hp -= v; u.st.taken += v; if (s.src) s.src.st.dmg += v; this.ev("dmg", u, v, { status: kind }); }
@@ -547,14 +481,13 @@
     echo(a, d, first) {
       if (!(first > 0) || !d.alive) return;
       const v = Math.max(1, Math.round(first * a.sup.b.echo));
-      a.st.dmg += v; a.st.sup++; d.st.taken += v;
-      if (!d.inf) { let left = v; if (d.shield > 0) { const s = Math.min(d.shield, left); d.shield -= s; left -= s; } d.hp -= left; }
+      a.st.dmg += v; a.st.sup++; this.take(d, v, a);
       this.ev("shout", a, a.sup.eff.toUpperCase() + "!", { k: "extra", y: "26%" });
       this.ev("dmg", d, v, { extra: true });
     }
-    hit(a, d, m0, extra) {
+    hit(a, d, m0, extra, o = {}) {
       const R = this.R;
-      if (!a.k.ignore) {
+      if (!a.k.ignore && !a.k.sure) {
         const ds = [];
         if (d.k.dodge) ds.push([(d.copied || d.skill) + " dodge", d.k.dodge, "k"]);
         if (d.trait && d.trait.fx.dodge) ds.push([d.trait.name + " dodge", d.trait.fx.dodge, "t"]);
@@ -569,12 +502,18 @@
         if (ok) { m *= bf.m; crit = heavy = true; this.ev("shout", a, (a.copied || a.skill).toUpperCase() + "!", { k: "skill" });
           if (a.zone < bf.max) { a.zone++; this.ev("zone", a, a.zone); if (a.zone === bf.max) this.ev("shout", a, "ZONE!", { k: "zone", y: "30%" }); } }
       }
-      const tc = a.trait && a.trait.fx.crit;
-      if (tc) { const ok = R() < tc[0]; this.proc(a, a.trait.name + " crit", ok, tc[0]); if (ok) { m *= tc[1]; crit = true; this.ev("shout", a, "CRIT!", { k: "crit", y: "30%" }); } }
+      for (const [c, nm] of [[a.k.crit, (a.copied || a.skill) + " crit"], [a.trait && a.trait.fx.crit, a.trait && a.trait.name + " crit"]]) {
+        if (!c) continue;
+        const ok = R() < c[0]; this.proc(a, nm, ok, c[0]);
+        if (ok) { m *= c[1]; crit = true; this.ev("shout", a, "CRIT!", { k: "crit", y: "30%" }); break; }
+      }
       if (a.k.first && !a.firstOn.has(d)) { a.firstOn.add(d); m *= a.k.first; heavy = true; this.ev("shout", a, a.skill.toUpperCase() + "!", { k: "skill" }); }
       if (a.trait && a.trait.fx.firstAll && !a.used.firstAll) { a.used.firstAll = 1; m *= 1 + a.trait.fx.firstAll; }
+      if (a.k.dmg) m *= 1 + a.k.dmg;
+      if (a.k.vs && inGroup(d.id, a.k.vs.group)) m *= a.k.vs.m;
+      if (d.k.weakTo && inGroup(a.id, d.k.weakTo.group)) m *= d.k.weakTo.m;
       // every hit rolls ±12% around ATK (the clip: 0.88–1.11, mean 1.00)
-      let dmg = a.atk * m * (1 + d.marked) * (1 - ROLL + R() * 2 * ROLL);
+      let dmg = a.atk * m * (1 + d.marked) * (1 - ROLL() + R() * 2 * ROLL());
       // damage cut: skill + trait + Grade Defense (Defense% × 0.2) · they add up
       let dr = (d.k.dr || 0) + ((d.trait && d.trait.fx.dr) || 0) + d.gdef;
       if (d.k.early && d.hitsTaken < d.k.early.n) dr += d.k.early.dr;
@@ -582,9 +521,12 @@
       dmg = Math.max(1, Math.round(dmg * Math.max(0, 1 - dr)));
       if (a.sup && a.sup.b.mark && !d.marked) { d.marked = a.sup.b.mark; a.st.sup++; }
       a.st.dmg += dmg; a.st.hits++; if (crit) a.st.crit++;
-      d.hitsTaken++; d.st.taken += dmg;
-      if (!d.inf) { let left = dmg; if (d.shield > 0) { const s = Math.min(d.shield, left); d.shield -= s; left -= s; } d.hp -= left; }
+      d.hitsTaken++; this.take(d, dmg, a);
       this.ev("dmg", d, dmg, { crit, heavy: heavy || (!d.inf && dmg > d.max * .25), extra });
+      // Hakai: a chance to finish an enemy under X% HP (not a boss)
+      if (a.k.execute && !d.inf && d.hp > 0 && d.hp / d.max < a.k.execute.under) { const ok = R() < a.k.execute.p; this.proc(a, (a.copied || a.skill) + " finish", ok, a.k.execute.p); if (ok) { d.hp = 0; this.ev("shout", a, (a.copied || a.skill).toUpperCase() + "!", { k: "skill" }); } }
+      // stun / paralyze (can't be stunned = noCC)
+      if (a.k.stun && d.hp > 0 && !d.k.noCC) { const ok = R() < a.k.stun.p; this.proc(a, a.k.stun.kind, ok, a.k.stun.p); if (ok) { d.cc = { ...a.k.stun }; this.ev("shout", d, a.k.stun.kind.toUpperCase() + "!", { k: "debuff", y: "70%" }); } }
       // the defender reacts before a copy (the clip: the boss copies after the 1st hit, so it grows 29 times)
       if (d.k.onHitAtk) { const g = d.atk0 * d.k.onHitAtk; d.atk += g; this.ev("buff", d, g); }
       if (d.sup && d.sup.b.onHitAtk) { const g = d.atk0 * d.sup.b.onHitAtk; d.atk += g; d.st.sup++; if (!d.k.onHitAtk) this.ev("buff", d, g); }
@@ -597,8 +539,16 @@
       if (d.k.reflect && !a.inf) { const r = Math.round(dmg * d.k.reflect); a.hp -= r; a.st.taken += r; this.ev("dmg", a, r, { reflect: 1 }); }
       const ls = (a.k.lifesteal || 0) + ((a.trait && a.trait.fx.lifesteal) || 0) + ((a.sup && a.sup.b.lifesteal) || 0);
       if (ls && !a.inf && a.hp > 0) { if (a.sup && a.sup.b.lifesteal) a.st.sup++; this.heal(a, dmg * ls, "ls"); }
-      if (a.k.splash) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * a.k.splash); x.hp -= s; x.st.taken += s; a.st.dmg += s; this.checkDeath(x, a, true); } this.ev("bench", d); }
+      if (a.k.splash) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * a.k.splash); this.take(x, s, a); a.st.dmg += s; this.checkDeath(x, a, true); } this.ev("bench", d); }
+      // counter-attack when hit (a counter never starts another counter)
+      if (d.k.counter && !o.counter && d.hp > 0 && a.hp > 0) { const ok = R() < d.k.counter; this.proc(d, (d.copied || d.skill) + " counter", ok, d.k.counter); if (ok) { this.ev("shout", d, "COUNTER!", { k: "skill" }); this.ev("atk", d); this.hit(d, a, 1, true, { counter: 1 }); } }
       return dmg;
+    }
+    // the card behind the one fighting (every 2nd attack: % of a normal hit, no crits or bonuses)
+    behind(a, d) {
+      const t = this[d.side], i = t.indexOf(d), x = t.slice(i + 1).find((u) => u.alive && !u.inf); if (!x) return;
+      const v = Math.max(1, Math.round(a.atk * a.k.behind.m)); a.st.dmg += v; this.take(x, v, a);
+      this.ev("shout", a, "EXTRA HIT", { k: "extra", y: "26%" }); this.ev("bench", d); this.checkDeath(x, a, true);
     }
     checkDeath(u, killer, bench) {
       if (u.inf || !u.alive || u.hp > 0) return false;
@@ -611,8 +561,20 @@
         killer.st.kills++;
         if (killer.k.killGain) { const g = u.atk0 * killer.k.killGain, h = isFinite(u.max) ? Math.round(u.max * killer.k.killGain) : 0;
           killer.atk += g; killer.atk0 += g; if (!killer.inf) { killer.max += h; killer.hp += h; } this.ev("buff", killer, g); this.ev("shout", killer, "+" + Math.round(killer.k.killGain * 100) + "% STOLEN", { k: "skill", y: "86%" }); }
+        // Arise: once, the defeated enemy comes back on the killer's team as its shadow (X% of its damage and HP, no skill)
+        if (killer.k.arise && !killer.used.arise && !u.shadow) {
+          killer.used.arise = 1;
+          const t = this[killer.side], sh = mkUnit({ id: u.id, x: u.x, side: killer.side, idx: t.length, slot: -1, rar: u.rar, trait: null, grade: 0, sup: null, b: null, atk: u.atk0 * killer.k.arise, hp: u.max * killer.k.arise });
+          sh.shadow = true; sh.name = u.name + " (shadow)"; t.push(sh);
+          this.ev("shout", killer, "ARISE!", { k: "skill", y: "40%" }); this.ev("bench", killer);
+        }
       }
       this.ev(bench ? "benchdie" : "die", u); return true;
+    }
+    nextTurn(side, foe) {
+      if (!this.front("a") || !this.front("b")) return this.finish();
+      if (side === "b") { this.round++; if (this.round > 30) { this.round = 30; return this.finish(); } this.ev("round", null, this.round); }
+      this.turn = foe; return false;
     }
     step() {
       if (this.done) return true;
@@ -620,30 +582,30 @@
       if (a && d) {
         this.startTurn(a);
         // a status can finish the attacker before it swings: the next card comes in, the turn passes
-        if (this.checkDeath(a, (Object.values(a.dots)[0] || {}).src || d)) {
-          if (this.front(side)) this.ev("enter", this.front(side));
-          if (!this.front(side)) return this.finish();
-          if (side === "b") { this.round++; if (this.round > 30) { this.round = 30; return this.finish(); } this.ev("round", null, this.round); }
-          this.turn = foe; return false;
+        if (this.checkDeath(a, (Object.values(a.dots)[0] || {}).src || d)) { if (this.front(side)) this.ev("enter", this.front(side)); return this.nextTurn(side, foe); }
+        // stunned / paralyzed: loses this turn (paralyze: a chance each turn)
+        if (a.cc) {
+          const c = a.cc, lose = c.lose >= 1 || this.R() < c.lose;
+          if (--c.turns <= 0) a.cc = null;
+          if (lose) { this.ev("shout", a, (c.kind === "Stun" ? "STUNNED" : c.kind.toUpperCase() + "D") + "!", { k: "debuff" }); return this.nextTurn(side, foe); }
         }
         this.ev("atk", a);
         const first = this.hit(a, d, 1, false);
         if (a.sup && a.sup.b.echo && a.turns % 2 === 0) this.echo(a, d, first);
+        if (a.k.behind && a.turns % a.k.behind.every === 0 && a.alive) this.behind(a, d);
         let dDead = this.checkDeath(d, a), aDead = this.checkDeath(a, d);
         const dbl = a.k.double;
-        if (dbl && a.alive && d.alive) { const ok = this.R() < dbl.p; this.proc(a, (a.copied || a.skill) + " extra hit", ok, dbl.p);
+        if (dbl && a.alive && d.alive && a.hp > 0) { const ok = this.R() < dbl.p; this.proc(a, (a.copied || a.skill) + " extra hit", ok, dbl.p);
           if (ok) { this.ev("shout", a, "EXTRA HIT", { k: "extra", y: "26%" }); this.ev("atk", a); this.hit(a, d, dbl.m, true); dDead = this.checkDeath(d, a) || dDead; aDead = this.checkDeath(a, d) || aDead; } }
         if (dDead && this.front(foe)) this.ev("enter", this.front(foe));
         if (aDead && this.front(side)) this.ev("enter", this.front(side));
       }
-      if (!this.front("a") || !this.front("b")) return this.finish();
-      if (side === "b") { this.round++; if (this.round > 30) { this.round = 30; return this.finish(); } this.ev("round", null, this.round); }
-      this.turn = foe; return false;
+      return this.nextTurn(side, foe);
     }
     finish() {
       this.done = true;
       const A = this.alive("a"), B = this.alive("b");
-      if (this.boss) { this.win = A ? "end" : "lose"; this.why = A ? "30 rounds done" : "Your team was wiped"; return true; }
+      if (this.boss) { this.win = A ? "end" : "lose"; this.why = A ? "30 rounds done" : "Your team was wiped in round " + this.round; return true; }
       if (!A && !B) { this.win = "draw"; this.why = "Both teams fell"; return true; }
       if (!B) { this.win = "win"; this.why = "Enemy team wiped in round " + this.round; return true; }
       if (!A) { this.win = "lose"; this.why = "Your team was wiped in round " + this.round; return true; }
@@ -659,10 +621,10 @@
   }
 
   /* ==========================================================
-     SOUND (Web Audio, made in code · starts after FIGHT · mute kept in cbi:battleMute)
+     SOUND (Web Audio, made in code · no game sounds · starts after FIGHT · mute kept in cbi:battleMute)
      ========================================================== */
   const SND = {
-    ctx: null, muted: store.get("cbi:battleMute") === "1", last: 0,
+    ctx: null, muted: store.get(MUTE_KEY) === "1", last: 0,
     unlock() { if (this.ctx) { if (this.ctx.state === "suspended") this.ctx.resume(); return; } try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { this.ctx = null; } },
     tone(f1, f2, dur, type, vol, delay = 0) {
       const c = this.ctx; if (!c) return; const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
@@ -694,18 +656,18 @@
   /* ==========================================================
      FIGHT (full screen over the site · the real card + an HP bar inside it, like the game's fight card)
      ========================================================== */
-  const F = { b: null, token: 0, k: 1, mode: "boss", seed: 7, hud: true, shown: { a: null, b: null } };
+  const F = { b: null, token: 0, k: 1, mode: "boss", seed: (Date.now() % 2147483647) || 7, hud: true, shown: { a: null, b: null } };
   const fightRoot = () => $("#bt-fight");
   function fightCard(u) {
     const card = C.renderCard(u.x, u.rar, { mini: false, tilt: false });
     card.removeAttribute("role"); card.tabIndex = -1; card.setAttribute("aria-hidden", "true");
     card.classList.add("bt-fc");
-    paintTG(card, u.trait && u.trait.id, u.grade);
+    P().paintTG(card, u.trait && u.trait.id, u.grade, false);
     const bar = document.createElement("span"); bar.className = "bt-hpbar" + (u.inf ? " is-inf" : ""); bar.innerHTML = `<i></i><b>HP</b>`;
     card.appendChild(bar);
-    if (!u.sim) { const w = document.createElement("span"); w.className = "bt-warn"; w.textContent = "Skill not simulated yet"; card.appendChild(w); }
-    const zone = (u.k.bf) ? `<span class="bt-zone">ZONE<i></i><i></i><i></i></span>` : "";
-    if (zone) card.insertAdjacentHTML("beforeend", zone);
+    if (!u.sim && !u.shadow) { const w = document.createElement("span"); w.className = "bt-warn"; w.textContent = "Skill not simulated yet"; card.appendChild(w); }
+    if (u.shadow) card.insertAdjacentHTML("beforeend", `<span class="bt-copy">SHADOW</span>`);
+    if (u.k.bf) card.insertAdjacentHTML("beforeend", `<span class="bt-zone">ZONE<i></i><i></i><i></i></span>`);
     return card;
   }
   function drawSlot(u, enter) {
@@ -768,10 +730,13 @@
     SND.play("die"); drawBench(); await sleep(620 * F.k);
   }
   async function startFight(mode) {
-    F.token++; const my = F.token; F.mode = mode; F.seed = (F.seed * 1103515245 + 12345) % 2147483647;
+    if (!ready) return;
+    F.seed = (F.seed * 1103515245 + 12345) % 2147483647;
     const queue = [];
     const b = new Battle(mode === "boss" ? "boss" : "a", "b", { seed: F.seed, boss: mode === "boss", log: (e) => queue.push(e) });
-    if (!b.a.length || !b.b.length) { FX.toast("Put at least one card in each team"); return; }
+    if (!b.a.length) { FX.toast("Add at least one card to your team"); return; }
+    if (!b.b.length) { FX.toast(mode === "boss" ? "The boss card isn't in the library" : "Add at least one card to the enemy team"); return; }
+    F.token++; const my = F.token; F.mode = mode;
     F.b = b; openFight();
     $("#bt-mode").textContent = mode === "boss" ? "Stage " + STAGE : "Arena";
     $("#bt-round").innerHTML = "1<em> / 30</em>";
@@ -804,21 +769,28 @@
   function openFight() {
     const f = fightRoot(); f.hidden = false; document.documentElement.classList.add("bt-fighting");
     if (location.hash !== "#battle/fight") history.pushState({ bt: 1 }, "", "#battle/fight");
+    const sp = $('[data-spd][aria-pressed="true"]', f); if (sp) sp.focus({ preventScroll: true });
   }
-  function closeFight() { F.token++; const f = fightRoot(); if (f) f.hidden = true; document.documentElement.classList.remove("bt-fighting"); }
+  function closeFight() { F.token++; const f = fightRoot(); if (f) f.hidden = true; document.documentElement.classList.remove("bt-fighting"); $$(".bt-banner").forEach((x) => x.remove()); }
+  function endFight() { if (!F.b) return; F.token++; const b = F.b; b.E = null; while (!b.step()); showResult(b); }
 
   /* ==========================================================
-     RESULT
+     RESULT (+ a Guild Boss fight is saved: best fights, your damage)
      ========================================================== */
   let lastResult = null;
-  const stageGain = (d) => Math.max(0, Math.floor(d / 60.5e9));   // placeholder: the clip moved 448 → 460 with 725.5B
+  const stageGain = (d) => Math.max(0, Math.floor(d / (Number(BD.boss.stageDmg) || 60.5e9)));   // a guess: the clip moved 448 → 460 with 725.5B
+  const teamDmg = (b) => b.a.reduce((x, u) => x + u.st.dmg, 0);
   function showResult(b) {
     lastResult = b; closeFight();
-    go("result", { replace: true });
-    const team = b.a, total = team.reduce((x, u) => x + u.st.dmg, 0), mvp = team.reduce((m, u) => (u.st.dmg > m.st.dmg ? u : m), team[0]);
+    const total = teamDmg(b);
+    if (b.boss && !b.saved) { b.saved = true; FIGHTS.push({ dmg: total, stage: STAGE, at: Date.now() }); save(); paintBossStats(); }
+    if (location.hash !== "#battle/result") history.replaceState(null, "", "#battle/result");
+    view = "result"; showView();
+    const team = b.a, mvp = team.reduce((m, u) => (u.st.dmg > m.st.dmg ? u : m), team[0]);
+    const mine = FIGHTS.reduce((x, f) => x + f.dmg, 0);
     const hero = b.boss
       ? `<p class="bt-res__eyebrow">DAMAGE DEALT</p><p class="bt-res__big" id="bt-res-num">0</p><p class="bt-res__why">${esc(b.why)}${b.win === "lose" ? "" : " · " + b.alive("a") + "/" + team.length + " cards still standing"}</p>
-        <div class="bt-res__kv"><div><span>Your total</span><b>${fmtS(2.91e12 + total)}</b></div><div><span>Guild total</span><b>${fmtS(18.42e12 + total)}</b></div><div><span>Stage</span><b class="up">${STAGE} → ~${STAGE + stageGain(total)}</b></div></div>`
+        <div class="bt-res__kv"><div><span>Your total</span><b>${fmtS(mine)}</b></div><div><span>Fights</span><b>${FIGHTS.length}</b></div><div><span>Stage (about)</span><b class="up">${STAGE} → ~${Math.min(1500, STAGE + stageGain(total))}</b></div></div>`
       : `<p class="bt-res__eyebrow">ARENA</p><p class="bt-res__big ${b.win}">${b.win === "win" ? "VICTORY" : b.win === "lose" ? "DEFEAT" : "DRAW"}</p><p class="bt-res__why">${esc(b.why)}</p>
         <div class="bt-res__kv"><div><span>Damage dealt</span><b>${fmtS(total)}</b></div><div><span>Cards left</span><b>${b.alive("a")} vs ${b.alive("b")}</b></div><div><span>Rounds</span><b>${b.round}</b></div></div>`;
     const procs = (u) => Object.entries(u.st.procs).filter(([, r]) => r.exp > 0).map(([n, r]) => `<span class="chip glass">${esc(n)} ${r.n}<em>/ ${r.exp.toFixed(1)} expected</em></span>`).join("");
@@ -826,25 +798,45 @@
         <p class="bt-pc__name"><span>${esc(u.name)}</span>${u === mvp && u.st.dmg > 0 ? `<span class="chip glass bt-mvp">MVP · ${pct(u.st.dmg / Math.max(1, total))}</span>` : u.st.died ? `<span class="chip glass">Fell</span>` : u.st.hits ? "" : `<span class="chip glass">Didn't fight</span>`}</p>
         <div class="bt-pc__grid"><span>Damage<b class="d">${fmtS(u.st.dmg)}</b></span><span>Hits<b>${u.st.hits}</b></span><span>CRIT<b>${u.st.crit}</b></span>
           <span>Healed<b class="h">${fmtS(u.st.heal)}</b></span><span>Taken<b>${fmtS(u.st.taken)}</b></span><span>Support<b>${u.st.sup}×</b></span></div>
-        <div class="bt-pc__procs">${u.sim ? procs(u) || `<span class="chip glass">No chance skill</span>` : `<span class="dk-pill bt-pill--warn"><span>Skill not simulated yet</span></span>`}</div></div></div>`).join("");
+        <div class="bt-pc__procs">${u.sim ? procs(u) || `<span class="chip glass">No chance skill</span>` : u.shadow ? `<span class="chip glass">Shadow</span>` : `<span class="dk-pill bt-pill--warn"><span>Skill not simulated yet</span></span>`}</div></div></div>`).join("");
     $("#bt-result").innerHTML = `<section class="panel bt-res__hero">${hero}</section>
       <section class="panel bt-res__cards"><div class="bt-h"><h2>Each card</h2><small>This fight</small></div><div class="bt-pcs">${rows}</div>
-        <div class="bt-res__btns"><button class="tm-btn tm-btn--primary fx-press" data-bt="save">Save as image</button><button class="tm-btn fx-press" data-bt="fight" data-mode="${b.boss ? "boss" : "arena"}">Fight again</button><button class="tm-btn fx-press" data-bt="go" data-to="${b.boss ? "boss" : "arena"}">Continue</button></div></section>`;
+        <div class="bt-res__btns"><button type="button" class="tm-btn tm-btn--primary fx-press" data-bt="save">Save as image</button><button type="button" class="tm-btn fx-press" data-bt="fight" data-mode="${b.boss ? "boss" : "arena"}">Fight again</button><button type="button" class="tm-btn fx-press" data-bt="go" data-to="${b.boss ? "boss" : "arena"}">Continue</button></div></section>`;
     FX.stagger($("#bt-result"), 80, { cls: "fx-up", max: 3, cleanup: true });
     if (b.boss) { const el = $("#bt-res-num"); if (reduced()) el.textContent = fmt(total); else FX.countTo(el, total, { format: fmt, duration: 1100 }); }
   }
-  async function saveImage() {
-    const b = lastResult; if (!b) return;
-    const total = b.a.reduce((x, u) => x + u.st.dmg, 0);
-    const res = await dialog({
-      title: "Save as image",
-      html: `<div class="bt-shot" id="bt-shot"><p class="bt-shot__h">${b.boss ? "GUILD BOSS · " + fmt(total) : String(b.win).toUpperCase() + " · ARENA"}</p>
-        <div class="bt-shot__mini">${b.a.map((u) => `<div><img src="${esc(thumbOf("cards", u.x))}" alt="">${fmtS(u.st.dmg)}</div>`).join("")}</div><p class="bt-shot__wm">CARD BATTLE INFINITY · BATTLE SIM</p></div>
-        <p class="tm-field__note">Mockup: step ② draws this with js/share.js like the Deck's Save as image.</p>`,
-      actions: [{ label: "Close", value: "cancel" }, { label: "Save", value: "save", cls: "tm-btn--primary" }],
+  // Save as image: drawn on a canvas in the site's colours (tokens), saved / shared like the Deck's (C.share.previewDialog)
+  function loadImg(src) { return new Promise((res) => { if (!src) return res(null); const im = new Image(); im.decoding = "async"; im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
+  async function resultImage(b) {
+    const cs = getComputedStyle(document.documentElement), tok = (n, f) => (cs.getPropertyValue(n).trim() || f);
+    const ink = tok("--ink", "white"), dim = tok("--ink-dim", "silver"), gold = tok("--gold-hi", "gold"), bg1 = tok("--void", "navy"), dmgC = tok("--bt-dmg", "red");
+    const W = 1080, rowH = 150, head = 300, team = b.a, H = head + team.length * rowH + 110, S = 1;
+    const cv = document.createElement("canvas"); cv.width = W * S; cv.height = H * S;
+    const ctx = cv.getContext("2d"); ctx.scale(S, S);
+    const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, bg1); g.addColorStop(1, tok("--bt-copy-line", bg1)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const disp = tok("--font-display", "serif"), body = tok("--font-body", "sans-serif"), num = tok("--gc-font-num", "sans-serif");
+    const total = teamDmg(b);
+    ctx.textAlign = "center"; ctx.fillStyle = gold; ctx.font = `400 34px ${disp}`;
+    ctx.fillText(b.boss ? `GUILD BOSS · STAGE ${STAGE}` : "ARENA", W / 2, 80);
+    ctx.fillStyle = b.boss ? dmgC : b.win === "win" ? tok("--bt-win", "lime") : b.win === "lose" ? tok("--bt-lose", "red") : dim;
+    ctx.font = `700 92px ${num}`;
+    ctx.fillText(b.boss ? fmt(total) : b.win === "win" ? "VICTORY" : b.win === "lose" ? "DEFEAT" : "DRAW", W / 2, 185);
+    ctx.fillStyle = dim; ctx.font = `400 28px ${body}`; ctx.fillText(b.boss ? "damage dealt · " + b.why : b.why, W / 2, 240);
+    const imgs = await Promise.all(team.map((u) => loadImg(thumbOf("cards", u.x))));
+    team.forEach((u, k) => {
+      const y = head + k * rowH;
+      ctx.fillStyle = tok("--bt-wash-03", "rgba(255,255,255,.03)"); ctx.fillRect(60, y, W - 120, rowH - 18);
+      if (imgs[k]) ctx.drawImage(imgs[k], 76, y + 10, 84, 112);
+      ctx.textAlign = "left"; ctx.fillStyle = ink; ctx.font = `700 34px ${body}`; ctx.fillText(u.name, 190, y + 52);
+      ctx.fillStyle = dim; ctx.font = `400 24px ${body}`;
+      ctx.fillText(`${u.st.hits} hits · ${u.st.crit} crit · healed ${fmtS(u.st.heal)} · taken ${fmtS(u.st.taken)}`, 190, y + 96);
+      ctx.textAlign = "right"; ctx.fillStyle = dmgC; ctx.font = `700 44px ${num}`; ctx.fillText(fmtS(u.st.dmg), W - 80, y + 70);
     });
-    if (res && res.action === "save") FX.toast("Saved battle-result.png (mockup)");
+    ctx.textAlign = "center"; ctx.fillStyle = dim; ctx.font = `400 22px ${body}`; ctx.fillText("CARD BATTLE INFINITY · BATTLE", W / 2, H - 44);
+    const blob = await new Promise((res, rej) => cv.toBlob((x) => (x ? res(x) : rej(new Error("Couldn't encode the image"))), "image/png"));
+    return { blob, width: cv.width, height: cv.height, filename: `battle-${b.boss ? "guild-boss" : "arena"}-${new Date().toLocaleDateString("en-CA")}.png` };
   }
+  function saveImage(btn) { const b = lastResult; if (!b || !C.share) return; C.share.previewDialog({ title: "Save as image", render: () => resultImage(b), flashEl: btn }); }
 
   /* ==========================================================
      ARENA: many fights → win %, who carries, luck, a better order
@@ -858,8 +850,8 @@
       for (let i = 0; i < n; i++) {
         const b = new Battle(aKey, "b", { seed: seed0 + i * 7919 }).run();
         out[b.win === "win" ? "w" : b.win === "lose" ? "l" : "d"]++;
-        b.a.forEach((u, k) => { out.dmg[k] += u.st.dmg; out.kills[k] += u.st.kills; out.died[k] += u.st.died; });
-        out.fights.push({ win: b.win, luck: b.a.map((u) => { const r = Object.values(u.st.procs)[0]; return r && r.exp > 0 ? r.n - r.exp : null; }), procs: b.a.map((u) => u.st.procs) });
+        b.a.forEach((u, k) => { if (k >= SLOTS) return; out.dmg[k] += u.st.dmg; out.kills[k] += u.st.kills; out.died[k] += u.st.died; });
+        out.fights.push({ win: b.win, luck: b.a.slice(0, SLOTS).map((u) => { const r = Object.values(u.st.procs)[0]; return r && r.exp > 0 ? r.n - r.exp : null; }), procs: b.a.map((u) => u.st.procs) });
       }
     } finally { if (saved) saved(); }
     out.units = new Battle(aKey, "b", { seed: 1 }).a.map((u) => u);
@@ -873,24 +865,31 @@
     keys.forEach((k, n) => { d[k] = p.map((j) => old[n][j]); });
     return () => keys.forEach((k, n) => { d[k] = old[n]; });
   }
-  async function runSim() {
+  let simming = false;
+  async function runSim(btn) {
+    if (simming) return;
+    if (!T.a.cards.some((id) => id && lookup("cards", id))) { FX.toast("Add at least one card to your team"); return; }
+    if (!T.b.cards.some((id) => id && lookup("cards", id))) { FX.toast("Add at least one card to the enemy team"); return; }
+    simming = true; btn.disabled = true;
     const out = $("#bt-sim-out"); out.dataset.has = "1";
-    out.innerHTML = `<div class="empty bt-sim__empty"><span class="fx-loader" aria-hidden="true"></span><p class="empty__text" id="bt-sim-prog">Fighting ${simN} times…</p></div>`;
-    await sleep(60);
-    const r = many("a", simN, 1001);
-    const tries = []; let done = 0;
-    for (const kind of ["cards", "sups"]) for (const p of perms([0, 1, 2, 3])) {
-      if (p.join("") === "0123") continue;
-      const m = many("a", simN, 1001, () => reorder(kind === "cards" ? "cards" : "support", p));
-      const undo = reorder(kind === "cards" ? "cards" : "support", p); const snap = { cards: T.a.cards.slice(), support: T.a.support.slice() }; undo();
-      tries.push({ kind, p, win: m.w / simN, snap });
-      if (++done % 3 === 0) { const pg = $("#bt-sim-prog"); if (pg) pg.textContent = `Trying other orders… ${done} / 46`; await sleep(0); }
-    }
-    tries.sort((x, y) => y.win - x.win);
-    drawSim(r, tries.filter((t) => t.win > r.w / simN + .005).slice(0, 3));
+    out.innerHTML = `<div class="empty bt-sim__empty"><span class="fx-loader" aria-hidden="true"></span><p class="empty__text" id="bt-sim-prog" aria-live="polite">Fighting ${simN} times…</p></div>`;
+    try {
+      await sleep(60);
+      const r = many("a", simN, 1001);
+      const tries = []; let done = 0;
+      for (const kind of ["cards", "sups"]) for (const p of perms([0, 1, 2, 3])) {
+        if (p.join("") === "0123") continue;
+        const m = many("a", simN, 1001, () => reorder(kind === "cards" ? "cards" : "support", p));
+        const undo = reorder(kind === "cards" ? "cards" : "support", p); const snap = { cards: T.a.cards.slice(), support: T.a.support.slice() }; undo();
+        tries.push({ kind, p, win: m.w / simN, snap });
+        if (++done % 3 === 0) { const pg = $("#bt-sim-prog"); if (pg) pg.textContent = `Trying other orders… ${done} / 46`; await sleep(0); }
+      }
+      tries.sort((x, y) => y.win - x.win);
+      drawSim(r, tries.filter((t) => t.win > r.w / simN + .005).slice(0, 3));
+    } finally { simming = false; btn.disabled = false; }
   }
   function drawSim(r, tips) {
-    const n = r.n, W = r.w / n, D = r.d / n, L = r.l / n, U = r.units, tot = r.dmg.reduce((x, y) => x + y, 0) || 1;
+    const n = r.n, W = r.w / n, D = r.d / n, L = r.l / n, U = r.units.slice(0, SLOTS), tot = r.dmg.reduce((x, y) => x + y, 0) || 1;
     const carryIdx = r.dmg.indexOf(Math.max(...r.dmg));
     const carry = U.map((u, k) => `<div class="bt-carry__row"><img src="${esc(thumbOf("cards", u.x))}" alt=""><div>
         <p class="bt-carry__top"><span>${esc(u.name)}${k === carryIdx ? `<span class="bt-crown">♛ carries</span>` : ""}</span><span>${pct(r.dmg[k] / tot)}</span></p>
@@ -908,7 +907,7 @@
     }).join("");
     const tipsH = tips.length ? tips.map((t, i) => `<div class="bt-tip"><div>${t.kind === "cards" ? "Card order" : "Support order"} <strong>${pct(t.win)}</strong> <span class="bt-faint">(now ${pct(W)} · same ${n} fights)</span>
         <span class="bt-tip__order">${(t.kind === "cards" ? t.snap.cards : t.snap.support).map((id) => { const x = id && lookup(t.kind === "cards" ? "cards" : "support", id); return x ? `<img src="${esc(thumbOf(t.kind === "cards" ? "cards" : "support", x))}" alt="">` : `<i></i>`; }).join("")}</span></div>
-        <button class="tm-btn tm-btn--primary fx-press" data-bt="apply" data-tip="${i}">Use</button></div>`).join("")
+        <button type="button" class="tm-btn tm-btn--primary fx-press" data-bt="apply" data-tip="${i}">Use</button></div>`).join("")
       : `<p class="bt-faint">This order already wins the most of the 46 orders tried.</p>`;
     $("#bt-sim-out").innerHTML = `<div class="bt-sim__grid">
       <div><h3 class="bt-sub">${n} fights</h3><p class="bt-big"><span>${pct(W)}</span><small>win chance</small></p>
@@ -927,79 +926,69 @@
   }
 
   /* ==========================================================
-     QUESTIONS (the owner, round 3: "wondering or suggesting something? make a lab to tap")
+     PAGE · #battle (Guild Boss) · #battle/arena · #battle/result · #battle/fight (js/app.js shows the page, show() the view)
      ========================================================== */
-  const ASK = [
-    { id: "q1", q: "หน้า Guild Boss ในเกมมี Top Hitters / Top Guilds แต่เว็บไม่มีข้อมูลกิลด์ จะแสดงอะไรแทน", o: [["Best fights ไฟต์ที่ดีที่สุดในเครื่อง", 1], ["ไม่ต้องมี", 0], ["ให้พิมพ์ชื่อ + ดาเมจเอง", 0]] },
-    { id: "q2", q: "Guild damage / Your damage ในหน้า Guild Boss เอามาจากไหน", o: [["รวมจากไฟต์ที่เล่นในเว็บ (จำในเครื่อง)", 1], ["ให้พิมพ์เอง", 0], ["ไม่ต้องแสดง", 0]] },
-    { id: "q3", q: "ทีมในหน้า Battle กับ deck ในหน้า Deck", o: [["แยกกัน · Load from My Decks = คัดลอกมา (แก้ในนี้ไม่เปลี่ยน deck)", 1], ["ผูกกัน · แก้ในนี้ = แก้ deck ด้วย", 0], ["มีปุ่ม Save as deck เพิ่มให้เซฟทีมกลับเป็น deck", 0]] },
-    { id: "q4", q: "Custom HP / ATK ที่พิมพ์เอง ใช้แทนตัวเลขไหน", o: [["แทนตัวเลขสุดท้าย (หลังบัฟ Deck + Trait + Grade)", 1], ["แทนค่าฐาน แล้วยังคูณบัฟต่อ", 0]] },
-    { id: "q5", q: "ในคลิป DFV (HP 9.5B) รอดครบ 30 รอบ แต่ engine ให้ตายรอบ ~12–21 (บอสตีแรงเกิน)", o: [["เดี๋ยวส่งเฟรมเลขดาเมจบอสให้ (Claude แก้สูตรตามนั้น)", 1], ["ปรับให้ DFV รอด 30 รอบไปก่อน", 0], ["ปล่อยไว้ก่อน", 0]] },
-    { id: "q6", q: "ตัวเลขเด้งตอนสู้", o: [["เลขเต็มไม่มีจุลภาค แบบคลิป (+567664559)", 1], ["มีจุลภาค (+567,664,559)", 0], ["แบบย่อ (+567.7M)", 0]] },
-    { id: "q7", q: "การ์ดตอนสู้: ป้าย 1 IN X (โอกาส) ซ่อนไหม", o: [["ซ่อน แบบในเกม", 1], ["แสดง", 0]] },
-    { id: "q8", q: "ทีมศัตรูในหน้า Arena", o: [["จัดเองแบบหน้า Deck (+ Load from My Decks)", 1], ["เลือกจาก Meta Decks ด้วย (ตอนเปิดแท็บ Meta กลับมา)", 0]] },
-    { id: "q9", q: "Spirit Wave Master ในคลิป (ตีซ้ำ 189.34%) ตั้งระดับไหน · ตอนนี้เดาว่า Godly (ระดับอื่นใช้ค่าบนการ์ด เช่น Godly บนการ์ด = 135%)", o: [["Godly", 1], ["ต่ำกว่า Godly (บอกระดับในแชท)", 0], ["ไม่แน่ใจ เดี๋ยวแคปให้", 0]] },
-  ];
-  const askState = {};
-  function paintAsk() {
-    $("#bt-ask-list").innerHTML = ASK.map((a, n) => `<section class="panel bt-q"><p class="bt-q__n">ข้อ ${n + 1}</p><p class="bt-q__q">${esc(a.q)}</p>
-        <div class="bt-q__opts">${a.o.map(([t, rec], k) => `<button type="button" class="chip glass fx-press bt-q__o" data-ask="${a.id}" data-k="${k}" aria-pressed="${askState[a.id] === k}">${esc(t)}${rec ? `<span class="bt-rec">Claude แนะนำ</span>` : ""}</button>`).join("")}</div></section>`).join("");
-    const nDone = Object.keys(askState).length; $("#bt-ask-count").textContent = `${nDone} / ${ASK.length}`;
-  }
-  async function copyAnswers(btn) {
-    const lines = ASK.map((a, n) => `${n + 1}. ${askState[a.id] == null ? "(ยังไม่เลือก)" : a.o[askState[a.id]][0]}`);
-    const text = "คำตอบ Battle mockup:\n" + lines.join("\n");
-    try { await navigator.clipboard.writeText(text); FX.toast("Copied · paste it in the chat"); }
-    catch (e) { const ta = $("#bt-ask-text"); ta.hidden = false; ta.value = text; ta.select(); FX.toast("Select all and copy the text"); }
-    if (!reduced()) FX.flash(btn);
-  }
-
-  /* ==========================================================
-     PAGE · routes #battle[/arena|/fight|/result|/ask] · mounted into the real site's menu (app.js stays as it is)
-     ========================================================== */
-  const VIEWS = ["boss", "arena", "result", "ask"];
-  const NOTES = {
-    boss: "<b>Guild Boss</b> · ทีมจัดแบบหน้า Deck ทุกอย่าง (การ์ดจริง · ป้าย Grade/Trait · ป้ายใต้การ์ด · บัฟ Deck จาก deckbuff.js) · แตะการ์ด = แผ่นตั้งค่าแบบหน้า Deck + ส่วนใหม่ <b>Custom HP / ATK</b> · <b>Load from My Decks</b> = ดึงทีมจากหน้า Deck · DFV ใส่ ATK/HP จากรูปเจ้าของ (ป้าย Custom) · สูตร ATK บอสตาม Stage ยังรอรูป (+0.6%/Stage แทน)",
-    arena: "<b>Arena</b> · ทีมเรา + ทีมศัตรู จัดแบบหน้า Deck (Load from My Decks ได้ทั้งคู่) · Simulate = สู้จริง 100/500/1000 ไฟต์ → ชนะ % · ใครแบก · ดวงสกิลโอกาส · ลองลำดับ 46 แบบ (Use) · Shadow Monarch = ตัวอย่าง “Skill not simulated yet”",
-    result: "<b>ผลลัพธ์</b> · Guild Boss = DAMAGE DEALT + Stage ที่น่าจะดันได้ (ประมาณ) · Arena = VICTORY/DEFEAT/DRAW + เหตุผล · ทุกใบ: ดาเมจ ตี CRIT ฮีล ดาเมจที่โดน Support สกิลโอกาสเทียบที่ควรติด",
-    ask: "<b>คำถามถึงเจ้าของ</b> · แตะเลือกคำตอบทีละข้อ แล้วกด <b>Copy answers</b> ส่งในแชท (ป้าย “Claude แนะนำ” = ตัวเลือกที่ Claude คิดว่าดีสุด)",
-  };
-  let view = "boss";
-  function go(v, { replace = false } = {}) {
+  const VIEWS = ["boss", "arena", "result"];
+  let view = "boss", bound = false;
+  const viewFromHash = () => { const m = location.hash.match(/^#\/?battle(?:\/(\w+))?/); return m ? (m[1] || "boss") : null; };
+  function go(v) {   // the tabs (Guild Boss | Arena) and Continue: no new history entry, like the Cards | Support tabs
     const h = v === "boss" ? "#battle" : "#battle/" + v;
-    if (location.hash !== h) { if (replace) history.replaceState(null, "", h); else history.pushState(null, "", h); }
-    showBattle();
-  }
-  function viewFromHash() { const m = location.hash.match(/^#battle(?:\/(\w+))?/); return m ? (m[1] || "boss") : null; }
-  function showBattle() {
-    let v = viewFromHash(); if (!v) return;
-    if (v === "fight") { if (!F.b || fightRoot().hidden) { go("boss", { replace: true }); return; } v = view; }
-    else closeFight();
-    if (v === "result" && !lastResult) { const b = new Battle("boss", "b", { seed: 7, boss: true }).run(); showResult(b); return; }
-    if (!VIEWS.includes(v)) v = "boss";
-    view = v;
-    const page = $("#page-battle");
-    $$(".page").forEach((p) => { if (p !== page) p.hidden = true; });
-    if (page.hidden) { page.hidden = false; page.classList.remove("fx-page-in"); void page.offsetWidth; page.classList.add("fx-page-in"); }
-    $$(".nav__btn").forEach((b) => { if (b.dataset.page === "battle") b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
-    $(".nav__list").style.setProperty("--i", 3);
-    document.title = "Battle — Card Battle Infinity";
-    $$("[data-bt-view]").forEach((s) => { s.hidden = s.dataset.btView !== v; });
-    $$("[data-bt-lab]").forEach((b) => b.setAttribute("aria-current", String(b.dataset.btLab === v)));
-    const seg = $("#bt-tabs"); seg.hidden = !(v === "boss" || v === "arena");
-    seg.style.setProperty("--i", v === "arena" ? 1 : 0);
-    $$("#bt-tabs .seg__btn").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.btLab === v)));
-    $("#bt-note").innerHTML = NOTES[v];
+    if (location.hash !== h) history.replaceState(null, "", h);
+    show();
     window.scrollTo({ top: 0 });
   }
+  function showView() {
+    $$("[data-bt-view]").forEach((s) => { s.hidden = s.dataset.btView !== view; });
+    const seg = $("#bt-tabs"); seg.hidden = !(view === "boss" || view === "arena");
+    seg.style.setProperty("--i", view === "arena" ? 1 : 0);
+    $$("#bt-tabs .seg__btn").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.btTab === view)));
+  }
+  function show() {
+    let v = viewFromHash(); if (!v || !$("#page-battle")) return;
+    if (!ready) { init(); return; }   // show() runs again once the data is in
+    if (v === "fight") { if (!F.b || fightRoot().hidden) { history.replaceState(null, "", "#battle"); v = "boss"; } else return; }
+    else closeFight();
+    if (v === "result" && !lastResult) { history.replaceState(null, "", "#battle"); v = "boss"; }
+    if (!VIEWS.includes(v)) v = "boss";
+    view = v; showView();
+  }
+  function paintBossStats() {
+    const best = FIGHTS.slice().sort((x, y) => y.dmg - x.dmg).slice(0, 3);
+    const when = (t) => { const d = Math.floor((Date.now() - t) / 864e5); return d <= 0 ? "Today" : d === 1 ? "Yesterday" : d + " days ago"; };
+    $("#bt-best").innerHTML = best.length ? best.map((f, i) => `<li><span class="bt-rk">${i + 1}</span><span>${when(f.at)} <span class="bt-faint">· Stage ${f.stage}</span></span><b>${fmtS(f.dmg)}</b></li>`).join("")
+      : `<li class="bt-list__empty"><span class="empty__text">No fights yet. Tap FIGHT: your best three show here.</span></li>`;
+    $("#bt-mine").textContent = fmtS(FIGHTS.reduce((x, f) => x + f.dmg, 0));
+    $("#bt-nfights").textContent = String(FIGHTS.length);
+  }
+  function paintBoss() {
+    const x = lookup("cards", BD.boss.id || "quirk-thief-overlord"), box = $("#bt-boss-card");
+    if (x) {
+      const card = cardEl("cards", x, "Normal");
+      box.innerHTML = ""; box.appendChild(scaled(card));
+      const h = $('[data-k="hp"]', card); if (h) { h.textContent = "∞"; h.dataset.t = "∞"; }
+      $("#bt-boss-name").textContent = x.name;
+    }
+    $("#bt-boss-card-atk").textContent = fmt(Number(BD.boss.cardAtk) || 0);
+    paintStage();
+    paintBossStats();
+  }
+  function paintStage() {
+    $("#bt-stage").value = STAGE; $("#bt-stage-n").textContent = fmt(STAGE);
+    $("#bt-boss-atk").textContent = fmt(bossAtk(STAGE));
+    $("#bt-stage-bar").style.setProperty("--p", (STAGE / 1500).toFixed(3));
+  }
+  function drawSound() { const b = $("#bt-sound"); b.innerHTML = SND.muted ? ICON.mute : ICON.sound; b.setAttribute("aria-label", SND.muted ? "Sound off" : "Sound on"); b.setAttribute("aria-pressed", String(!SND.muted)); }
+  function moveTo(slot) {
+    const s = sel; sel = null;
+    if (!s || slot.dataset.team !== s.key || slot.dataset.kind !== s.kind) { paintBoard(s.key); FX.toast("Pick a slot in the same row"); return; }
+    const j = Number(slot.dataset.i); if (j !== s.i) swap(s.key, s.kind, s.i, j);
+    paintBoard(s.key, { flash: { kind: s.kind, i: j } });
+  }
   function bind() {
-    // the Battle menu button: handled here before app.js (its PAGES has no "battle")
-    $(".nav").addEventListener("click", (e) => { const b = e.target.closest('.nav__btn[data-page="battle"]'); if (b) { e.stopPropagation(); go(view === "result" ? "result" : view); } }, true);
-    window.addEventListener("hashchange", (e) => { if (viewFromHash()) { e.stopImmediatePropagation(); showBattle(); } }, true);
-    window.addEventListener("popstate", (e) => { if (viewFromHash()) { e.stopImmediatePropagation(); showBattle(); } }, true);
+    if (bound) return; bound = true;
     const page = $("#page-battle");
     page.addEventListener("click", (e) => {
-      const lab = e.target.closest("[data-bt-lab]"); if (lab) { go(lab.dataset.btLab); return; }
+      const tab = e.target.closest("[data-bt-tab]"); if (tab) { go(tab.dataset.btTab); return; }
       const t = e.target.closest("[data-bt]");
       const slot = e.target.closest(".dk-slot[data-team]");
       if (t) {
@@ -1009,23 +998,20 @@
         if (act === "add" && slot) { if (sel) { moveTo(slot); return; } openPicker(slot.dataset.team, slot.dataset.kind, Number(slot.dataset.i)); return; }
         if (act === "load") { loadDeck(t.dataset.team); return; }
         if (act === "fight") { SND.unlock(); startFight(t.dataset.mode); return; }
-        if (act === "sim") { runSim(); return; }
+        if (act === "sim") { runSim(t); return; }
         if (act === "simn") { simN = Number(t.dataset.n); const seg = t.parentNode; seg.style.setProperty("--i", [...seg.querySelectorAll(".seg__btn")].indexOf(t)); seg.querySelectorAll(".seg__btn").forEach((x) => x.setAttribute("aria-pressed", String(x === t))); return; }
         if (act === "apply") { applyTip(Number(t.dataset.tip)); return; }
-        if (act === "save") { saveImage(); return; }
+        if (act === "save") { saveImage(t); return; }
         if (act === "go") { go(t.dataset.to); return; }
-        if (act === "copyask") { copyAnswers(t); return; }
-        if (act === "resetask") { Object.keys(askState).forEach((k) => delete askState[k]); paintAsk(); return; }
       }
-      const ask = e.target.closest("[data-ask]");
-      if (ask) { askState[ask.dataset.ask] = Number(ask.dataset.k); paintAsk(); return; }
       const item = e.target.closest(".dk-item[data-id]");
-      if (item && slot) { if (sel) { moveTo(slot); return; } slotSheet(slot.dataset.team, slot.dataset.kind, Number(slot.dataset.i)); }
+      if (item && slot) { if (sel) { moveTo(slot); return; } slotSheet(slot.dataset.team, slot.dataset.kind, Number(slot.dataset.i)); return; }
+      if (sel && slot) moveTo(slot);
     });
     page.addEventListener("keydown", (e) => { const item = e.target.closest(".dk-item[data-id]"); if (item && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); item.click(); } });
     $("#bt-stage").addEventListener("change", (e) => {
-      let v = Math.round(Number(e.target.value)); if (!v || v < 1) v = 1; if (v > 1500) v = 1500; e.target.value = v; STAGE = v;
-      $("#bt-stage-n").textContent = v; $("#bt-boss-atk").textContent = fmt(bossAtk(v)); if (!reduced()) FX.flash($("#bt-boss-atk").closest(".panel"));
+      let v = Math.round(Number(e.target.value)); if (!v || v < 1) v = 1; if (v > 1500) v = 1500; STAGE = v; save();
+      paintStage(); if (!reduced()) FX.flash($("#bt-boss-atk").closest(".panel"));
     });
     // fight controls
     const f = fightRoot();
@@ -1033,45 +1019,31 @@
       const sp = e.target.closest("[data-spd]");
       if (sp) { const v = Number(sp.dataset.spd); F.k = v === 1 ? 1 : v === 2 ? .5 : 1 / 3; f.style.setProperty("--bt-k", F.k.toFixed(3)); $$("[data-spd]", f).forEach((x) => x.setAttribute("aria-pressed", String(x === sp))); return; }
       if (e.target.closest("#bt-hide")) { F.hud = !F.hud; f.classList.toggle("hud-off", !F.hud); $("#bt-hide span").textContent = F.hud ? "Hide" : "Show"; return; }
-      if (e.target.closest("#bt-end")) { if (!F.b) return; F.token++; const b = F.b; b.E = null; while (!b.step()); showResult(b); return; }
-      if (e.target.closest("#bt-sound")) { SND.unlock(); SND.muted = !SND.muted; store.set("cbi:battleMute", SND.muted ? "1" : "0"); drawSound(); FX.toast(SND.muted ? "Sound off" : "Sound on"); }
+      if (e.target.closest("#bt-end")) { endFight(); return; }
+      if (e.target.closest("#bt-sound")) { SND.unlock(); SND.muted = !SND.muted; store.set(MUTE_KEY, SND.muted ? "1" : "0"); drawSound(); FX.toast(SND.muted ? "Sound off" : "Sound on"); }
     });
-  }
-  function drawSound() { const b = $("#bt-sound"); b.innerHTML = SND.muted ? ICON.mute : ICON.sound; b.setAttribute("aria-label", SND.muted ? "Sound off" : "Sound on"); }
-  function moveTo(slot) {
-    const s = sel; sel = null;
-    if (!s || slot.dataset.team !== s.key || slot.dataset.kind !== s.kind) { paintBoard(s.key); FX.toast("Pick a slot in the same row"); return; }
-    const j = Number(slot.dataset.i); if (j !== s.i) swap(s.key, s.kind, s.i, j);
-    paintBoard(s.key, { flash: { kind: s.kind, i: j } });
-  }
-  let countdownEnd = Date.now() + (2 * 86400 + 14 * 3600 + 32 * 60 + 8) * 1000;
-  function tick() {
-    const s = Math.max(0, Math.floor((countdownEnd - Date.now()) / 1000)), d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), x = s % 60;
-    const el = $("#bt-timer"); if (el) el.textContent = `${d}d ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}`;
-  }
-  function paintBoss() {
-    const x = lookup("cards", BOSS_ID), box = $("#bt-boss-card");
-    const card = cardEl("cards", x, "Normal");
-    box.innerHTML = ""; box.appendChild(scaled(card));
-    const h = $('[data-k="hp"]', card); if (h) { h.textContent = "∞"; h.dataset.t = "∞"; }
-    $("#bt-boss-atk").textContent = fmt(bossAtk(STAGE));
-    $("#bt-best").innerHTML = [[725551288028, "448 → 460", "Today"], [688204511930, "436 → 447", "Yesterday"], [612993004117, "425 → 435", "2 days ago"]]
-      .map(([dmg, st, w], i) => `<li><span class="bt-rk">${i + 1}</span><span>${w} <span class="bt-faint">· Stage ${st}</span></span><b>${fmtS(dmg)}</b></li>`).join("");
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !fightRoot().hidden) endFight(); });   // no dialog opens during a fight
   }
 
-  async function start() {
-    // supports for the mockup: data/pending/support.json (the live data/support.json is still empty)
-    try {
-      const pend = await C.loadJSON("data/pending/support.json");
-      const have = new Set((state.support || []).map((s) => s.id));
-      (Array.isArray(pend) ? pend : []).forEach((s) => { if (s && s.id && !have.has(s.id)) { s.kind = "support"; if (!s.name) s.name = s.id; state.support.push(s); } });
-    } catch (e) { console.warn("pending supports not loaded", e); }
-    bind(); drawSound(); paintBoss(); paintBoard("boss"); paintBoard("a"); paintBoard("b"); paintAsk();
-    tick(); setInterval(tick, 1000);
-    if (!viewFromHash()) history.replaceState(null, "", "#battle");
-    showBattle();
+  /* ---------- Load once (the first time the Battle page opens): data/battle.json + the pending supports ---------- */
+  function init() {
+    if (ready || loading || !state.loaded || !$("#page-battle")) return loading;
+    $("#bt-loading").hidden = false;
+    loading = Promise.all([
+      C.loadJSON("data/battle.json").catch((e) => { console.warn("data/battle.json not loaded: skills off", e); return null; }),
+      C.loadJSON("data/pending/support.json").catch(() => []),
+    ]).then(([bd, pend]) => {
+      if (bd && typeof bd === "object") BD = { clip: {}, boss: {}, cards: {}, support: {}, traits: {}, groups: {}, ...bd };
+      const live = Array.isArray(state.support) ? state.support : [], have = new Set(live.map((s) => s.id));
+      SUP = live.concat((Array.isArray(pend) ? pend : []).filter((s) => s && s.id && s.effect && !have.has(s.id)).map((s) => ({ ...s, kind: "support", name: s.name || s.id })));
+      loadSaved();
+      ready = true;
+      $("#bt-loading").hidden = true;
+      bind(); drawSound(); paintBoss(); paintBoard("boss"); paintBoard("a"); paintBoard("b");
+      show();
+    }).catch((e) => { console.error(e); $("#bt-loading").innerHTML = `<p class="empty__title">Couldn't load the battle data</p><p class="empty__text">Check your connection and open Battle again.</p>`; loading = null; });
+    return loading;
   }
-  // for checks in the browser console / tests (mockup only)
-  C.battleMock = { Battle, T, SKILL, stats, ROLL, DEF_K, ECHO_CLIP };
-  const wait = setInterval(() => { if (state.loaded && C.dialog && C.deckBuff) { clearInterval(wait); start(); } }, 50);
+
+  C.battle = { init, show, Battle, teams: T, stats, data: () => BD };
 })();
