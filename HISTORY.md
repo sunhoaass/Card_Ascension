@@ -2179,3 +2179,9 @@
 - **ทำ:** `docs/bg-prompts.md` = prompt ภาษาอังกฤษ 6 ก้อน (A Celestial Eclipse / B Amethyst Dusk / C Sapphire Abyss × มือถือ 9:16 + คอม 21:9 ที่ของเด่นอยู่กลาง 16:9) + negative prompt + วิธีส่ง (`inbox/bg/`) + เหตุผลการวางองค์ประกอบ (กลางจอเงียบ, บน/ล่างเรียบสำหรับหัวเว็บ/เมนู, ซ้ายเรียบสำหรับเมนูคอม) + แผน artifact รอบ 2
 - **ไฟล์:** `docs/bg-prompts.md` · `inbox/bg/.gitkeep` · `PROGRESS.md` · `HISTORY.md`
 - **เพิ่ม 2026-11-04:** prompt D Castle Night (เมือง + ปราสาทเด่นสุด + ฟ้ากลางคืนมีดาว) มือถือ + คอม + ตารางของเสริม 10 อย่าง + ชุดแนะนำ + บรรยากาศสำรอง 2 แบบ + รูปแยกชั้น (ไม่บังคับ) ใน `docs/bg-prompts.md`
+
+### 2026-11-04 · 🌌 Artifact ธีมรอบ 2: ธีมมืด 4 แบบ + ปุ่มระดับ 4 แบบ + ทุกขนาดจอ
+- **เจ้าของ:** ยกเลิกรูปพื้นหลัง ให้ทำ artifact เลย (ต่อจากคำสั่ง: โทนมืดไม่ดำ ใกล้หน้าดูการ์ด · เปลี่ยนปุ่มระดับ · จอคอมทุกขนาด)
+- **ทำ:** เขียน `mockup/bright-themes.html` ใหม่ (ลิงก์ artifact เดิม เวอร์ชัน 2): หน้าเว็บจำลองชุดเดียว (`.site` + container query ≥ 1100px = เมนูซ้าย 252px · การ์ด 5 ใบต่อแถวตาม `--grid-cols`) ใช้กับโทรศัพท์ 4 หน้า + จอพรีวิวทุกขนาด (จอ > 1920 = หน้า w/zoom ขยายตามสูตร `min(w/1920, h/1080)` เหมือน `<head>` ของ index.html) · ธีมมืด D1 Castle Night / D2 Royal Eclipse / D3 Amethyst Dusk / D4 Sapphire Abyss (ฉากวาดด้วยโค้ด: ดาว, จันทร์, สุริยุปราคา, ประตูมิติ, ออโรรา, เมืองปราสาท SVG จาก seed) + ธีมสว่าง L1–L5 เดิม · ปุ่มระดับ 4 แบบ (Ascension Ladder / Gem / Seal / Capsule) เลือกแยกจากธีม · เมนูในจอกดเปลี่ยนหน้าได้ · แตะระดับ = การ์ดแฟลช · IntersectionObserver หยุดอนิเมชั่นจอที่พ้นสายตา · reduced motion
+- **ทดสอบ (Playwright):** 1400px + 390px · ธีมมืด 4 แบบ · จอ 1366×768 / 1920×1080 / 3440×1440 · console error 0 · หน้า lab ที่ 390px เลื่อนข้างไม่ได้ (scrollX = 0)
+- **ไฟล์:** `mockup/bright-themes.html` · `docs/bg-prompts.md` (ทำเครื่องหมายยกเลิก) · `PROGRESS.md` · `HISTORY.md`
