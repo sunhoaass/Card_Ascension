@@ -529,8 +529,8 @@
   // under the card, like the saved image (owner 2026-11-04): rarity pill (the game card's own) · GRADE n (bronze / silver / gold / rainbow)
   // · trait (icon + name in its colour) · support: rarity · Mutation +x% (C.mutAt) · a changed pill flashes (§4)
   // the pills of one slot: [{ p, key, html, attrs, label }] · used by the editor (paintInfo) and the deck list (deckRow)
-  function pillSpecs(kind, d, i, id) {
-    const x = lookup(kind, id), r = rarityAt(d, kind, i), lr = String(r).toLowerCase();
+  function pillSpecs(kind, d, i, id, item) {   // item = the card / support (js/battle.js passes its own: pending supports)
+    const x = item || lookup(kind, id), r = rarityAt(d, kind, i), lr = String(r).toLowerCase();
     const out = [{ p: "rar", key: r, html: `<span>${esc(r)}</span>`, label: `Rarity: ${r}`,
       attrs: { "data-r": r, style: r === "Normal" ? null : `--rar-bg:var(--gc-rar-${lr});--rar-line:var(--gc-rar-${lr}-line);--rar-ink:var(--gc-rar-${lr}-ink,#fff)` } }];
     if (kind === "cards") {
@@ -547,7 +547,7 @@
     return out;
   }
   const pillAttrs = (attrs) => Object.entries(attrs).filter(([, v]) => v != null).map(([a, v]) => ` ${a}="${esc(v)}"`).join("");
-  const pillsHTML = (kind, d, i, id) => pillSpecs(kind, d, i, id).map((q) => `<span class="dk-pill dk-pill--${q.p}"${pillAttrs(q.attrs)}>${q.html}</span>`).join("");
+  const pillsHTML = (kind, d, i, id, item) => pillSpecs(kind, d, i, id, item).map((q) => `<span class="dk-pill dk-pill--${q.p}"${pillAttrs(q.attrs)}>${q.html}</span>`).join("");
   function paintInfo(slot, kind, d, i, id, animate) {
     const box = slot._info;
     if (!box) return;
@@ -1183,6 +1183,36 @@
       </section>` : ""}`;
   }
   const traitFx = (t) => [t.dmg ? `x${t.dmg} Damage` : "", t.hp ? `x${t.hp} Health` : "", ...(Array.isArray(t.lines) ? t.lines : [])].filter(Boolean);
+  // paint the sheet's Grade + Trait part from a slot's 4 grades + trait id (also js/battle.js · C.deckParts)
+  function paintTGSheet(root, g4, tId) {
+    const g = overallOf(g4), full = fullOf(g4);
+    root.querySelectorAll("[data-ss-grade]").forEach((b) => {
+      const v = g4[Number(b.dataset.ssGk)], n = Number(b.dataset.ssGrade);
+      b.setAttribute("aria-pressed", String(n === v));
+      b.classList.toggle("is-on", n <= v);
+    });
+    root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
+    root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
+    // "+x%" = what the card really gets (js/deckbuff.js gradePct: 2.5% a point · +30% more when all 4 are 10)
+    const gp = C.deckBuff.gradePct(g4), gpv = [gp.atk, gp.def, gp.status, gp.hp];
+    root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = gpv[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number(v.toFixed(1))}%` : ""; });
+    const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
+    if (gt) { gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g); }
+    if (gsum) { gsum.textContent = full ? GSUM_FULL : GSUM; gsum.classList.toggle("is-full", full); }
+    if (all) all.hidden = full;
+    root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
+    const rmG = $('[data-ss-rm="grade"]', root), rmT = $('[data-ss-rm="trait"]', root), tfx = $("[data-ss-tfx]", root);
+    if (rmG) rmG.hidden = !g;
+    if (rmT) rmT.hidden = !tId;
+    const t = tId ? traitById(tId) : null;
+    if (tfx) { tfx.hidden = !t; tfx.innerHTML = t ? `<b>${esc(t.name)}</b> <span>${esc(t.tier)}</span> · ${traitFx(t).map(esc).join(" · ")}` : ""; }
+  }
+  // a tap on grade step g of stat k: the 4 grades after it (the grade that's on again = off · all 0 = null)
+  function gradeTap(g4, k, g) {
+    const n = (g4 || [0, 0, 0, 0]).slice();
+    n[k] = n[k] === g ? 0 : g;
+    return n.some((v) => v > 0) ? n : null;
+  }
 
   async function slotSheet(kind, i) {
     if (!cur || mode !== "editor" || !cur[kind][i] || sheet || dialogOpen()) return;
@@ -1217,26 +1247,7 @@
           if (isCard) {
             const tId = cur.trait[i], g4 = cur.grades[i] || [0, 0, 0, 0], g = overallOf(g4), full = fullOf(g4);
             paintTG(art, tId, g, animate);
-            root.querySelectorAll("[data-ss-grade]").forEach((b) => {
-              const v = g4[Number(b.dataset.ssGk)], n = Number(b.dataset.ssGrade);
-              b.setAttribute("aria-pressed", String(n === v));
-              b.classList.toggle("is-on", n <= v);
-            });
-            root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
-            root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
-            // "+x%" = what the card really gets (js/deckbuff.js gradePct: 2.5% a point · +30% more when all 4 are 10)
-            const gp = C.deckBuff.gradePct(g4), gpv = [gp.atk, gp.def, gp.status, gp.hp];
-            root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = gpv[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number(v.toFixed(1))}%` : ""; });
-            const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
-            if (gt) { gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g); }
-            if (gsum) { gsum.textContent = full ? GSUM_FULL : GSUM; gsum.classList.toggle("is-full", full); }
-            if (all) all.hidden = full;
-            root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
-            const rmG = $('[data-ss-rm="grade"]', root), rmT = $('[data-ss-rm="trait"]', root), tfx = $("[data-ss-tfx]", root);
-            if (rmG) rmG.hidden = !g;
-            if (rmT) rmT.hidden = !tId;
-            const t = tId ? traitById(tId) : null;
-            if (tfx) { tfx.hidden = !t; tfx.innerHTML = t ? `<b>${esc(t.name)}</b> <span>${esc(t.tier)}</span> · ${traitFx(t).map(esc).join(" · ")}` : ""; }
+            paintTGSheet(root, g4, tId);
             const b = ed.buffs && ed.buffs[i];
             if (b && b.id === id) {
               C.setCardNums(art, { atk: b.atk, hp: b.hp }, { animate });
@@ -1272,12 +1283,7 @@
             commit((d) => { d.grades[i] = [GRADE_MAX, GRADE_MAX, GRADE_MAX, GRADE_MAX]; });
             paint(true);
           } else if (gb || (rm && rm.dataset.ssRm === "grade")) {
-            commit((d) => {
-              if (!gb) { d.grades[i] = null; return; }
-              const k = Number(gb.dataset.ssGk), g = Number(gb.dataset.ssGrade), g4 = (d.grades[i] || [0, 0, 0, 0]).slice();
-              g4[k] = g4[k] === g ? 0 : g;                       // the grade that's on again = off
-              d.grades[i] = g4.some((n) => n > 0) ? g4 : null;
-            });
+            commit((d) => { d.grades[i] = gb ? gradeTap(d.grades[i], Number(gb.dataset.ssGk), Number(gb.dataset.ssGrade)) : null; });
             paint(true);
           } else if (tb || (rm && rm.dataset.ssRm === "trait")) {
             const t = tb ? tb.dataset.ssTrait : null;
@@ -2377,4 +2383,6 @@
   }
 
   C.deck = { init, enter, show, paintScore };
+  /* Parts the Battle page builds its team boards + slot sheet from (js/battle.js · PROGRESS §3.3): same classes, css/deck.css */
+  C.deckParts = { pillsHTML, fitName, tgHTML, paintTG, tgSheetHTML, paintTGSheet, gradeTap, buffText, overallOf, fullOf, gradeBand, gradeTone, traitById, traitIcon, traitColor, traitFx, GSTATS, GRADE_MAX, ICON };
 })();

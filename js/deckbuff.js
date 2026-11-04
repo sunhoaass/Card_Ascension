@@ -34,7 +34,7 @@
    NAME / GROUP -> card ids: data/buffs.json (aliases / groups · null = not known yet: the buff is skipped, never an error)
 
    CBI.deckBuff = {
-     compute(deck)
+     compute(deck, { support }?)   (support = another support list to read · js/battle.js)
        -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct (all in: deck × trait × grade · the buff pill),
             deckAtkPct, deckHpPct (deck buffs only), trait, fullGrade,
             grade: { atk, def, status, hp (% each), full } (gradePct), atk, hp (all in),
@@ -168,9 +168,10 @@
     return id ? (Array.isArray(C.state.traits) ? C.state.traits : []).find((t) => t.id === id) || null : null;
   };
 
-  function compute(deck) {
-    const st = C.state;
-    const cardBy = new Map((st.cards || []).map((c) => [c.id, c])), supBy = new Map((Array.isArray(st.support) ? st.support : []).map((s) => [s.id, s]));
+  // opts.support = the support list to read (js/battle.js: the live list + data/pending/support.json) · default C.state.support
+  function compute(deck, opts) {
+    const st = C.state, sl = opts && Array.isArray(opts.support) ? opts.support : st.support;
+    const cardBy = new Map((st.cards || []).map((c) => [c.id, c])), supBy = new Map((Array.isArray(sl) ? sl : []).map((s) => [s.id, s]));
     const slot = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(Array.isArray(a) && typeof a[i] === "string" && a[i] ? a[i] : null); return o; };
     const ids = slot(deck && deck.cards), sids = slot(deck && deck.support);
     const at = ids.map((id) => (id ? cardBy.get(id) || null : null)), sat = sids.map((id) => (id ? supBy.get(id) || null : null));

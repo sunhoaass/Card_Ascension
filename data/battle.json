@@ -1,0 +1,60 @@
+{
+  "updated": "2026-11-04",
+  "note": "Battle engine data (js/battle.js · PROGRESS §14). cards = the skill of each card as numbers the engine runs (a card not here fights with ATK / HP only: 'Skill not simulated yet'). support = what a support does in a fight that needs a hit / a turn (its value = C.supValAt at the support slot's rarity; buffs with no condition are already in js/deckbuff.js). traits = the trait lines that need a fight (the ×damage / ×HP are in js/deckbuff.js). groups = card ids of a group a skill names (guess = not checked in the game yet). Fields: PROGRESS §14 'field battle'.",
+  "clip": {
+    "roll": 0.12,
+    "defK": 0.2,
+    "echo": { "rarity": "Godly", "v": 189.34 },
+    "statusConfirmed": false
+  },
+  "boss": { "id": "quirk-thief-overlord", "stage": 448, "atk": 460425250, "perStage": 0.006, "cardAtk": 3761530, "stageDmg": 60500000000 },
+  "cards": {
+    "one-punch-caped-hero": { "first": 3.68, "ignore": 1, "noCC": 1, "dmg": 0.15 },
+    "cyborg-sister": { "perTurn": { "v": 0.05, "n": 6 }, "double": { "p": 0.25, "m": 1 } },
+    "moon-breath-swordsman": { "behind": { "every": 2, "m": 0.5 }, "regen": 0.08, "crit": [0.4, 2.5], "weakTo": { "group": "Sun", "m": 2 } },
+    "dragon-king-of-ruin": { "killGain": 0.13, "splash": 0.2, "ignore": 1, "weaken": 0.912 },
+    "full-moon-demon-king": { "reflect": 0.2, "counter": 0.2, "onHitAtk": 0.039, "revive": 0.39 },
+    "golden-wind-boss": { "reflect": 0.31, "early": { "dr": 0.44, "n": 3 }, "lifesteal": 0.19, "killGain": 0.12 },
+    "ant-king": { "killGain": 0.25, "adapt": 0.12, "regen": 0.041, "perTurn": { "v": 0.049, "n": 10 } },
+    "divergent-fist-vessel": { "bf": { "p": 0.15, "per": 0.1, "max": 3, "m": 2.5 }, "ignore": 1, "survive": 1, "onHitAtk": 0.08 },
+    "founding-titan": { "splash": 0.2, "weaken": 0.923, "dr": 0.091 },
+    "octopus-teacher": { "dodge": 0.38, "double": { "p": 0.69, "m": 0.8 }, "regen": 0.069, "survive": 1 },
+    "quirk-thief-overlord": { "copy": 1, "killGain": 0.11, "weaken": 0.93 },
+    "slime-demon-lord": { "copy": 1, "killGain": 0.11, "dodge": 0.14 },
+    "soul-king-father": { "dodge": 0.14, "copy": 1, "killGain": 0.072, "ignore": 1 },
+    "sun-breath-origin": { "vs": { "group": "Demon", "m": 1.79 }, "ignore": 1, "dodge": 0.35, "first": 2.18 },
+    "sun-god-captain": { "dodge": 0.3, "stun": { "p": 0.3, "turns": 1, "lose": 1, "kind": "Stun" }, "perTurn": { "v": 0.1, "n": 10 }, "survive": 1 },
+    "sword-saint": { "revive": 0.53, "ignore": 1, "first": 1.8, "noCC": 1 },
+    "ultra-instinct-saiyan": { "dodge": 0.38, "sure": 1, "counter": 0.38, "survive": 1 },
+    "shadow-monarch": { "arise": 0.54, "perTurn": { "v": 0.072, "n": 10 }, "dodge": 0.36, "ignore": 1 },
+    "destroyer-god": { "execute": { "p": 0.21, "under": 0.6 }, "ignore": 1, "dodge": 0.3, "weaken": 0.83 },
+    "storm-dragon": { "splash": 0.2, "stun": { "p": 0.28, "turns": 2, "lose": 0.5, "kind": "Paralyze" }, "weaken": 0.85, "dr": 0.26 }
+  },
+  "support": {
+    "gate-healer": "teamHeal",
+    "cafe-owner-owl": "lifesteal",
+    "plant-healer": "hitHeal",
+    "spirit-sidekick": "onHitAtk",
+    "portal-playboy": "dodge",
+    "crow-banker": "mark",
+    "pig-captain": "lucky",
+    "spirit-wave-master": "echo"
+  },
+  "traits": {
+    "ascendant": { "crit": [0.2, 2.5], "revive": 0.5 },
+    "limitless": { "dodge": 0.12, "dr": 0.1 },
+    "sage-mode": { "lifesteal": 0.12, "shield": 0.15 },
+    "awakened": { "crit": [0.15, 2] },
+    "undying": { "revive": 0.3 },
+    "prodigy": { "firstAll": 0.3 },
+    "keen-eye": { "crit": [0.12, 2] },
+    "bloodlust": { "lifesteal": 0.08 },
+    "iron-body": { "dr": 0.06 },
+    "nimble": { "dodge": 0.05 }
+  },
+  "groups": {
+    "guess": "Sun / Demon = cards with Sun / Demon in the name (not checked in the game yet)",
+    "Sun": ["sun-breath-origin", "sun-god-captain"],
+    "Demon": ["full-moon-demon-king", "slime-demon-lord"]
+  }
+}

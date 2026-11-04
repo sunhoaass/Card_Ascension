@@ -74,16 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=97">
-  <link rel="stylesheet" href="css/base.css?v=97">
-  <link rel="stylesheet" href="css/fx.css?v=97">
-  <link rel="stylesheet" href="css/cards.css?v=97">
-  <link rel="stylesheet" href="css/tier.css?v=97">
-  <link rel="stylesheet" href="css/deck.css?v=97">
-  <link rel="stylesheet" href="css/support.css?v=97">
-  <link rel="stylesheet" href="css/tiermaker.css?v=97">
-  <link rel="stylesheet" href="css/detail.css?v=97">
-  <link rel="stylesheet" href="css/home.css?v=97">
+  <link rel="stylesheet" href="css/tokens.css?v=98">
+  <link rel="stylesheet" href="css/base.css?v=98">
+  <link rel="stylesheet" href="css/fx.css?v=98">
+  <link rel="stylesheet" href="css/cards.css?v=98">
+  <link rel="stylesheet" href="css/tier.css?v=98">
+  <link rel="stylesheet" href="css/deck.css?v=98">
+  <link rel="stylesheet" href="css/support.css?v=98">
+  <link rel="stylesheet" href="css/tiermaker.css?v=98">
+  <link rel="stylesheet" href="css/detail.css?v=98">
+  <link rel="stylesheet" href="css/home.css?v=98">
+  <link rel="stylesheet" href="css/battle.css?v=98">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -116,6 +117,7 @@
       <symbol id="i-fan" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="#0f1428"><rect x="5" y="5" width="9" height="13" rx="1.2" transform="rotate(-20 12 20)"/><rect x="7.5" y="4" width="9" height="13" rx="1.2" transform="rotate(20 12 20)"/><rect x="7.5" y="4.5" width="9" height="13.5" rx="1.2"/><path d="M12 8.6l2 2.6-2 2.6-2-2.6z" fill="currentColor" stroke="none"/></g></symbol>
       <symbol id="i-potion" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M9.5 3h5M10.2 3v4.6L5.8 14a6.6 6.6 0 1 0 12.4 0l-4.4-6.4V3"/><path d="M6.6 14.5h10.8"/><circle cx="10.5" cy="17" r=".9" fill="currentColor"/><circle cx="13.7" cy="18.3" r=".6" fill="currentColor"/></g></symbol>
       <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H18v14H5.5c-.8 0-1.5.7-1.5 1.5z"/><path d="M4 19.5C4 20.3 4.7 21 5.5 21H19"/><path d="M8 8h6M8 11h4"/><path d="M15 4v5l1.5-1 1.5 1V4" stroke-width="1.2"/></g></symbol>
+      <symbol id="i-swords" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4"/><path d="m7 17-3 3"/><path d="m3 19 2 2"/></g></symbol>
       <symbol id="i-lens" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3.6" stroke-width=".8" stroke-dasharray="1.6 1.6"/><path d="M14.5 14.5 20.5 20.5" stroke-width="2.6"/><path d="M7.5 7.8a3.4 3.4 0 0 1 2.5-1.3"/></g></symbol>
       <!-- Card detail label icons (W6): Tier = i-crown · Passive / Skill = star · Strongest = sword · Weakness = cracked shield -->
       <symbol id="i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="m12 3.2 2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/><path d="M12 7.6v5.2M9.6 10.6h4.8" stroke-width="1"/></g></symbol>
@@ -175,12 +177,13 @@
       <svg class="brand__crest" aria-hidden="true"><use href="#i-crest"/></svg>
       <span class="brand__name">Card Battle Infinity</span>
     </a>
-    <ul class="nav__list" style="--n:3">
+    <ul class="nav__list" style="--n:4">
       <li aria-hidden="true" class="nav__indicator"></li>
       <li><button class="nav__btn fx-press" data-page="home" type="button"><svg aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></button></li>
       <!-- Tier List menu button removed 2026-11-04 (owner: rank everything again later) · put back: data-page="tier" + "tier" in PAGES (js/app.js) + --n:4 -->
       <li><button class="nav__btn fx-press" data-page="cards" type="button"><svg aria-hidden="true"><use href="#i-fan"/></svg><span>Cards</span></button></li>
       <li><button class="nav__btn fx-press" data-page="deck" type="button"><svg aria-hidden="true"><use href="#i-book"/></svg><span>Deck</span></button></li>
+      <li><button class="nav__btn fx-press" data-page="battle" type="button"><svg aria-hidden="true"><use href="#i-swords"/></svg><span>Battle</span></button></li>
     </ul>
     <div class="nav__foot">
       <span class="brand__date" data-updated>Loading…</span>
@@ -625,7 +628,118 @@
       </div>
     </section>
 
+
+    <!-- ===================== Battle (PROGRESS §14 · js/battle.js · css/battle.css) ===================== -->
+    <section id="page-battle" class="page" hidden aria-labelledby="bt-title" data-no-detail>
+      <div class="page__head">
+        <p class="page__eyebrow">The Colosseum</p>
+        <h1 id="bt-title" class="page__title">Battle</h1>
+        <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
+        <p class="page__lead">Build a team like a deck, then fight the Guild Boss or another team.</p>
+      </div>
+
+      <div id="bt-tabs" class="seg glass" role="tablist" aria-label="Battle mode" style="--n:2;--i:0">
+        <span class="seg__ind" aria-hidden="true"></span>
+        <button class="seg__btn fx-press" type="button" role="tab" data-bt-tab="boss" aria-selected="true">Guild Boss</button>
+        <button class="seg__btn fx-press" type="button" role="tab" data-bt-tab="arena" aria-selected="false">Arena</button>
+      </div>
+
+      <div class="empty bt-loading" id="bt-loading" hidden><span class="fx-loader" aria-hidden="true"></span><p class="empty__text">Getting the battle ready…</p></div>
+
+      <!-- Guild Boss -->
+      <div class="bt-view bt-view--boss" data-bt-view="boss" hidden>
+        <div class="bt-col">
+          <section class="panel">
+            <div class="bt-h"><h2>Guild Boss</h2><small>HP: infinite · no support</small></div>
+            <div class="bt-boss">
+              <div class="bt-boss__card" id="bt-boss-card"></div>
+              <div>
+                <h3 class="bt-boss__name" id="bt-boss-name">Guild Boss</h3>
+                <p class="bt-boss__tag">Gets stronger every stage!</p>
+                <dl class="bt-kv">
+                  <dt>HP</dt><dd class="inf">INFINITE</dd>
+                  <dt>ATK (card)</dt><dd class="atk" id="bt-boss-card-atk">0</dd>
+                  <dt>ATK in fight</dt><dd class="atk" id="bt-boss-atk">0</dd>
+                  <dt>Support</dt><dd>None</dd>
+                </dl>
+              </div>
+            </div>
+          </section>
+          <section class="panel bt-stage">
+            <div class="bt-stage__top"><span class="bt-stage__n"><span id="bt-stage-n">448</span> <small>/ 1,500</small></span>
+              <label class="tm-field bt-stage__in"><span class="tm-field__label">Your stage</span><input class="tm-input" id="bt-stage" type="number" inputmode="numeric" min="1" max="1500" value="448"></label></div>
+            <span class="bt-bar"><i id="bt-stage-bar" style="--p:.3"></i></span>
+            <p class="bt-faint bt-stage__note">The boss's ATK by stage is a guess until we have 2–3 stages from the game.</p>
+            <div class="bt-stats"><div class="bt-stat"><span>Your damage</span><b id="bt-mine">0</b></div><div class="bt-stat"><span>Fights</span><b id="bt-nfights">0</b></div></div>
+          </section>
+          <section class="panel">
+            <div class="bt-h"><h3>Best fights</h3><small>Saved on this device</small></div>
+            <ol class="bt-list" id="bt-best"></ol>
+          </section>
+        </div>
+        <div class="bt-col">
+          <section class="panel">
+            <div class="bt-h"><h2>Your team</h2><small>Tap a card: rarity, grade, trait, HP / ATK</small></div>
+            <div class="bt-team__bar"><span class="bt-team__from" data-team-from="boss"></span><button type="button" class="tm-btn fx-press" data-bt="load" data-team="boss">Load from My Decks</button></div>
+            <div class="dk-board" data-board="boss"></div>
+          </section>
+          <button type="button" class="tm-btn tm-btn--primary fx-press bt-fight-btn" data-bt="fight" data-mode="boss">FIGHT</button>
+        </div>
+      </div>
+
+      <!-- Arena -->
+      <div class="bt-view bt-view--arena" data-bt-view="arena" hidden>
+        <section class="panel">
+          <div class="bt-h"><h2>Your team</h2><small>Order = who fights first</small></div>
+          <div class="bt-team__bar"><span class="bt-team__from" data-team-from="a"></span><button type="button" class="tm-btn fx-press" data-bt="load" data-team="a">Load from My Decks</button></div>
+          <div class="dk-board" data-board="a"></div>
+        </section>
+        <div class="bt-vs"><span>VS</span></div>
+        <section class="panel">
+          <div class="bt-h"><h2>Enemy team</h2><small>The team you face</small></div>
+          <div class="bt-team__bar"><span class="bt-team__from" data-team-from="b"></span><button type="button" class="tm-btn fx-press" data-bt="load" data-team="b">Load from My Decks</button></div>
+          <div class="dk-board" data-board="b"></div>
+        </section>
+        <section class="panel bt-sim">
+          <div class="bt-h"><h2>Win chance</h2><small>Same rules as a real fight</small></div>
+          <ul class="bt-rules">
+            <li>You attack first · 1 round = you hit, then they hit · max 30 rounds</li>
+            <li>No team wiped after 30 rounds: more cards alive wins → then team HP % → then HP % of the card fighting</li>
+          </ul>
+          <div class="bt-sim__ctl">
+            <div class="seg glass" style="--n:3;--i:1"><span class="seg__ind" aria-hidden="true"></span><button type="button" class="seg__btn fx-press" data-bt="simn" data-n="100" aria-pressed="false">100</button><button type="button" class="seg__btn fx-press" data-bt="simn" data-n="500" aria-pressed="true">500</button><button type="button" class="seg__btn fx-press" data-bt="simn" data-n="1000" aria-pressed="false">1000</button></div>
+            <button type="button" class="tm-btn tm-btn--primary fx-press" data-bt="sim">Simulate</button>
+          </div>
+          <button type="button" class="tm-btn fx-press bt-watch" data-bt="fight" data-mode="arena">Watch one fight</button>
+          <div id="bt-sim-out"><div class="empty bt-sim__empty"><p class="empty__title">How often do you win?</p><p class="empty__text">Pick how many fights, then tap Simulate: win / lose / draw %, who carries, how luck changes it and a better order to try.</p></div></div>
+        </section>
+      </div>
+
+      <!-- Result -->
+      <div class="bt-view bt-view--result" data-bt-view="result" id="bt-result" hidden aria-live="polite"></div>
+    </section>
   </main>
+
+  <!-- Battle fight (full screen, over the site · js/battle.js) -->
+  <div class="bt-fight" id="bt-fight" hidden data-no-detail role="dialog" aria-modal="true" aria-label="Battle">
+    <div class="bt-ft__top">
+      <span class="chip glass" id="bt-mode">Guild Boss</span>
+      <div class="bt-ft__round"><small>ROUND</small><b id="bt-round">1<em> / 30</em></b></div>
+      <div class="bt-ft__tr"><button type="button" class="iconbtn glass fx-press" id="bt-sound" aria-label="Sound on"></button></div>
+    </div>
+    <div class="bt-arena"><div class="bt-fslot" id="bt-slot-a"></div><div class="bt-fslot" id="bt-slot-b"></div></div>
+    <div class="bt-ft__bottom">
+      <div class="bt-teams">
+        <div class="bt-left"><b><em id="bt-left-a">4/4</em> left</b><div class="bt-bench" id="bt-bench-a"></div></div>
+        <div class="bt-left bt-left--b"><b><em id="bt-left-b">1/1</em> left</b><div class="bt-bench" id="bt-bench-b"></div></div>
+      </div>
+      <div class="bt-ctl">
+        <div class="bt-spd" role="group" aria-label="Speed"><button type="button" data-spd="1" aria-pressed="true">1x</button><button type="button" data-spd="2" aria-pressed="false">2x</button><button type="button" data-spd="3" aria-pressed="false">3x</button></div>
+        <button type="button" class="tm-btn fx-press" id="bt-hide"><span>Hide</span></button>
+        <button type="button" class="tm-btn tm-btn--danger fx-press" id="bt-end">End Battle</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Card detail: the "Black Sun" scene (opens over any page, see js/detail.js + css/detail.css) -->
   <div id="detail" class="bs" hidden role="dialog" aria-modal="true" aria-label="Card details">
@@ -742,18 +856,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=97"></script>
-  <script src="js/app.js?v=97"></script>
-  <script src="js/deckbuff.js?v=97"></script>
-  <script src="js/teamscore.js?v=97"></script>
-  <script src="js/share.js?v=97"></script>
-  <script src="js/cards.js?v=97"></script>
-  <script src="js/detail.js?v=97"></script>
-  <script src="js/tier.js?v=97"></script>
-  <script src="js/deck.js?v=97"></script>
-  <script src="js/support.js?v=97"></script>
-  <script src="js/home.js?v=97"></script>
-  <script src="js/tiermaker.js?v=97"></script>
+  <script src="js/fx.js?v=98"></script>
+  <script src="js/app.js?v=98"></script>
+  <script src="js/deckbuff.js?v=98"></script>
+  <script src="js/teamscore.js?v=98"></script>
+  <script src="js/share.js?v=98"></script>
+  <script src="js/cards.js?v=98"></script>
+  <script src="js/detail.js?v=98"></script>
+  <script src="js/tier.js?v=98"></script>
+  <script src="js/deck.js?v=98"></script>
+  <script src="js/support.js?v=98"></script>
+  <script src="js/home.js?v=98"></script>
+  <script src="js/tiermaker.js?v=98"></script>
+  <script src="js/battle.js?v=98"></script>
 </body>
 </html>
 
