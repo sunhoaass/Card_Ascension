@@ -2166,3 +2166,10 @@
 - **Tier:** บรรทัดใต้ชื่อเหลือซีรีส์ (Support = "Support")
 - **ทดสอบ (Playwright Pixel 7):** ใบกลาง opacity 1 + รูป `images/cards/art/…` · `100Qa` ที่ Normal = ว่าง "No Qa cards at Normal" → กด Godly = Shadow Monarch + 5 ใบ · `5Qi` = "Not in the game" · `2.5B` = Dragon King of Ruin · `octopus` = 1 ใบ · `dodge twice` = Octopus Teacher · console error 0
 - **ไฟล์:** `index.html` · `js/detail.js` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 · 🎨 Mockup ธีมสว่าง 5 แบบ (ยังไม่แตะเว็บจริง)
+- **เจ้าของสั่ง:** ปรับโทนธีมทุกหน้าเป็นแบบสว่าง มีสีสัน สร้างสรรค์ มีอนิเมชั่นแต่ไม่แลค เกี่ยวกับชื่อเว็บ · ทำ mockup หลายแบบให้เลือก (อ้างอิง uiverse.io) · จดไว้ว่าเมนูใหม่ในอนาคตต้องใช้โทนเดียวกัน
+- **ทำ:** `mockup/bright-themes.html` (หน้าเดียว · รูปการ์ด 13 ใบฝังเป็น data URI 150×200) · หน้าจอโทรศัพท์ 4 หน้า (Home · Cards · Deck · New menu แม่แบบ) markup ชุดเดียว เปลี่ยนธีมด้วย `data-skin` = token ล้วน + รายละเอียดเด่นของแต่ละธีม · 5 ธีม: Infinity Prism / Sky Ascension / Battle Comic / Gacha Candy / Golden Dawn · แตะการ์ด / เมนูล่าง / ชิป / สวิตช์ / ปุ่ม Copy ได้ · รองรับ reduced motion · artifact: https://claude.ai/artifact/VhdkCJZmWyGeV1hrJL6xzw
+- **ค้นคว้า:** uiverse.io เปิดจาก session นี้ไม่ได้ (เครือข่ายไม่อนุญาต) ใช้รูปแบบที่รู้จักจาก uiverse (ปุ่มกดยุบ 3D, ขอบไล่สี, แสงวิ่งบนปุ่ม, ตัวโหลดจุดเด้ง, สวิตช์) + เทรนด์ 2026 (สีสด "dopamine", อนิเมชั่นเพื่อ feedback, คุมงบความเร็ว)
+- **ทดสอบ (Playwright):** 1400px + 390px ทั้ง 5 ธีม · ไม่มี scroll แนวนอน (390px = 390) · console error 0
+- **ไฟล์:** `mockup/bright-themes.html` · `PROGRESS.md` · `HISTORY.md`
