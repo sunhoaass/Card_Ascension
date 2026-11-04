@@ -120,6 +120,16 @@
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
   const isRankedSup = (s) => !!(s && s.scores && s.scores.value > 0 && s.tier);
   const isRankedOf = (kind, x) => !!x && (kind === "cards" ? C.isRanked(x) : isRankedSup(x));
+  // a library best first: ranked by score, then the rest by name (the picker's order · also js/battle.js)
+  const orderList = (kind, list) => {
+    const score = (x) => Number(kind === "cards" ? x.scores && x.scores.overall : x.scores && x.scores.value) || 0;
+    return list.slice().sort((a, b) => {
+      const ra = isRankedOf(kind, a), rb = isRankedOf(kind, b);
+      if (ra !== rb) return ra ? -1 : 1;
+      if (ra && score(a) !== score(b)) return score(b) - score(a);
+      return String(a.name).localeCompare(String(b.name));
+    });
+  };
   const lookup = (kind, id) => (kind === "cards" ? cardById : supById).get(id);
   const countOf = (arr) => arr.filter(Boolean).length;
   const fmtDate = (iso) => {
@@ -541,7 +551,8 @@
         attrs: { "data-c": t ? (t.color === "rainbow" ? "rainbow" : "solid") : null, "data-off": t ? null : "", style: t ? traitColor(t) || null : null } });
     } else {
       const m = x && C.mutAt ? C.mutAt(x, r) : 0;
-      out.push({ p: "mut", key: String(m), html: m ? `<span>Mutation +${m}%</span>` : `<span>No mutation</span>`, label: m ? `Mutation bonus +${m}% damage and HP` : "No mutation",
+      // the % never gets cut (owner 2026-11-04: "Mutation +1…" hid it) · the word: MUT on a phone, MUTATION on a wide screen
+      out.push({ p: "mut", key: String(m), html: m ? `<span><i class="dk-pill__long">Mutation</i><i class="dk-pill__short">Mut</i></span><b>+${m}%</b>` : `<span>No mutation</span>`, label: m ? `Mutation bonus +${m}% damage and HP` : "No mutation",
         attrs: { "data-off": m ? null : "" } });
     }
     return out;
@@ -1310,14 +1321,19 @@
   }
   async function openPicker(kind, i) {
     if (!cur || mode !== "editor") return;
-    const isCard = kind === "cards";
-    const all = libs[kind];
     const here = cur[kind][i];
     const usedAt = new Map();
-    if (isCard) cur.cards.forEach((id, k) => { if (id) usedAt.set(id, k); });
+    if (kind === "cards") cur.cards.forEach((id, k) => { if (id) usedAt.set(id, k); });
+    const id = await pickDialog({ kind, slot: i, all: libs[kind], here, usedAt, rarity: lastRarity() });
+    if (!id || !cur || mode !== "editor" || id === here) return;
+    commit((d) => { place(d, kind, i, id); });
+  }
+  /* The picker dialog itself (also the Battle page's · C.deckParts.pickDialog · owner 2026-11-04: "the same as the Deck 100%"):
+     { kind, slot, all (the list, best first), here (id in the slot now), usedAt (Map id -> slot), rarity } -> the picked id | null */
+  async function pickDialog({ kind, slot: i, all, here = null, usedAt = new Map(), rarity }) {
+    const isCard = kind === "cards";
     const f = { q: "", tier: "", role: "", series: "" };
     const text = new Map(all.map((x) => [x.id, [x.name, x.series, x.role].filter(Boolean).join(" ").toLowerCase()]));
-    const rarity = lastRarity();                       // the rarity the pick will get (owner 2026-11-02)
     const noun = isCard ? "cards" : "support cards";
     const tierNames = state.meta.tiers.filter((t) => isCard || !t.cardsOnly).map((t) => t.name);   // Utility = cards only
     let filters = `<div class="tm-chips" role="group" aria-label="Filter by tier">${tierNames.map((t) => chipHTML("tier", t, t, `--sw:var(${C.TIER_COLOR[t] || "--t-d"});--sw-line:var(${C.TIER_COLOR[t] || "--t-d"})`)).join("")}${chipHTML("tier", "-", "Unranked")}</div>`;
@@ -1434,9 +1450,7 @@
         if (!fine.matches && document.activeElement && document.activeElement.blur) document.activeElement.blur();   // no keyboard popping up on a phone
       },
     });
-    if (!res || res.action !== "pick" || !cur || mode !== "editor") return;
-    if (res.id === here) return;
-    commit((d) => { place(d, kind, i, res.id); });
+    return res && res.action === "pick" ? res.id : null;
   }
 
   /* ==========================================================
@@ -2349,17 +2363,7 @@
     cardById = new Map(state.cards.map((c) => [c.id, c]));
     const sup = (Array.isArray(state.support) ? state.support : []).filter((s) => s && s.id).map((s) => ({ ...s, name: s.name || pretty(s.id) }));
     supById = new Map(sup.map((s) => [s.id, s]));
-    const order = (kind) => {
-      const all = kind === "cards" ? state.cards.slice() : [...supById.values()];
-      const score = (x) => (kind === "cards" ? x.scores.overall : x.scores.value);
-      return all.sort((a, b) => {
-        const ra = isRankedOf(kind, a), rb = isRankedOf(kind, b);
-        if (ra !== rb) return ra ? -1 : 1;
-        if (ra && score(a) !== score(b)) return score(b) - score(a);
-        return a.name.localeCompare(b.name);
-      });
-    };
-    libs = { cards: order("cards"), support: order("support") };
+    libs = { cards: orderList("cards", state.cards), support: orderList("support", [...supById.values()]) };
 
     // layer for the dragged card and fading copies (outside the page so nothing clips it)
     ui.layer = document.createElement("div");
@@ -2384,5 +2388,5 @@
 
   C.deck = { init, enter, show, paintScore };
   /* Parts the Battle page builds its team boards + slot sheet from (js/battle.js · PROGRESS §3.3): same classes, css/deck.css */
-  C.deckParts = { pillsHTML, fitName, tgHTML, paintTG, tgSheetHTML, paintTGSheet, gradeTap, buffText, overallOf, fullOf, gradeBand, gradeTone, traitById, traitIcon, traitColor, traitFx, GSTATS, GRADE_MAX, ICON };
+  C.deckParts = { pickDialog, lastRarity, rememberRarity, orderList, pillsHTML, fitName, tgHTML, paintTG, tgSheetHTML, paintTGSheet, gradeTap, buffText, overallOf, fullOf, gradeBand, gradeTone, traitById, traitIcon, traitColor, traitFx, GSTATS, GRADE_MAX, ICON };
 })();

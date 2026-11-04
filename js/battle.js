@@ -199,7 +199,7 @@
   function place(key, kind, i, id) {
     const d = T[key];
     d[kind][i] = id;
-    if (!d[RKEY[kind]][i]) d[RKEY[kind]][i] = "Godly";
+    d[RKEY[kind]][i] = P().lastRarity();   // like the Deck: a new pick starts at the rarity used last (cbi:deckRarity)
     if (kind === "cards") { d.trait[i] = null; d.grades[i] = null; d.custom[i] = null; }
   }
   function swap(key, kind, a, b) {
@@ -319,7 +319,7 @@
         const commit = (fn) => { fn(d); paintBoard(key, { flash: { kind, i } }); paint(true); };
         root.addEventListener("click", (e) => {
           const rb = e.target.closest("[data-ss-rarity]");
-          if (rb) { const r = rb.dataset.ssRarity; if (r !== rarityOf(d, kind, i)) commit((dd) => { dd[RKEY[kind]][i] = r; }); return; }
+          if (rb) { const r = rb.dataset.ssRarity; P().rememberRarity(r); if (r !== rarityOf(d, kind, i)) commit((dd) => { dd[RKEY[kind]][i] = r; }); return; }   // like the Deck: the next pick starts here
           if (!isCard) return;
           const gb = e.target.closest("[data-ss-grade]"), tb = e.target.closest("[data-ss-trait]"), rm = e.target.closest("[data-ss-rm]"), al = e.target.closest("[data-ss-all]"), cr = e.target.closest("[data-ss-cusrm]");
           if (al) commit((dd) => { dd.grades[i] = [GRADE_MAX, GRADE_MAX, GRADE_MAX, GRADE_MAX]; });
@@ -349,23 +349,15 @@
     else if (res.action === "remove") clearSlot(key, kind, i);
   }
 
-  /* ---------- Picker (cards: the live list · support: live + data/pending/support.json) ---------- */
+  /* ---------- Picker = the Deck page's own (C.deckParts.pickDialog · owner 2026-11-04: "the same as the Deck 100%"):
+     search + filters + game cards at the rarity a new pick gets · cards: the live list · support: live + pending ---------- */
   async function openPicker(key, kind, i) {
-    const list = kind === "cards" ? state.cards : SUP;
-    const tiles = list.map((x) => `<button type="button" class="bt-pk__t fx-press" data-pick="${esc(x.id)}" data-q="${esc(x.name.toLowerCase())}"><img src="${esc(thumbOf(kind, x))}" alt="" loading="lazy" decoding="async"><span>${esc(x.name)}</span></button>`).join("");
-    const res = await dialog({
-      title: kind === "cards" ? "Pick a card" : "Pick a support",
-      html: list.length ? `<label class="tm-field"><span class="tm-field__label">Search</span><input class="tm-input" id="bt-pk-q" data-pk-q placeholder="Name" autocomplete="off"></label><div class="bt-pk" data-pk-grid>${tiles}</div><p class="empty__text" data-pk-none hidden>No match.</p>`
-        : `<div class="empty"><p class="empty__title">Nothing here yet</p><p class="empty__text">No ${kind === "cards" ? "cards" : "support cards"} to pick from yet.</p></div>`,
-      actions: [{ label: "Cancel", value: "cancel" }],
-      onMount(dlg, finish) {
-        const q = $("[data-pk-q]", dlg); if (!q) return;
-        q.addEventListener("input", (e) => { const v = e.target.value.trim().toLowerCase(); let n = 0; $$("[data-pick]", dlg).forEach((b) => { b.hidden = !!v && !b.dataset.q.includes(v); if (!b.hidden) n++; }); $("[data-pk-none]", dlg).hidden = n > 0; });
-        $("[data-pk-grid]", dlg).addEventListener("click", (e) => { const b = e.target.closest("[data-pick]"); if (b) finish({ action: "pick", id: b.dataset.pick }); });
-      },
-    });
-    if (!res || res.action !== "pick") return;
-    place(key, kind, i, res.id);
+    const d = T[key], here = d[kind][i], usedAt = new Map();
+    if (kind === "cards") d.cards.forEach((id, k) => { if (id) usedAt.set(id, k); });
+    const all = P().orderList(kind, kind === "cards" ? state.cards : SUP);
+    const id = await P().pickDialog({ kind, slot: i, all, here, usedAt, rarity: P().lastRarity() });
+    if (!id || id === here) return;
+    place(key, kind, i, id);
     paintBoard(key, { flash: { kind, i } });
   }
 
