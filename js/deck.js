@@ -524,7 +524,7 @@
   const traitIcon = (t, cls) => `<img class="${cls}" src="images/traits/${esc(t.id)}.webp" alt="" width="96" height="96" decoding="async" draggable="false">`;
   function tgHTML(t, g) {
     return `${t ? `<span class="tg__tr" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}">${traitIcon(t, "tg__ic")}<span class="tg__lab">${esc(t.name)}</span></span>` : ""}`
-      + `${g > 0 ? `<span class="tg__gr" data-band="${gradeBand(g)}"><span class="tg__ring"><b>${g}</b></span><span class="tg__lab">Grade</span></span>` : ""}`;
+      + `${g > 0 ? `<span class="tg__gr" data-band="${gradeBand(g)}"><span class="tg__ring"><b data-n="${g}">${g}</b></span><span class="tg__lab">Grade</span></span>` : ""}`;
   }
   function paintTG(card, traitId, grade, animate) {
     if (!card) return;
@@ -1094,7 +1094,9 @@
   }
   // the slot sheet's Grade (1–10) and Trait (13) pickers · tap the one that's on, or Remove, to take it off
   function tgSheetHTML() {
-    const grades = Array.from({ length: GRADE_MAX }, (_, k) => k + 1).map((g) => `<button type="button" class="dk-gp__b fx-press" data-ss-grade="${g}" data-band="${gradeBand(g)}" aria-pressed="false" aria-label="Grade ${g}">${g}</button>`).join("");
+    // grouped by colour (owner 2026-11-04): bronze 1–3 | silver 4–6 | gold 7–9 | rainbow 10 · upright numbers
+    const gb = (g) => `<button type="button" class="dk-gp__b fx-press" data-ss-grade="${g}" data-band="${gradeBand(g)}" aria-pressed="false" aria-label="Grade ${g}">${g}</button>`;
+    const grades = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]].map((grp) => `<span class="dk-gp__grp" data-band="${gradeBand(grp[0])}">${grp.map(gb).join("")}</span>`).join("");
     const traits = traitList().map((t) => `<button type="button" class="dk-tp__b fx-press" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">${traitIcon(t, "dk-tp__ic")}<span class="dk-tp__n">${esc(t.name)}</span></button>`).join("");
     const rm = (what) => `<button type="button" class="dk-ss__rm fx-press" data-ss-rm="${what}" hidden>${ICON.x}Remove</button>`;
     return `<section class="dk-ss__sec" aria-label="Grade">
