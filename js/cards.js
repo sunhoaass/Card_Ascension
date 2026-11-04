@@ -1,7 +1,7 @@
 /* ==========================================================
    Card Battle Infinity — Cards page (step 2 · redesigned 2026-11-03)
-   · top to bottom (round 2, 2026-11-03): pull-odds finder ("1 IN …" + a 1M / 1B / 1T / 1Qa dropdown inside the box),
-     rarity bar (sticks under the top bar, wraps: no sideways scroll), search box with the ↑↓ pull-odds order button in it,
+   · top to bottom (2026-11-04): ONE search box for names and pull odds (100 · 2.5B · 100Qa, no "1 IN" · the old
+     "1 IN …" box is gone) with the ↑↓ pull-odds order button in it, rarity bar (sticks under the top bar, wraps),
      series / role selects (only when the data has 2+), layout switch (grid 2 · grid 3 · list, remembered in cbi:cardView),
      chips of the filters in use (× each) + Reset all
    · cards always sort by pull odds (the Rarest / Overall / ATK / HP switch was removed in round 2)
@@ -20,14 +20,13 @@
   /* ==========================================================
      Pull-odds units (2026-11-03)
      GAME_MAX_UNIT = the biggest odds unit the game has right now. When the game adds a new unit (say Qi), change ONLY
-     this line: the shortcut buttons (1M … 1<max>), the parser and the "Not in the game" message all follow it.
+     this line: the parser and the "Not in the game" message follow it.
      UNITS must already list that unit (it lists the ones after Qa so typing them can say "Not in the game").
      ========================================================== */
   const GAME_MAX_UNIT = "Qa";
   const UNITS = [["", 1], ["K", 1e3], ["M", 1e6], ["B", 1e9], ["T", 1e12], ["Qa", 1e15], ["Qi", 1e18], ["Sx", 1e21], ["Sp", 1e24], ["Oc", 1e27], ["No", 1e30], ["Dc", 1e33]];
   const UNIT_ALIAS = { qd: "Qa" };    // the cards write a thousand trillion "Qd" like the game (app.js shortNum) → same unit
   const MAX_UNIT_I = UNITS.findIndex((u) => u[0] === GAME_MAX_UNIT);
-  const SHORTCUT_FROM = "M";          // shortcuts: 1M, 1B, 1T … 1<GAME_MAX_UNIT>
   const unitByKey = new Map(UNITS.filter((u) => u[0]).map((u, i) => [u[0].toLowerCase(), i + 1]));
   Object.entries(UNIT_ALIAS).forEach(([k, v]) => unitByKey.set(k, UNITS.findIndex((u) => u[0] === v)));
 
@@ -110,7 +109,7 @@
       rarity: $("#rarity-picker"), search: $("#card-search"),
       dir: $("#card-dir"), series: $("#card-series"), seriesField: $("#series-field"),
       role: $("#card-role"), roleField: $("#role-field"), selects: $("#card-selects"),
-      oddsForm: $("#odds-form"), oddsInput: $("#odds-input"), oddsClear: $("#odds-clear"), oddsQuick: $("#odds-quick"), oddsMsg: $("#odds-msg"),
+      searchBox: $("#cards-search"),
       count: $("#card-count"), viewSw: $("#card-view"), active: $("#card-active"),
     });
 
@@ -124,7 +123,7 @@
     ui.grid.innerHTML = "";
     ui.tools.hidden = !state.cards.length;
     $("#rarity-bar").hidden = !state.cards.length;
-    ui.oddsForm.hidden = !state.cards.length;
+    ui.searchBox.hidden = !state.cards.length;
     ui.empty.hidden = state.cards.length > 0;
     if (!state.cards.length) return;
 
@@ -220,14 +219,10 @@
     ui.series.innerHTML = `<option value="">All series</option>` + series.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
     ui.seriesField.hidden = series.length < 2;
     ui.selects.hidden = ui.roleField.hidden && ui.seriesField.hidden;
-    // the dropdown inside the odds box: 1M · 1B · 1T · 1Qa (up to GAME_MAX_UNIT) · "Pick" while none of them is in use
-    const from = UNITS.findIndex((u) => u[0] === SHORTCUT_FROM);
-    ui.oddsQuick.innerHTML = `<option value="">Pick</option>` +
-      UNITS.slice(from, MAX_UNIT_I + 1).map((u) => `<option value="1${u[0]}">1${u[0]}</option>`).join("");
   }
 
   function bindTools() {
-    ui.search.addEventListener("input", () => { filters.q = ui.search.value; apply(); });
+    ui.search.addEventListener("input", () => { readSearch(); apply(); });
     ui.search.addEventListener("keydown", (e) => { if (e.key === "Enter") ui.search.blur(); });   // closes the phone keyboard
     ui.series.addEventListener("change", () => { filters.series = ui.series.value; apply({ animate: true }); });
     ui.role.addEventListener("change", () => { filters.role = ui.role.value; apply({ animate: true }); });
@@ -235,12 +230,6 @@
       filters.dir = filters.dir === "desc" ? "asc" : "desc";
       apply({ animate: true });
     });
-
-    // pull odds: Enter / OK / the dropdown all go through setOdds (one rule)
-    ui.oddsForm.addEventListener("submit", (e) => { e.preventDefault(); setOdds(ui.oddsInput.value); ui.oddsInput.blur(); });
-    ui.oddsInput.addEventListener("input", () => { ui.oddsClear.hidden = !ui.oddsInput.value && !filters.odds; showOddsError(""); });
-    ui.oddsQuick.addEventListener("change", () => { if (ui.oddsQuick.value) setOdds(ui.oddsQuick.value); else if (filters.odds) setOdds(""); });
-    ui.oddsClear.addEventListener("click", () => { setOdds(""); ui.oddsInput.focus({ preventScroll: true }); });
 
     ui.viewSw.addEventListener("click", (e) => { const b = e.target.closest("[data-view]"); if (b) setView(b.dataset.view); });
     ui.viewSw.addEventListener("keydown", (e) => {
@@ -257,10 +246,9 @@
       if (!b) return;
       const k = b.dataset.clear;
       if (k === "all") { reset(); return; }
-      if (k === "q") { filters.q = ""; ui.search.value = ""; }
+      if (k === "q" || k === "odds") { filters.q = ""; filters.odds = null; ui.search.value = ""; }   // one box holds both
       if (k === "series") { filters.series = ""; ui.series.value = ""; }
       if (k === "role") { filters.role = ""; ui.role.value = ""; }
-      if (k === "odds") { setOdds(""); return; }
       apply({ animate: true });
     });
     $("#cards-none-reset").addEventListener("click", reset);
@@ -277,34 +265,20 @@
   function reset() {
     filters.q = filters.role = filters.series = "";
     filters.odds = null; oddsState = "";
-    ui.search.value = ""; ui.series.value = ""; ui.role.value = ""; ui.oddsInput.value = "";
-    showOddsError("");
+    ui.search.value = ""; ui.series.value = ""; ui.role.value = "";
     apply({ animate: true });
   }
 
-  /* ---------- Pull odds ("1 IN …") ----------
-     The typed value is rewritten short (1,000,000 → 1M · 1,500,000,000 → 1.5B).
-     · unit above GAME_MAX_UNIT → "Not in the game", no cards
-     · otherwise only cards whose odds (at the picked rarity) are in the typed unit or rarer, the closest to the value first
-       (typed higher than every card = all the cards in that unit, rarest first · none in that unit = an empty grid) */
-  function setOdds(raw) {
-    const p = parseOdds(raw);
-    if (p && p.error) {
-      showOddsError(p.error);
-      syncTools();   // the dropdown goes back to what is in use
-      FX.flash && FX.flash(ui.oddsForm);
-      return;
-    }
-    showOddsError("");
-    filters.odds = p;
-    ui.oddsInput.value = p ? p.text : "";
-    apply({ animate: true });
-  }
-  // the line under the odds box: only when what was typed can't be read (no help text · round 2) ·
-  // no cards in that unit / a unit the game doesn't have = the empty state under the bar says it
-  function showOddsError(text) {
-    ui.oddsMsg.textContent = text;
-    ui.oddsMsg.hidden = !text;
+  /* ---------- The one search box: a name / series / ability, or pull odds (2026-11-04) ----------
+     What is typed reads as odds when it is a number with an optional unit: 100 · 2.5B · 100Qa · 1,000,000 ("1 in 100Qa"
+     works too) → only cards whose odds (at the picked rarity) are in that unit or rarer, the closest to the value first
+     (unit above GAME_MAX_UNIT → "Not in the game" · none in that unit = an empty grid that says so).
+     Anything else (or a number with a word that isn't a unit) is a text search like before. */
+  function readSearch() {
+    const raw = ui.search.value;
+    const p = /\d/.test(raw) ? parseOdds(raw) : null;
+    if (p && !p.error) { filters.odds = p; filters.q = ""; }
+    else { filters.odds = null; filters.q = raw; }
   }
 
   // always by pull odds at the picked rarity · desc (default) = rarest first · odds typed = closest to them first
@@ -356,10 +330,6 @@
     ui.dir.setAttribute("aria-label", filters.odds
       ? `Order: ${filters.dir === "desc" ? "closest to 1 in " + filters.odds.text + " first" : "farthest first"}. Tap to reverse.`
       : `Pull odds: ${filters.dir === "desc" ? "rarest first" : "most common first"}. Tap to reverse.`);
-    ui.oddsClear.hidden = !ui.oddsInput.value && !filters.odds;
-    const q = filters.odds && [...ui.oddsQuick.options].some((o) => o.value === filters.odds.text) ? filters.odds.text : "";
-    ui.oddsQuick.value = q;
-    ui.oddsQuick.parentElement.classList.toggle("is-on", !!q);
   }
   function activeChips(hasWords) {
     const chip = (k, label) => `<span class="actchip"><span class="actchip__t">${label}</span><button type="button" class="actchip__x fx-press" data-clear="${k}" aria-label="Remove filter: ${esc(label.replace(/<[^>]+>/g, ""))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg></button></span>`;
