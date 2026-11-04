@@ -2058,7 +2058,7 @@
 - **ยังไม่ได้วัด:** fps §11.3 (ไม่ได้แตะการ์ด/อนิเมชั่น · เอาป้ายออกทำให้ DOM น้อยลง)
 - **ไฟล์:** `index.html` · `js/cards.js` · `css/cards.css` · `PROGRESS.md` · `HISTORY.md`
 
-### 2026-11-04 หน้า Cards: รวมช่อง 1 IN เข้าช่องค้นหา (`?v=79`)
+### 2026-11-04 หน้า Cards: รวมช่อง 1 IN เข้าช่องค้นหา (`?v=79` · merge pull request #123)
 - **ที่ทำ:** เอากล่อง `#odds-form` (ป้าย PULL ODDS · "1 IN" · dropdown Pick 1M…1Qa · OK · ข้อความแดง) ออก · ย้าย `.sbox` (ช่องค้นหา + ↑↓) ออกจาก `#cards-tools` ไปไว้ใน `#cards-search` **เหนือแถบระดับ** · `readSearch()` ใน `js/cards.js`: ข้อความมีตัวเลขและ `parseOdds` อ่านได้ = กรองโอกาส (กติกาเดิม) ไม่งั้น = ค้นชื่อ · ลบ `setOdds` / `showOddsError` / `SHORTCUT_FROM` / CSS `.oddsbox*` · placeholder "Name, ability or odds (100Qa)" · `?v=78` → `79`
 - **สมมติฐาน:** พิมพ์แล้วกรองทันที (ไม่มี OK) · ตัวเลขล้วน (`100`) = โอกาส ไม่ใช่ชื่อ · ช่องไม่เขียนย่อค่าที่พิมพ์ให้ (ชิปเขียนย่อแทน) · ฝั่ง Support ไม่แตะ (ไม่ได้สั่ง)
 - **ทดสอบ (Chromium 400×900):** ไม่มี error · `100` = 20 cards + ชิป "1 in 100" · `1B` / `2.5b` = 16 of 20 · `100Qa` ที่ Normal = "No Qa cards at Normal" · ที่ Godly = 16 of 20 · `5Qi` = "Not in the game" · `sword` = 2 of 20 (ค้นชื่อ) · `abc1x` = "No cards match" · ชิป × = ช่องว่าง + 20 cards · แคปมือถือ: ช่องค้นหาอยู่เหนือปุ่มระดับ
