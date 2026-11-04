@@ -583,3 +583,15 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-tp__fx { margin: 0; font-size: 12px; line-height: 1.45; color: var(--ink-dim); }
 .dk-tp__fx b { color: var(--ink); }
 .dk-tp__fx span { color: var(--ink-faint); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+
+/* Grade: 4 rows like the game (Basic Attack, Defense, Status Damage, HP) · "All 10" = the four at once (owner 2026-11-04) */
+.dk-ss__hb { display: inline-flex; gap: 6px; }
+.dk-ss__all { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
+.dk-g4 { display: grid; gap: 10px; }
+.dk-g4__row { display: grid; gap: 5px; min-width: 0; }
+.dk-g4__name { display: flex; justify-content: space-between; align-items: baseline; margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--ink-dim); }
+.dk-g4__name b { font-family: var(--gc-font-num); font-weight: 600; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.dk-g4__sum { margin: 0; font-size: 12px; color: var(--ink-faint); }
+.dk-g4__sum b { color: var(--ink); }
+.dk-g4__sum.is-full { color: var(--gold); }
+.dk-g4__sum.is-full b { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }

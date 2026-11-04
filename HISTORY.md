@@ -2109,3 +2109,9 @@
 ### 2026-11-04 เลข Grade ลงมา บน/ล่างเท่ากัน (`?v=86`)
 - **เจ้าของ:** "ลงมาอีก ให้บนกับล่างเท่ากัน" → `translateY` −1.1 → −0.5cqw (ลง ~5.7px ที่การ์ด 950px · อยู่ระหว่าง `?v=84` กลางวงทั้งวง (ต่ำไป) กับ `?v=85` (สูงไป)) · วัดตามพื้นมืดในวง: ก่อนแก้เหนือเลข 12px / ใต้เลขถึงป้าย 13px แต่ตาเห็นเลขลอยสูง → ยึดตาเจ้าของ
 - **ไฟล์:** `index.html` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 Grade 4 ค่าแบบเกม (`?v=87`)
+- **เจ้าของ:** "Grade 1–9 ไม่ได้บัฟเพิ่ม แต่ถ้า 10 ทุกค่าจะ +30% ทุกค่า · ทำระบบที่มีค่า 4 ค่าให้ด้วยตามเกม"
+- **ที่ทำ:** `js/deck.js` ใช้ `deck.grades` (4 ค่าต่อช่อง · field เดิม) แทน `deck.grade` (เลขเดียว · `clean()` แปลงเป็น 4 ค่าเท่ากัน) · `overallOf` (เฉลี่ยปัด .5 ขึ้น → ตรา) · `fullOf` · แผ่นตั้งค่า 4 แถว `.dk-g4` + All 10 + Remove + สรุป · กดค่าเดิมซ้ำ = 0 · ลิงก์แชร์ `g` · `js/deckbuff.js` `fullGrade` → ×`GRADE_BONUS` 1.3 เฉพาะครบ 10 ทั้ง 4 · `css/deck.css` `.dk-g4*` `.dk-ss__all`
+- **ทดสอบ (Playwright 412×915):** deck เก่า `grade: [10, 5, 0, 0]` → `[[10×4], [5×4], null, null]` ตรา 10 / 5 · Divergent Fist Vessel Limitless + 10 ทุกค่า ATK 1,075,122,153 ✓ · Storm Dragon 7/3/9/6 → ตรา 6, ATK 414,882,045 (ไม่บัฟ) · All 10 → ตรา 10, ATK 539,346,659 (= ×1.3 ✓) · HP 10 → 0 → บัฟหาย · Remove → ไม่มีตรา · ลิงก์แชร์ → "LIMITLESS 10 GRADE", "5 GRADE" · console error 0
+- **ไฟล์:** `index.html` · `js/deck.js` · `js/deckbuff.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
