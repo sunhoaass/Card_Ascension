@@ -272,7 +272,7 @@
     try {
       await Promise.race([Promise.all([
         document.fonts.load('700 20px "Cinzel"'), document.fonts.load('600 14px "Cinzel"'),
-        document.fonts.load('500 14px Inter'), document.fonts.load('700 20px "Oswald"'), document.fonts.load('600 20px "Oswald"'), document.fonts.load('20px "Bangers"'),
+        document.fonts.load('500 14px Inter'), document.fonts.load('600 20px Inter'), document.fonts.load('700 20px Inter'), document.fonts.load('700 20px "Oswald"'), document.fonts.load('600 20px "Oswald"'), document.fonts.load('20px "Bangers"'),
         document.fonts.load('20px "Anton"'), document.fonts.load('italic 800 20px "Barlow Condensed"'), document.fonts.ready,   // redrawn cards: numbers / pills / ability name + the card name
       ]), wait]);
     } catch {}
@@ -1020,21 +1020,31 @@
     if (out.length > NOTE.LINES) { out.length = NOTE.LINES; out[NOTE.LINES - 1] = fitText(mc, out[NOTE.LINES - 1] + " …", maxW); }
     return out;
   }
-  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 190, CH: 253, PANEL_GAP: 14, R: 16,
-    NAME_FS: 17, NAME_LH: 21, NAME_LINES: 2, NAME_GAP: 8, RAR: 26, RAR_GAP: 10 };
-  // a slot's name over its card: one size for every slot, wrapped to NAME_LINES (the last line squeezed if it is longer)
+  // owner 2026-11-04: the slot like the Deck page · the full name on top (2 lines, then smaller type) · under the card a pill a line:
+  // rarity · GRADE n · trait (support: rarity · Mutation +x%) · the card carries its Grade / Trait badges (drawTG, as on the page)
+  const DECKIMG = { W: 1200, PAD: 28, HEAD: 100, FOOT: 28, GAP: 24, CW: 210, CH: 280, PANEL_GAP: 14, R: 16,
+    NAME_FS: 22, NAME_MIN: 15, NAME_LINES: 2, NAME_GAP: 10, RAR: 32, RAR_GAP: 12, ROW_GAP: 8, PILL_W: 200 };
+  const nameLH = (fs) => Math.round(fs * 1.2);
+  // a slot's name over its card: wrapped to NAME_LINES, the type made smaller (to NAME_MIN) until it fits · still longer = … on the last line
   function slotName(ctx, name, maxW, font) {
-    ctx.font = `600 ${DECKIMG.NAME_FS}px ${font}`;
-    const lines = wrapText(ctx, String(name || ""), maxW);
-    if (lines.length > DECKIMG.NAME_LINES) lines.splice(DECKIMG.NAME_LINES - 1, lines.length, fitText(ctx, lines.slice(DECKIMG.NAME_LINES - 1).join(" "), maxW));
-    return lines.map((l) => fitText(ctx, l, maxW));
+    const B = DECKIMG, text = String(name || "");
+    for (let fs = B.NAME_FS; ; fs -= 1) {
+      ctx.font = `600 ${fs}px ${font}`;
+      const lines = wrapText(ctx, text, maxW);
+      if (lines.length <= B.NAME_LINES && lines.every((l) => ctx.measureText(l).width <= maxW)) return { lines, fs };
+      if (fs <= B.NAME_MIN) {
+        if (lines.length > B.NAME_LINES) lines.splice(B.NAME_LINES - 1, lines.length, fitText(ctx, lines.slice(B.NAME_LINES - 1).join(" "), maxW));
+        return { lines: lines.map((l) => fitText(ctx, l, maxW)), fs };
+      }
+    }
   }
-  // the rarity pill under a card: the card's own rarity pill (gcSpec · Normal = a plain dark pill)
-  function drawRarityPill(ctx, cx, y, h, rarity, pal) {
-    const sp = gcSpec(rarity), text = String(rarity || "Normal").toUpperCase(), pop = cssVar("--gc-font-pop") || pal.display;
+  // the rarity pill under a card: the card's own rarity pill colours (gcSpec · Normal = a plain dark pill) · fixed width when given
+  function drawRarityPill(ctx, cx, y, h, rarity, pal, fixedW) {
+    // owner 2026-11-04: upright type, the GRADE pill's face (Oswald) · not the card's slanted comic type
+    const sp = gcSpec(rarity), text = String(rarity || "Normal").toUpperCase(), face = cssVar("--gc-font-num") || pal.body;
     ctx.save();
-    ctx.font = `italic 400 ${h * 0.68}px ${pop}`; if ("letterSpacing" in ctx) ctx.letterSpacing = "1px";
-    const w = Math.max(96, ctx.measureText(text).width + 30), x = cx - w / 2;
+    ctx.font = `600 ${h * 0.54}px ${face}`; if ("letterSpacing" in ctx) ctx.letterSpacing = "3px";
+    const w = fixedW || Math.max(96, ctx.measureText(text).width + 30), x = cx - w / 2;
     roundRect(ctx, x, y, w, h, h / 2);
     if (sp.normal) { ctx.fillStyle = pal.void; ctx.fill(); ctx.lineWidth = 1.5; ctx.strokeStyle = pal.faint; ctx.stroke(); }
     else {
@@ -1045,9 +1055,125 @@
       ctx.lineWidth = 2; ctx.strokeStyle = sp.line; ctx.stroke();
     }
     ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
-    if (!sp.normal && !sp.flat) { ctx.lineWidth = 2.5; ctx.strokeStyle = sp.line; ctx.strokeText(text, cx, y + h / 2 + 1); }
+    if (!sp.normal && !sp.flat) { ctx.lineWidth = 3.5; ctx.strokeStyle = sp.line; ctx.strokeText(text, cx, y + h / 2 + 1); }
     ctx.fillStyle = sp.normal ? pal.dim : sp.ink; ctx.fillText(text, cx, y + h / 2 + 1);
     ctx.restore();
+  }
+
+  // a CSS gradient token as a canvas fill over a box (linear top → bottom / across · conic round a centre)
+  function tokenFill(ctx, token, x, y, w, h) {
+    const v = cssVar(token), st = gradStops(v);
+    let g;
+    if (/conic/.test(v) && ctx.createConicGradient) g = ctx.createConicGradient(-Math.PI / 2, x + w / 2, y + h / 2);
+    else if (/90deg/.test(v)) g = ctx.createLinearGradient(x, 0, x + w, 0);
+    else g = ctx.createLinearGradient(0, y, 0, y + h);
+    st.forEach(([o, c]) => g.addColorStop(Math.min(1, Math.max(0, o)), c));
+    return g;
+  }
+  const BAND_OF = (g) => (g >= 10 ? "rainbow" : g >= 7 ? "gold" : g >= 4 ? "silver" : "bronze");
+  const bandTok = (b, part) => (b === "rainbow" ? { pill: "--tg-rainbow-pill", num: "--tg-rainbow-num", ring: "--tg-rainbow-ring" }[part] : `--tg-${b}${part === "ring" ? "-ring" : ""}`);
+  // one pill under a card (Grade / Trait / Mutation / not set): a dark pill with a coloured edge
+  function pillBox(ctx, cx, y, h, w, edge, fill, dashed) {
+    const x = cx - w / 2;
+    roundRect(ctx, x + 1, y + 1, w - 2, h - 2, h / 2);
+    ctx.fillStyle = fill; ctx.fill();
+    if (dashed) ctx.setLineDash([6, 4]);
+    ctx.lineWidth = 2; ctx.strokeStyle = edge; ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  function drawOffPill(ctx, cx, y, h, w, text, pal) {
+    ctx.save();
+    pillBox(ctx, cx, y, h, w, "rgba(255, 255, 255, .16)", "rgba(0, 0, 0, 0)", true);
+    ctx.font = `600 ${h * 0.5}px ${pal.body}`; ctx.fillStyle = pal.faint; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(text, cx, y + h / 2 + 1);
+    ctx.restore();
+  }
+  function drawGradePill(ctx, cx, y, h, w, g, pal) {
+    if (!g) { drawOffPill(ctx, cx, y, h, w, "No grade", pal); return; }
+    const b = BAND_OF(g), num = cssVar("--gc-font-num") || pal.body, x = cx - w / 2;
+    ctx.save();
+    pillBox(ctx, cx, y, h, w, tokenFill(ctx, bandTok(b, "pill"), x, y, w, h), cssVar("--gr-box") || "#1b1840");
+    ctx.textBaseline = "middle"; ctx.textAlign = "left"; setSpacing(ctx, 2);
+    ctx.font = `600 ${h * 0.5}px ${num}`;
+    const lab = "GRADE", lw = ctx.measureText(lab).width;
+    setSpacing(ctx, 0); ctx.font = `700 ${h * 0.68}px ${num}`;
+    const nw = ctx.measureText(String(g)).width, gap = h * 0.25, tx = cx - (lw + gap + nw) / 2;
+    setSpacing(ctx, 2); ctx.font = `600 ${h * 0.5}px ${num}`; ctx.fillStyle = pal.ink; ctx.fillText(lab, tx, y + h / 2 + 1);
+    setSpacing(ctx, 0); ctx.font = `700 ${h * 0.68}px ${num}`;
+    ctx.fillStyle = tokenFill(ctx, bandTok(b, "num"), tx + lw + gap, y + h * 0.15, nw, h * 0.7);
+    ctx.fillText(String(g), tx + lw + gap, y + h / 2 + 1);
+    ctx.restore();
+  }
+  function drawTraitPill(ctx, cx, y, h, w, t, icon, pal) {
+    if (!t) { drawOffPill(ctx, cx, y, h, w, "No trait", pal); return; }
+    const x = cx - w / 2, rb = t.color === "rainbow", tc = rb ? "#b98cff" : t.color || "#b98cff";
+    ctx.save();
+    pillBox(ctx, cx, y, h, w, rb ? tokenFill(ctx, "--tg-rainbow-pill", x, y, w, h) : mix(tc, "#1b1840", 0.7), rb ? "#211a36" : mix(tc, "#1b1840", 0.16));
+    const is = h * 0.82;
+    if (icon) ctx.drawImage(icon, x + h * 0.16, y + (h - is) / 2, is, is);
+    ctx.font = `700 ${h * 0.5}px ${pal.body}`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    const room = w - is - h * 0.9, text = fitText(ctx, t.name, room), tx = x + is + h * 0.3 + room / 2;
+    const tw = ctx.measureText(text).width;
+    ctx.fillStyle = rb ? tokenFill(ctx, "--tg-rainbow", tx - tw / 2, y, tw, h) : tc;
+    ctx.fillText(text, tx, y + h / 2 + 1);
+    ctx.restore();
+  }
+  function drawMutPill(ctx, cx, y, h, w, m, pal) {
+    if (!m) { drawOffPill(ctx, cx, y, h, w, "No mutation", pal); return; }
+    const green = cssVar("--gr-green") || "#3fd47c";
+    ctx.save();
+    pillBox(ctx, cx, y, h, w, mix(green, "#1b1840", 0.6), mix(green, "#1b1840", 0.12));
+    ctx.font = `700 ${h * 0.5}px ${pal.body}`; ctx.fillStyle = green; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(`Mutation +${m}%`, cx, y + h / 2 + 1);
+    ctx.restore();
+  }
+  // the Grade / Trait badges on a card, as css/deck.css .tg draws them on the Deck page (u = 1% of the card width · s = .92)
+  function drawTG(ctx, x, y, w, t, icon, g, pal) {
+    if (!t && !g) return;
+    const u = w / 100, s = 0.92, ink = cssVar("--tg-ink") || "#150e1c", pop = cssVar("--gc-font-pop") || pal.display, num = cssVar("--gc-font-num") || pal.body;
+    const label = (lx, ly, lw, lh, fill, text, fs, stroke) => {
+      ctx.save();
+      roundRect(ctx, lx, ly, lw, lh, lh / 2);
+      ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 0.8 * u; ctx.shadowOffsetY = 0.4 * u;
+      ctx.fillStyle = fill; ctx.fill();
+      ctx.shadowColor = "transparent";
+      ctx.lineWidth = 0.5 * u * s; ctx.strokeStyle = ink; ctx.stroke();
+      ctx.font = `italic 400 ${fs}px ${pop}`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+      const tx = fitText(ctx, text.toUpperCase(), lw - 2.4 * u * s);
+      if (stroke) { ctx.lineWidth = stroke; ctx.strokeStyle = ink; ctx.strokeText(tx, lx + lw / 2, ly + lh / 2 + 0.3 * u); ctx.fillStyle = cssVar("--tg-lab-ink") || "#fff"; }
+      else ctx.fillStyle = ink;
+      ctx.fillText(tx, lx + lw / 2, ly + lh / 2 + 0.3 * u);
+      ctx.restore();
+    };
+    if (t) {
+      const tw = 25.3 * u * s, tx = x + 5.5 * u, ty = y + (61.7 - 10.7 * s) * u, is = 12.2 * u * s, lh = 5.5 * u * s;
+      if (icon) {
+        ctx.save(); ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 0.5 * u; ctx.shadowOffsetY = 0.3 * u;
+        ctx.drawImage(icon, tx + (tw - is) / 2, ty, is, is); ctx.restore();
+      }
+      const ly = ty + is - 1.5 * u * s, rb = t.color === "rainbow", tc = rb ? null : t.color || "#d4d7e2";
+      let fill;
+      if (rb) fill = tokenFill(ctx, "--tg-rainbow-pill", tx, ly, tw, lh);
+      else { fill = ctx.createLinearGradient(0, ly, 0, ly + lh); fill.addColorStop(0, mix(tc, "#ffffff", 0.45)); fill.addColorStop(0.45, tc); fill.addColorStop(1, mix(tc, "#000000", 0.7)); }
+      label(tx, ly, tw, lh, fill, t.name, 4.1 * u * s, 0.9 * u * s);
+    }
+    if (g) {
+      const b = BAND_OF(g), gw = 15 * u * s, gx = x + w - 5.3 * u - gw, gy = y + (61.7 - 11.2 * s) * u, d = 14.2 * u * s, rx = gx + (gw - d) / 2, pad = 1.15 * u * s;
+      ctx.save();
+      ctx.shadowColor = "rgba(0, 0, 0, .45)"; ctx.shadowBlur = 0.8 * u; ctx.shadowOffsetY = 0.4 * u;
+      ctx.beginPath(); ctx.arc(rx + d / 2, gy + d / 2, d / 2, 0, Math.PI * 2);
+      ctx.fillStyle = tokenFill(ctx, bandTok(b, "ring"), rx, gy, d, d); ctx.fill();
+      ctx.shadowColor = "transparent";
+      ctx.beginPath(); ctx.arc(rx + d / 2, gy + d / 2, d / 2 - pad, 0, Math.PI * 2);
+      ctx.fillStyle = cssVar("--tg-core") || "#3a3148"; ctx.fill();
+      const fs = 7.1 * u * s, ny = gy + d / 2 - 0.5 * u * s;
+      ctx.font = `700 ${fs}px ${num}`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+      ctx.lineWidth = 1.2 * u * s; ctx.strokeStyle = ink; ctx.strokeText(String(g), rx + d / 2, ny);
+      ctx.fillStyle = tokenFill(ctx, bandTok(b, "num"), rx, ny - fs / 2, d, fs); ctx.fillText(String(g), rx + d / 2, ny);
+      ctx.restore();
+      const lh = 5.5 * u * s;
+      label(gx, gy + d - 3 * u * s, gw, lh, tokenFill(ctx, bandTok(b, "pill"), gx, gy + d - 3 * u * s, gw, lh), "Grade", 4 * u * s, 0);
+    }
   }
 
   function drawEmptySlot(ctx, x, y, w, h, pal) {
@@ -1074,9 +1200,10 @@
     const frameAt = (a, i) => frameSpec(rOf(a, i));
     const nums = cards.map((it, i) => (it && !it.missing && Array.isArray(spec.nums) && spec.nums[i] ? spec.nums[i] : null));
 
-    // over each card: its name (NAME_LINES lines tall in every slot) · under it: its rarity pill
-    const NM = B.NAME_LINES * B.NAME_LH + B.NAME_GAP, RR = B.RAR_GAP + B.RAR;
-    const P1 = 14 + 22 + NM + B.CH + RR + 18, P2 = 14 + 22 + NM + B.CH + RR + 18;
+    // over each card: its name (NAME_LINES lines tall in every slot) · under it: rarity · grade · trait (support: rarity · mutation)
+    const NM = B.NAME_LINES * nameLH(B.NAME_FS) + B.NAME_GAP, rows = (n) => B.RAR_GAP + n * B.RAR + (n - 1) * B.ROW_GAP;
+    const P1 = 14 + 22 + NM + B.CH + rows(3) + 20, P2 = 14 + 22 + NM + B.CH + rows(2) + 20;
+    const traits = (Array.isArray(spec.traits) ? spec.traits : []).slice(0, DECK_SLOTS), grades = Array.isArray(spec.grade) ? spec.grade : [], muts = Array.isArray(spec.mut) ? spec.mut : [];
     // the deck's note (owner 2026-11-02: farming time …, written by the user): a clear box under the name, wrapped
     const noteLines = deckNoteLines(spec.note, B.W - B.PAD * 2 - NOTE.PAD * 2 - NOTE.BAR);
     const NH = noteLines.length ? noteLines.length * NOTE.LH + NOTE.PAD * 2 + NOTE.GAP : 0;
@@ -1093,6 +1220,7 @@
     const arts = new Map();
     const srcs = new Set();
     [...cards, ...sups].forEach((it) => { if (it && !it.missing && it.image) srcs.add(it.image); });
+    traits.forEach((t) => { if (t && t.icon) srcs.add(t.icon); });
     await Promise.all([...srcs].map(async (s) => arts.set(s, await loadImg(s))));
 
     const canvas = document.createElement("canvas");
@@ -1135,23 +1263,32 @@
       ctx.fillText(label.toUpperCase(), B.PAD + 22, y + 14 + 14);
       setSpacing(ctx, 0);
     };
-    // the name over a slot (bottom line just above the card) + its rarity pill under it · empty slot = neither
-    const label = (it, i, cy, r) => {
+    // the name over a slot (bottom line just above the card) + its pills under it (draw(cx, y, h, w) each) · empty slot = neither
+    const PW = Math.min(B.PILL_W, colW - 20);
+    const label = (it, i, cy, r, more) => {
       if (!it) return;
-      const lines = slotName(ctx, it.missing ? pretty(it.id) : it.name || pretty(it.id), colW - 14, pal.body);
+      const { lines, fs } = slotName(ctx, it.missing ? pretty(it.id) : it.name || pretty(it.id), colW - 14, pal.body), lh = nameLH(fs);
       ctx.fillStyle = pal.ink; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-      const base = cy - B.NAME_GAP - 4 - (lines.length - 1) * B.NAME_LH;
-      lines.forEach((l, j) => ctx.fillText(l, colX(i), base + j * B.NAME_LH));
+      const base = cy - B.NAME_GAP - 4 - (lines.length - 1) * lh;
+      lines.forEach((l, j) => ctx.fillText(l, colX(i), base + j * lh));
       ctx.textAlign = "left";
-      if (!it.missing) drawRarityPill(ctx, colX(i), cy + B.CH + B.RAR_GAP, B.RAR, r, pal);
+      if (it.missing) return;
+      const py = (n) => cy + B.CH + B.RAR_GAP + n * (B.RAR + B.ROW_GAP);
+      drawRarityPill(ctx, colX(i), py(0), B.RAR, r, pal, PW);
+      more.forEach((draw, n) => draw(colX(i), py(n + 1), B.RAR, PW));
     };
     let y = B.HEAD;
     panel(y, P1, "Cards");
     cards.forEach((it, i) => {
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + NM;
+      const t = traits[i] || null, g = Number(grades[i]) || 0, icon = t && t.icon ? arts.get(t.icon) : null;
       if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frameAt(spec.cardRarity, i), it.image ? arts.get(it.image) : null, k, pal, nums[i]);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
-      label(it, i, cy, rOf(spec.cardRarity, i));
+      if (it && !it.missing) drawTG(ctx, x, cy, B.CW, t, icon, g, pal);
+      label(it, i, cy, rOf(spec.cardRarity, i), [
+        (cx, py, h, w) => drawGradePill(ctx, cx, py, h, w, g, pal),
+        (cx, py, h, w) => drawTraitPill(ctx, cx, py, h, w, t, icon, pal),
+      ]);
     });
     y += P1 + B.PANEL_GAP;
     panel(y, P2, "Support");
@@ -1159,7 +1296,7 @@
       const x = colX(i) - B.CW / 2, cy = y + 14 + 22 + NM;
       if (it) drawCard(ctx, x, cy, B.CW, B.CH, it, frameAt(spec.supRarity, i), it.image ? arts.get(it.image) : null, k, pal);
       else drawEmptySlot(ctx, x, cy, B.CW, B.CH, pal);
-      label(it, i, cy, rOf(spec.supRarity, i));
+      label(it, i, cy, rOf(spec.supRarity, i), [(cx, py, h, w) => drawMutPill(ctx, cx, py, h, w, Number(muts[i]) || 0, pal)]);
     });
     // the note last, under the support panel (owner 2026-11-02 round 2)
     if (noteLines.length) drawNote(y + P2 + B.PANEL_GAP);

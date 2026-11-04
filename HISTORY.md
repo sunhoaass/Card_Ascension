@@ -2127,3 +2127,23 @@
 - **เจ้าของ:** "Traits ทำมาแบบเป็นกล่องเลือกเลื่อนขึ้นลงแทน ประหยัดพื้นที่" → ตาราง 13 ปุ่ม (5 แถว) → กล่องเลื่อน `.dk-tl` สูง 214px (เห็น ~3½ แถว) · แถว: ไอคอน 40px · ชื่อ · ผล (`traitFx`) · ระดับ · เอาบรรทัดผลใต้ตารางออก (อยู่ในแถวแล้ว) · เปิดแผ่น = `scrollTop` ไปแถวที่เลือก
 - **ทดสอบ:** deck ที่ใส่ Tough → เปิดแผ่น กล่องเลื่อนลงถึง Tough (scrollTop 586) · แตะ Sage Mode → บันทึก + กรอบทอง · console error 0
 - **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 แก้บัค Trait (กล่องเห็น 3 แถว) + mockup ช่องการ์ด/รูป Save (`?v=90`)
+- **เจ้าของ:** "แก้บัค Traits แล้วให้เห็นแค่ 3 อันแรกแล้วค่อยเลื่อนขึ้นลง" (แคป: แถว Ascendant ที่เลือก ข้อความล้นทับแถว Limitless) + หน้า Deck: ชื่อการ์ดเห็นครบ, ใต้การ์ด 3 แถว ระดับ/Grade/Trait, ป้ายในการ์ดเล็กลง, Support ใต้การ์ด ระดับ + Mutation %, รูป Save มาตรฐานเดียวกัน → **ทำ mockup ก่อน**
+- **สาเหตุบัค:** `.dk-tl` เป็น grid + max-height → แถวที่เลือก (ข้อความเต็ม) โดนบีบเหลือ 56px ทั้งที่เนื้อหา 70px → ข้อความล้นลงแถวถัดไป
+- **แก้:** `.dk-tl` = flex column · ทุกแถวสูง 64px เท่ากัน (`flex: 0 0`, ไม่หด) · ทุกแถว 2 บรรทัด … (แถวที่เลือกไม่ขยายแล้ว) · กล่องสูง = 3 แถวพอดี (212px) · scroll-snap · ข้อความเต็มของ Trait ที่เลือกขึ้นใต้กล่อง (`.dk-tl__fx` / `data-ss-tfx`) · เปิดแผ่น = เลื่อนให้ Trait ที่ใส่อยู่เป็นแถวบนสุด
+- **ทดสอบ (Playwright Pixel 7):** กล่อง clientHeight 212 · แถว offsetHeight 64 / scrollHeight 62 (ไม่ล้น) · Ascendant ที่เลือก = 2 บรรทัด + ข้อความเต็มใต้กล่อง · deck ที่ใส่ Bloodlust (แถว 8) → เปิดแผ่นแล้ว Bloodlust อยู่แถวบน · console error 0
+- **Mockup:** `mockup/deck-slot-info.html` + รูป `mockup/deck-slot/` (การ์ดแคปจากเว็บจริง ป้าย `--s` 0.92) · https://claude.ai/artifact/S4oSVxsSYsGXVNBkVZweqD · 5 ข้อให้เลือก (ชื่อยาว, ขนาดป้าย, ช่องที่ยังไม่ตั้ง, Grade 4 ค่าย่อยในรูป Save, ป้ายบัฟ Deck)
+- **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `mockup/deck-slot-info.html` + `mockup/deck-slot/` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 ช่องการ์ด Deck แบบรูป Save + รูป Save มี Grade / Trait / Mutation (`?v=91`)
+- **เจ้าของ:** "ตอนจัดหน้าการ์ดให้เหมือนกับตอน Save รูป ครับ สวยกว่าดีกว่า" (ไม่ได้ตอบ 5 ข้อ → ใช้ตัวเลือกแรกตามที่ mockup บอก: ชื่อ 2 บรรทัดแล้วย่อ · ป้ายในการ์ด ~70% · No grade/No trait จาง · GRADE + เลขเฉลี่ย · เก็บป้ายบัฟ)
+- **หน้า Deck:** `.deck__pos` (ป้ายทองชื่อ) + `.dk-rar` → `.dk-nm` (ชื่อเต็ม · `fitName`) + `.dk-info` ป้ายเม็ดยา (`paintInfo`) · `.dk-row .tg --s` 0.92 · จอ ≥ 720 ป้ายสูง 23 ชื่อ 13px
+- **รูป Save:** การ์ด 190×253 → 210×280 · ชื่อ 17 → 22px ย่อได้ถึง 15 · ป้ายใต้การ์ด 3 แถว (Support 2) ขนาดเท่ากัน · `drawTG` วาดป้าย Trait/Grade บนการ์ด · รูปตัวอย่าง 4+4 ใบ = 2400 × 2292 px PNG 5.0 MB
+- **ทดสอบ (Playwright · Pixel 7 + จอ 1280):** ชื่อ "Divergent Fist Vessel" / "Ultra Instinct Saiyan" 2 บรรทัดครบบนมือถือ · 1 บรรทัดบนคอม · ป้ายระดับ 7 แบบ (Godly, Divine, Rainbow, Ascended, Cosmic, Shiny, Normal) · Grade 10 รุ้ง / 6 เงิน / 3 บรอนซ์ · Trait รุ้ง + สีส้ม · Mutation 13/7/1/ไม่มี · แตะป้าย Trait = แผ่นตั้งค่าเปิด · รูป Save ตรงกับหน้า · console error 0
+- **ไฟล์:** `index.html` · `js/deck.js` · `js/share.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 ป้ายระดับใต้การ์ด: ตัวตรง (`?v=92`)
+- **เจ้าของ:** "ไม่เอาตัวอักษรระดับเอียง ฟอนต์ด้วย ทั้งหน้าจัดการ์ดและ save" → ป้ายระดับใต้การ์ด Bangers เอียง → **Oswald 600 ตัวตรง** (ฟอนต์เดียวกับป้าย GRADE) ตัวพิมพ์ใหญ่ เว้นช่องไฟ · สีป้าย/ขอบ/ตัวอักษรเหมือนเดิม · ป้ายระดับบนตัวการ์ดเอง (แบบเกม) ไม่ได้แก้
+- **ทดสอบ:** หน้า Deck (Pixel 7) + รูป Save 2400 px: Godly, Divine, Rainbow, Ascended, Cosmic, Shiny, Normal ตัวตรงอ่านชัด · console error 0
+- **ไฟล์:** `index.html` · `js/share.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`

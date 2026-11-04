@@ -1,0 +1,273 @@
+<meta charset="utf-8">
+<title>Deck Slot Layout</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
+<style>
+/* Layout: a single dark column like the site's Gilded Nocturne theme · phone frame for the Deck page, a scaled 1200px
+   canvas for the saved image · the owner's choices at the bottom (copy answer) */
+:root {
+  color-scheme: dark;
+  --void: #0b1020; --void-2: #131a2e; --panel: rgba(15, 20, 37, .93);
+  --ink: #efe6d2; --ink-dim: #b3a88f; --ink-faint: #7d7563;
+  --gold: #d8b46a; --gold-lo: #8a6a32; --line: rgba(216, 180, 106, .30);
+  --green: #3fd47c; --bad: #ff6b6b;
+  --brass: linear-gradient(180deg, #f6e2aa, #d8b46a 48%, #a07a2e); --on-gold: #23190a;
+  --rainbow: linear-gradient(90deg, #ff6b8b, #ffb35c, #ffe873, #7ff0a0, #5fd0ff, #9a8cff, #f27ce0);
+  --rainbow-pill: linear-gradient(180deg, #ff9a52 0%, #ffd84f 22%, #8fe36a 42%, #4fc3f2 62%, #9b7bf2 80%, #f45fae 100%);
+  --bronze: linear-gradient(180deg, #ffe0bd 0%, #e7a06a 35%, #b8693a 70%, #8a4a22 100%);
+  --silver: linear-gradient(180deg, #ffffff 0%, #e2e7ef 35%, #a9b2c2 70%, #7d879a 100%);
+  --goldm: linear-gradient(180deg, #fff8cc 0%, #ffd863 35%, #e0a42c 70%, #a8701a 100%);
+  --r-normal: #c9cfdb; --r-shiny: #ecc768; --r-cosmic: linear-gradient(135deg, #8f7dff, #3150c4);
+  --r-rainbow: linear-gradient(135deg, #e8607a, #e9a75a, #7fd39a, #69b9e0, #8a7be0);
+  --r-divine: #d6ad5c; --r-ascended: linear-gradient(135deg, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8);
+  --r-godly: linear-gradient(135deg, #ff7aa8, #f7a35c, #ffd36a);
+  --f-display: "Cinzel", Georgia, serif; --f-body: "Inter", system-ui, sans-serif;
+  --f-num: "Oswald", "Arial Narrow", sans-serif; --f-pop: "Bangers", "Arial Narrow", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(120% 60% at 70% 0%, #1a2240 0%, var(--void) 60%) fixed, var(--void); color: var(--ink); font: 15px/1.55 var(--f-body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 36px; }
+h1, h2 { font-family: var(--f-display); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: .02em; }
+h1 { font-size: clamp(26px, 6vw, 38px); }
+h2 { font-size: 20px; color: var(--gold); }
+p { margin: 0; }
+.lead { color: var(--ink-dim); max-width: 64ch; }
+.sec { display: grid; gap: 14px; }
+.sec > p { color: var(--ink-dim); max-width: 68ch; }
+.eyebrow { font: 700 11px/1 var(--f-display); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint); }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; align-items: start; }
+.fig { display: grid; gap: 8px; min-width: 0; }
+.fig > .eyebrow { display: flex; align-items: center; gap: 8px; }
+.fig > .eyebrow b { padding: 3px 8px; border-radius: 99px; font: 700 10px/1 var(--f-body); letter-spacing: .08em; }
+.tag-old { background: rgba(255, 255, 255, .06); color: var(--ink-dim); }
+.tag-new { background: var(--brass); color: var(--on-gold); }
+.shot { width: 100%; border-radius: 14px; border: 1px solid var(--line); display: block; }
+
+/* ---------- phone: the Deck page (new) ---------- */
+.phone { width: 100%; max-width: 412px; justify-self: center; padding: 14px 14px 18px; border-radius: 22px; border: 1px solid var(--line); background: linear-gradient(180deg, #10172b, #0b1020); display: grid; gap: 14px; }
+.grp-h { display: flex; justify-content: space-between; align-items: baseline; }
+.grp-h h3 { margin: 0; font: 700 12px/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.grp-h span { font-size: 12px; color: var(--ink-dim); }
+.row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.slot { min-width: 0; display: grid; align-content: start; gap: 5px; position: relative; }
+/* the name: on top, full · wraps to 2 lines, then the type shrinks (fitNames) */
+.nm { display: flex; align-items: flex-end; justify-content: center; height: 30px; padding: 0 4px; border-radius: 6px; background: var(--brass); color: var(--on-gold);
+  font: 700 11px/1.2 var(--f-body); text-align: center; overflow: hidden; }
+.nm span { display: block; overflow-wrap: anywhere; padding-bottom: 2px; }
+.nm-wrap { height: 30px; display: grid; align-items: end; }
+.card { position: relative; aspect-ratio: 364 / 488; border-radius: 8px; overflow: visible; }
+.card img { width: 100%; height: 100%; display: block; border-radius: 8px; }
+.x { position: absolute; right: -6px; top: -8px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--void-2); border: 1px solid var(--gold-lo); color: var(--ink); font-size: 12px; line-height: 1; box-shadow: 0 2px 6px rgba(0, 0, 0, .55); }
+/* 3 rows under a card (2 under a support): rarity · grade · trait, the same height in every slot */
+.info { display: grid; gap: 3px; }
+.ln { display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 0; height: 15px; font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-dim); white-space: nowrap; }
+.ln > span { overflow: hidden; text-overflow: ellipsis; }
+.dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sw); box-shadow: 0 0 0 1px rgba(0, 0, 0, .45); }
+.ln.off { color: var(--ink-faint); font-weight: 600; text-transform: none; letter-spacing: 0; }
+.gnum { font-family: var(--f-num); font-size: 12px; letter-spacing: .02em; -webkit-background-clip: text; background-clip: text; color: transparent; background-image: var(--gfill); }
+.tic { flex: none; width: 14px; height: 14px; }
+.tname { text-transform: none; letter-spacing: 0; font-size: 10.5px; color: var(--tc); }
+.tname.rb { background: var(--rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.mut { color: var(--green); }
+.buff { margin-top: 2px; padding: 4px 2px; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--green) 40%, transparent); background: rgba(63, 212, 124, .07); color: var(--ink); text-align: center; font-size: 10px; line-height: 1.35; }
+.buff b { color: var(--green); }
+.hint { font-size: 12px; color: var(--ink-faint); }
+
+/* ---------- the saved image (1200 px wide, scaled to fit) ---------- */
+.canvas-box { position: relative; width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+.cv { position: absolute; left: 0; top: 0; width: 1200px; transform-origin: 0 0; padding: 26px 26px 30px; background: radial-gradient(90% 60% at 80% 0%, #1b2341, #0d1224 70%); display: grid; gap: 22px; }
+.cv-h { font: 700 46px/1.1 var(--f-display); color: var(--ink); padding: 8px 4px 0; }
+.cv-p { border-radius: 18px; border: 1px solid var(--line); background: var(--panel); padding: 18px 22px 22px; display: grid; gap: 14px; }
+.cv-p h4 { margin: 0; font: 700 13px/1 var(--f-display); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.cv-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.cv-s { display: grid; gap: 10px; justify-items: center; min-width: 0; }
+.cv-nm { height: 58px; width: 100%; display: flex; align-items: flex-end; justify-content: center; text-align: center; font: 600 23px/1.2 var(--f-body); color: var(--ink); overflow: hidden; }
+.cv-nm span { display: block; }
+.cv-card { width: 210px; aspect-ratio: 364 / 488; }
+.cv-card img { width: 100%; height: 100%; display: block; border-radius: 10px; }
+.cv-info { display: grid; gap: 7px; justify-items: center; width: 100%; }
+.pill { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 34px; min-width: 150px; max-width: 100%; padding: 0 16px; border-radius: 99px; border: 2px solid #15101e;
+  font: 400 21px/1 var(--f-pop); letter-spacing: .04em; text-transform: uppercase; color: #fff; paint-order: stroke fill; -webkit-text-stroke: 3px #15101e; white-space: nowrap; }
+.pill.rar { background: var(--sw); }
+.pill.rar.lt { color: #15101e; -webkit-text-stroke: 0; }
+.pill.gr { background: #141a2e; border-color: transparent; background-clip: padding-box; position: relative; -webkit-text-stroke: 0; font-family: var(--f-num); font-weight: 700; font-size: 18px; letter-spacing: .06em; }
+.pill.gr::before { content: ""; position: absolute; inset: -2px; border-radius: inherit; padding: 2px; background: var(--gfill); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.pill.gr i { font-style: normal; background: var(--gfill); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 22px; }
+.pill.tr { background: color-mix(in srgb, var(--tc) 18%, #141a2e); border-color: color-mix(in srgb, var(--tc) 70%, transparent); -webkit-text-stroke: 0; font: 700 17px/1 var(--f-body); text-transform: none; letter-spacing: 0; color: var(--tc); padding-left: 8px; }
+.pill.tr.rb { border-color: transparent; background: linear-gradient(#211a36, #211a36) padding-box, var(--rainbow-pill) border-box; }
+.pill.tr.rb b { background: var(--rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pill.tr img { width: 26px; height: 26px; }
+.pill.none { background: transparent; border: 2px dashed rgba(255, 255, 255, .14); color: var(--ink-faint); -webkit-text-stroke: 0; font: 600 16px/1 var(--f-body); text-transform: none; letter-spacing: 0; }
+.pill.mt { background: rgba(63, 212, 124, .12); border-color: color-mix(in srgb, var(--green) 65%, transparent); color: var(--green); -webkit-text-stroke: 0; font: 700 18px/1 var(--f-body); text-transform: none; letter-spacing: 0; }
+
+/* ---------- choices ---------- */
+.qs { display: grid; gap: 14px; }
+.q { padding: 16px; border-radius: 14px; border: 1px solid var(--line); background: rgba(19, 26, 46, .7); display: grid; gap: 10px; }
+.q h3 { margin: 0; font-size: 15px; }
+.q .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opt { min-height: 40px; padding: 8px 14px; border-radius: 99px; border: 1px solid var(--line); background: transparent; color: var(--ink); font: 500 14px/1.3 var(--f-body); cursor: pointer; text-align: left; transition: background-color .15s, border-color .15s, transform .1s; }
+.opt:hover { border-color: var(--gold); }
+.opt:active { transform: scale(.97); }
+.opt[aria-pressed="true"] { background: var(--brass); color: var(--on-gold); border-color: transparent; font-weight: 700; }
+.opt:focus-visible, .copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.copy { justify-self: start; min-height: 46px; padding: 0 22px; border-radius: 12px; border: 0; background: var(--brass); color: var(--on-gold); font: 700 15px/1 var(--f-display); letter-spacing: .06em; cursor: pointer; }
+.out { width: 100%; min-height: 110px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0, 0, 0, .25); color: var(--ink); font: 13px/1.5 var(--f-body); resize: vertical; }
+.note { font-size: 13px; color: var(--ink-dim); }
+@media (prefers-reduced-motion: reduce) { .opt { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="sec">
+    <p class="eyebrow">Card Battle Infinity · mockup</p>
+    <h1>ช่องการ์ดในหน้า Deck + รูป Save</h1>
+    <p class="lead">ชื่อการ์ดอยู่ด้านบนเห็นครบ (ยาวขึ้นบรรทัด 2 แล้วค่อยย่อตัวอักษร) · ใต้การ์ด 3 แถว: ระดับการ์ด · Grade · Trait · ป้าย Grade/Trait บนการ์ดเล็กลง · Support: ชื่อบน + ใต้การ์ด 2 แถว: ระดับ · Mutation % · รูป Save ใช้มาตรฐานเดียวกัน</p>
+  </header>
+
+  <section class="sec" aria-labelledby="h-page">
+    <h2 id="h-page">1 · หน้า Deck (มือถือ)</h2>
+    <p>ทุกช่องสูงเท่ากัน: ชื่อจองที่ 2 บรรทัด · ช่องที่ยังไม่ตั้ง Grade / Trait ขึ้น “No grade” / “No trait” สีจาง แถวจะได้ตรงกันทุกช่อง · ป้ายบัฟ Deck (ATK +13% …) อยู่ใต้ 3 แถว</p>
+    <div class="pair">
+      <div class="fig">
+        <p class="eyebrow"><b class="tag-old">ตอนนี้</b> ชื่อโดนตัด · ไม่มี Grade / Trait ใต้การ์ด · ป้ายในการ์ดใหญ่</p>
+        <img class="shot" src="deck-slot/before-page.webp" alt="หน้า Deck ตอนนี้: ชื่อการ์ดถูกตัดเป็น … และป้าย Grade/Trait บนการ์ดใหญ่">
+      </div>
+      <div class="fig">
+        <p class="eyebrow"><b class="tag-new">แบบใหม่</b></p>
+        <div class="phone" id="phone"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-save">
+    <h2 id="h-save">2 · รูปตอนกด Save image</h2>
+    <p>รูปกว้าง 1200 (×2 = 2400 px คมชัด) · ชื่อเต็มด้านบน · ใต้การ์ดเป็นป้ายใหญ่อ่านง่าย: ระดับ (สีระดับ) · GRADE เลข (สีบรอนซ์/เงิน/ทอง/รุ้ง) · Trait (ไอคอน + ชื่อสีของ Trait) · Support: ระดับ + Mutation % · การ์ดในรูปมีป้าย Grade/Trait ขนาดใหม่ด้วย</p>
+    <div class="fig">
+      <p class="eyebrow"><b class="tag-new">แบบใหม่</b></p>
+      <div class="canvas-box" data-fit><div class="cv" id="cv"></div></div>
+    </div>
+    <div class="fig">
+      <p class="eyebrow"><b class="tag-old">ตอนนี้</b> มีแค่ระดับ ไม่มี Grade / Trait / Mutation</p>
+      <img class="shot" src="deck-slot/before-save.webp" alt="รูป Save image ตอนนี้: ชื่อ การ์ด และป้ายระดับอย่างเดียว">
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-q">
+    <h2 id="h-q">3 · เลือกก่อนทำจริง</h2>
+    <p>ข้อที่ไม่เลือก = ใช้แบบที่เห็นในรูปด้านบน (ตัวเลือกแรก) · กด “คัดลอกคำตอบ” แล้ววางในแชท</p>
+    <div class="qs" id="qs"></div>
+    <button type="button" class="copy" id="copy">คัดลอกคำตอบ</button>
+    <textarea class="out" id="out" aria-label="คำตอบ" readonly></textarea>
+  </section>
+</div>
+
+<script>
+(() => {
+  const T = "deck-slot/t-";
+  const GB = (g) => (g >= 10 ? "var(--rainbow-pill)" : g >= 7 ? "var(--goldm)" : g >= 4 ? "var(--silver)" : "var(--bronze)");
+  const RS = { Godly: "var(--r-godly)", Divine: "var(--r-divine)", Rainbow: "var(--r-rainbow)", Ascended: "var(--r-ascended)", Cosmic: "var(--r-cosmic)", Shiny: "var(--r-shiny)", Normal: "var(--r-normal)" };
+  const LIGHT = new Set(["Divine", "Ascended", "Shiny", "Normal", "Godly", "Rainbow"]);
+  const TR = {
+    ascendant: { name: "Ascendant", rb: true }, limitless: { name: "Limitless", rb: true }, "sage-mode": { name: "Sage Mode", c: "#ff8a5c" },
+  };
+  const cards = [
+    { name: "Octopus Teacher", img: "c0", r: "Godly", g: 10, t: "ascendant", buff: ["+13%", "+29.9%"] },
+    { name: "Divergent Fist Vessel", img: "c1", r: "Divine", g: 6, t: "limitless", buff: ["+7%", "+7%"] },
+    { name: "Ultra Instinct Saiyan", img: "c2", r: "Rainbow", g: 0, t: null, buff: ["+3.5%", "+1%"] },
+    { name: "Ant King", img: "c3", r: "Ascended", g: 3, t: "sage-mode", buff: null },
+  ];
+  const sups = [
+    { name: "Automail Mechanic", img: "c4", r: "Godly", m: 13 },
+    { name: "Cafe Owner Owl", img: "c5", r: "Cosmic", m: 7 },
+    { name: "Navigation Pixie", img: "c6", r: "Shiny", m: 1 },
+    { name: "Portal Playboy", img: "c7", r: "Normal", m: 0 },
+  ];
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  /* ---- phone ---- */
+  const ln = (inner, off) => `<div class="ln${off ? " off" : ""}">${inner}</div>`;
+  const rarLn = (r) => ln(`<i class="dot" style="--sw:${RS[r]}"></i><span>${r}</span>`);
+  const grLn = (g) => (g ? ln(`<span>Grade</span><b class="gnum" style="--gfill:${GB(g)}">${g}</b>`) : ln("<span>No grade</span>", true));
+  const trLn = (id) => {
+    if (!id) return ln("<span>No trait</span>", true);
+    const t = TR[id];
+    return ln(`<img class="tic" src="${T}${id}.webp" alt=""><span class="tname${t.rb ? " rb" : ""}" style="--tc:${t.c || "#fff"}">${esc(t.name)}</span>`);
+  };
+  const slot = (x, info, extra = "") => `<div class="slot">
+      <div class="nm-wrap"><div class="nm"><span>${esc(x.name)}</span></div></div>
+      <div class="card"><img src="deck-slot/${x.img}.webp" alt="${esc(x.name)}"><span class="x" aria-hidden="true">&times;</span></div>
+      <div class="info">${info}</div>${extra}
+    </div>`;
+  const phone = document.getElementById("phone");
+  phone.innerHTML = `
+    <p class="hint">Tap a card: rarity, grade, trait. Hold to move.</p>
+    <div class="grp-h"><h3>Cards</h3><span>4 / 4</span></div>
+    <div class="row">${cards.map((c) => slot(c, rarLn(c.r) + grLn(c.g) + trLn(c.t),
+      c.buff ? `<div class="buff">ATK <b>${c.buff[0]}</b><br>HP <b>${c.buff[1]}</b></div>` : "")).join("")}</div>
+    <div class="grp-h"><h3>Support</h3><span>4 / 4</span></div>
+    <div class="row">${sups.map((s) => slot(s, rarLn(s.r) + (s.m ? ln(`<span class="mut">Mutation +${s.m}%</span>`) : ln("<span>No mutation</span>", true)))).join("")}</div>`;
+
+  /* ---- saved image ---- */
+  const rarPill = (r) => `<span class="pill rar${LIGHT.has(r) ? "" : ""}" style="--sw:${RS[r]}">${r}</span>`;
+  const grPill = (g) => (g ? `<span class="pill gr" style="--gfill:${GB(g)}">GRADE <i>${g}</i></span>` : `<span class="pill none">No grade</span>`);
+  const trPill = (id) => {
+    if (!id) return `<span class="pill none">No trait</span>`;
+    const t = TR[id];
+    return `<span class="pill tr${t.rb ? " rb" : ""}" style="--tc:${t.c || "#fff"}"><img src="${T}${id}.webp" alt=""><b>${esc(t.name)}</b></span>`;
+  };
+  const cvSlot = (x, info) => `<div class="cv-s"><div class="cv-nm"><span>${esc(x.name)}</span></div>
+      <div class="cv-card"><img src="deck-slot/${x.img}.webp" alt="${esc(x.name)}"></div><div class="cv-info">${info}</div></div>`;
+  document.getElementById("cv").innerHTML = `
+    <div class="cv-h">Tower Push</div>
+    <div class="cv-p"><h4>Cards</h4><div class="cv-row">${cards.map((c) => cvSlot(c, rarPill(c.r) + grPill(c.g) + trPill(c.t))).join("")}</div></div>
+    <div class="cv-p"><h4>Support</h4><div class="cv-row">${sups.map((s) => cvSlot(s, rarPill(s.r) + (s.m ? `<span class="pill mt">Mutation +${s.m}%</span>` : `<span class="pill none">No mutation</span>`))).join("")}</div></div>`;
+
+  /* names: 2 lines, then smaller type until it fits */
+  function fit(sel, base, min) {
+    document.querySelectorAll(sel).forEach((box) => {
+      const s = box.firstElementChild;
+      let f = base;
+      s.style.fontSize = f + "px";
+      while (f > min && (s.scrollHeight > box.clientHeight + 1 || s.scrollWidth > box.clientWidth + 1)) { f -= 0.5; s.style.fontSize = f + "px"; }
+    });
+  }
+  const box = document.querySelector("[data-fit]"), cv = document.getElementById("cv");
+  function layout() {
+    fit(".nm", 11, 8);
+    fit(".cv-nm", 23, 15);
+    const k = box.clientWidth / 1200;
+    cv.style.transform = `scale(${k})`;
+    box.style.height = cv.offsetHeight * k + "px";
+  }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(layout);
+  new ResizeObserver(layout).observe(box);
+  addEventListener("load", layout);
+
+  /* ---- choices ---- */
+  const Q = [
+    { k: "name", q: "ชื่อการ์ดยาว", o: ["ขึ้นบรรทัด 2 ก่อน ยาวมากค่อยย่อตัวอักษร (ในรูป)", "บรรทัดเดียว ย่อตัวอักษรอย่างเดียว"] },
+    { k: "badge", q: "ป้าย Grade / Trait บนตัวการ์ด", o: ["เล็กลงแบบในรูป (ประมาณ 70% ของตอนนี้)", "เล็กกว่านี้อีก (ประมาณ 55%)", "เท่าเดิม"] },
+    { k: "empty", q: "ช่องที่ยังไม่ตั้ง Grade / Trait", o: ["ขึ้น No grade / No trait สีจาง (ในรูป)", "เว้นแถวว่างไว้ (ไม่มีข้อความ)", "ซ่อนแถว (ช่องจะสูงไม่เท่ากัน)"] },
+    { k: "grade", q: "Grade ใต้การ์ด", o: ["GRADE + เลขเฉลี่ย (ในรูป)", "GRADE + เลขเฉลี่ย + 4 ค่าย่อย (ATK/DEF/STA/HP) ในรูป Save"] },
+    { k: "buff", q: "ป้ายบัฟ Deck (ATK +13% / HP …) ใต้การ์ดในหน้า Deck", o: ["เก็บไว้ ใต้ 3 แถว (ในรูป)", "เอาออก ดูในแผ่นตั้งค่าแทน"] },
+  ];
+  const pick = {};
+  const qs = document.getElementById("qs"), out = document.getElementById("out");
+  qs.innerHTML = Q.map((x, i) => `<div class="q"><h3>${i + 1}. ${x.q}</h3><div class="opts" role="group" aria-label="${x.q}">${x.o.map((o, j) =>
+    `<button type="button" class="opt" id="q${i}o${j}" data-q="${i}" data-o="${j}" aria-pressed="${j === 0}">${o}</button>`).join("")}</div></div>`).join("");
+  Q.forEach((x, i) => { pick[i] = 0; });
+  const write = () => { out.value = "Deck slot mockup:\n" + Q.map((x, i) => `${i + 1}. ${x.q}: ${x.o[pick[i]]}`).join("\n"); };
+  qs.addEventListener("click", (e) => {
+    const b = e.target.closest(".opt"); if (!b) return;
+    const i = +b.dataset.q; pick[i] = +b.dataset.o;
+    qs.querySelectorAll(`[data-q="${i}"]`).forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+    write();
+  });
+  write();
+  const copyBtn = document.getElementById("copy");
+  copyBtn.addEventListener("click", () => {
+    const done = () => { copyBtn.textContent = "คัดลอกแล้ว"; setTimeout(() => { copyBtn.textContent = "คัดลอกคำตอบ"; }, 1600); };
+    const fallback = () => { out.focus(); out.select(); copyBtn.textContent = "เลือกข้อความแล้ว กดคัดลอกเอง"; };
+    try { navigator.clipboard.writeText(out.value).then(done, fallback); } catch { fallback(); }
+  });
+})();
+</script>
