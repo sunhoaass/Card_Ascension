@@ -227,7 +227,7 @@
 
 /* ==========================================================
    Cards page redesign (2026-11-03 · js/cards.js)
-   pull-odds finder (+ 1M…1Qa dropdown in the box) · rarity bar (sticky, wraps) · search box with the ↑↓ button in it ·
+   one search box for names + pull odds (↑↓ button in it, above the rarity bar · 2026-11-04) · rarity bar (sticky, wraps) ·
    layout switch · chips of the filters in use · cells (card only · list view adds name + stats). Mobile first: nothing here scrolls sideways.
    ========================================================== */
 .ctools { gap: var(--s-3); }
@@ -242,8 +242,8 @@
 }
 .rarity-bar[hidden] { display: none; }
 #cards-view > .rarity-bar, #support-view > .rarity-bar { margin-bottom: var(--s-3); }
-#cards-view > .oddsbox { margin-bottom: var(--s-3); }
-.oddsbox[hidden] { display: none; }
+#cards-view > .cards-search { margin-bottom: var(--s-3); }
+.cards-search[hidden] { display: none; }
 .rarity-bar.is-stuck {
   background-color: var(--glass-under);
   border-bottom-color: var(--glass-line);
@@ -263,56 +263,7 @@
 @media (max-width: 359px) { .rarity-picker--wrap .chip { font-size: 11px; } .rarity-picker--wrap .chip__swatch { display: none; } }
 @media (min-width: 760px) { .rarity-picker--wrap .chip { flex: 1 1 0; font-size: 13px; } }
 
-/* pull-odds finder */
-.oddsbox { display: grid; gap: var(--s-2); padding: var(--s-4); --orn-s: 13px; }
-.oddsbox__label {
-  font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--gold);
-}
-.oddsbox__row {
-  display: flex; align-items: center; gap: var(--s-2); min-width: 0;
-  padding-left: 12px; border-radius: var(--r-chip);
-  border: 1px solid var(--glass-line); background-color: var(--glass-under);
-  transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
-}
-.oddsbox__row:focus-within { border-color: var(--gold); box-shadow: var(--rift-glow); }
-.oddsbox__pre { flex: none; font-family: var(--gc-font-pop); font-size: 20px; letter-spacing: .04em; line-height: 1; color: var(--gold-hi); }
-.oddsbox__input {
-  flex: 1; min-width: 0; height: 44px; padding: 0 2px;
-  border: 0; background: none; color: var(--ink); outline: none;
-  font: inherit; font-size: var(--fs-md); font-variant-numeric: tabular-nums;   /* 16px: no iOS zoom */
-}
-.oddsbox__input::placeholder { color: var(--ink-faint); font-size: var(--fs-sm); }
-.oddsbox__x { flex: none; width: 40px; height: 44px; display: grid; place-items: center; color: var(--ink-dim); }
-.oddsbox__x[hidden] { display: none; }
-.oddsbox__x svg { width: 16px; height: 16px; }
-.oddsbox__go {
-  flex: none; align-self: stretch; min-width: 56px; padding: 0 14px;
-  border-radius: 0 calc(var(--r-chip) - 1px) calc(var(--r-chip) - 1px) 0;
-  background-image: var(--brass-gold); color: var(--on-gold);
-  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); letter-spacing: .08em;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 240, .5);
-}
-/* the 1M / 1B / 1T / 1Qa dropdown inside the box, between the typed value and OK (round 2) · gold while one is in use */
-.oddsbox__pick { position: relative; flex: none; align-self: stretch; display: flex; align-items: center; border-left: 1px solid var(--glass-line); }
-.oddsbox__pick select {
-  -webkit-appearance: none; appearance: none; color-scheme: dark;
-  height: 100%; min-height: 44px; width: 80px; padding: 0 24px 0 12px;
-  border: 0; background-color: transparent; color: var(--gold-hi); cursor: pointer;
-  font-family: var(--gc-font-num); font-weight: 600; font-size: var(--fs-md); letter-spacing: .02em;   /* 16px: no iOS zoom */
-  text-overflow: ellipsis; white-space: nowrap;
-  /* chevron: data URIs can't read CSS variables, colour is --gold (#d8b46a) */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8b46a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 7px center; background-size: 13px;
-  transition: color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
-}
-.oddsbox__pick select:focus { outline: none; }
-.oddsbox__pick:focus-within { box-shadow: inset 0 0 0 2px var(--gold); }
-.oddsbox__pick select option { background: var(--void-2); color: var(--ink); }
-.oddsbox__pick.is-on select { background-color: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold-hi); }
-.oddsbox__msg[hidden] { display: none; }
-.oddsbox__msg { margin: 0; font-size: var(--fs-xs); line-height: 1.45; color: var(--bad); font-weight: 600; overflow-wrap: anywhere; }
-
-/* search box with the ↑↓ pull-odds order button inside it, on the right (round 2) */
+/* search box (names + pull odds) with the ↑↓ pull-odds order button inside it, on the right (round 2 · above the rarity bar 2026-11-04) */
 .sbox {
   display: flex; align-items: stretch; min-width: 0;
   border-radius: var(--r-chip); border: 1px solid var(--glass-line); background-color: rgba(14, 18, 34, .92);
