@@ -2185,3 +2185,19 @@
 - **ทำ:** เขียน `mockup/bright-themes.html` ใหม่ (ลิงก์ artifact เดิม เวอร์ชัน 2): หน้าเว็บจำลองชุดเดียว (`.site` + container query ≥ 1100px = เมนูซ้าย 252px · การ์ด 5 ใบต่อแถวตาม `--grid-cols`) ใช้กับโทรศัพท์ 4 หน้า + จอพรีวิวทุกขนาด (จอ > 1920 = หน้า w/zoom ขยายตามสูตร `min(w/1920, h/1080)` เหมือน `<head>` ของ index.html) · ธีมมืด D1 Castle Night / D2 Royal Eclipse / D3 Amethyst Dusk / D4 Sapphire Abyss (ฉากวาดด้วยโค้ด: ดาว, จันทร์, สุริยุปราคา, ประตูมิติ, ออโรรา, เมืองปราสาท SVG จาก seed) + ธีมสว่าง L1–L5 เดิม · ปุ่มระดับ 4 แบบ (Ascension Ladder / Gem / Seal / Capsule) เลือกแยกจากธีม · เมนูในจอกดเปลี่ยนหน้าได้ · แตะระดับ = การ์ดแฟลช · IntersectionObserver หยุดอนิเมชั่นจอที่พ้นสายตา · reduced motion
 - **ทดสอบ (Playwright):** 1400px + 390px · ธีมมืด 4 แบบ · จอ 1366×768 / 1920×1080 / 3440×1440 · console error 0 · หน้า lab ที่ 390px เลื่อนข้างไม่ได้ (scrollX = 0)
 - **ไฟล์:** `mockup/bright-themes.html` · `docs/bg-prompts.md` (ทำเครื่องหมายยกเลิก) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 · 🏰 ธีม Castle Night + ปุ่มระดับ Capsule ในเว็บจริง (`?v=96`)
+- **เจ้าของ:** "เลือกธีม D1 Castle Night + ปุ่มระดับแบบ Capsule (mockup/bright-themes.html)"
+- **เปลี่ยน:** `tokens.css` ชุดสีใหม่ (กรมท่า/คราม/ม่วง ไม่มีดำ · ทอง `#f2c45a` · ตัวหนังสือลาเวนเดอร์) + token ใหม่ `--sky` `--gold-rgb` `--city-*` · ฟอนต์ Marcellus SC + Nunito Sans (index.html โหลดแทน Cinzel/Inter · share.js โหลดฟอนต์ใหม่ก่อนวาดรูป · รูปการ์ดสำรองใน app.js) · `--r-chip` 12 · `--r-panel` 14 · `--chamfer` = มุมโค้ง · `--nav-h` 80 · ทองเลขตายตัว `rgba(216, 180, 106, …)` ทุกไฟล์ CSS → `rgba(var(--gold-rgb), …)` · พื้นกรมท่าเลขตายตัว → ค่าใหม่ · `base.css` ฉากหลังใหม่ (ดาววิบ, จันทร์รัศมี, ดาวตก, เมืองปราสาท 2 SVG, หน้าต่างกะพริบ) · กล่องไม่มีลายมุม · เมนูมือถือลอย + แผ่นทองทึบ · ชิประดับ `.chip[data-rarity]` = Capsule (สีระดับ + เรือง + แสงพาด) · `fx.js` `FX.backdrop` วาดเมืองปราสาทแทนเมืองวิกตอเรียน (scroll เดิม) · ไอคอนโหลด/`theme-color`/`site.webmanifest` สีใหม่ · `?v=96`
+- **ไม่เปลี่ยน:** หน้าดูการ์ด (ฉาก Silver Palace + จุดระดับ) · การ์ดแบบเกม · route / localStorage / ลิงก์แชร์
+- **ทดสอบ (Playwright Chromium):** 390×844 + 1920×1080: Home / Cards / Deck / แตะ Cosmic / เปิดการ์ด · console error 0 · scrollWidth 390 (ไม่เลื่อนข้าง)
+- **ความเร็ว (§11.3 · CPU ช้า 6× · 390×844 dpr 2.75 · เลื่อน 3 วิ · เทียบ HEAD เดิม):**
+
+| หน้า | เดิม fps / เฟรมช้าสุด / TaskDuration | ใหม่ |
+|---|---|---|
+| Home | 58.7 / 50ms / 1.44s | 59.6 / 33ms / 1.84s |
+| Cards | 35.5 / 567ms / 1.59s | 40.8 / 167ms / 2.25s |
+| Deck | 56.7 / 183ms / 1.15s | 57.3 / 167ms / 1.26s |
+
+  fps ไม่ลดทุกหน้า · TaskDuration เพิ่มเล็กน้อย (ชั้นวิบ/ดาวตก) · หน้า Cards ต่ำกว่า 55 fps ตั้งแต่ก่อนแก้ (ไม่ใช่จากธีม)
+- **ไฟล์:** `index.html` · `site.webmanifest` · `css/tokens.css` · `css/base.css` · `css/cards.css` · `css/deck.css` · `css/detail.css` · `css/home.css` · `css/tier.css` · `css/tiermaker.css` · `js/fx.js` · `js/app.js` · `js/share.js` · `PROGRESS.md` · `HISTORY.md`

@@ -1,11 +1,11 @@
 /* ==========================================================
    Base layout: reset, backdrop, boot screen, header, menu, pages, panels
-   Theme "Gilded Nocturne" (step 9.6b). Mobile-first:
+   Theme "Castle Night" (owner 2026-11-04 · was "Gilded Nocturne" step 9.6b). Mobile-first:
    · phones / tablets (< 1100px): top bar + menu bar at the bottom
    · PC (≥ 1100px): menu becomes a rail on the left (like a PC game), the top bar is hidden
    ========================================================== */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--void); }
+html { -webkit-text-size-adjust: 100%; background: var(--void); font-synthesis-weight: none; }   /* Marcellus SC has one weight: never fake a bold */
 body {
   margin: 0;
   min-height: 100dvh;
@@ -29,60 +29,83 @@ p { margin: 0; }
 .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 /* ==========================================================
-   Backdrop (js/fx.js FX.backdrop): night sky, moon, Victorian skyline, lamp light, fog, rising lamp motes.
-   Drawn once. Always moving: fog + motes (CSS transform only) = 2 layers.
-   The skyline moves only while the page scrolls (a paused Web Animation, js sets currentTime).
+   Backdrop (js/fx.js FX.backdrop) "Castle Night": navy → violet sky, stars that twinkle, a moon with a breathing halo,
+   a shooting star now and then, a castle city with lit windows, window glow, fog, golden fireflies.
+   Drawn once. Always moving (CSS transform / opacity only, each its own layer): twinkle stars, moon halo, shooting star,
+   one window layer, fog, fireflies. The city moves only while the page scrolls (a paused Web Animation, js sets currentTime).
    ========================================================== */
 #backdrop {
   position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; contain: strict;
-  background:
-    radial-gradient(60vmax 40vmax at 78% 8%, rgba(255, 230, 180, .10), transparent 60%),
-    radial-gradient(120vmax 60vmax at 50% 110%, var(--haze), transparent 65%),
-    linear-gradient(180deg, #070b18 0%, var(--void) 40%, var(--void-2) 75%, #1b1630 100%);
+  background: radial-gradient(120vmax 60vmax at 50% 112%, var(--haze), transparent 62%), var(--sky);
 }
 .bd-moon {
-  position: absolute; right: 9%; top: 9%; width: clamp(56px, 12vw, 104px); aspect-ratio: 1; border-radius: 50%;
-  background: radial-gradient(circle at 40% 38%, #fff8e6, #efe0b8 55%, #cdb88a 100%);
-  box-shadow: 0 0 40px 10px rgba(255, 236, 190, .18), 0 0 120px 40px rgba(255, 236, 190, .07);
-  opacity: .9;
+  position: absolute; right: 7%; top: 8%; width: clamp(54px, 11vw, 96px); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #ffffff, #e9ebff 55%, #c6cbf2);
+  box-shadow: 0 0 40px 10px rgba(214, 220, 255, .3);
 }
+.bd-moon::before {
+  content: ""; position: absolute; inset: -60%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(205, 212, 255, .26), transparent);
+  animation: bd-halo 4s ease-in-out infinite alternate;
+}
+@keyframes bd-halo { to { transform: scale(1.15); } }
 .bd-moon::after {
   content: ""; position: absolute; inset: 0; border-radius: 50%;
   background:
-    radial-gradient(circle at 30% 60%, rgba(160, 140, 100, .25) 0 9%, transparent 10%),
-    radial-gradient(circle at 62% 30%, rgba(160, 140, 100, .2) 0 6%, transparent 7%),
-    radial-gradient(circle at 66% 66%, rgba(160, 140, 100, .18) 0 11%, transparent 12%);
+    radial-gradient(circle at 30% 60%, rgba(150, 160, 210, .22) 0 9%, transparent 10%),
+    radial-gradient(circle at 62% 30%, rgba(150, 160, 210, .18) 0 6%, transparent 7%),
+    radial-gradient(circle at 66% 66%, rgba(150, 160, 210, .16) 0 11%, transparent 12%);
 }
 .bd-stars {
-  position: absolute; inset: 0 0 45% 0; opacity: .55;
+  position: absolute; inset: 0 0 30% 0; opacity: .85;
   background-image:
-    radial-gradient(1px 1px at 8% 12%, #fff, transparent), radial-gradient(1px 1px at 22% 30%, #f3e6c8, transparent),
-    radial-gradient(1.4px 1.4px at 36% 8%, #fff, transparent), radial-gradient(1px 1px at 48% 22%, #e9dcc0, transparent),
-    radial-gradient(1px 1px at 58% 40%, #fff, transparent), radial-gradient(1.2px 1.2px at 66% 16%, #fff3d6, transparent),
-    radial-gradient(1px 1px at 90% 34%, #fff, transparent), radial-gradient(1px 1px at 14% 48%, #efe2c4, transparent),
-    radial-gradient(1.3px 1.3px at 30% 56%, #fff, transparent), radial-gradient(1px 1px at 96% 10%, #fff, transparent);
+    radial-gradient(1.3px 1.3px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 120px 80px, #fff, transparent),
+    radial-gradient(1.6px 1.6px at 180px 20px, #fff, transparent), radial-gradient(1px 1px at 60px 140px, #dfe4ff, transparent),
+    radial-gradient(1.2px 1.2px at 200px 170px, #fff, transparent), radial-gradient(1px 1px at 150px 210px, #cfd6ff, transparent),
+    radial-gradient(1px 1px at 90px 230px, #fff, transparent);
+  background-size: 240px 250px;
 }
-.bd-city { position: absolute; left: 0; right: 0; bottom: 0; height: min(52vh, 480px); }   /* moved on scroll by FX.backdrop (paused Web Animation) */
-.bd-city svg { width: 100%; height: 100%; max-width: none; }
+.bd-stars::after {   /* the twinkling ones: one layer, opacity only */
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(2px 2px at 70px 60px, #fff, transparent), radial-gradient(1.6px 1.6px at 210px 120px, #fff, transparent),
+    radial-gradient(2px 2px at 30px 190px, #ffeab8, transparent);
+  background-size: 260px 270px;
+  animation: bd-twinkle 2.6s ease-in-out infinite alternate;
+}
+@keyframes bd-twinkle { from { opacity: 1; } to { opacity: .2; } }
+.bd-shoot {
+  position: absolute; top: 12%; left: 6%; width: 130px; height: 2px; border-radius: 2px; opacity: 0;
+  background: linear-gradient(90deg, transparent, #fff);
+  transform: rotate(-18deg) translateX(-200px);
+  animation: bd-shoot 11s linear 3s infinite;
+}
+@keyframes bd-shoot {
+  0%, 88% { opacity: 0; transform: rotate(-18deg) translateX(-200px); }
+  90% { opacity: 1; }
+  97%, 100% { opacity: 0; transform: rotate(-18deg) translateX(520px); }
+}
+.bd-city { position: absolute; left: 0; right: 0; bottom: 0; height: min(44vh, 440px); }   /* moved on scroll by FX.backdrop (paused Web Animation) */
+.bd-city svg { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.bd-city .c1 { fill: var(--city-1); } .bd-city .c2 { fill: var(--city-2); } .bd-city .c3 { fill: var(--city-3); } .bd-city .w { fill: var(--city-win); }
+.bd-win2 { animation: bd-twinkle 3.4s ease-in-out infinite alternate; }   /* half the windows dim and light up again */
 .bd-lamps {
   position: absolute; left: 0; right: 0; bottom: 0; height: 30vh;
   background:
-    radial-gradient(90px 70px at 12% 92%, rgba(255, 212, 138, .22), transparent 70%),
-    radial-gradient(90px 70px at 41% 96%, rgba(255, 212, 138, .18), transparent 70%),
-    radial-gradient(90px 70px at 73% 93%, rgba(255, 212, 138, .2), transparent 70%),
-    radial-gradient(90px 70px at 94% 97%, rgba(255, 212, 138, .16), transparent 70%);
+    radial-gradient(90px 70px at 12% 92%, rgba(255, 207, 110, .18), transparent 70%),
+    radial-gradient(160px 110px at 50% 96%, rgba(255, 207, 110, .2), transparent 70%),
+    radial-gradient(90px 70px at 88% 94%, rgba(255, 207, 110, .16), transparent 70%);
 }
 .bd-fog {
-  position: absolute; left: 0; bottom: 4%; width: 200%; height: 34vh; opacity: .55;
+  position: absolute; left: 0; bottom: 4%; width: 200%; height: 30vh; opacity: .5;
   background:
-    radial-gradient(28% 46% at 12% 60%, rgba(150, 140, 175, .22), transparent 70%),
-    radial-gradient(22% 38% at 34% 70%, rgba(170, 155, 185, .18), transparent 70%),
-    radial-gradient(30% 44% at 58% 62%, rgba(150, 140, 175, .2), transparent 70%),
-    radial-gradient(24% 40% at 84% 72%, rgba(170, 155, 185, .18), transparent 70%);
+    radial-gradient(28% 46% at 12% 60%, rgba(150, 160, 220, .2), transparent 70%),
+    radial-gradient(22% 38% at 34% 70%, rgba(170, 160, 225, .16), transparent 70%),
+    radial-gradient(30% 44% at 58% 62%, rgba(150, 160, 220, .18), transparent 70%),
+    radial-gradient(24% 40% at 84% 72%, rgba(170, 160, 225, .16), transparent 70%);
   animation: bd-fog 80s linear infinite;
 }
 @keyframes bd-fog { to { transform: translateX(-50%); } }
-.bd-motes {
+.bd-motes {   /* golden fireflies drifting up */
   position: absolute; left: 0; right: 0; top: 0; height: 200%; opacity: .8;
   background-image:
     radial-gradient(2px 2px at 14% 22%, var(--lamp), transparent), radial-gradient(1.5px 1.5px at 37% 64%, #ffe7b8, transparent),
@@ -92,7 +115,10 @@ p { margin: 0; }
   animation: bd-motes 46s linear infinite;
 }
 @keyframes bd-motes { from { transform: translateY(0); } to { transform: translateY(-420px); } }
-html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer motes, nothing else changes */
+html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer fireflies, no twinkle / shooting star */
+html.lite .bd-stars::after, html.lite .bd-win2 { animation: none; }
+html.lite .bd-shoot { display: none; }
+@media (min-width: 1100px) { .bd-city { left: var(--side-w); } }   /* the castle stands in the middle of the content, not under the menu */
 
 /* ==========================================================
    Boot screen: crest + pocket watch (hidden by js/app.js when the data is in;
@@ -138,10 +164,10 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
   padding: 0 var(--gutter);
   border-width: 0 0 1px;
 }
-.topbar.glass { background: rgba(11, 16, 32, .72); }
+.topbar.glass { background: rgba(15, 22, 56, .74); }
 .topbar::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 3px; pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(216, 180, 106, .25), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), .25), transparent);
 }
 .brand { display: flex; align-items: center; gap: var(--s-2); min-width: 0; flex: 1; text-decoration: none; color: var(--ink); }
 .brand__crest { width: 34px; height: 34px; flex: none; }
@@ -155,18 +181,16 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 /* ==========================================================
    Menu: brass bar at the bottom (phones / tablets) · left rail on PC (≥ 1100px)
    ========================================================== */
-.nav {
+.nav {   /* Castle Night: a floating rounded bar (--nav-h = its 68px + the 12px gap under it) */
   position: fixed; z-index: 30;
-  left: 0; right: 0; bottom: 0;
-  height: calc(var(--nav-h) + var(--safe-b));
-  padding: 6px 8px calc(6px + var(--safe-b));
-  border-width: 1px 0 0;
+  left: 10px; right: 10px; bottom: calc(12px + var(--safe-b));
+  height: calc(var(--nav-h) - 12px);
+  padding: 5px;
+  border-radius: 20px;
+  box-shadow: 0 14px 28px -12px rgba(4, 6, 24, .7);
 }
-.nav.glass { background: rgba(13, 17, 32, .82); }
-.nav::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 3px; height: 1px; pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(216, 180, 106, .35), transparent);
-}
+.nav.glass { background: rgba(14, 19, 50, .92); }
+.nav::before { content: none; }
 .nav__brand, .nav__foot { display: none; }
 .nav__list {
   position: relative; height: 100%;
@@ -179,15 +203,10 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
   transition: transform var(--t-slow) var(--ease);
   pointer-events: none;
 }
-.nav__indicator::before {
-  content: ""; position: absolute; inset: 0 5px; border-radius: 8px;
-  background: linear-gradient(180deg, rgba(216, 180, 106, .22), rgba(216, 180, 106, .06));
-  border: 1px solid rgba(216, 180, 106, .5);
-  box-shadow: inset 0 1px 0 rgba(255, 232, 180, .25), 0 0 16px rgba(216, 180, 106, .18);
-}
-.nav__indicator::after {
-  content: ""; position: absolute; left: 50%; top: -1px; width: 22px; height: 2px; margin-left: -11px;
-  background: var(--gold-hi); border-radius: 2px; box-shadow: 0 0 8px var(--gold);
+.nav__indicator::before {   /* gold plate under the open tab */
+  content: ""; position: absolute; inset: 0 3px; border-radius: 15px;
+  background: var(--brass-gold);
+  box-shadow: inset 0 1px 0 rgba(255, 250, 230, .55), 0 0 16px rgba(var(--gold-rgb), .3);
 }
 .nav__btn {
   position: relative; z-index: 1;
@@ -198,7 +217,7 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 }
 .nav__btn svg { width: 24px; height: 24px; transition: transform var(--t-med) var(--ease); }
 .nav__btn span { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: .06em; }
-.nav__btn[aria-current="page"] { color: var(--gold-hi); }
+.nav__btn[aria-current="page"] { color: var(--on-gold); }
 .nav__btn[aria-current="page"] svg { transform: translateY(-1px); }
 @media (max-width: 359px) { .nav__btn span { font-size: 9px; letter-spacing: 0; } }   /* 5 labels still fit on a 320px phone */
 .nav.is-dim > * { opacity: .5; }   /* the menu is inert while a card detail is open (js/detail.js setBackground): dim its content, keep its fill · speed 2026-11-03: the class sits on .nav (an "html.x … > *" rule restyled the whole page at every open / close) */
@@ -220,7 +239,7 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 .page__title {
   position: relative; display: inline-block; overflow: hidden; margin-top: 2px; padding-right: 4px;
   font-size: var(--fs-2xl); font-weight: 700; line-height: 1.15; letter-spacing: .04em;
-  background: linear-gradient(180deg, #fff3d4, var(--gold) 70%, #b48b45);
+  background: linear-gradient(180deg, #fff6dc, var(--gold) 70%, var(--gold-lo));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 /* a gold line sweeps across the title once when the page comes in (transform + opacity only) */
@@ -255,13 +274,37 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
   color: var(--ink-dim);
   transition: color var(--t-med) var(--ease), border-color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
 }
-.chip.glass { background-color: rgba(18, 23, 41, .92); }
+.chip.glass { background-color: rgba(20, 27, 66, .9); }
 .chip__swatch { width: 10px; height: 10px; border-radius: 50%; background: var(--sw, var(--gold)); box-shadow: 0 0 0 1px rgba(0, 0, 0, .45); }
 .chip[aria-pressed="true"] {
-  color: var(--on-gold); border-color: #f6e2aa;
+  color: var(--on-gold); border-color: #ffe29a;
   background-color: transparent; background-image: var(--brass-gold);
   box-shadow: inset 0 1px 0 rgba(255, 255, 240, .5);
 }
+/* Rarity chips = "Capsule" (owner's pick 2026-11-04 · mockup/bright-themes.html): the picked one fills with its rarity's
+   colours (--g), takes a glow of that colour (--c) and a light sweeps across it once (transform only) */
+.chip[data-rarity] { overflow: hidden; }
+.chip[data-rarity="Normal"] { --g: linear-gradient(145deg, #eef1f7, #9aa2b4); --tc: #1d2230; --c: #c9cfdb; }
+.chip[data-rarity="Shiny"] { --g: linear-gradient(145deg, #fff1b8, #e3a92a); --tc: #3a2600; --c: #ecc768; }
+.chip[data-rarity="Rainbow"] { --g: linear-gradient(110deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0); --tc: #1a1030; --c: #b48cff; }
+.chip[data-rarity="Secret"] { --g: linear-gradient(145deg, #ff6b81, #6e0d22); --tc: #fff; --c: #ff4d6a; }
+.chip[data-rarity="Divine"] { --g: linear-gradient(145deg, #fffaf0, #d6ad5c); --tc: #3a2600; --c: #ffe9b0; }
+.chip[data-rarity="Cosmic"] { --g: linear-gradient(145deg, #b3a6ff, #3150c4); --tc: #fff; --c: #8f7dff; }
+.chip[data-rarity="Ascended"] { --g: linear-gradient(110deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2); --tc: #2a1c40; --c: #c5a8f5; }
+.chip[data-rarity="Godlike"] { --g: linear-gradient(145deg, #ffffff, #e9c877); --tc: #3a2600; --c: #fff3c8; }
+.chip[data-rarity="Godly"] { --g: linear-gradient(145deg, #ff7aa2, #ffcf6a); --tc: #3a0f1c; --c: #f06a92; }
+.chip[data-rarity][aria-pressed="true"] {
+  color: var(--tc); border-color: transparent; background-image: var(--g);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), 0 4px 14px -4px var(--c);
+}
+.chip[data-rarity][aria-pressed="true"] .chip__swatch { box-shadow: 0 0 0 2px rgba(255, 255, 255, .75); }
+.chip[data-rarity]::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .6) 50%, transparent 65%);
+  transform: translateX(-110%);
+}
+.chip[data-rarity][aria-pressed="true"]::after { animation: chip-sweep 700ms var(--ease); }
+@keyframes chip-sweep { to { transform: translateX(110%); } }
 
 /* ---------- Segmented switch (Global | My Lists, Cards | Support, and later pages) ----------
    Set --n (number of buttons) and --i (selected index) on the .seg element; the gold plate slides with transform only. */
@@ -271,7 +314,7 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
   width: 100%; max-width: 360px; margin-bottom: var(--s-4); padding: 3px;
   border-radius: var(--r-chip);
 }
-.seg.glass { background-color: rgba(14, 18, 34, .92); }
+.seg.glass { background-color: rgba(17, 23, 58, .9); }
 [hidden].seg { display: none; }
 .seg--sub { max-width: 260px; }
 .seg__ind {
@@ -279,7 +322,7 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
   width: calc((100% - 6px) / var(--n));
   border-radius: 4px;
   background: var(--brass-gold);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 240, .55), 0 0 14px rgba(216, 180, 106, .22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 240, .55), 0 0 14px rgba(var(--gold-rgb), .22);
   transform: translateX(calc(var(--i) * 100%));
   transition: transform var(--t-med) var(--ease);
   pointer-events: none;
@@ -311,13 +354,14 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
   position: relative; isolation: isolate;
   clip-path: var(--chamfer);
   border: 0;
-  background: linear-gradient(160deg, rgba(216, 180, 106, .55), rgba(216, 180, 106, .18) 40%, rgba(216, 180, 106, .45));
+  background: linear-gradient(160deg, rgba(var(--gold-rgb), .55), rgba(var(--gold-rgb), .18) 40%, rgba(var(--gold-rgb), .45));
 }
 .panel::before, .dpanel::before, .dstat::before, .deck::before, .tier-row::before, .goverall::before, .tm-dlg__sheet::before {
   content: ""; position: absolute; inset: 1px; z-index: -1; pointer-events: none;
-  clip-path: var(--chamfer); background: var(--panel-fill);
+  clip-path: inset(0 round calc(var(--r-panel) - 1px)); background: var(--panel-fill);
 }
 .panel::after, .dpanel::after, .dstat::after, .deck::after, .tier-row::after, .goverall::after, .tm-dlg__sheet::after {
+  display: none;   /* Castle Night: no Victorian corner ornaments (rule kept: set display back to show them) */
   content: ""; position: absolute; inset: 5px; z-index: -1; pointer-events: none;
   background: var(--gold); opacity: .55;
   -webkit-mask: var(--orn-tl) top left / var(--orn-s) no-repeat, var(--orn-tr) top right / var(--orn-s) no-repeat,
@@ -345,14 +389,14 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 @media (min-width: 1100px) {
   .topbar { display: none; }
   .nav {
-    top: 0; right: auto; width: var(--side-w); height: auto;
+    top: 0; left: 0; bottom: 0; right: auto; width: var(--side-w); height: auto;
     padding: var(--s-6) var(--s-4);
     display: flex; flex-direction: column; gap: var(--s-6);
-    border-width: 0 1px 0 0;
+    border-width: 0 1px 0 0; border-radius: 0; box-shadow: none;
   }
-  .nav.glass { background: rgba(12, 16, 31, .78); }
+  .nav.glass { background: rgba(13, 18, 48, .86); }
   .nav::before { left: auto; right: 3px; top: 0; bottom: 0; width: 1px; height: auto;
-    background: linear-gradient(180deg, transparent, rgba(216, 180, 106, .35), transparent); }
+    background: linear-gradient(180deg, transparent, rgba(var(--gold-rgb), .35), transparent); }
   .nav__brand {
     display: grid; justify-items: center; gap: var(--s-2); text-align: center;
     padding-bottom: var(--s-5); border-bottom: 1px solid var(--glass-line);
@@ -363,12 +407,11 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
   .nav__list { display: flex; flex-direction: column; height: auto; }
   .nav__list > li:not(.nav__indicator) { height: 54px; }
   .nav__indicator { right: 0; bottom: auto; width: auto; height: 54px; transform: translateY(calc(var(--i, 0) * 100%)); }
-  .nav__indicator::before { inset: 3px 0; }
-  .nav__indicator::after { left: -16px; top: 12px; width: 3px; height: 30px; margin: 0; }
+  .nav__indicator::before { inset: 3px 0; border-radius: 14px; }
   .nav__btn { flex-direction: row; justify-content: flex-start; gap: var(--s-3); padding: 0 var(--s-4); }
   .nav__btn span { font-size: 14px; letter-spacing: .1em; }
   .nav__btn:hover { color: var(--ink); }
-  .nav__btn[aria-current="page"]:hover { color: var(--gold-hi); }
+  .nav__btn[aria-current="page"]:hover { color: var(--on-gold); }
   .nav__foot { display: grid; gap: var(--s-3); margin-top: auto; padding-top: var(--s-5); border-top: 1px solid var(--glass-line); }
   .nav__foot .brand__date { text-align: center; }
   .main {
@@ -378,7 +421,8 @@ html.lite .bd-motes { background-size: 520px 420px; }   /* lite mode: fewer mote
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bd-motes { display: none; }
+  .bd-motes, .bd-shoot { display: none; }
+  .bd-stars::after, .bd-win2, .bd-moon::before { animation: none !important; }
   .bd-fog { animation: none !important; }
   .boot__hand { animation: none !important; }
   .page.fx-page-in .page__title::after { animation: none !important; }

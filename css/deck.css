@@ -304,7 +304,7 @@
 }
 .dk-part__pts { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .dk-part__pts small { font-weight: 400; color: var(--ink-faint); }
-.dk-part__track { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: rgba(216, 180, 106, .12); overflow: hidden; }
+.dk-part__track { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: rgba(var(--gold-rgb), .12); overflow: hidden; }
 .dk-part__track i {
   display: block; height: 100%; border-radius: inherit;
   background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
@@ -317,7 +317,7 @@
 .dk-part.is-behind .dk-part__pts::after { content: " ▼"; color: var(--bad); font-size: 10px; }
 .dk-notes {
   display: grid; gap: 4px; margin-top: var(--s-3); padding-top: var(--s-3);
-  border-top: 1px solid rgba(216, 180, 106, .18);
+  border-top: 1px solid rgba(var(--gold-rgb), .18);
   list-style: none; padding-left: 0; font-size: var(--fs-xs); color: var(--ink-dim); line-height: 1.4;
 }
 .dk-notes li { padding-left: 14px; position: relative; }
@@ -331,7 +331,7 @@
 .dk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .dk-chip {
   display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 10px; max-width: 100%;
-  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: rgba(216, 180, 106, .06);
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: rgba(var(--gold-rgb), .06);
   font-size: var(--fs-xs); color: var(--ink); overflow-wrap: anywhere; text-align: left;
 }
 button.dk-chip { min-height: 40px; cursor: pointer; transition: border-color var(--t-med) var(--ease); }
@@ -383,7 +383,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-cmp__pick .field select { min-height: 44px; font-size: var(--fs-sm); }
 .dk-cmp__verdict { text-align: center; font-family: var(--font-display); font-size: var(--fs-sm); color: var(--gold-hi); }
 .dk-cmp__cols { display: grid; gap: var(--s-3); min-width: 0; }
-.dk-cmp__deck { display: grid; gap: var(--s-3); align-content: start; min-width: 0; padding: var(--s-3); border-radius: var(--r-panel); border: 1px solid var(--glass-line); background: rgba(216, 180, 106, .03); }
+.dk-cmp__deck { display: grid; gap: var(--s-3); align-content: start; min-width: 0; padding: var(--s-3); border-radius: var(--r-panel); border: 1px solid var(--glass-line); background: rgba(var(--gold-rgb), .03); }
 .dk-cmp__deck .dk-sw + .dk-sw { margin-top: 0; }
 .dk-cmp__head { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s-2); align-items: center; }
 .dk-cmp__tag { grid-row: span 2; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--brass-gold); color: var(--on-gold); font-family: var(--font-display); font-weight: 700; }

@@ -450,7 +450,7 @@
   opacity: 0; transform: translate(-50%, 16px); pointer-events: none;
   transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
 }
-.fx-toast.glass { background-color: rgba(20, 25, 44, .97); border-color: var(--gold-lo); box-shadow: 0 12px 30px rgba(0, 0, 0, .55); }
+.fx-toast.glass { background-color: rgba(22, 29, 70, .97); border-color: var(--gold-lo); box-shadow: 0 12px 30px rgba(0, 0, 0, .55); }
 .fx-toast.is-on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .fx-toast__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 0; }
 .fx-toast:not(:has(.fx-toast__btn)) { padding-right: var(--s-4); }
