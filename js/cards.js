@@ -2,10 +2,11 @@
    Card Battle Infinity — Cards page (step 2 · redesigned 2026-11-03)
    · top to bottom (2026-11-04): ONE search box for names and pull odds (100 · 2.5B · 100Qa, no "1 IN" · the old
      "1 IN …" box is gone) with the ↑↓ pull-odds order button in it, rarity bar (sticks under the top bar, wraps),
-     series / role selects (only when the data has 2+), layout switch (grid 2 · grid 3 · list, remembered in cbi:cardView),
+     series / role selects (only when the data has 2+), card count (one grid: 3 a row on phones · 5 on computers · 50 a page,
+     the grid 2 / grid 3 / list switch was removed 2026-11-04),
      chips of the filters in use (× each) + Reset all
    · cards always sort by pull odds (the Rarest / Overall / ATK / HP switch was removed in round 2)
-   · every card sits in a cell (C.cardCell · no tier badge under it since round 2 · the list view shows name + stats)
+   · every card sits in a cell (C.cardCell · no tier badge under it since round 2)
    · setRarity(): the one place that changes the rarity for the whole site (fires "cbi:rarity")
    · the card detail lives in js/detail.js (step 12)
    · Cards | Support switch at the top (owner 2026-10-28 · #cards / #support, state.kind): the Support side is js/support.js
@@ -63,9 +64,6 @@
 
   const ROLE_ORDER = ["DPS", "Tank", "Support", "Hybrid"];
   const filters = { q: "", role: "", series: "", odds: null, dir: "desc" };   // rarest first (owner 2026-10-28) · always by pull odds (round 2)
-  const VIEW_KEY = "cbi:cardView";   // "2" | "3" | "list" (2026-11-03)
-  const VIEWS = ["2", "3", "list"];
-  let view = (() => { const v = C.store.get(VIEW_KEY); return VIEWS.includes(v) ? v : "3"; })();
   const cardById = new Map();     // id -> card data
   const cardEls = new Map();      // id -> card element (made the first time its page shows, kept after)
   const cellEls = new Map();      // id -> the grid cell (card + list details)
@@ -84,16 +82,13 @@
 
   const rectVisible = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
 
-  /* ---------- A card in a grid cell: the card + the list view's details ----------
+  /* ---------- A card in a grid cell ----------
      Used by the Cards and Support grids · no tier badge under the card (owner, round 2 2026-11-03) */
   function cardCell(el, item) {
     const cell = document.createElement("div");
     cell.className = "cg-cell";
     cell.dataset.cell = item.id;
-    const meta = document.createElement("div");
-    meta.className = "cg-meta";
-    meta.innerHTML = `<div class="cg-info"></div>`;
-    cell.append(el, meta);
+    cell.append(el);
     return cell;
   }
 
@@ -110,7 +105,7 @@
       dir: $("#card-dir"), series: $("#card-series"), seriesField: $("#series-field"),
       role: $("#card-role"), roleField: $("#role-field"), selects: $("#card-selects"),
       searchBox: $("#cards-search"),
-      count: $("#card-count"), viewSw: $("#card-view"), active: $("#card-active"),
+      count: $("#card-count"), active: $("#card-active"),
     });
 
     state.cards.forEach((c) => {
@@ -136,7 +131,6 @@
     stickyBars();
     buildFilters();
     bindTools();
-    setView(view, { animate: false });
     // step 9.5: the grid's cards are made the first time the Cards tab shows (not while you're on another tab)
     // the Support side opened first: the card grid waits until the Cards side shows (view())
     C.lazy("cards", () => { if (state.kind !== "support") build(); });
@@ -231,15 +225,6 @@
       apply({ animate: true });
     });
 
-    ui.viewSw.addEventListener("click", (e) => { const b = e.target.closest("[data-view]"); if (b) setView(b.dataset.view); });
-    ui.viewSw.addEventListener("keydown", (e) => {
-      const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-      if (!d) return;
-      e.preventDefault();
-      setView(VIEWS[(VIEWS.indexOf(view) + d + VIEWS.length) % VIEWS.length]);
-      ui.viewSw.querySelector(`[data-view="${view}"]`).focus();
-    });
-
     // chips of the filters in use: × clears that one · Reset all clears them all
     ui.active.addEventListener("click", (e) => {
       const b = e.target.closest("[data-clear]");
@@ -253,14 +238,6 @@
     });
     $("#cards-none-reset").addEventListener("click", reset);
     C.bindPager(ui.pager, goPage);
-
-    // list view: tapping a row's details opens the card like tapping the card (it flies from the card)
-    ui.grid.addEventListener("click", (e) => {
-      const m = e.target.closest(".cg-meta");
-      if (!m) return;
-      const cell = m.closest(".cg-cell"), card = cell && cell.querySelector(".card[data-id]");
-      if (card) C.openCard(card.dataset.id, card);
-    });
   }
   function reset() {
     filters.q = filters.role = filters.series = "";
@@ -342,42 +319,8 @@
     ui.active.innerHTML = list.length ? list.join("") + `<button type="button" class="actchips__reset fx-press" data-clear="all">Reset all</button>` : "";
   }
 
-  /* ---------- Layout: grid 2 · grid 3 · list (remembered on this device) ---------- */
-  function setView(v, { animate = true } = {}) {
-    if (!VIEWS.includes(v)) return;
-    const changed = v !== view;
-    view = v;
-    C.store.set(VIEW_KEY, v);
-    ui.grid.dataset.view = v;
-    ui.viewSw.querySelectorAll("[data-view]").forEach((b) => { const on = b.dataset.view === v; b.setAttribute("aria-checked", String(on)); b.tabIndex = on ? 0 : -1; });
-    ui.viewSw.style.setProperty("--i", VIEWS.indexOf(v));
-    if (!built) return;
-    const first = onPage[0];
-    onPage = [];   // repaint (the page size may differ)
-    if (first) { const k = shown.indexOf(first); if (k >= 0) page = Math.floor(k / pageSize()); }
-    paint({ animate: animate && changed });
-  }
-  // cards a page: about C.PAGE_SIZE, always whole rows for the columns this layout shows
-  function pageSize() {
-    const cols = Math.max(1, parseInt(getComputedStyle(ui.grid).getPropertyValue("--grid-cols"), 10) || 1);
-    return Math.ceil(C.PAGE_SIZE / cols) * cols;
-  }
-
-  // the list view's details next to the card (ATK / HP / odds at the picked rarity)
-  function fillInfo(id) {
-    const cell = cellEls.get(id), c = cardById.get(id), r = state.rarity;
-    if (!cell || !c) return;
-    const info = cell.querySelector(".cg-info");
-    if (info._r === r) return;
-    info._r = r;
-    const sub = [c.series, c.role].filter(Boolean).map(esc).join(" · ");
-    info.innerHTML = `<span class="cg-info__name">${esc(c.name)}</span>${sub ? `<span class="cg-info__sub">${sub}</span>` : ""}
-      <span class="cg-info__stats">
-        <span class="cg-stat cg-stat--odds"><b>Odds</b>${esc(C.fmtOdds(C.oddsAt(c, r)))}</span>
-        <span class="cg-stat cg-stat--atk"><b>ATK</b>${esc(C.fmtStat(C.statAt(c, "atk", r)))}</span>
-        <span class="cg-stat cg-stat--hp"><b>HP</b>${esc(C.fmtHp(C.statAt(c, "hp", r)))}</span>
-      </span>`;
-  }
+  // cards a page: C.PAGE_SIZE (50 on every screen · app.js)
+  const pageSize = () => C.PAGE_SIZE;
 
   // the grid shows one page of `shown` · a card is made the first time it is needed
   const elOf = (id) => {
@@ -402,7 +345,6 @@
       onPage = ids;
       if (animate) FX.stagger(ui.grid, 28, { cls: "fx-grid-in", max: 10, limit: 16, cleanup: true });
     }
-    if (view === "list") onPage.forEach(fillInfo);
     C.pager(ui.pager, page, shown.length ? pages : 0);
     const total = state.cards.length, n = shown.length;
     ui.count.textContent = (n === total ? `${total} ${total === 1 ? "card" : "cards"}` : `${n} of ${total} cards`);
@@ -436,7 +378,6 @@
     const jobs = [...cardEls].map(([id, el]) => () => C.setCardRarity(el, cardById.get(id), name, { animate: onScreen.get(id) }));
     // exact game values can change the order, and typed odds depend on the rarity · no-op when nothing changes
     jobs.push(() => apply({ keepPage: !filters.odds }));
-    if (view === "list") jobs.push(() => onPage.forEach(fillInfo));
     C.later("cards", jobs);
     document.dispatchEvent(new CustomEvent("cbi:rarity", { detail: name }));   // js/tier.js, js/detail.js … listen
   }

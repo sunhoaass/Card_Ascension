@@ -284,18 +284,9 @@
 .sbox__dir svg { width: 20px; height: 20px; transition: transform var(--t-med) var(--ease); }
 .sbox__dir[data-dir="asc"] svg { transform: rotate(180deg); }
 
-/* count + layout switch (grid 2 · grid 3 · list) */
+/* card count (the layout switch was removed 2026-11-04: one grid, 3 a row on phones · 5 on computers) */
 .ctools__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-width: 0; }
 .ctools__count { margin: 0; min-width: 0; font-size: var(--fs-sm); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
-.viewsw { display: inline-flex; flex: none; padding: 3px; gap: 2px; border-radius: var(--r-chip); background-color: var(--glass-under); }
-.viewsw__btn {
-  width: 40px; height: 40px; display: grid; place-items: center; border-radius: 4px; color: var(--ink-dim);
-  transition: color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
-}
-.viewsw__btn svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 0; }
-.viewsw__btn svg path { stroke-width: 1.8; }
-.viewsw__btn[aria-checked="true"] { color: var(--on-gold); background-image: var(--brass-gold); box-shadow: inset 0 1px 0 rgba(255, 255, 240, .5); }
-
 /* chips of the filters in use (× each) + Reset all */
 .actchips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-width: 0; }
 .actchips[hidden] { display: none; }
@@ -310,32 +301,6 @@
 .actchip__x svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
 .actchips__reset { min-height: 40px; padding: 0 10px; color: var(--rift); font-size: var(--fs-sm); font-weight: 600; }
 
-/* a grid cell: the card (no tier badge since round 2) · the list view adds name + stats beside it (C.cardCell) */
+/* a grid cell: the card (no tier badge since round 2 · C.cardCell) */
 .cg-cell { display: flex; flex-direction: column; min-width: 0; }
-.cg-meta { display: none; min-width: 0; cursor: pointer; }
-.cg-info { display: none; }
 
-/* layouts (js/cards.js setView · cbi:cardView) · grid 3 = the site's columns (--grid-cols on <html>) */
-#card-grid[data-view="2"] { --grid-cols: 2; }
-@media (min-width: 600px) { #card-grid[data-view="2"] { --grid-cols: 3; } }
-@media (min-width: 1000px) { #card-grid[data-view="2"] { --grid-cols: 4; } }
-@media (min-width: 1600px) { #card-grid[data-view="2"] { --grid-cols: 5; } }
-#card-grid[data-view="list"] { --grid-cols: 1; gap: var(--s-2); }
-@media (min-width: 900px) { #card-grid[data-view="list"] { --grid-cols: 2; gap: var(--s-3); } }
-#card-grid[data-view="list"] .cg-cell {
-  flex-direction: row; align-items: center; gap: var(--s-3);
-  padding: var(--s-2); border-radius: var(--r-panel);
-  border: 1px solid var(--glass-line); background: var(--panel-fill);
-}
-#card-grid[data-view="list"] .cg-cell > .card { width: 92px; flex: none; }
-#card-grid[data-view="list"] .cg-meta { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; flex: 1; align-self: stretch; }
-#card-grid[data-view="list"] .cg-info { display: contents; }
-.cg-info__name { order: 1; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.2; letter-spacing: .03em; color: var(--gold-hi); overflow-wrap: anywhere; }
-.cg-info__sub { order: 1; margin-top: -4px; font-size: var(--fs-xs); font-style: italic; color: var(--ink-faint); }
-.cg-info__stats { order: 3; display: grid; gap: 2px; width: 100%; }
-.cg-stat { display: flex; justify-content: space-between; gap: var(--s-2); font-family: var(--gc-font-num); font-weight: 600; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; color: var(--ink); }
-.cg-stat b { font-family: var(--font-body); font-weight: 600; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); align-self: center; }
-.cg-stat--odds { color: var(--gold-hi); }
-.cg-stat--atk { color: var(--atk); }
-.cg-stat--hp { color: var(--hp); }
-@media (min-width: 900px) { #card-grid[data-view="list"] .cg-cell > .card { width: 110px; } }
