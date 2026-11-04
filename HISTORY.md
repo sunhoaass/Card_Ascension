@@ -2153,3 +2153,8 @@
 - **ทำ:** `stripCol` = `C.renderCard` mini + `C.setCardNums` (บัฟ Deck) + `paintTG` · ใต้การ์ด `pillsHTML` (แยกจาก `paintInfo` เป็น `pillSpecs` ใช้ร่วม) ป้ายสูง 16px (จอ ≥ 720: 19px) · `.tml.dkl` = grid (แถบการ์ดเต็มกว้าง · ปุ่มไอคอนมุมขวาบน) · เอา `.dkl__pip` + ระดับรวมออก
 - **ทดสอบ (Playwright Pixel 7 + 1280):** deck 2 ใบ + deck 4 ใบ (ระดับ 4 แบบ, Grade 10/6/3/ไม่มี, Trait รุ้ง/ส้ม/ไม่มี) · ชื่อ Trait ไม่โดนตัดบนมือถือ · แตะการ์ดในรายการ = `#deck/my/<id>` (ไม่เปิดหน้าการ์ด) · editor + รูป Save เหมือนเดิม · console error 0
 - **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 รายการ Deck: แถว Support ขนาดเล็ก (`?v=94`)
+- **เจ้าของ:** "เพิ่มแถว Support ขนาดเล็กในรายการด้วยครับ" → `stripCol(d, kind, i, buffs)` ใช้ได้ทั้งการ์ดและ Support · แถว `.dkl__strip--sup` ใต้แถวการ์ด (คอลัมน์ตรงกัน) · การ์ด Support กว้าง 72% · ป้ายระดับ + Mutation % · ไม่มี Support เลย = ไม่มีแถว
+- **ทดสอบ (Playwright Pixel 7 + 1280):** deck ที่มี Support 1 ใบ (ช่องว่างเส้นประ) + deck ที่มีครบ 4 (Godly 13% / Cosmic 7% / Shiny 1% / Normal ไม่มี) · แตะ = เปิด deck · console error 0
+- **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`

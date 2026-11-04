@@ -87,6 +87,10 @@
 .dkl__c.is-missing { display: grid; place-items: center; padding: 4px; border: 1px dashed var(--ink-faint); }
 .dkl__miss { font-size: 9px; line-height: 1.2; text-align: center; color: var(--ink-faint); overflow-wrap: anywhere; }
 .dkl .tg { --s: .92; }
+/* the support row: smaller cards (72% of the column) under their cards · the pills keep the column's width */
+.dkl__sh { margin-top: 6px; font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.dkl__strip--sup { margin-top: 4px; }
+.dkl__strip--sup .dkl__c { width: 72%; align-self: center; }
 .dkl__info { gap: 3px; margin-top: 5px; }
 .dkl__info .dk-pill { height: 16px; padding: 0 4px; border-width: 1px; font-size: 8.5px; gap: 2px; }
 .dkl__info .dk-pill--rar > span { font-size: 9px; letter-spacing: .06em; }
