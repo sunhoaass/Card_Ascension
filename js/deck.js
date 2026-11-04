@@ -1878,24 +1878,27 @@
      Views: all decks (index) / one deck (editor)
      ========================================================== */
   // the deck list (owner 2026-11-04: show what was set inside): each card as the small game card (name · skill · its text ·
-  // the deck's ATK / HP · Grade / Trait badges) + its rarity · grade · trait pills, like the editor, small · empty = a dashed slot
-  function stripCol(d, i, buffs) {
+  // the deck's ATK / HP · Grade / Trait badges) + its rarity · grade · trait pills, like the editor, small · empty = a dashed slot ·
+  // supports in a smaller row under their cards (rarity · mutation pills) · no support at all = no row
+  function stripCol(d, kind, i, buffs) {
     const col = document.createElement("span");
     col.className = "dkl__col";
-    const id = d.cards[i], x = id ? cardById.get(id) : null;
+    const id = d[kind][i], x = id ? lookup(kind, id) : null;
     const cell = document.createElement("span");
     cell.className = "dkl__c";
     if (x) {
-      const r = rarityAt(d, "cards", i), card = C.renderCard(x, r, { mini: true, tilt: false });
+      const r = rarityAt(d, kind, i), card = C.renderCard(x, r, { mini: true, tilt: false });
       card.tabIndex = -1; card.removeAttribute("role"); card.setAttribute("aria-hidden", "true");
-      const b = buffs && buffs[i];
-      if (b && b.id === id) C.setCardNums(card, { atk: b.atk, hp: b.hp }, { animate: false });
-      paintTG(card, d.trait && d.trait[i], overallOf(d.grades && d.grades[i]), false);
+      if (kind === "cards") {
+        const b = buffs && buffs[i];
+        if (b && b.id === id) C.setCardNums(card, { atk: b.atk, hp: b.hp }, { animate: false });
+        paintTG(card, d.trait && d.trait[i], overallOf(d.grades && d.grades[i]), false);
+      }
       cell.appendChild(card);
       col.appendChild(cell);
       const info = document.createElement("span");
       info.className = "dk-info dkl__info";
-      info.innerHTML = pillsHTML("cards", d, i, id);
+      info.innerHTML = pillsHTML(kind, d, i, id);
       col.appendChild(info);
     } else {
       cell.classList.add(id ? "is-missing" : "is-empty");
@@ -1915,13 +1918,15 @@
           <span class="tml__name">${esc(d.name)}</span>
           <span class="tml__meta">${nc}/${SLOTS} cards · ${ns}/${SLOTS} support</span>
           <span class="dkl__strip" aria-hidden="true"></span>
+          ${ns ? `<span class="dkl__sh" aria-hidden="true">Support</span><span class="dkl__strip dkl__strip--sup" aria-hidden="true"></span>` : ""}
           <span class="tml__date">Edited ${esc(fmtDate(d.updated))}</span>
         </span>
       </button>
       <button type="button" class="iconbtn fx-press dkl__dup" data-act="dup" aria-label="Duplicate ${esc(d.name)}">${ICON.copy}</button>
       <button type="button" class="iconbtn fx-press dkl__del" data-act="del" aria-label="Delete ${esc(d.name)}">${ICON.trash}</button>`;
-    const strip = $(".dkl__strip", li), buffs = C.deckBuff ? C.deckBuff.compute(d) : [];
-    d.cards.forEach((id, i) => strip.appendChild(stripCol(d, i, buffs)));
+    const strip = $(".dkl__strip", li), sup = $(".dkl__strip--sup", li), buffs = C.deckBuff ? C.deckBuff.compute(d) : [];
+    d.cards.forEach((id, i) => strip.appendChild(stripCol(d, "cards", i, buffs)));
+    if (sup) d.support.forEach((id, i) => sup.appendChild(stripCol(d, "support", i)));
     return li;
   }
   function renderIndex(animate) {
