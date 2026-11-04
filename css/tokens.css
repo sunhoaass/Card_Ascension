@@ -180,6 +180,19 @@
   /* ---- Rainbow line (was the grade-10 bar · Grade removed 2026-11-03) · the Deck score's "Perfect" label ---- */
   --g-rainbow-line: linear-gradient(90deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0);
 
+  /* ---- Trait + Grade on a deck card (owner 2026-11-04 · css/deck.css .tg) · Grade: 1–3 bronze · 4–6 silver · 7–9 gold · 10 rainbow ---- */
+  --tg-rainbow: linear-gradient(90deg, #ff6b8b, #ffb35c, #ffe873, #7ff0a0, #5fd0ff, #9a8cff, #f27ce0);
+  --tg-rainbow-ring: conic-gradient(from 200deg, #ff6b8b, #ffb35c, #ffe873, #7ff0a0, #5fd0ff, #9a8cff, #f27ce0, #ff6b8b);
+  --tg-ink: #1b0f24;                    /* outline of the badge text / the ring's dark middle */
+  --tg-core: #3a1f4c;                   /* inside the grade ring */
+  --tg-lab-ink: #ffffff;
+  --tg-bronze: linear-gradient(180deg, #ffd9b0, #d98b52 55%, #8e4f25);
+  --tg-bronze-ring: conic-gradient(from 200deg, #ffd9b0, #c87a44, #8e4f25, #e8a676, #ffd9b0);
+  --tg-silver: linear-gradient(180deg, #ffffff, #c9d0dc 55%, #7f8899);
+  --tg-silver-ring: conic-gradient(from 200deg, #ffffff, #b8c0cd, #7f8899, #e3e8ef, #ffffff);
+  --tg-gold: linear-gradient(180deg, #fff6c2, #f6c64a 55%, #a8701a);
+  --tg-gold-ring: conic-gradient(from 200deg, #fff6c2, #f2bd3e, #a8701a, #ffe28a, #fff6c2);
+
   /* ---- Team score bands (step 11 · Deck page) · 1–49 red · 50–79 yellow · 80–99 green · 100 rainbow ---- */
   --score-bad: #e0687a;
   --score-mid: #e8c35a;

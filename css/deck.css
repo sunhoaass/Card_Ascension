@@ -499,3 +499,75 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-note--ro { cursor: default; }
 [hidden].dk-note { display: none; }
 .dk-note__input { min-height: 120px; padding: 10px 12px; resize: vertical; line-height: 1.45; }
+
+/* ==========================================================
+   Trait + Grade on a deck card (owner 2026-11-04 · js/deck.js tgHTML / paintTG)
+   Like the game card: trait icon + name pill on the left, grade ring + "GRADE" pill on the right, between the art and the
+   skill name · sizes in cqw of the card (game card 962 px wide measured) · --tg-s scales them (bigger on the small deck cards)
+   ========================================================== */
+.tg { position: absolute; inset: 0; z-index: 5; pointer-events: none; --tg-s: 1; }
+.dk-row .tg { --tg-s: 1.3; }
+.tg__tr, .tg__gr { position: absolute; top: calc(50cqw - 6cqw * (var(--tg-s) - 1)); display: flex; flex-direction: column; align-items: center; }
+.tg__tr { left: 4.5cqw; width: calc(26cqw * var(--tg-s)); }
+.tg__gr { right: 4.5cqw; width: calc(16cqw * var(--tg-s)); }
+.tg__ic { display: block; width: calc(12cqw * var(--tg-s)); height: auto; filter: drop-shadow(0 .4cqw .6cqw rgba(0, 0, 0, .5)); position: relative; z-index: 1; }
+.tg__lab {
+  display: block; max-width: 100%; margin-top: calc(-1.4cqw * var(--tg-s)); padding: calc(.5cqw * var(--tg-s)) calc(1.8cqw * var(--tg-s));
+  border-radius: 99px; border: calc(.45cqw * var(--tg-s)) solid var(--tg-ink); background: var(--tc, #d4d7e2);
+  font-family: var(--gc-font-pop); font-style: italic; font-size: calc(3.5cqw * var(--tg-s)); line-height: 1; letter-spacing: .02em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--tg-lab-ink);
+  paint-order: stroke fill; -webkit-text-stroke: calc(.55cqw * var(--tg-s)) var(--tg-ink);
+  box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .45);
+}
+.tg__tr[data-c="rainbow"] .tg__lab { background: var(--tg-rainbow); }
+.tg__ring {
+  position: relative; display: grid; place-items: center; width: calc(14cqw * var(--tg-s)); aspect-ratio: 1; border-radius: 50%;
+  background: var(--tg-ring); box-shadow: 0 0 0 calc(.45cqw * var(--tg-s)) var(--tg-ink), 0 .5cqw 1cqw rgba(0, 0, 0, .5);
+}
+/* the ring's dark middle · the number on top is the band's gradient (clipped to the text) with a dark outline */
+.tg__ring::before { content: ""; position: absolute; inset: calc(1.4cqw * var(--tg-s)); border-radius: 50%; background: var(--tg-core); box-shadow: inset 0 0 0 calc(.35cqw * var(--tg-s)) var(--tg-ink); }
+.tg__ring b {
+  position: relative; font-family: var(--gc-font-pop); font-style: italic; font-weight: 400; font-size: calc(7.4cqw * var(--tg-s)); line-height: 1; padding-right: .06em;
+  color: transparent; background-image: var(--tg-fill); -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 0 .3cqw var(--tg-ink)) drop-shadow(0 0 .3cqw var(--tg-ink));
+}
+.tg__gr .tg__lab { margin-top: calc(-1.2cqw * var(--tg-s)); padding-inline: calc(1.2cqw * var(--tg-s)); background: var(--tg-fill); font-size: calc(3.4cqw * var(--tg-s)); }
+.tg__gr[data-band="bronze"]  { --tg-ring: var(--tg-bronze-ring);  --tg-fill: var(--tg-bronze); }
+.tg__gr[data-band="silver"]  { --tg-ring: var(--tg-silver-ring);  --tg-fill: var(--tg-silver); }
+.tg__gr[data-band="gold"]    { --tg-ring: var(--tg-gold-ring);    --tg-fill: var(--tg-gold); }
+.tg__gr[data-band="rainbow"] { --tg-ring: var(--tg-rainbow-ring); --tg-fill: var(--tg-rainbow); }
+
+/* the slot's label: "Slot 1" → the card's name once a card is in (owner 2026-11-04) */
+.dk-slot .deck__pos.is-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; letter-spacing: .02em; text-transform: none; font-family: var(--font-body, inherit); font-weight: 700; }
+
+/* slot sheet: Grade 1–10 + Trait grid · tap the one that's on (or Remove) = off */
+.dk-ss__h { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); min-height: 28px; }
+.dk-ss__rm { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 10px; border-radius: 99px; border: 1px solid var(--glass-line); background: transparent; color: var(--ink-dim); font-size: 12px; font-weight: 600; cursor: pointer; }
+.dk-ss__rm[hidden] { display: none; }
+.dk-ss__rm svg { width: 14px; height: 14px; }
+.dk-gp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+.dk-gp__b {
+  min-width: 0; border-radius: 50%; aspect-ratio: 1; justify-self: center; width: 100%; max-width: 40px; padding: 0;
+  border: 2px solid transparent; background: var(--tg-ring) border-box; color: var(--tg-ink);
+  font-family: var(--gc-font-pop); font-style: italic; font-size: 17px; line-height: 1; cursor: pointer; position: relative; opacity: .55;
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.dk-gp__b[data-band="bronze"]  { --tg-ring: var(--tg-bronze); }
+.dk-gp__b[data-band="silver"]  { --tg-ring: var(--tg-silver); }
+.dk-gp__b[data-band="gold"]    { --tg-ring: var(--tg-gold); }
+.dk-gp__b[data-band="rainbow"] { --tg-ring: var(--tg-rainbow); }
+.dk-gp__b[aria-pressed="true"] { opacity: 1; transform: scale(1.12); box-shadow: 0 0 0 2px var(--tg-ink), 0 0 0 4px var(--gold); }
+@media (hover: hover) { .dk-gp__b:hover { opacity: .9; } }
+.dk-tp { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
+.dk-tp__b {
+  display: flex; align-items: center; gap: 5px; min-width: 0; height: 44px; padding: 0 6px 0 4px; border-radius: 10px;
+  border: 1px solid var(--glass-line); background: rgba(255, 255, 255, .03); color: var(--tc, var(--ink)); cursor: pointer; text-align: left;
+  transition: border-color var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.dk-tp__b[data-c="rainbow"] .dk-tp__n { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.dk-tp__ic { width: 30px; height: 30px; flex: none; }
+.dk-tp__n { min-width: 0; font-size: 11.5px; font-weight: 700; line-height: 1.15; overflow-wrap: normal; word-break: keep-all; letter-spacing: -.01em; }
+.dk-tp__b[aria-pressed="true"] { border-color: var(--gold); background: rgba(232, 196, 120, .14); box-shadow: inset 0 0 0 1px var(--gold); }
+.dk-tp__fx { margin: 0; font-size: 12px; line-height: 1.45; color: var(--ink-dim); }
+.dk-tp__fx b { color: var(--ink); }
+.dk-tp__fx span { color: var(--ink-faint); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
