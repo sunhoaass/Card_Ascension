@@ -59,6 +59,37 @@ Vertical 9:16 mobile wallpaper, fantasy cosmic sky above a sea of clouds for a c
 Ultra-wide 21:9 desktop website background, fantasy cosmic sky above a sea of clouds for a card battle game. Sapphire blue, deep teal and indigo palette with bright cyan and lavender-white light, warm gold accents. Upper center: a huge circular portal gate in the sky with an ornate glowing gold rim and a swirling deep sapphire nebula inside (not black). Pillars of light rise from the cloud sea into the portal. Faint constellation lines connect stars into simple rectangular card shapes and a subtle infinity loop. Lower part: a wide calm glowing sea of clouds reflecting the light, distant temple spires through mist across the horizon. A few small translucent blank cards float upward. Keep all important elements inside the central 16:9 area; the far left and right edges are smooth open sky; the left 15 percent is calm and low detail for a sidebar menu. Center slightly darker and calm where text panels will sit. Painterly digital matte painting, soft volumetric light, high detail. Darkest tone is deep teal-navy, never pure black. No text, no logo, no letters, no characters, no people, no UI, no frame, no watermark, no symbols on the cards.
 ```
 
+## D · Castle Night (เจ้าของขอ 2026-11-04 · ⭐ แบบหลักตอนนี้)
+เมืองยามค่ำ **ปราสาทเด่นที่สุด** · ฟ้ากลางคืน + ดาว · มืดไม่ดำ (น้ำเงินกรมท่า คราม ม่วง) · ไฟหน้าต่างสีทองอุ่น · ปราสาทออกแบบเอง ไม่เหมือนปราสาทในเกมไหน
+
+**D-mobile**
+```
+Vertical 9:16 mobile wallpaper, fantasy night city with a grand castle as the clear main focus, for a card battle game website background. The castle stands in the center of the lower half: tall slender spires with blue slate roofs and gold trims, the tallest spire reaching about 25 percent from the top of the image, warm golden light glowing from many arched and stained-glass windows, a soft beam of pale light rising from the highest tower into the sky. Around and below it: a layered medieval-fantasy city on a hillside, rooftops, small towers, a stone bridge over a calm river that reflects the lights, tiny warm street lanterns. Behind the castle: a large full moon with a soft halo, slightly off-center. Night sky full of stars with a faint violet-blue milky way band, a few thin clouds lit by moonlight, one or two small shooting stars. A few small translucent blank rectangular cards float upward from the city like glowing lanterns. Light mist between the city layers. Palette: deep navy, indigo and royal blue with violet shadows, lavender-white moonlight, warm gold window light. Painterly digital matte painting, soft volumetric light, crisp castle silhouette, high detail. Top 12 percent and bottom 10 percent smooth and low detail; the middle area slightly calmer and darker so text panels stay readable. Darkest tone is deep navy, never pure black. No text, no logo, no letters, no characters, no people, no UI, no frame, no watermark, no symbols on the cards.
+```
+
+**D-desktop**
+```
+Ultra-wide 21:9 desktop website background, fantasy night city with a grand castle as the clear main focus, for a card battle game. The castle stands at the horizontal center: tall slender spires with blue slate roofs and gold trims, the tallest spire reaching about 20 percent from the top, warm golden light glowing from many arched and stained-glass windows, a soft beam of pale light rising from the highest tower into the sky. A layered medieval-fantasy city spreads to both sides across rolling hills: rooftops, small towers, a stone bridge over a calm river reflecting the lights, tiny warm street lanterns, the city getting smaller and hazier toward the edges. Behind the castle: a large full moon with a soft halo, slightly off-center. Wide night sky full of stars with a faint violet-blue milky way band arching across, thin moonlit clouds, one or two small shooting stars. A few small translucent blank rectangular cards float upward from the city like glowing lanterns. Light mist between the city layers. Palette: deep navy, indigo and royal blue with violet shadows, lavender-white moonlight, warm gold window light. Keep the castle, the moon and all important elements inside the central 16:9 area; the far left and right edges are open sky and distant hazy hills; the left 15 percent is calm and low detail for a sidebar menu. Painterly digital matte painting, soft volumetric light, crisp castle silhouette, high detail. Darkest tone is deep navy, never pure black. No text, no logo, no letters, no characters, no people, no UI, no frame, no watermark, no symbols on the cards.
+```
+
+### D · ของเสริม (เลือกใส่ได้ · วางประโยคอังกฤษต่อท้าย prompt หรือแทนประโยคเดิม)
+| ไอเดีย | ทำไมเข้ากับเว็บ | ประโยคที่ใส่ |
+|---|---|---|
+| แสงจากยอดปราสาทเป็นรูป ∞ | ชื่อเว็บ Infinity | `The light beam from the highest tower curls into a faint glowing infinity-symbol loop in the sky.` |
+| การ์ดลอยขึ้นจากเมืองเยอะขึ้น | Ascension · เทศกาลการ์ด | `Dozens of small glowing blank cards rise from the city streets into the sky like a lantern festival.` |
+| หอนาฬิกาหน้าปัดเรืองแสง | เคยเป็นของธีมทองเดิม ผู้ใช้จำได้ | `Beside the castle, a tall clock tower with a softly glowing clock face.` |
+| พระจันทร์เป็นสุริยุปราคาวงทอง | เชื่อมกับฉากหน้าดูการ์ด | `Replace the full moon with a solar eclipse: a glowing gold-to-orange ring around a deep indigo core.` |
+| ออโรราม่วง-ฟ้าอมเขียว | สีสันมากขึ้นแต่ยังมืด | `Soft ribbons of violet and teal aurora drift above the castle.` |
+| เกาะลอยฟ้า + น้ำตกแสง | แฟนตาซีมากขึ้น | `Small floating islands with tiny towers hover beside the castle, thin waterfalls of light falling from them.` |
+| หิ่งห้อย / ละอองทอง | อนิเมชั่นโค้ดทับได้สวย | `Tiny golden fireflies and sparkles float in the foreground mist.` |
+| ประตูปราสาทเปิดมีแสงลอดออกมา | ความรู้สึก "เข้าไปในโลกเกม" | `The great castle gate is open, warm light spilling out onto a grand staircase.` |
+| ธงยาวบนยอดหอ | เพิ่มสี (แดงไวน์ / ทอง) | `Long wine-red and gold banners flutter from the castle towers.` |
+| กลุ่มดาวเป็นรูปการ์ด | ซ่อนธีมการ์ดแบบเนียน | `A faint constellation in the sky traces the outline of a playing card.` |
+
+**ชุดที่ Claude แนะนำ (ไม่รกเกิน):** ∞ จากยอดปราสาท + การ์ดลอยแบบเทศกาล + หอนาฬิกา + หิ่งห้อยทอง · ใส่ไม่เกิน 3–4 อย่าง ไม่งั้นรูปรกจนวางตัวหนังสือไม่ได้
+**เปลี่ยนบรรยากาศ (แทนประโยค Palette):** ม่วงพลบค่ำ `Palette: deep plum and amethyst with rose-pink highlights, warm gold window light.` · ไพลินเย็น `Palette: deep sapphire and teal with cyan moonlight, warm gold window light.`
+**รูปแยกชั้น (ไม่บังคับ · ทำให้อนิเมชั่นลึกขึ้น):** สร้างรูปเดิมอีกรูปแต่ต่อท้าย `Same scene but only the night sky, moon and stars, no castle, no city.` → Claude ทำฟ้าขยับช้ากว่าเมืองได้ (ถ้ารูป 2 รูปไม่ตรงกันพอดีไม่เป็นไร ใช้รูปเดียวก็ได้)
+
 ## เสริม (ถ้าตัวสร้างรูปมีช่อง negative prompt)
 ```
 text, letters, words, watermark, signature, logo, UI, buttons, frame, border, people, characters, faces, anime character, symbols on cards, pure black, crushed shadows, oversaturated neon, blurry, low resolution, jpeg artifacts
