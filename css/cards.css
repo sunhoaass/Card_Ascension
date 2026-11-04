@@ -16,7 +16,7 @@
   width: 100%; min-height: 44px;
   border-radius: var(--r-chip);
   border: 1px solid var(--glass-line);
-  background-color: rgba(14, 18, 34, .92);
+  background-color: rgba(17, 23, 58, .9);
   color: var(--ink);
   font: inherit; font-size: var(--fs-md);   /* 16px: keeps iOS from zooming in on focus */
   transition: border-color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
@@ -26,8 +26,8 @@
 .field select {
   -webkit-appearance: none; appearance: none;
   padding: 0 34px 0 12px; cursor: pointer; color-scheme: dark; text-overflow: ellipsis;
-  /* chevron: data URIs can't read CSS variables, colour is --gold (#d8b46a) */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8b46a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  /* chevron: data URIs can't read CSS variables, colour is --gold (#f2c45a) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f2c45a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
 }
 .field select option { background: var(--void-2); color: var(--ink); }
@@ -175,7 +175,7 @@
 .score__name { font-size: var(--fs-sm); font-weight: 500; }
 .score__weight { font-size: var(--fs-xs); color: var(--ink-faint); }
 .score__num { min-width: 2ch; text-align: right; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
-.score__track { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: rgba(216, 180, 106, .12); overflow: hidden; }
+.score__track { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: rgba(var(--gold-rgb), .12); overflow: hidden; }
 .score__track i {
   display: block; height: 100%; border-radius: inherit;
   background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
@@ -186,7 +186,7 @@
 .unranked .badge { flex: none; }
 
 /* Abilities */
-.ability + .ability { margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid rgba(216, 180, 106, .18); }
+.ability + .ability { margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid rgba(var(--gold-rgb), .18); }
 .ability__kind { display: inline-block; margin-bottom: 4px; font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
 .ability__name { display: block; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); line-height: 1.2; letter-spacing: .03em; }
 .ability__desc { margin-top: 4px; color: var(--ink-dim); font-size: var(--fs-sm); overflow-wrap: anywhere; }
@@ -266,7 +266,7 @@
 /* search box (names + pull odds) with the ↑↓ pull-odds order button inside it, on the right (round 2 · above the rarity bar 2026-11-04) */
 .sbox {
   display: flex; align-items: stretch; min-width: 0;
-  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background-color: rgba(14, 18, 34, .92);
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background-color: rgba(17, 23, 58, .9);
   transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
 }
 .sbox:focus-within { border-color: var(--gold); box-shadow: var(--rift-glow); }

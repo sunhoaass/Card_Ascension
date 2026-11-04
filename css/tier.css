@@ -23,7 +23,7 @@
   font-family: var(--font-display); font-weight: 700; font-size: 28px; line-height: 1;
   color: color-mix(in srgb, var(--tc) 55%, #fff6e0);
   text-shadow: 0 0 14px color-mix(in srgb, var(--tc) 60%, transparent);
-  border-right: 1px solid rgba(216, 180, 106, .35);
+  border-right: 1px solid rgba(var(--gold-rgb), .35);
   background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 34%, #10142a), color-mix(in srgb, var(--tc) 12%, #0c1022));
 }
 .tier-row__name--long { font-size: .66em; letter-spacing: -.01em; }   /* longer tier names (Meta) fit the same column */

@@ -1,47 +1,54 @@
 /* ==========================================================
-   Card Battle Infinity — Design tokens ("Gilded Nocturne", step 9.6b)
-   A Victorian city at night: ink-blue sky, old gold lines, ivory text.
+   Card Battle Infinity — Design tokens ("Castle Night", owner's pick 2026-11-04 · mockup/bright-themes.html D1;
+   was "Gilded Nocturne" step 9.6b)
+   A castle city under a starry night: navy-to-violet sky (never black), warm window gold, lavender-white text.
    Every page reads colors, type, spacing and motion from here.
    The old token names are kept (--void, --ink, --rift, --glass-under …) so every page keeps working:
    --rift is now old gold, --flux is amethyst.
    ========================================================== */
 :root {
   /* ---- Night city (backgrounds) ---- */
-  --void: #0b1020;          /* page background: deep ink blue */
-  --void-2: #131a2e;        /* gradient partner */
-  --nebula: #1a2238;        /* solid raised surface */
-  --haze: #2a1528;          /* faint wine haze near the horizon */
+  --void: #0f1638;          /* page background: night navy (no black anywhere) */
+  --void-2: #18215a;        /* gradient partner: indigo */
+  --nebula: #1b2352;        /* solid raised surface */
+  --haze: #3b2c6c;          /* violet glow on the horizon */
+  --sky: linear-gradient(180deg, #0f1638 0%, #18215a 45%, #2a2a6e 78%, #3b2c6c 100%);   /* the backdrop sky */
+  --gold-rgb: 242, 196, 90; /* the gold as r, g, b: write rgba(var(--gold-rgb), a) instead of a literal colour */
+  --city-1: #0c1230;        /* castle city (FX.backdrop): front houses + castle */
+  --city-2: #182152;        /* back houses */
+  --city-3: #232c63;        /* far hills */
+  --city-win: #ffcf6e;      /* lit windows */
 
   /* ---- Panels (old "glass" names kept) ---- */
-  --glass: rgba(216, 180, 106, 0.05);
-  --glass-strong: rgba(216, 180, 106, 0.11);
-  --glass-line: rgba(216, 180, 106, 0.30);
+  --glass: rgba(var(--gold-rgb), 0.05);
+  --glass-strong: rgba(var(--gold-rgb), 0.11);
+  --glass-line: rgba(var(--gold-rgb), 0.28);
   --glass-blur: 14px;                       /* only the top bar and the menu blur (step 9.5) */
-  --glass-under: rgba(15, 20, 37, 0.93);    /* solid fill of every other panel (stands in for the blur) */
-  --panel-fill: linear-gradient(180deg, rgba(25, 31, 52, 0.96), rgba(14, 18, 34, 0.96));
+  --glass-under: rgba(17, 23, 58, 0.92);    /* solid fill of every other panel (stands in for the blur) */
+  --panel-fill: linear-gradient(180deg, rgba(22, 29, 70, 0.9), rgba(14, 19, 50, 0.9));   /* the castle shows faintly through */
 
   /* ---- Metals ---- */
-  --gold: #d8b46a;          /* old gold: lines, active states */
-  --gold-hi: #f3dca0;
-  --gold-lo: #8a6a32;
+  --gold: #f2c45a;          /* window gold: lines, active states */
+  --gold-hi: #ffe29a;
+  --gold-lo: #c9932d;
   --silver: #c9cfdb;
-  --wine: #8e2a3a;          /* danger buttons, weaknesses */
-  --wine-hi: #c24a5e;
-  --brass: linear-gradient(180deg, #2e2617, #1c170e);
-  --brass-gold: linear-gradient(180deg, #f6e2aa, #d8b46a 48%, #a07a2e);
-  --brass-wine: linear-gradient(180deg, #a53a4b, #6e1d2a);
-  --on-gold: #23190a;       /* text on a gold plate */
+  --wine: #a83a52;          /* danger buttons, weaknesses */
+  --wine-hi: #d5546e;
+  --brass: linear-gradient(180deg, #232b62, #161d4a);
+  --brass-gold: linear-gradient(180deg, #ffe29a, #f2c45a 55%, #c9932d);
+  --brass-wine: linear-gradient(180deg, #d5546e, #8a2c42);
+  --on-gold: #2b1a00;       /* text on a gold plate */
 
   /* ---- Ink (text) ---- */
-  --ink: #efe6d2;           /* ivory */
-  --ink-dim: #b3a88f;
-  --ink-faint: #7d7563;
+  --ink: #f1edff;           /* lavender white */
+  --ink-dim: #abb1da;
+  --ink-faint: #7c82ad;
 
   /* ---- Accents (old names kept so other CSS files still work) ---- */
   --rift: var(--gold);
-  --flux: #9b86d6;          /* amethyst, secondary */
-  --rift-glow: 0 0 0 1px rgba(216, 180, 106, .45), 0 0 18px rgba(216, 180, 106, .30);
-  --lamp: #ffd48a;          /* gas-lamp light */
+  --flux: #9fb4ff;          /* periwinkle moonlight, secondary */
+  --rift-glow: 0 0 0 1px rgba(var(--gold-rgb), .45), 0 0 18px rgba(var(--gold-rgb), .30);
+  --lamp: #ffcf6e;          /* window / firefly light */
 
   /* ---- Rarity palette (frame, tag, glow) ---- */
   --r-normal: #c9cfdb;   --r-normal-2: #575e6e;
@@ -208,8 +215,8 @@
   --score-perfect: var(--r-rainbow);
 
   /* ---- Type ---- */
-  --font-display: "Cinzel", "Cormorant SC", Georgia, serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Marcellus SC", "Cinzel", Georgia, serif;   /* one weight (400): bold is never faked (base.css font-synthesis) */
+  --font-body: "Nunito Sans", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   /* 1.25 scale */
   --fs-xs: 0.75rem;   /* 12 */
   --fs-sm: 0.875rem;  /* 14 */
@@ -227,12 +234,14 @@
   --gutter: 16px;
 
   /* ---- Shape: small radii (picture frames, brass plates) + cut corners on still panels ---- */
-  --r-chip: 6px;      /* chips, small buttons */
+  --r-chip: 12px;     /* chips, small buttons, search boxes (Castle Night: softer than the old 6px) */
   --r-card: 8px;      /* game cards */
-  --r-panel: 12px;    /* panels, dialogs */
+  --r-panel: 14px;    /* panels, dialogs */
   --r-pill: 999px;
   --cut: 10px;
-  --chamfer: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+  /* Castle Night: still panels are rounded (the name is kept so every panel rule keeps working · old cut corners:
+     polygon(var(--cut) 0, …) in git 0223c7f) */
+  --chamfer: inset(0 round var(--r-panel));
 
   /* ---- Victorian corner ornament (mask image; its colour comes from the element's background) ---- */
   --orn-tl: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'><path d='M2 31V13Q2 2 13 2H31'/><path d='M7 31V17Q7 7 17 7H31' stroke-width='.9'/><path d='M12.5 12.5c3.6-2.4 7.4.2 6 3.6-1.1 2.7-5.3 2.2-4.6-.9'/></g><circle cx='4.6' cy='4.6' r='2.5' fill='%23000'/></svg>");
@@ -242,7 +251,7 @@
   --orn-s: 22px;
 
   /* ---- Layout ---- */
-  --nav-h: 70px;
+  --nav-h: 80px;      /* room the phone menu takes: a 68px floating bar + 12px under it (base.css .nav) */
   --header-h: 58px;
   --side-w: 252px;    /* left menu rail on screens ≥ 1100px */
   --max-w: 1180px;

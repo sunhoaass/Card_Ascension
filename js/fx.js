@@ -9,7 +9,7 @@
      FX.fade(el, to)       – fade in (1) or out (0); still works when motion is reduced
      FX.toast(text, opts)  – short message at the bottom (opts: { action: { label, fn }, duration, bottom })
      FX.flash(el)          – short glow around el after it was saved / copied (image saved, link copied)
-     FX.backdrop(el)       – the night-city background (drawn once, moved by CSS: no animation loop, step 9.6b)
+     FX.backdrop(el)       – the "Castle Night" background (drawn once, moved by CSS: no animation loop · 2026-11-04)
      FX.reduced            – true when the user asked for less motion
      FX.lite / FX.probe()  – automatic lite mode for low-end devices (html.lite, step 9.5)
    Performance rules (step 9.5): no requestAnimationFrame that runs forever · animate transform/opacity only ·
@@ -237,62 +237,53 @@
     requestAnimationFrame(f);
   };
 
-  /* ---------- Backdrop: the night city (step 9.6b, replaces FX.starfield) ----------
-     Night sky + faint stars + moon + Victorian skyline (2 layers: palace dome, clock tower with a lit face,
-     lit windows) + lamp light on the street + fog + lamp motes rising. All drawn ONCE; the GPU does the rest:
-     · always moving = fog (bd-fog) + motes (bd-motes): CSS transform animations, 2 full-screen layers
-     · the skyline moves only while the page scrolls: a paused Web Animation whose currentTime follows
-       the scroll (Chrome's fast path, no re-layering per scroll step; never write style.transform on scroll)
-     · no requestAnimationFrame loop · lite mode = fewer motes (base.css) · reduced motion = still picture
-     The skyline is made up for this site (no game art). Seeded random, so it looks the same on every visit. */
+  /* ---------- Backdrop "Castle Night" (owner's pick 2026-11-04 · mockup/bright-themes.html D1 · was the Victorian
+     night city of step 9.6b) ----------
+     Navy → violet sky + stars (one twinkling layer) + moon with a breathing halo + a shooting star now and then +
+     a castle city: far hills, back houses, front houses, the castle in the middle, lit windows (half of them on their
+     own layer that dims and lights up) + window glow + fog + golden fireflies. All drawn ONCE; the GPU does the rest:
+     · always moving = CSS transform / opacity animations, each on its own layer (base.css)
+     · the city moves only while the page scrolls: a paused Web Animation whose currentTime follows the scroll
+       (Chrome's fast path, no re-layering per scroll step; never write style.transform on scroll)
+     · no requestAnimationFrame loop · lite mode = fewer fireflies, no twinkle / shooting star (base.css) · reduced motion = still
+     The castle and city are made up for this site (no game art). Seeded random, so it looks the same on every visit. */
   FX.backdrop = function (root) {
     if (!root) return;
-    const W = 1440, H = 420;
     let seed = 7;
     const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    function layer(minH, maxH, fill, windows, landmarks) {
-      let d = `M0 ${H}`, x = 0, win = "";
-      while (x < W) {
-        const lm = landmarks.find((l) => !l.done && x + 60 >= l.x);
-        if (lm) lm.done = true;
-        const w = lm ? (lm.type === "tower" ? 84 : 190) : 40 + rnd() * 70;
-        const h = minH + rnd() * (maxH - minH), top = H - h, kind = rnd();
-        d += ` L${x} ${top}`;
-        if (lm && lm.type === "tower") {                      // clock tower with a lit face
-          const cx = x + w / 2, tw = 34, th = lm.h;
-          d += ` L${cx - tw} ${top} L${cx - tw} ${H - th} L${cx - tw - 6} ${H - th} L${cx} ${H - th - 70} L${cx + tw + 6} ${H - th} L${cx + tw} ${H - th} L${cx + tw} ${top}`;
-          win += `<circle cx="${cx}" cy="${H - th + 34}" r="18" fill="#f4d79a" opacity=".85"/><circle cx="${cx}" cy="${H - th + 34}" r="18" fill="none" stroke="#3a2e1a" stroke-width="2"/>` +
-            `<path d="M${cx} ${H - th + 34}v-12M${cx} ${H - th + 34}l8 5" stroke="#3a2e1a" stroke-width="2" stroke-linecap="round"/>` +
-            `<path d="M${cx} ${H - th - 70}v-26" stroke="${fill}" stroke-width="3"/>`;
-        } else if (lm && lm.type === "dome") {                // palace dome
-          const cx = x + w / 2, r = 58, b = H - lm.h;
-          d += ` L${cx - 90} ${top} L${cx - 90} ${b} L${cx - r} ${b} A${r} ${r} 0 0 1 ${cx + r} ${b} L${cx + 90} ${b} L${cx + 90} ${top}`;
-          win += `<path d="M${cx} ${b - r}v-34" stroke="${fill}" stroke-width="4"/><circle cx="${cx}" cy="${b - r - 38}" r="5" fill="${fill}"/>`;
-        } else if (kind < 0.3) {                              // gable
-          d += ` L${x + w / 2} ${top - 26 - rnd() * 18} L${x + w} ${top}`;
-        } else if (kind < 0.45) {                             // spire
-          d += ` L${x + w * 0.4} ${top} L${x + w / 2} ${top - 60 - rnd() * 40} L${x + w * 0.6} ${top} L${x + w} ${top}`;
-        } else if (kind < 0.7) {                              // mansard roof with a chimney
-          const cx = x + w * 0.75;
-          d += ` L${x + 8} ${top - 14} L${cx - 6} ${top - 14} L${cx - 6} ${top - 34} L${cx + 6} ${top - 34} L${cx + 6} ${top - 14} L${x + w - 8} ${top - 14} L${x + w} ${top}`;
-        } else d += ` L${x + w} ${top}`;
-        if (windows) {
-          for (let wy = top + 14; wy < H - 20; wy += 22) for (let wx = x + 8; wx < x + w - 12; wx += 16) {
-            if (rnd() < 0.14) win += `<rect x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="6" height="10" rx="1" fill="#ffd48a" opacity="${(0.45 + rnd() * 0.5).toFixed(2)}"/>`;
-          }
-        }
-        d += ` L${x + w} ${H}`;
-        x += w;
-      }
-      d += ` L${W} ${H} Z`;
-      return `<path d="${d}" fill="${fill}"/>${win}`;
+    const n = (v) => v.toFixed(0);
+    let back = "", front = "", win = "", win2 = "";
+    for (let x = -10; x < 1210;) {                                   // back houses
+      const w = 24 + rnd() * 30, h = 40 + rnd() * 70;
+      back += `<rect x="${n(x)}" y="${n(220 - h)}" width="${n(w)}" height="${n(h + 40)}"/>`;
+      if (rnd() > 0.5) back += `<polygon points="${n(x)},${n(220 - h)} ${n(x + w / 2)},${n(200 - h)} ${n(x + w)},${n(220 - h)}"/>`;
+      x += w + 2;
     }
-    const far = layer(120, 230, "#161c34", false, [{ x: 330, type: "dome", h: 210 }]);
-    const near = layer(60, 150, "#0a0e1c", true, [{ x: 1010, type: "tower", h: 280 }]);
+    const house = (x, w, h) => {                                     // front house with a pointed roof and a lit window or two
+      const top = 260 - h;
+      front += `<rect x="${x}" y="${top}" width="${w}" height="${h}"/><polygon points="${x - 3},${top} ${n(x + w / 2)},${n(top - 14 - rnd() * 10)} ${x + w + 3},${top}"/>`;
+      for (let k = 0; k < 2; k++) if (rnd() > 0.45) {
+        const r = `<rect x="${n(x + 5 + rnd() * (w - 12))}" y="${n(top + 8 + rnd() * (h - 24))}" width="4" height="6"/>`;
+        if (rnd() > 0.5) win += r; else win2 += r;
+      }
+    };
+    for (let x = -6; x < 470;) { const w = 22 + Math.round(rnd() * 22); house(x, w, 26 + Math.round(rnd() * 40) + Math.round((x / 470) * 20)); x += w + 4; }
+    for (let x = 736; x < 1215;) { const w = 22 + Math.round(rnd() * 22); house(x, w, 26 + Math.round(rnd() * 40) + Math.round(((1200 - x) / 470) * 20)); x += w + 4; }
+    const castle =                                                   // wall + battlements, two big towers, keep, turrets, central spire with a flag
+      `<rect x="468" y="176" width="264" height="84"/>` + Array.from({ length: 12 }, (_, i) => `<rect x="${470 + i * 22}" y="168" width="11" height="10"/>`).join("") +
+      `<rect x="478" y="112" width="38" height="148"/><polygon points="472,114 497,52 522,114"/><rect x="684" y="112" width="38" height="148"/><polygon points="678,114 703,52 728,114"/>` +
+      `<rect x="540" y="122" width="120" height="138"/><rect x="528" y="98" width="24" height="70"/><polygon points="524,100 540,62 556,100"/><rect x="648" y="98" width="24" height="70"/><polygon points="644,100 660,62 676,100"/>` +
+      `<rect x="560" y="90" width="20" height="40"/><polygon points="556,92 570,58 584,92"/><rect x="620" y="90" width="20" height="40"/><polygon points="616,92 630,58 644,92"/>` +
+      `<rect x="584" y="56" width="32" height="80"/><polygon points="578,58 600,0 622,58"/><rect x="599" y="-14" width="2" height="16"/><polygon points="601,-14 614,-10 601,-6"/>`;
+    win += `<path d="M588 260V236a12 12 0 0 1 24 0V260Z"/><rect x="595" y="72" width="10" height="16" rx="5"/><rect x="494" y="130" width="6" height="11" rx="3"/><rect x="700" y="130" width="6" height="11" rx="3"/><rect x="562" y="150" width="6" height="12" rx="3"/><rect x="632" y="150" width="6" height="12" rx="3"/>`;
+    win2 += `<rect x="494" y="170" width="6" height="11" rx="3"/><rect x="700" y="170" width="6" height="11" rx="3"/><rect x="537" y="118" width="6" height="10" rx="3"/><rect x="657" y="118" width="6" height="10" rx="3"/><rect x="580" y="196" width="6" height="12" rx="3"/><rect x="614" y="196" width="6" height="12" rx="3"/>`;
+    const svg = (cls, body) => `<svg class="${cls}" viewBox="0 -20 1200 280" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${body}</svg>`;
     root.innerHTML =
-      `<div class="bd-stars"></div><div class="bd-moon"></div>` +
-      `<div class="bd-city"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g opacity=".9">${far}</g>${near}</svg></div>` +
-      `<div class="bd-lamps"></div><div class="bd-fog"></div><div class="bd-motes"></div>`;
+      `<div class="bd-stars"></div><div class="bd-moon"></div><i class="bd-shoot"></i>` +
+      `<div class="bd-city">` +
+        svg("bd-town", `<path class="c3" d="M0 260V176Q120 148 240 170T480 158T720 164T960 152T1200 166V260Z"/><g class="c2">${back}</g><g class="c1">${front}${castle}</g><g class="w">${win}</g>`) +
+        svg("bd-win2", `<g class="w">${win2}</g>`) +
+      `</div><div class="bd-lamps"></div><div class="bd-fog"></div><div class="bd-motes"></div>`;
     const city = root.querySelector(".bd-city");
     // a paused Web Animation (not a paused CSS animation: Chrome only keeps the scroll-driven currentTime on the
     // compositor fast path for script animations; a paused CSS one re-layerised and repainted the page every frame)

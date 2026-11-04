@@ -45,7 +45,7 @@
 }
 .hcode__main { flex: 1; min-width: 0; display: grid; gap: 2px; }
 .hcode__code {
-  font-family: var(--font-body); font-size: var(--fs-lg); font-weight: 600; letter-spacing: .06em; color: var(--gold-hi);   /* Inter: codes are case-sensitive (Cinzel has no lowercase) */
+  font-family: var(--font-body); font-size: var(--fs-lg); font-weight: 600; letter-spacing: .06em; color: var(--gold-hi);   /* Inter: codes are case-sensitive (the display face Marcellus SC has no lowercase) */
   overflow-wrap: anywhere; user-select: all; -webkit-user-select: all;
 }
 .hcode__reward { color: var(--ink-dim); font-size: var(--fs-sm); }

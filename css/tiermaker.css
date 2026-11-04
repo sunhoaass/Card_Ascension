@@ -20,7 +20,7 @@
 .tm-btn--primary {
   color: var(--on-gold); border-color: #f6e2aa;
   background: var(--brass-gold); text-shadow: 0 1px 0 rgba(255, 245, 210, .5);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 240, .6), 0 2px 0 #4a3714, 0 0 18px rgba(216, 180, 106, .25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 240, .6), 0 2px 0 #4a3714, 0 0 18px rgba(var(--gold-rgb), .25);
 }
 .tm-btn--danger { color: #ffe6ea; border-color: #d0697a; background: var(--brass-wine); }
 .tm-btn:disabled { opacity: 0.4; cursor: default; }
@@ -91,7 +91,7 @@
 [hidden].tm-switch, [hidden].rarity-picker { display: none; }
 .tm-switch__track {
   position: relative; flex: none; width: 40px; height: 24px;
-  border-radius: var(--r-pill); background: rgba(14, 18, 34, .9); border: 1px solid var(--gold-lo);
+  border-radius: var(--r-pill); background: rgba(17, 23, 58, .9); border: 1px solid var(--gold-lo);
   transition: background-color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
 }
 .tm-switch__dot {
@@ -122,7 +122,7 @@
   background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 34%, #10142a), color-mix(in srgb, var(--tc) 12%, #0c1022));
   color: color-mix(in srgb, var(--tc) 55%, #fff6e0);
   text-shadow: 0 0 12px color-mix(in srgb, var(--tc) 55%, transparent);
-  border-right: 1px solid rgba(216, 180, 106, .35);
+  border-right: 1px solid rgba(var(--gold-rgb), .35);
   font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xl); line-height: 1.05;
   text-align: center; overflow-wrap: anywhere; word-break: break-word;
   border-radius: 0;
@@ -217,7 +217,7 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
   margin-top: var(--s-4);
   border-radius: var(--r-panel);
   /* no blur since step 9.5 (cards scroll behind the dock): almost solid so they stay hidden */
-  background: rgba(16, 21, 38, .97);
+  background: rgba(17, 23, 58, .97);
   border-color: var(--gold-lo);
   box-shadow: 0 -6px 30px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 232, 180, .08);
 }
@@ -260,7 +260,7 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
   position: absolute; left: 0; right: 0; bottom: calc(100% + 8px); z-index: 5;
   display: grid; gap: 6px; padding: var(--s-2);
   border-radius: var(--r-panel); border: 1px solid var(--gold-lo);
-  background: rgba(22, 28, 48, .98);
+  background: rgba(24, 31, 74, .98);
   box-shadow: 0 -6px 26px rgba(0, 0, 0, .55);
   opacity: 0; transform: translateY(14px); visibility: hidden; pointer-events: none;
   transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease), visibility 0s linear var(--t-med);
@@ -293,7 +293,7 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
 .tm-dlg::backdrop { background: transparent; }
 .tm-dlg__scrim {
   position: fixed; inset: 0;
-  background: rgba(5, 7, 15, .74);
+  background: rgba(8, 11, 34, .74);
   animation: fx-fade var(--t-med) var(--ease) both;
 }
 .tm-dlg__sheet {
@@ -317,7 +317,7 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
 .tm-input {
   width: 100%; min-height: 44px; padding: 0 12px;
   border-radius: var(--r-chip); border: 1px solid var(--glass-line);
-  background: rgba(14, 18, 34, .92); color: var(--ink);
+  background: rgba(17, 23, 58, .9); color: var(--ink);
   font: inherit; font-size: var(--fs-md);   /* 16px: no iOS zoom on focus */
 }
 .tm-input:focus { outline: none; border-color: var(--gold); box-shadow: var(--rift-glow); }
@@ -356,7 +356,7 @@ html.tm-grabbing, html.tm-grabbing * { cursor: grabbing !important; }
 .tm-prev {
   display: flex; align-items: center; justify-content: center; gap: var(--s-3);
   min-height: 140px; padding: var(--s-3);
-  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: rgba(14, 18, 34, .92);
+  border-radius: var(--r-chip); border: 1px solid var(--glass-line); background: rgba(17, 23, 58, .9);
 }
 .tm-prev.is-ready { padding: var(--s-2); min-height: 0; }
 .tm-prev__msg { color: var(--ink-dim); font-size: var(--fs-sm); }

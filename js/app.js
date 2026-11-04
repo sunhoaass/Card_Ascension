@@ -223,7 +223,7 @@
   const cardLabel = (card, rarity) => `${card.name}${isSupport(card) ? ", support" : ""}, ${rarity}${isRanked(card) ? ", tier " + card.tier : ", unranked"}`;
 
   /* ---------- Placeholder art (until real images exist) ----------
-     Step 9.6b: jewel-tone gradient + a gothic arch window + the initials in Cinzel.
+     Step 9.6b: jewel-tone gradient + a gothic arch window + the initials in Marcellus SC (Castle Night 2026-11-04).
      js/share.js drawPlaceholder() draws the same picture into saved images (keep the two in step). */
   function hash(str) { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) | 0; return Math.abs(h); }
   const ART_HUES = [222, 260, 330, 350, 200, 160, 30];
@@ -245,7 +245,7 @@
       <circle cx="50" cy="56" r="44" fill="url(#r${uid})"/>
       <path d="M28 104V52a22 22 0 0 1 44 0v52z" fill="hsl(${h} 40% 12% / .55)" stroke="hsl(42 70% 70% / .55)" stroke-width="1"/>
       <path d="M33 104V54a17 17 0 0 1 34 0v50M50 37v67M33 72h34" fill="none" stroke="hsl(42 70% 70% / .25)" stroke-width=".7"/>
-      <text x="50" y="76" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="17" fill="hsl(42 80% 88% / .92)">${initials}</text>
+      <text x="50" y="76" text-anchor="middle" font-family="Marcellus SC, Georgia, serif" font-weight="700" font-size="17" fill="hsl(42 80% 88% / .92)">${initials}</text>
     </svg>`;
   }
 

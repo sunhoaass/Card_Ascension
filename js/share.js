@@ -271,8 +271,8 @@
     const wait = new Promise((r) => setTimeout(r, 2500));
     try {
       await Promise.race([Promise.all([
-        document.fonts.load('700 20px "Cinzel"'), document.fonts.load('600 14px "Cinzel"'),
-        document.fonts.load('500 14px Inter'), document.fonts.load('600 20px Inter'), document.fonts.load('700 20px Inter'), document.fonts.load('700 20px "Oswald"'), document.fonts.load('600 20px "Oswald"'), document.fonts.load('20px "Bangers"'),
+        document.fonts.load('20px "Marcellus SC"'), document.fonts.load('14px "Marcellus SC"'),
+        document.fonts.load('400 14px "Nunito Sans"'), document.fonts.load('600 20px "Nunito Sans"'), document.fonts.load('700 20px "Nunito Sans"'), document.fonts.load('700 20px "Oswald"'), document.fonts.load('600 20px "Oswald"'), document.fonts.load('20px "Bangers"'),
         document.fonts.load('20px "Anton"'), document.fonts.load('italic 800 20px "Barlow Condensed"'), document.fonts.ready,   // redrawn cards: numbers / pills / ability name + the card name
       ]), wait]);
     } catch {}
