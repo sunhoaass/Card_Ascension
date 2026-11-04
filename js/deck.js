@@ -21,9 +21,8 @@
      starts at the rarity used last (cbi:deckRarity, first time Godly). The editor has no mode buttons, deck rarity buttons,
      meta line or score ring any more (deck.mode is still saved and used by the analysis). Decks saved before: every slot =
      the deck's old rarity. Links carry cr / sr (older links: the deck's rarity).
-   · Grades + Traits removed 2026-11-03 (docs/archive-grade-traits.md): no grade bars / trait chips in the slot sheet, no trait
-     pill under a card, no ×1.3 / trait in the numbers. A deck's old "grades" field is kept as it was (moves with its card,
-     cleared when the card leaves) so a new grade system can read it · links no longer write g / t (old links still open).
+   · Grade (4 per card slot: Basic Attack, Defense, Status Damage, HP · all 4 at 10 = +30% ATK and HP) + Trait per card slot
+     (owner 2026-11-04): set in the slot sheet, shown on the card only when set, in the numbers (js/deckbuff.js) · links g / t.
    · Undo / Redo: 50 steps per deck (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
    · Step 9 tools (js/share.js) are reused: Save as image (C.share.deckImageDialog), Share link (#deck/s/<data>),
      backup file (registers "decks"). Dialogs are the Tier Maker's C.dialog.
@@ -146,8 +145,8 @@
     };
   };
   /* ---------- Rarity per slot (owner 2026-11-02) ----------
-     deck.cardRarity / deck.supRarity = [rarity name × 4] · deck.grades = [[atk, def, status, hp] | null × 4] (0–10): left from
-     the Grade system removed 2026-11-03 · kept, not shown or counted (docs/archive-grade-traits.md) */
+     deck.cardRarity / deck.supRarity = [rarity name × 4] · deck.grades = [[atk, def, status, hp] | null × 4] (0–10 each, like the
+     game: Basic Attack, Defense, Status Damage, HP · owner 2026-11-04: 1–9 add nothing, all 4 at 10 = +30% ATK and HP, js/deckbuff.js) */
   const LAST_KEY = "cbi:deckRarity", FIRST_RARITY = "Godly", GRADE_MAX = 10;
   const RKEY = { cards: "cardRarity", support: "supRarity" };
   const isRarity = (r) => typeof r === "string" && state.meta.rarities.some((x) => x.name === r);
@@ -168,13 +167,19 @@
   }
   const gradesOf = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(gradeOf(Array.isArray(a) ? a[i] : null)); return o; };
   /* Trait + Grade per card slot (owner 2026-11-04 · set in the slot sheet, shown on the card only when set):
-     deck.trait = [trait id | null × 4] (data/traits.json) · deck.grade = [0–10 × 4] (0 = none) · move with the card,
+     deck.trait = [trait id | null × 4] (data/traits.json) · deck.grades (above: 4 grades per slot) · move with the card,
      cleared when the card leaves or a new card goes in · ATK / HP: js/deckbuff.js */
   const traitList = () => (Array.isArray(state.traits) ? state.traits : []);
   const traitById = (id) => traitList().find((t) => t.id === id) || null;
   const traitsOf = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) { const v = Array.isArray(a) ? a[i] : null; o.push(typeof v === "string" && /^[a-z0-9-]{1,40}$/.test(v) ? v : null); } return o; };
   const gradeNumsOf = (a) => { const o = []; for (let i = 0; i < SLOTS; i++) { const n = Math.round(Number(Array.isArray(a) ? a[i] : 0) || 0); o.push(Math.max(0, Math.min(GRADE_MAX, n))); } return o; };
-  const resetTG = (d, i) => { if (!Array.isArray(d.trait)) d.trait = traitsOf(null); if (!Array.isArray(d.grade)) d.grade = gradeNumsOf(null); d.trait[i] = null; d.grade[i] = 0; };
+  const resetTG = (d, i) => { if (!Array.isArray(d.trait)) d.trait = traitsOf(null); if (!Array.isArray(d.grades)) d.grades = gradesOf(null); d.trait[i] = null; d.grades[i] = null; };
+  // the card's grade on its badge = the 4 grades' average, .5 up (the old rule · 10 only when all 4 are 10) · 0 = none
+  const overallOf = (g) => (Array.isArray(g) && g.some((n) => n > 0) ? Math.floor(g.reduce((a, n) => a + n, 0) / 4 + 0.5) : 0);
+  const fullOf = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => n >= GRADE_MAX);
+  const GSTATS = ["Basic Attack", "Defense", "Status Damage", "HP"];
+  // a grade's colour in the Card Grader rows (the game: 1–2 grey · 5 green · 7 purple · guessed in between) · 10 = rainbow
+  const gradeTone = (v) => (v >= 10 ? "mint" : v >= 9 ? "gold" : v >= 6 ? "purple" : v >= 3 ? "green" : v >= 1 ? "grey" : "none");
   // a card / support put in a slot: the last rarity (a deck's old grades for that slot are cleared)
   function place(d, kind, i, id) {
     d[kind][i] = id;
@@ -185,7 +190,7 @@
   function swapSlots(d, kind, a, b) {
     const sw = (arr) => { if (Array.isArray(arr)) [arr[a], arr[b]] = [arr[b], arr[a]]; };
     sw(d[kind]); sw(d[RKEY[kind]]);
-    if (kind === "cards") { sw(d.grades); sw(d.trait); sw(d.grade); }
+    if (kind === "cards") { sw(d.grades); sw(d.trait); }
   }
   // "Godly" when every filled slot has the same rarity, else "Mixed rarity" (deck list, shared deck)
   function rarityLabel(d) {
@@ -244,9 +249,11 @@
       cards: f.cards, support: f.support,
       cardRarity: raritiesOf(d.cardRarity, rarity), supRarity: raritiesOf(d.supRarity, rarity),
     };
-    if (Array.isArray(d.grades)) out.grades = gradesOf(d.grades);
+    out.grades = gradesOf(d.grades);
+    // the first round (2026-11-04) kept one grade per slot (deck.grade / link gr): that number on all 4
+    const one = gradeNumsOf(d.grade);
+    out.grades.forEach((g, i) => { if (!g && one[i] > 0) out.grades[i] = [one[i], one[i], one[i], one[i]]; });
     out.trait = traitsOf(d.trait);
-    out.grade = gradeNumsOf(d.grade);
     const note = noteOf(d.note);
     if (note) out.note = note;
     if (f.extra) out.extra = f.extra;
@@ -266,7 +273,7 @@
   }
   function touch() { if (cur) cur.updated = now(); save(); }
   const histOf = (id) => { if (!hist.has(id)) hist.set(id, { undo: [], redo: [] }); return hist.get(id); };
-  const snap = () => JSON.stringify({ c: cur.cards, s: cur.support, m: cur.mode, cr: cur.cardRarity, sr: cur.supRarity, g: cur.grades || null, t: cur.trait, gr: cur.grade });
+  const snap = () => JSON.stringify({ c: cur.cards, s: cur.support, m: cur.mode, cr: cur.cardRarity, sr: cur.supRarity, g: cur.grades || null, t: cur.trait });
 
   /* ==========================================================
      Motion helpers (transform / opacity only, §4)
@@ -474,7 +481,7 @@
         slot._pos.classList.toggle("is-name", !!n);
         if (n) slot._pos.title = nm; else slot._pos.removeAttribute("title");
       }
-      if (kind === "cards" && n) paintTG($(".card", n.el), d.trait && d.trait[i], d.grade ? d.grade[i] : 0, animate);
+      if (kind === "cards" && n) paintTG($(".card", n.el), d.trait && d.trait[i], overallOf(d.grades && d.grades[i]), animate);
       if (slot._empty && b.editable) slot._empty.setAttribute("aria-label", `Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}`);
     });
     b.shown[kind] = next.map((n) => (n ? { id: n.id, el: n.el } : null));
@@ -959,8 +966,8 @@
     cur.cardRarity = raritiesOf(cur.cardRarity, cur.rarity);
     cur.supRarity = raritiesOf(cur.supRarity, cur.rarity);
     cur.grades = gradesOf(cur.grades);
-    cur.trait = traitsOf(cur.trait); cur.grade = gradeNumsOf(cur.grade);
-    cur.cards.forEach((id, i) => { if (!id) { cur.trait[i] = null; cur.grade[i] = 0; } });
+    cur.trait = traitsOf(cur.trait);
+    cur.cards.forEach((id, i) => { if (!id) { cur.trait[i] = null; cur.grades[i] = null; } });
     const changed = snap() !== before;
     if (changed) {
       const h = histOf(cur.id);
@@ -983,7 +990,7 @@
     const s = JSON.parse(from.pop());
     cur.cards = slotsOf(s.c, true); cur.support = slotsOf(s.s, false);
     cur.cardRarity = raritiesOf(s.cr, cur.rarity); cur.supRarity = raritiesOf(s.sr, cur.rarity); cur.grades = gradesOf(s.g);
-    cur.trait = traitsOf(s.t); cur.grade = gradeNumsOf(s.gr);
+    cur.trait = traitsOf(s.t);
     if (MODES.some((m) => m.id === s.m)) cur.mode = s.m;
     clearSel();
     touch();
@@ -1094,19 +1101,31 @@
   }
   // the slot sheet's Grade (1–10) and Trait (13) pickers · tap the one that's on, or Remove, to take it off
   function tgSheetHTML() {
-    // grouped by colour (owner 2026-11-04): bronze 1–3 | silver 4–6 | gold 7–9 | rainbow 10 · upright numbers
-    const gb = (g) => `<button type="button" class="dk-gp__b fx-press" data-ss-grade="${g}" data-band="${gradeBand(g)}" aria-pressed="false" aria-label="Grade ${g}">${g}</button>`;
-    const grades = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]].map((grp) => `<span class="dk-gp__grp" data-band="${gradeBand(grp[0])}">${grp.map(gb).join("")}</span>`).join("");
-    const traits = traitList().map((t) => `<button type="button" class="dk-tp__b fx-press" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">${traitIcon(t, "dk-tp__ic")}<span class="dk-tp__n">${esc(t.name)}</span></button>`).join("");
+    // 4 grades like the game (Basic Attack, Defense, Status Damage, HP), each 1–10 grouped by colour (owner 2026-11-04):
+    // bronze 1–3 | silver 4–6 | gold 7–9 | rainbow 10 · upright numbers · "All 10" sets the four at once
+    const gb = (k, g) => `<button type="button" class="dk-gp__b fx-press" data-ss-gk="${k}" data-ss-grade="${g}" data-band="${gradeBand(g)}" aria-pressed="false" aria-label="${GSTATS[k]} grade ${g}">${g}</button>`;
+    // like the game's Card Grader (owner 2026-11-04): a panel per stat · NAME + "+x%" (2.5% a grade, the game's label) ·
+    // a 10-step bar (tap a step = that grade, the same step again = 0) · the grade in a box on the right
+    const seg = (k, g) => `<button type="button" class="dk-g4__seg" style="--i:${g - 1}" data-ss-gk="${k}" data-ss-grade="${g}" aria-pressed="false" aria-label="${GSTATS[k]} grade ${g}"></button>`;
+    const grades = GSTATS.map((name, k) => `<div class="dk-g4__row" data-ss-grow="${k}">
+        <p class="dk-g4__name">${name}</p>
+        <span class="dk-g4__pct" data-ss-gp="${k}"></span>
+        <div class="dk-g4__bar" role="group" aria-label="${name} grade">${Array.from({ length: GRADE_MAX }, (_, j) => seg(k, j + 1)).join("")}</div>
+        <b class="dk-g4__box" data-ss-gv="${k}"></b>
+      </div>`).join("");
+    // Trait: one scrolling box (owner 2026-11-04: saves room) · a row per trait like the game's Trait Shop: icon · name · what it does · tier
+    const traits = traitList().map((t) => `<button type="button" class="dk-tl__row" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">
+        ${traitIcon(t, "dk-tl__ic")}<span class="dk-tl__txt"><b class="dk-tl__n">${esc(t.name)}</b><small>${traitFx(t).map(esc).join(" · ")}</small></span><span class="dk-tl__tier">${esc(t.tier)}</span></button>`).join("");
     const rm = (what) => `<button type="button" class="dk-ss__rm fx-press" data-ss-rm="${what}" hidden>${ICON.x}Remove</button>`;
     return `<section class="dk-ss__sec" aria-label="Grade">
-        <div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3>${rm("grade")}</div>
-        <div class="dk-gp" role="group" aria-label="Grade">${grades}</div>
+        <div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><b class="dk-g4__total" data-ss-gt></b></div>
+        <p class="dk-g4__sum" data-ss-gsum>A 10 MINT (all four at 10) gives +30% to every stat.</p>
+        <div class="dk-g4">${grades}</div>
+        <div class="dk-g4__acts"><button type="button" class="dk-ss__rm dk-ss__all fx-press" data-ss-all>All 10</button>${rm("grade")}</div>
       </section>
       ${traitList().length ? `<section class="dk-ss__sec" aria-label="Trait">
         <div class="dk-ss__h"><h3 class="tm-field__label">Trait</h3>${rm("trait")}</div>
-        <div class="dk-tp" role="group" aria-label="Trait">${traits}</div>
-        <p class="dk-tp__fx" data-ss-tfx hidden></p>
+        <div class="dk-tl" role="group" aria-label="Trait">${traits}</div>
       </section>` : ""}`;
   }
   const traitFx = (t) => [t.dmg ? `x${t.dmg} Damage` : "", t.hp ? `x${t.hp} Health` : "", ...(Array.isArray(t.lines) ? t.lines : [])].filter(Boolean);
@@ -1142,9 +1161,20 @@
             art._r = r;
           }
           if (isCard) {
-            const tId = cur.trait[i], g = cur.grade[i];
+            const tId = cur.trait[i], g4 = cur.grades[i] || [0, 0, 0, 0], g = overallOf(g4), full = fullOf(g4);
             paintTG(art, tId, g, animate);
-            root.querySelectorAll("[data-ss-grade]").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.ssGrade) === g)));
+            root.querySelectorAll("[data-ss-grade]").forEach((b) => {
+              const v = g4[Number(b.dataset.ssGk)], n = Number(b.dataset.ssGrade);
+              b.setAttribute("aria-pressed", String(n === v));
+              b.classList.toggle("is-on", n <= v);
+            });
+            root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
+            root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
+            root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = g4[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number((v * 2.5).toFixed(1))}%` : ""; });
+            const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
+            if (gt) { gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g); }
+            if (gsum) { gsum.textContent = full ? "10 MINT: +30% to every stat." : "A 10 MINT (all four at 10) gives +30% to every stat."; gsum.classList.toggle("is-full", full); }
+            if (all) all.hidden = full;
             root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
             const rmG = $('[data-ss-rm="grade"]', root), rmT = $('[data-ss-rm="trait"]', root), tfx = $("[data-ss-tfx]", root);
             if (rmG) rmG.hidden = !g;
@@ -1166,6 +1196,7 @@
         };
         sheet = { kind, i, id, root, paint };
         paint(false);
+        { const on = $('.dk-tl [aria-pressed="true"]', root); if (on) on.parentNode.scrollTop = on.offsetTop - 6; }   // the chosen trait shows in its box
         requestAnimationFrame(() => root.querySelectorAll(".rarity-picker").forEach((p) => C.revealChip(p.parentNode)));
         root.addEventListener("click", (e) => {
           if (!alive()) return;
@@ -1180,9 +1211,17 @@
           }
           if (!isCard) return;
           const gb = e.target.closest("[data-ss-grade]"), tb = e.target.closest("[data-ss-trait]"), rm = e.target.closest("[data-ss-rm]");
-          if (gb || (rm && rm.dataset.ssRm === "grade")) {
-            const g = gb ? Number(gb.dataset.ssGrade) : 0;
-            commit((d) => { d.grade[i] = d.grade[i] === g ? 0 : g; });   // the grade that's on again = off
+          const al = e.target.closest("[data-ss-all]");
+          if (al) {
+            commit((d) => { d.grades[i] = [GRADE_MAX, GRADE_MAX, GRADE_MAX, GRADE_MAX]; });
+            paint(true);
+          } else if (gb || (rm && rm.dataset.ssRm === "grade")) {
+            commit((d) => {
+              if (!gb) { d.grades[i] = null; return; }
+              const k = Number(gb.dataset.ssGk), g = Number(gb.dataset.ssGrade), g4 = (d.grades[i] || [0, 0, 0, 0]).slice();
+              g4[k] = g4[k] === g ? 0 : g;                       // the grade that's on again = off
+              d.grades[i] = g4.some((n) => n > 0) ? g4 : null;
+            });
             paint(true);
           } else if (tb || (rm && rm.dataset.ssRm === "trait")) {
             const t = tb ? tb.dataset.ssTrait : null;
@@ -1668,7 +1707,7 @@
     p.sr = d.support.map((x, i) => (x ? rarityAt(d, "support", i) : ""));
     if (d.note) p.o = d.note;                        // the note for the image (owner 2026-11-02 · older links: none)
     if (d.trait && d.trait.some(Boolean)) p.t = d.trait.map((x, i) => (x && d.cards[i] ? x : ""));   // trait per card slot (2026-11-04)
-    if (d.grade && d.grade.some((g) => g > 0)) p.gr = d.grade.map((g, i) => (d.cards[i] ? g : 0));    // grade per card slot (2026-11-04)
+    if (d.grades && d.grades.some((g, i) => g && d.cards[i])) p.g = d.grades.map((g, i) => (g && d.cards[i] ? g : 0));   // 4 grades per card slot (same as links before 2026-11-03)
     return p;
   }
   // ...and back, checking everything (a link is typed by strangers). Returns a clean deck or null.
@@ -1676,9 +1715,9 @@
     if (!p || p.v !== 1 || typeof p.n !== "string" || !Array.isArray(p.c) || !Array.isArray(p.s) || p.c.length > OLD_SLOTS || p.s.length > OLD_SLOTS) return null;   // 5-slot links still open
     const ids = (a) => a.map((x) => (typeof x === "string" && x && x.length <= 80 ? x : null));
     const arr = (a) => (Array.isArray(a) && a.length <= OLD_SLOTS ? a : null);   // anything odd = as if it wasn't there
-    // t = trait id per card slot (same as the links from before 2026-11-03) · gr = grade 0–10 per card slot · an older link's g (4 grades) is left out
+    // t = trait id per card slot · g = [atk, def, status, hp] | 0 per card slot (both as the links from before 2026-11-03) · gr = one grade per slot (first round 2026-11-04)
     return clean({ id: newId("dk_"), name: p.n, mode: p.m, rarity: p.r, cards: ids(p.c), support: ids(p.s),
-      cardRarity: arr(p.cr), supRarity: arr(p.sr), trait: arr(p.t), grade: arr(p.gr), note: typeof p.o === "string" ? p.o : "", created: now(), updated: now() });
+      cardRarity: arr(p.cr), supRarity: arr(p.sr), trait: arr(p.t), grades: arr(p.g), grade: arr(p.gr), note: typeof p.o === "string" ? p.o : "", created: now(), updated: now() });
   }
 
   async function saveImage(d, flashEl) {

@@ -197,6 +197,10 @@
   --tg-gold: linear-gradient(180deg, #fff8cc 0%, #ffd863 35%, #e0a42c 70%, #a8701a 100%);
   --tg-gold-ring: conic-gradient(from 0deg, #fff6c2, #f2bd3e 90deg, #a8701a 180deg, #ffe28a 270deg, #fff6c2);
 
+  /* ---- Card Grader rows in the Deck slot sheet (owner 2026-11-04 · like the game) ---- */
+  --gr-panel: rgba(26, 22, 58, .9); --gr-panel-line: rgba(140, 120, 230, .35); --gr-box: #1b1840; --gr-track: #2b2858;
+  --gr-grey: #8c96ad; --gr-green: #3fd47c; --gr-purple: #a66cf2; --gr-gold: #f2c14e; --gr-tip: #f2b544;
+
   /* ---- Team score bands (step 11 · Deck page) · 1–49 red · 50–79 yellow · 80–99 green · 100 rainbow ---- */
   --score-bad: #e0687a;
   --score-mid: #e8c35a;
