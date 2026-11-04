@@ -12,7 +12,8 @@
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
-  const PAGES = ["home", "tier", "cards", "deck"];   // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
+  const PAGES = ["home", "cards", "deck"];   // "tier" removed 2026-11-04 (owner: Tier List page out until everything is ranked again · #tier -> Home)
+  // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
   const PAGE_TITLES = {
     home: "Card Battle Infinity — Tier List & Card Database",
     tier: "Tier List — Card Battle Infinity",
@@ -1062,6 +1063,7 @@
   const pageFromHash = () => {
     const seg = location.hash.replace(/^#\/?/, "").split("/")[0];
     if (seg === "support") return "cards";
+    if (seg === "tier") { try { history.replaceState(null, "", "#home"); } catch {} return "home"; }   // Tier List page off (2026-11-04): old #tier… links = Home
     return PAGES.includes(seg) ? seg : null;
   };
   // the Cards page's side from the hash (#cards / #support) · null = keep the one shown last

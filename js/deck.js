@@ -1921,10 +1921,14 @@
   /* ==========================================================
      Routing: My Decks | Meta Decks, and which deck
      ========================================================== */
+  const META_OFF = true;   // owner 2026-11-04: Meta Decks tab hidden (index.html #deck-tabs hidden) until the battle system is redone
   const isDeckHash = () => /^#\/?deck(?:[/?#]|$)/.test(location.hash);
   function parse() {
     const h = location.hash;
-    if (/^#\/?deck\/meta(?:[/?#]|$)/.test(h)) return { view: "meta" };
+    if (/^#\/?deck\/meta(?:[/?#]|$)/.test(h)) {
+      if (!META_OFF) return { view: "meta" };
+      try { history.replaceState(null, "", "#deck"); } catch {}   // Meta Decks off: an old #deck/meta link = My Decks
+    }
     let m = h.match(/^#\/?deck\/my\/([^/?#]+)/);
     if (m) { try { return { view: "my", id: decodeURIComponent(m[1]) }; } catch { return { view: "my", id: "" }; } }
     m = h.match(/^#\/?deck\/s\/([^/?#]+)/);
