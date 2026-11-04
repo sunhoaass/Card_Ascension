@@ -6,7 +6,9 @@
    King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying).
    Trait + Grade per card slot (owner 2026-11-04 · back in the Deck only): after the deck's buffs, ATK × the trait's dmg and
    HP × its hp (data/traits.json · deck.trait[i] = trait id | null) · Grade (deck.grades[i] = [atk, def, status, hp] 0–10,
-   like the game · owner 2026-11-04): grades 1–9 add nothing, all 4 at 10 = ATK and HP × 1.3 (GRADE_BONUS).
+   like the game · owner 2026-11-04 rule 2): each stat +2.5% a point on ITSELF only (10 = +25%) · all 4 at 10 = +30% more on
+   every stat, added (25 + 30 = +55%) · 3 at 10 = +25% on those 3, no +30% · Basic Attack -> ATK × (1 + %), HP -> HP × (1 + %)
+   · Defense / Status Damage don't change the card's numbers (the battle engine reads them: gradePct).
    The deck's buffs themselves are unchanged.
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
    (same column) gets +X% damage and max HP when the support is mutated (its slot's rarity above Normal) · X = the owner's
@@ -33,8 +35,11 @@
 
    CBI.deckBuff = {
      compute(deck)
-       -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct (deck buffs only), trait, grade, atk, hp (all in),
+       -> [slot × 4: null | { id, rarity, base{atk,hp}, atkPct, hpPct (all in: deck × trait × grade · the buff pill),
+            deckAtkPct, deckHpPct (deck buffs only), trait, fullGrade,
+            grade: { atk, def, status, hp (% each), full } (gradePct), atk, hp (all in),
             from: [{ name, kind: "card"|"support"|"trait"|"grade", atk, hp (% in total), mA, mH (trait / grade: ×), n copies }] }]
+     gradePct([atk, def, status, hp] 0–10) -> { atk, def, status, hp (% each), full } (also the Card Grader's "+x%" labels)
      rarityOf(deck, "cards"|"support", slot) -> the slot's rarity name (also used by js/deck.js, js/teamscore.js, js/share.js)
      wideFirst(supports[4]) -> [bool × 4]: false = a 2nd+ copy of a whole-deck support (gives nothing)
      supportRules(s), cardRules(c), deckWide(s), report()   (report = the table for the owner, also run by tools/deckbuff_report.js)
@@ -148,9 +153,16 @@
       return true;
     });
   }
-  // Grade: 4 per card slot (0–10) · all 4 at 10 = × 1.3 on ATK and HP, anything less = nothing (owner 2026-11-04)
-  const GRADE_MAX = 10, GRADE_BONUS = 1.3;
-  const fullGrade = (deck, k) => { const g = deck && Array.isArray(deck.grades) ? deck.grades[k] : null; return Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => Number(n) >= GRADE_MAX); };
+  // Grade: 4 per card slot (0–10: Basic Attack, Defense, Status Damage, HP) · owner 2026-11-04 rule 2:
+  // +2.5% a point on that stat only · all 4 at 10 = +30% more on every stat, added (10 = 25 + 30 = +55%)
+  const GRADE_MAX = 10, GRADE_STEP = 2.5, GRADE_FULL = 30, GRADE_KEYS = ["atk", "def", "status", "hp"];
+  const gradeNums = (g) => GRADE_KEYS.map((_, q) => Math.max(0, Math.min(GRADE_MAX, Math.round(Number(Array.isArray(g) ? g[q] : 0) || 0))));
+  function gradePct(g) {
+    const n = gradeNums(g), full = n.every((v) => v >= GRADE_MAX), o = { full };
+    GRADE_KEYS.forEach((key, q) => { o[key] = round(n[q] * GRADE_STEP + (full ? GRADE_FULL : 0)); });
+    return o;
+  }
+  const gradeAt = (deck, k) => gradePct(deck && Array.isArray(deck.grades) ? deck.grades[k] : null);
   const traitAt = (deck, k) => {
     const id = deck && Array.isArray(deck.trait) ? deck.trait[k] : null;
     return id ? (Array.isArray(C.state.traits) ? C.state.traits : []).find((t) => t.id === id) || null : null;
@@ -213,7 +225,7 @@
       // every buff multiplies: total % = (Π(1 + p/100) − 1) × 100
       const mul = (key) => got[k].reduce((a, x) => a * (1 + x[key] / 100), 1);
       const mA = mul("atk"), mH = mul("hp");
-      const atkPct = round((mA - 1) * 100), hpPct = round((mH - 1) * 100);
+      const deckAtkPct = round((mA - 1) * 100), deckHpPct = round((mH - 1) * 100);
       // one line per source: its ATK and HP together, every copy multiplied (King of Conquerors ×3 = 1.15³ = +52.09%, n = 3)
       const from = [];
       got[k].forEach((x) => {
@@ -223,15 +235,18 @@
       });
       from.forEach((f) => { f.n = f.copies.size; delete f.copies; });
       // then the slot's trait and grade multiply (shown as ×N rows in the buff list)
-      const t = traitAt(deck, k), full = fullGrade(deck, k), gm = full ? GRADE_BONUS : 1;
+      const t = traitAt(deck, k), gp = gradeAt(deck, k), gA = 1 + gp.atk / 100, gH = 1 + gp.hp / 100;
       const tA = t && t.dmg > 0 ? t.dmg : 1, tH = t && t.hp > 0 ? t.hp : 1;
       if (t && (tA !== 1 || tH !== 1)) from.push({ key: "t:" + t.id, name: t.name, kind: "trait", atk: round((tA - 1) * 100), hp: round((tH - 1) * 100), mA: tA, mH: tH, n: 1 });
-      if (full) from.push({ key: "g:10", name: "Grade 10 (all 4)", kind: "grade", atk: round((gm - 1) * 100), hp: round((gm - 1) * 100), mA: gm, mH: gm, n: 1 });
+      // grade row: Basic Attack -> ATK, HP -> HP (+2.5% a point · +30% more when all 4 are 10) · 0 / 0 = no row
+      if (gp.atk || gp.hp) from.push({ key: "g", name: gp.full ? "Grade 10 MINT (all 4)" : "Grade", kind: "grade", atk: gp.atk, hp: gp.hp, mA: round(gA * 1e4) / 1e4, mH: round(gH * 1e4) / 1e4, n: 1 });
+      // atkPct / hpPct = everything in (deck × trait × grade) = the buff pill under the card (owner 2026-11-04: grade shows there too)
       return {
-        id: c.id, rarity, base, atkPct, hpPct,
-        trait: t ? t.id : null, fullGrade: full,
-        atk: Math.round(base.atk * mA * tA * gm),
-        hp: Math.round(base.hp * mH * tH * gm),
+        id: c.id, rarity, base, deckAtkPct, deckHpPct,
+        atkPct: round((mA * tA * gA - 1) * 100), hpPct: round((mH * tH * gH - 1) * 100),
+        trait: t ? t.id : null, fullGrade: gp.full, grade: gp,
+        atk: Math.round(base.atk * mA * tA * gA),
+        hp: Math.round(base.hp * mH * tH * gH),
         from,
       };
     });
@@ -257,5 +272,5 @@
   }
 
   root.CBI = root.CBI || {};
-  root.CBI.deckBuff = { compute, rarityOf, wideFirst, supportRules, cardRules, deckWide, mutOf, report, SLOTS, GRADE_MAX, GRADE_BONUS };
+  root.CBI.deckBuff = { compute, rarityOf, wideFirst, supportRules, cardRules, deckWide, mutOf, report, gradePct, SLOTS, GRADE_MAX, GRADE_STEP, GRADE_FULL };
 })(typeof window !== "undefined" ? window : globalThis);

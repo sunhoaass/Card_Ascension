@@ -160,10 +160,13 @@ def build():
     s = s.replace("  </main>", PAGE + "  </main>\n" + FIGHT, 1)
     css = re.findall(r'<link rel="stylesheet" href="css/home\.css[^"]*">', s)
     assert css, "css/home.css link not found"
-    s = s.replace(css[0], css[0] + '\n  <link rel="stylesheet" href="mockup/battle/battle.css">', 1)
+    # the battle files get the site's ?v= too (rule 9: phones keep old files otherwise)
+    ver = re.search(r"\?v=\d+", css[0])
+    q = ver.group(0) if ver else ""
+    s = s.replace(css[0], css[0] + f'\n  <link rel="stylesheet" href="mockup/battle/battle.css{q}">', 1)
     js = re.findall(r'<script src="js/tiermaker\.js[^"]*"></script>', s)
     assert js, "js/tiermaker.js script not found"
-    s = s.replace(js[0], js[0] + '\n  <script src="mockup/battle/battle.js"></script>', 1)
+    s = s.replace(js[0], js[0] + f'\n  <script src="mockup/battle/battle.js{q}"></script>', 1)
     return s
 
 

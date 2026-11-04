@@ -81,6 +81,9 @@
 
 /* slot sheet: Custom HP / ATK (battle only) */
 .bt-new { margin-left: 6px; padding: 2px 6px; border-radius: var(--r-pill); font-size: 10px; letter-spacing: .06em; color: var(--bt-cus); border: 1px solid var(--bt-cus); text-transform: none; }
+/* Grade in battle (owner 2026-11-04): Status Damage "Unconfirmed" tag + the "In battle: …" line under the 4 grades */
+.dk-g4__name .bt-new--warn { display: inline-block; vertical-align: 2px; font-family: var(--font-body); font-weight: 700; letter-spacing: .04em; color: #ffc7b5; border-color: rgba(255, 140, 110, .7); background: rgba(255, 120, 90, .14); }
+.bt-gfx { margin-top: 8px; }
 .bt-cus__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .bt-cus__in { font-family: var(--gc-font-num); font-weight: 600; letter-spacing: .02em; }
 .bt-cus__in--atk { color: var(--gc-atk); } .bt-cus__in--hp { color: var(--gc-hp); }
