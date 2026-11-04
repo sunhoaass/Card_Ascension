@@ -2200,4 +2200,4 @@
 | Deck | 56.7 / 183ms / 1.15s | 57.3 / 167ms / 1.26s |
 
   fps ไม่ลดทุกหน้า · TaskDuration เพิ่มเล็กน้อย (ชั้นวิบ/ดาวตก) · หน้า Cards ต่ำกว่า 55 fps ตั้งแต่ก่อนแก้ (ไม่ใช่จากธีม)
-- **ไฟล์:** `index.html` · `site.webmanifest` · `css/tokens.css` · `css/base.css` · `css/cards.css` · `css/deck.css` · `css/detail.css` · `css/home.css` · `css/tier.css` · `css/tiermaker.css` · `js/fx.js` · `js/app.js` · `js/share.js` · `PROGRESS.md` · `HISTORY.md`
+- **ไฟล์:** `index.html` · `site.webmanifest` · `css/tokens.css` · `css/base.css` · `css/fx.css` · `css/cards.css` · `css/deck.css` · `css/detail.css` · `css/home.css` · `css/tier.css` · `css/tiermaker.css` · `js/fx.js` · `js/app.js` · `js/share.js` · `PROGRESS.md` · `HISTORY.md`
