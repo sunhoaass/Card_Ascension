@@ -2135,3 +2135,10 @@
 - **ทดสอบ (Playwright Pixel 7):** กล่อง clientHeight 212 · แถว offsetHeight 64 / scrollHeight 62 (ไม่ล้น) · Ascendant ที่เลือก = 2 บรรทัด + ข้อความเต็มใต้กล่อง · deck ที่ใส่ Bloodlust (แถว 8) → เปิดแผ่นแล้ว Bloodlust อยู่แถวบน · console error 0
 - **Mockup:** `mockup/deck-slot-info.html` + รูป `mockup/deck-slot/` (การ์ดแคปจากเว็บจริง ป้าย `--s` 0.92) · https://claude.ai/artifact/S4oSVxsSYsGXVNBkVZweqD · 5 ข้อให้เลือก (ชื่อยาว, ขนาดป้าย, ช่องที่ยังไม่ตั้ง, Grade 4 ค่าย่อยในรูป Save, ป้ายบัฟ Deck)
 - **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `mockup/deck-slot-info.html` + `mockup/deck-slot/` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 ช่องการ์ด Deck แบบรูป Save + รูป Save มี Grade / Trait / Mutation (`?v=91`)
+- **เจ้าของ:** "ตอนจัดหน้าการ์ดให้เหมือนกับตอน Save รูป ครับ สวยกว่าดีกว่า" (ไม่ได้ตอบ 5 ข้อ → ใช้ตัวเลือกแรกตามที่ mockup บอก: ชื่อ 2 บรรทัดแล้วย่อ · ป้ายในการ์ด ~70% · No grade/No trait จาง · GRADE + เลขเฉลี่ย · เก็บป้ายบัฟ)
+- **หน้า Deck:** `.deck__pos` (ป้ายทองชื่อ) + `.dk-rar` → `.dk-nm` (ชื่อเต็ม · `fitName`) + `.dk-info` ป้ายเม็ดยา (`paintInfo`) · `.dk-row .tg --s` 0.92 · จอ ≥ 720 ป้ายสูง 23 ชื่อ 13px
+- **รูป Save:** การ์ด 190×253 → 210×280 · ชื่อ 17 → 22px ย่อได้ถึง 15 · ป้ายใต้การ์ด 3 แถว (Support 2) ขนาดเท่ากัน · `drawTG` วาดป้าย Trait/Grade บนการ์ด · รูปตัวอย่าง 4+4 ใบ = 2400 × 2292 px PNG 5.0 MB
+- **ทดสอบ (Playwright · Pixel 7 + จอ 1280):** ชื่อ "Divergent Fist Vessel" / "Ultra Instinct Saiyan" 2 บรรทัดครบบนมือถือ · 1 บรรทัดบนคอม · ป้ายระดับ 7 แบบ (Godly, Divine, Rainbow, Ascended, Cosmic, Shiny, Normal) · Grade 10 รุ้ง / 6 เงิน / 3 บรอนซ์ · Trait รุ้ง + สีส้ม · Mutation 13/7/1/ไม่มี · แตะป้าย Trait = แผ่นตั้งค่าเปิด · รูป Save ตรงกับหน้า · console error 0
+- **ไฟล์:** `index.html` · `js/deck.js` · `js/share.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`

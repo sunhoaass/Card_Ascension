@@ -142,6 +142,11 @@
       id: d.id, title: d.name, note: d.note || "", mode: modeOf(d.mode).name, rarity: d.rarity, cards: d.cards.slice(), support: d.support.slice(),
       cardRarity: d.cards.map((x, i) => rarityAt(d, "cards", i)), supRarity: d.support.map((x, i) => rarityAt(d, "support", i)),
       nums: d.cards.map((id, i) => { const r = res[i]; return r ? { atk: r.atk, hp: r.hp } : null; }),
+      // under each card, like the Deck page (owner 2026-11-04): grade (the badge number) · trait · support: mutation %
+      grade: d.cards.map((id, i) => (id ? overallOf(d.grades && d.grades[i]) : 0)),
+      traits: d.cards.map((id, i) => { const t = id && d.trait && d.trait[i] ? traitById(d.trait[i]) : null;
+        return t ? { id: t.id, name: t.name, color: t.color || "", icon: `images/traits/${t.id}.webp` } : null; }),
+      mut: d.support.map((id, i) => { const s = id ? supById.get(id) : null; return s && C.mutAt ? C.mutAt(s, rarityAt(d, "support", i)) : 0; }),
     };
   };
   /* ---------- Rarity per slot (owner 2026-11-02) ----------
@@ -377,10 +382,14 @@
         slot.className = "dk-slot is-empty";
         slot.dataset.kind = kind;
         slot.dataset.i = i;
-        slot.innerHTML = `${kind === "cards" ? `<span class="deck__pos">Slot ${i + 1}</span>` : ""}<div class="dk-slot__box"></div><span class="dk-rar" hidden></span>`;
+        // like the saved image (owner 2026-11-04): the full name on top (2 lines, then smaller type · fitName) · under the card a pill
+        // per line: rarity · grade · trait (support: rarity · mutation %) · "No grade" / "No trait" keep every slot the same height
+        const pills = kind === "cards" ? ["rar", "gr", "tr"] : ["rar", "mut"];
+        slot.innerHTML = `<div class="dk-nm"><span></span></div><div class="dk-slot__box"></div>`
+          + `<div class="dk-info" hidden>${pills.map((p) => `<span class="dk-pill dk-pill--${p}" data-pill="${p}"></span>`).join("")}</div>`;
         const box = $(".dk-slot__box", slot);
-        slot._pos = $(".deck__pos", slot);                 // "Slot 1" until a card is in, then the card's name (owner 2026-11-04)
-        slot._rar = $(".dk-rar", slot);                   // the slot's rarity, written under the card (owner 2026-11-02)
+        slot._pos = $(".dk-nm span", slot);               // "Slot 1" (cards) until a card is in, then the card's name (owner 2026-11-04)
+        slot._info = $(".dk-info", slot);
         if (editable) {
           const add = document.createElement("button");
           add.type = "button";
@@ -416,6 +425,7 @@
         row.appendChild(slot);
         b.slots[kind].push(slot);
       }
+      if (nameFit) nameFit.observe(row);
     });
   }
 
@@ -474,12 +484,11 @@
         slot._x.hidden = !n;
         if (n) slot._x.setAttribute("aria-label", `Remove ${n.el.dataset.name} from ${kind === "cards" ? "slot" : "support slot"} ${i + 1}`);
       }
-      paintRar(slot, n && !n.el.classList.contains("dk-item--missing") ? rarityAt(d, kind, i) : null, animate);
+      paintInfo(slot, kind, d, i, n && !n.el.classList.contains("dk-item--missing") ? n.id : null, animate);
       if (slot._pos) {
-        const nm = n ? n.el.dataset.name : `Slot ${i + 1}`;
-        if (slot._pos.textContent !== nm) slot._pos.textContent = nm;
-        slot._pos.classList.toggle("is-name", !!n);
-        if (n) slot._pos.title = nm; else slot._pos.removeAttribute("title");
+        const nm = n ? n.el.dataset.name : kind === "cards" ? `Slot ${i + 1}` : "";
+        slot._pos.parentNode.classList.toggle("is-name", !!n);
+        if (slot._pos.textContent !== nm) { slot._pos.textContent = nm; fitName(slot._pos); }
       }
       if (kind === "cards" && n) paintTG($(".card", n.el), d.trait && d.trait[i], overallOf(d.grades && d.grades[i]), animate);
       if (slot._empty && b.editable) slot._empty.setAttribute("aria-label", `Add ${kind === "cards" ? "a card" : "a support card"} to slot ${i + 1}`);
@@ -512,18 +521,46 @@
   }
   const paintBoard = (b, d, opts) => KINDS.forEach((k) => paintKind(b, k, d, opts));
 
-  // the slot's rarity under the card (a fresh one flashes · §4)
-  function paintRar(slot, r, animate) {
-    const t = slot._rar;
-    t.hidden = !r;
-    if (!r || t.dataset.r === r) return;
-    const was = t.dataset.r;
-    t.dataset.r = r;
-    t.style.setProperty("--sw", C.RARITY_SWATCH[r] || "var(--r-normal)");
-    t.innerHTML = `<span>${esc(r)}</span>`;
-    t.setAttribute("aria-label", `Rarity: ${r}`);
-    if (animate && was && !FX.reduced) FX.flash(t);
+  // under the card, like the saved image (owner 2026-11-04): rarity pill (the game card's own) · GRADE n (bronze / silver / gold / rainbow)
+  // · trait (icon + name in its colour) · support: rarity · Mutation +x% (C.mutAt) · a changed pill flashes (§4)
+  function paintInfo(slot, kind, d, i, id, animate) {
+    const box = slot._info;
+    if (!box) return;
+    box.hidden = !id;
+    if (!id) return;
+    const x = lookup(kind, id), r = rarityAt(d, kind, i), lr = String(r).toLowerCase();
+    const set = (p, key, html, attrs, label) => {
+      const el = $(`[data-pill="${p}"]`, box);
+      if (!el || el.dataset.key === key) return;
+      const was = el.dataset.key;
+      el.dataset.key = key;
+      Object.entries(attrs).forEach(([a, v]) => { if (v == null) el.removeAttribute(a); else el.setAttribute(a, v); });
+      el.innerHTML = html;
+      el.setAttribute("aria-label", label);
+      if (animate && was && !FX.reduced) FX.flash(el);
+    };
+    set("rar", r, `<span>${esc(r)}</span>`, { "data-r": r, style: r === "Normal" ? null : `--rar-bg:var(--gc-rar-${lr});--rar-line:var(--gc-rar-${lr}-line);--rar-ink:var(--gc-rar-${lr}-ink,#fff)` }, `Rarity: ${r}`);
+    if (kind === "cards") {
+      const g4 = d.grades && d.grades[i], g = overallOf(g4), t = d.trait && d.trait[i] ? traitById(d.trait[i]) : null;
+      set("gr", String(g), g ? `<span>Grade</span><b>${g}</b>` : `<span>No grade</span>`, { "data-band": gradeBand(g), "data-off": g ? null : "" }, g ? `Grade ${g}` : "No grade");
+      set("tr", t ? t.id : "", t ? `${traitIcon(t, "dk-pill__ic")}<span>${esc(t.name)}</span>` : `<span>No trait</span>`,
+        { "data-c": t ? (t.color === "rainbow" ? "rainbow" : "solid") : null, "data-off": t ? null : "", style: t ? traitColor(t) || null : null }, t ? `Trait: ${t.name}` : "No trait");
+    } else {
+      const m = x && C.mutAt ? C.mutAt(x, r) : 0;
+      set("mut", String(m), m ? `<span>Mutation +${m}%</span>` : `<span>No mutation</span>`, { "data-off": m ? null : "" }, m ? `Mutation bonus +${m}% damage and HP` : "No mutation");
+    }
   }
+  // a slot's name: 2 lines at the slot's size, then smaller type (to 8px) until it fits · refit when the slots change width
+  function fitName(el) {
+    const box = el.parentNode;
+    el.style.fontSize = "";
+    box.classList.remove("is-clamp");
+    if (!el.textContent || !box.clientHeight) return;
+    let f = parseFloat(getComputedStyle(el).fontSize) || 11;
+    while (el.offsetHeight > box.clientHeight + 0.5 && f > 8) { f -= 0.5; el.style.fontSize = f + "px"; }
+    if (el.offsetHeight > box.clientHeight + 0.5) box.classList.add("is-clamp");
+  }
+  const nameFit = typeof ResizeObserver === "function" ? new ResizeObserver((es) => es.forEach((e) => e.target.querySelectorAll(".dk-nm span").forEach(fitName))) : null;
   /* ---------- Trait + Grade on the card (owner 2026-11-04 · like the game card: trait icon + name on the left,
      grade number in a ring + "GRADE" on the right, above the skill name) · only when set · css/deck.css .tg ---------- */
   const gradeBand = (g) => (g >= 10 ? "rainbow" : g >= 7 ? "gold" : g >= 4 ? "silver" : g >= 1 ? "bronze" : "none");
