@@ -529,15 +529,15 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
   padding: calc(1.15cqw * var(--s)); background: var(--tg-ring); box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .45);
 }
 .tg__ring::before { content: ""; position: absolute; inset: calc(1.15cqw * var(--s)); border-radius: 50%; background: var(--tg-core); box-shadow: inset 0 0 0 calc(.3cqw * var(--s)) rgba(0, 0, 0, .35); }
-/* the number: itself in the dark outline colour (thick stroke), its gradient copy (data-n) on top · sits a little above the
-   ring's middle like the game (the pill hides the ring's lower part) */
+/* the number (owner 2026-11-04): upright (Oswald, the card's ATK / HP face), in the middle of the ring · itself in the dark
+   outline colour (thick stroke), its gradient copy (data-n) on top */
 .tg__ring b {
-  position: relative; display: block; margin-top: calc(-1.6cqw * var(--s));
-  font-family: var(--gc-font-pop); font-style: italic; font-weight: 400; font-size: calc(8.8cqw * var(--s)); line-height: 1; letter-spacing: .01em; padding: 0 .08em 0 0;
-  color: var(--tg-ink); -webkit-text-stroke: calc(1.5cqw * var(--s)) var(--tg-ink);
+  position: relative; display: block;
+  font-family: var(--gc-font-num); font-style: normal; font-weight: 700; font-size: calc(7.6cqw * var(--s)); line-height: 1; letter-spacing: 0;
+  font-variant-numeric: tabular-nums lining-nums; color: var(--tg-ink); -webkit-text-stroke: calc(1.2cqw * var(--s)) var(--tg-ink);
 }
 .tg__ring b::after {
-  content: attr(data-n); position: absolute; inset: 0; padding: inherit; -webkit-text-stroke: 0;
+  content: attr(data-n); position: absolute; inset: 0; -webkit-text-stroke: 0;
   color: transparent; background-image: var(--tg-fill); -webkit-background-clip: text; background-clip: text;
 }
 .tg__gr .tg__lab { margin-top: calc(-3cqw * var(--s)); padding: 0; background: var(--tg-pill); color: var(--tg-ink); -webkit-text-stroke: 0; font-size: calc(4cqw * var(--s)); letter-spacing: .02em; }
