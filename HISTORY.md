@@ -2265,3 +2265,9 @@
 - **ทำ:** ลบ `.page__lead` ทุกหน้า (Home · Tier · Deck · Cards/Support · Battle) + `#dk-hint` + "Tap a card to see its details." (หน้าแชร์ deck/tier) + "Four cards, a support under each." (deck ว่าง) · Battle: ลบ `<small>` ข้างหัวกล่อง 6 จุด · "Gets stronger every stage!" · โน้ต ATK บอสเดา · กติกา Win chance · ข้อความว่าง Simulate (เหลือหัวข้อ) · Best fights ว่าง = "No fights yet." · โน้ตในแผ่น Custom HP/ATK · โน้ต Load from My Decks · โน้ต "Every buff multiplies…" (หน้าต่างที่มาบัฟ Deck + Battle) · โน้ต "You can change the mode later." · JS ที่เคยใส่ข้อความ (`cards.js` `deck.js` `tier.js` `tiermaker.js`) เช็คว่ามี element ก่อน · `?v=99` → `100`
 - **ทดสอบ (Playwright Chromium 412px):** Home · Cards · Support · Deck · Battle · Battle/Arena เปิดได้ ไม่มี error ใน console · `node --check` js ทุกไฟล์ผ่าน
 - **ไฟล์:** `index.html` · `js/cards.js` · `js/deck.js` · `js/tier.js` · `js/tiermaker.js` · `js/battle.js` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 · 🧹 รอบ 2: Load Deck + หัวข้อ Cards + คำอธิบายบอส/โอกาสชนะกลับ (`?v=101`)
+- **เจ้าของ (แคป Battle):** ปุ่ม Load from My Decks ชื่อสั้นลง + จัด layout ให้สมดุล · หัวข้อหน้า Cards ใช้ฟอนต์/สี/ขนาดแบบ "Your team" (เลือกจากคำถาม: หัวข้อใหญ่) · คำอธิบายใช้เฉพาะบอส/โอกาสชนะ ในกรอบของมัน → จดเป็นกฎ
+- **ทำ:** ปุ่ม **Load Deck** + ไอคอน อยู่แถวเดียวกับหัวกล่องทีม (ชิดขวา) · ชื่อ deck = บรรทัดเล็กใต้ชื่อทีม (ว่าง = ซ่อน · ยาว = ตัด …) · หน้าต่างโหลดชื่อ "Load Deck" · `#cards-title` = `400 var(--fs-lg) var(--font-display)` สี `--gold-hi` ไม่มีแสงวิ่ง · ใส่กลับ: "Gets stronger every stage!" · โน้ต ATK บอสเดา · กติกา Win chance · ข้อความว่าง Simulate · PROGRESS กฎทำงานข้อ 13 (คำอธิบาย)
+- **ทดสอบ (Playwright Chromium 412 + 1280):** Cards · Battle · Arena ไม่มี error · ปุ่ม Load Deck อยู่แนวเดียวกับหัวข้อทั้งมือถือและคอม · ชื่อ deck ใต้หัวข้อ
+- **ไฟล์:** `index.html` · `css/battle.css` · `css/cards.css` · `js/battle.js` · `PROGRESS.md` · `HISTORY.md`

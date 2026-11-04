@@ -147,7 +147,7 @@
       for (let i = 0; i < SLOTS; i++) row.appendChild(slotEl(key, kind, i, st));
     });
     requestAnimationFrame(() => root.querySelectorAll(".dk-nm span").forEach(P().fitName));
-    const fromEl = $(`[data-team-from="${key}"]`); if (fromEl) fromEl.textContent = d.from;
+    const fromEl = $(`[data-team-from="${key}"]`); if (fromEl) fromEl.textContent = d.from.replace(/^From My Decks:\s*/, "");   // saved as "From My Decks: <name>" · shown as the deck name
     if (flash) { const el = $(`.dk-slot[data-kind="${flash.kind}"][data-i="${flash.i}"]`, root); if (el && !reduced()) FX.flash(el); }
     if (key === "a" || key === "b") clearSim();
     save();
@@ -366,7 +366,7 @@
         <span class="bt-dl__imgs">${[0, 1, 2, 3].map((i) => { const x = d.cards[i] && lookup("cards", d.cards[i]); return x ? `<img src="${esc(thumbOf("cards", x))}" alt="">` : `<i></i>`; }).join("")}</span>
         <span class="bt-dl__txt"><b>${esc(d.name || "Deck")}</b><small>${d.cards.filter(Boolean).length} cards · ${(d.support || []).filter(Boolean).length} support</small></span></button>`).join("");
     const res = await dialog({
-      title: "Load from My Decks",
+      title: "Load Deck",
       html: decks.length ? `<div class="bt-dl">${rows}</div>`
         : `<div class="empty"><p class="empty__title">No decks yet</p><p class="empty__text">Make a team on the Deck page first, then load it here.</p></div>`,
       actions: decks.length ? [{ label: "Cancel", value: "cancel" }] : [{ label: "Open Deck", value: "deck", cls: "tm-btn--primary" }, { label: "Close", value: "cancel" }],
