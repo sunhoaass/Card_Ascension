@@ -167,7 +167,7 @@
 
   function setLead() {
     const shared = view === "my" && C.tm && C.tm.mode && C.tm.mode() === "shared";
-    ui.lead.textContent = shared ? LEADS.shared : view === "my" ? LEADS.my : LEADS[kind];
+    if (ui.lead) ui.lead.textContent = shared ? LEADS.shared : view === "my" ? LEADS.my : LEADS[kind];
   }
 
   function animateIn(el) {

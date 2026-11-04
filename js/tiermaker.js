@@ -1393,7 +1393,7 @@
     ui.compare.hidden = !card;
     ui.compare.setAttribute("aria-checked", String(prefs.compare));
     markRarity();
-    ui.hint.textContent = fine.matches
+    if (ui.hint) ui.hint.textContent = fine.matches
       ? "Drag cards into rows, or click a card then a row. Drag back to the pool to remove."
       : "Hold a card to drag it, or tap a card then a row. Drag back to the pool to remove.";
   }

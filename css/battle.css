@@ -53,8 +53,12 @@
 .bt-list li:first-child .bt-rk { background: var(--brass-gold); color: var(--on-gold); }
 
 /* team panel head: where the team came from + Load from My Decks */
-.bt-team__bar { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin: -4px 0 var(--s-3); flex-wrap: wrap; }
-.bt-team__from { font-size: var(--fs-xs); color: var(--ink-dim); }
+/* team panel head: title + the deck it came from (left) · Load Deck (right), one row */
+.bt-team__head { align-items: center; }
+.bt-team__t { min-width: 0; display: grid; gap: 2px; }
+.bt-team__from { font-size: var(--fs-xs); color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bt-team__from:empty { display: none; }
+.bt-load { flex: none; min-height: 40px; padding-inline: 14px; }
 .bt-fight-btn { width: 100%; min-height: 64px; font: 400 30px/1 var(--font-display); letter-spacing: .12em; position: relative; overflow: hidden; }
 .bt-fight-btn::before { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 38%, var(--bt-shine) 50%, transparent 62%); transform: translateX(-120%); animation: bt-shine 3.2s var(--ease) infinite; pointer-events: none; }
 @keyframes bt-shine { 0%, 55% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
