@@ -2147,3 +2147,9 @@
 - **เจ้าของ:** "ไม่เอาตัวอักษรระดับเอียง ฟอนต์ด้วย ทั้งหน้าจัดการ์ดและ save" → ป้ายระดับใต้การ์ด Bangers เอียง → **Oswald 600 ตัวตรง** (ฟอนต์เดียวกับป้าย GRADE) ตัวพิมพ์ใหญ่ เว้นช่องไฟ · สีป้าย/ขอบ/ตัวอักษรเหมือนเดิม · ป้ายระดับบนตัวการ์ดเอง (แบบเกม) ไม่ได้แก้
 - **ทดสอบ:** หน้า Deck (Pixel 7) + รูป Save 2400 px: Godly, Divine, Rainbow, Ascended, Cosmic, Shiny, Normal ตัวตรงอ่านชัด · console error 0
 - **ไฟล์:** `index.html` · `js/share.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 รายการ Deck เห็นการ์ด + Grade / Trait (`?v=93`)
+- **เจ้าของ:** (แคปหน้ารายการ deck ที่มีแค่รูปเล็ก) "หน้านี้เอาให้เห็นรายละเอียดที่ทำไว้ข้างในด้วย ชื่อ คำอธิบายสกิล สกิล grade Traits ปรับให้ขนาดเล็กและสมดุล"
+- **ทำ:** `stripCol` = `C.renderCard` mini + `C.setCardNums` (บัฟ Deck) + `paintTG` · ใต้การ์ด `pillsHTML` (แยกจาก `paintInfo` เป็น `pillSpecs` ใช้ร่วม) ป้ายสูง 16px (จอ ≥ 720: 19px) · `.tml.dkl` = grid (แถบการ์ดเต็มกว้าง · ปุ่มไอคอนมุมขวาบน) · เอา `.dkl__pip` + ระดับรวมออก
+- **ทดสอบ (Playwright Pixel 7 + 1280):** deck 2 ใบ + deck 4 ใบ (ระดับ 4 แบบ, Grade 10/6/3/ไม่มี, Trait รุ้ง/ส้ม/ไม่มี) · ชื่อ Trait ไม่โดนตัดบนมือถือ · แตะการ์ดในรายการ = `#deck/my/<id>` (ไม่เปิดหน้าการ์ด) · editor + รูป Save เหมือนเดิม · console error 0
+- **ไฟล์:** `index.html` · `js/deck.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`

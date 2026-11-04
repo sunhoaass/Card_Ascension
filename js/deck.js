@@ -523,32 +523,41 @@
 
   // under the card, like the saved image (owner 2026-11-04): rarity pill (the game card's own) · GRADE n (bronze / silver / gold / rainbow)
   // · trait (icon + name in its colour) · support: rarity · Mutation +x% (C.mutAt) · a changed pill flashes (§4)
+  // the pills of one slot: [{ p, key, html, attrs, label }] · used by the editor (paintInfo) and the deck list (deckRow)
+  function pillSpecs(kind, d, i, id) {
+    const x = lookup(kind, id), r = rarityAt(d, kind, i), lr = String(r).toLowerCase();
+    const out = [{ p: "rar", key: r, html: `<span>${esc(r)}</span>`, label: `Rarity: ${r}`,
+      attrs: { "data-r": r, style: r === "Normal" ? null : `--rar-bg:var(--gc-rar-${lr});--rar-line:var(--gc-rar-${lr}-line);--rar-ink:var(--gc-rar-${lr}-ink,#fff)` } }];
+    if (kind === "cards") {
+      const g = overallOf(d.grades && d.grades[i]), t = d.trait && d.trait[i] ? traitById(d.trait[i]) : null;
+      out.push({ p: "gr", key: String(g), html: g ? `<span>Grade</span><b>${g}</b>` : `<span>No grade</span>`, label: g ? `Grade ${g}` : "No grade",
+        attrs: { "data-band": gradeBand(g), "data-off": g ? null : "" } });
+      out.push({ p: "tr", key: t ? t.id : "", html: t ? `${traitIcon(t, "dk-pill__ic")}<span>${esc(t.name)}</span>` : `<span>No trait</span>`, label: t ? `Trait: ${t.name}` : "No trait",
+        attrs: { "data-c": t ? (t.color === "rainbow" ? "rainbow" : "solid") : null, "data-off": t ? null : "", style: t ? traitColor(t) || null : null } });
+    } else {
+      const m = x && C.mutAt ? C.mutAt(x, r) : 0;
+      out.push({ p: "mut", key: String(m), html: m ? `<span>Mutation +${m}%</span>` : `<span>No mutation</span>`, label: m ? `Mutation bonus +${m}% damage and HP` : "No mutation",
+        attrs: { "data-off": m ? null : "" } });
+    }
+    return out;
+  }
+  const pillAttrs = (attrs) => Object.entries(attrs).filter(([, v]) => v != null).map(([a, v]) => ` ${a}="${esc(v)}"`).join("");
+  const pillsHTML = (kind, d, i, id) => pillSpecs(kind, d, i, id).map((q) => `<span class="dk-pill dk-pill--${q.p}"${pillAttrs(q.attrs)}>${q.html}</span>`).join("");
   function paintInfo(slot, kind, d, i, id, animate) {
     const box = slot._info;
     if (!box) return;
     box.hidden = !id;
     if (!id) return;
-    const x = lookup(kind, id), r = rarityAt(d, kind, i), lr = String(r).toLowerCase();
-    const set = (p, key, html, attrs, label) => {
-      const el = $(`[data-pill="${p}"]`, box);
-      if (!el || el.dataset.key === key) return;
+    pillSpecs(kind, d, i, id).forEach((q) => {
+      const el = $(`[data-pill="${q.p}"]`, box);
+      if (!el || el.dataset.key === q.key) return;
       const was = el.dataset.key;
-      el.dataset.key = key;
-      Object.entries(attrs).forEach(([a, v]) => { if (v == null) el.removeAttribute(a); else el.setAttribute(a, v); });
-      el.innerHTML = html;
-      el.setAttribute("aria-label", label);
+      el.dataset.key = q.key;
+      Object.entries(q.attrs).forEach(([a, v]) => { if (v == null) el.removeAttribute(a); else el.setAttribute(a, v); });
+      el.innerHTML = q.html;
+      el.setAttribute("aria-label", q.label);
       if (animate && was && !FX.reduced) FX.flash(el);
-    };
-    set("rar", r, `<span>${esc(r)}</span>`, { "data-r": r, style: r === "Normal" ? null : `--rar-bg:var(--gc-rar-${lr});--rar-line:var(--gc-rar-${lr}-line);--rar-ink:var(--gc-rar-${lr}-ink,#fff)` }, `Rarity: ${r}`);
-    if (kind === "cards") {
-      const g4 = d.grades && d.grades[i], g = overallOf(g4), t = d.trait && d.trait[i] ? traitById(d.trait[i]) : null;
-      set("gr", String(g), g ? `<span>Grade</span><b>${g}</b>` : `<span>No grade</span>`, { "data-band": gradeBand(g), "data-off": g ? null : "" }, g ? `Grade ${g}` : "No grade");
-      set("tr", t ? t.id : "", t ? `${traitIcon(t, "dk-pill__ic")}<span>${esc(t.name)}</span>` : `<span>No trait</span>`,
-        { "data-c": t ? (t.color === "rainbow" ? "rainbow" : "solid") : null, "data-off": t ? null : "", style: t ? traitColor(t) || null : null }, t ? `Trait: ${t.name}` : "No trait");
-    } else {
-      const m = x && C.mutAt ? C.mutAt(x, r) : 0;
-      set("mut", String(m), m ? `<span>Mutation +${m}%</span>` : `<span>No mutation</span>`, { "data-off": m ? null : "" }, m ? `Mutation bonus +${m}% damage and HP` : "No mutation");
-    }
+    });
   }
   // a slot's name: 2 lines at the slot's size, then smaller type (to 8px) until it fits · refit when the slots change width
   function fitName(el) {
@@ -1868,20 +1877,31 @@
   /* ==========================================================
      Views: all decks (index) / one deck (editor)
      ========================================================== */
-  function stripCol(id, sup) {
+  // the deck list (owner 2026-11-04: show what was set inside): each card as the small game card (name · skill · its text ·
+  // the deck's ATK / HP · Grade / Trait badges) + its rarity · grade · trait pills, like the editor, small · empty = a dashed slot
+  function stripCol(d, i, buffs) {
     const col = document.createElement("span");
     col.className = "dkl__col";
+    const id = d.cards[i], x = id ? cardById.get(id) : null;
     const cell = document.createElement("span");
     cell.className = "dkl__c";
-    const x = id && cardById.get(id);
     if (x) {
-      cell.innerHTML = x.image ? C.artImg(x.image, true) : C.placeholderArt(x);
-      C.bindArt(cell, x);
-    } else cell.classList.add(id ? "is-missing" : "is-empty");
-    col.appendChild(cell);
-    const pip = document.createElement("i");
-    pip.className = "dkl__pip" + (sup ? " is-on" : "");
-    col.appendChild(pip);
+      const r = rarityAt(d, "cards", i), card = C.renderCard(x, r, { mini: true, tilt: false });
+      card.tabIndex = -1; card.removeAttribute("role"); card.setAttribute("aria-hidden", "true");
+      const b = buffs && buffs[i];
+      if (b && b.id === id) C.setCardNums(card, { atk: b.atk, hp: b.hp }, { animate: false });
+      paintTG(card, d.trait && d.trait[i], overallOf(d.grades && d.grades[i]), false);
+      cell.appendChild(card);
+      col.appendChild(cell);
+      const info = document.createElement("span");
+      info.className = "dk-info dkl__info";
+      info.innerHTML = pillsHTML("cards", d, i, id);
+      col.appendChild(info);
+    } else {
+      cell.classList.add(id ? "is-missing" : "is-empty");
+      if (id) cell.innerHTML = `<span class="dkl__miss">${esc(pretty(id))}</span>`;
+      col.appendChild(cell);
+    }
     return col;
   }
   function deckRow(d) {
@@ -1893,15 +1913,15 @@
       <button type="button" class="tml__open dkl__open fx-press" data-act="open" aria-label="Open ${esc(d.name)}, ${nc} of ${SLOTS} cards, ${ns} of ${SLOTS} support">
         <span class="tml__text">
           <span class="tml__name">${esc(d.name)}</span>
-          <span class="tml__meta">${esc(rarityLabel(d))} · ${nc}/${SLOTS} cards · ${ns}/${SLOTS} support</span>
+          <span class="tml__meta">${nc}/${SLOTS} cards · ${ns}/${SLOTS} support</span>
           <span class="dkl__strip" aria-hidden="true"></span>
           <span class="tml__date">Edited ${esc(fmtDate(d.updated))}</span>
         </span>
       </button>
-      <button type="button" class="iconbtn fx-press" data-act="dup" aria-label="Duplicate ${esc(d.name)}">${ICON.copy}</button>
-      <button type="button" class="iconbtn fx-press" data-act="del" aria-label="Delete ${esc(d.name)}">${ICON.trash}</button>`;
-    const strip = $(".dkl__strip", li);
-    d.cards.forEach((id, i) => strip.appendChild(stripCol(id, d.support[i])));
+      <button type="button" class="iconbtn fx-press dkl__dup" data-act="dup" aria-label="Duplicate ${esc(d.name)}">${ICON.copy}</button>
+      <button type="button" class="iconbtn fx-press dkl__del" data-act="del" aria-label="Delete ${esc(d.name)}">${ICON.trash}</button>`;
+    const strip = $(".dkl__strip", li), buffs = C.deckBuff ? C.deckBuff.compute(d) : [];
+    d.cards.forEach((id, i) => strip.appendChild(stripCol(d, i, buffs)));
     return li;
   }
   function renderIndex(animate) {
