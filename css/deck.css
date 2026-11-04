@@ -465,13 +465,12 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 }
 .dk-pill > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .dk-pill[data-off] { border-style: dashed; border-color: rgba(255, 255, 255, .14); background: transparent; color: var(--ink-faint); font-weight: 600; }
-/* rarity: the game card's own pill (css/fx.css .gc__rar) · Normal = plain dark */
+/* rarity: the game card's own pill colours (css/fx.css .gc__rar), upright type · Normal = plain dark */
 .dk-pill--rar { border-color: var(--rar-line, var(--ink-faint)); background: var(--rar-bg, var(--void-2)); color: var(--rar-ink, var(--ink-dim)); }
-.dk-pill--rar > span {
-  font-family: var(--gc-font-pop); font-style: italic; font-weight: 400; font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
-  padding: 0 1px; transform: translateY(.5px);
+.dk-pill--rar > span {   /* owner 2026-11-04: upright, the GRADE pill's face (Oswald) · not the card's slanted comic type */
+  font-family: var(--gc-font-num); font-style: normal; font-weight: 600; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 0 1px;
 }
-.dk-pill--rar:not([data-r="Normal"]):not([data-r="Godly"]):not([data-r="Godlike"]) > span { paint-order: stroke fill; -webkit-text-stroke: 2px var(--rar-line); }
+.dk-pill--rar:not([data-r="Normal"]):not([data-r="Godly"]):not([data-r="Godlike"]) > span { paint-order: stroke fill; -webkit-text-stroke: 2.5px var(--rar-line); }
 /* GRADE n: band-coloured edge + number (1–3 bronze · 4–6 silver · 7–9 gold · 10 rainbow) */
 .dk-pill--gr:not([data-off]) { --band: var(--tg-bronze); --band-n: var(--tg-bronze); border-color: transparent; background: linear-gradient(var(--gr-box), var(--gr-box)) padding-box, var(--band) border-box; gap: 4px; }
 .dk-pill--gr[data-band="silver"] { --band: var(--tg-silver); --band-n: var(--tg-silver); }
@@ -492,7 +491,7 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
   .dk-nm span { font-size: 13px; }
   .dk-info { gap: 5px; }
   .dk-pill { height: 23px; font-size: 11.5px; }
-  .dk-pill--rar > span { font-size: 14px; }
+  .dk-pill--rar > span { font-size: 13px; }
   .dk-pill--gr b { font-size: 15px; }
   .dk-pill__ic { width: 18px; height: 18px; }
 }

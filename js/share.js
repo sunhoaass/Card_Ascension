@@ -1038,11 +1038,12 @@
       }
     }
   }
-  // the rarity pill under a card: the card's own rarity pill (gcSpec · Normal = a plain dark pill) · fixed width when given
+  // the rarity pill under a card: the card's own rarity pill colours (gcSpec · Normal = a plain dark pill) · fixed width when given
   function drawRarityPill(ctx, cx, y, h, rarity, pal, fixedW) {
-    const sp = gcSpec(rarity), text = String(rarity || "Normal").toUpperCase(), pop = cssVar("--gc-font-pop") || pal.display;
+    // owner 2026-11-04: upright type, the GRADE pill's face (Oswald) · not the card's slanted comic type
+    const sp = gcSpec(rarity), text = String(rarity || "Normal").toUpperCase(), face = cssVar("--gc-font-num") || pal.body;
     ctx.save();
-    ctx.font = `italic 400 ${h * 0.68}px ${pop}`; if ("letterSpacing" in ctx) ctx.letterSpacing = "1px";
+    ctx.font = `600 ${h * 0.54}px ${face}`; if ("letterSpacing" in ctx) ctx.letterSpacing = "3px";
     const w = fixedW || Math.max(96, ctx.measureText(text).width + 30), x = cx - w / 2;
     roundRect(ctx, x, y, w, h, h / 2);
     if (sp.normal) { ctx.fillStyle = pal.void; ctx.fill(); ctx.lineWidth = 1.5; ctx.strokeStyle = pal.faint; ctx.stroke(); }
@@ -1054,7 +1055,7 @@
       ctx.lineWidth = 2; ctx.strokeStyle = sp.line; ctx.stroke();
     }
     ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
-    if (!sp.normal && !sp.flat) { ctx.lineWidth = 2.5; ctx.strokeStyle = sp.line; ctx.strokeText(text, cx, y + h / 2 + 1); }
+    if (!sp.normal && !sp.flat) { ctx.lineWidth = 3.5; ctx.strokeStyle = sp.line; ctx.strokeText(text, cx, y + h / 2 + 1); }
     ctx.fillStyle = sp.normal ? pal.dim : sp.ink; ctx.fillText(text, cx, y + h / 2 + 1);
     ctx.restore();
   }

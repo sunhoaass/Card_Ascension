@@ -2142,3 +2142,8 @@
 - **รูป Save:** การ์ด 190×253 → 210×280 · ชื่อ 17 → 22px ย่อได้ถึง 15 · ป้ายใต้การ์ด 3 แถว (Support 2) ขนาดเท่ากัน · `drawTG` วาดป้าย Trait/Grade บนการ์ด · รูปตัวอย่าง 4+4 ใบ = 2400 × 2292 px PNG 5.0 MB
 - **ทดสอบ (Playwright · Pixel 7 + จอ 1280):** ชื่อ "Divergent Fist Vessel" / "Ultra Instinct Saiyan" 2 บรรทัดครบบนมือถือ · 1 บรรทัดบนคอม · ป้ายระดับ 7 แบบ (Godly, Divine, Rainbow, Ascended, Cosmic, Shiny, Normal) · Grade 10 รุ้ง / 6 เงิน / 3 บรอนซ์ · Trait รุ้ง + สีส้ม · Mutation 13/7/1/ไม่มี · แตะป้าย Trait = แผ่นตั้งค่าเปิด · รูป Save ตรงกับหน้า · console error 0
 - **ไฟล์:** `index.html` · `js/deck.js` · `js/share.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-04 ป้ายระดับใต้การ์ด: ตัวตรง (`?v=92`)
+- **เจ้าของ:** "ไม่เอาตัวอักษรระดับเอียง ฟอนต์ด้วย ทั้งหน้าจัดการ์ดและ save" → ป้ายระดับใต้การ์ด Bangers เอียง → **Oswald 600 ตัวตรง** (ฟอนต์เดียวกับป้าย GRADE) ตัวพิมพ์ใหญ่ เว้นช่องไฟ · สีป้าย/ขอบ/ตัวอักษรเหมือนเดิม · ป้ายระดับบนตัวการ์ดเอง (แบบเกม) ไม่ได้แก้
+- **ทดสอบ:** หน้า Deck (Pixel 7) + รูป Save 2400 px: Godly, Divine, Rainbow, Ascended, Cosmic, Shiny, Normal ตัวตรงอ่านชัด · console error 0
+- **ไฟล์:** `index.html` · `js/share.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`
