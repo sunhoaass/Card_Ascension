@@ -279,5 +279,333 @@
     "prevTier": "",
     "bestDeck": [],
     "redraw": true
+  },
+  {
+    "id": "true-queen",
+    "name": "True Queen",
+    "image": "images/support/art/true-queen.webp",
+    "effect": {
+      "name": "Queen's Command",
+      "desc": "True Queen rallies her soldiers: the supported card makes every OTHER card in your deck deal {0}% more damage. Mutation bonus: +16% damage and max HP.",
+      "vals": [
+        2.777
+      ],
+      "real": [
+        2.776667
+      ],
+      "type": "dmg"
+    },
+    "odds": 6739,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 36.2,
+      "reliability": 88.6,
+      "flexibility": 95.8,
+      "synergy": 22.9,
+      "value": 55.9
+    },
+    "tier": "S",
+    "updated": "2026-11-02",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "charge-commander",
+    "name": "Charge Commander",
+    "image": "images/support/art/charge-commander.webp",
+    "effect": {
+      "name": "Dedicate Your Hearts!",
+      "desc": "Charge Commander leads the charge: the supported card makes every OTHER card in your deck deal {0}% more damage. Mutation bonus: +16% damage and max HP.",
+      "vals": [
+        4.533
+      ],
+      "type": "dmg"
+    },
+    "odds": 558000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 59.5,
+      "reliability": 92.8,
+      "flexibility": 97.9,
+      "synergy": 37.8,
+      "value": 69.5
+    },
+    "tier": "SS",
+    "updated": "2026-11-02",
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-doom-opener",
+      "pvp-titan-wall",
+      "pvp-beerus-squad",
+      "tower-blessed-blades",
+      "tower-storm-front",
+      "overall-blessed-blades",
+      "overall-beerus-squad"
+    ],
+    "redraw": true
+  },
+  {
+    "id": "gentle-priest",
+    "name": "Gentle Priest",
+    "image": "images/support/art/gentle-priest.webp",
+    "effect": {
+      "name": "Goddess Magic",
+      "desc": "Gentle Priest's goddess magic: the supported card heals EVERY card in your deck {0}% of its max HP at the start of each of its turns.",
+      "vals": [
+        1.8
+      ],
+      "type": "heal"
+    },
+    "odds": 571000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 92.4,
+      "reliability": 77.0,
+      "flexibility": 47.9,
+      "synergy": 100.0,
+      "value": 81.9
+    },
+    "tier": "Meta",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-doom-opener",
+      "pvp-titan-wall",
+      "pvp-beerus-squad",
+      "tower-blessed-blades",
+      "tower-storm-front",
+      "overall-blessed-blades",
+      "overall-beerus-squad"
+    ],
+    "redraw": true
+  },
+  {
+    "id": "guild-master-giant",
+    "name": "Guild Master Giant",
+    "image": "images/support/art/guild-master-giant.webp",
+    "effect": {
+      "name": "Guild Master's Faith",
+      "desc": "Guild Master Giant believes in his guild: the supported card gives EVERY card in your deck {0}% more damage and max HP. Mutation bonus: +32% damage and max HP.",
+      "vals": [
+        1.87
+      ],
+      "real": [
+        1.87
+      ],
+      "type": "dmg"
+    },
+    "odds": 20500000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 83.3,
+      "reliability": 96.2,
+      "flexibility": 100.0,
+      "synergy": 48.7,
+      "value": 82.3
+    },
+    "tier": "Meta",
+    "updated": "2026-11-02",
+    "prevTier": "",
+    "bestDeck": [
+      "pvp-doom-opener",
+      "pvp-titan-wall",
+      "tower-predator-court",
+      "overall-predator-court"
+    ],
+    "redraw": true
+  },
+  {
+    "id": "spirit-wave-master",
+    "name": "Spirit Wave Master",
+    "image": "images/support/art/spirit-wave-master.webp",
+    "effect": {
+      "name": "Spirit Wave Orb",
+      "desc": "Spirit Wave Master's Spirit Wave: the supported card hits again for {0}% of the damage every 2nd attack.",
+      "vals": [
+        68.57
+      ],
+      "type": "echo"
+    },
+    "odds": 19600000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 25.7,
+      "reliability": 70.4,
+      "flexibility": 31.2,
+      "synergy": 44.6,
+      "value": 39.5
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "flower-healer-captain",
+    "name": "Flower Healer Captain",
+    "image": "images/support/art/flower-healer-captain.webp",
+    "effect": {
+      "name": "Minazuki",
+      "desc": "Flower Healer Captain's Minazuki swallows the wounds: the supported card has a {0}% chance each turn to heal {1}% of its max HP.",
+      "vals": [
+        69,
+        22
+      ],
+      "type": "heal",
+      "knee": [
+        69,
+        22
+      ]
+    },
+    "odds": 189000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 100.0,
+      "reliability": 77.1,
+      "flexibility": 56.2,
+      "synergy": 93.8,
+      "value": 85.4
+    },
+    "tier": "Meta",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [
+      "tower-predator-court",
+      "tower-blessed-blades",
+      "overall-predator-court",
+      "overall-blessed-blades"
+    ],
+    "redraw": true
+  },
+  {
+    "id": "eternal-wish-dragon",
+    "name": "Eternal Wish Dragon",
+    "image": "images/support/art/eternal-wish-dragon.webp",
+    "effect": {
+      "name": "Wish Granted",
+      "desc": "Eternal Wish Dragon grants one wish: the supported card has a {0}% chance to come back once with {2}% HP and makes every OTHER card in your deck deal {1}% more damage.",
+      "vals": [
+        24.33,
+        3.33,
+        22
+      ],
+      "type": "revive"
+    },
+    "odds": 211000000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 79.5,
+      "reliability": 93.6,
+      "flexibility": 97.9,
+      "synergy": 60.2,
+      "value": 82.1
+    },
+    "tier": "Meta",
+    "updated": "2026-11-02",
+    "prevTier": "",
+    "bestDeck": [
+      "tower-predator-court",
+      "tower-blessed-blades",
+      "overall-predator-court",
+      "overall-blessed-blades"
+    ],
+    "redraw": true
+  },
+  {
+    "id": "angel-attendant",
+    "name": "Angel Attendant",
+    "image": "images/support/art/angel-attendant.webp",
+    "effect": {
+      "name": "Angel's Grace",
+      "desc": "Angel Attendant moves like an angel: the supported card dodges {0}% of hits and gets {1}% more damage and {2}% more max HP.",
+      "vals": [
+        29,
+        12.43,
+        12.43
+      ],
+      "type": "dodge"
+    },
+    "odds": 1900000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 84.0,
+      "reliability": 86.2,
+      "flexibility": 58.3,
+      "synergy": 92.1,
+      "value": 80.9
+    },
+    "tier": "SS",
+    "updated": "2026-11-03",
+    "prevTier": "S",
+    "bestDeck": [
+      "pvp-doom-opener"
+    ],
+    "redraw": true
+  },
+  {
+    "id": "first-master-fairy",
+    "name": "First Master Fairy",
+    "image": "images/support/art/first-master-fairy.webp",
+    "effect": {
+      "name": "Fairy Law",
+      "desc": "First Master Fairy casts Fairy Law: the supported card blasts every enemy card for {0}% of its max HP with its first hit (once per fight; bench cards keep 1 HP).",
+      "vals": [
+        11
+      ],
+      "type": "splash"
+    },
+    "odds": 2200000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 64.4,
+      "reliability": 90.4,
+      "flexibility": 100.0,
+      "synergy": 42.6,
+      "value": 72.4
+    },
+    "tier": "SS",
+    "updated": "2026-11-03",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "nine-tails-fox",
+    "name": "Nine Tails Fox",
+    "image": "images/support/art/nine-tails-fox.webp",
+    "effect": {
+      "name": "Nine-Tails Chakra Mode",
+      "desc": "Nine Tails Fox wraps the supported card in his chakra: it gets {0}% more damage and {1}% more max HP and takes {2}% less damage. Mutation bonus: +40% damage and max HP.",
+      "vals": [
+        30,
+        30,
+        15
+      ],
+      "real": [
+        30
+      ],
+      "type": "dmg",
+      "knee": [
+        35,
+        35,
+        40
+      ]
+    },
+    "odds": 2033000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 99.5,
+      "reliability": 90.3,
+      "flexibility": 56.2,
+      "synergy": 96.7,
+      "value": 88.4
+    },
+    "tier": "Meta",
+    "updated": "2026-11-03",
+    "prevTier": "S",
+    "bestDeck": [],
+    "redraw": true
   }
 ]
