@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=102">
-  <link rel="stylesheet" href="css/base.css?v=102">
-  <link rel="stylesheet" href="css/fx.css?v=102">
-  <link rel="stylesheet" href="css/cards.css?v=102">
-  <link rel="stylesheet" href="css/tier.css?v=102">
-  <link rel="stylesheet" href="css/deck.css?v=102">
-  <link rel="stylesheet" href="css/support.css?v=102">
-  <link rel="stylesheet" href="css/tiermaker.css?v=102">
-  <link rel="stylesheet" href="css/detail.css?v=102">
-  <link rel="stylesheet" href="css/home.css?v=102">
-  <link rel="stylesheet" href="css/battle.css?v=102">
+  <link rel="stylesheet" href="css/tokens.css?v=103">
+  <link rel="stylesheet" href="css/base.css?v=103">
+  <link rel="stylesheet" href="css/fx.css?v=103">
+  <link rel="stylesheet" href="css/cards.css?v=103">
+  <link rel="stylesheet" href="css/tier.css?v=103">
+  <link rel="stylesheet" href="css/deck.css?v=103">
+  <link rel="stylesheet" href="css/support.css?v=103">
+  <link rel="stylesheet" href="css/tiermaker.css?v=103">
+  <link rel="stylesheet" href="css/detail.css?v=103">
+  <link rel="stylesheet" href="css/home.css?v=103">
+  <link rel="stylesheet" href="css/battle.css?v=103">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -656,11 +656,13 @@
             </div>
           </section>
           <section class="panel bt-stage">
-            <div class="bt-stage__top"><span class="bt-stage__n"><span id="bt-stage-n">448</span> <small>/ 1,500</small></span>
-              <label class="tm-field bt-stage__in"><span class="tm-field__label">Your stage</span><input class="tm-input" id="bt-stage" type="number" inputmode="numeric" min="1" max="1500" value="448"></label></div>
-            <span class="bt-bar"><i id="bt-stage-bar" style="--p:.3"></i></span>
-            <p class="bt-faint bt-stage__note">The boss's ATK by stage is a guess until we have 2–3 stages from the game.</p>
-            <div class="bt-stats"><div class="bt-stat"><span>Your damage</span><b id="bt-mine">0</b></div><div class="bt-stat"><span>Fights</span><b id="bt-nfights">0</b></div></div>
+            <div class="bt-stage__top">
+              <label class="tm-field bt-stage__in"><span class="tm-field__label">Start stage</span><input class="tm-input" id="bt-stage" type="number" inputmode="numeric" min="0" max="1500" value="0"></label>
+              <button type="button" class="tm-btn fx-press bt-load" data-bt="refresh" aria-label="Refresh: start a new week"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>Refresh</button></div>
+            <span class="bt-bar"><i id="bt-stage-bar" style="--p:0"></i></span>
+            <p class="bt-stage__next" id="bt-next">Next at 10.0K</p>
+            <p class="bt-faint bt-stage__note">Stage 414 and up follow the game (each stage needs ×1.03 damage). Lower stages and the boss's ATK between stages are a guess.</p>
+            <div class="bt-stats"><div class="bt-stat"><span>Your damage</span><b id="bt-mine">0</b></div><div class="bt-stat"><span>Stage</span><b><span id="bt-reached">0</span> <small>/ 1,500</small></b></div></div>
           </section>
           <section class="panel">
             <div class="bt-h"><h3>Best fights</h3></div>
@@ -843,19 +845,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=102"></script>
-  <script src="js/app.js?v=102"></script>
-  <script src="js/deckbuff.js?v=102"></script>
-  <script src="js/teamscore.js?v=102"></script>
-  <script src="js/share.js?v=102"></script>
-  <script src="js/cards.js?v=102"></script>
-  <script src="js/detail.js?v=102"></script>
-  <script src="js/tier.js?v=102"></script>
-  <script src="js/deck.js?v=102"></script>
-  <script src="js/support.js?v=102"></script>
-  <script src="js/home.js?v=102"></script>
-  <script src="js/tiermaker.js?v=102"></script>
-  <script src="js/battle.js?v=102"></script>
+  <script src="js/fx.js?v=103"></script>
+  <script src="js/app.js?v=103"></script>
+  <script src="js/deckbuff.js?v=103"></script>
+  <script src="js/teamscore.js?v=103"></script>
+  <script src="js/share.js?v=103"></script>
+  <script src="js/cards.js?v=103"></script>
+  <script src="js/detail.js?v=103"></script>
+  <script src="js/tier.js?v=103"></script>
+  <script src="js/deck.js?v=103"></script>
+  <script src="js/support.js?v=103"></script>
+  <script src="js/home.js?v=103"></script>
+  <script src="js/tiermaker.js?v=103"></script>
+  <script src="js/battle.js?v=103"></script>
 </body>
 </html>
 
