@@ -656,28 +656,34 @@
   }
   // a support (owner 2026-11-03 "Support Layout Lab"): measured on the game's Hat and Clogs Shopkeeper (Deck view, 600×840)
   const RDU = { nameCap: 3.42, nameTop: 6.83, abnCap: 5.83, abnTop: 74.17, abnX: 2.83, abnMax: 92, txtCap: 3.08, txtTop: 85,
-    txtPitch: 6.33 * 3.08 / 3.58, txtL: 5, txtR: 95, txtEnd: 118, wordCap: 8.5, wordTop: 120.5 };   // 3:4 card: the lower block 5.5cqw higher (owner 2026-11-03)
+    txtPitch: 6.33 * 3.08 / 3.58, txtL: 5, txtR: 95, txtEnd: 114, wordCap: 8.5, wordTop: 120.5 };   // 3:4 card: the lower block 5.5cqw higher (owner 2026-11-03)
   function fitRdSup(el) {
     const q = (s) => $(s, el);
     const nm = q(".rd__nm");
     if (nm) fitRdName(nm, RDU.nameCap, RDU.nameTop);
     const abn = q(".rd__abn");
-    if (abn) {   // Anton slanted like the name (owner's pick)
+    if (abn) {   // Anton slanted like the name (owner's pick) · stays on the game's line at every rarity
       const base = RDU.abnCap / ANTON.c, w = capsW(abn.textContent.toUpperCase(), 0), fs = w * base + RDC.slant > RDU.abnMax ? (RDU.abnMax - RDC.slant) / w : base;
       abn.style.fontSize = cq(fs);
       abn.style.left = cq(RDU.abnX - RDC.padN);
       abn.style.top = cq(RDU.abnTop + (RDU.abnCap - ANTON.c * fs) / 2 - capOff(ANTON, 1) * fs);
     }
+    // text + Mutation line = the card's size rule (owner 2026-11-05 "สมดุลและเป็นมาตรฐาน"): short text grows (up to RDC.txtGrow ×
+    // the game's size), long text shrinks, the line pitch in proportion · starts on the game's line (txtTop: the gap under the
+    // ability name stays) and the last line never goes below txtEnd (a clear gap above SUPPORT) · a rarity with a Mutation
+    // line = more lines → the block gets smaller (never overlaps)
     const abd = q(".rd__abd"), mut = q(".rd__mut"), txt = q(".rd__txt");
-    if (abd && txt) {   // text + Mutation line: the card's size, the game's support line pitch · smaller until it ends above SUPPORT
+    if (abd && txt) {
       const words = wordsOf(abd.textContent), mw = mut && !mut.hidden ? wordsOf(mut.textContent) : [], room = RDU.txtR - RDU.txtL;
-      let f = RDU.txtCap / OSW.c, L = RDU.txtPitch;
-      for (let i = 0; i < 16; i++) {
+      const f0 = RDU.txtCap / OSW.c, k = RDU.txtPitch / f0;
+      let f = f0 * RDC.txtGrow;
+      for (let i = 0; i < 400; i++) {
         const n = rdLines(words, "t", f, room)[0] + (mw.length ? rdLines(mw, "t", f, room)[0] : 0);
-        if (RDU.txtTop + OSW.c * f + (n - 1) * L <= RDU.txtEnd) break;
-        f *= 0.95; L *= 0.95;
+        if (RDU.txtTop + OSW.c * f + (n - 1) * k * f <= RDU.txtEnd) break;
+        f *= 0.995;
       }
-      [abd, mut].forEach((n) => { if (n) { n.style.fontSize = cq(f); n.style.lineHeight = cq(L); } });
+      const L = k * f;
+      [abd, mut].forEach((m) => { if (m) { m.style.fontSize = cq(f); m.style.lineHeight = cq(L); } });
       txt.style.top = cq(RDU.txtTop - capOff(OSW, L / f) * f);
     }
     const word = q(".rd__sup"), ws = word && word.firstElementChild;
