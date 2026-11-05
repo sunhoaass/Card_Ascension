@@ -145,7 +145,7 @@
 .bt-res__big.lose { color: var(--bt-lose); }
 .bt-res__big.draw { color: var(--ink-dim); -webkit-text-stroke-color: var(--bt-dim-line); }
 .bt-res__why { margin: 0; color: var(--ink-dim); font-size: 13.5px; }
-.bt-res__kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: var(--s-4); }
+.bt-res__kv { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 8px; margin-top: var(--s-4); }
 .bt-res__kv div { padding: 8px; border-radius: 10px; background: var(--bt-well); border: 1px solid var(--bt-wash-08); }
 .bt-res__kv b { display: block; font: 700 16px/1.15 var(--gc-font-num); font-variant-numeric: tabular-nums; }
 .bt-res__kv span { font-size: 10.5px; font-weight: 800; letter-spacing: .06em; color: var(--ink-faint); text-transform: uppercase; }
@@ -230,6 +230,8 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-ft__round b { font: 700 calc(24px * var(--hs))/1 var(--gc-font-num); color: var(--bt-ng-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bt-ft__round b em { font-style: normal; font-size: .62em; color: var(--bt-ng-dim); }
 .bt-ft__round b.pop { animation: bt-pop 340ms var(--ease); }
+/* only Guild Boss shows the round count · Custom and later modes show just the mode name (owner 2026-11-05) */
+.bt-fight--noround .bt-ft__rw, .bt-fight--noround #bt-round { display: none; }
 @keyframes bt-pop { 40% { transform: scale(1.25); } }
 .bt-spd { justify-self: end; display: inline-flex; gap: 3px; padding: 3px; border-radius: 99px; }
 .bt-spd button { min-width: calc(40px * var(--hs)); min-height: calc(40px * var(--hs)); border: 0; border-radius: 99px; background: transparent; color: var(--bt-ng-dim); font: 700 calc(15px * var(--hs))/1 var(--gc-font-num); }

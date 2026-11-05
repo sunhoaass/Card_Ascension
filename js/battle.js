@@ -1,6 +1,6 @@
 /* ==========================================================
    Card Battle Infinity — Battle (PROGRESS ▶️ "⚔️ ระบบต่อสู้" + §14 · step ② · from mockup/battle 2026-11-04)
-   Menu "Battle" (4th) · 2 tabs: Guild Boss | Arena · routes (js/app.js PAGES "battle"):
+   Menu "Battle" (4th) · 2 tabs: Guild Boss | Custom (route stays #battle/arena) · routes (js/app.js PAGES "battle"):
      #battle = Guild Boss · #battle/arena · #battle/fight (the fight, over the site) · #battle/result
    Teams are built like a deck: the Deck page's parts (C.deckParts in js/deck.js: pills, Trait / Grade badges, the
    slot sheet's Grade + Trait) + battle-only Custom HP / ATK · numbers = js/deckbuff.js (deck buffs + trait + grade).
@@ -716,12 +716,13 @@
     // (owner's pick 2026-11-05: you gave up)
     finish(stop = false) {
       this.done = true; this.stopped = !!stop;
-      const A = this.alive("a"), B = this.alive("b"), at = stop ? "Ended in round " + this.round : "30 rounds";
+      // only Guild Boss shows rounds · Custom and later modes don't show the round count (owner 2026-11-05)
+      const A = this.alive("a"), B = this.alive("b"), at = stop ? "Ended in round " + this.round : this.boss ? "30 rounds" : "No team wiped";
       if (this.boss) { this.win = A ? "end" : "lose"; this.why = A ? (stop ? at : "30 rounds done") : "Your team was wiped in round " + this.round; return true; }
-      if (stop) { this.win = "lose"; this.why = "You ended the battle in round " + this.round; return true; }
+      if (stop) { this.win = "lose"; this.why = "You ended the battle"; return true; }
       if (!A && !B) { this.win = "draw"; this.why = "Both teams fell"; return true; }
-      if (!B) { this.win = "win"; this.why = "Enemy team wiped in round " + this.round; return true; }
-      if (!A) { this.win = "lose"; this.why = "Your team was wiped in round " + this.round; return true; }
+      if (!B) { this.win = "win"; this.why = "Enemy team wiped"; return true; }
+      if (!A) { this.win = "lose"; this.why = "Your team was wiped"; return true; }
       const thp = (s) => { const t = this[s]; return t.reduce((x, u) => x + Math.max(0, u.hp), 0) / t.reduce((x, u) => x + u.max, 0); };
       const fhp = (s) => { const f = this.front(s); return f ? f.hp / f.max : 0; };
       if (A !== B) { this.win = A > B ? "win" : "lose"; this.why = at + " · cards alive " + A + " vs " + B; }
@@ -994,7 +995,7 @@
       case "dodge": dodgeFx(u); SND.play("dodge"); break;
       case "dot": { const k = ST_N[ev.v] ? ev.v : "poison"; statusFx(u, k, true); SND.play(k + "On"); setNums(u); break; }
       case "zone": case "copy": case "nums": setNums(u); break;
-      case "round": { const r = $("#bt-round"); r.innerHTML = ev.v + "<em> / 30</em>"; retrig(r, "pop"); break; }
+      case "round": { if (!F.b || !F.b.boss) break; const r = $("#bt-round"); r.innerHTML = ev.v + "<em> / 30</em>"; retrig(r, "pop"); break; }
       case "bench": case "benchdie": drawBench(); break;
     }
   }
@@ -1029,8 +1030,9 @@
     if (!b.b.length) { FX.toast(mode === "boss" ? "The boss card isn't in the library" : "Add at least one card to the enemy team"); return; }
     F.token++; const my = F.token; F.mode = mode; F.paused = false;
     F.b = b; F.started = false; openFight();
-    $("#bt-mode").textContent = mode === "boss" ? "Stage " + fmt(STAGE) : "Arena";
+    $("#bt-mode").textContent = mode === "boss" ? "Stage " + fmt(STAGE) : "Custom";
     $("#bt-round").innerHTML = "1<em> / 30</em>";
+    $("#bt-fight").classList.toggle("bt-fight--noround", mode !== "boss");   // only Guild Boss shows the round count
     $("#bt-team-b").textContent = mode === "boss" ? "Boss" : "Enemy team";
     drawBench(); drawSlot(b.front("a"), true); drawSlot(b.front("b"), true); SND.play("enter");
     await wait(500 * F.k); if (my !== F.token) return;
@@ -1077,7 +1079,7 @@
     const b = F.b; F.paused = true;
     const res = await dialog({
       title: "End the battle here?",
-      html: `<p class="tm-dlg__text">${b.boss ? "Your damage so far counts, and the stage moves up from it." : "Ending an Arena battle counts as a loss."}</p>`,
+      html: `<p class="tm-dlg__text">${b.boss ? "Your damage so far counts, and the stage moves up from it." : "Ending a Custom battle counts as a loss."}</p>`,
       actions: [{ label: "Keep fighting", value: "cancel" }, { label: "End battle", value: "ok", submit: true, cls: "tm-btn--danger" }],
     });
     F.paused = false;
@@ -1104,8 +1106,8 @@
     const hero = b.boss
       ? `<p class="bt-res__eyebrow">DAMAGE DEALT</p><p class="bt-res__big" id="bt-res-num">0</p><p class="bt-res__why">${esc(b.why)}${b.win === "lose" ? "" : " · " + b.alive("a") + "/" + team.length + " cards still standing"}</p>
         <div class="bt-res__kv"><div><span>Your total</span><b>${fmtS(mine())}</b></div><div><span>Stage</span><b class="up">${b.st0} → ${b.st1}</b></div><div><span>Next at</span><b>${b.st1 >= SMAX ? "Max" : fmtG(need(b.st1 + 1))}</b></div></div>`
-      : `<p class="bt-res__eyebrow">ARENA</p><p class="bt-res__big ${b.win}">${b.win === "win" ? "VICTORY" : b.win === "lose" ? "DEFEAT" : "DRAW"}</p><p class="bt-res__why">${esc(b.why)}</p>
-        <div class="bt-res__kv"><div><span>Damage dealt</span><b>${fmtS(total)}</b></div><div><span>Cards left</span><b>${b.alive("a")} vs ${b.alive("b")}</b></div><div><span>Rounds</span><b>${b.round}</b></div></div>`;
+      : `<p class="bt-res__eyebrow">CUSTOM</p><p class="bt-res__big ${b.win}">${b.win === "win" ? "VICTORY" : b.win === "lose" ? "DEFEAT" : "DRAW"}</p><p class="bt-res__why">${esc(b.why)}</p>
+        <div class="bt-res__kv"><div><span>Damage dealt</span><b>${fmtS(total)}</b></div><div><span>Cards left</span><b>${b.alive("a")} vs ${b.alive("b")}</b></div></div>`;
     const procs = (u) => Object.entries(u.st.procs).filter(([, r]) => r.exp > 0).map(([n, r]) => `<span class="chip glass">${esc(n)} ${r.n}<em>/ ${r.exp.toFixed(1)} expected</em></span>`).join("");
     const rows = team.map((u) => `<div class="bt-pc${u === mvp && u.st.dmg > 0 ? " mvp" : ""}"><img src="${esc(thumbOf("cards", u.x))}" alt=""><div>
         <p class="bt-pc__name"><span>${esc(u.name)}</span>${u === mvp && u.st.dmg > 0 ? `<span class="chip glass bt-mvp">MVP · ${pct(u.st.dmg / Math.max(1, total))}</span>` : u.st.died ? `<span class="chip glass">Fell</span>` : u.st.hits ? "" : `<span class="chip glass">Didn't fight</span>`}</p>
@@ -1130,7 +1132,7 @@
     const disp = tok("--font-display", "serif"), body = tok("--font-body", "sans-serif"), num = tok("--gc-font-num", "sans-serif");
     const total = teamDmg(b);
     ctx.textAlign = "center"; ctx.fillStyle = gold; ctx.font = `400 34px ${disp}`;
-    ctx.fillText(b.boss ? `GUILD BOSS · STAGE ${b.st0 != null ? b.st0 + " → " + b.st1 : STAGE}` : "ARENA", W / 2, 80);
+    ctx.fillText(b.boss ? `GUILD BOSS · STAGE ${b.st0 != null ? b.st0 + " → " + b.st1 : STAGE}` : "CUSTOM BATTLE", W / 2, 80);
     ctx.fillStyle = b.boss ? dmgC : b.win === "win" ? tok("--bt-win", "lime") : b.win === "lose" ? tok("--bt-lose", "red") : dim;
     ctx.font = `700 92px ${num}`;
     ctx.fillText(b.boss ? fmt(total) : b.win === "win" ? "VICTORY" : b.win === "lose" ? "DEFEAT" : "DRAW", W / 2, 185);
@@ -1147,7 +1149,7 @@
     });
     ctx.textAlign = "center"; ctx.fillStyle = dim; ctx.font = `400 22px ${body}`; ctx.fillText("CARD BATTLE INFINITY · BATTLE", W / 2, H - 44);
     const blob = await new Promise((res, rej) => cv.toBlob((x) => (x ? res(x) : rej(new Error("Couldn't encode the image"))), "image/png"));
-    return { blob, width: cv.width, height: cv.height, filename: `battle-${b.boss ? "guild-boss" : "arena"}-${new Date().toLocaleDateString("en-CA")}.png` };
+    return { blob, width: cv.width, height: cv.height, filename: `battle-${b.boss ? "guild-boss" : "custom"}-${new Date().toLocaleDateString("en-CA")}.png` };
   }
   function saveImage(btn) { const b = lastResult; if (!b || !C.share) return; C.share.previewDialog({ title: "Save as image", render: () => resultImage(b), flashEl: btn }); }
 

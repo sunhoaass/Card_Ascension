@@ -2380,3 +2380,8 @@
 - **ทดสอบ (Chromium 390×844):** หน้า Cards 120 ใบ (3 หน้า) รูปหน้า 1 โหลด 50/50 · หน้าดูการ์ดทั้ง 20 ใบใหม่ (`#card/<id>`): รูป 600 กว้างโหลดครบ · ไม่มีอะไรล้นขอบการ์ด 0 · ชื่อตรงข้อมูล · ไม่มี error / 404 · เปิดดู screenshot Undefeated Reaper: ชื่อ HP ป้ายโอกาส ข้อความ ATK อ่านได้ ไม่ทับกัน
 - **หมายเหตุ:** `inbox/blank/skeleton-unmatched.jpg` ยังไม่ตรงใบไหน (ไม่มีรูปโครงกระดูกในชุดนี้)
 - **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+
+**2026-11-05 · Battle: Arena → Custom + ไม่แสดงจำนวนรอบนอก Guild Boss** (`?v=112`)
+- แท็บ/หัวจอสู้/หน้าผล/รูปบันทึก/ข้อความยืนยัน End = "Custom" · route + key เดิม · โหมดที่ไม่ใช่ boss: ซ่อน " · Round" + `#bt-round` (class `bt-fight--noround`), event `round` ไม่อัปเดตตัวเลข, หน้าผลตัดช่อง Rounds (`.bt-res__kv` เป็น `grid-auto-flow: column` → 2 หรือ 3 ช่องเต็มแถว), ข้อความผลตัด "in round N"
+- **ทดสอบ (Chromium 400×860):** แท็บขึ้น Custom · Watch one fight: หัวจอขึ้น "CUSTOM" ไม่มีเลขรอบ · หน้าผล 2 ช่อง (Damage dealt · Cards left) · Guild Boss ยังขึ้น "Stage 0 · Round 2 / 30" · ไม่มี error ใน console
+- **ไฟล์:** `index.html` · `js/battle.js` · `css/battle.css` · `PROGRESS.md` · `HISTORY.md`
