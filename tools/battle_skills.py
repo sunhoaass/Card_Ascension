@@ -175,7 +175,8 @@ SUPPORT = {
     "weather-witch-navigator": {"stun": {"p": "$0", "turns": 2, "lose": 0.5, "kind": "Paralyze"}},
     "zero-gravity-hero": {"stun": {"p": "$0", "turns": 1, "lose": 1, "kind": "Stun"}},
     "half-elf-ice-mage": {"stun": {"p": "$0", "turns": 1, "lose": 1, "kind": "Freeze"}},
-    "great-spirit-cat": {"stun": {"p": "$0", "turns": 1, "lose": 1, "kind": "Freeze"}, "vsFrozen": 1.04},   # frozen: 30% more from it (the rule's 25% × 1.04)
+    "great-spirit-cat": {"stun": {"p": "$0", "turns": 1, "lose": 1, "kind": "Freeze"}, "vsFrozen": "1+$1"},   # "does {1}% more damage to frozen enemies" (on top of the rule's 25% for any frozen enemy)
+    "wish-granter": {"reviveChance": {"p": 1, "v": 1}, "regen": "$0", "todo": ["blocks the first 2 debuffs that would hit it each fight"]},
     "flower-hand-scholar": {"splash": "$0", "stun": {"p": "$1", "turns": 1, "lose": 1, "kind": "Stun"}},
     "master-spy-father": {"crit": ["$0", 2]},
     "hawks-eye-sniper": {"crit": ["$0", 2]},
@@ -243,7 +244,7 @@ SUPPORT = {
     "sky-dragon-healer": {"todo": ["while it waits on the bench, the card in front heals"]},
 }
 # only "+x% damage / max HP" (js/deckbuff.js) or nothing in a fight (gems) → no entry
-STAT_ONLY = {"automail-mechanic", "navigation-pixie", "foundation-gentleman", "star-key-mage", "wish-granter", "ogre-shrine-princess",
+STAT_ONLY = {"automail-mechanic", "navigation-pixie", "foundation-gentleman", "star-key-mage", "ogre-shrine-princess",
              "corps-master", "guild-master-giant", "true-queen", "charge-commander", "shadow-garden-strategist"}
 
 

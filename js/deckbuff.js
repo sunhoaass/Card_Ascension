@@ -53,7 +53,7 @@
   /* ---------- reading support texts ---------- */
   const STAT_RE = /\{(\d)\}% more (damage and max HP|max HP and damage|damage|max HP)(?! from)/g;
   // a piece that says when: the buff doesn't count
-  const COND = /every time|every turn|each turn|every (?:other|\d+(?:st|nd|rd|th)) attack|\bfirst\b|\bunder \d|\bwhen\b|\bafter\b|\bonce\b|\bwhile\b|\bif\b|\brandom\b|\bup to \d+ times\b|\bchance\b|\bon hit\b/i;
+  const COND = /every time|every turn|each turn|every (?:other|\d+(?:st|nd|rd|th)) attack|\bfirst\b|\bunder \d|\bwhen\b|\bafter\b|\bonce\b|\bwhile\b|\bif\b|\brandom\b|\bup to \d+ times\b|\bchance\b|\bon hit\b|\bfrozen\b/i;
   // a piece that only says when, for the pieces after it in the sentence ("from its 3rd attack on, it deals …")
   const PREFIX = /^(?:from|under|when|after|while|if|once|every time|the first time|at the start|each turn|every turn)\b/i;
   const PIECES = /,\s*|\s+and\s+(?=(?:it|the supported card|gets?|deals?|takes?|makes?|heals?|dodges?|has|counters?|can't)\b)|\s+and\s+(?=\{\d\})/i;

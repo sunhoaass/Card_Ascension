@@ -3934,7 +3934,7 @@
       "series": "",
       "odds": 21400000,
       "vals": [
-        2.5
+        34.93
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_122109913.png",
@@ -3949,7 +3949,7 @@
       "series": "",
       "odds": 22400000,
       "vals": [
-        10
+        29
       ],
       "type": "counter",
       "src": "RobloxScreenShot20261028_122214412.png",
@@ -3964,7 +3964,7 @@
       "series": "",
       "odds": 17200000,
       "vals": [
-        16
+        17.4
       ],
       "type": "confuse",
       "src": "RobloxScreenShot20261028_122331499.png",
@@ -3979,7 +3979,8 @@
       "series": "",
       "odds": 18800000,
       "vals": [
-        20
+        24.5,
+        46.67
       ],
       "type": "freeze",
       "src": "RobloxScreenShot20261028_122356079.png",
@@ -4388,7 +4389,7 @@
       "series": "",
       "odds": 16400000,
       "vals": [
-        8
+        19.27
       ],
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_122951963.png",
@@ -4784,7 +4785,7 @@
       "series": "",
       "odds": 18000000,
       "vals": [
-        8.3
+        7.77
       ],
       "type": "weaken",
       "src": "RobloxScreenShot20261028_123058467.png",
@@ -4799,7 +4800,8 @@
       "series": "",
       "odds": 220400000,
       "vals": [
-        53
+        80,
+        61
       ],
       "type": "revive",
       "src": "RobloxScreenShot20261028_123217241.png",
@@ -5025,7 +5027,7 @@
       "series": "",
       "odds": 204100000,
       "vals": [
-        24
+        57
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_123448917.png",
@@ -5748,10 +5750,9 @@
       "series": "",
       "odds": 21400000000,
       "vals": [
-        14,
-        14
+        2
       ],
-      "type": "dmg",
+      "type": "heal",
       "src": "RobloxScreenShot20261028_124043205.png",
       "round": 15,
       "oddsShort": true,
