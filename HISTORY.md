@@ -2505,3 +2505,11 @@
 - **ทดสอบ (Node + Playwright Chromium 390):** deck ในรูป: Founding Titan ATK **7,516,970,289** (= เกม) · HP **33.4B** (= เกม) · ข้อความ NTF Godly ยัง "51.7%" · #home #cards #deck #battle console error 0
 - **ยังไม่รู้:** HP เต็มของ Founding Titan ในเกม (เห็นแค่ 33.4B) · ระดับอื่นของ NTF เปลี่ยนเล็กน้อย (Godlike 82.40 แทน 82.5 ก่อน soft curve)
 - **ไฟล์:** `index.html` · `data/support.json` · `data/cards.json` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 🛡️ Battle: "starts with X% less damage" ตอนลงสนาม · ครั้งเดียวต่อไฟต์ (`?v=119` → `120`)
+- **เจ้าของสั่ง:** การ์ดที่ลดดาเมจ/ลดพลังโจมตีศัตรู ทำงานเฉพาะตอนการ์ดลงสนาม · 1 ครั้งต่อไฟต์ (ใบแรก 15% ตาย → ใบสอง 17% ลง = ไม่ทำงาน) · ลดทุกใบของทีมศัตรู ตลอดแมพ ล้างไม่ได้ · ยกเว้นการ์ด/Support ที่เขียนว่าลดทั้งทีม = ช่องไหนก็มีผล · Infinity Tower: ชั้นใหม่ = ลดได้อีก
+- **เดิม:** `start()` เอา `weaken` ของทุกใบใน 4 ช่องมาคูณ ATK ศัตรูตั้งแต่เริ่ม (ซ้อนกันได้ · ใบที่ไม่เคยลงก็มีผล)
+- **ทำ (`js/battle.js`):** `onEnter()` ใช้ `weaken` ถ้าฝั่งนั้นยังไม่เคยใช้ (`wkUsed`) · `weakenTeam(side, w)` คูณ `atk` `atk0` `atkS` `weakM` ทุกใบของทีมศัตรู + เก็บ `wkM[side]` ให้เงา (`arise`) ที่เข้าทีมทีหลังโดนด้วย · ป้าย "-x% DMG" ขึ้นที่ใบหน้าศัตรูตอนลด · field ใหม่ `weakenAll` (ลดทั้งทีม · ช่องไหนก็ได้ · ใช้ตอนเริ่ม · ยังไม่มีใบไหนใช้) · `index.html` `?v=120`
+- **ทดสอบ (Playwright Chromium · `CBI.battle.Battle`):** Storm Dragon ช่อง 1 + Destroyer God ช่อง 2 + World Champ + Founding Titan → เริ่ม ATK ศัตรู × 0.85 ทั้ง 4 ใบ · Storm ตาย Destroyer ลง ยัง 0.85 · ป้าย −DMG 1 ครั้งทั้งไฟต์ · Sword Saint (HP 1) ช่อง 1 + Destroyer God ช่อง 2 + Storm Dragon ช่อง 3 → เริ่ม 1.00 · Destroyer ลง → 0.83 · Storm ลงต่อ → ยัง 0.83 · Guild Boss: บอส Quirk Thief Overlord ลดทีมเรา 0.93 ตอนเริ่ม · ทีมเรา Storm ช่อง 1 ลดบอส 0.85 · สุ่มทีม 58 ไฟต์จากการ์ด 400 ใบ ไม่ error · console error 0
+- **ยังไม่แก้:** `tools/deck_sim.py` / `matchup_sim.py` / `team_sim.py` (คะแนนงาน B) ยังลดจากทุกใบตั้งแต่เริ่ม · ยังไม่รู้ว่าการ์ด/Support ใบไหนเขียน "ลดทั้งทีม"
+- **ไฟล์:** `index.html` · `js/battle.js` · `PROGRESS.md` · `HISTORY.md`
