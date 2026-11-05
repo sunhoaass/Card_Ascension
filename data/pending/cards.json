@@ -7246,40 +7246,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "dragon-slayer-swordsman",
-    "name": "Dragon Slayer Swordsman",
-    "series": "",
-    "image": "images/cards/dragon-slayer-swordsman.webp",
-    "base": {
-      "atk": 51539,
-      "hp": 343594,
-      "def": 0,
-      "status": 0,
-      "odds": 10600000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Berserker Armor",
-      "desc": "Guts swings the Dragon Slayer. Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. +9.1% damage every time it is hit. Survives its first killing blow with 1 HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "eight-gates-beast",
     "name": "Eight Gates Beast",
     "series": "",
@@ -7484,40 +7450,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "giant-viking",
-    "name": "Giant Viking",
-    "series": "",
-    "image": "images/cards/giant-viking.webp",
-    "base": {
-      "atk": 61351,
-      "hp": 409006,
-      "def": 0,
-      "status": 0,
-      "odds": 12100000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Berserker Joy",
-      "desc": "Thorkell loves a good fight. +8.2% damage every time it is hit. Takes 16% less damage. Every 2nd attack also hits the card behind for 35%. +16% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "grace-archangel",
     "name": "Grace Archangel",
     "series": "",
@@ -7534,40 +7466,6 @@
     "passive": {
       "name": "Sunshine",
       "desc": "Mael's Sunshine burns brighter than anything. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). +50% damage against Demon cards. Takes 25% less damage. +8% damage every turn (up to 6 times)."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "gravity-corruption",
-    "name": "Gravity Corruption",
-    "series": "",
-    "image": "images/cards/gravity-corruption.webp",
-    "base": {
-      "atk": 73778,
-      "hp": 491854,
-      "def": 0,
-      "status": 0,
-      "odds": 13800000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Corruption",
-      "desc": "Chuuya's Corruption bends gravity. +47% damage. Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. Loses 5% of its max HP every attack."
     },
     "skill": {
       "name": "",
@@ -7636,40 +7534,6 @@
     "passive": {
       "name": "Heavenly Restriction",
       "desc": "Maki: 30% chance to dodge each hit. Ignores shields, dodges and barriers. +10% damage every turn (up to 5 times). +30% damage against Curse cards."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "hell-butler",
-    "name": "Hell Butler",
-    "series": "",
-    "image": "images/cards/hell-butler.webp",
-    "base": {
-      "atk": 55017,
-      "hp": 366780,
-      "def": 0,
-      "status": 0,
-      "odds": 12600000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "One Hell of a Butler",
-      "desc": "Sebastian is simply one hell of a butler. 40% chance to dodge each hit. Its attacks can't be dodged. 30% chance to crit for 2x damage. Takes 20% less damage."
     },
     "skill": {
       "name": "",
@@ -8022,40 +7886,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "muscle-magic-boy",
-    "name": "Muscle Magic Boy",
-    "series": "",
-    "image": "images/cards/muscle-magic-boy.webp",
-    "base": {
-      "atk": 49421,
-      "hp": 329476,
-      "def": 0,
-      "status": 0,
-      "odds": 14400000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Muscle Magic",
-      "desc": "Mash has no magic, just muscles. Ignores shields, dodges and barriers. +50% damage. Can't be stunned, frozen or paralyzed. +8% damage every turn (up to 6 times)."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "number-one-hero",
     "name": "Number One Hero",
     "series": "",
@@ -8140,40 +7970,6 @@
     "passive": {
       "name": "Kakuja: One-Eyed Owl",
       "desc": "Eto: Every 2nd attack also hits the card behind for 35%. Heals 5.1% of its max HP every turn. +5.7% damage every time it is hit. Heals 8.7% of the damage it deals."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "order-hunter-x",
-    "name": "Order Hunter X",
-    "series": "",
-    "image": "images/cards/order-hunter-x.webp",
-    "base": {
-      "atk": 49969,
-      "hp": 333128,
-      "def": 0,
-      "status": 0,
-      "odds": 10100000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Slur",
-      "desc": "X's split personality fights twice. Always attacks twice (each hit does 0.8x damage). Its first hit on each new enemy does 2x damage. Takes 15% less damage."
     },
     "skill": {
       "name": "",
@@ -8498,40 +8294,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "shapeshift-kaiju",
-    "name": "Shapeshift Kaiju",
-    "series": "",
-    "image": "images/cards/shapeshift-kaiju.webp",
-    "base": {
-      "atk": 41396,
-      "hp": 275974,
-      "def": 0,
-      "status": 0,
-      "odds": 9700000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Assimilation",
-      "desc": "Kaiju No. 9: Copies the ability of every enemy card it faces. Each kill gives it 20% of the defeated card's damage and HP. Comes back once with 32% HP. Takes 8% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "sixfold-prophet",
     "name": "Sixfold Prophet",
     "series": "",
@@ -8548,40 +8310,6 @@
     "passive": {
       "name": "Six Paths of Pain",
       "desc": "Pain's six bodies. Every hit also hits the whole enemy bench for 20%. Heals 19% of the damage it deals. Comes back once with 31% HP. Takes 7.6% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "immortal-apostle",
-    "name": "Immortal Apostle",
-    "series": "",
-    "image": "images/cards/immortal-apostle.webp",
-    "base": {
-      "atk": 46231,
-      "hp": 308206,
-      "def": 0,
-      "status": 0,
-      "odds": 11100000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Nosferatu Zodd",
-      "desc": "Zodd the Immortal. Heals 8% of its max HP every turn. Takes 20% less damage. +10% damage every time it is hit. +20% damage."
     },
     "skill": {
       "name": "",
@@ -8650,40 +8378,6 @@
     "passive": {
       "name": "Commanding Voice",
       "desc": "Demiurge's Commanding Voice. 40% chance per hit to Confuse the enemy (it hits itself instead). Every hit sets the whole enemy deck on fire for 2 turns. Takes 10% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "kaiju-number-eight",
-    "name": "Kaiju Number Eight",
-    "series": "",
-    "image": "images/cards/kaiju-number-eight.webp",
-    "base": {
-      "atk": 57542,
-      "hp": 383610,
-      "def": 0,
-      "status": 0,
-      "odds": 9300000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Full Release",
-      "desc": "Kafka: Heals 6.9% of its max HP every turn. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 35%. +6.9% damage every time it is hit."
     },
     "skill": {
       "name": "",
@@ -8950,40 +8644,6 @@
     "passive": {
       "name": "Skill Hunter",
       "desc": "Chrollo steals abilities with his book. Copies the ability of every enemy card it faces. Each hit drains 3.2% of the enemy's max HP per turn for 3 turns, healing it. 13% chance to dodge each hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "stampede-gunman",
-    "name": "Stampede Gunman",
-    "series": "",
-    "image": "images/cards/stampede-gunman.webp",
-    "base": {
-      "atk": 78222,
-      "hp": 521482,
-      "def": 0,
-      "status": 0,
-      "odds": 13200000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Angel Arm",
-      "desc": "Vash refuses to kill. 24% chance to dodge each hit. Every 3rd attack does 2.06x damage. Every 2nd attack also hits the card behind for 35%. Takes 5.3% less damage."
     },
     "skill": {
       "name": "",
@@ -9540,40 +9200,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "wrath-fuhrer",
-    "name": "Wrath Fuhrer",
-    "series": "",
-    "image": "images/cards/wrath-fuhrer.webp",
-    "base": {
-      "atk": 47772,
-      "hp": 318478,
-      "def": 0,
-      "status": 0,
-      "odds": 11500000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Ultimate Eye",
-      "desc": "King Bradley sees every move. 45% chance to dodge each hit. 40% chance to counter-attack when hit. 30% chance to crit for 2x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "yellow-flash-hokage",
     "name": "Yellow Flash Hokage",
     "series": "",
@@ -9590,40 +9216,6 @@
     "passive": {
       "name": "Flying Raijin",
       "desc": "Minato is the fastest shinobi. Always attacks twice (each hit does 0.7x damage). Its attacks can't be dodged. 30% chance to dodge each hit. With Naruto in the deck, both get +15% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "beast-mode-scholar",
-    "name": "Beast Mode Scholar",
-    "series": "",
-    "image": "images/cards/beast-mode-scholar.webp",
-    "base": {
-      "atk": 81857,
-      "hp": 545716,
-      "def": 0,
-      "status": 0,
-      "odds": 23800000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Beast Unleashed",
-      "desc": "Gohan's hidden potential. Under 50% HP: +80% damage. +10% damage every time it is hit. Every 2nd attack also hits the card behind for 50%. With Piccolo in the deck: +20% damage and HP."
     },
     "skill": {
       "name": "",
@@ -9676,244 +9268,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "darkness-emperor",
-    "name": "Darkness Emperor",
-    "series": "",
-    "image": "images/cards/darkness-emperor.webp",
-    "base": {
-      "atk": 139007,
-      "hp": 926714,
-      "def": 0,
-      "status": 0,
-      "odds": 27700000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Two Devil Fruits",
-      "desc": "Blackbeard: 35% chance per hit to Seal the enemy's ability for 2 turns. Every hit also hits the whole enemy bench for 20%. Heals 20% of the damage it deals."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "divine-general",
-    "name": "Divine General",
-    "series": "",
-    "image": "images/cards/divine-general.webp",
-    "base": {
-      "atk": 70232,
-      "hp": 468210,
-      "def": 0,
-      "status": 0,
-      "odds": 30000000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Adaptation",
-      "desc": "Mahoraga adapts to everything. Takes 15% less from an attack each time it has seen it (up to 4 times). Ignores shields, dodges and barriers. Heals 6% of its max HP every turn. +25% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "ice-empress-general",
-    "name": "Ice Empress General",
-    "series": "",
-    "image": "images/cards/ice-empress-general.webp",
-    "base": {
-      "atk": 215300,
-      "hp": 1435332,
-      "def": 0,
-      "status": 0,
-      "odds": 9200000
-    },
-    "exact": {},
-    "obtain": "Weather card: only drops during a Snowstorm",
-    "passive": {
-      "name": "Mahapadma",
-      "desc": "Esdeath freezes time itself. 33% chance per hit to Freeze the enemy for 2 turns (frozen cards take 25% more damage). 1.85x damage against frozen enemies. Every 2nd attack also hits the card behind for 44%. +5.8% damage every time it is hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "ice-fan-upper-moon",
-    "name": "Ice Fan Upper Moon",
-    "series": "",
-    "image": "images/cards/ice-fan-upper-moon.webp",
-    "base": {
-      "atk": 74231,
-      "hp": 494872,
-      "def": 0,
-      "status": 0,
-      "odds": 34900000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Cryo Lotus",
-      "desc": "Doma's freezing powder. 40% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2x damage against frozen enemies. Each hit adds 1 Poison stack (2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 7% of its max HP every turn."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "masked-moon-plotter",
-    "name": "Masked Moon Plotter",
-    "series": "",
-    "image": "images/cards/masked-moon-plotter.webp",
-    "base": {
-      "atk": 215300,
-      "hp": 1435332,
-      "def": 0,
-      "status": 0,
-      "odds": 9200000
-    },
-    "exact": {},
-    "obtain": "Weather card: only drops during a Solar Eclipse",
-    "passive": {
-      "name": "Kamui Intangibility",
-      "desc": "Obito phases through attacks. 40% chance to dodge each hit. Every 2nd attack also hits the card behind for 50%. Ignores shields, dodges and barriers. Comes back once with 25% HP. Once, takes the killing blow for Kakashi."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "red-hair-emperor",
-    "name": "Red Hair Emperor",
-    "series": "",
-    "image": "images/cards/red-hair-emperor.webp",
-    "base": {
-      "atk": 73358,
-      "hp": 489054,
-      "def": 0,
-      "status": 0,
-      "odds": 25700000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Divine Departure",
-      "desc": "Shanks: When it comes in, every weaker enemy card loses its first turn (not bosses). Ignores shields, dodges and barriers. Its first hit on each new enemy does 2.2x damage. With Luffy in the deck, Luffy gets +20% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "sorcerer-killer",
-    "name": "Sorcerer Killer",
-    "series": "",
-    "image": "images/cards/sorcerer-killer.webp",
-    "base": {
-      "atk": 68338,
-      "hp": 455588,
-      "def": 0,
-      "status": 0,
-      "odds": 32400000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Sorcerer Killer",
-      "desc": "Toji: Its first attack also hits the card behind for 50%. 35% chance to dodge each hit. Ignores shields, dodges and barriers. Its first hit on each new enemy does 1.8x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
     "id": "star-fist-delinquent",
     "name": "Star Fist Delinquent",
     "series": "",
@@ -9930,40 +9284,6 @@
     "passive": {
       "name": "ORA ORA ORA",
       "desc": "Star Platinum's rush. Always attacks twice (each hit does 0.8x damage). Its attacks can't be dodged. 38% chance per hit to Stun the enemy for 1 turn. +50% damage against Vampire cards."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "upper-moon-fist",
-    "name": "Upper Moon Fist",
-    "series": "",
-    "image": "images/cards/upper-moon-fist.webp",
-    "base": {
-      "atk": 69369,
-      "hp": 462460,
-      "def": 0,
-      "status": 0,
-      "odds": 37700000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Destructive Death: Compass Needle",
-      "desc": "Akaza senses fighting spirit. 50% chance to counter-attack when hit (0.9x damage). +10% damage every time it is hit. Heals 8% of its max HP every turn. Ignores shields, dodges and barriers."
     },
     "skill": {
       "name": "",
