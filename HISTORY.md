@@ -2497,3 +2497,11 @@
 - **ทดสอบ (Node + Playwright Chromium 390 · เซิร์ฟเวอร์ในเครื่อง):** deck ในรูป: Founding Titan ATK 7,517,203,916 (เกม 7,516,970,289 · ต่าง 0.003%) · HP 33.3B · `gradePct` 10/10/10/10 = 30 ทุกค่า · 7/3/9/6 = 17.5/7.5/22.5/15 · 10/10/10/9 = 25/25/25/22.5 (เหมือนเดิม) · #home #deck #battle console error 0
 - **ยังไม่รู้:** Grade 1–9 ในเกมยังไม่ได้เทียบ · Defense ×0.2 ตอนนี้ครบ 4 ค่า = ลด 6% (เดิม 11%) ยังไม่ได้เทียบคลิป
 - **ไฟล์:** `index.html` · `js/deckbuff.js` · `js/deck.js` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 🎯 Founding Titan ตรงเกมทุกหลัก (`?v=118` → `119`)
+- **เจ้าของ:** หลังแก้ Grade ยังคลาดเคลื่อน · HP ในเกม 33.4B (เว็บ 33.3B)
+- **วัด:** เว็บ ATK 7,517,203,916 vs เกม 7,516,970,289 (+223,627) · ตามผลวัด 2026-11-02 (NTF ×2.124360 = 1.5174 × 1.4) บัฟ NTF จริง = 51.74% แต่ soft curve จาก `real 30` ให้ 51.7445 · HP ใช้ค่าแสดง 51.7 (ไม่มี `real[1]`) → 33.347B = "33.3B" · ฐาน Godlike เกม 2,355,270,032 ÷ 2.21 = 1,065,733,046.15 (เว็บ 1,065,733,074)
+- **ทำ:** `data/support.json` NTF `real [29.96372, 29.96372]` (soft curve knee 35 → 51.740 ที่ Godly ทั้ง damage + HP) · `data/cards.json` Founding Titan `exact.Godlike.atk 1065733046.15` · `index.html` `?v=119`
+- **ทดสอบ (Node + Playwright Chromium 390):** deck ในรูป: Founding Titan ATK **7,516,970,289** (= เกม) · HP **33.4B** (= เกม) · ข้อความ NTF Godly ยัง "51.7%" · #home #cards #deck #battle console error 0
+- **ยังไม่รู้:** HP เต็มของ Founding Titan ในเกม (เห็นแค่ 33.4B) · ระดับอื่นของ NTF เปลี่ยนเล็กน้อย (Godlike 82.40 แทน 82.5 ก่อน soft curve)
+- **ไฟล์:** `index.html` · `data/support.json` · `data/cards.json` · `PROGRESS.md` · `HISTORY.md`
