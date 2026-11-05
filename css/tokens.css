@@ -327,8 +327,6 @@
   --bt-tip-line: rgba(127, 240, 160, .25);
   --bt-win-line: #04260d;
   --bt-dim-line: #141a3a;
-  --bt-inf-a: #6fe07a;
-  --bt-inf-b: #3fae55;
   --bt-hp-ink: #fff;
   --bt-zone-bg: rgba(40, 4, 14, .8);
   --bt-zone-ring: #ff8fa3;
@@ -350,6 +348,28 @@
   --bt-arrow-glow: rgba(212, 232, 92, .8);
   --bt-lose-ink: #ffb0b0;
   --bt-lose-line: #3a0505;
+  /* ---- Battle Stage = the fight screen only (owner 2026-11-05: "Battle UI Lab" look 1 Neon Arcade · the rest of the site stays
+     Castle Night) · damage colours by kind (owner's picks) ---- */
+  --bt-ng-sky: radial-gradient(60% 50% at 50% 42%, #5b2ab0 0%, transparent 70%), linear-gradient(180deg, #1b0b4a, #2a0f63 55%, #120638);
+  --bt-ng-grid-a: rgba(0, 240, 255, .35); --bt-ng-grid-b: rgba(255, 60, 220, .35); --bt-ng-floor: rgba(255, 70, 200, .35);
+  --bt-ng-pn: rgba(20, 10, 55, .88); --bt-ng-line: #8a63ff; --bt-ng-glow: rgba(138, 99, 255, .7);
+  --bt-ng-ink: #fff; --bt-ng-dim: rgba(255, 255, 255, .72); --bt-ng-mine: #8fd0ff; --bt-ng-foe: #ff8fa6;
+  --bt-ng-end: linear-gradient(180deg, #ff5a6e, #d81e3c); --bt-ng-skip: linear-gradient(180deg, #4c9bff, #1f5fe0); --bt-ng-btn-line: rgba(255, 255, 255, .35);
+  --bt-ng-spd-on: linear-gradient(180deg, #ffd65a, #e8a80c); --bt-ng-spd-on-ink: #241500; --bt-ng-front: #57e38a; --bt-ng-ko: #e8364f; --bt-ng-ko-line: #3a0410;
+  --bt-frame-plain: linear-gradient(160deg, #fff, #dcd6ff);
+  --bt-card-ink: #f2f0fa; --bt-card-hp: #63e66e; --bt-card-hp-line: #061a08; --bt-card-atk: #ff4a4a; --bt-card-atk-line: #200406; --bt-card-sk: #c79bff; --bt-card-sk-line: #12081f;
+  --bt-card-num: #ffd45a; --bt-card-shade: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 36%, rgba(6,4,14,.82) 58%, rgba(6,4,14,.9) 100%);
+  --bt-chip-bg: rgba(8, 6, 20, .84); --bt-c-up: #7dff8f; --bt-c-down: #ff8a8a; --bt-c-zone: #ff6ad5; --bt-c-copy: #e0b6ff; --bt-c-shield: #9fd8ff; --bt-c-gold: #ffd23a; --bt-c-more: #cfcbe8;
+  --bt-d-normal: #ff3b45; --bt-d-crit: #ffd23a; --bt-d-pierce: #3fb4ff; --bt-d-aoe: #ffb020; --bt-d-poison: #b562ff; --bt-d-burn: #ff5a1f; --bt-d-bleed: #ff2a5a;
+  --bt-d-pct: #ffffff; --bt-d-heal: #4dff8a; --bt-d-sup: #4ff0d6; --bt-d-line: #1a0610;
+  --bt-db-poison: linear-gradient(180deg, #8b3be0, #5a1aa8); --bt-db-poison-line: #24073f;
+  --bt-db-burn: linear-gradient(180deg, #ff7a2e, #c8340c); --bt-db-burn-line: #3a0d02;
+  --bt-db-bleed: linear-gradient(180deg, #ff4a6e, #a3102e); --bt-db-bleed-line: #3a0412;
+  --bt-db-stun: linear-gradient(180deg, #ffe35a, #d8a90b); --bt-db-stun-line: #3a2a00; --bt-db-stun-ink: #241a00;
+  --bt-db-para: linear-gradient(180deg, #5fe3ff, #1688c4); --bt-db-para-line: #032a3d;
+  --bt-db-weak: linear-gradient(180deg, #6c7aa8, #3d4770); --bt-db-weak-line: #12162a;
+  --bt-db-turns: rgba(0, 0, 0, .45);
+  --bt-sp-bg: linear-gradient(90deg, rgba(4, 40, 44, .95), rgba(4, 40, 44, .78)); --bt-sp-glow: rgba(79, 240, 214, .5); --bt-sp-small: #bff; --bt-sp-line: #022;
 }
 @media (min-width: 1100px) {
   :root {

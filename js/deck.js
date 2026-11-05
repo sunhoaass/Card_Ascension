@@ -552,8 +552,9 @@
         attrs: { "data-c": t ? (t.color === "rainbow" ? "rainbow" : "solid") : null, "data-off": t ? null : "", style: t ? traitColor(t) || null : null } });
     } else {
       const m = x && C.mutAt ? C.mutAt(x, r) : 0;
-      // the % never gets cut (owner 2026-11-04: "Mutation +1…" hid it) · the word: MUT on a phone, MUTATION on a wide screen
-      out.push({ p: "mut", key: String(m), html: m ? `<span><i class="dk-pill__long">Mutation</i><i class="dk-pill__short">Mut</i></span><b>+${m}%</b>` : `<span>No mutation</span>`, label: m ? `Mutation bonus +${m}% damage and HP` : "No mutation",
+      // the % never gets cut (owner 2026-11-04: "Mutation +1…" hid it) · owner 2026-11-05: the full "Mutation bonus +x%", smaller type
+      // to fit (css .dk-pill--mut) · the deck list's small pills keep MUT
+      out.push({ p: "mut", key: String(m), html: m ? `<span><i class="dk-pill__long">Mutation bonus</i><i class="dk-pill__short">Mut</i></span><b>+${m}%</b>` : `<span>No mutation</span>`, label: m ? `Mutation bonus +${m}% damage and HP` : "No mutation",
         attrs: { "data-off": m ? null : "" } });
     }
     return out;
