@@ -2387,3 +2387,5 @@
 - **ไฟล์:** `index.html` · `js/battle.js` · `css/battle.css` · `PROGRESS.md` · `HISTORY.md`
 
 **2026-11-05 · Battle Custom: กติกาในกรอบ Win chance ไม่บอกเลขรอบ** · `index.html` เท่านั้น (ไม่มี CSS/JS = ไม่เปลี่ยน `?v=`): "You attack first, then they hit back" · "No team wiped at the end: …" · ไฟล์: `index.html` · `PROGRESS.md` · `HISTORY.md`
+
+**2026-11-05 · Battle Custom: เอากล่อง "CUSTOM" ด้านบนจอสู้ออก** (`?v=113`) · `.bt-fight--noround .bt-ft__round { visibility: hidden }` (ปุ่มเสียง/ความเร็วอยู่ที่เดิม) · Guild Boss ยังมี "Stage · Round" · ไฟล์: `css/battle.css` · `index.html` · `PROGRESS.md` · `HISTORY.md`
