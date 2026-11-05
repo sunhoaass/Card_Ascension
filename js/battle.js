@@ -325,6 +325,8 @@
           else if (tb || (rm && rm.dataset.ssRm === "trait")) { const t = tb ? tb.dataset.ssTrait : null; commit((dd) => { dd.trait[i] = dd.trait[i] === t ? null : t; }); }
           else if (cr) { commit((dd) => { dd.custom[i] = null; }); FX.toast("Back to the real value"); }
         });
+        // grade boxes take a typed 0–10 (same as the Deck · C.deckParts.gradeInputs)
+        if (isCard) P().gradeInputs(root, (k, v) => commit((dd) => { dd.grades[i] = P().gradeSet(dd.grades[i], k, v); }), () => paint(false));
         // custom HP / ATK: on change (Enter / leaving the box) · empty = real value
         root.addEventListener("change", (e) => {
           const inp = e.target.closest("[data-ss-cus]"); if (!inp) return;

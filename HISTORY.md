@@ -2271,3 +2271,9 @@
 - **ทำ:** ปุ่ม **Load Deck** + ไอคอน อยู่แถวเดียวกับหัวกล่องทีม (ชิดขวา) · ชื่อ deck = บรรทัดเล็กใต้ชื่อทีม (ว่าง = ซ่อน · ยาว = ตัด …) · หน้าต่างโหลดชื่อ "Load Deck" · `#cards-title` = `400 var(--fs-lg) var(--font-display)` สี `--gold-hi` ไม่มีแสงวิ่ง · ใส่กลับ: "Gets stronger every stage!" · โน้ต ATK บอสเดา · กติกา Win chance · ข้อความว่าง Simulate · PROGRESS กฎทำงานข้อ 13 (คำอธิบาย)
 - **ทดสอบ (Playwright Chromium 412 + 1280):** Cards · Battle · Arena ไม่มี error · ปุ่ม Load Deck อยู่แนวเดียวกับหัวข้อทั้งมือถือและคอม · ชื่อ deck ใต้หัวข้อ
 - **ไฟล์:** `index.html` · `css/battle.css` · `css/cards.css` · `js/battle.js` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 🎚️ Grade: ขีดในหลอด + พิมพ์เลข + ปุ่ม All 10 / Remove (`?v=102`)
+- **เจ้าของ (แคปแผ่น Grade หน้า Deck/Battle):** ขีดในหลอด · ช่องเลขพิมพ์ 1–10 ได้ · ปุ่ม All 10 / Remove เล็กไป ให้ดูดีและเป็นมาตรฐานเดียวกัน
+- **ทำ:** `js/deck.js` ช่องเลข `<b>` → `<input data-ss-gv>` (inputmode numeric · maxlength 2) + `gradeInputs(root, set, repaint)` (เลือกทั้งช่องตอนแตะ · Enter = blur · change → 0–10 / ผิด = paint คืน) + `gradeSet(g4, k, v)` · ส่งออกทาง `C.deckParts` · `js/battle.js` ใช้ตัวเดียวกัน · ปุ่ม All 10 (ไอคอนลูกศรขึ้นคู่ `ICON.max`) + Remove = `.tm-btn` 2 คอลัมน์ · `disabled` แทน `hidden` (ไม่กระโดด) · `css/deck.css`: ขีดแบ่ง 9 จุด (`.dk-g4__seg + .dk-g4__seg::after`) · ช่องว่าง = ขีดกลางวาดด้วย background (placeholder ของ Chromium เบี้ยวซ้าย) · `.dk-ss__rm` = ปุ่มทองเหลืองแบบ `.tm-btn` ขนาด 36px
+- **ทดสอบ (Playwright Chromium 412px):** Battle: พิมพ์ 7 / 15 / "ab" → [7, –, –, 10] GRADE 4 · All 10 → 10×4 ปุ่มจาง · Remove → ว่าง ปุ่มจาง · Deck: พิมพ์ 5 ช่อง Status · 0 ช่อง Basic Attack → GRADE 1 · ไม่มี error ใน console
+- **ไฟล์:** `index.html` · `js/deck.js` · `js/battle.js` · `css/deck.css` · `PROGRESS.md` · `HISTORY.md`

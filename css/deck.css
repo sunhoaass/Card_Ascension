@@ -618,9 +618,15 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 
 /* slot sheet: Grade 1–10 + Trait grid · tap the one that's on (or Remove) = off */
 .dk-ss__h { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); min-height: 28px; }
-.dk-ss__rm { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 10px; border-radius: 99px; border: 1px solid var(--glass-line); background: transparent; color: var(--ink-dim); font-size: 12px; font-weight: 600; cursor: pointer; }
+/* small head buttons (Trait Remove · Battle "Real value"): the site's brass button (.tm-btn) in a compact size (owner 2026-11-04: one standard) */
+.dk-ss__rm {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 0 14px; cursor: pointer;
+  border-radius: var(--r-chip); border: 1px solid var(--gold-lo); background: var(--brass); color: var(--gold-hi);
+  font-family: var(--font-display); font-size: 13px; letter-spacing: .06em; white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 230, 170, .16), 0 2px 0 rgba(0, 0, 0, .45);
+}
 .dk-ss__rm[hidden] { display: none; }
-.dk-ss__rm svg { width: 14px; height: 14px; }
+.dk-ss__rm svg { width: 15px; height: 15px; flex: none; }
 .dk-gp { display: grid; grid-template-columns: 3fr 3fr 3fr 1fr; gap: 5px; }
 .dk-gp__grp { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; padding: 3px; border-radius: 99px; background: rgba(255, 255, 255, .04); min-width: 0; }
 .dk-gp__grp[data-band="bronze"]  { --gp-c: #e6a06a; --gp-fill: var(--tg-bronze); }
@@ -669,6 +675,8 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-g4__seg::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 12px; margin-top: -6px; background: var(--gr-track); transition: background-color var(--t-fast) var(--ease); }
 .dk-g4__seg:first-child::before { border-radius: 99px 0 0 99px; left: 0; }
 .dk-g4__seg:last-child::before { border-radius: 0 99px 99px 0; }
+/* tick marks between the 10 steps (owner 2026-11-04): a notch cut through the bar at every step */
+.dk-g4__seg + .dk-g4__seg::after { content: ""; position: absolute; z-index: 1; left: -1px; top: 50%; width: 2px; height: 12px; margin-top: -6px; background: var(--gr-box); pointer-events: none; }
 .dk-g4__seg.is-on::before { background: var(--tone); }
 .dk-g4__row[data-tone="mint"] .dk-g4__seg.is-on::before { background: var(--tg-rainbow); background-size: 1000% 100%; background-position: calc(var(--i, 0) * 11.11%) 0; }
 .dk-g4__seg:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; border-radius: 4px; }
@@ -677,6 +685,12 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
   border: 2px solid var(--tone); background: var(--gr-box); color: #fff;
   font-family: var(--gc-font-num); font-weight: 700; font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums;
 }
+/* the box is an input: type 1–10 (owner 2026-11-04) */
+input.dk-g4__box { display: block; justify-self: end; padding: 0; margin: 0; text-align: center; appearance: none; -webkit-appearance: none; caret-color: var(--gold); outline: none; transition: box-shadow var(--t-fast) var(--ease); }
+input.dk-g4__box::placeholder { color: transparent; }
+/* empty = a dash in the middle (drawn: the browser puts a placeholder dash off-centre in this box) */
+input.dk-g4__box:placeholder-shown:not(:focus) { background: linear-gradient(var(--ink-faint), var(--ink-faint)) center / 14px 3px no-repeat, var(--gr-box); }
+input.dk-g4__box:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 45%, transparent); }
 .dk-g4__row[data-tone="none"] .dk-g4__box { color: var(--ink-faint); border-color: var(--gr-panel-line); }
 .dk-g4__row[data-tone="mint"] .dk-g4__box { border-color: transparent; background: linear-gradient(var(--gr-box), var(--gr-box)) padding-box, var(--tg-rainbow-pill) border-box; }
 .dk-g4__total { font-family: var(--gc-font-num); font-weight: 700; font-size: 20px; letter-spacing: .03em; color: var(--gr-green); }
@@ -686,8 +700,9 @@ button.dk-fit__btn:hover, button.dk-fit__btn:focus-visible { border-color: var(-
 .dk-g4__total[data-tone="mint"] { background: var(--tg-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .dk-g4__sum { margin: -2px 0 0; font-size: 12.5px; font-weight: 600; color: var(--gr-tip); }
 .dk-g4__sum.is-full { color: var(--gold); }
-.dk-g4__acts { display: flex; justify-content: flex-end; gap: 6px; }
-.dk-ss__all { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
+/* All 10 | Remove: two full-size site buttons side by side (owner 2026-11-04 · always there, greyed out when they'd do nothing) */
+.dk-g4__acts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); margin-top: 2px; }
+.dk-g4__btn { width: 100%; }
 
 /* Trait: a scrolling box (owner 2026-11-04 · saves room) · exactly 3 rows show, the rest scroll (owner 2026-11-04 fix) ·
    a row like the game's Trait Shop · every row the same height and never squeezed (the old grid box shrank the chosen row

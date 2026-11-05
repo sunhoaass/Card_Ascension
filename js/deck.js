@@ -80,6 +80,7 @@
     trash: svg('<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>'),
     pencil: svg('<path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/>'),
     x: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
+    max: svg('<path d="m17 11-5-5-5 5"/><path d="m17 18-5-5-5 5"/>'),   // All 10 (grades)
     info: svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'),
     swap: svg('<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>'),
     move: svg('<path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/>'),
@@ -1174,7 +1175,7 @@
         <p class="dk-g4__name">${name}</p>
         <span class="dk-g4__pct" data-ss-gp="${k}"></span>
         <div class="dk-g4__bar" role="group" aria-label="${name} grade">${Array.from({ length: GRADE_MAX }, (_, j) => seg(k, j + 1)).join("")}</div>
-        <b class="dk-g4__box" data-ss-gv="${k}"></b>
+        <input class="dk-g4__box" data-ss-gv="${k}" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" enterkeyhint="done" spellcheck="false" placeholder="–" aria-label="${name} grade, 0 to ${GRADE_MAX}">
       </div>`).join("");
     // Trait: one scrolling box, 3 rows show (owner 2026-11-04: saves room) · the chosen one's full text under the box · a row per trait like the game's Trait Shop: icon · name · what it does · tier
     const traits = traitList().map((t) => `<button type="button" class="dk-tl__row" data-ss-trait="${esc(t.id)}" data-c="${t.color === "rainbow" ? "rainbow" : "solid"}" style="${traitColor(t)}" aria-pressed="false">
@@ -1184,7 +1185,7 @@
         <div class="dk-ss__h"><h3 class="tm-field__label">Grade</h3><b class="dk-g4__total" data-ss-gt></b></div>
         <p class="dk-g4__sum" data-ss-gsum>${GSUM}</p>
         <div class="dk-g4">${grades}</div>
-        <div class="dk-g4__acts"><button type="button" class="dk-ss__rm dk-ss__all fx-press" data-ss-all>All 10</button>${rm("grade")}</div>
+        <div class="dk-g4__acts"><button type="button" class="tm-btn fx-press dk-g4__btn" data-ss-all>${ICON.max}All ${GRADE_MAX}</button><button type="button" class="tm-btn fx-press dk-g4__btn" data-ss-rm="grade">${ICON.x}Remove</button></div>
       </section>
       ${traitList().length ? `<section class="dk-ss__sec" aria-label="Trait">
         <div class="dk-ss__h"><h3 class="tm-field__label">Trait</h3>${rm("trait")}</div>
@@ -1202,20 +1203,38 @@
       b.classList.toggle("is-on", n <= v);
     });
     root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
-    root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.textContent = v ? String(v) : "–"; });
+    root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.value = v ? String(v) : ""; });
     // "+x%" = what the card really gets (js/deckbuff.js gradePct: 2.5% a point · +30% more when all 4 are 10)
     const gp = C.deckBuff.gradePct(g4), gpv = [gp.atk, gp.def, gp.status, gp.hp];
     root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = gpv[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number(v.toFixed(1))}%` : ""; });
     const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);
     if (gt) { gt.textContent = g ? `GRADE ${g}` : "NO GRADE"; gt.dataset.tone = full ? "mint" : gradeTone(g); }
     if (gsum) { gsum.textContent = full ? GSUM_FULL : GSUM; gsum.classList.toggle("is-full", full); }
-    if (all) all.hidden = full;
+    if (all) all.disabled = full;
     root.querySelectorAll("[data-ss-trait]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ssTrait === tId)));
     const rmG = $('[data-ss-rm="grade"]', root), rmT = $('[data-ss-rm="trait"]', root), tfx = $("[data-ss-tfx]", root);
-    if (rmG) rmG.hidden = !g;
+    if (rmG) rmG.disabled = !g;
     if (rmT) rmT.hidden = !tId;
     const t = tId ? traitById(tId) : null;
     if (tfx) { tfx.hidden = !t; tfx.innerHTML = t ? `<b>${esc(t.name)}</b> <span>${esc(t.tier)}</span> · ${traitFx(t).map(esc).join(" · ")}` : ""; }
+  }
+  // the grade boxes take a typed number (owner 2026-11-04): 1–10 · empty / 0 = no grade · over 10 = 10 · anything else = put back
+  // set(k, v) commits stat k = v · repaint() paints the sheet again (puts a bad entry back) · Enter closes the keyboard
+  function gradeInputs(root, set, repaint) {
+    root.addEventListener("focusin", (e) => { const inp = e.target.closest("[data-ss-gv]"); if (inp) requestAnimationFrame(() => inp.select()); });
+    root.addEventListener("keydown", (e) => { const inp = e.target.closest("[data-ss-gv]"); if (inp && e.key === "Enter") { e.preventDefault(); inp.blur(); } });
+    root.addEventListener("change", (e) => {
+      const inp = e.target.closest("[data-ss-gv]"); if (!inp) return;
+      const txt = String(inp.value).trim();
+      if (txt !== "" && !/^\d+$/.test(txt)) { repaint(); if (!FX.reduced) FX.flash(inp); return; }
+      set(Number(inp.dataset.ssGv), Math.min(GRADE_MAX, Number(txt || 0)));
+    });
+  }
+  // stat k set to v (0 = off): the 4 grades after it (all 0 = null)
+  function gradeSet(g4, k, v) {
+    const n = (g4 || [0, 0, 0, 0]).slice();
+    n[k] = v;
+    return n.some((x) => x > 0) ? n : null;
   }
   // a tap on grade step g of stat k: the 4 grades after it (the grade that's on again = off · all 0 = null)
   function gradeTap(g4, k, g) {
@@ -1275,6 +1294,7 @@
         paint(false);
         { const on = $('.dk-tl [aria-pressed="true"]', root); if (on) on.parentNode.scrollTop = on.offsetTop - on.parentNode.firstElementChild.offsetTop; }   // the chosen trait shows in its box
         requestAnimationFrame(() => root.querySelectorAll(".rarity-picker").forEach((p) => C.revealChip(p.parentNode)));
+        if (isCard) gradeInputs(root, (k, v) => { if (!alive()) return; commit((d) => { d.grades[i] = gradeSet(d.grades[i], k, v); }); paint(true); }, () => { if (alive()) paintTGSheet(root, cur.grades[i] || [0, 0, 0, 0], cur.trait[i]); });
         root.addEventListener("click", (e) => {
           if (!alive()) return;
           const rb = e.target.closest("[data-ss-rarity]");
@@ -2386,5 +2406,5 @@
 
   C.deck = { init, enter, show, paintScore };
   /* Parts the Battle page builds its team boards + slot sheet from (js/battle.js · PROGRESS §3.3): same classes, css/deck.css */
-  C.deckParts = { pickDialog, lastRarity, rememberRarity, orderList, pillsHTML, fitName, tgHTML, paintTG, tgSheetHTML, paintTGSheet, gradeTap, buffText, overallOf, fullOf, gradeBand, gradeTone, traitById, traitIcon, traitColor, traitFx, GSTATS, GRADE_MAX, ICON };
+  C.deckParts = { gradeInputs, gradeSet, pickDialog, lastRarity, rememberRarity, orderList, pillsHTML, fitName, tgHTML, paintTG, tgSheetHTML, paintTGSheet, gradeTap, buffText, overallOf, fullOf, gradeBand, gradeTone, traitById, traitIcon, traitColor, traitFx, GSTATS, GRADE_MAX, ICON };
 })();
