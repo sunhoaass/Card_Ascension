@@ -658,7 +658,11 @@
       "status": 0,
       "odds": 78600000000
     },
-    "exact": {},
+    "exact": {
+      "Godlike": {
+        "atk": 1065733046.15
+      }
+    },
     "obtain": "Rolls anywhere",
     "passive": {
       "name": "The Rumbling",
