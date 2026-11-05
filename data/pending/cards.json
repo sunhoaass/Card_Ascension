@@ -3938,74 +3938,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "armor-queen",
-    "name": "Armor Queen",
-    "series": "",
-    "image": "images/cards/armor-queen.webp",
-    "base": {
-      "atk": 11757,
-      "hp": 78380,
-      "def": 0,
-      "status": 0,
-      "odds": 305000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Requip: Nakagami Armor",
-      "desc": "Erza swaps armor for every fight. Blocks the first 2 hits completely. 40% chance to attack twice. +30% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "atomic-swordsman",
-    "name": "Atomic Swordsman",
-    "series": "",
-    "image": "images/cards/atomic-swordsman.webp",
-    "base": {
-      "atk": 11447,
-      "hp": 76316,
-      "def": 0,
-      "status": 0,
-      "odds": 215000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Atomic Slash",
-      "desc": "Atomic Samurai: Every 2nd attack also hits the card behind for 35%. Each hit adds 2 Bleed stacks (1.3% of the enemy's max HP per turn each, up to 4, 3 turns). Its first hit on each new enemy does 1.38x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "bat-wing-espada",
     "name": "Bat Wing Espada",
     "series": "",
@@ -4056,40 +3988,6 @@
     "passive": {
       "name": "Rock Barrage",
       "desc": "Zeke: Every hit also hits the whole enemy bench for 20%. 25% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "black-dragon-swordsman",
-    "name": "Black Dragon Swordsman",
-    "series": "",
-    "image": "images/cards/black-dragon-swordsman.webp",
-    "base": {
-      "atk": 11372,
-      "hp": 75814,
-      "def": 0,
-      "status": 0,
-      "odds": 284000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Dragon of the Darkness Flame",
-      "desc": "Hiei: Every hit sets the whole enemy deck on fire for 1 turn. Each hit adds 3 Burn stacks (1.9% of the enemy's max HP per turn each, up to 4, 3 turns). 19% chance to dodge each hit. Spirit Detective cards in your deck get +3.2% damage."
     },
     "skill": {
       "name": "",
@@ -4544,108 +4442,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "crimson-spear-hound",
-    "name": "Crimson Spear Hound",
-    "series": "",
-    "image": "images/cards/crimson-spear-hound.webp",
-    "base": {
-      "atk": 14251,
-      "hp": 95004,
-      "def": 0,
-      "status": 0,
-      "odds": 259000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Gae Bolg",
-      "desc": "Cu Chulainn's spear reverses cause and effect. Its attacks can't be dodged. Instantly kills enemies under 15% HP (not bosses). Survives its first killing blow with 1 HP. Ignores shields, dodges and barriers."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "dark-captain",
-    "name": "Dark Captain",
-    "series": "",
-    "image": "images/cards/dark-captain.webp",
-    "base": {
-      "atk": 17790,
-      "hp": 118600,
-      "def": 0,
-      "status": 0,
-      "odds": 298000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Dark Cloaked Dimension Slash",
-      "desc": "Yami cuts through space. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 50%. Under 50% HP: +40% damage. 20% chance to crit for 1.8x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "dragon-butler",
-    "name": "Dragon Butler",
-    "series": "",
-    "image": "images/cards/dragon-butler.webp",
-    "base": {
-      "atk": 10291,
-      "hp": 68608,
-      "def": 0,
-      "status": 0,
-      "odds": 230000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Dragonoid Fist",
-      "desc": "Sebas' dragon strength. +30% damage. 30% chance to counter-attack when hit. Nazarick cards in your deck get +10% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "dragon-grandpa-assassin",
     "name": "Dragon Grandpa Assassin",
     "series": "",
@@ -4696,40 +4492,6 @@
     "passive": {
       "name": "Howitzer Impact",
       "desc": "Bakugo: Every 2nd attack also hits the card behind for 35%. Every 3rd attack does 2.32x damage. +5.3% damage every turn (up to 6 times). With Deku in the deck, both get +13% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "finest-knight",
-    "name": "Finest Knight",
-    "series": "",
-    "image": "images/cards/finest-knight.webp",
-    "base": {
-      "atk": 11501,
-      "hp": 76672,
-      "def": 0,
-      "status": 0,
-      "odds": 225000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Al Clauzeria",
-      "desc": "Julius's spirits power his sword. 25% chance to dodge each hit. 25% chance to crit for 1.8x damage. Its first hit on each new enemy does 1.8x damage."
     },
     "skill": {
       "name": "",
@@ -4918,40 +4680,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "half-demon-fang",
-    "name": "Half-Demon Fang",
-    "series": "",
-    "image": "images/cards/half-demon-fang.webp",
-    "base": {
-      "atk": 19007,
-      "hp": 126712,
-      "def": 0,
-      "status": 0,
-      "odds": 278000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Red Tessaiga: Wind Scar",
-      "desc": "Inuyasha: Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. Under 28% HP: +66% damage. With Sesshomaru in the deck, both get +14% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "half-hot-half-cold",
     "name": "Half-Hot Half-Cold",
     "series": "",
@@ -4968,40 +4696,6 @@
     "passive": {
       "name": "Phosphor",
       "desc": "Todoroki uses both sides. 41% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Each hit adds 2 Burn stacks (2.8% of the enemy's max HP per turn each, up to 4, 3 turns). 2.38x damage against frozen enemies."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "incursio-armor",
-    "name": "Incursio Armor",
-    "series": "",
-    "image": "images/cards/incursio-armor.webp",
-    "base": {
-      "atk": 11000,
-      "hp": 73332,
-      "def": 0,
-      "status": 0,
-      "odds": 265000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Incursio Evolved",
-      "desc": "Tatsumi: Takes 25% less damage. Takes 15% less from an attack each time it has seen it (up to 4 times). 20% chance to dodge each hit. +20% damage."
     },
     "skill": {
       "name": "",
@@ -5070,40 +4764,6 @@
     "passive": {
       "name": "Vanishing Rasengan + Karma",
       "desc": "Boruto: Its attacks can't be dodged. +8% damage every time it is hit. 20% chance to crit for 1.7x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "lion-flame-queen",
-    "name": "Lion Flame Queen",
-    "series": "",
-    "image": "images/cards/lion-flame-queen.webp",
-    "base": {
-      "atk": 11499,
-      "hp": 76660,
-      "def": 0,
-      "status": 0,
-      "odds": 291000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Mana Zone: Flame Hand",
-      "desc": "Mereoleona: Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 50% HP: +60% damage. Can't be burned."
     },
     "skill": {
       "name": "",
@@ -5206,40 +4866,6 @@
     "passive": {
       "name": "Future Sight Mochi",
       "desc": "Katakuri sees the future. 30% chance to dodge each hit. 30% chance to counter-attack when hit (0.8x damage). 20% chance per hit to Stun the enemy for 1 turn."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "ogre-sword-master",
-    "name": "Ogre Sword Master",
-    "series": "",
-    "image": "images/cards/ogre-sword-master.webp",
-    "base": {
-      "atk": 12179,
-      "hp": 81194,
-      "def": 0,
-      "status": 0,
-      "odds": 220000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Instant Slash",
-      "desc": "Hakurou cuts before you see the blade. Its first hit on each new enemy does 2.2x damage. 30% chance to crit for 1.8x damage."
     },
     "skill": {
       "name": "",
@@ -5564,40 +5190,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "shadow-garden-beta",
-    "name": "Shadow Garden Beta",
-    "series": "",
-    "image": "images/cards/shadow-garden-beta.webp",
-    "base": {
-      "atk": 13340,
-      "hp": 88936,
-      "def": 0,
-      "status": 0,
-      "odds": 253000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Slime Sword",
-      "desc": "Beta: 30% chance to crit for 1.8x damage. Takes 15% less damage. +10% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "sickle-upper-moon",
     "name": "Sickle Upper Moon",
     "series": "",
@@ -5700,74 +5292,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "spiral-bro",
-    "name": "Spiral Bro",
-    "series": "",
-    "image": "images/cards/spiral-bro.webp",
-    "base": {
-      "atk": 13347,
-      "hp": 88980,
-      "def": 0,
-      "status": 0,
-      "odds": 271000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Kick Reason to the Curb",
-      "desc": "Kamina believes in the Simon who believes in him. +40% damage. Survives its first killing blow with 1 HP. When knocked out, Simon gets +50% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "superd-spear-warrior",
-    "name": "Superd Spear Warrior",
-    "series": "",
-    "image": "images/cards/superd-spear-warrior.webp",
-    "base": {
-      "atk": 11048,
-      "hp": 73656,
-      "def": 0,
-      "status": 0,
-      "odds": 241000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Third Eye",
-      "desc": "Rujierd's third eye sees everything. 35% chance to dodge each hit. Ignores shields, dodges and barriers. Every other card in your deck gets +8% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "surgeon-of-death",
     "name": "Surgeon of Death",
     "series": "",
@@ -5784,74 +5308,6 @@
     "passive": {
       "name": "ROOM: Shambles",
       "desc": "Law reshapes the battlefield. Each hit swaps the enemy's front card with a random one (not bosses). Every 3rd attack does 1.6x damage. Ignores shields, dodges and barriers."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "sword-king-girl",
-    "name": "Sword King Girl",
-    "series": "",
-    "image": "images/cards/sword-king-girl.webp",
-    "base": {
-      "atk": 11551,
-      "hp": 77006,
-      "def": 0,
-      "status": 0,
-      "odds": 236000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Light Speed Sword",
-      "desc": "Eris swings faster than light. Its first hit on each new enemy does 2.2x damage. 25% chance to crit for 1.8x damage. Under 50% HP: +40% damage. With Rudeus in the deck, both get +15% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "tanuki-sword-girl",
-    "name": "Tanuki Sword Girl",
-    "series": "",
-    "image": "images/cards/tanuki-sword-girl.webp",
-    "base": {
-      "atk": 10640,
-      "hp": 70930,
-      "def": 0,
-      "status": 0,
-      "odds": 247000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Instant Blade: Mist",
-      "desc": "Raphtalia's illusion magic. 30% chance to dodge each hit. Its first hit on each new enemy does 2x damage. With Naofumi in the deck: +20% damage and HP. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
     },
     "skill": {
       "name": "",
@@ -6056,142 +5512,6 @@
     "passive": {
       "name": "Fierce Wings",
       "desc": "Hawks is the fastest hero. 38% chance to attack twice. Every 2nd attack also hits the card behind for 35%. 19% chance to dodge each hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "lightning-sorcerer",
-    "name": "Lightning Sorcerer",
-    "series": "",
-    "image": "images/cards/lightning-sorcerer.webp",
-    "base": {
-      "atk": 66841,
-      "hp": 445608,
-      "def": 0,
-      "status": 0,
-      "odds": 306000
-    },
-    "exact": {},
-    "obtain": "Weather card: only drops during a Rain Storm",
-    "passive": {
-      "name": "Mythical Beast Amber",
-      "desc": "Kashimo burns his body out for one fight. +100% damage. 50% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Its attacks can't be dodged. Ignores shields, dodges and barriers. Loses 3% of its max HP every attack."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "star-rage-sorcerer",
-    "name": "Star Rage Sorcerer",
-    "series": "",
-    "image": "images/cards/star-rage-sorcerer.webp",
-    "base": {
-      "atk": 66841,
-      "hp": 445608,
-      "def": 0,
-      "status": 0,
-      "odds": 306000
-    },
-    "exact": {},
-    "obtain": "Weather card: only drops during a Starfall Night",
-    "passive": {
-      "name": "Star Rage",
-      "desc": "Yuki: +40% damage. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 50%. Instantly kills enemies under 15% HP (not bosses)."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "tensen-lord",
-    "name": "Tensen Lord",
-    "series": "",
-    "image": "images/cards/tensen-lord.webp",
-    "base": {
-      "atk": 66841,
-      "hp": 445608,
-      "def": 0,
-      "status": 0,
-      "odds": 306000
-    },
-    "exact": {},
-    "obtain": "Weather card: only drops during a Sakura Love",
-    "passive": {
-      "name": "Tensen Full Bloom",
-      "desc": "Rien's Tao blooms. Heals 5.6% of its max HP every turn. Each hit drains 3.3% of the enemy's max HP per turn for 3 turns, healing it. Takes 7% less from an attack each time it has seen it (up to 4 times)."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "sun-dance-slayer",
-    "name": "Sun Dance Slayer",
-    "series": "",
-    "image": "images/cards/sun-dance-slayer.webp",
-    "base": {
-      "atk": 66841,
-      "hp": 445608,
-      "def": 0,
-      "status": 0,
-      "odds": 306000
-    },
-    "exact": {},
-    "obtain": "Weather card: only drops during a Solar Eclipse",
-    "passive": {
-      "name": "Hinokami Kagura",
-      "desc": "Tanjiro's Sun Breathing burns demons. +90% damage against Demon cards. Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 40% HP: +75% damage. With Nezuko in the deck, both get +15% damage and HP."
     },
     "skill": {
       "name": "",
