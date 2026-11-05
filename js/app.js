@@ -128,7 +128,8 @@
        (Eternal Wish Dragon Secret 89.3 · Chainsaw Pup Devil Cosmic 95.7)
      · the HP a card comes back with ("with {n}% HP"): straight, tops out at 100% (more than full HP does nothing)
      · anything else: knee 150, room 75 (Hellsing Commander Ascended 166 · Godlike 177 · Godly 187)
-     effect.dp = decimals the game shows for that card (default 1 · Hellsing Commander 0: 84 / 101 / 117 …) */
+     effect.dp = decimals the game shows for that card (default 1 · Hellsing Commander 0: 84 / 101 / 117 …)
+     effect.cap[i] = a straight cap for that value instead of the soft curve (Rewind Girl heal 100 · 2026-11-05) */
   const SOFT = { chance: [75, 25], other: [150, 75] };
   /* effect.knee[i] (owner + game 2026-11-02 · PROGRESS ▶️ "ค่า Support ตามระดับ"): the knee is not the same on every card
      (Nine Tails Fox damage + HP 35, less damage 40 · Hat and Clogs miss chance 90, damage 35) · past it a chance closes in
@@ -147,6 +148,8 @@
     if (!Number.isFinite(v) || v <= 0) return 0;
     const plain = dp ? supAt(base, rarity) : Math.round(v);       // tenths: the game's even rounding of an exact …5
     if (k === "hp") return Math.min(100, plain);
+    const cp = s && s.effect && Array.isArray(s.effect.cap) ? Number(s.effect.cap[i]) : NaN;
+    if (cp > 0) return Math.min(cp, plain);                        // effect.cap[i]: a straight cap, no soft curve (Rewind Girl "heals {0}% of its max HP" tops out at 100)
     const [t, c] = softOf(s, i, k);
     if (v <= t) return plain;
     v = t + c * (1 - Math.exp(-(v - t) / c));

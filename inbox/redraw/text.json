@@ -1,33 +1,4 @@
 {
-  "chainsaw-pup-devil": {
-    "support": true,
-    "odds": "220.4M",
-    "obtain": "Rolls anywhere",
-    "effect": {
-      "name": "Chainsaw Heart",
-      "desc": "Chainsaw Pup Devil gives his heart: the supported card has an {0}% chance to come back once with {1}% HP.",
-      "normal": [
-        80,
-        61
-      ],
-      "text": "Chainsaw Pup Devil gives his heart: the supported card has an 80% chance to come back once with 61% HP."
-    },
-    "note": "game buffed it: data vals [53, 40] → [80, 61] at Normal (1 in 220.4M) · 80% at Normal is above the default chance knee 75 → needs effect.knee (or the owner's all-rarity screenshots) or Normal shows 79.5% · Tier/Value were made with the old values"
-  },
-  "rewind-girl": {
-    "support": true,
-    "odds": "204.1M",
-    "obtain": "Rolls anywhere",
-    "effect": {
-      "name": "Rewind",
-      "desc": "Rewind Girl rewinds the supported card's body: it heals {0}% of its max HP the first time it drops under 20% HP.",
-      "normal": [
-        57
-      ],
-      "text": "Rewind Girl rewinds the supported card's body: it heals 57% of its max HP the first time it drops under 20% HP."
-    },
-    "note": "game buffed it: data vals [24] → [57] at Normal (1 in 204.1M) · small game star above the text (right of REWIND) · the screenshot had the Index list showing through the panel: look at the sheet that the card picture itself is clean · Tier/Value were made with the old value"
-  },
   "flower-healer-captain": {
     "support": true,
     "odds": "189.0M",

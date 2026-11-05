@@ -54,6 +54,8 @@ def sup_val(s, i, rarity="Godly"):
     v = float(base) * (1 + 0.25 * level)
     plain = sup_at(base, level) if dp else round(v)
     if k == "hp": return min(100.0, plain)
+    cp = (e.get("cap") or [])[i] if i < len(e.get("cap") or []) else None   # effect.cap (app.js supValAt)
+    if cp: return min(float(cp), plain)
     kn = (e.get("knee") or [None] * (i + 1))[i] if i < len(e.get("knee") or []) else None   # effect.knee (app.js softOf)
     t, c = (kn, 100 - kn if k == "chance" else kn / 2) if kn else SOFT[k]
     if v <= t: return plain
@@ -149,7 +151,7 @@ SUP = {
     "ancient-archmage": lambda v: dict(ignore=True, flat=v[0]),
     "dark-king-coach": lambda v: dict(counter=v[0], undodgeable=True),
     "geass-strategist": lambda v: dict(confuse=v[0]),
-    "great-spirit-cat": lambda v: dict(freeze=(v[0], 1), vs_frozen=1.30),
+    "great-spirit-cat": lambda v: dict(freeze=(v[0], 1), vs_frozen=1 + v[1]),
     "guild-master-giant": lambda v: dict(team_all=(v[0], v[0])),
     "hat-and-clogs-shopkeeper": lambda v: dict(entry_miss=(3, v[0]), flat=v[1]),   # game text 2026-11-02
     "serpent-sin-mage": lambda v: dict(dblock=3, dr=v[0]),
@@ -162,7 +164,7 @@ SUP = {
     "angel-attendant": lambda v: dict(dodge=v[0], flat=v[1], maxhp=v[2]),
     "first-master-fairy": lambda v: dict(fairy=v[0]),
     "nine-tails-fox": lambda v: dict(flat=v[0], maxhp=v[1], dr=v[2]),
-    "wish-granter": lambda v: dict(flat=v[0], maxhp=v[1]),
+    "wish-granter": lambda v: dict(revive=(1.0, 1.0), regen=v[0], dblock=2),
     "eternal-wish-dragon": lambda v: dict(revive=(v[0], v[2]), team_others=v[1]),
     "immortal-witch": lambda v: dict(revive=(v[0], v[1])),
     "library-spirit": lambda v: dict(leech=v[0]),

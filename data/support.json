@@ -1,1 +1,283 @@
-[]
+[
+  {
+    "id": "spirit-medium-granny",
+    "name": "Spirit Medium Granny",
+    "image": "images/support/art/spirit-medium-granny.webp",
+    "effect": {
+      "name": "Exorcist's Barrier",
+      "desc": "Spirit Medium Granny's barrier talismans guard your WHOLE deck: the supported card protects your whole deck: only the card that is attacked takes damage (no splash, card-behind or bench hits) and takes {0}% less damage.",
+      "vals": [
+        2
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 5517,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 31.0,
+      "reliability": 85.1,
+      "flexibility": 97.9,
+      "synergy": 22.3,
+      "value": 53.5
+    },
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [
+      "tower-predator-court",
+      "overall-predator-court"
+    ],
+    "redraw": true
+  },
+  {
+    "id": "ancient-archmage",
+    "name": "Ancient Archmage",
+    "image": "images/support/art/ancient-archmage.webp",
+    "effect": {
+      "name": "Concealed Mana",
+      "desc": "Ancient Archmage hides her true mana: the supported card ignores the enemy's shields, dodges and barriers and deals {0}% more damage.",
+      "vals": [
+        34.93
+      ],
+      "type": "dmg"
+    },
+    "odds": 21400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 9.5,
+      "reliability": 62.7,
+      "flexibility": 14.6,
+      "synergy": 30.0,
+      "value": 25.3
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "dark-king-coach",
+    "name": "Dark King Coach",
+    "image": "images/support/art/dark-king-coach.webp",
+    "effect": {
+      "name": "Haki Mastery",
+      "desc": "Dark King Coach's fighting spirit: the supported card strikes back at {0}% of the hits it takes and can't have its attacks dodged.",
+      "vals": [
+        29
+      ],
+      "type": "counter"
+    },
+    "odds": 22400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 19.8,
+      "reliability": 65.3,
+      "flexibility": 22.9,
+      "synergy": 41.3,
+      "value": 33.8
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "geass-strategist",
+    "name": "Geass Strategist",
+    "image": "images/support/art/geass-strategist.webp",
+    "effect": {
+      "name": "Absolute Obedience",
+      "desc": "Geass Strategist's Geass commands the enemy: the supported card has a {0}% chance per hit to Confuse the enemy (it skips its next turn and hits itself for half damage).",
+      "vals": [
+        17.4
+      ],
+      "type": "confuse"
+    },
+    "odds": 17200000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 45.9,
+      "reliability": 80.4,
+      "flexibility": 45.8,
+      "synergy": 60.5,
+      "value": 55.7
+    },
+    "tier": "S",
+    "updated": "2026-10-31",
+    "prevTier": "SS",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "great-spirit-cat",
+    "name": "Great Spirit Cat",
+    "image": "images/support/art/great-spirit-cat.webp",
+    "effect": {
+      "name": "Great Spirit's Frost",
+      "desc": "Great Spirit Cat freezes the field: the supported card has a {0}% chance per hit to Freeze the enemy for 1 turn (it skips that turn and takes 25% more damage) and does {1}% more damage to frozen enemies.",
+      "vals": [
+        24.5,
+        46.67
+      ],
+      "type": "freeze"
+    },
+    "odds": 18800000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 35.6,
+      "reliability": 68.5,
+      "flexibility": 31.2,
+      "synergy": 63.7,
+      "value": 46.9
+    },
+    "tier": "A",
+    "updated": "2026-10-31",
+    "prevTier": "S",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "serpent-sin-mage",
+    "name": "Serpent Sin Mage",
+    "image": "images/support/art/serpent-sin-mage.webp",
+    "effect": {
+      "name": "Perfect Cube",
+      "desc": "Serpent Sin Mage's Perfect Cube: the supported card blocks the first 3 debuffs that would hit it each fight and takes {0}% less damage.",
+      "vals": [
+        19.27
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 16400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 23.9,
+      "reliability": 73.2,
+      "flexibility": 25.0,
+      "synergy": 45.4,
+      "value": 38.3
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "sweet-tooth-detective",
+    "name": "Sweet Tooth Detective",
+    "image": "images/support/art/sweet-tooth-detective.webp",
+    "effect": {
+      "name": "Deductive Reasoning",
+      "desc": "Sweet Tooth Detective reads the enemy: the supported card lowers the enemy's damage by another {0}% with every hit (up to 4 times).",
+      "vals": [
+        7.77
+      ],
+      "type": "weaken"
+    },
+    "odds": 18000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 56.4,
+      "reliability": 79.5,
+      "flexibility": 54.2,
+      "synergy": 73.0,
+      "value": 63.9
+    },
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "chainsaw-pup-devil",
+    "name": "Chainsaw Pup Devil",
+    "image": "images/support/art/chainsaw-pup-devil.webp",
+    "effect": {
+      "name": "Chainsaw Heart",
+      "desc": "Chainsaw Pup Devil gives his heart: the supported card has an {0}% chance to come back once with {1}% HP.",
+      "vals": [
+        80,
+        61
+      ],
+      "type": "revive",
+      "knee": [
+        80
+      ]
+    },
+    "odds": 220400000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 46.6,
+      "reliability": 76.2,
+      "flexibility": 43.8,
+      "synergy": 60.7,
+      "value": 54.8
+    },
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "rewind-girl",
+    "name": "Rewind Girl",
+    "image": "images/support/art/rewind-girl.webp",
+    "effect": {
+      "name": "Rewind",
+      "desc": "Rewind Girl rewinds the supported card's body: it heals {0}% of its max HP the first time it drops under 20% HP.",
+      "vals": [
+        57
+      ],
+      "type": "heal",
+      "cap": [
+        100
+      ]
+    },
+    "odds": 204100000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 31.1,
+      "reliability": 66.2,
+      "flexibility": 37.5,
+      "synergy": 45.5,
+      "value": 42.3
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "wish-granter",
+    "name": "Wish Granter",
+    "image": "images/support/art/wish-granter.webp",
+    "effect": {
+      "name": "Nanika's Wish",
+      "desc": "Wish Granter grants any wish: the supported card always comes back once with 100% HP, heals {0}% of its max HP every turn and blocks the first 2 debuffs that would hit it each fight.",
+      "vals": [
+        2
+      ],
+      "type": "heal"
+    },
+    "odds": 21400000000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 40.1,
+      "reliability": 80.5,
+      "flexibility": 37.5,
+      "synergy": 65.8,
+      "value": 52.8
+    },
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  }
+]
