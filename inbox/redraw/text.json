@@ -1,46 +1,4 @@
 {
- "potara-fusion-warrior": {
-  "hp": 2234886,
-  "atk": 335233,
-  "odds": "302.4M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Final Kamehameha",
-   "desc": "Potara Fusion Warrior: Every 2nd attack also hits the card behind for 40% of its normal hit (no crits or bonuses). 24% chance to dodge each hit. 20% chance to crit for 2x damage. Every 3rd attack does 2.01x damage."
-  }
- },
- "fusion-dance-warrior": {
-  "hp": 3005314,
-  "atk": 450797,
-  "odds": "279.3M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Stardust Breaker",
-   "desc": "Fusion Dance Warrior: 62% chance per hit to Seal the enemy's ability for 2 turns (bosses: 1 turn). Ignores the enemy's shields, dodges and barriers. Its first hit on each new enemy does 1.31x damage. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses)."
-  }
- },
- "ultra-ego-prince": {
-  "hp": 1678284,
-  "atk": 251743,
-  "odds": "258.0M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Ultra Ego",
-   "desc": "Ultra Ego Prince: +15% damage every time it is hit. Under 40% HP: +100% damage. Survives its first killing blow with 1 HP. With Ultra Instinct Saiyan in your deck, both get +25% damage and HP."
-  },
-  "note": "small game star bottom-right next to ×545 (erase it like Storm Dragon's) · data/buffs.json needs alias \"Ultra Instinct Saiyan\""
- },
- "galactic-tyrant": {
-  "hp": 1671616,
-  "atk": 250742,
-  "odds": "238.3M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Black Tyrant Form",
-   "desc": "Galactic Tyrant: Ignores the enemy's shields, dodges and barriers. Every hit also hits the whole enemy bench for 20% of its normal hit (no crits or bonuses). Every enemy card starts with 9.7% less damage. Instantly kills enemies under 15% HP (not bosses)."
-  },
-  "note": "ability NAME changed in the game: data says \"Black Frieza\" → \"Black Tyrant Form\" · tiny game star in the bottom-right corner"
- },
  "chainsaw-pup-devil": {
   "support": true,
   "odds": "220.4M",
