@@ -72,6 +72,10 @@
 /* Grade in battle (owner 2026-11-04): Status Damage "Unconfirmed" tag + the "In battle: …" line under the 4 grades */
 .dk-g4__name .bt-new--warn { display: inline-block; vertical-align: 2px; font-family: var(--font-body); font-weight: 700; letter-spacing: .04em; color: var(--bt-warn-ink); border-color: var(--bt-warn-line); background: var(--bt-warn-bg); }
 .bt-gfx { margin-top: 8px; }
+/* Custom head (owner 2026-11-05 · the "Battle only" pill broke over 2 lines at 390px): title + pill wrap as whole pieces */
+.bt-cus__t { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-width: 0; margin: 0; }
+.bt-cus__t .bt-new { margin-left: 0; white-space: nowrap; line-height: 1.3; }
+.bt-cus .dk-ss__h { align-items: flex-start; }
 .bt-cus__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .bt-cus__in { font-family: var(--gc-font-num); font-weight: 600; letter-spacing: .02em; }
 .bt-cus__in--atk { color: var(--gc-atk); } .bt-cus__in--hp { color: var(--gc-hp); }
