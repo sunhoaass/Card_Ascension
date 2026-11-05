@@ -143,11 +143,21 @@
     const d = (s && s.effect && s.effect.desc) || "";
     return new RegExp(`\\{${i}\\}% (chance|of (the )?hits)`).test(d) ? "chance" : new RegExp(`\\{${i}\\}% HP\\b`).test(d) ? "hp" : "other";
   };
+  /* effect.step[i] (game 2026-11-05) = that value's growth per level instead of 0.25: value × (1 + step × level)
+     (Eternal Wish Dragon damage 0.0875: 10 / 10.9 / 11.8 / 12.6 … · revive chance 0.28 + knee 72) · same even rounding */
+  const stepOf = (s, i) => { const st = s && s.effect && Array.isArray(s.effect.step) ? Number(s.effect.step[i]) : NaN; return st > 0 ? st : 0; };
+  const supMultAt = (s, i, rarity) => { const st = stepOf(s, i); return st ? 1 + st * levelOf(rarity) : supLevelMult(rarity); };
+  function supAtStep(base, st, rarity) {
+    const b = Math.round(Number(base) * 1000), m = 10000 + Math.round(st * 10000) * levelOf(rarity);
+    if (!Number.isFinite(b) || b <= 0) return 0;
+    const n = b * m, q = Math.floor(n / 1e6), r = n - q * 1e6;   // value × 1e7 · tenths + what's left (half a tenth = 5e5)
+    return (r > 5e5 || (r === 5e5 && q % 2) ? q + 1 : q) / 10;
+  }
   const supValAt = (s, i, rarity) => {
-    const base = supVals(s)[i], k = supKind(s, i), dp = s && s.effect && s.effect.dp === 0 ? 0 : 1;
-    let v = Number(base) * supLevelMult(rarity);
+    const base = supVals(s)[i], k = supKind(s, i), dp = s && s.effect && s.effect.dp === 0 ? 0 : 1, st = stepOf(s, i);
+    let v = Number(base) * supMultAt(s, i, rarity);
     if (!Number.isFinite(v) || v <= 0) return 0;
-    const plain = dp ? supAt(base, rarity) : Math.round(v);       // tenths: the game's even rounding of an exact …5
+    const plain = !dp ? Math.round(v) : st ? supAtStep(base, st, rarity) : supAt(base, rarity);   // tenths: the game's even rounding of an exact …5
     if (k === "hp") return Math.min(100, plain);
     const cp = s && s.effect && Array.isArray(s.effect.cap) ? Number(s.effect.cap[i]) : NaN;
     if (cp > 0) return Math.min(cp, plain);                        // effect.cap[i]: a straight cap, no soft curve (Rewind Girl "heals {0}% of its max HP" tops out at 100)
@@ -163,7 +173,7 @@
     const real = s && s.effect && Array.isArray(s.effect.real) ? Number(s.effect.real[i]) : NaN;
     if (!(real > 0)) return supValAt(s, i, rarity);
     const k = supKind(s, i);
-    const v = real * supLevelMult(rarity);
+    const v = real * supMultAt(s, i, rarity);
     if (k === "hp") return Math.min(100, v);
     const [t, c] = softOf(s, i, k);
     return v <= t ? v : t + c * (1 - Math.exp(-(v - t) / c));

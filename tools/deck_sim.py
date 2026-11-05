@@ -41,6 +41,13 @@ def sup_at(base, level):
     return (q + 1 if r > 200 or (r == 200 and q % 2) else q) / 10
 
 
+def sup_at_step(base, st, level):   # app.js supAtStep
+    b = round(float(base) * 1000)
+    if b <= 0: return 0.0
+    q, r = divmod(b * (10000 + round(st * 10000) * level), 10**6)
+    return (q + 1 if r > 5 * 10**5 or (r == 5 * 10**5 and q % 2) else q) / 10
+
+
 def sup_kind(desc, i):
     import re
     if re.search(r"\{%d\}%% (chance|of (the )?hits)" % i, desc): return "chance"
@@ -51,8 +58,9 @@ def sup_kind(desc, i):
 def sup_val(s, i, rarity="Godly"):
     e = s["effect"]; base = e["vals"][i]; level = LEVELS.index(rarity); k = sup_kind(e["desc"], i)
     dp = 0 if e.get("dp") == 0 else 1
-    v = float(base) * (1 + 0.25 * level)
-    plain = sup_at(base, level) if dp else round(v)
+    st = (e.get("step") or [])[i] if i < len(e.get("step") or []) else None   # effect.step (app.js supMultAt)
+    v = float(base) * (1 + (st or 0.25) * level)
+    plain = (sup_at_step(base, st, level) if st else sup_at(base, level)) if dp else round(v)
     if k == "hp": return min(100.0, plain)
     cp = (e.get("cap") or [])[i] if i < len(e.get("cap") or []) else None   # effect.cap (app.js supValAt)
     if cp: return min(float(cp), plain)
