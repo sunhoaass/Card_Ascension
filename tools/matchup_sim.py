@@ -86,6 +86,7 @@ def one(a, s):
         elif g(r"Takes " + F + "% less damage"): a["dr"] = float(m[1]) / 100
         elif g(r"Takes " + F + r"% less damage until it has been hit (\d+) times"): a["dr_until"] = (float(m[1]) / 100, int(m[2]))
         elif g(r"Takes " + F + r"% less from an attack each time it has seen it \(up to (\d+) times\)"): a["adapt"] = (float(m[1]) / 100, int(m[2]))
+        elif g(r"Each time an enemy card's attack hits it, that attack does " + F + r"% less to it next time \(up to " + F + r"% less\)"): a["adapt"] = (float(m[1]) / 100, round(float(m[2]) / float(m[1])))
         elif g(r"Can't be stunned, frozen or paralyzed"): a["cc_immune"] = True
         elif g(r"Can't be stunned, frozen, paralyzed, confused, sealed or weakened"): a["cc_immune"] = a["status_immune"] = True
         elif g(r"Can't be burned"): a["burn_immune"] = True
@@ -141,6 +142,8 @@ def one(a, s):
         elif g(r"Shadows raised by your deck are " + F + "% stronger"): a["shadow_boost"] = float(m[1]) / 100
         elif g(r"Whoever hits it gets (\d+) (Burn|Poison|Bleed) stacks? \(" + F + r"% max HP per turn, up to (\d+)\)"):
             a["thorns"] = (m[2].lower(), int(m[1]), float(m[3]) / 100, int(m[4]), THORN_TURNS)
+        elif g(r"Whoever hits it gets (\d+) (Burn|Poison|Bleed) stacks? \(each stack: " + F + r"% of their max HP per turn, max (\d+) stacks, (\d+) turns\)"):
+            a["thorns"] = (m[2].lower(), int(m[1]), float(m[3]) / 100, int(m[4]), int(m[5]))
         elif g(r"When knocked out, it explodes for " + F + "% of its max HP on the enemy in front"): a["explode"] = float(m[1]) / 100
         else: return False
     return True
