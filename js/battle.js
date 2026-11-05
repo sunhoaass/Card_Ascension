@@ -53,7 +53,7 @@
   const statusOk = () => !!clip().statusConfirmed;
 
   /* ==========================================================
-     Teams (deck-shaped so js/deckbuff.js reads them) · custom[i] = { atk?, hp? } replaces the final number (battle only)
+     Teams (deck-shaped so js/deckbuff.js reads them) · custom[i] = { atk?, hp? } replaces the number before Trait + Grade (battle only)
      ========================================================== */
   const emptyTeam = () => ({ name: "", rarity: "Godly", cards: [null, null, null, null], support: [null, null, null, null],
     cardRarity: [null, null, null, null], supRarity: [null, null, null, null], trait: [null, null, null, null], grades: [null, null, null, null], custom: [null, null, null, null], from: "" });
@@ -104,10 +104,35 @@
     if (d0) { copyDeck(d0, T.boss); copyDeck(d0, T.a); }
   }
 
-  // final numbers of a team: deck buffs + trait + grade (js/deckbuff.js) · then custom
+  /* final numbers of a team: deck buffs + trait + grade (js/deckbuff.js) · custom (owner 2026-11-05) = the number before
+     Trait + Grade (it stands in for card × rarity × supports × card buffs) · Trait and Grade still multiply it
+     real = without custom · pre = real before Trait + Grade (the custom boxes' placeholder) · tg = the Trait × Grade multiplier */
   function stats(key) {
     const d = T[key], res = C.deckBuff.compute(d, { support: SUP });
-    return res.map((r, i) => (r ? { ...r, real: { atk: r.atk, hp: r.hp }, atk: d.custom[i] && d.custom[i].atk != null ? d.custom[i].atk : r.atk, hp: d.custom[i] && d.custom[i].hp != null ? d.custom[i].hp : r.hp } : null));
+    return res.map((r, i) => {
+      if (!r) return null;
+      const t = r.from.find((x) => x.kind === "trait"), g = r.grade || {};
+      const tg = { atk: (t ? t.mA : 1) * (1 + (Number(g.atk) || 0) / 100), hp: (t ? t.mH : 1) * (1 + (Number(g.hp) || 0) / 100) };
+      const c = d.custom[i] || {}, pre = { atk: Math.round(r.atk / tg.atk), hp: Math.round(r.hp / tg.hp) };
+      return { ...r, real: { atk: r.atk, hp: r.hp }, pre, tg,
+        atk: c.atk != null ? Math.round(c.atk * tg.atk) : r.atk, hp: c.hp != null ? Math.round(c.hp * tg.hp) : r.hp };
+    });
+  }
+  /* custom boxes (owner 2026-11-05): type short numbers too · 1k 10K 1.5M 100m 2B 1T 1Qd 1Qi (case doesn't matter) · commas ok */
+  const UNITS = { k: 1e3, m: 1e6, b: 1e9, t: 1e12, qa: 1e15, qd: 1e15, qi: 1e18 };
+  function parseNum(txt) {
+    const m = /^(\d+(?:\.\d+)?|\.\d+)(k|m|b|t|qa|qd|qi)?$/i.exec(String(txt).replace(/[,\s_]/g, ""));
+    if (!m) return NaN;
+    return Math.round(Number(m[1]) * (m[2] ? UNITS[m[2].toLowerCase()] : 1));
+  }
+  // a custom number back in its box: short when it is exactly short (1,000,000,000 -> 1B · 2.5T) · else the full number
+  function cusText(v) {
+    for (const [u, n] of [["Qi", 1e18], ["Qd", 1e15], ["T", 1e12], ["B", 1e9], ["M", 1e6], ["K", 1e3]]) {
+      if (v < n) continue;
+      const q = v / n, r = Math.round(q * 1000) / 1000;
+      return Math.abs(q - r) * n < 0.5 ? Number(r.toFixed(3)) + u : fmt(v);   // only the biggest unit that fits
+    }
+    return fmt(v);
   }
   // boss ATK at a stage: the 2 clips (stage 0 = 128,080,338 · stage 448 = 460,425,250) · in between = a guess (the same % every stage)
   const bossAtk = (st) => (Number(BD.boss.atk) || 128080338) * Math.pow(1 + (Number(BD.boss.perStage) || 0.002860093), st - (Number(BD.boss.stage) || 0));
@@ -251,7 +276,7 @@
       title: `${card.name} · Buffs`,
       html: `<div class="dk-bf"><div class="dk-bf__sum">${stat("ATK", r.base.atk, r.real.atk)}${stat("HP", r.base.hp, r.real.hp)}</div>
           <ul class="dk-bf__list">${rows}</ul>
-          ${cus ? `<p class="tm-field__note bt-note--cus">Custom for battle: ${cus.atk != null ? "ATK " + C.fmtStat(cus.atk) : ""}${cus.atk != null && cus.hp != null ? " · " : ""}${cus.hp != null ? "HP " + C.fmtHp(cus.hp) : ""} (used instead of the numbers above).</p>` : ""}</div>`,
+          ${cus ? `<p class="tm-field__note bt-note--cus">Custom for battle: ${cus.atk != null ? "ATK " + C.fmtHp(cus.atk) + " → " + C.fmtHp(r.atk) : ""}${cus.atk != null && cus.hp != null ? " · " : ""}${cus.hp != null ? "HP " + C.fmtHp(cus.hp) + " → " + C.fmtHp(r.hp) : ""} (in place of the cards and supports · Trait and Grade still multiply).</p>` : ""}</div>`,
       actions: [{ label: "Close", value: "cancel" }],
       onMount(dlg) { FX.stagger($(".dk-bf__list", dlg), 40, { cls: "fx-up", max: 8, cleanup: true }); },
     });
@@ -277,11 +302,11 @@
   // battle only: type the HP / ATK yourself, any size · empty = the real number with the deck's buffs
   function cusHTML() {
     return `<section class="dk-ss__sec bt-cus" aria-label="Custom HP and ATK">
-        <div class="dk-ss__h"><h3 class="tm-field__label">Custom HP / ATK <span class="bt-new">Battle only</span></h3><button type="button" class="dk-ss__rm fx-press" data-ss-cusrm hidden>${ICON.reset}Real value</button></div>
+        <div class="dk-ss__h"><h3 class="tm-field__label bt-cus__t"><span>Custom HP / ATK</span> <span class="bt-new">Battle only</span></h3><button type="button" class="dk-ss__rm fx-press" data-ss-cusrm hidden>${ICON.reset}Real value</button></div>
         <div class="bt-cus__row">
-          <label class="tm-field"><span class="tm-field__label">ATK</span><input class="tm-input bt-cus__in bt-cus__in--atk" id="bt-cus-atk" data-ss-cus="atk" inputmode="numeric" autocomplete="off" enterkeyhint="done"></label>
-          <label class="tm-field"><span class="tm-field__label">HP</span><input class="tm-input bt-cus__in bt-cus__in--hp" id="bt-cus-hp" data-ss-cus="hp" inputmode="numeric" autocomplete="off" enterkeyhint="done"></label>
-        </div><p class="bt-cus__err" data-ss-cuserr hidden>Type a whole number above 0, e.g. 2,661,922,940.</p></section>`;
+          <label class="tm-field"><span class="tm-field__label">ATK</span><input class="tm-input bt-cus__in bt-cus__in--atk" id="bt-cus-atk" data-ss-cus="atk" inputmode="text" autocapitalize="characters" spellcheck="false" autocomplete="off" enterkeyhint="done"></label>
+          <label class="tm-field"><span class="tm-field__label">HP</span><input class="tm-input bt-cus__in bt-cus__in--hp" id="bt-cus-hp" data-ss-cus="hp" inputmode="text" autocapitalize="characters" spellcheck="false" autocomplete="off" enterkeyhint="done"></label>
+        </div><p class="bt-cus__err" data-ss-cuserr hidden>Type a number above 0, e.g. 2,661,922,940 · 500M · 1.5B · 1T.</p></section>`;
   }
   let sheetOpen = false;
   async function slotSheet(key, kind, i) {
@@ -317,13 +342,13 @@
           if (s) {
             C.setCardNums(art, { atk: s.atk, hp: s.hp }, { animate });
             const sa = $("[data-ss-atk]", root), sh = $("[data-ss-hp]", root);
-            sa.textContent = C.fmtStat(s.atk); sh.textContent = C.fmtHp(s.hp);
+            sa.textContent = C.fmtHp(s.atk); sh.textContent = C.fmtHp(s.hp);   // short from 100M, like HP (owner 2026-11-05 · the card keeps the full ATK)
             $("[data-ss-buff]", root).innerHTML = (s.atkPct || s.hpPct ? `<span>Buffs</span> <b>${esc(P().buffText(s))}</b>` : "") + (cus ? ` <span class="bt-cus__tag">Custom</span>` : "");
             if (animate && !reduced()) { FX.flash(sa.parentNode); FX.flash(sh.parentNode); }
-            [["atk", s.real.atk], ["hp", s.real.hp]].forEach(([k, realV]) => {
+            [["atk", s.pre.atk], ["hp", s.pre.hp]].forEach(([k, realV]) => {
               const inp = $(`[data-ss-cus="${k}"]`, root); if (document.activeElement === inp) return;
               const v = cus && cus[k] != null ? cus[k] : null;
-              inp.value = v != null ? fmt(v) : ""; inp.placeholder = fmt(realV); inp.classList.toggle("is-custom", v != null);
+              inp.value = v != null ? cusText(v) : ""; inp.placeholder = C.fmtHp(realV); inp.classList.toggle("is-custom", v != null);
             });
             $("[data-ss-cusrm]", root).hidden = !cus;
           }
@@ -349,10 +374,10 @@
           const inp = e.target.closest("[data-ss-cus]"); if (!inp) return;
           const k = inp.dataset.ssCus, txt = String(inp.value).replace(/[,\s_]/g, ""), err = $("[data-ss-cuserr]", root);
           if (txt === "") { commit((dd) => { const c = { ...(dd.custom[i] || {}) }; delete c[k]; dd.custom[i] = Object.keys(c).length ? c : null; }); err.hidden = true; return; }
-          const v = Number(txt);
-          if (!Number.isFinite(v) || v < 1 || !/^\d+(\.\d+)?$/.test(txt)) { err.hidden = false; if (!reduced()) FX.flash(inp.parentNode); return; }
+          const v = parseNum(txt);
+          if (!Number.isFinite(v) || v < 1 || v > 1e30) { err.hidden = false; if (!reduced()) FX.flash(inp.parentNode); return; }
           err.hidden = true;
-          commit((dd) => { dd.custom[i] = { ...(dd.custom[i] || {}), [k]: Math.round(v) }; });
+          commit((dd) => { dd.custom[i] = { ...(dd.custom[i] || {}), [k]: v }; });
           inp.blur();
         });
         root.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.closest("[data-ss-cus]")) { e.preventDefault(); e.target.dispatchEvent(new Event("change", { bubbles: true })); } });

@@ -1281,7 +1281,7 @@
             if (b && b.id === id) {
               C.setCardNums(art, { atk: b.atk, hp: b.hp }, { animate });
               const sa = $("[data-ss-atk]", root), sh2 = $("[data-ss-hp]", root);
-              sa.textContent = C.fmtStat(b.atk); sh2.textContent = C.fmtHp(b.hp);
+              sa.textContent = C.fmtHp(b.atk); sh2.textContent = C.fmtHp(b.hp);   // short from 100M, like HP (owner 2026-11-05 · the card keeps the full ATK)
               $("[data-ss-buff]", root).innerHTML = b.atkPct || b.hpPct ? `<span>Buffs</span> <b>${esc(buffText(b))}</b>` : "";
               if (animate) { FX.flash(sa.parentNode); FX.flash(sh2.parentNode); }
             }
