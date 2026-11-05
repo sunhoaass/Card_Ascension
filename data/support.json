@@ -623,5 +623,567 @@
     "prevTier": "S",
     "bestDeck": [],
     "redraw": true
+  },
+  {
+    "id": "blue-healer-cat-knight",
+    "name": "Blue Healer Cat Knight",
+    "image": "images/support/art/blue-healer-cat-knight.webp",
+    "effect": {
+      "name": "Water Mana Healing",
+      "desc": "Blue Healer Cat Knight is the best healer in the kingdom: the supported card heals {0}% of its max HP every turn.",
+      "vals": [
+        3.73
+      ],
+      "type": "heal"
+    },
+    "odds": 737000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 61.0,
+      "reliability": 65.5,
+      "flexibility": 41.7,
+      "synergy": 87.2,
+      "value": 63.3
+    },
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "cherry-blossom-medic",
+    "name": "Cherry Blossom Medic",
+    "image": "images/support/art/cherry-blossom-medic.webp",
+    "effect": {
+      "name": "Cherry Blossom Impact",
+      "desc": "Cherry Blossom Medic's chakra fist: the supported card does {0}% more damage every 3rd attack.",
+      "vals": [
+        117
+      ],
+      "type": "dmg",
+      "knee": [
+        351
+      ]
+    },
+    "odds": 520000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 19.6,
+      "reliability": 61.7,
+      "flexibility": 22.9,
+      "synergy": 37.5,
+      "value": 32.3
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "flower-hand-scholar",
+    "name": "Flower Hand Scholar",
+    "image": "images/support/art/flower-hand-scholar.webp",
+    "effect": {
+      "name": "Mil Fleur",
+      "desc": "Flower Hand Scholar's hands bloom everywhere: the supported card also hits the whole enemy bench with every hit for {0}% of its normal hit (no crits or bonuses) and has a {1}% chance per hit to Stun the enemy for 1 turn.",
+      "vals": [
+        9.5,
+        4.7
+      ],
+      "type": "splash"
+    },
+    "odds": 641000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 27.7,
+      "reliability": 74.9,
+      "flexibility": 50.0,
+      "synergy": 35.1,
+      "value": 43.1
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "future-sight-dog",
+    "name": "Future Sight Dog",
+    "image": "images/support/art/future-sight-dog.webp",
+    "effect": {
+      "name": "Future Vision",
+      "desc": "Future Sight Dog sees what's coming: the supported card takes {0}% less damage from the first 2 hits each fight.",
+      "vals": [
+        31.67
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 612000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 18.2,
+      "reliability": 70.3,
+      "flexibility": 43.8,
+      "synergy": 26.0,
+      "value": 35.3
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "gentle-palm-heiress",
+    "name": "Gentle Palm Heiress",
+    "image": "images/support/art/gentle-palm-heiress.webp",
+    "effect": {
+      "name": "Twin Lion Fists",
+      "desc": "Gentle Palm Heiress closes the chakra points: the supported card lowers the enemy's damage by another {0}% with every hit (up to 5 times).",
+      "vals": [
+        4.8
+      ],
+      "type": "weaken"
+    },
+    "odds": 672000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 46.5,
+      "reliability": 77.0,
+      "flexibility": 39.6,
+      "synergy": 66.2,
+      "value": 55.2
+    },
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "golden-shield-healer",
+    "name": "Golden Shield Healer",
+    "image": "images/support/art/golden-shield-healer.webp",
+    "effect": {
+      "name": "Santen Kesshun",
+      "desc": "Golden Shield Healer's three-petal shield: the supported card starts each fight with a shield worth {0}% of its max HP.",
+      "vals": [
+        26.33
+      ],
+      "type": "shield"
+    },
+    "odds": 532000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 15.0,
+      "reliability": 65.4,
+      "flexibility": 37.5,
+      "synergy": 25.1,
+      "value": 31.6
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "hellsing-commander",
+    "name": "Hellsing Commander",
+    "image": "images/support/art/hellsing-commander.webp",
+    "effect": {
+      "name": "Search and Destroy",
+      "desc": "Hellsing Commander's order: the supported card does {0}% more damage with its first hit on each new enemy.",
+      "vals": [
+        79
+      ],
+      "dp": 0,
+      "type": "dmg",
+      "knee": [
+        237
+      ]
+    },
+    "odds": 720000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 26.8,
+      "reliability": 76.9,
+      "flexibility": 39.6,
+      "synergy": 39.6,
+      "value": 41.9
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "hero-of-legend",
+    "name": "Hero of Legend",
+    "image": "images/support/art/hero-of-legend.webp",
+    "effect": {
+      "name": "The Hero's Resolve",
+      "desc": "Hero of Legend never gives up: the supported card deals {0}% more damage while under 50% HP and gets {1}% more max HP.",
+      "vals": [
+        46.63,
+        8
+      ],
+      "type": "dmg"
+    },
+    "odds": 584000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 18.0,
+      "reliability": 66.4,
+      "flexibility": 35.4,
+      "synergy": 30.0,
+      "value": 33.6
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "reindeer-doctor",
+    "name": "Reindeer Doctor",
+    "image": "images/support/art/reindeer-doctor.webp",
+    "effect": {
+      "name": "Rumble Ball",
+      "desc": "Reindeer Doctor's Rumble Ball: the supported card heals {0}% of its max HP the first time it drops under 40% HP.",
+      "vals": [
+        26
+      ],
+      "type": "heal"
+    },
+    "odds": 626000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 22.6,
+      "reliability": 67.4,
+      "flexibility": 39.6,
+      "synergy": 33.2,
+      "value": 37.1
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "sacred-arrow-priestess",
+    "name": "Sacred Arrow Priestess",
+    "image": "images/support/art/sacred-arrow-priestess.webp",
+    "effect": {
+      "name": "Sacred Arrow",
+      "desc": "Sacred Arrow Priestess's sacred arrows purify: the supported card Seals each new enemy's ability for 1 turn with its first hit on it and deals {0}% more damage.",
+      "vals": [
+        35.8
+      ],
+      "type": "dmg"
+    },
+    "odds": 688000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 28.8,
+      "reliability": 77.3,
+      "flexibility": 43.8,
+      "synergy": 43.3,
+      "value": 44.4
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "shadow-strategist",
+    "name": "Shadow Strategist",
+    "image": "images/support/art/shadow-strategist.webp",
+    "effect": {
+      "name": "Shadow Possession",
+      "desc": "Shadow Strategist's shadow: the supported card has an {0}% chance to Freeze the enemy in front for 1 turn when it comes in.",
+      "vals": [
+        55
+      ],
+      "type": "bind",
+      "knee": [
+        90
+      ]
+    },
+    "odds": 656000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 9.5,
+      "reliability": 63.4,
+      "flexibility": 37.5,
+      "synergy": 14.0,
+      "value": 26.8
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "teacher-alchemist",
+    "name": "Teacher Alchemist",
+    "image": "images/support/art/teacher-alchemist.webp",
+    "effect": {
+      "name": "Hand-Clap Alchemy",
+      "desc": "Teacher Alchemist doesn't need a circle: the supported card strikes back at {0}% of the hits it takes.",
+      "vals": [
+        26.45
+      ],
+      "type": "counter"
+    },
+    "odds": 704000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 22.1,
+      "reliability": 65.5,
+      "flexibility": 37.5,
+      "synergy": 37.7,
+      "value": 37.0
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "titan-scientist",
+    "name": "Titan Scientist",
+    "image": "images/support/art/titan-scientist.webp",
+    "effect": {
+      "name": "Titan Research",
+      "desc": "Titan Scientist finds the weak spot: the supported card Marks the enemy with every hit (it takes {0}% more damage from every card).",
+      "vals": [
+        21.73
+      ],
+      "type": "mark"
+    },
+    "odds": 545000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 35.5,
+      "reliability": 78.1,
+      "flexibility": 60.4,
+      "synergy": 40.5,
+      "value": 50.0
+    },
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "useless-goddess",
+    "name": "Useless Goddess",
+    "image": "images/support/art/useless-goddess.webp",
+    "effect": {
+      "name": "Resurrection",
+      "desc": "Useless Goddess is NOT useless: the supported card has a {0}% chance to come back once with {1}% HP.",
+      "vals": [
+        49,
+        35
+      ],
+      "type": "revive"
+    },
+    "odds": 598000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 41.0,
+      "reliability": 75.9,
+      "flexibility": 43.8,
+      "synergy": 54.0,
+      "value": 51.1
+    },
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "water-king-teacher",
+    "name": "Water King Teacher",
+    "image": "images/support/art/water-king-teacher.webp",
+    "effect": {
+      "name": "Water King Barrier",
+      "desc": "Water King Teacher's water magic: the supported card gets a shield worth {0}% of its max HP every 3rd turn.",
+      "vals": [
+        13.97
+      ],
+      "type": "shield"
+    },
+    "odds": 755000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 22.7,
+      "reliability": 43.3,
+      "flexibility": 16.7,
+      "synergy": 61.5,
+      "value": 33.4
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "slug-princess-hokage",
+    "name": "Slug Princess Hokage",
+    "image": "images/support/art/slug-princess-hokage.webp",
+    "effect": {
+      "name": "Creation Rebirth",
+      "desc": "Slug Princess Hokage's Creation Rebirth: the supported card heals {0}% of its max HP the first time it drops under 30% HP.",
+      "vals": [
+        34
+      ],
+      "type": "heal",
+      "cap": [
+        100
+      ]
+    },
+    "odds": 15100000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 25.2,
+      "reliability": 67.1,
+      "flexibility": 35.4,
+      "synergy": 37.5,
+      "value": 38.1
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "immortal-witch",
+    "name": "Immortal Witch",
+    "image": "images/support/art/immortal-witch.webp",
+    "effect": {
+      "name": "Code of Immortality",
+      "desc": "Immortal Witch can't die: the supported card has a {0}% chance to come back once with {1}% HP.",
+      "vals": [
+        46,
+        27
+      ],
+      "type": "revive"
+    },
+    "odds": 73000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 28.5,
+      "reliability": 73.4,
+      "flexibility": 43.8,
+      "synergy": 39.1,
+      "value": 42.7
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "ogre-shrine-princess",
+    "name": "Ogre Shrine Princess",
+    "image": "images/support/art/ogre-shrine-princess.webp",
+    "effect": {
+      "name": "Shrine Maiden's Blessing",
+      "desc": "Ogre Shrine Princess's cooking and blessing: the supported card deals {0}% more damage.",
+      "vals": [
+        29
+      ],
+      "type": "dmg"
+    },
+    "odds": 76000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 13.6,
+      "reliability": 69.9,
+      "flexibility": 29.2,
+      "synergy": 25.0,
+      "value": 30.3
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "shapeshift-actor",
+    "name": "Shapeshift Actor",
+    "image": "images/support/art/shapeshift-actor.webp",
+    "effect": {
+      "name": "Doppelganger",
+      "desc": "Shapeshift Actor copies the enemy: the supported card adds {0}% of the enemy's normal hit to every hit.",
+      "vals": [
+        14.9
+      ],
+      "type": "dmg"
+    },
+    "odds": 74000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 16.5,
+      "reliability": 74.1,
+      "flexibility": 31.2,
+      "synergy": 27.6,
+      "value": 33.2
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "hat-and-clogs-shopkeeper",
+    "name": "Hat and Clogs Shopkeeper",
+    "image": "images/support/art/hat-and-clogs-shopkeeper.webp",
+    "effect": {
+      "name": "Blood Mist Shield",
+      "desc": "Hat and Clogs Shopkeeper's Blood Mist: the supported card blinds the enemy in front when it comes in (its next 3 attacks each have a {0}% chance to miss) and deals {1}% more damage.",
+      "vals": [
+        58,
+        10
+      ],
+      "type": "dodge",
+      "knee": [
+        90,
+        35
+      ]
+    },
+    "odds": 15700000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 16.9,
+      "reliability": 69.7,
+      "flexibility": 47.9,
+      "synergy": 21.0,
+      "value": 34.5
+    },
+    "tier": "B",
+    "updated": "2026-11-02",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
   }
 ]

@@ -149,7 +149,7 @@ SUP = {
     "gentle-priest": lambda v: dict(heal_all=v[0]),
     "golden-shield-healer": lambda v: dict(shield=v[0]),
     "hellsing-commander": lambda v: dict(first_new=1 + v[0]),
-    "hero-of-legend": lambda v: dict(low_hp=(0.30, v[0])),
+    "hero-of-legend": lambda v: dict(low_hp=(0.50, v[0]), maxhp=v[1]),
     "reindeer-doctor": lambda v: dict(low_heal=(0.40, v[0])),
     "sacred-arrow-priestess": lambda v: dict(seal_first=1, flat=v[0]),
     "shadow-strategist": lambda v: dict(entry_skip=v[0]),
