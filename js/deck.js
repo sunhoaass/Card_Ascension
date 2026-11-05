@@ -21,8 +21,8 @@
      starts at the rarity used last (cbi:deckRarity, first time Godly). The editor has no mode buttons, deck rarity buttons,
      meta line or score ring any more (deck.mode is still saved and used by the analysis). Decks saved before: every slot =
      the deck's old rarity. Links carry cr / sr (older links: the deck's rarity).
-   · Grade (4 per card slot: Basic Attack, Defense, Status Damage, HP · +2.5% a point on its own stat · all 4 at 10 = +30%
-     more on every stat = +55%) + Trait per card slot
+   · Grade (4 per card slot: Basic Attack, Defense, Status Damage, HP · +2.5% a point on its own stat · all 4 at 10 = +5%
+     more on every stat = +30%) + Trait per card slot
      (owner 2026-11-04): set in the slot sheet, shown on the card only when set, in the numbers (js/deckbuff.js) · links g / t.
    · Undo / Redo: 50 steps per deck (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
    · Step 9 tools (js/share.js) are reused: Save as image (C.share.deckImageDialog), Share link (#deck/s/<data>),
@@ -163,8 +163,8 @@
   };
   /* ---------- Rarity per slot (owner 2026-11-02) ----------
      deck.cardRarity / deck.supRarity = [rarity name × 4] · deck.grades = [[atk, def, status, hp] | null × 4] (0–10 each, like the
-     game: Basic Attack, Defense, Status Damage, HP · owner 2026-11-04 rule 2: +2.5% a point on its own stat, all 4 at 10 = +30%
-     more on every stat (+55%) · Basic Attack -> ATK, HP -> HP · js/deckbuff.js gradePct) */
+     game: Basic Attack, Defense, Status Damage, HP · owner 2026-11-04 rule 2: +2.5% a point on its own stat, all 4 at 10 = +5%
+     more on every stat (+30% · game 2026-11-05) · Basic Attack -> ATK, HP -> HP · js/deckbuff.js gradePct) */
   const LAST_KEY = "cbi:deckRarity", FIRST_RARITY = "Godly", GRADE_MAX = 10;
   const RKEY = { cards: "cardRarity", support: "supRarity" };
   const isRarity = (r) => typeof r === "string" && state.meta.rarities.some((x) => x.name === r);
@@ -197,8 +197,8 @@
   const fullOf = (g) => Array.isArray(g) && g.length >= 4 && g.slice(0, 4).every((n) => n >= GRADE_MAX);
   const GSTATS = ["Basic Attack", "Defense", "Status Damage", "HP"];
   // the Card Grader's line (owner 2026-11-04 rule 2 · js/deckbuff.js gradePct)
-  const GSUM = "Each point gives +2.5% to its own stat. A 10 MINT (all four at 10) adds +30% more to every stat.";
-  const GSUM_FULL = "10 MINT: +25% + 30% = +55% to every stat.";
+  const GSUM = "Each point gives +2.5% to its own stat. A 10 MINT (all four at 10) adds +5% more to every stat.";
+  const GSUM_FULL = "10 MINT: +25% + 5% = +30% to every stat.";
   // a grade's colour in the Card Grader rows (the game: 1–2 grey · 5 green · 7 purple · guessed in between) · 10 = rainbow
   const gradeTone = (v) => (v >= 10 ? "mint" : v >= 9 ? "gold" : v >= 6 ? "purple" : v >= 3 ? "green" : v >= 1 ? "grey" : "none");
   // a card / support put in a slot: the last rarity (a deck's old grades for that slot are cleared)
@@ -1205,7 +1205,7 @@
     });
     root.querySelectorAll("[data-ss-grow]").forEach((row) => { row.dataset.tone = gradeTone(g4[Number(row.dataset.ssGrow)]); });
     root.querySelectorAll("[data-ss-gv]").forEach((e) => { const v = g4[Number(e.dataset.ssGv)]; e.value = v ? String(v) : ""; });
-    // "+x%" = what the card really gets (js/deckbuff.js gradePct: 2.5% a point · +30% more when all 4 are 10)
+    // "+x%" = what the card really gets (js/deckbuff.js gradePct: 2.5% a point · +5% more when all 4 are 10 = +30%)
     const gp = C.deckBuff.gradePct(g4), gpv = [gp.atk, gp.def, gp.status, gp.hp];
     root.querySelectorAll("[data-ss-gp]").forEach((e) => { const v = gpv[Number(e.dataset.ssGp)]; e.textContent = v ? `+${Number(v.toFixed(1))}%` : ""; });
     const gt = $("[data-ss-gt]", root), gsum = $("[data-ss-gsum]", root), all = $("[data-ss-all]", root);

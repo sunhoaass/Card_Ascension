@@ -6,8 +6,9 @@
    King of Conquerors Godly 10.89M → 20.3M / 26.3M / 21.6M only fits multiplying).
    Trait + Grade per card slot (owner 2026-11-04 · back in the Deck only): after the deck's buffs, ATK × the trait's dmg and
    HP × its hp (data/traits.json · deck.trait[i] = trait id | null) · Grade (deck.grades[i] = [atk, def, status, hp] 0–10,
-   like the game · owner 2026-11-04 rule 2): each stat +2.5% a point on ITSELF only (10 = +25%) · all 4 at 10 = +30% more on
-   every stat, added (25 + 30 = +55%) · 3 at 10 = +25% on those 3, no +30% · Basic Attack -> ATK × (1 + %), HP -> HP × (1 + %)
+   like the game · owner 2026-11-04 rule 2): each stat +2.5% a point on ITSELF only (10 = +25%) · all 4 at 10 = +5% more on
+   every stat, added (25 + 5 = +30% · checked 2026-11-05 on the owner's game screenshot: Founding Titan Godlike + Limitless +
+   10 MINT, game ATK 7,516,970,289 = ×1.30, the old +55% gave 8,962,820,053) · 3 at 10 = +25% on those 3, no +5% · Basic Attack -> ATK × (1 + %), HP -> HP × (1 + %)
    · Defense / Status Damage don't change the card's numbers (the battle engine reads them: gradePct).
    The deck's buffs themselves are unchanged.
    Mutation bonus (game 2026-11-02): "Mutation bonus: +X% damage and max HP." in a support's text = the supported card
@@ -154,8 +155,8 @@
     });
   }
   // Grade: 4 per card slot (0–10: Basic Attack, Defense, Status Damage, HP) · owner 2026-11-04 rule 2:
-  // +2.5% a point on that stat only · all 4 at 10 = +30% more on every stat, added (10 = 25 + 30 = +55%)
-  const GRADE_MAX = 10, GRADE_STEP = 2.5, GRADE_FULL = 30, GRADE_KEYS = ["atk", "def", "status", "hp"];
+  // +2.5% a point on that stat only · all 4 at 10 = +5% more on every stat, added (10 = 25 + 5 = +30% · game 2026-11-05)
+  const GRADE_MAX = 10, GRADE_STEP = 2.5, GRADE_FULL = 5, GRADE_KEYS = ["atk", "def", "status", "hp"];
   const gradeNums = (g) => GRADE_KEYS.map((_, q) => Math.max(0, Math.min(GRADE_MAX, Math.round(Number(Array.isArray(g) ? g[q] : 0) || 0))));
   function gradePct(g) {
     const n = gradeNums(g), full = n.every((v) => v >= GRADE_MAX), o = { full };
@@ -239,7 +240,7 @@
       const t = traitAt(deck, k), gp = gradeAt(deck, k), gA = 1 + gp.atk / 100, gH = 1 + gp.hp / 100;
       const tA = t && t.dmg > 0 ? t.dmg : 1, tH = t && t.hp > 0 ? t.hp : 1;
       if (t && (tA !== 1 || tH !== 1)) from.push({ key: "t:" + t.id, name: t.name, kind: "trait", atk: round((tA - 1) * 100), hp: round((tH - 1) * 100), mA: tA, mH: tH, n: 1 });
-      // grade row: Basic Attack -> ATK, HP -> HP (+2.5% a point · +30% more when all 4 are 10) · 0 / 0 = no row
+      // grade row: Basic Attack -> ATK, HP -> HP (+2.5% a point · +5% more when all 4 are 10 = +30%) · 0 / 0 = no row
       if (gp.atk || gp.hp) from.push({ key: "g", name: gp.full ? "Grade 10 MINT (all 4)" : "Grade", kind: "grade", atk: gp.atk, hp: gp.hp, mA: round(gA * 1e4) / 1e4, mH: round(gH * 1e4) / 1e4, n: 1 });
       // atkPct / hpPct = everything in (deck × trait × grade) = the buff pill under the card (owner 2026-11-04: grade shows there too)
       return {

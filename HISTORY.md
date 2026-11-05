@@ -2488,3 +2488,12 @@
 - **ทดสอบ (Chromium + Playwright · เซิร์ฟเวอร์ `http.server`):** (1) หน้า Support โหลด 40 ใบ รูปโหลดครบ 40/40 ไม่มี error / 404 (2) `CBI.supText` ที่ Godly ของ 20 ใบ = รูปครอบ **20/20 ทุกตัวอักษร** รวมบรรทัด Mutation (+16 ×17 · +32 ×2: Hat and Clogs · Slug Princess Hokage) (3) ค่า 9 ระดับ ไล่ขึ้นเรื่อยๆ ทุกใบ ไม่เกินเพดาน (Shadow Strategist 55 → 100 · Slug 34 → 100 · Hellsing 79 → 237 · Cherry 117 → 351) (4) ข้อความไม่ทับคำ SUPPORT: วัด 40 ใบ × 9 ระดับ = 360 กล่อง ไม่ทับเลย (5) screenshot หน้า Support ที่ Godly ดูตา: รูป + ข้อความ + ป้ายครบทุกใบ (6) `data/battle.json` โหลดได้ · `node tools/deckbuff_report.js` ไม่มีชื่อที่ไม่รู้จักเพิ่ม (4 ชื่อเดิมของการ์ด)
 - **ไม่ได้ทำ:** ไม่จัด Tier / ไม่แก้ `scores` · `tier` ของ Support (ยังเป็นของข้อความเก่า → งาน B) · ไม่แตะโค้ดเว็บ / CSS · ไม่เอารูปครอบ (`cropped_cards/`) ลงเว็บ
 - **ไฟล์:** `data/support.json` · `data/pending/support.json` · `data/pool.json` · `data/battle.json` · `tools/battle_skills.py` · `tools/deck_sim.py` · `images/support/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 🎚️ Grade 10 MINT = +30% ให้ ATK/HP ตรงเกม (`?v=117` → `118`)
+- **เจ้าของ:** แคปเกม (Tower Floor 2830) + แคปเว็บ deck เดียวกัน · HP เต็ม ~33.2B · ATK ไม่ตรง
+- **Deck:** Founding Titan Godlike (Limitless · Grade 10 ×4) · Witch of Envy Godly (Ascendant · Grade 10 ×4) · King of Conquerors Godly ×2 · Support Nine Tails Fox ×2 · Charge Commander · Spirit Medium Granny (Godly ทั้งหมด)
+- **วัด:** เว็บเดิม ATK 8,962,820,053 / HP 39.8B · เกม 7,516,970,289 / ~33.2B → ทั้งคู่ ÷1.192 = 1.55 ÷ 1.30 · บัฟอื่น (Nine Tails 51.74% + Mutation 40% · Charge Commander 13.6% · King of Conquerors 1.15² · Limitless ×1.7) ไม่เปลี่ยน
+- **ทำ:** `js/deckbuff.js` `GRADE_FULL` 30 → 5 (ครบ 10 ทั้ง 4 = 25 + 5 = +30%) · `js/deck.js` ข้อความ Card Grader ("adds +5% more" · "10 MINT: +25% + 5% = +30%") + คอมเมนต์ · `index.html` `?v=118`
+- **ทดสอบ (Node + Playwright Chromium 390 · เซิร์ฟเวอร์ในเครื่อง):** deck ในรูป: Founding Titan ATK 7,517,203,916 (เกม 7,516,970,289 · ต่าง 0.003%) · HP 33.3B · `gradePct` 10/10/10/10 = 30 ทุกค่า · 7/3/9/6 = 17.5/7.5/22.5/15 · 10/10/10/9 = 25/25/25/22.5 (เหมือนเดิม) · #home #deck #battle console error 0
+- **ยังไม่รู้:** Grade 1–9 ในเกมยังไม่ได้เทียบ · Defense ×0.2 ตอนนี้ครบ 4 ค่า = ลด 6% (เดิม 11%) ยังไม่ได้เทียบคลิป
+- **ไฟล์:** `index.html` · `js/deckbuff.js` · `js/deck.js` · `PROGRESS.md` · `HISTORY.md`
