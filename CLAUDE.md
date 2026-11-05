@@ -12,3 +12,4 @@
   5. Send this batch's files to the owner with `SendUserFile` (display: attach), always, followed by the list of card names.
   6. When the batch is done: commit, push to the session branch, then **merge into `main` immediately and push `main`** (no PR, no waiting for the owner to say so).
   7. Do not add the cards to the website, `data/`, or `PROGRESS.md` unless the owner asks separately.
+  8. **Support cards** ("ครอบการ์ด Support" / "crop support cards"): same rules, but save into `cropped_cards/support/` (never mix with the character cards, so names cannot collide). Name = the support card's own name as printed on the card. The 2400×1080 check still applies; the box `(886, 108, 1514, 972)` was set for character cards, so on the first Support batch check it fits the picture and, if edges/name/numbers get cut, stop and ask the owner before using any other box. Same steps 4–6 (contact sheet, `SendUserFile`, commit/push, merge into `main`).
