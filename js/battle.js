@@ -17,7 +17,7 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const P = () => C.deckParts;        // js/deck.js (loaded before this file)
   const SLOTS = 4, KINDS = ["cards", "support"], RKEY = { cards: "cardRarity", support: "supRarity" }, GRADE_MAX = 10;
-  const SAVE_KEY = "cbi:battle", MUTE_KEY = "cbi:battleMute";
+  const SAVE_KEY = "cbi:battle", MUTE_KEY = "cbi:battleMute", MUSIC_VOL = 0.3;
   const reduced = () => !!(window.FX && FX.reduced);
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } } };
   const svg = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
@@ -27,8 +27,9 @@
     mute: svg('<path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/>'),
   };
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
-  const fmtS = (n) => { const a = Math.abs(n); for (const [v, u] of [[1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]]) if (a >= v) return (n / v).toFixed(a / v >= 100 ? 0 : a / v >= 10 ? 1 : 2) + u; return String(Math.round(n)); };
-  const fmtG = (n) => { for (const [v, u] of [[1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]]) if (n >= v) return (n / v).toFixed(1) + u; return String(Math.round(n)); };   // the game's "next at 642.5B"
+  const BIG = [[1e24, "Sp"], [1e21, "Sx"], [1e18, "Qi"], [1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]];   // stage 1000+ needs Qi and up
+  const fmtS = (n) => { const a = Math.abs(n); for (const [v, u] of BIG) if (a >= v) return (n / v).toFixed(a / v >= 100 ? 0 : a / v >= 10 ? 1 : 2) + u; return String(Math.round(n)); };
+  const fmtG = (n) => { for (const [v, u] of BIG) if (n >= v) return (n / v).toFixed(1) + u; return String(Math.round(n)); };   // the game's "next at 642.5B"
   const pct = (x, d = 0) => (x * 100).toFixed(d) + "%";
   const raw = (n) => String(Math.round(n));   // floating numbers like the game's clip: +567664559 (no commas)
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -439,7 +440,7 @@
     const sr = rarityOf(d, "support", i), ec = clip().echo;
     let v = Number(C.supValAt(s, 0, sr)) / 100;
     if (k === "echo" && ec && sr === ec.rarity) v = Number(ec.v) / 100;   // measured in the clip
-    return { name: s.name, eff: (s.effect && s.effect.name) || s.name, b: { [k]: v } };
+    return { name: s.name, eff: (s.effect && s.effect.name) || s.name, b: { [k]: v }, x: s };
   }
   function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function mkTeamUnits(key, side) {
@@ -482,8 +483,10 @@
       for (const side of ["a", "b"]) {
         const foe = side === "a" ? "b" : "a";
         // "every enemy card starts with X% less damage": the enemy team's ATK × weaken (the clip: × 0.93)
-        for (const u of this[side]) if (u.k.weaken) { for (const f of this[foe]) { f.atk *= u.k.weaken; f.atk0 = f.atk; } this.ev("shout", this.front(foe), "-" + ((1 - u.k.weaken) * 100).toFixed(1) + "% DMG", { k: "debuff" }); }
+        for (const u of this[side]) if (u.k.weaken) { for (const f of this[foe]) { f.atk *= u.k.weaken; f.atk0 = f.atk; f.weakM = (f.weakM || 1) * u.k.weaken; } this.ev("shout", this.front(foe), "-" + ((1 - u.k.weaken) * 100).toFixed(1) + "% DMG", { k: "debuff" }); }
       }
+      // the ATK each card starts the fight with (the fight card's "DMG +x%" chip counts from it · display only)
+      for (const side of ["a", "b"]) for (const u of this[side]) u.atkS = u.atk;
       this.ev("nums", this.front("a")); this.ev("nums", this.front("b"));
     }
     heal(u, v, src) { if (u.inf || !u.alive || v <= 0) return 0; const h = Math.min(Math.round(v), u.max - u.hp); if (h <= 0) return 0; u.hp += h; u.st.heal += h; this.ev("heal", u, h, { src }); return h; }
@@ -516,8 +519,8 @@
       if (!(first > 0) || !d.alive) return;
       const v = Math.max(1, Math.round(first * a.sup.b.echo));
       a.st.dmg += v; a.st.sup++; this.take(d, v, a);
-      this.ev("shout", a, a.sup.eff.toUpperCase() + "!", { k: "extra", y: "26%" });
-      this.ev("dmg", d, v, { extra: true });
+      this.ev("sup", a, v, { d });            // the support banner (picture + name + skill + damage)
+      this.ev("dmg", d, v, { extra: true, sup: true });
     }
     hit(a, d, m0, extra, o = {}) {
       const R = this.R;
@@ -555,8 +558,9 @@
       dmg = Math.max(1, Math.round(dmg * Math.max(0, 1 - dr)));
       if (a.sup && a.sup.b.mark && !d.marked) { d.marked = a.sup.b.mark; a.st.sup++; }
       a.st.dmg += dmg; a.st.hits++; if (crit) a.st.crit++;
+      const pierce = !!(a.k.ignore && d.shield > 0);   // through a shield = the blue number
       d.hitsTaken++; this.take(d, dmg, a);
-      this.ev("dmg", d, dmg, { crit, heavy: heavy || (!d.inf && dmg > d.max * .25), extra });
+      this.ev("dmg", d, dmg, { crit, heavy: heavy || (!d.inf && dmg > d.max * .25), extra, pierce });
       // Hakai: a chance to finish an enemy under X% HP (not a boss)
       if (a.k.execute && !d.inf && d.hp > 0 && d.hp / d.max < a.k.execute.under) { const ok = R() < a.k.execute.p; this.proc(a, (a.copied || a.skill) + " finish", ok, a.k.execute.p); if (ok) { d.hp = 0; this.ev("shout", a, (a.copied || a.skill).toUpperCase() + "!", { k: "skill" }); } }
       // stun / paralyze (can't be stunned = noCC)
@@ -573,7 +577,7 @@
       if (d.k.reflect && !a.inf) { const r = Math.round(dmg * d.k.reflect); a.hp -= r; a.st.taken += r; this.ev("dmg", a, r, { reflect: 1 }); }
       const ls = (a.k.lifesteal || 0) + ((a.trait && a.trait.fx.lifesteal) || 0) + ((a.sup && a.sup.b.lifesteal) || 0);
       if (ls && !a.inf && a.hp > 0) { if (a.sup && a.sup.b.lifesteal) a.st.sup++; this.heal(a, dmg * ls, "ls"); }
-      if (a.k.splash) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * a.k.splash); this.take(x, s, a); a.st.dmg += s; this.checkDeath(x, a, true); } this.ev("bench", d); }
+      if (a.k.splash) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * a.k.splash); this.take(x, s, a); a.st.dmg += s; this.ev("splash", x, s); this.checkDeath(x, a, true); } this.ev("bench", d); }
       // counter-attack when hit (a counter never starts another counter)
       if (d.k.counter && !o.counter && d.hp > 0 && a.hp > 0) { const ok = R() < d.k.counter; this.proc(d, (d.copied || d.skill) + " counter", ok, d.k.counter); if (ok) { this.ev("shout", d, "COUNTER!", { k: "skill" }); this.ev("atk", d); this.hit(d, a, 1, true, { counter: 1 }); } }
       return dmg;
@@ -582,7 +586,7 @@
     behind(a, d) {
       const t = this[d.side], i = t.indexOf(d), x = t.slice(i + 1).find((u) => u.alive && !u.inf); if (!x) return;
       const v = Math.max(1, Math.round(a.atk * a.k.behind.m)); a.st.dmg += v; this.take(x, v, a);
-      this.ev("shout", a, "EXTRA HIT", { k: "extra", y: "26%" }); this.ev("bench", d); this.checkDeath(x, a, true);
+      this.ev("shout", a, "EXTRA HIT", { k: "extra", y: "26%" }); this.ev("splash", x, v); this.ev("bench", d); this.checkDeath(x, a, true);
     }
     checkDeath(u, killer, bench) {
       if (u.inf || !u.alive || u.hp > 0) return false;
@@ -599,7 +603,7 @@
         if (killer.k.arise && !killer.used.arise && !u.shadow) {
           killer.used.arise = 1;
           const t = this[killer.side], sh = mkUnit({ id: u.id, x: u.x, side: killer.side, idx: t.length, slot: -1, rar: u.rar, trait: null, grade: 0, sup: null, b: null, atk: u.atk0 * killer.k.arise, hp: u.max * killer.k.arise });
-          sh.shadow = true; sh.name = u.name + " (shadow)"; t.push(sh);
+          sh.shadow = true; sh.name = u.name + " (shadow)"; sh.atkS = sh.atk; t.push(sh);
           this.ev("shout", killer, "ARISE!", { k: "skill", y: "40%" }); this.ev("bench", killer);
         }
       }
@@ -636,12 +640,13 @@
       }
       return this.nextTurn(side, foe);
     }
-    // stop = the End button (owner 2026-11-05): the fight ends where it is · Guild Boss keeps the damage so far · Arena is judged
-    // now with the 30-round rules (cards alive → team HP → front HP)
+    // stop = the End button (owner 2026-11-05): the fight ends where it is · Guild Boss keeps the damage so far · Arena = a loss
+    // (owner's pick 2026-11-05: you gave up)
     finish(stop = false) {
       this.done = true; this.stopped = !!stop;
       const A = this.alive("a"), B = this.alive("b"), at = stop ? "Ended in round " + this.round : "30 rounds";
       if (this.boss) { this.win = A ? "end" : "lose"; this.why = A ? (stop ? at : "30 rounds done") : "Your team was wiped in round " + this.round; return true; }
+      if (stop) { this.win = "lose"; this.why = "You ended the battle in round " + this.round; return true; }
       if (!A && !B) { this.win = "draw"; this.why = "Both teams fell"; return true; }
       if (!B) { this.win = "win"; this.why = "Enemy team wiped in round " + this.round; return true; }
       if (!A) { this.win = "lose"; this.why = "Your team was wiped in round " + this.round; return true; }
@@ -658,26 +663,45 @@
 
   /* ==========================================================
      SOUND (Web Audio, made in code · no game sounds · starts after FIGHT · mute kept in cbi:battleMute)
+     owner 2026-11-05: "action" sounds, one per kind of damage (normal · crit · through a shield · splash · poison · burn · % HP
+     · support · debuff) · 2 channels: effects 100% · music 30% that dips while an effect plays (for the scene music to come;
+     then 2 buttons: music / effects)
      ========================================================== */
   const SND = {
-    ctx: null, muted: store.get(MUTE_KEY) === "1", last: 0,
-    unlock() { if (this.ctx) { if (this.ctx.state === "suspended") this.ctx.resume(); return; } try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { this.ctx = null; } },
+    ctx: null, muted: store.get(MUTE_KEY) === "1", last: 0, fx: null, music: null,
+    unlock() {
+      if (this.ctx) { if (this.ctx.state === "suspended") this.ctx.resume(); return; }
+      try {
+        const c = this.ctx = new (window.AudioContext || window.webkitAudioContext)(), comp = c.createDynamicsCompressor();
+        comp.connect(c.destination); this.fx = c.createGain(); this.fx.gain.value = 1; this.fx.connect(comp);
+        this.music = c.createGain(); this.music.gain.value = MUSIC_VOL; this.music.connect(comp);
+      } catch (e) { this.ctx = null; }
+    },
+    duck() { const m = this.music; if (!m) return; const t = this.ctx.currentTime; m.gain.cancelScheduledValues(t); m.gain.setValueAtTime(m.gain.value, t); m.gain.linearRampToValueAtTime(MUSIC_VOL / 3, t + .04); m.gain.linearRampToValueAtTime(MUSIC_VOL, t + .5); },
     tone(f1, f2, dur, type, vol, delay = 0) {
       const c = this.ctx; if (!c) return; const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
       o.type = type; o.frequency.setValueAtTime(f1, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), t + dur);
       g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + 0.02);
+      o.connect(g).connect(this.fx || c.destination); o.start(t); o.stop(t + dur + 0.02);
     },
-    noise(dur, vol, freq) {
+    noise(dur, vol, freq, type = "lowpass", delay = 0) {
       const c = this.ctx; if (!c) return; const n = Math.floor(c.sampleRate * dur), buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
       for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
-      const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain(); s.buffer = buf; f.type = "lowpass"; f.frequency.value = freq; g.gain.value = vol;
-      s.connect(f).connect(g).connect(c.destination); s.start();
+      const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain(); s.buffer = buf; f.type = type; f.frequency.value = freq; g.gain.value = vol;
+      s.connect(f).connect(g).connect(this.fx || c.destination); s.start(c.currentTime + delay);
     },
     play(kind) {
-      if (this.muted || !this.ctx) return; const now = performance.now(); if (now - this.last < 45 && kind !== "win") return; this.last = now;
+      if (this.muted || !this.ctx) return; const now = performance.now(); if (now - this.last < 45 && kind !== "win" && kind !== "aoe") return; this.last = now;
+      this.duck();
       if (kind === "hit") { this.noise(.09, .35, 1800); this.tone(150, 50, .14, "sine", .5); }
       else if (kind === "crit") { this.noise(.16, .5, 4000); this.tone(220, 40, .25, "sawtooth", .25); this.tone(880, 1320, .12, "square", .08, .02); }
+      else if (kind === "pierce") { this.tone(130, 45, .14, "sine", .45); this.noise(.22, .4, 6000, "highpass", .02); this.tone(2400, 900, .18, "sawtooth", .12, .02); }
+      else if (kind === "aoe") { [0, .07].forEach((t, i) => this.tone(220 - i * 40, 60, .14, "sine", .32, t)); this.noise(.26, .22, 900, "bandpass"); }
+      else if (kind === "poison") { [0, .09, .18].forEach((t, i) => this.tone(520 - i * 90, 300 - i * 60, .1, "sine", .22, t)); }
+      else if (kind === "burn") { this.noise(.35, .4, 1400, "bandpass"); this.noise(.2, .15, 3000, "highpass", .1); }
+      else if (kind === "pct") { this.tone(880, 220, .3, "sawtooth", .16); this.tone(110, 45, .2, "sine", .4); }
+      else if (kind === "sup") { this.noise(.25, .22, 1600, "bandpass"); this.tone(988, 1318, .35, "sine", .22, .05); this.tone(130, 45, .15, "sine", .4); }
+      else if (kind === "debuff") { [659, 523, 392].forEach((f, i) => this.tone(f, f * .98, .14, "triangle", .14, i * .06)); }
       else if (kind === "heal") { this.tone(660, 700, .12, "sine", .18); this.tone(990, 1040, .16, "sine", .14, .07); }
       else if (kind === "buff") { this.tone(400, 900, .16, "triangle", .14); }
       else if (kind === "shout") { this.tone(520, 780, .1, "triangle", .14); }
@@ -690,86 +714,192 @@
   };
 
   /* ==========================================================
-     FIGHT (full screen over the site · the real card + an HP bar inside it, like the game's fight card)
+     FIGHT = the Battle Stage (owner 2026-11-05 · "Battle UI Lab" look 1 Neon Arcade · one stage for every mode, only the top
+     line changes: STAGE / ARENA / later FLOOR) · full screen over the site · phone portrait, phone landscape and desktop
+     placements in css/battle.css · the fight card is drawn here (not the site card): no rarity pill (the frame = the rarity),
+     upright type only, nothing on top of anything: name + HP · buffs top right (one chip each, the number changes in place,
+     4 shown, the rest "+n") · Trait + Grade (C.deckParts) · ability name · text (smaller when long) · HP bar · swords + ATK
+     where the site card has them · debuffs above the card (icon + name + stacks + turns, own colour) · damage numbers in the
+     picture: normal red · crit gold · through a shield blue · splash orange (on the front card once per bench card hit, and
+     on that card's picture in the team box) · poison purple · burn orange-red · % HP white · heal green · support = banner
      ========================================================== */
-  const F = { b: null, token: 0, k: 1, mode: "boss", seed: (Date.now() % 2147483647) || 7, hud: true, shown: { a: null, b: null } };
+  const F = { b: null, token: 0, k: 1, mode: "boss", seed: (Date.now() % 2147483647) || 7, paused: false, started: false, shown: { a: null, b: null } };
   const fightRoot = () => $("#bt-fight");
-  /* the fight card's text (owner 2026-11-05 · C.RDC places replaced on this card only, cqw of the card · css .bt-hpbar):
-     the ability name never meets the Trait / Grade pills (they end at 67.2) → its capitals start at 71 at the highest ·
-     the text ends 3 above the HP bar (108.5–117.5, bigger) · a long text gets smaller, line pitch kept (room between lines) */
-  const FIGHT_RDC = { txtTop: 71 + 5.83 + 4.2, txtEnd: 104.8 };
+  const fmtD = fmtS;   // damage numbers: short, the owner's pick (2.48B)
+  const pctS = (x) => String(Math.round(x * 1000) / 10) + "%";
+  const DB_ICON = {
+    poison: '<path fill="currentColor" d="M12 2s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11Zm-2 12a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/>',
+    burn: '<path fill="currentColor" d="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9Z"/>',
+    bleed: '<path fill="currentColor" d="M12 3s-5 6-5 10a5 5 0 0 0 10 0c0-4-5-10-5-10Z"/>',
+    stun: '<path fill="currentColor" d="M12 2l2.4 6.6L21 9l-5 4.6L17.4 21 12 17.3 6.6 21 8 13.6 3 9l6.6-.4z"/>',
+    paralyze: '<path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6z"/>',
+    weak: '<path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M12 4v15M6 13l6 6 6-6"/>',
+  };
+  const dbIcon = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${DB_ICON[k] || DB_ICON.poison}</svg>`;
+  // the card's own text from the site card (same words, the numbers that change with the rarity in colour)
+  function cardText(u) {
+    let el = null; try { el = C.redrawEl ? C.redrawEl(u.x, u.rar || "Normal") : null; } catch (e) { el = null; }
+    const ab = u.x.passive && u.x.passive.name ? u.x.passive : u.x.skill || {}, abn = el && $(".rd__abn", el), abd = el && $(".rd__abd", el);
+    return { sk: (abn && abn.textContent) || ab.name || "", ds: abd ? abd.innerHTML : esc(ab.desc || "") };
+  }
   function fightCard(u) {
-    const card = C.renderCard(u.x, u.rar, { mini: false, tilt: false });
-    card.removeAttribute("role"); card.tabIndex = -1; card.setAttribute("aria-hidden", "true");
-    card.classList.add("bt-fc");
+    const t = cardText(u), lr = String(u.rar || "Normal").toLowerCase();
+    const card = document.createElement("article");
+    card.className = "btc"; card.setAttribute("aria-hidden", "true"); card.dataset.r = u.rar || "Normal";
+    card.style.setProperty("--frame", `var(--gc-rar-${lr}, var(--bt-frame-plain))`);
+    card.innerHTML = `<div class="btc__art"><img src="${esc(u.x.image || "")}" alt="" decoding="async"></div>
+      <span class="btc__nm">${esc(u.name)}</span><span class="btc__hp"><b data-hp></b><svg class="btc__heart" viewBox="0 0 100 92" aria-hidden="true"><use href="#rd-heart"/></svg></span>
+      <span class="btc__bf" data-buffs></span>
+      <span class="btc__sk">${esc(t.sk)}</span><p class="btc__ds"><span>${t.ds}</span></p>
+      <span class="btc__bar"><i></i><b>HP</b></span><svg class="btc__sw" viewBox="0 0 100 100" aria-hidden="true"><use href="#rd-swords"/></svg><b class="btc__atk" data-atk></b>
+      ${!u.sim && !u.shadow ? `<span class="btc__warn">Skill not simulated yet</span>` : ""}`;
     P().paintTG(card, u.trait && u.trait.id, u.grade, false);
-    card._rdc = FIGHT_RDC;   // fitted again by setNums → C.setCardNums
-    const bar = document.createElement("span"); bar.className = "bt-hpbar"; bar.innerHTML = `<i></i><b>HP</b>`;   // the boss's bar = ours (full: HP ∞)
-    card.appendChild(bar);
-    if (!u.sim && !u.shadow) { const w = document.createElement("span"); w.className = "bt-warn"; w.textContent = "Skill not simulated yet"; card.appendChild(w); }
-    if (u.shadow) card.insertAdjacentHTML("beforeend", `<span class="bt-copy">SHADOW</span>`);
-    if (u.k.bf) card.insertAdjacentHTML("beforeend", `<span class="bt-zone">ZONE<i></i><i></i><i></i></span>`);
     return card;
+  }
+  // fits (the card is laid out 300px wide: 1cqw = 3px): name ≤ 46 (left half) · HP ≤ 33 + heart (right half, like the site card) ·
+  // ability name ≤ 90 · ATK ≤ 64 (never under the swords) · text in its box
+  function fitW(n, max, room) { if (!n) return max; let f = max; n.style.fontSize = f + "cqw"; for (let i = 0; i < 40 && n.scrollWidth > room * 3; i++) { f *= .96; n.style.fontSize = f + "cqw"; } return f; }
+  function fitAtk(card) { const a = $(".btc__atk", card); if (!a) return; const f = fitW(a, 11.4, 64); a.style.top = (125.1 - .495 * f) + "cqw"; }   // capitals centred on the site card's ATK line (120.2–130)
+  function fitText(card) {
+    fitW($(".btc__nm", card), 6.6, 46); fitW($(".btc__sk", card), 6.2, 90); fitAtk(card); fitW($("[data-hp]", card), 8.8, 33);
+    const ds = $(".btc__ds", card), sp = ds && ds.firstElementChild; if (!sp) return;
+    let f = 4.1; ds.style.fontSize = f + "cqw";
+    for (let i = 0; i < 60 && sp.offsetHeight > ds.clientHeight; i++) { f *= .97; ds.style.fontSize = f + "cqw"; }
+  }
+  // buffs on the card (top right): one chip each · DMG = all the ATK it gained this fight (owner: one chip, the total)
+  function chipsOf(u) {
+    const out = [], g = u.atkS ? Math.round((u.atk / u.atkS - 1) * 100) : 0, tr = u.trait && u.trait.fx;
+    if (g) out.push({ k: "dmg", h: `DMG <b>${g > 0 ? "+" : "−"}${Math.abs(g)}%</b>`, c: g > 0 ? "up" : "down" });
+    if (u.k.bf) out.push({ k: "zone", h: `ZONE <span class="btc__zn">${[0, 1, 2].map((i) => `<i class="${i < u.zone ? "on" : ""}"></i>`).join("")}</span>`, c: "zone" });
+    if (u.copied) out.push({ k: "copy", h: `COPIED: <b>${esc(u.copied.toUpperCase())}</b>`, c: "copy" });
+    if (u.shadow) out.push({ k: "shadow", h: "SHADOW", c: "copy" });
+    if (u.shield > 0) out.push({ k: "shield", h: `SHIELD <b>${C.fmtHp(u.shield)}</b>`, c: "shield" });
+    const dr = (u.k.dr || 0) + ((tr && tr.dr) || 0) + (u.gdef || 0);
+    if (dr > 0) out.push({ k: "dr", h: `DMG TAKEN <b>−${pctS(dr)}</b>`, c: "shield" });
+    if (u.k.survive && !u.used.survive) out.push({ k: "surv", h: "SURVIVE <b>1×</b>", c: "gold" });
+    const rv = u.k.revive || (tr && tr.revive);
+    if (rv && !u.used.revive) out.push({ k: "rev", h: `REVIVE <b>${pctS(rv)}</b>`, c: "gold" });
+    return out;
+  }
+  function paintChips(u, card) {
+    const box = $("[data-buffs]", card); if (!box) return;
+    const list = chipsOf(u), was = card._chips || {}, now = {};
+    const chip = (c) => { now[c.k] = c.h; const cls = !(c.k in was) ? " in" : was[c.k] !== c.h ? " pop" : ""; return `<span class="btc__chip btc__chip--${c.c}${cls}">${c.h}</span>`; };
+    const shown = list.length > 4 ? list.slice(0, 3) : list, more = list.length - shown.length;
+    // owner's pick: 4 rows at most · more than 4 = the 4th row is "+n" (the rest)
+    box.innerHTML = shown.map(chip).join("") + (more ? `<span class="btc__chip btc__chip--more">+${more}</span>` : "");
+    card._chips = now;
+    $$(".btc__chip", box).forEach((c) => { if (c.scrollWidth > 64 * 3) c.style.fontSize = Math.max(2.4, 3.9 * (64 * 3) / c.scrollWidth) + "cqw"; });
+  }
+  // debuffs above the card (outside it): icon + name + stacks + turns (∞ = the whole fight)
+  function dbsOf(u) {
+    const out = [];
+    if (u.weakM && u.weakM < 1) out.push({ k: "weak", n: `ATK −${pctS(1 - u.weakM)}`, t: "∞" });
+    for (const [kind, s] of Object.entries(u.dots)) out.push({ k: kind, n: `${kind.toUpperCase()} ×${s.stacks}`, t: s.left + "T" });
+    if (u.cc) out.push({ k: u.cc.kind.toLowerCase(), n: u.cc.kind.toUpperCase(), t: u.cc.turns + "T" });
+    return out;
+  }
+  function paintDbs(u, s) {
+    const box = $(".bt-dbs", s.slot); if (!box) return;
+    const list = dbsOf(u), was = s.dbs || {}, now = {};
+    box.innerHTML = list.map((d) => { const key = d.n + d.t; now[d.k] = key; const cls = !(d.k in was) ? " in" : was[d.k] !== key ? " tick" : "";
+      return `<span class="bt-db bt-db--${esc(d.k)}${cls}">${dbIcon(d.k)}<span>${esc(d.n)}</span><u>${esc(d.t)}</u></span>`; }).join("");
+    s.dbs = now;
   }
   function drawSlot(u, enter) {
     const el = $(u.side === "a" ? "#bt-slot-a" : "#bt-slot-b");
-    el.innerHTML = `<div class="bt-fwrap${enter ? " enter" : ""}"><i class="bt-flash"></i><div class="bt-fxl"></div></div>`;
+    el.innerHTML = `<div class="bt-dbs" aria-hidden="true"></div><div class="bt-fwrap${enter ? " enter" : ""}"><i class="bt-flash"></i><div class="bt-fxl"></div></div>`;
     const wrap = $(".bt-fwrap", el), card = fightCard(u);
     wrap.insertBefore(scaled(card), wrap.firstChild);
-    el.dataset.uid = u.side + u.idx; F.shown[u.side] = { u, card, wrap };
-    setNums(u);
+    el.dataset.uid = u.side + u.idx; F.shown[u.side] = { u, card, wrap, slot: el, dbs: null };
+    setNums(u); requestAnimationFrame(() => fitText(card));
   }
   function setNums(u) {
     const s = F.shown[u.side]; if (!s || s.u !== u) return;
-    C.setCardNums(s.card, { atk: u.atk, hp: u.inf ? 1 : Math.max(0, u.hp) }, { animate: false });
-    if (u.inf) { const h = $('[data-k="hp"]', s.card); h.textContent = "∞"; h.dataset.t = "∞"; }
-    const bar = $(".bt-hpbar > i", s.card);
-    if (!u.inf) { const p = Math.max(0, u.hp) / u.max; bar.style.setProperty("--p", p.toFixed(4)); bar.className = p > .5 ? "" : p > .25 ? "mid" : "lo"; s.wrap.classList.toggle("is-low", p <= .25 && u.alive); }
+    const hp = $("[data-hp]", s.card), at = $("[data-atk]", s.card), a = fmt(u.atk);
+    const ht = u.inf ? "∞" : C.fmtHp(Math.max(0, u.hp));
+    if (hp.textContent !== ht) { hp.textContent = ht; fitW(hp, 8.8, 33); }
+    if (at.textContent !== a) { at.textContent = a; fitAtk(s.card); }
+    const bar = $(".btc__bar > i", s.card), p = u.inf ? 1 : Math.max(0, u.hp) / u.max;   // the boss's bar = ours, full (HP ∞)
+    bar.style.setProperty("--p", p.toFixed(4)); bar.className = p > .5 ? "" : p > .25 ? "mid" : "lo";
+    s.wrap.classList.toggle("is-low", !u.inf && p <= .25 && u.alive);
+    paintChips(u, s.card); paintDbs(u, s);
   }
+  const refresh = () => { for (const side of ["a", "b"]) { const s = F.shown[side]; if (s) setNums(s.u); } };
+  // team boxes: as wide as the team (1 card = a small box) · front glows · KO on the fallen
   function drawBench() {
     for (const side of ["a", "b"]) {
       const t = F.b[side], f = F.b.front(side);
-      $("#bt-left-" + side).textContent = F.b.alive(side) + "/" + t.length;
-      $("#bt-bench-" + side).innerHTML = t.map((u) => `<i class="${!u.alive ? "dead" : u === f ? "front" : ""}"><img src="${esc(thumbOf("cards", u.x))}" alt=""></i>`).join("");
+      $("#bt-left-" + side).textContent = F.b.alive(side) + "/" + t.length + " left";
+      $("#bt-left-" + side).closest(".bt-team").classList.toggle("is-solo", t.length === 1);   // 1 card: the words beside it, no empty slots
+      $("#bt-bench-" + side).innerHTML = t.map((u, i) => `<i class="bt-th${!u.alive ? " dead" : u === f ? " front" : ""}" data-i="${i}"><img src="${esc(thumbOf("cards", u.x))}" alt=""><span>${u.inf ? "∞" : C.fmtHp(u.atk)}</span></i>`).join("");
     }
   }
   const retrig = (el, cls) => { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
   function spawn(u, html, cls, style) {
     const s = F.shown[u.side]; if (!s || s.u !== u) return;
-    const l = $(".bt-fxl", s.wrap); while (l.children.length > 9) l.firstChild.remove();
+    const l = $(".bt-fxl", s.wrap); while (l.children.length > 11) l.firstChild.remove();
     const n = document.createElement("span"); n.className = cls; n.innerHTML = html; if (style) n.setAttribute("style", style); l.appendChild(n);
     n.addEventListener("animationend", () => n.remove(), { once: true }); setTimeout(() => n.remove(), 2600);
   }
   let numN = 0;
+  // numbers float in the picture (18–34% of the card: above the Trait / Grade band, never on the text)
+  const numAt = (i) => `--x:${32 + (i % 3) * 6}%;--y:${22 + (i % 2) * 8}%`;   // the buff chips are on the right: numbers stay left of centre
+  function number(u, v, kind, tag) { numN++; spawn(u, (kind === "heal" ? "+" : "-") + fmtD(v) + (tag ? `<small>${tag}</small>` : ""), "bt-num bt-num--" + kind, numAt(numN)); }
   function sparks(u) { if (reduced()) return; for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 + Math.random() * .4, r = 50 + Math.random() * 40; spawn(u, "", "bt-spark", `--dx:${Math.cos(a) * r}px;--dy:${Math.sin(a) * r}px`); } }
   function arrows(u) { if (reduced()) return; for (let i = 0; i < 3; i++) spawn(u, "", "bt-arrow", `--x:${30 + i * 20}%;--d:${i * 90}ms`); }
+  const SHOUT_Y = { skill: "13%", copy: "16%", zone: "24%", crit: "24%", extra: "20%", dodge: "22%", heal: "28%", debuff: "30%" };   // all in the picture
+  // the splash hit on a bench card: an orange number on the front card (once per card hit) + its picture in the team box jumps
+  function splash(x, v) {
+    const s = F.shown[x.side]; if (s) { numN++; spawn(s.u, "-" + fmtD(v), "bt-num bt-num--aoe", `--x:${26 + (numN % 3) * 8}%;--y:${18 + (numN % 4) * 6}%;animation-delay:${(numN % 4) * 70}ms`); }
+    const th = $(`#bt-bench-${x.side} .bt-th[data-i="${F.b[x.side].indexOf(x)}"]`);
+    if (th) { retrig(th, "hit"); const n = document.createElement("span"); n.className = "bt-thn"; n.textContent = "-" + fmtD(v); th.appendChild(n); setTimeout(() => n.remove(), 1100); }
+    SND.play("aoe");
+  }
+  // the support banner: its picture + name + ability + the damage (owner: bigger and clearer than the game's "-123 NAME")
+  function supBanner(a, v) {
+    const s = F.shown[a.side]; if (!s || !a.sup) return;
+    const arena = $("#bt-arena"), b = document.createElement("div");
+    b.className = "bt-sp bt-sp--" + a.side;
+    b.innerHTML = `<img src="${esc(thumbOf("support", a.sup.x))}" alt=""><div><small>${esc(a.sup.name)}</small><strong>${esc(a.sup.eff.toUpperCase())}</strong><b>-${fmtD(v)}</b></div>`;
+    const im = $("img", b); im.addEventListener("error", () => im.remove(), { once: true });
+    arena.appendChild(b); b.addEventListener("animationend", () => b.remove(), { once: true }); setTimeout(() => b.remove(), 2400);
+    SND.play("sup");
+  }
   function showEv(ev) {
     const u = ev.u; if (!u && ev.t !== "round") return;
-    const s = u && F.shown[u.side] && F.shown[u.side].u === u ? F.shown[u.side] : null, wrap = s && s.wrap;
+    const s = u && F.shown[u.side] && F.shown[u.side].u === u ? F.shown[u.side] : null, wrap = s && s.wrap, o = ev.o || {};
     switch (ev.t) {
       case "atk": retrig(wrap, "lunge"); break;
-      case "dmg": { const big = ev.o && (ev.o.crit || ev.o.heavy); numN++;
-        spawn(u, "-" + raw(ev.v), "bt-num" + (big ? " crit" : ""), `--x:${38 + (numN % 3) * 12}%;--y:${36 + (numN % 2) * 10}%`);
+      case "dmg": {
+        const big = o.crit || o.heavy;
+        if (!o.sup) {
+          const kind = o.status ? (["poison", "burn", "bleed"].includes(o.status) ? o.status : "poison") : o.pct ? "pct" : o.pierce ? "pierce" : o.crit ? "crit" : "normal";
+          number(u, ev.v, kind, o.status ? esc(String(o.status).toUpperCase()) : kind === "crit" ? "CRIT!" : kind === "pierce" ? "PIERCE" : o.reflect ? "REFLECT" : "");
+          SND.play(o.status ? (o.status === "burn" ? "burn" : "poison") : kind === "pierce" ? "pierce" : big ? "crit" : "hit");
+        }
         if (wrap) { retrig(wrap, big ? "shake-big" : "shake"); if (big) { retrig($(".bt-flash", wrap), "go"); sparks(u); } }
-        setNums(u); SND.play(big ? "crit" : "hit"); break; }
-      case "heal": spawn(u, "+" + raw(ev.v), "bt-num heal", "--x:60%;--y:58%"); setNums(u); SND.play("heal"); break;
-      case "buff": spawn(u, "+" + raw(ev.v), "bt-num buff", "--x:50%;--y:80%;--sz:16px"); arrows(u); setNums(u); SND.play("buff"); break;
-      case "shout": { const k = (ev.o && ev.o.k) || "skill"; spawn(u, esc(ev.v), "bt-shout " + k, `--y:${(ev.o && ev.o.y) || "14%"};--r:${u.side === "a" ? -6 : 6}deg`); if (k !== "heal") SND.play("shout"); break; }
+        setNums(u); break; }
+      case "splash": splash(u, ev.v); break;
+      case "sup": supBanner(u, ev.v); break;
+      case "heal": number(u, ev.v, "heal", o.src === "revive" ? "REVIVE" : ""); setNums(u); SND.play("heal"); break;
+      case "buff": arrows(u); setNums(u); SND.play("buff"); break;
+      case "shout": { const k = o.k || "skill"; if (!s) break; spawn(u, esc(ev.v), "bt-shout " + k, `--y:${SHOUT_Y[k] || "16%"}`); if (k === "debuff") { SND.play("debuff"); setNums(u); } else if (k !== "heal") SND.play("shout"); break; }
       case "dodge": retrig(wrap, "dodge"); SND.play("dodge"); break;
-      case "zone": { const z = s && $(".bt-zone", s.card); if (z) { z.querySelectorAll("i").forEach((i, n) => i.classList.toggle("on", n < ev.v)); retrig(z, "pop"); } break; }
-      case "copy": if (s) { $(".bt-copy", s.card)?.remove(); s.card.insertAdjacentHTML("beforeend", `<span class="bt-copy">COPIED: ${esc(u.copied.toUpperCase())}</span>` + (u.k.bf && !$(".bt-zone", s.card) ? `<span class="bt-zone">ZONE<i></i><i></i><i></i></span>` : "")); } break;
-      case "nums": setNums(u); break;
+      case "zone": case "copy": case "nums": setNums(u); break;
       case "round": { const r = $("#bt-round"); r.innerHTML = ev.v + "<em> / 30</em>"; retrig(r, "pop"); break; }
       case "bench": case "benchdie": drawBench(); break;
     }
   }
   async function playDie(u) {
     const s = F.shown[u.side]; if (!s || s.u !== u) return;
-    s.wrap.classList.add("die"); s.wrap.classList.remove("is-low");
+    s.wrap.classList.add("die"); s.wrap.classList.remove("is-low"); $(".bt-dbs", s.slot).innerHTML = "";
     const sk = document.createElement("div"); sk.className = "bt-skull"; sk.innerHTML = `<svg viewBox="0 0 64 64"><path fill="currentColor" d="M32 4C17 4 7 14.5 7 28c0 8 3.6 13.4 8 16.6V54a4 4 0 0 0 4 4h4v-6h4v6h10v-6h4v6h4a4 4 0 0 0 4-4v-9.4c4.4-3.2 8-8.6 8-16.6C57 14.5 47 4 32 4Zm-11 34a7 7 0 1 1 0-14 7 7 0 0 1 0 14Zm22 0a7 7 0 1 1 0-14 7 7 0 0 1 0 14Zm-11 9-4-7h8z"/></svg>`;
     s.wrap.parentNode.appendChild(sk);
-    SND.play("die"); drawBench(); await sleep(620 * F.k);
+    SND.play("die"); drawBench(); await wait(620 * F.k);
   }
+  // a wait that stops while the End dialog is open
+  async function wait(ms) { await sleep(ms); while (F.paused) await sleep(120); }
   async function startFight(mode) {
     if (!ready) return;
     F.seed = (F.seed * 1103515245 + 12345) % 2147483647;
@@ -777,26 +907,29 @@
     const b = new Battle(mode === "boss" ? "boss" : "a", "b", { seed: F.seed, boss: mode === "boss", log: (e) => queue.push(e) });
     if (!b.a.length) { FX.toast("Add at least one card to your team"); return; }
     if (!b.b.length) { FX.toast(mode === "boss" ? "The boss card isn't in the library" : "Add at least one card to the enemy team"); return; }
-    F.token++; const my = F.token; F.mode = mode;
+    F.token++; const my = F.token; F.mode = mode; F.paused = false;
     F.b = b; F.started = false; openFight();
-    $("#bt-mode").textContent = mode === "boss" ? "Stage " + STAGE : "Arena";
+    $("#bt-mode").textContent = mode === "boss" ? "Stage " + fmt(STAGE) : "Arena";
     $("#bt-round").innerHTML = "1<em> / 30</em>";
-    drawSlot(b.front("a"), true); drawSlot(b.front("b"), true); drawBench(); SND.play("enter");
-    await sleep(500 * F.k); if (my !== F.token) return;
+    $("#bt-team-b").textContent = mode === "boss" ? "Boss" : "Enemy team";
+    drawBench(); drawSlot(b.front("a"), true); drawSlot(b.front("b"), true); SND.play("enter");
+    await wait(500 * F.k); if (my !== F.token) return;
     b.start(); F.started = true; for (const e of queue.splice(0)) showEv(e);
-    await sleep(450 * F.k);
+    refresh(); drawBench();
+    await wait(450 * F.k);
     while (my === F.token) {
       const done = b.step(), evs = queue.splice(0), t0 = performance.now();
       for (const ev of evs) {
         if (my !== F.token) return;
-        if (ev.t === "atk") { showEv(ev); await sleep(190 * F.k); continue; }
-        if (ev.t === "die") { await sleep(120 * F.k); await playDie(ev.u); continue; }
-        if (ev.t === "enter") { drawSlot(ev.u, true); drawBench(); SND.play("enter"); await sleep(430 * F.k); continue; }
+        if (ev.t === "atk") { showEv(ev); await wait(190 * F.k); continue; }
+        if (ev.t === "die") { await wait(120 * F.k); await playDie(ev.u); continue; }
+        if (ev.t === "enter") { drawSlot(ev.u, true); drawBench(); SND.play("enter"); await wait(430 * F.k); continue; }
         showEv(ev);
-        if (ev.t === "shout") await sleep(70 * F.k);
+        if (ev.t === "shout" || ev.t === "sup") await wait(70 * F.k);
       }
+      refresh();
       const need = 900 * F.k - (performance.now() - t0);
-      if (need > 0) await sleep(need);
+      if (need > 0) await wait(need);
       if (my !== F.token) return;
       if (done) break;
     }
@@ -812,10 +945,29 @@
     if (location.hash !== "#battle/fight") history.pushState({ bt: 1 }, "", "#battle/fight");
     const sp = $('[data-spd][aria-pressed="true"]', f); if (sp) sp.focus({ preventScroll: true });
   }
-  function closeFight() { F.token++; const f = fightRoot(); if (f) f.hidden = true; document.documentElement.classList.remove("bt-fighting"); $$(".bt-banner").forEach((x) => x.remove()); }
-  // Skip = play the rest at once (same result as watching) · End = stop here (b.finish(true))
-  function skipFight() { if (!F.b) return; F.token++; const b = F.b; b.E = null; if (!F.started) { b.start(); F.started = true; } while (!b.step()); showResult(b); }
-  function endFight() { if (!F.b) return; F.token++; const b = F.b; b.E = null; if (!b.done) b.finish(true); showResult(b); }
+  function closeFight() {
+    F.token++; F.paused = false; const f = fightRoot(); if (f) f.hidden = true; document.documentElement.classList.remove("bt-fighting"); $$(".bt-banner").forEach((x) => x.remove());
+    try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+  }
+  // Skip = play the rest at once (the same result as watching) · End = stop here (b.finish(true)) after a yes:
+  // Guild Boss keeps the damage so far · Arena = a loss (owner's picks 2026-11-05)
+  function skipFight() { if (!F.b || F.paused) return; F.token++; const b = F.b; b.E = null; if (!F.started) { b.start(); F.started = true; } while (!b.step()); showResult(b); }
+  async function endFight() {
+    if (!F.b || F.paused || fightRoot().hidden) return;
+    const b = F.b; F.paused = true;
+    const res = await dialog({
+      title: "End the battle here?",
+      html: `<p class="tm-dlg__text">${b.boss ? "Your damage so far counts, and the stage moves up from it." : "Ending an Arena battle counts as a loss."}</p>`,
+      actions: [{ label: "Keep fighting", value: "cancel" }, { label: "End battle", value: "ok", submit: true, cls: "tm-btn--danger" }],
+    });
+    F.paused = false;
+    if (!res || res.action !== "ok" || F.b !== b || fightRoot().hidden) return;
+    F.token++; b.E = null; if (!b.done) b.finish(true); showResult(b);
+  }
+  function toggleFull() {
+    const f = fightRoot();
+    try { if (document.fullscreenElement) document.exitFullscreen(); else if (f.requestFullscreen) f.requestFullscreen().catch(() => FX.toast("Full screen isn't available here")); } catch (e) {}
+  }
 
   /* ==========================================================
      RESULT (+ a Guild Boss fight is saved: best fights, your damage, the stage it pushed to)
@@ -1075,12 +1227,13 @@
     f.addEventListener("click", (e) => {
       const sp = e.target.closest("[data-spd]");
       if (sp) { const v = Number(sp.dataset.spd); F.k = v === 1 ? 1 : v === 2 ? .5 : 1 / 3; f.style.setProperty("--bt-k", F.k.toFixed(3)); $$("[data-spd]", f).forEach((x) => x.setAttribute("aria-pressed", String(x === sp))); return; }
-      if (e.target.closest("#bt-hide")) { F.hud = !F.hud; f.classList.toggle("hud-off", !F.hud); $("#bt-hide span").textContent = F.hud ? "Hide" : "Show"; return; }
+      if (e.target.closest("#bt-full")) { toggleFull(); return; }
       if (e.target.closest("#bt-skip")) { skipFight(); return; }
       if (e.target.closest("#bt-end")) { endFight(); return; }
       if (e.target.closest("#bt-sound")) { SND.unlock(); SND.muted = !SND.muted; store.set(MUTE_KEY, SND.muted ? "1" : "0"); drawSound(); FX.toast(SND.muted ? "Sound off" : "Sound on"); }
     });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !fightRoot().hidden) endFight(); });   // no dialog opens during a fight
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !fightRoot().hidden && !F.paused) setTimeout(endFight, 0); });   // Esc = End (asks first · opened after this key, or the same Esc closes the dialog)
+    const fb = $("#bt-full", f); if (fb) fb.hidden = !(f.requestFullscreen && document.fullscreenEnabled !== false);
   }
 
   /* ---------- Load once (the first time the Battle page opens): data/battle.json + the pending supports ---------- */

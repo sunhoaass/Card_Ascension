@@ -60,8 +60,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Fonts load without blocking the first paint (text swaps in when they arrive) -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Marcellus+SC&family=Nunito+Sans:wght@400;600;700;800&family=Oswald:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Marcellus+SC&family=Nunito+Sans:wght@400;600;700;800&family=Oswald:wght@500;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Marcellus+SC&family=Nunito+Sans:wght@400;600;700;800&family=Oswald:wght@500;600;700&family=Russo+One&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow+Condensed:ital,wght@1,800&family=Marcellus+SC&family=Nunito+Sans:wght@400;600;700;800&family=Oswald:wght@500;600;700&family=Russo+One&display=swap"></noscript>
   <!-- W3: screens wider than 1920px show the 1920px layout zoomed up (text, cards, buttons grow with the screen) · ≤ 1920 = normal layout -->
   <script>
     (function () {
@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=105">
-  <link rel="stylesheet" href="css/base.css?v=105">
-  <link rel="stylesheet" href="css/fx.css?v=105">
-  <link rel="stylesheet" href="css/cards.css?v=105">
-  <link rel="stylesheet" href="css/tier.css?v=105">
-  <link rel="stylesheet" href="css/deck.css?v=105">
-  <link rel="stylesheet" href="css/support.css?v=105">
-  <link rel="stylesheet" href="css/tiermaker.css?v=105">
-  <link rel="stylesheet" href="css/detail.css?v=105">
-  <link rel="stylesheet" href="css/home.css?v=105">
-  <link rel="stylesheet" href="css/battle.css?v=105">
+  <link rel="stylesheet" href="css/tokens.css?v=106">
+  <link rel="stylesheet" href="css/base.css?v=106">
+  <link rel="stylesheet" href="css/fx.css?v=106">
+  <link rel="stylesheet" href="css/cards.css?v=106">
+  <link rel="stylesheet" href="css/tier.css?v=106">
+  <link rel="stylesheet" href="css/deck.css?v=106">
+  <link rel="stylesheet" href="css/support.css?v=106">
+  <link rel="stylesheet" href="css/tiermaker.css?v=106">
+  <link rel="stylesheet" href="css/detail.css?v=106">
+  <link rel="stylesheet" href="css/home.css?v=106">
+  <link rel="stylesheet" href="css/battle.css?v=106">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -709,25 +709,20 @@
     </section>
   </main>
 
-  <!-- Battle fight (full screen, over the site · js/battle.js) -->
+  <!-- Battle fight = the Battle Stage (full screen, over the site · js/battle.js · look 1 Neon Arcade, owner 2026-11-05) -->
   <div class="bt-fight" id="bt-fight" hidden data-no-detail role="dialog" aria-modal="true" aria-label="Battle">
+    <div class="bt-ft__bg" aria-hidden="true"></div>
     <div class="bt-ft__top">
-      <span class="chip glass" id="bt-mode">Guild Boss</span>
-      <div class="bt-ft__round"><small>ROUND</small><b id="bt-round">1<em> / 30</em></b></div>
-      <div class="bt-ft__tr"><button type="button" class="iconbtn glass fx-press" id="bt-sound" aria-label="Sound on"></button></div>
+      <div class="bt-ft__tl"><button type="button" class="bt-ibtn fx-press" id="bt-sound" aria-label="Sound on"></button><button type="button" class="bt-ibtn fx-press" id="bt-full" aria-label="Full screen" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+      <div class="bt-ft__round"><small><span id="bt-mode">Guild Boss</span><span class="bt-ft__rw"> · Round</span></small><b id="bt-round">1<em> / 30</em></b></div>
+      <div class="bt-spd" role="group" aria-label="Speed"><button type="button" data-spd="1" aria-pressed="true">1x</button><button type="button" data-spd="2" aria-pressed="false">2x</button><button type="button" data-spd="3" aria-pressed="false">3x</button></div>
     </div>
-    <div class="bt-arena"><div class="bt-fslot" id="bt-slot-a"></div><div class="bt-fslot" id="bt-slot-b"></div></div>
-    <div class="bt-ft__bottom">
-      <div class="bt-teams">
-        <div class="bt-left"><b><em id="bt-left-a">4/4</em> left</b><div class="bt-bench" id="bt-bench-a"></div></div>
-        <div class="bt-left bt-left--b"><b><em id="bt-left-b">1/1</em> left</b><div class="bt-bench" id="bt-bench-b"></div></div>
-      </div>
-      <div class="bt-ctl">
-        <div class="bt-spd" role="group" aria-label="Speed"><button type="button" data-spd="1" aria-pressed="true">1x</button><button type="button" data-spd="2" aria-pressed="false">2x</button><button type="button" data-spd="3" aria-pressed="false">3x</button></div>
-        <button type="button" class="tm-btn fx-press" id="bt-hide"><span>Hide</span></button>
-        <button type="button" class="tm-btn fx-press" id="bt-skip" aria-label="Skip battle: play the rest at once">Skip</button>
-        <button type="button" class="tm-btn tm-btn--danger fx-press" id="bt-end" aria-label="End battle here">End</button>
-      </div>
+    <div class="bt-arena" id="bt-arena"><div class="bt-fslot" id="bt-slot-a"></div><div class="bt-fslot" id="bt-slot-b"></div></div>
+    <div class="bt-team bt-team--a"><div class="bt-team__h"><span>Your team</span><b id="bt-left-a">4/4 left</b></div><div class="bt-ths" id="bt-bench-a"></div></div>
+    <div class="bt-team bt-team--b"><div class="bt-team__h"><span id="bt-team-b">Enemy team</span><b id="bt-left-b">1/1 left</b></div><div class="bt-ths" id="bt-bench-b"></div></div>
+    <div class="bt-ctl">
+      <button type="button" class="bt-cbtn bt-cbtn--end fx-press" id="bt-end"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><span>End Battle</span></button>
+      <button type="button" class="bt-cbtn bt-cbtn--skip fx-press" id="bt-skip"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 5l8 7-8 7zM12 5l8 7-8 7z"/></svg><span>Skip</span></button>
     </div>
   </div>
 
@@ -846,19 +841,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=105"></script>
-  <script src="js/app.js?v=105"></script>
-  <script src="js/deckbuff.js?v=105"></script>
-  <script src="js/teamscore.js?v=105"></script>
-  <script src="js/share.js?v=105"></script>
-  <script src="js/cards.js?v=105"></script>
-  <script src="js/detail.js?v=105"></script>
-  <script src="js/tier.js?v=105"></script>
-  <script src="js/deck.js?v=105"></script>
-  <script src="js/support.js?v=105"></script>
-  <script src="js/home.js?v=105"></script>
-  <script src="js/tiermaker.js?v=105"></script>
-  <script src="js/battle.js?v=105"></script>
+  <script src="js/fx.js?v=106"></script>
+  <script src="js/app.js?v=106"></script>
+  <script src="js/deckbuff.js?v=106"></script>
+  <script src="js/teamscore.js?v=106"></script>
+  <script src="js/share.js?v=106"></script>
+  <script src="js/cards.js?v=106"></script>
+  <script src="js/detail.js?v=106"></script>
+  <script src="js/tier.js?v=106"></script>
+  <script src="js/deck.js?v=106"></script>
+  <script src="js/support.js?v=106"></script>
+  <script src="js/home.js?v=106"></script>
+  <script src="js/tiermaker.js?v=106"></script>
+  <script src="js/battle.js?v=106"></script>
 </body>
 </html>
 
