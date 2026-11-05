@@ -513,6 +513,7 @@
       const s = d.dots[dot.kind] || (d.dots[dot.kind] = { stacks: 0, pct: dot.pct, left: 0, mult: 1, src: a });
       s.stacks = Math.min(dot.max, s.stacks + (dot.add || 1)); s.left = dot.turns; s.mult = a.gstatus; s.src = a;
       this.ev("shout", d, dot.kind.toUpperCase() + " x" + s.stacks, { k: "debuff", y: "70%" });
+      this.ev("dot", d, dot.kind, { stacks: s.stacks });   // display only: the status lands (its burst + sound)
     }
     // Spirit Wave Master (support · echo): the supported card's every 2nd attack hits again for v × the 1st hit
     echo(a, d, first) {
@@ -684,28 +685,33 @@
       g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
       o.connect(g).connect(this.fx || c.destination); o.start(t); o.stop(t + dur + 0.02);
     },
-    noise(dur, vol, freq, type = "lowpass", delay = 0) {
+    noise(dur, vol, freq, type = "lowpass", delay = 0, freq2 = 0) {
       const c = this.ctx; if (!c) return; const n = Math.floor(c.sampleRate * dur), buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
       for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
-      const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain(); s.buffer = buf; f.type = type; f.frequency.value = freq; g.gain.value = vol;
+      const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain(), t = c.currentTime + delay; s.buffer = buf; f.type = type; g.gain.value = vol;
+      f.frequency.setValueAtTime(freq, t); if (freq2) f.frequency.exponentialRampToValueAtTime(freq2, t + dur);   // a sweep (whoosh / ignition)
       s.connect(f).connect(g).connect(this.fx || c.destination); s.start(c.currentTime + delay);
     },
     play(kind) {
-      if (this.muted || !this.ctx) return; const now = performance.now(); if (now - this.last < 45 && kind !== "win" && kind !== "aoe") return; this.last = now;
+      if (this.muted || !this.ctx) return; const now = performance.now(); if (now - this.last < 45 && kind !== "win" && kind !== "aoe" && !kind.endsWith("On")) return; this.last = now;
       this.duck();
       if (kind === "hit") { this.noise(.09, .35, 1800); this.tone(150, 50, .14, "sine", .5); }
       else if (kind === "crit") { this.noise(.16, .5, 4000); this.tone(220, 40, .25, "sawtooth", .25); this.tone(880, 1320, .12, "square", .08, .02); }
       else if (kind === "pierce") { this.tone(130, 45, .14, "sine", .45); this.noise(.22, .4, 6000, "highpass", .02); this.tone(2400, 900, .18, "sawtooth", .12, .02); }
       else if (kind === "aoe") { [0, .07].forEach((t, i) => this.tone(220 - i * 40, 60, .14, "sine", .32, t)); this.noise(.26, .22, 900, "bandpass"); }
-      else if (kind === "poison") { [0, .09, .18].forEach((t, i) => this.tone(520 - i * 90, 300 - i * 60, .1, "sine", .22, t)); }
-      else if (kind === "burn") { this.noise(.35, .4, 1400, "bandpass"); this.noise(.2, .15, 3000, "highpass", .1); }
+      else if (kind === "poison") { [0, .09, .18].forEach((t, i) => this.tone(520 - i * 90, 300 - i * 60, .1, "sine", .22, t)); this.tone(110, 70, .2, "sine", .25); }
+      else if (kind === "burn") { this.noise(.35, .4, 1400, "bandpass"); [0, .06, .13, .21].forEach((t) => this.noise(.03, .3, 3500, "highpass", t)); }   // flame + crackles
+      else if (kind === "bleed") { [0, .12].forEach((t, i) => this.tone(900 - i * 150, 480, .12, "sine", .2, t)); }
+      else if (kind === "poisonOn") { [0, .08, .16, .24].forEach((t, i) => this.tone(320 - i * 40, 160, .09, "sine", .26, t)); this.noise(.35, .1, 5000, "highpass"); }   // glug + hiss
+      else if (kind === "burnOn") { this.noise(.45, .55, 300, "lowpass", 0, 4500); this.tone(90, 45, .3, "sine", .4); }   // ignition
+      else if (kind === "bleedOn") { this.noise(.12, .4, 3000, "highpass"); this.tone(1400, 300, .18, "sawtooth", .12); }
       else if (kind === "pct") { this.tone(880, 220, .3, "sawtooth", .16); this.tone(110, 45, .2, "sine", .4); }
       else if (kind === "sup") { this.noise(.25, .22, 1600, "bandpass"); this.tone(988, 1318, .35, "sine", .22, .05); this.tone(130, 45, .15, "sine", .4); }
       else if (kind === "debuff") { [659, 523, 392].forEach((f, i) => this.tone(f, f * .98, .14, "triangle", .14, i * .06)); }
       else if (kind === "heal") { this.tone(660, 700, .12, "sine", .18); this.tone(990, 1040, .16, "sine", .14, .07); }
       else if (kind === "buff") { this.tone(400, 900, .16, "triangle", .14); }
       else if (kind === "shout") { this.tone(520, 780, .1, "triangle", .14); }
-      else if (kind === "dodge") { this.noise(.12, .18, 6000); }
+      else if (kind === "dodge") { this.noise(.26, .55, 500, "bandpass", 0, 3800); this.tone(1800, 2700, .09, "sine", .07, .05); }   // whoosh (owner: its own sound)
       else if (kind === "die") { this.tone(320, 50, .5, "sawtooth", .2); }
       else if (kind === "enter") { this.noise(.18, .12, 900); this.tone(200, 320, .16, "triangle", .1); }
       else if (kind === "win") { [523, 659, 784, 1047].forEach((f, i) => this.tone(f, f, .22, "triangle", .2, i * .11)); }
@@ -808,7 +814,7 @@
   }
   function drawSlot(u, enter) {
     const el = $(u.side === "a" ? "#bt-slot-a" : "#bt-slot-b");
-    el.innerHTML = `<div class="bt-dbs" aria-hidden="true"></div><div class="bt-fwrap${enter ? " enter" : ""}"><i class="bt-flash"></i><div class="bt-fxl"></div></div>`;
+    el.innerHTML = `<div class="bt-dbs" aria-hidden="true"></div><div class="bt-fwrap${enter ? " enter" : ""}"><i class="bt-flash"></i><i class="bt-tint"></i><div class="bt-fxl"></div></div>`;
     const wrap = $(".bt-fwrap", el), card = fightCard(u);
     wrap.insertBefore(scaled(card), wrap.firstChild);
     el.dataset.uid = u.side + u.idx; F.shown[u.side] = { u, card, wrap, slot: el, dbs: null };
@@ -823,6 +829,7 @@
     const bar = $(".btc__bar > i", s.card), p = u.inf ? 1 : Math.max(0, u.hp) / u.max;   // the boss's bar = ours, full (HP ∞)
     bar.style.setProperty("--p", p.toFixed(4)); bar.className = p > .5 ? "" : p > .25 ? "mid" : "lo";
     s.wrap.classList.toggle("is-low", !u.inf && p <= .25 && u.alive);
+    const st = ["burn", "poison", "bleed"].find((k) => u.dots[k]); s.wrap.dataset.st = st || "";
     paintChips(u, s.card); paintDbs(u, s);
   }
   const refresh = () => { for (const side of ["a", "b"]) { const s = F.shown[side]; if (s) setNums(s.u); } };
@@ -848,6 +855,26 @@
   function number(u, v, kind, tag) { numN++; spawn(u, (kind === "heal" ? "+" : "-") + fmtD(v) + (tag ? `<small>${tag}</small>` : ""), "bt-num bt-num--" + kind, numAt(numN)); }
   function sparks(u) { if (reduced()) return; for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 + Math.random() * .4, r = 50 + Math.random() * 40; spawn(u, "", "bt-spark", `--dx:${Math.cos(a) * r}px;--dy:${Math.sin(a) * r}px`); } }
   function arrows(u) { if (reduced()) return; for (let i = 0; i < 3; i++) spawn(u, "", "bt-arrow", `--x:${30 + i * 20}%;--d:${i * 90}ms`); }
+  // dodge (owner 2026-11-05: its own move + sound): a dash away from the attacker, an afterimage where it stood, wind lines
+  function dodgeFx(u) {
+    const s = F.shown[u.side]; if (!s || s.u !== u) return;
+    retrig(s.wrap, "dodge"); if (reduced()) return;
+    const g = document.createElement("i"); g.className = "bt-ghost"; s.slot.appendChild(g);
+    g.addEventListener("animationend", () => g.remove(), { once: true }); setTimeout(() => g.remove(), 1200);
+    for (let i = 0; i < 3; i++) spawn(u, "", "bt-streak", `--y:${28 + i * 15}%;--d:${i * 45}ms`);
+  }
+  // statuses on the card (owner 2026-11-05): poison = purple bubbles · burn = flames + embers · bleed = red drops ·
+  // the card flashes its colour · landing (big) = more of them + the status icon pops
+  const ST_N = { poison: 7, burn: 9, bleed: 5 };
+  function statusFx(u, kind, big) {
+    const s = F.shown[u.side]; if (!s || s.u !== u) return;
+    const t = $(".bt-tint", s.wrap); if (t) { t.dataset.k = kind; retrig(t, "go"); }
+    if (big) spawn(u, dbIcon(kind), "bt-stpop bt-stpop--" + kind);
+    if (reduced()) return;
+    const n = (ST_N[kind] || 6) + (big ? 4 : 0);
+    for (let i = 0; i < n; i++) spawn(u, "", "bt-pt bt-pt--" + (ST_N[kind] ? kind : "poison"),
+      `--x:${10 + Math.random() * 78}%;--d:${Math.round(Math.random() * 260)}ms;--s:${(big ? 7 : 5) + Math.random() * 6}%;--dx:${Math.round((Math.random() - .5) * 30)}px;--t:${800 + Math.round(Math.random() * 500)}ms`);
+  }
   const SHOUT_Y = { skill: "13%", copy: "16%", zone: "24%", crit: "24%", extra: "20%", dodge: "22%", heal: "28%", debuff: "30%" };   // all in the picture
   // the splash hit on a bench card: an orange number on the front card (once per card hit) + its picture in the team box jumps
   function splash(x, v) {
@@ -876,7 +903,8 @@
         if (!o.sup) {
           const kind = o.status ? (["poison", "burn", "bleed"].includes(o.status) ? o.status : "poison") : o.pct ? "pct" : o.pierce ? "pierce" : o.crit ? "crit" : "normal";
           number(u, ev.v, kind, o.status ? esc(String(o.status).toUpperCase()) : kind === "crit" ? "CRIT!" : kind === "pierce" ? "PIERCE" : o.reflect ? "REFLECT" : "");
-          SND.play(o.status ? (o.status === "burn" ? "burn" : "poison") : kind === "pierce" ? "pierce" : big ? "crit" : "hit");
+          if (o.status) statusFx(u, kind, false);
+          SND.play(o.status ? kind : kind === "pierce" ? "pierce" : big ? "crit" : "hit");
         }
         if (wrap) { retrig(wrap, big ? "shake-big" : "shake"); if (big) { retrig($(".bt-flash", wrap), "go"); sparks(u); } }
         setNums(u); break; }
@@ -885,7 +913,8 @@
       case "heal": number(u, ev.v, "heal", o.src === "revive" ? "REVIVE" : ""); setNums(u); SND.play("heal"); break;
       case "buff": arrows(u); setNums(u); SND.play("buff"); break;
       case "shout": { const k = o.k || "skill"; if (!s) break; spawn(u, esc(ev.v), "bt-shout " + k, `--y:${SHOUT_Y[k] || "16%"}`); if (k === "debuff") { SND.play("debuff"); setNums(u); } else if (k !== "heal") SND.play("shout"); break; }
-      case "dodge": retrig(wrap, "dodge"); SND.play("dodge"); break;
+      case "dodge": dodgeFx(u); SND.play("dodge"); break;
+      case "dot": { const k = ST_N[ev.v] ? ev.v : "poison"; statusFx(u, k, true); SND.play(k + "On"); setNums(u); break; }
       case "zone": case "copy": case "nums": setNums(u); break;
       case "round": { const r = $("#bt-round"); r.innerHTML = ev.v + "<em> / 30</em>"; retrig(r, "pop"); break; }
       case "bench": case "benchdie": drawBench(); break;

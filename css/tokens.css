@@ -369,6 +369,12 @@
   --bt-db-para: linear-gradient(180deg, #5fe3ff, #1688c4); --bt-db-para-line: #032a3d;
   --bt-db-weak: linear-gradient(180deg, #6c7aa8, #3d4770); --bt-db-weak-line: #12162a;
   --bt-db-turns: rgba(0, 0, 0, .45);
+  /* dodge + statuses on the card (owner 2026-11-05) */
+  --bt-dodge-ghost: rgba(170, 210, 255, .22); --bt-dodge-line: rgba(190, 225, 255, .85);
+  --bt-st-poison: rgba(181, 98, 255, .6); --bt-st-burn: rgba(255, 110, 40, .6); --bt-st-bleed: rgba(255, 42, 90, .55);
+  --bt-pt-poison: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, .7), #b562ff 45%, #3a0a6a);
+  --bt-pt-burn: radial-gradient(ellipse at 50% 70%, #fff6c0 0, #ffb020 32%, #ff5a1f 58%, rgba(255, 60, 20, 0) 72%);
+  --bt-pt-bleed: radial-gradient(circle at 40% 35%, #ff9ab0, #ff2a5a 50%, #7a0620);
   --bt-sp-bg: linear-gradient(90deg, rgba(4, 40, 44, .95), rgba(4, 40, 44, .78)); --bt-sp-glow: rgba(79, 240, 214, .5); --bt-sp-small: #bff; --bt-sp-line: #022;
 }
 @media (min-width: 1100px) {
