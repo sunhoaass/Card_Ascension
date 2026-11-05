@@ -2396,3 +2396,5 @@
 - **ทดสอบ (Chromium 390×844):** หน้า Cards 140 ใบ (หน้าแรก 50 ใบ) · หน้าดูการ์ดทั้ง 20 ใบใหม่ (`#card/<id>`): รูป 600 กว้างโหลดครบ · ข้อความไม่ล้นขอบการ์ด 0 · ไม่มี error / 404 · เปิดดู screenshot Flower Wind Captain: ชื่อ HP ป้ายโอกาส ข้อความ ATK อ่านได้ ไม่ทับกัน
 - **หมายเหตุ:** `inbox/blank/skeleton-unmatched.jpg` ยังไม่ตรงใบไหน (ไม่มีรูปโครงกระดูกในชุดนี้)
 - **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+
+**2026-11-05 · Battle Custom: เอากล่อง "CUSTOM" ด้านบนจอสู้ออก** (`?v=113`) · `.bt-fight--noround .bt-ft__round { visibility: hidden }` (ปุ่มเสียง/ความเร็วอยู่ที่เดิม) · Guild Boss ยังมี "Stage · Round" · ไฟล์: `css/battle.css` · `index.html` · `PROGRESS.md` · `HISTORY.md`

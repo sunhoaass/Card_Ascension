@@ -230,8 +230,8 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-ft__round b { font: 700 calc(24px * var(--hs))/1 var(--gc-font-num); color: var(--bt-ng-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bt-ft__round b em { font-style: normal; font-size: .62em; color: var(--bt-ng-dim); }
 .bt-ft__round b.pop { animation: bt-pop 340ms var(--ease); }
-/* only Guild Boss shows the round count · Custom and later modes show just the mode name (owner 2026-11-05) */
-.bt-fight--noround .bt-ft__rw, .bt-fight--noround #bt-round { display: none; }
+/* only Guild Boss shows the top box (stage + round) · Custom and later modes: no box at all (owner 2026-11-05) · hidden, not removed, so sound / speed keep their place */
+.bt-fight--noround .bt-ft__round { visibility: hidden; }
 @keyframes bt-pop { 40% { transform: scale(1.25); } }
 .bt-spd { justify-self: end; display: inline-flex; gap: 3px; padding: 3px; border-radius: 99px; }
 .bt-spd button { min-width: calc(40px * var(--hs)); min-height: calc(40px * var(--hs)); border: 0; border-radius: 99px; background: transparent; color: var(--bt-ng-dim); font: 700 calc(15px * var(--hs))/1 var(--gc-font-num); }
