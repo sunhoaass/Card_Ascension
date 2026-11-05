@@ -434,14 +434,25 @@
      Master hits again for 189.34% at the clip's rarity (clip.echo) · "starts with 7.4% less damage" = ATK × 0.93.
      Supports: only what needs a hit / a turn (the buffs with no condition are already in deckbuff's numbers).
      ========================================================== */
+  /* a support in data/battle.json: "echo" (one support effect, its 1st value) · or { field: … } = fields like a card's
+     (merged into the supported card's skill: numbers add, the rest only when the card has none) · "$n" = the support's
+     n-th value at the slot's rarity ÷ 100 ("1+$n" = 1 + that) · "todo": [the parts not simulated] (2026-11-05) */
   function supFx(d, i) {
-    const id = d.support[i], s = id && lookup("support", id), k = id && BD.support[id];
-    if (!s || !k) return null;
-    const sr = rarityOf(d, "support", i), ec = clip().echo;
-    let v = Number(C.supValAt(s, 0, sr)) / 100;
-    if (k === "echo" && ec && sr === ec.rarity) v = Number(ec.v) / 100;   // measured in the clip
-    return { name: s.name, eff: (s.effect && s.effect.name) || s.name, b: { [k]: v }, x: s };
+    const id = d.support[i], s = id && lookup("support", id), spec = id && BD.support[id];
+    if (!s || !spec) return null;
+    const sr = rarityOf(d, "support", i), ec = clip().echo, val = (j) => Number(C.supValAt(s, j, sr)) / 100;
+    const base = { name: s.name, eff: (s.effect && s.effect.name) || s.name, x: s };
+    if (typeof spec === "string") {
+      let v = val(0);
+      if (spec === "echo" && ec && sr === ec.rarity) v = Number(ec.v) / 100;   // measured in the clip
+      return { ...base, b: { [spec]: v } };
+    }
+    const res = (x) => (typeof x === "string" && /^(1\+)?\$\d$/.test(x) ? (x[0] === "1" ? 1 : 0) + val(+x[x.length - 1]) : Array.isArray(x) ? x.map(res) : x && typeof x === "object" ? Object.fromEntries(Object.entries(x).map(([k, v]) => [k, res(v)])) : x);
+    const k = {}; for (const [n, v] of Object.entries(spec)) if (n !== "todo" && n !== "b") k[n] = res(v);
+    return { ...base, b: spec.b ? res(spec.b) : {}, k, part: Array.isArray(spec.todo) && spec.todo.length ? spec.todo : null };
   }
+  // the card's skill + its support's fields (numbers add · the rest only when the card has none)
+  function mergeK(base, add) { const k = { ...base }; for (const [n, v] of Object.entries(add || {})) { if (typeof v === "number" && typeof k[n] === "number") k[n] += v; else if (k[n] == null) k[n] = v; } return k; }
   function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function mkTeamUnits(key, side) {
     const d = T[key], st = stats(key), out = [];
@@ -456,10 +467,14 @@
     return out;
   }
   function mkUnit(o) {
-    return { ...o, name: o.x.name, skill: o.x.passive ? o.x.passive.name : "", sim: !!o.b, inf: !!o.inf, kBase: o.b ? { ...o.b } : {}, k: o.b ? { ...o.b } : {},
+    const own = o.b ? { ...o.b } : {}, supK = (o.sup && o.sup.k) || null; delete own.todo;
+    const k = mergeK(own, supK);
+    return { ...o, name: o.x.name, skill: o.x.passive ? o.x.passive.name : "", sim: !!o.b, inf: !!o.inf, kBase: own, supK, k,
+      part: (o.b && Array.isArray(o.b.todo) && o.b.todo.length ? o.b.todo : []).concat((o.sup && o.sup.part) || []),
+      block: k.block || 0, sealT: 0, kSeal: null, wk: new Map(),
       gdef: o.gdef || 0, gstatus: o.gstatus || 1, dots: {}, cc: null,
       atk0: o.atk, atk: o.atk, max: o.hp, hp: o.hp, zone: 0, alive: true, used: {}, seen: new Set(), firstOn: new Set(), adaptMap: new Map(), hitsTaken: 0, turns: 0,
-      shield: o.trait && o.trait.fx.shield ? o.hp * o.trait.fx.shield : 0, marked: 0, copied: null,
+      shield: (o.trait && o.trait.fx.shield ? o.hp * o.trait.fx.shield : 0) + (k.shieldStart && isFinite(o.hp) ? o.hp * k.shieldStart : 0), marked: 0, copied: null,
       st: { dmg: 0, hits: 0, crit: 0, heal: 0, taken: 0, sup: 0, kills: 0, died: 0, procs: {} } };
   }
   function bossUnit() {
@@ -487,14 +502,34 @@
       }
       // the ATK each card starts the fight with (the fight card's "DMG +x%" chip counts from it · display only)
       for (const side of ["a", "b"]) for (const u of this[side]) u.atkS = u.atk;
+      for (const side of ["a", "b"]) { const f = this.front(side); if (f) this.onEnter(f); }
       this.ev("nums", this.front("a")); this.ev("nums", this.front("b"));
+    }
+    // a card comes in: "when it comes in" effects (stun the card in front · hit it for x% of its max HP)
+    onEnter(u) {
+      const d = this.front(u.side === "a" ? "b" : "a"); if (!d || !u.alive) return;
+      const es = typeof u.k.entryStun === "object" ? u.k.entryStun : u.k.entryStun ? { p: 1, turns: u.k.entryStun } : null;
+      if (es && !this.immune(d, "cc")) { const ok = es.p >= 1 || this.R() < es.p; if (es.p < 1) this.proc(u, "Bind", ok, es.p); if (ok) { d.cc = { kind: "Stun", turns: es.turns, lose: 1 }; this.ev("shout", d, "STUN!", { k: "debuff" }); } }
+      if (u.k.entryHit && !d.inf) { const v = Math.max(1, Math.round(d.max * u.k.entryHit)); u.st.dmg += v; this.take(d, v, u); this.ev("dmg", d, v, { pct: true }); }
+    }
+    enter(side) { const f = this.front(side); if (f) { this.ev("enter", f); this.onEnter(f); } }
+    // can't be stunned / frozen / paralyzed (noCC) · can't be confused, sealed or weakened either (noDebuff) · statuses (noDot: true | ["burn"])
+    immune(u, what, kind) {
+      if (what === "cc") return !!(u.k.noCC || u.k.noDebuff);
+      if (what === "debuff") return !!u.k.noDebuff;
+      if (what === "dot") { const n = u.k.noDot; return n === true || n === 1 || (Array.isArray(n) && n.includes(kind)); }
+      return false;
     }
     heal(u, v, src) { if (u.inf || !u.alive || v <= 0) return 0; const h = Math.min(Math.round(v), u.max - u.hp); if (h <= 0) return 0; u.hp += h; u.st.heal += h; this.ev("heal", u, h, { src }); return h; }
     // damage that isn't an attack (bench splash, echo, status): shield first (unless the attacker ignores it)
     take(u, v, a) { u.st.taken += v; if (u.inf) return; let left = v; if (u.shield > 0 && !(a && a.k.ignore)) { const s = Math.min(u.shield, left); u.shield -= s; left -= s; } u.hp -= left; }
     startTurn(u) {
       u.turns++;
+      if (u.sealT > 0 && --u.sealT <= 0 && u.kSeal) { u.k = u.kSeal; u.kSeal = null; }   // the seal wears off: the skill is back
       if (u.k.regen) this.heal(u, u.max * u.k.regen, "skill");
+      if (u.k.regenChance) { const rc = u.k.regenChance, ok = this.R() < rc.p; this.proc(u, "Heal", ok, rc.p); if (ok) this.heal(u, u.max * rc.v, "sup"); }
+      if (u.k.teamRegen) for (const x of this[u.side]) if (x.alive && x !== u) this.heal(x, x.max * u.k.teamRegen, "sup");
+      if (u.k.lowHeal && !u.used.lowHeal && !u.inf && u.hp / u.max < u.k.lowHeal.under) { u.used.lowHeal = 1; this.heal(u, u.max * u.k.lowHeal.v, "skill"); }
       if (u.k.perTurn && u.turns <= u.k.perTurn.n) { const g = u.atk0 * u.k.perTurn.v; u.atk += g; this.ev("buff", u, g); }
       if (u.sup && u.sup.b.teamHeal) {
         u.st.sup++; let any = false;
@@ -510,7 +545,10 @@
     }
     // a status from a skill (field dot: { kind, add, pct, max, turns }) · stacks up to max, every new stack resets the turns
     addDot(a, d, dot) {
-      const s = d.dots[dot.kind] || (d.dots[dot.kind] = { stacks: 0, pct: dot.pct, left: 0, mult: 1, src: a });
+      if (Array.isArray(dot)) { for (const x of dot) this.addDot(a, d, x); return; }
+      if (dot.all && !dot._one) { for (const x of this[d.side]) if (x.alive && !x.inf) this.addDot(a, x, { ...dot, _one: 1 }); return; }
+      if (this.immune(d, "dot", dot.kind)) return;
+      const s = d.dots[dot.kind] || (d.dots[dot.kind] = { stacks: 0, pct: dot.pct, left: 0, mult: 1, src: a, name: dot.name || dot.kind });
       s.stacks = Math.min(dot.max, s.stacks + (dot.add || 1)); s.left = dot.turns; s.mult = a.gstatus; s.src = a;
       this.ev("shout", d, dot.kind.toUpperCase() + " x" + s.stacks, { k: "debuff", y: "70%" });
       this.ev("dot", d, dot.kind, { stacks: s.stacks });   // display only: the status lands (its burst + sound)
@@ -532,7 +570,15 @@
         if (d.sup && d.sup.b.dodge) ds.push([d.sup.eff, d.sup.b.dodge, "s"]);
         for (const [nm, p, src] of ds) { const ok = R() < p; this.proc(d, nm, ok, p); if (ok) { if (src === "s") d.st.sup++; this.ev("dodge", d); this.ev("shout", d, "DODGE!", { k: "dodge" }); return 0; } }
       }
+      // blocks the first N hits completely (not through "ignores shields, dodges and barriers")
+      if (d.block > 0 && !a.k.ignore) { d.block--; this.ev("dodge", d); this.ev("shout", d, "BLOCKED!", { k: "dodge" }); this.ev("nums", d); return 0; }
       let m = m0, crit = false, heavy = false;
+      if (!extra) a.atks = (a.atks || 0) + 1;
+      if (a.k.everyN && !extra && a.atks % a.k.everyN.n === 0) { m *= a.k.everyN.m; heavy = true; }
+      if (a.k.lowHp && !a.inf && a.hp / a.max < a.k.lowHp.under) m *= 1 + a.k.lowHp.dmg;
+      if (a.k.firstFight && !extra && !a.used.firstFight) { a.used.firstFight = 1; m *= a.k.firstFight; heavy = true; }
+      if (a.k.dmgFrom && a.atks >= a.k.dmgFrom.n) m *= 1 + a.k.dmgFrom.v;
+      if (d.cc && d.cc.kind === "Freeze") { m *= 1.25; if (a.k.vsFrozen) m *= a.k.vsFrozen; }
       const bf = a.k.bf;
       if (bf) {
         const p = a.zone >= bf.max ? 1 : Math.min(1, bf.p + bf.per * a.zone), ok = R() < p;
@@ -551,36 +597,53 @@
       if (a.k.vs && inGroup(d.id, a.k.vs.group)) m *= a.k.vs.m;
       if (d.k.weakTo && inGroup(a.id, d.k.weakTo.group)) m *= d.k.weakTo.m;
       // every hit rolls ±12% around ATK (the clip: 0.88–1.11, mean 1.00)
-      let dmg = a.atk * m * (1 + d.marked) * (1 - ROLL() + R() * 2 * ROLL());
+      let dmg = (a.atk + (a.k.addFoeAtk && isFinite(d.atk) ? d.atk * a.k.addFoeAtk : 0)) * m * (1 + d.marked) * (1 - ROLL() + R() * 2 * ROLL());
       // damage cut: skill + trait + Grade Defense (Defense% × 0.2) · they add up
       let dr = (d.k.dr || 0) + ((d.trait && d.trait.fx.dr) || 0) + d.gdef;
       if (d.k.early && d.hitsTaken < d.k.early.n) dr += d.k.early.dr;
-      if (d.k.adapt) { const seen = d.adaptMap.get(a) || 0; dr += Math.min(3, seen) * d.k.adapt; d.adaptMap.set(a, seen + 1); }
+      if (d.k.adapt) { const ad = typeof d.k.adapt === "object" ? d.k.adapt : { v: d.k.adapt, n: 3 }, seen = d.adaptMap.get(a) || 0; dr += Math.min(ad.n, seen) * ad.v; d.adaptMap.set(a, seen + 1); }
       dmg = Math.max(1, Math.round(dmg * Math.max(0, 1 - dr)));
       if (a.sup && a.sup.b.mark && !d.marked) { d.marked = a.sup.b.mark; a.st.sup++; }
       a.st.dmg += dmg; a.st.hits++; if (crit) a.st.crit++;
       const pierce = !!(a.k.ignore && d.shield > 0);   // through a shield = the blue number
       d.hitsTaken++; this.take(d, dmg, a);
       this.ev("dmg", d, dmg, { crit, heavy: heavy || (!d.inf && dmg > d.max * .25), extra, pierce });
+      // x% of the enemy's max HP on every hit (not bosses: their HP has no end) = the white number
+      if (a.k.maxHp && !d.inf && d.hp > 0) { const v = Math.max(1, Math.round(d.max * a.k.maxHp)); a.st.dmg += v; this.take(d, v, a); this.ev("dmg", d, v, { pct: true }); }
+      // on-hit chances: weaken (ATK down for the fight, stacks up to n) · mark · seal the skill · confuse
+      const wh = a.k.weakenHit;
+      if (wh && d.hp > 0 && !this.immune(d, "debuff") && (d.wk.get(a) || 0) < (wh.n || 1)) { const ok = (wh.p == null || wh.p >= 1) ? true : this.R() < wh.p; if (wh.p < 1) this.proc(a, "Weaken", ok, wh.p);
+        if (ok) { d.wk.set(a, (d.wk.get(a) || 0) + 1); d.atk *= 1 - wh.v; d.weakM = (d.weakM || 1) * (1 - wh.v); this.ev("shout", d, "WEAKENED!", { k: "debuff" }); } }
+      if (a.k.markHit && d.hp > 0 && !d.marked) { const ok = this.R() < a.k.markHit.p; this.proc(a, "Mark", ok, a.k.markHit.p); if (ok) { d.marked = a.k.markHit.v; this.ev("shout", d, "MARKED!", { k: "debuff" }); } }
+      const sl = a.k.sealFirst && !a.firstOn.has("seal:" + d.idx + d.side) ? { p: 1, turns: a.k.sealFirst, first: 1 } : a.k.seal;
+      if (sl && d.hp > 0 && !d.inf && !d.kSeal && !this.immune(d, "debuff")) { if (sl.first) a.firstOn.add("seal:" + d.idx + d.side); const ok = sl.p >= 1 || this.R() < sl.p; if (sl.p < 1) this.proc(a, "Seal", ok, sl.p);
+        if (ok) { d.kSeal = d.k; d.k = mergeK({}, d.supK); d.sealT = sl.turns + 1; this.ev("shout", d, "SEALED!", { k: "debuff" }); } }
+      if (a.k.confuse && d.hp > 0 && !d.cc && !this.immune(d, "debuff")) { const ok = this.R() < a.k.confuse.p; this.proc(a, "Confuse", ok, a.k.confuse.p); if (ok) { d.cc = { kind: "Confuse", turns: 1, lose: 1, self: a.k.confuse.self || .5 }; this.ev("shout", d, "CONFUSED!", { k: "debuff" }); } }
       // Hakai: a chance to finish an enemy under X% HP (not a boss)
       if (a.k.execute && !d.inf && d.hp > 0 && d.hp / d.max < a.k.execute.under) { const ok = R() < a.k.execute.p; this.proc(a, (a.copied || a.skill) + " finish", ok, a.k.execute.p); if (ok) { d.hp = 0; this.ev("shout", a, (a.copied || a.skill).toUpperCase() + "!", { k: "skill" }); } }
       // stun / paralyze (can't be stunned = noCC)
-      if (a.k.stun && d.hp > 0 && !d.k.noCC) { const ok = R() < a.k.stun.p; this.proc(a, a.k.stun.kind, ok, a.k.stun.p); if (ok) { d.cc = { ...a.k.stun }; this.ev("shout", d, a.k.stun.kind.toUpperCase() + "!", { k: "debuff", y: "70%" }); } }
+      if (a.k.stun && d.hp > 0 && !this.immune(d, "cc")) { const ok = R() < a.k.stun.p; this.proc(a, a.k.stun.kind, ok, a.k.stun.p); if (ok) { d.cc = { ...a.k.stun }; this.ev("shout", d, a.k.stun.kind.toUpperCase() + "!", { k: "debuff", y: "70%" }); } }
       // the defender reacts before a copy (the clip: the boss copies after the 1st hit, so it grows 29 times)
       if (d.k.onHitAtk) { const g = d.atk0 * d.k.onHitAtk; d.atk += g; this.ev("buff", d, g); }
       if (d.sup && d.sup.b.onHitAtk) { const g = d.atk0 * d.sup.b.onHitAtk; d.atk += g; d.st.sup++; if (!d.k.onHitAtk) this.ev("buff", d, g); }
       if (d.sup && d.sup.b.hitHeal && !d.inf && d.hp > 0) { d.st.sup++; this.heal(d, dmg * d.sup.b.hitHeal, "sup"); }
       if (a.k.dot && !d.inf) this.addDot(a, d, a.k.dot);
+      if (d.k.thorns && !a.inf && d !== a) this.addDot(d, a, d.k.thorns);   // whoever hits it gets the status
       if (d.k.copy && a.sim && !d.seen.has(a.id)) {
         d.seen.add(a.id); const keep = { copy: 1, killGain: d.kBase.killGain, weaken: d.kBase.weaken };
-        d.k = { ...a.kBase, ...keep }; d.copied = a.skill; d.zone = 0; this.ev("shout", d, "COPIED " + a.skill.toUpperCase() + "!", { k: "copy", y: "24%" }); this.ev("copy", d);
+        d.k = mergeK({ ...a.kBase, ...keep }, d.supK); d.copied = a.skill; if (d.kSeal) { d.kSeal = d.k; d.k = mergeK({}, d.supK); } d.zone = 0; this.ev("shout", d, "COPIED " + a.skill.toUpperCase() + "!", { k: "copy", y: "24%" }); this.ev("copy", d);
       }
       if (d.k.reflect && !a.inf) { const r = Math.round(dmg * d.k.reflect); a.hp -= r; a.st.taken += r; this.ev("dmg", a, r, { reflect: 1 }); }
       const ls = (a.k.lifesteal || 0) + ((a.trait && a.trait.fx.lifesteal) || 0) + ((a.sup && a.sup.b.lifesteal) || 0);
       if (ls && !a.inf && a.hp > 0) { if (a.sup && a.sup.b.lifesteal) a.st.sup++; this.heal(a, dmg * ls, "ls"); }
-      if (a.k.splash) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * a.k.splash); this.take(x, s, a); a.st.dmg += s; this.ev("splash", x, s); this.checkDeath(x, a, true); } this.ev("bench", d); }
+      const spl = (a.k.splash || 0) + (a.k.splashFirst && !a.used.splashFirst && !extra ? (a.used.splashFirst = 1, a.k.splashFirst) : 0);
+      if (spl) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * spl); this.take(x, s, a); a.st.dmg += s; this.ev("splash", x, s); this.checkDeath(x, a, true); } this.ev("bench", d); }
       // counter-attack when hit (a counter never starts another counter)
-      if (d.k.counter && !o.counter && d.hp > 0 && a.hp > 0) { const ok = R() < d.k.counter; this.proc(d, (d.copied || d.skill) + " counter", ok, d.k.counter); if (ok) { this.ev("shout", d, "COUNTER!", { k: "skill" }); this.ev("atk", d); this.hit(d, a, 1, true, { counter: 1 }); } }
+      if (d.k.counter && !o.counter && d.hp > 0 && a.hp > 0) { const cp = typeof d.k.counter === "object" ? d.k.counter.p : d.k.counter, cm = typeof d.k.counter === "object" ? d.k.counter.m || 1 : 1;
+        const ok = R() < cp; this.proc(d, (d.copied || d.skill) + " counter", ok, cp); if (ok) { this.ev("shout", d, "COUNTER!", { k: "skill" }); this.ev("atk", d); this.hit(d, a, cm, true, { counter: 1 }); } }
+      if (d.k.onHitHp && !d.inf) { const g = Math.round(d.max * d.k.onHitHp); d.max += g; d.hp += g; }
+      // it loses x% of its max HP every attack
+      if (a.k.selfDmg && !extra && !a.inf) { const v = Math.max(1, Math.round(a.max * a.k.selfDmg)); a.hp -= v; a.st.taken += v; this.ev("dmg", a, v, {}); }
       return dmg;
     }
     // the card behind the one fighting (every 2nd attack: % of a normal hit, no crits or bonuses)
@@ -595,9 +658,14 @@
       if (u.sup && u.sup.b.lucky && !u.used.lucky) { u.used.lucky = 1; const ok = this.R() < u.sup.b.lucky; this.proc(u, u.sup.eff, ok, u.sup.b.lucky); if (ok) { u.hp = 1; u.st.sup++; this.ev("shout", u, "HOLD ON!", { k: "heal" }); this.ev("nums", u); return false; } }
       const rv = u.k.revive || (u.trait && u.trait.fx.revive);
       if (rv && !u.used.revive) { u.used.revive = 1; u.hp = Math.round(u.max * rv); this.ev("shout", u, "REVIVED!", { k: "heal" }); this.ev("heal", u, u.hp, { src: "revive" }); return false; }
+      const rc = u.k.reviveChance;   // a support: x% chance to come back with y% HP (once)
+      if (rc && !u.used.reviveChance) { u.used.reviveChance = 1; const ok = this.R() < rc.p; this.proc(u, "Revive", ok, rc.p); if (ok) { u.hp = Math.round(u.max * rc.v); u.st.sup++; this.ev("shout", u, "REVIVED!", { k: "heal" }); this.ev("heal", u, u.hp, { src: "revive" }); return false; } }
       u.alive = false; u.hp = 0; u.st.died = 1;
+      // knocked out: it explodes on the enemy in front
+      if (u.k.explode && isFinite(u.max)) { const f = this.front(u.side === "a" ? "b" : "a"); if (f && !f.inf) { const v = Math.max(1, Math.round(u.max * u.k.explode)); this.take(f, v, u); u.st.dmg += v; this.ev("shout", u, "BOOM!", { k: "crit" }); this.ev("dmg", f, v, { pct: true }); this.checkDeath(f, null); } }
       if (killer && killer.alive) {
         killer.st.kills++;
+        if (killer.k.killHeal) this.heal(killer, killer.max * killer.k.killHeal, "skill");
         if (killer.k.killGain) { const g = u.atk0 * killer.k.killGain, h = isFinite(u.max) ? Math.round(u.max * killer.k.killGain) : 0;
           killer.atk += g; killer.atk0 += g; if (!killer.inf) { killer.max += h; killer.hp += h; } this.ev("buff", killer, g); this.ev("shout", killer, "+" + Math.round(killer.k.killGain * 100) + "% STOLEN", { k: "skill", y: "86%" }); }
         // Arise: once, the defeated enemy comes back on the killer's team as its shadow (X% of its damage and HP, no skill)
@@ -621,12 +689,14 @@
       if (a && d) {
         this.startTurn(a);
         // a status can finish the attacker before it swings: the next card comes in, the turn passes
-        if (this.checkDeath(a, (Object.values(a.dots)[0] || {}).src || d)) { if (this.front(side)) this.ev("enter", this.front(side)); return this.nextTurn(side, foe); }
+        if (this.checkDeath(a, (Object.values(a.dots)[0] || {}).src || d)) { this.enter(side); return this.nextTurn(side, foe); }
         // stunned / paralyzed: loses this turn (paralyze: a chance each turn)
         if (a.cc) {
           const c = a.cc, lose = c.lose >= 1 || this.R() < c.lose;
           if (--c.turns <= 0) a.cc = null;
-          if (lose) { this.ev("shout", a, (c.kind === "Stun" ? "STUNNED" : c.kind.toUpperCase() + "D") + "!", { k: "debuff" }); return this.nextTurn(side, foe); }
+          if (c.kind === "Confuse") { const v = Math.max(1, Math.round(a.atk * (c.self || .5))); this.take(a, v, null); this.ev("shout", a, "CONFUSED!", { k: "debuff" }); this.ev("dmg", a, v, {});
+            if (this.checkDeath(a, d)) this.enter(side); return this.nextTurn(side, foe); }
+          if (lose) { this.ev("shout", a, ({ Stun: "STUNNED", Freeze: "FROZEN", Paralyze: "PARALYZED" }[c.kind] || c.kind.toUpperCase()) + "!", { k: "debuff" }); return this.nextTurn(side, foe); }
         }
         this.ev("atk", a);
         const first = this.hit(a, d, 1, false);
@@ -636,8 +706,8 @@
         const dbl = a.k.double;
         if (dbl && a.alive && d.alive && a.hp > 0) { const ok = this.R() < dbl.p; this.proc(a, (a.copied || a.skill) + " extra hit", ok, dbl.p);
           if (ok) { this.ev("shout", a, "EXTRA HIT", { k: "extra", y: "26%" }); this.ev("atk", a); this.hit(a, d, dbl.m, true); dDead = this.checkDeath(d, a) || dDead; aDead = this.checkDeath(a, d) || aDead; } }
-        if (dDead && this.front(foe)) this.ev("enter", this.front(foe));
-        if (aDead && this.front(side)) this.ev("enter", this.front(side));
+        if (dDead) this.enter(foe);
+        if (aDead) this.enter(side);
       }
       return this.nextTurn(side, foe);
     }
@@ -740,6 +810,10 @@
     stun: '<path fill="currentColor" d="M12 2l2.4 6.6L21 9l-5 4.6L17.4 21 12 17.3 6.6 21 8 13.6 3 9l6.6-.4z"/>',
     paralyze: '<path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6z"/>',
     weak: '<path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M12 4v15M6 13l6 6 6-6"/>',
+    freeze: '<path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M9 4l3 2 3-2M9 20l3-2 3 2"/>',
+    seal: '<path fill="currentColor" d="M6 10V8a6 6 0 1 1 12 0v2h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h1Zm3 0h6V8a3 3 0 1 0-6 0v2Z"/>',
+    confuse: '<path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" d="M12 12c0-3 4-3 4 0s-5 5-8 2-1-9 4-9 8 5 6 10"/>',
+    mark: '<path fill="none" stroke="currentColor" stroke-width="2.6" d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2.6"/>',
   };
   const dbIcon = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${DB_ICON[k] || DB_ICON.poison}</svg>`;
   // the card's own text from the site card (same words, the numbers that change with the rarity in colour)
@@ -780,6 +854,7 @@
     if (u.copied) out.push({ k: "copy", h: `COPIED: <b>${esc(u.copied.toUpperCase())}</b>`, c: "copy" });
     if (u.shadow) out.push({ k: "shadow", h: "SHADOW", c: "copy" });
     if (u.shield > 0) out.push({ k: "shield", h: `SHIELD <b>${C.fmtHp(u.shield)}</b>`, c: "shield" });
+    if (u.block > 0) out.push({ k: "block", h: `BLOCK <b>${u.block}</b>`, c: "shield" });
     const dr = (u.k.dr || 0) + ((tr && tr.dr) || 0) + (u.gdef || 0);
     if (dr > 0) out.push({ k: "dr", h: `DMG TAKEN <b>−${pctS(dr)}</b>`, c: "shield" });
     if (u.k.survive && !u.used.survive) out.push({ k: "surv", h: "SURVIVE <b>1×</b>", c: "gold" });
@@ -801,8 +876,10 @@
   function dbsOf(u) {
     const out = [];
     if (u.weakM && u.weakM < 1) out.push({ k: "weak", n: `ATK −${pctS(1 - u.weakM)}`, t: "∞" });
-    for (const [kind, s] of Object.entries(u.dots)) out.push({ k: kind, n: `${kind.toUpperCase()} ×${s.stacks}`, t: s.left + "T" });
+    for (const [kind, s] of Object.entries(u.dots)) out.push({ k: kind, n: `${String(s.name || kind).toUpperCase()} ×${s.stacks}`, t: s.left > 99 ? "∞" : s.left + "T" });
     if (u.cc) out.push({ k: u.cc.kind.toLowerCase(), n: u.cc.kind.toUpperCase(), t: u.cc.turns + "T" });
+    if (u.kSeal) out.push({ k: "seal", n: "SEALED", t: Math.max(1, u.sealT - 1) + "T" });
+    if (u.marked && !(u.sup && u.sup.b.mark)) out.push({ k: "mark", n: `MARKED +${pctS(u.marked)}`, t: "∞" });
     return out;
   }
   function paintDbs(u, s) {
@@ -1020,7 +1097,7 @@
         <p class="bt-pc__name"><span>${esc(u.name)}</span>${u === mvp && u.st.dmg > 0 ? `<span class="chip glass bt-mvp">MVP · ${pct(u.st.dmg / Math.max(1, total))}</span>` : u.st.died ? `<span class="chip glass">Fell</span>` : u.st.hits ? "" : `<span class="chip glass">Didn't fight</span>`}</p>
         <div class="bt-pc__grid"><span>Damage<b class="d">${fmtS(u.st.dmg)}</b></span><span>Hits<b>${u.st.hits}</b></span><span>CRIT<b>${u.st.crit}</b></span>
           <span>Healed<b class="h">${fmtS(u.st.heal)}</b></span><span>Taken<b>${fmtS(u.st.taken)}</b></span><span>Support<b>${u.st.sup}×</b></span></div>
-        <div class="bt-pc__procs">${u.sim ? procs(u) || `<span class="chip glass">No chance skill</span>` : u.shadow ? `<span class="chip glass">Shadow</span>` : `<span class="dk-pill bt-pill--warn"><span>Skill not simulated yet</span></span>`}</div></div></div>`).join("");
+        <div class="bt-pc__procs">${u.sim ? procs(u) || `<span class="chip glass">No chance skill</span>` : u.shadow ? `<span class="chip glass">Shadow</span>` : `<span class="dk-pill bt-pill--warn"><span>Skill not simulated yet</span></span>`}${u.part && u.part.length ? `<span class="dk-pill bt-pill--warn" title="${esc(u.part.join(" "))}"><span>Partly simulated</span></span>` : ""}</div></div></div>`).join("");
     $("#bt-result").innerHTML = `<section class="panel bt-res__hero">${hero}</section>
       <section class="panel bt-res__cards"><div class="bt-h"><h2>Each card</h2><small>This fight</small></div><div class="bt-pcs">${rows}</div>
         <div class="bt-res__btns"><button type="button" class="tm-btn tm-btn--primary fx-press" data-bt="save">Save as image</button><button type="button" class="tm-btn fx-press" data-bt="fight" data-mode="${b.boss ? "boss" : "arena"}">Fight again</button><button type="button" class="tm-btn fx-press" data-bt="go" data-to="${b.boss ? "boss" : "arena"}">Continue</button></div></section>`;
