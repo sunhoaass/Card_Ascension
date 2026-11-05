@@ -387,7 +387,7 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 @keyframes bt-arrow { 25% { opacity: 1; } 100% { transform: translateY(-90px); opacity: 0; } }
 .bt-spark { position: absolute; left: 50%; top: 28%; width: 6px; height: 6px; margin: -3px; border-radius: 50%; background: var(--bt-spark); box-shadow: 0 0 10px var(--bt-spark); animation: bt-spark calc(560ms * var(--bt-k)) ease-out forwards; }
 @keyframes bt-spark { to { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; } }
-/* the support banner: picture + name + ability + damage, from the supported card's side (bigger than the game's) */
+/* the support banner: picture + name + ability (no number · once per card · owner 2026-11-05), from the supported card's side */
 .bt-sp { position: absolute; z-index: 15; top: calc(var(--cw) * .42); display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 14px; background: var(--bt-sp-bg);
   box-shadow: 0 0 0 2px var(--bt-d-sup), 0 0 22px var(--bt-sp-glow); pointer-events: none; animation: bt-sp calc(1500ms * var(--bt-k)) var(--ease) forwards; }
 .bt-sp--a { left: calc(var(--cw) * .35); --from: -40px; } .bt-sp--b { right: calc(var(--cw) * .35); --from: 40px; }
@@ -395,7 +395,6 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-sp div { display: grid; gap: 3px; }
 .bt-sp small { font: 600 min(calc(var(--cw) * .055), calc(13px * var(--hs)))/1 var(--gc-font-num); letter-spacing: .08em; color: var(--bt-sp-small); text-transform: uppercase; white-space: nowrap; }
 .bt-sp strong { font: 400 min(calc(var(--cw) * .085), calc(22px * var(--hs)))/1 "Russo One", sans-serif; letter-spacing: .02em; color: var(--bt-d-sup); white-space: nowrap; }
-.bt-sp b { font: 700 min(calc(var(--cw) * .13), calc(34px * var(--hs)))/1 var(--gc-font-num); color: var(--bt-d-sup); paint-order: stroke fill; -webkit-text-stroke: 3px var(--bt-sp-line); }
 @keyframes bt-sp { 0% { transform: translateX(var(--from)) scale(.8); opacity: 0; } 14% { transform: none; opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-20px); opacity: 0; } }
 
 /* team boxes: as wide as the team (1 card = a small box, no empty slots) · the front card glows · KO on the fallen */

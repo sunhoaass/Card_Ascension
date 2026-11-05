@@ -491,6 +491,8 @@
       this.round = 1; this.turn = "a"; this.done = false; this.why = "";
     }
     ev(t, u, v, o) { if (this.E) this.E({ t, u, v, o }); }
+    // a support works: counted every time · its banner (picture + name + skill) only the 1st time for this card (owner 2026-11-05)
+    supOn(u) { u.st.sup++; if (!u.used.supShown) { u.used.supShown = 1; this.ev("sup", u); } }
     front(side) { return this[side].find((u) => u.alive) || null; }
     alive(side) { return this[side].filter((u) => u.alive).length; }
     proc(u, name, ok, p) { const r = u.st.procs[name] || (u.st.procs[name] = { n: 0, exp: 0 }); if (ok) r.n++; r.exp += p; }
@@ -532,9 +534,9 @@
       if (u.k.lowHeal && !u.used.lowHeal && !u.inf && u.hp / u.max < u.k.lowHeal.under) { u.used.lowHeal = 1; this.heal(u, u.max * u.k.lowHeal.v, "skill"); }
       if (u.k.perTurn && u.turns <= u.k.perTurn.n) { const g = u.atk0 * u.k.perTurn.v; u.atk += g; this.ev("buff", u, g); }
       if (u.sup && u.sup.b.teamHeal) {
-        u.st.sup++; let any = false;
+        let any = false;
         for (const x of this[u.side]) if (x.alive && !x.inf && x.hp < x.max) { const h = Math.min(Math.round(x.max * u.sup.b.teamHeal), x.max - x.hp); x.hp += h; u.st.heal += h; if (x === u) this.ev("heal", u, h, { src: "sup" }); any = true; }
-        if (any) this.ev("shout", u, u.sup.eff.toUpperCase(), { k: "heal", y: "88%" });
+        if (any) this.supOn(u);
       }
       // statuses tick at the start of the card's turn (burn / poison / bleed: % of its max HP per stack × the giver's
       // Grade Status Damage · an infinite-HP boss: not known yet, nothing)
@@ -557,9 +559,8 @@
     echo(a, d, first) {
       if (!(first > 0) || !d.alive) return;
       const v = Math.max(1, Math.round(first * a.sup.b.echo));
-      a.st.dmg += v; a.st.sup++; this.take(d, v, a);
-      this.ev("sup", a, v, { d });            // the support banner (picture + name + skill + damage)
-      this.ev("dmg", d, v, { extra: true, sup: true });
+      a.st.dmg += v; this.supOn(a); this.take(d, v, a);
+      this.ev("dmg", d, v, { extra: true, sup: true });   // shown added to the hit's number (mergeEvs)
     }
     hit(a, d, m0, extra, o = {}) {
       const R = this.R;
@@ -568,7 +569,7 @@
         if (d.k.dodge) ds.push([(d.copied || d.skill) + " dodge", d.k.dodge, "k"]);
         if (d.trait && d.trait.fx.dodge) ds.push([d.trait.name + " dodge", d.trait.fx.dodge, "t"]);
         if (d.sup && d.sup.b.dodge) ds.push([d.sup.eff, d.sup.b.dodge, "s"]);
-        for (const [nm, p, src] of ds) { const ok = R() < p; this.proc(d, nm, ok, p); if (ok) { if (src === "s") d.st.sup++; this.ev("dodge", d); this.ev("shout", d, "DODGE!", { k: "dodge" }); return 0; } }
+        for (const [nm, p, src] of ds) { const ok = R() < p; this.proc(d, nm, ok, p); if (ok) { if (src === "s") this.supOn(d); this.ev("dodge", d); this.ev("shout", d, "DODGE!", { k: "dodge" }); return 0; } }
       }
       // blocks the first N hits completely (not through "ignores shields, dodges and barriers")
       if (d.block > 0 && !a.k.ignore) { d.block--; this.ev("dodge", d); this.ev("shout", d, "BLOCKED!", { k: "dodge" }); this.ev("nums", d); return 0; }
@@ -603,7 +604,7 @@
       if (d.k.early && d.hitsTaken < d.k.early.n) dr += d.k.early.dr;
       if (d.k.adapt) { const ad = typeof d.k.adapt === "object" ? d.k.adapt : { v: d.k.adapt, n: 3 }, seen = d.adaptMap.get(a) || 0; dr += Math.min(ad.n, seen) * ad.v; d.adaptMap.set(a, seen + 1); }
       dmg = Math.max(1, Math.round(dmg * Math.max(0, 1 - dr)));
-      if (a.sup && a.sup.b.mark && !d.marked) { d.marked = a.sup.b.mark; a.st.sup++; }
+      if (a.sup && a.sup.b.mark && !d.marked) { d.marked = a.sup.b.mark; this.supOn(a); }
       a.st.dmg += dmg; a.st.hits++; if (crit) a.st.crit++;
       const pierce = !!(a.k.ignore && d.shield > 0);   // through a shield = the blue number
       d.hitsTaken++; this.take(d, dmg, a);
@@ -625,8 +626,8 @@
       if (a.k.stun && d.hp > 0 && !this.immune(d, "cc")) { const ok = R() < a.k.stun.p; this.proc(a, a.k.stun.kind, ok, a.k.stun.p); if (ok) { d.cc = { ...a.k.stun }; this.ev("shout", d, a.k.stun.kind.toUpperCase() + "!", { k: "debuff", y: "70%" }); } }
       // the defender reacts before a copy (the clip: the boss copies after the 1st hit, so it grows 29 times)
       if (d.k.onHitAtk) { const g = d.atk0 * d.k.onHitAtk; d.atk += g; this.ev("buff", d, g); }
-      if (d.sup && d.sup.b.onHitAtk) { const g = d.atk0 * d.sup.b.onHitAtk; d.atk += g; d.st.sup++; if (!d.k.onHitAtk) this.ev("buff", d, g); }
-      if (d.sup && d.sup.b.hitHeal && !d.inf && d.hp > 0) { d.st.sup++; this.heal(d, dmg * d.sup.b.hitHeal, "sup"); }
+      if (d.sup && d.sup.b.onHitAtk) { const g = d.atk0 * d.sup.b.onHitAtk; d.atk += g; this.supOn(d); if (!d.k.onHitAtk) this.ev("buff", d, g); }
+      if (d.sup && d.sup.b.hitHeal && !d.inf && d.hp > 0) { this.supOn(d); this.heal(d, dmg * d.sup.b.hitHeal, "sup"); }
       if (a.k.dot && !d.inf) this.addDot(a, d, a.k.dot);
       if (d.k.thorns && !a.inf && d !== a) this.addDot(d, a, d.k.thorns);   // whoever hits it gets the status
       if (d.k.copy && a.sim && !d.seen.has(a.id)) {
@@ -635,7 +636,7 @@
       }
       if (d.k.reflect && !a.inf) { const r = Math.round(dmg * d.k.reflect); a.hp -= r; a.st.taken += r; this.ev("dmg", a, r, { reflect: 1 }); }
       const ls = (a.k.lifesteal || 0) + ((a.trait && a.trait.fx.lifesteal) || 0) + ((a.sup && a.sup.b.lifesteal) || 0);
-      if (ls && !a.inf && a.hp > 0) { if (a.sup && a.sup.b.lifesteal) a.st.sup++; this.heal(a, dmg * ls, "ls"); }
+      if (ls && !a.inf && a.hp > 0) { if (a.sup && a.sup.b.lifesteal) this.supOn(a); this.heal(a, dmg * ls, "ls"); }
       const spl = (a.k.splash || 0) + (a.k.splashFirst && !a.used.splashFirst && !extra ? (a.used.splashFirst = 1, a.k.splashFirst) : 0);
       if (spl) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * spl); this.take(x, s, a); a.st.dmg += s; this.ev("splash", x, s); this.checkDeath(x, a, true); } this.ev("bench", d); }
       // counter-attack when hit (a counter never starts another counter)
@@ -655,7 +656,7 @@
     checkDeath(u, killer, bench) {
       if (u.inf || !u.alive || u.hp > 0) return false;
       if (u.k.survive && !u.used.survive) { u.used.survive = 1; u.hp = 1; this.ev("shout", u, "SURVIVED!", { k: "skill" }); this.ev("nums", u); return false; }
-      if (u.sup && u.sup.b.lucky && !u.used.lucky) { u.used.lucky = 1; const ok = this.R() < u.sup.b.lucky; this.proc(u, u.sup.eff, ok, u.sup.b.lucky); if (ok) { u.hp = 1; u.st.sup++; this.ev("shout", u, "HOLD ON!", { k: "heal" }); this.ev("nums", u); return false; } }
+      if (u.sup && u.sup.b.lucky && !u.used.lucky) { u.used.lucky = 1; const ok = this.R() < u.sup.b.lucky; this.proc(u, u.sup.eff, ok, u.sup.b.lucky); if (ok) { u.hp = 1; this.supOn(u); this.ev("shout", u, "HOLD ON!", { k: "heal" }); this.ev("nums", u); return false; } }
       const rv = u.k.revive || (u.trait && u.trait.fx.revive);
       if (rv && !u.used.revive) { u.used.revive = 1; u.hp = Math.round(u.max * rv); this.ev("shout", u, "REVIVED!", { k: "heal" }); this.ev("heal", u, u.hp, { src: "revive" }); return false; }
       const rc = u.k.reviveChance;   // a support: x% chance to come back with y% HP (once)
@@ -960,12 +961,12 @@
     if (th) { retrig(th, "hit"); const n = document.createElement("span"); n.className = "bt-thn"; n.textContent = "-" + fmtD(v); th.appendChild(n); setTimeout(() => n.remove(), 1100); }
     SND.play("aoe");
   }
-  // the support banner: its picture + name + ability + the damage (owner: bigger and clearer than the game's "-123 NAME")
-  function supBanner(a, v) {
+  // the support banner: its picture + name + ability (owner 2026-11-05: no number · once per card · what it adds goes in the card's own numbers)
+  function supBanner(a) {
     const s = F.shown[a.side]; if (!s || !a.sup) return;
     const arena = $("#bt-arena"), b = document.createElement("div");
     b.className = "bt-sp bt-sp--" + a.side;
-    b.innerHTML = `<img src="${esc(thumbOf("support", a.sup.x))}" alt=""><div><small>${esc(a.sup.name)}</small><strong>${esc(a.sup.eff.toUpperCase())}</strong><b>-${fmtD(v)}</b></div>`;
+    b.innerHTML = `<img src="${esc(thumbOf("support", a.sup.x))}" alt=""><div><small>${esc(a.sup.name)}</small><strong>${esc(a.sup.eff.toUpperCase())}</strong></div>`;
     const im = $("img", b); im.addEventListener("error", () => im.remove(), { once: true });
     arena.appendChild(b); b.addEventListener("animationend", () => b.remove(), { once: true }); setTimeout(() => b.remove(), 2400);
     SND.play("sup");
@@ -977,7 +978,7 @@
       case "atk": retrig(wrap, "lunge"); break;
       case "dmg": {
         const big = o.crit || o.heavy;
-        if (!o.sup) {
+        {
           const kind = o.status ? (["poison", "burn", "bleed"].includes(o.status) ? o.status : "poison") : o.pct ? "pct" : o.pierce ? "pierce" : o.crit ? "crit" : "normal";
           number(u, ev.v, kind, o.status ? esc(String(o.status).toUpperCase()) : kind === "crit" ? "CRIT!" : kind === "pierce" ? "PIERCE" : o.reflect ? "REFLECT" : "");
           if (o.status) statusFx(u, kind, false);
@@ -986,7 +987,7 @@
         if (wrap) { retrig(wrap, big ? "shake-big" : "shake"); if (big) { retrig($(".bt-flash", wrap), "go"); sparks(u); } }
         setNums(u); break; }
       case "splash": splash(u, ev.v); break;
-      case "sup": supBanner(u, ev.v); break;
+      case "sup": supBanner(u); break;
       case "heal": number(u, ev.v, "heal", o.src === "revive" ? "REVIVE" : ""); setNums(u); SND.play("heal"); break;
       case "buff": arrows(u); setNums(u); SND.play("buff"); break;
       case "shout": { const k = o.k || "skill"; if (!s) break; spawn(u, esc(ev.v), "bt-shout " + k, `--y:${SHOUT_Y[k] || "16%"}`); if (k === "debuff") { SND.play("debuff"); setNums(u); } else if (k !== "heal") SND.play("shout"); break; }
@@ -1004,6 +1005,19 @@
     s.wrap.parentNode.appendChild(sk);
     SND.play("die"); drawBench(); await wait(620 * F.k);
   }
+  // one step's events: a support's extra damage joins the hit it follows (5B + echo 5B = one "10B") · heals on the same card
+  // in the same step = one number (owner 2026-11-05 "แสดงค่ารวม")
+  function mergeEvs(evs) {
+    const out = [];
+    for (const e of evs) {
+      const o = e.o || {};
+      if (e.t === "dmg" && o.sup) { const j = findLast(out, (x) => x.t === "dmg" && x.u === e.u && !(x.o || {}).status); if (j) { j.v += e.v; continue; } }
+      if (e.t === "heal" && o.src !== "revive") { const j = findLast(out, (x) => x.t === "heal" && x.u === e.u && (x.o || {}).src !== "revive"); if (j) { j.v += e.v; continue; } }
+      out.push(e);
+    }
+    return out;
+  }
+  function findLast(a, f) { for (let i = a.length - 1; i >= 0; i--) if (f(a[i])) return a[i]; return null; }
   // a wait that stops while the End dialog is open
   async function wait(ms) { await sleep(ms); while (F.paused) await sleep(120); }
   async function startFight(mode) {
@@ -1020,11 +1034,11 @@
     $("#bt-team-b").textContent = mode === "boss" ? "Boss" : "Enemy team";
     drawBench(); drawSlot(b.front("a"), true); drawSlot(b.front("b"), true); SND.play("enter");
     await wait(500 * F.k); if (my !== F.token) return;
-    b.start(); F.started = true; for (const e of queue.splice(0)) showEv(e);
+    b.start(); F.started = true; for (const e of mergeEvs(queue.splice(0))) showEv(e);
     refresh(); drawBench();
     await wait(450 * F.k);
     while (my === F.token) {
-      const done = b.step(), evs = queue.splice(0), t0 = performance.now();
+      const done = b.step(), evs = mergeEvs(queue.splice(0)), t0 = performance.now();
       for (const ev of evs) {
         if (my !== F.token) return;
         if (ev.t === "atk") { showEv(ev); await wait(190 * F.k); continue; }
