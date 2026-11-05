@@ -2458,3 +2458,12 @@
 - **ทดสอบ (Chromium + Playwright):** (1) หน้า Support โหลด 20 ใบ ไม่มี error / 404 (2) ข้อความที่ระดับ Godly ของ 10 ใบตรงรูปครอบทุกตัวอักษร 10/10 (ข้อความหลัก) + บรรทัด Mutation ตรง 9/10 (+32 ×2 · +16 ×3 · +40 ×4 · Eternal Wish Dragon +40 ที่รูปครอบไม่มี) (3) ข้อความ Normal แสดงค่า Normal ถูกต้องทั้ง 10 ใบ (4) ข้อความจบก่อนขอบล่าง 0.793–0.849 (Normal) / 0.822–0.846 (Godly) ของการ์ด เหมือนรอบ 1 ไม่ทับ SUPPORT (5) screenshot หน้า Support ดูตา: รูปครบ 20 ใบ
 - **ไม่ได้ทำ:** ไม่จัด Tier / ไม่แก้ `scores` · ไม่แตะโค้ด / CSS / `data/battle.json` / `tools/`
 - **ไฟล์:** `data/support.json` · `data/pending/support.json` · `data/pool.json` · `images/support/art/` + `art/thumb/` (10 ใบใหม่) · `inbox/redraw/` (ลบ `flower-healer-captain.webp` + `text.json`) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 🛠 แก้ Support 2 ใบให้ตรงเกม: Wish Granter + Angel Attendant (`?v=115` → `116`)
+- **ที่มา:** เจ้าของแนบรูปเกม 18 รูป (2 ใบ × Normal…Godly) บอกว่าไม่ตรงเว็บ
+- **Wish Granter:** เว็บเขียน "comes back once with 100% HP" ตายตัว แต่เกมโตตามระดับ 35 → 100 (เส้นตรง ตัน 100 แบบ `{n}% HP` เดิม) · heal 2 → 6 ตรงอยู่แล้ว → `vals [2, 35]` · `{1}` = HP · battle `reviveChance.v "$1"` · deck_sim `revive=(1.0, v[1])`
+- **Angel Attendant:** ข้อมูลเดิม `[29, 12.43, 12.43]` (ถอยจาก Godly แบบเส้นตรง) ผิด → Normal จริง 37 / 12.5 / 12.5 · หลบไม่เข้ากฎ chance เดิม (75/25 → Secret 64.8 แต่เกม 64.4) · fit ครบ 9 ระดับ: knee 60 room 30 (ช่วงที่ตรง 59.9–60 / 29.9–30.2) → เพิ่ม `effect.room` · ดาเมจ/HP Godly 37.5 → เกม 37.3 = knee 35 (room 17.5 อัตโนมัติ) เหมือน Nine Tails Fox
+- **Mutation:** +3 / 5 / 8 / 13 / 18 / 25 / 33 / 40 ตรงตาราง MUT ทั้ง 2 ใบ (ไม่ต้องแก้)
+- **ทดสอบ (Chromium + Playwright):** `CBI.supText` ทั้ง 9 ระดับ × 2 ใบ = รูปเกม 18/18 (ต่างแค่ Angel Divine เกม "25.0%" เว็บ "25%") · `deck_sim.sup_val` ได้ค่าเดียวกัน · หน้า `#support/wish-granter` + `#support/angel-attendant` ไม่มี error
+- **ไม่ได้ทำ:** ไม่แก้ `scores` / `tier` (ค่าเก่า → งาน B)
+- **ไฟล์:** `index.html` · `js/app.js` · `data/support.json` · `data/pool.json` · `data/battle.json` · `tools/battle_skills.py` · `tools/deck_sim.py` · `PROGRESS.md` · `HISTORY.md`

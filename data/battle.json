@@ -481,7 +481,7 @@
     "dark-king-coach": { "counter": "$0", "sure": 1 },
     "geass-strategist": { "confuse": { "p": "$0" } },
     "great-spirit-cat": { "stun": { "p": "$0", "turns": 1, "lose": 1, "kind": "Freeze" }, "vsFrozen": "1+$1" },
-    "wish-granter": { "reviveChance": { "p": 1, "v": 1 }, "regen": "$0", "todo": ["blocks the first 2 debuffs that would hit it each fight"] },
+    "wish-granter": { "reviveChance": { "p": 1, "v": "$1" }, "regen": "$0", "todo": ["blocks the first 2 debuffs that would hit it each fight"] },
     "serpent-sin-mage": { "dr": "$0", "todo": ["the first 3 debuffs that would hit it each fight are blocked"] },
     "slug-princess-hokage": { "lowHeal": { "under": 0.3, "v": "$0" } },
     "sweet-tooth-detective": { "weakenHit": { "p": 1, "v": "$0", "n": 4 } },

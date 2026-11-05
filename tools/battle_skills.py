@@ -176,7 +176,7 @@ SUPPORT = {
     "zero-gravity-hero": {"stun": {"p": "$0", "turns": 1, "lose": 1, "kind": "Stun"}},
     "half-elf-ice-mage": {"stun": {"p": "$0", "turns": 1, "lose": 1, "kind": "Freeze"}},
     "great-spirit-cat": {"stun": {"p": "$0", "turns": 1, "lose": 1, "kind": "Freeze"}, "vsFrozen": "1+$1"},   # "does {1}% more damage to frozen enemies" (on top of the rule's 25% for any frozen enemy)
-    "wish-granter": {"reviveChance": {"p": 1, "v": 1}, "regen": "$0", "todo": ["blocks the first 2 debuffs that would hit it each fight"]},
+    "wish-granter": {"reviveChance": {"p": 1, "v": "$1"}, "regen": "$0", "todo": ["blocks the first 2 debuffs that would hit it each fight"]},
     "flower-hand-scholar": {"splash": "$0", "stun": {"p": "$1", "turns": 1, "lose": 1, "kind": "Stun"}},
     "master-spy-father": {"crit": ["$0", 2]},
     "hawks-eye-sniper": {"crit": ["$0", 2]},
