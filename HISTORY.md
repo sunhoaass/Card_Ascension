@@ -2330,3 +2330,9 @@
 - **ทำ (`css/battle.css`):** `--hs` ตามจอ (ตาราง PROGRESS) · แนวนอน `--cw` = max(เหนือกล่องทีม, ระหว่างกล่องทีมเหนือปุ่ม) ไม่มีเพดาน · `--top` = แถบบน + แถวดีบัฟ · `--vw/--vh` หาร `--zoom` (index.html W3 zoom จอ > 1920) · กล่องทีมหัวบนรูปล่างทุกจอ + แนวนอนกว้าง `--tw` · หัวกล่องตัดบรรทัดได้ · ดีบัฟ/แบนเนอร์ Support โตตาม `--hs` · แนวนอนแถวดีบัฟกว้างเกินการ์ด 14% ต่อข้าง
 - **ผล:** การ์ด 568×320 82→118 · 667×375 125→160 · 1024×768 184→389 · 1920×1080 300→576 · 4K = 1920 × zoom 2 · 35 จอผ่านหมด (4K ทับเฉพาะตอนการ์ดเด้งเข้า = อนิเมชั่น)
 - **ไฟล์:** `index.html` · `css/battle.css` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 🎴 Battle: Support ขึ้นครั้งเดียว + ค่ารวมในเลขเดียว (`?v=111`)
+- **เจ้าของ:** "การ์ด support ที่ทำงานทุกเทิร์นให้แสดงแค่ 1 ครั้งพอ … เพิ่มดาเมจ, HP … ให้ไปบวกไปเลย แสดงค่ารวม เช่น ตี 5B support เด้ง x2 รวมเป็น 10B … support แสดงการ์ด ชื่อ ชื่อสกิลก็พอ"
+- **ทำ (`js/battle.js`):** `Battle.supOn(u)` แทน `st.sup++` ทุกจุด (echo · dodge · mark · onHitAtk · hitHeal · lifesteal · lucky · teamHeal) → event `sup` ครั้งแรกต่อการ์ด (`u.used.supShown`) · echo ไม่ส่งตัวเลขในแบนเนอร์แล้ว · `mergeEvs()` รวม event ในก้าวเดียว: `dmg` ของ Support บวกเข้า `dmg` ก่อนหน้าบนการ์ดเดียวกัน (ไม่รวมกับพิษ/ไฟ) · `heal` บนการ์ดเดียวกันรวมเป็นเลขเดียว (ยกเว้น revive) · teamHeal เลิกตะโกนชื่อสกิลทุกเทิร์น · `css/battle.css` ลบ `.bt-sp b`
+- **ทดสอบ (Playwright 412×915 · Guild Boss · Support Spirit Wave Master + ฮีล 3 ใบ · 3x):** แบนเนอร์ขึ้น 1 ครั้งทั้งไฟต์ ("SPIRIT WAVE MASTER | SPIRIT WAVE ORB" ไม่มีเลข) · เลขดาเมจบนบอสเป็นค่ารวม · ไม่มี error
+- **ไฟล์:** `index.html` · `js/battle.js` · `css/battle.css` · `PROGRESS.md` · `HISTORY.md`
