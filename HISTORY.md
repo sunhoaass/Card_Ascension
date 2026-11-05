@@ -2385,3 +2385,5 @@
 - แท็บ/หัวจอสู้/หน้าผล/รูปบันทึก/ข้อความยืนยัน End = "Custom" · route + key เดิม · โหมดที่ไม่ใช่ boss: ซ่อน " · Round" + `#bt-round` (class `bt-fight--noround`), event `round` ไม่อัปเดตตัวเลข, หน้าผลตัดช่อง Rounds (`.bt-res__kv` เป็น `grid-auto-flow: column` → 2 หรือ 3 ช่องเต็มแถว), ข้อความผลตัด "in round N"
 - **ทดสอบ (Chromium 400×860):** แท็บขึ้น Custom · Watch one fight: หัวจอขึ้น "CUSTOM" ไม่มีเลขรอบ · หน้าผล 2 ช่อง (Damage dealt · Cards left) · Guild Boss ยังขึ้น "Stage 0 · Round 2 / 30" · ไม่มี error ใน console
 - **ไฟล์:** `index.html` · `js/battle.js` · `css/battle.css` · `PROGRESS.md` · `HISTORY.md`
+
+**2026-11-05 · Battle Custom: กติกาในกรอบ Win chance ไม่บอกเลขรอบ** · `index.html` เท่านั้น (ไม่มี CSS/JS = ไม่เปลี่ยน `?v=`): "You attack first, then they hit back" · "No team wiped at the end: …" · ไฟล์: `index.html` · `PROGRESS.md` · `HISTORY.md`

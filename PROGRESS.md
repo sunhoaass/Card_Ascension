@@ -40,7 +40,7 @@
 ## ▶️ ขั้นถัดไป (เจ้าของ copy ไปวางในแชทใหม่)
 **⚔️ Battle: แท็บ Arena → "Custom" + ไม่แสดงจำนวนรอบนอก Guild Boss** (เจ้าของสั่ง 2026-11-05 · `?v=112` · branch `claude/arena-custom-naming-u97mhj` · งานหน้าตา = **รอเจ้าของดูก่อน merge** · ผล: HISTORY §9):
 - ชื่อที่เห็นบนเว็บเปลี่ยนเป็น **Custom** (แท็บ · หัวจอสู้ · หน้าผล · รูปบันทึก "CUSTOM BATTLE") · **route `#battle/arena`, `data-bt-tab="arena"`, key `cbi:battle` ไม่เปลี่ยน** (กฎข้อ 11)
-- **กติกา:** จำนวนรอบแสดงเฉพาะ **Guild Boss** · Custom และโหมดที่จะเพิ่มทีหลัง (`mode !== "boss"`) = หัวจอสู้โชว์แค่ชื่อโหมด (class `bt-fight--noround`) · หน้าผลไม่มีช่อง Rounds · ข้อความผลไม่บอก "in round N" · engine ยังจำกัด 30 รอบเหมือนเดิม (กติกาในกรอบ Win chance ยังเขียน "max 30 rounds")
+- **กติกา:** จำนวนรอบแสดงเฉพาะ **Guild Boss** · Custom และโหมดที่จะเพิ่มทีหลัง (`mode !== "boss"`) = หัวจอสู้โชว์แค่ชื่อโหมด (class `bt-fight--noround`) · หน้าผลไม่มีช่อง Rounds · ข้อความผลไม่บอก "in round N" · engine ยังจำกัด 30 รอบเหมือนเดิม (กติกาในกรอบ Win chance ไม่บอกเลขรอบแล้ว · เจ้าของสั่ง 2026-11-05)
 - **อัปไฟล์:** `index.html` · `js/battle.js` · `css/battle.css` · `PROGRESS.md` · `HISTORY.md`
 
 **🖼 รอบรูปว่าง 6: การ์ด 20 ใบ → เว็บมีการ์ด 120 ใบ** (เจ้าของแนบรูป 20 รูป 2026-11-05 · ไม่เปลี่ยน `?v=` (ยัง `111`) · branch `ccr-ef666beb-lhm8ip` · merge เองตามกฎข้อ 12 · ผล: HISTORY §9):
