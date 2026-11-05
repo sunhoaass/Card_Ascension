@@ -489,6 +489,7 @@
       const bu = this.boss ? bossUnit() : null;
       this.b = this.boss ? (bu ? [bu] : []) : mkTeamUnits(bKey, "b");
       this.round = 1; this.turn = "a"; this.done = false; this.why = "";
+      this.wkUsed = { a: 0, b: 0 }; this.wkM = { a: 1, b: 1 };   // "starts with X% less damage": used once per side · the ATK × on each side
     }
     ev(t, u, v, o) { if (this.E) this.E({ t, u, v, o }); }
     // a support works: counted every time · its banner (picture + name + skill) only the 1st time for this card (owner 2026-11-05)
@@ -497,11 +498,8 @@
     alive(side) { return this[side].filter((u) => u.alive).length; }
     proc(u, name, ok, p) { const r = u.st.procs[name] || (u.st.procs[name] = { n: 0, exp: 0 }); if (ok) r.n++; r.exp += p; }
     start() {
-      for (const side of ["a", "b"]) {
-        const foe = side === "a" ? "b" : "a";
-        // "every enemy card starts with X% less damage": the enemy team's ATK × weaken (the clip: × 0.93)
-        for (const u of this[side]) if (u.k.weaken) { for (const f of this[foe]) { f.atk *= u.k.weaken; f.atk0 = f.atk; f.weakM = (f.weakM || 1) * u.k.weaken; } this.ev("shout", this.front(foe), "-" + ((1 - u.k.weaken) * 100).toFixed(1) + "% DMG", { k: "debuff" }); }
-      }
+      // a skill that says it works for the WHOLE team (weakenAll · card or support): from any slot, at the start
+      for (const side of ["a", "b"]) for (const u of this[side]) if (u.k.weakenAll) this.weakenTeam(side === "a" ? "b" : "a", u.k.weakenAll);
       // the ATK each card starts the fight with (the fight card's "DMG +x%" chip counts from it · display only)
       for (const side of ["a", "b"]) for (const u of this[side]) u.atkS = u.atk;
       for (const side of ["a", "b"]) { const f = this.front(side); if (f) this.onEnter(f); }
@@ -510,11 +508,20 @@
     // a card comes in: "when it comes in" effects (stun the card in front · hit it for x% of its max HP)
     onEnter(u) {
       const d = this.front(u.side === "a" ? "b" : "a"); if (!d || !u.alive) return;
+      // "every enemy card starts with X% less damage" (owner 2026-11-05): only when the card comes in, once per fight per
+      // side (the 1st one in counts · a later card's weaken does nothing) · every enemy card, for the whole fight, can't be removed
+      if (u.k.weaken && !this.wkUsed[u.side]) { this.wkUsed[u.side] = 1; this.weakenTeam(d.side, u.k.weaken); }
       const es = typeof u.k.entryStun === "object" ? u.k.entryStun : u.k.entryStun ? { p: 1, turns: u.k.entryStun } : null;
       if (es && !this.immune(d, "cc")) { const ok = es.p >= 1 || this.R() < es.p; if (es.p < 1) this.proc(u, "Bind", ok, es.p); if (ok) { d.cc = { kind: "Stun", turns: es.turns, lose: 1 }; this.ev("shout", d, "STUN!", { k: "debuff" }); } }
       if (u.k.entryHit && !d.inf) { const v = Math.max(1, Math.round(d.max * u.k.entryHit)); u.st.dmg += v; this.take(d, v, u); this.ev("dmg", d, v, { pct: true }); }
     }
     enter(side) { const f = this.front(side); if (f) { this.ev("enter", f); this.onEnter(f); } }
+    // the whole team's ATK × w (the clip: × 0.93) · the cards on the bench and any card that joins later too (wkM)
+    weakenTeam(side, w) {
+      this.wkM[side] *= w;
+      for (const f of this[side]) { f.atk *= w; f.atk0 *= w; if (f.atkS) f.atkS *= w; f.weakM = (f.weakM || 1) * w; }
+      const fr = this.front(side); if (fr) this.ev("shout", fr, "-" + ((1 - w) * 100).toFixed(1) + "% DMG", { k: "debuff" });
+    }
     // can't be stunned / frozen / paralyzed (noCC) · can't be confused, sealed or weakened either (noDebuff) · statuses (noDot: true | ["burn"])
     immune(u, what, kind) {
       if (what === "cc") return !!(u.k.noCC || u.k.noDebuff);
@@ -673,6 +680,7 @@
         if (killer.k.arise && !killer.used.arise && !u.shadow) {
           killer.used.arise = 1;
           const t = this[killer.side], sh = mkUnit({ id: u.id, x: u.x, side: killer.side, idx: t.length, slot: -1, rar: u.rar, trait: null, grade: 0, sup: null, b: null, atk: u.atk0 * killer.k.arise, hp: u.max * killer.k.arise });
+          const wm = this.wkM[killer.side]; if (wm < 1) { sh.atk *= wm; sh.atk0 *= wm; sh.weakM = wm; }
           sh.shadow = true; sh.name = u.name + " (shadow)"; sh.atkS = sh.atk; t.push(sh);
           this.ev("shout", killer, "ARISE!", { k: "skill", y: "40%" }); this.ev("bench", killer);
         }
