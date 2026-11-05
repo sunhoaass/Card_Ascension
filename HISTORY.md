@@ -2317,3 +2317,9 @@
 - **ผล:** การ์ด 400/400 · Support 89/100 (+11 บัฟล้วน) · todo การ์ด 59 ใบ (66 ประโยค) · Support 11 ใบ · field ที่ใช้มากสุด: dodge 84 · behind 73 · dot 68 · dr 62 · ignore 60 · regen 50 · double 48 · stun/freeze/paralyze 40
 - **ทดสอบ (Playwright · ใส่การ์ด pending ใน state ชั่วคราว):** 1,289 ไฟต์ (ทุกการ์ดเป็นใบหน้า × 3 seed + ทุก Support กับบอส) ไม่มี error · ไม่มี HP/ATK เป็น NaN/∞ · เทียบ main กับใหม่ 380 ไฟต์การ์ดเว็บ 20 ใบ seed เดียวกัน: ต่าง 1 ไฟต์ (Sun Breath Origin vs Moon Breath Swordsman: กลุ่ม Demon เพิ่ม Moon Breath) · หน้าต่อสู้จริง Clown Court Mage + Witch of Envy (Geass) vs Storm Dragon + Colossal Strategist + Serpent Pillar (Capsule Corp): ป้าย SEALED / ไฟ / ATK − / SHIELD ขึ้น · ระเบิดตอนตาย = เลขขาว · ไม่มี error ใน console
 - **ไฟล์:** `index.html` · `js/battle.js` · `css/battle.css` · `css/tokens.css` · `data/battle.json` · `tools/battle_skills.py` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 📐 Battle Stage: กล่องทีมเท่ากัน + ดีบัฟกลางการ์ด (`?v=109`)
+- **เจ้าของ:** "แก้ layout ครับ ให้เท่ากันและ ATK บนหัวการ์ดให้อยู่ตรงกลาง" (แคปมือถือแนวตั้ง: กล่อง YOUR TEAM กว้างกว่ากล่อง BOSS · ป้าย ATK −7% ชิดซ้าย)
+- **ทำ (`css/battle.css`):** `.bt-dbs` `justify-content: center` (ลบกฎชิดขวาของ `#bt-slot-b`) · แนวตั้ง: `.bt-team` กว้าง `--cw` ตรงใต้การ์ด (`left/right: 50% − cw × (1 + gr/2)`) · `--th` ย่อตามความกว้าง (4 รูปพอดี) · ทีม 1 ใบ (`is-solo`) ใช้แบบหัวบน-รูปล่างเหมือนทีมเต็ม → สูงเท่ากัน · `?v=108 → 109`
+- **ทดสอบ (Playwright 412×915 + 915×412):** กล่อง 2 ฝั่งกว้าง/สูงเท่ากันตรงแนวการ์ด · ดีบัฟกลางการ์ดทั้ง 2 ใบ · แนวนอนไม่เปลี่ยน
+- **ไฟล์:** `index.html` · `css/battle.css` · `PROGRESS.md` · `HISTORY.md`

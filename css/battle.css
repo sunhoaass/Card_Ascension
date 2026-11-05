@@ -275,8 +275,7 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .btc__warn { left: 8cqw; right: 8cqw; top: 28cqw; padding: 2cqw; border-radius: 3cqw; text-align: center; font: 400 4.6cqw/1.15 "Russo One", sans-serif; color: var(--bt-warn-ink); background: var(--bt-warn-card); box-shadow: 0 0 0 .5cqw var(--bt-warn-ring); }
 
 /* debuffs: above the card, outside it · icon + name + stacks + turns · a colour per kind */
-.bt-dbs { position: absolute; left: -4px; right: -4px; bottom: calc(100% + 6px); display: flex; flex-wrap: wrap-reverse; justify-content: flex-start; gap: 4px; pointer-events: none; }
-#bt-slot-b .bt-dbs { justify-content: flex-end; }   /* each card's debuffs keep to its outer side: a 2nd row never reaches the round panel in the middle */
+.bt-dbs { position: absolute; left: -4px; right: -4px; bottom: calc(100% + 6px); display: flex; flex-wrap: wrap-reverse; justify-content: center; gap: 4px; pointer-events: none; }   /* centred over the card (owner 2026-11-05) */
 .bt-db { display: inline-flex; align-items: center; gap: 4px; height: min(calc(var(--cw) * .12), 28px); padding: 0 6px 0 4px; border-radius: 99px; font: 400 min(calc(var(--cw) * .07), 15px)/1 "Russo One", sans-serif; letter-spacing: .02em; white-space: nowrap;
   color: var(--bt-ng-ink); background: var(--bg); box-shadow: 0 0 0 2px var(--line), 0 0 10px var(--glow, transparent); }
 .bt-db svg { width: 1.2em; height: 1.2em; flex: none; }
@@ -419,7 +418,11 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-cbtn--end { background: var(--bt-ng-end); } .bt-cbtn--skip { background: var(--bt-ng-skip); }
 @media (orientation: portrait) {
   .bt-ft__rw { display: none; }   /* "STAGE 1096" + the round · no room for the word on a phone held upright */
-  .bt-team { top: calc(var(--top) + var(--cw) * 4 / 3 + 18px); bottom: auto; max-width: calc(50% - 15px); }
+  /* both boxes = the card's width, under it, the same height (owner 2026-11-05 "ให้เท่ากัน") · header on top, pictures under it, also for 1 card */
+  .bt-team { top: calc(var(--top) + var(--cw) * 4 / 3 + 18px); bottom: auto; width: var(--cw); box-sizing: border-box; align-content: start; --th: min(36px, calc((var(--cw) - 28px) / 4)); }
+  .bt-team--a { left: calc(50% - var(--cw) * (1 + var(--gr) / 2)); } .bt-team--b { right: calc(50% - var(--cw) * (1 + var(--gr) / 2)); }
+  .bt-team.is-solo { grid-template-columns: none; align-items: stretch; gap: 5px; }
+  .bt-team.is-solo .bt-team__h { order: 0; flex-direction: row; align-items: baseline; gap: 10px; }
   .bt-ctl { left: 12px; right: 12px; transform: none; }
   .bt-ctl .bt-cbtn { flex: 1; }
 }
