@@ -192,18 +192,25 @@ html.bt-fighting { overflow: hidden; }
 html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-fight { position: fixed; inset: 0; z-index: 60; overflow: hidden; color: var(--bt-ng-ink); font-family: "Russo One", var(--gc-font-num);
   --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px); --sal: env(safe-area-inset-left, 0px); --sar: env(safe-area-inset-right, 0px);
-  --gr: .08; --hs: 1; --th: 36px;
-  --cw: min(calc((100vw - 24px) / 2.08), calc((100vh - 330px) * .75));
-  --cw: min(calc((100vw - 24px) / 2.08), calc((100dvh - 330px) * .75));
+  --vw: calc(100vw / var(--zoom, 1)); --vh: calc(100vh / var(--zoom, 1)); --vh: calc(100dvh / var(--zoom, 1));   /* screens > 1920px: the page is zoomed (index.html W3) */
+  --gr: .08; --hs: 1; --th: min(calc(36px * var(--hs)), calc((var(--cw) - 28px) / 4));
+  --cw: min(calc((var(--vw) - 24px) / 2.08), calc((var(--vh) - 330px * var(--hs)) * .75));
   --top: calc(50% - var(--cw) * .84); background: var(--bt-ng-sky); }
+/* sizes checked on 35 screens (owner 2026-11-05 "เช็คจอทุกเครื่อง"): --hs = the size of the bar, boxes and buttons */
+@media (orientation: portrait) and (max-width: 340px) { .bt-fight { --hs: .74; } }   /* iPhone SE 1st gen: the speed buttons fit */
+@media (orientation: portrait) and (max-width: 300px) { .bt-fight { --hs: .66; } }   /* Galaxy Fold cover screen */
+@media (orientation: portrait) and (min-width: 600px) and (min-height: 800px) { .bt-fight { --hs: 1.35; --th: min(64px, calc((var(--cw) - 28px) / 4)); } }   /* tablets held upright */
+/* landscape: the cards take what is left between the top bar (+ a debuff row) and the bottom row, two ways, the bigger wins:
+   A = above the team boxes · B = between the team boxes (corners), above End / Skip · --tw / --tbh = a team box's size */
 @media (orientation: landscape) {
-  .bt-fight { --gr: .3; --hs: .9; --th: 34px; --top: calc(84px + var(--sat));
-    --cw: min(calc((100vh - 150px) * .75), 300px, calc((100vw - 380px) / 2.3));
-    --cw: min(calc((100dvh - 150px - var(--sat) - var(--sab)) * .75), 300px, calc((100vw - 380px) / 2.3)); }
+  .bt-fight { --gr: .3; --hs: .9; --th: 34px;
+    --top: calc(24px + 78px * var(--hs) + var(--sat));
+    --tw: calc(var(--th) * 4 + 32px); --tbh: calc(13px * var(--hs) + var(--th) * 4 / 3 + 23px);
+    --cw: min(max(calc((var(--vh) - var(--top) - var(--tbh) - 18px - var(--sab)) * .75), min(calc((var(--vh) - var(--top) - 46px * var(--hs) - 22px - var(--sab)) * .75), calc((var(--vw) - var(--tw) * 2 - 44px - var(--sal) - var(--sar)) / 2.3))), calc((var(--vw) - 40px) / 2.3)); }
 }
-@media (orientation: landscape) and (min-width: 1000px) and (min-height: 600px) {
-  .bt-fight { --hs: 1.2; --th: 56px; --top: 116px; --cw: min(calc((100vh - 290px) * .75), 300px, calc((100vw - 600px) / 2.3)); }
-}
+@media (orientation: landscape) and (max-height: 440px) { .bt-fight { --hs: .72; --th: 24px; } }   /* phones on their side */
+@media (orientation: landscape) and (min-width: 1000px) and (min-height: 600px) { .bt-fight { --hs: 1.2; --th: 56px; } }
+@media (orientation: landscape) and (min-width: 1600px) and (min-height: 1000px) { .bt-fight { --hs: 1.6; --th: 76px; } }
 .bt-fight[hidden] { display: none; }
 .bt-ft__bg, .bt-ft__bg::before, .bt-ft__bg::after { position: absolute; inset: 0; pointer-events: none; }
 .bt-ft__bg::before { content: ""; top: 55%; background: repeating-linear-gradient(90deg, var(--bt-ng-grid-a) 0 2px, transparent 2px 60px), repeating-linear-gradient(0deg, var(--bt-ng-grid-b) 0 2px, transparent 2px 34px);
@@ -275,9 +282,9 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .btc__warn { left: 8cqw; right: 8cqw; top: 28cqw; padding: 2cqw; border-radius: 3cqw; text-align: center; font: 400 4.6cqw/1.15 "Russo One", sans-serif; color: var(--bt-warn-ink); background: var(--bt-warn-card); box-shadow: 0 0 0 .5cqw var(--bt-warn-ring); }
 
 /* debuffs: above the card, outside it · icon + name + stacks + turns · a colour per kind */
-.bt-dbs { position: absolute; left: -4px; right: -4px; bottom: calc(100% + 6px); display: flex; flex-wrap: wrap-reverse; justify-content: flex-start; gap: 4px; pointer-events: none; }
-#bt-slot-b .bt-dbs { justify-content: flex-end; }   /* each card's debuffs keep to its outer side: a 2nd row never reaches the round panel in the middle */
-.bt-db { display: inline-flex; align-items: center; gap: 4px; height: min(calc(var(--cw) * .12), 28px); padding: 0 6px 0 4px; border-radius: 99px; font: 400 min(calc(var(--cw) * .07), 15px)/1 "Russo One", sans-serif; letter-spacing: .02em; white-space: nowrap;
+.bt-dbs { position: absolute; left: -4px; right: -4px; bottom: calc(100% + 6px); display: flex; flex-wrap: wrap-reverse; justify-content: center; gap: 4px; pointer-events: none; }   /* centred over the card (owner 2026-11-05) */
+@media (orientation: landscape) { .bt-dbs { left: calc(var(--cw) * -.14); right: calc(var(--cw) * -.14); } }   /* the gap is wide: debuffs may use it, one row more often */
+.bt-db { display: inline-flex; align-items: center; gap: 4px; height: min(calc(var(--cw) * .12), calc(28px * var(--hs))); padding: 0 6px 0 4px; border-radius: 99px; font: 400 min(calc(var(--cw) * .07), calc(15px * var(--hs)))/1 "Russo One", sans-serif; letter-spacing: .02em; white-space: nowrap;
   color: var(--bt-ng-ink); background: var(--bg); box-shadow: 0 0 0 2px var(--line), 0 0 10px var(--glow, transparent); }
 .bt-db svg { width: 1.2em; height: 1.2em; flex: none; }
 .bt-db u { text-decoration: none; padding: 2px 5px; border-radius: 99px; background: var(--bt-db-turns); font-family: var(--gc-font-num); font-weight: 700; }
@@ -384,11 +391,11 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-sp { position: absolute; z-index: 15; top: calc(var(--cw) * .42); display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 14px; background: var(--bt-sp-bg);
   box-shadow: 0 0 0 2px var(--bt-d-sup), 0 0 22px var(--bt-sp-glow); pointer-events: none; animation: bt-sp calc(1500ms * var(--bt-k)) var(--ease) forwards; }
 .bt-sp--a { left: calc(var(--cw) * .35); --from: -40px; } .bt-sp--b { right: calc(var(--cw) * .35); --from: 40px; }
-.bt-sp img { width: min(calc(var(--cw) * .26), 70px); aspect-ratio: var(--card-ratio); object-fit: cover; border-radius: 8px; box-shadow: 0 0 0 2px var(--bt-ng-ink); }
+.bt-sp img { width: min(calc(var(--cw) * .26), calc(70px * var(--hs))); aspect-ratio: var(--card-ratio); object-fit: cover; border-radius: 8px; box-shadow: 0 0 0 2px var(--bt-ng-ink); }
 .bt-sp div { display: grid; gap: 3px; }
-.bt-sp small { font: 600 min(calc(var(--cw) * .055), 13px)/1 var(--gc-font-num); letter-spacing: .08em; color: var(--bt-sp-small); text-transform: uppercase; white-space: nowrap; }
-.bt-sp strong { font: 400 min(calc(var(--cw) * .085), 22px)/1 "Russo One", sans-serif; letter-spacing: .02em; color: var(--bt-d-sup); white-space: nowrap; }
-.bt-sp b { font: 700 min(calc(var(--cw) * .13), 34px)/1 var(--gc-font-num); color: var(--bt-d-sup); paint-order: stroke fill; -webkit-text-stroke: 3px var(--bt-sp-line); }
+.bt-sp small { font: 600 min(calc(var(--cw) * .055), calc(13px * var(--hs)))/1 var(--gc-font-num); letter-spacing: .08em; color: var(--bt-sp-small); text-transform: uppercase; white-space: nowrap; }
+.bt-sp strong { font: 400 min(calc(var(--cw) * .085), calc(22px * var(--hs)))/1 "Russo One", sans-serif; letter-spacing: .02em; color: var(--bt-d-sup); white-space: nowrap; }
+.bt-sp b { font: 700 min(calc(var(--cw) * .13), calc(34px * var(--hs)))/1 var(--gc-font-num); color: var(--bt-d-sup); paint-order: stroke fill; -webkit-text-stroke: 3px var(--bt-sp-line); }
 @keyframes bt-sp { 0% { transform: translateX(var(--from)) scale(.8); opacity: 0; } 14% { transform: none; opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-20px); opacity: 0; } }
 
 /* team boxes: as wide as the team (1 card = a small box, no empty slots) · the front card glows · KO on the fallen */
@@ -397,8 +404,8 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-team__h { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; font: 400 calc(13px * var(--hs))/1 "Russo One", sans-serif; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
 .bt-team__h span { color: var(--bt-ng-mine); } .bt-team--b .bt-team__h span { color: var(--bt-ng-foe); }
 .bt-team__h b { font: 700 calc(13px * var(--hs))/1 var(--gc-font-num); }
-.bt-team.is-solo { grid-template-columns: auto auto; align-items: center; gap: 8px; }
-.bt-team.is-solo .bt-team__h { order: 2; flex-direction: column; align-items: flex-start; gap: 6px; }
+.bt-team { width: var(--tw, auto); box-sizing: border-box; align-content: start; }   /* landscape: both boxes the size of a team of 4 (owner 2026-11-05) */
+.bt-team__h { flex-wrap: wrap; row-gap: 3px; }
 .bt-ths { display: flex; gap: 4px; }
 .bt-th { position: relative; width: var(--th); aspect-ratio: var(--card-ratio); border-radius: 4px; overflow: visible; box-shadow: 0 0 0 1.5px var(--bt-wash-25); }
 .bt-th img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 4px; }
@@ -419,7 +426,9 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-cbtn--end { background: var(--bt-ng-end); } .bt-cbtn--skip { background: var(--bt-ng-skip); }
 @media (orientation: portrait) {
   .bt-ft__rw { display: none; }   /* "STAGE 1096" + the round · no room for the word on a phone held upright */
-  .bt-team { top: calc(var(--top) + var(--cw) * 4 / 3 + 18px); bottom: auto; max-width: calc(50% - 15px); }
+  /* both boxes = the card's width, under it, the same height (owner 2026-11-05 "ให้เท่ากัน") · header on top, pictures under it, also for 1 card */
+  .bt-team { top: calc(var(--top) + var(--cw) * 4 / 3 + 18px); bottom: auto; width: var(--cw); }
+  .bt-team--a { left: calc(50% - var(--cw) * (1 + var(--gr) / 2)); } .bt-team--b { right: calc(50% - var(--cw) * (1 + var(--gr) / 2)); }
   .bt-ctl { left: 12px; right: 12px; transform: none; }
   .bt-ctl .bt-cbtn { flex: 1; }
 }
