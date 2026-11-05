@@ -4244,40 +4244,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "blue-flame-son",
-    "name": "Blue Flame Son",
-    "series": "",
-    "image": "images/cards/blue-flame-son.webp",
-    "base": {
-      "atk": 13886,
-      "hp": 92576,
-      "def": 0,
-      "status": 0,
-      "odds": 432000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Kurikara: Blue Flames",
-      "desc": "Rin unseals his blue flames. Each hit adds 3 Burn stacks (2.5% of the enemy's max HP per turn each, up to 4, 3 turns). Can't be burned. Every hit sets the whole enemy deck on fire for 1 turn. Under 41% HP: +41% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "bomb-girl",
     "name": "Bomb Girl",
     "series": "",
@@ -4448,102 +4414,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "claw-boss-psychic",
-    "name": "Claw Boss Psychic",
-    "series": "",
-    "image": "images/cards/claw-boss-psychic.webp",
-    "base": {
-      "atk": 13572,
-      "hp": 90480,
-      "def": 0,
-      "status": 0,
-      "odds": 350000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Divine Tree",
-      "desc": "Toichiro's power grows. +8.2% damage every turn (up to 6 times). Every enemy card starts with 9.9% less damage. Every 2nd attack also hits the card behind for 35%."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 2.0,
-      "hp": 2.0,
-      "passive": 62,
-      "skill": 62,
-      "matchup": 0.0,
-      "team": 70,
-      "overall": 33.1
-    },
-    "tier": "Utility",
-    "updated": "2026-10-30",
-    "prevTier": "",
-    "beats": [],
-    "losesTo": [
-      "founding-titan",
-      "sword-saint",
-      "octopus-teacher",
-      "shadow-monarch",
-      "slime-demon-lord",
-      "quirk-thief-overlord",
-      "ant-king",
-      "one-punch-caped-hero",
-      "sun-breath-origin",
-      "soul-king-father",
-      "sun-god-captain",
-      "divergent-fist-vessel",
-      "golden-wind-boss",
-      "destroyer-god",
-      "storm-dragon",
-      "witch-of-envy",
-      "dragon-king-of-ruin",
-      "spiral-drill-king",
-      "ultra-instinct-saiyan",
-      "no-life-king",
-      "full-moon-demon-king",
-      "destroyer-dragonoid",
-      "dragon-god",
-      "dragon-emperor-monarch",
-      "primordial-butler-demon",
-      "moon-eye-ghost",
-      "atomic-shadow-lord",
-      "hypnosis-traitor",
-      "hollow-mask-reaper",
-      "pirate-king",
-      "beast-emperor",
-      "rabbit-goddess",
-      "homunculus-father",
-      "white-hawk-godhand",
-      "pumpkin-sun-pride",
-      "golden-gate-king",
-      "infinity-sorcerer",
-      "demon-god-of-flame",
-      "soul-magic-father",
-      "hero-number-one",
-      "made-in-heaven-priest",
-      "wood-god-hokage",
-      "monk-of-names",
-      "demon-progenitor",
-      "king-of-curses",
-      "control-devil",
-      "black-wizard-brother",
-      "undead-overlord-king"
-    ],
-    "utilGain": 11.0,
-    "team": {
-      "bestSupport": [
-        "guild-master-giant",
-        "charge-commander",
-        "eternal-wish-dragon"
-      ],
-      "position": "",
-      "bestWith": []
-    }
-  },
-  {
     "id": "colossal-strategist",
     "name": "Colossal Strategist",
     "series": "",
@@ -4674,102 +4544,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "crazy-diamond-pompadour",
-    "name": "Crazy Diamond Pompadour",
-    "series": "",
-    "image": "images/cards/crazy-diamond-pompadour.webp",
-    "base": {
-      "atk": 12428,
-      "hp": 82852,
-      "def": 0,
-      "status": 0,
-      "odds": 342000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Crazy Diamond",
-      "desc": "Josuke's Stand restores anything. While on the bench, heals the card in front 6% of its max HP every turn. Heals 5% of its max HP every turn. Ignores shields, dodges and barriers. 30% chance to attack twice."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 2.0,
-      "hp": 2.0,
-      "passive": 73,
-      "skill": 73,
-      "matchup": 0.0,
-      "team": 74,
-      "overall": 37.2
-    },
-    "tier": "Utility",
-    "updated": "2026-10-30",
-    "prevTier": "",
-    "beats": [],
-    "losesTo": [
-      "founding-titan",
-      "sword-saint",
-      "octopus-teacher",
-      "shadow-monarch",
-      "slime-demon-lord",
-      "quirk-thief-overlord",
-      "ant-king",
-      "one-punch-caped-hero",
-      "sun-breath-origin",
-      "soul-king-father",
-      "sun-god-captain",
-      "divergent-fist-vessel",
-      "golden-wind-boss",
-      "destroyer-god",
-      "storm-dragon",
-      "witch-of-envy",
-      "dragon-king-of-ruin",
-      "spiral-drill-king",
-      "ultra-instinct-saiyan",
-      "no-life-king",
-      "full-moon-demon-king",
-      "destroyer-dragonoid",
-      "dragon-god",
-      "dragon-emperor-monarch",
-      "primordial-butler-demon",
-      "moon-eye-ghost",
-      "atomic-shadow-lord",
-      "hypnosis-traitor",
-      "hollow-mask-reaper",
-      "pirate-king",
-      "beast-emperor",
-      "rabbit-goddess",
-      "homunculus-father",
-      "white-hawk-godhand",
-      "pumpkin-sun-pride",
-      "golden-gate-king",
-      "infinity-sorcerer",
-      "demon-god-of-flame",
-      "soul-magic-father",
-      "hero-number-one",
-      "made-in-heaven-priest",
-      "wood-god-hokage",
-      "monk-of-names",
-      "demon-progenitor",
-      "king-of-curses",
-      "control-devil",
-      "black-wizard-brother",
-      "undead-overlord-king"
-    ],
-    "utilGain": 66.7,
-    "team": {
-      "bestSupport": [
-        "guild-master-giant",
-        "charge-commander",
-        "eternal-wish-dragon"
-      ],
-      "position": "",
-      "bestWith": []
-    }
-  },
-  {
     "id": "crimson-spear-hound",
     "name": "Crimson Spear Hound",
     "series": "",
@@ -4820,40 +4594,6 @@
     "passive": {
       "name": "Dark Cloaked Dimension Slash",
       "desc": "Yami cuts through space. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 50%. Under 50% HP: +40% damage. 20% chance to crit for 1.8x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "disguise-assassin",
-    "name": "Disguise Assassin",
-    "series": "",
-    "image": "images/cards/disguise-assassin.webp",
-    "base": {
-      "atk": 13284,
-      "hp": 88558,
-      "def": 0,
-      "status": 0,
-      "odds": 393000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Disguise",
-      "desc": "Nagumo's disguises fool everyone. 35% chance to dodge each hit. Its first hit on each new enemy does 2.2x damage. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
     },
     "skill": {
       "name": "",
@@ -4940,40 +4680,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "dual-blade-gamer",
-    "name": "Dual Blade Gamer",
-    "series": "",
-    "image": "images/cards/dual-blade-gamer.webp",
-    "base": {
-      "atk": 14198,
-      "hp": 94654,
-      "def": 0,
-      "status": 0,
-      "odds": 452000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Starburst Stream",
-      "desc": "Kirito's dual blades. Always attacks twice (each hit does 0.8x damage). Every 3rd attack does 2x damage. Survives its first killing blow with 1 HP. 20% chance to dodge each hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "explosion-rival",
     "name": "Explosion Rival",
     "series": "",
@@ -4990,40 +4696,6 @@
     "passive": {
       "name": "Howitzer Impact",
       "desc": "Bakugo: Every 2nd attack also hits the card behind for 35%. Every 3rd attack does 2.32x damage. +5.3% damage every turn (up to 6 times). With Deku in the deck, both get +13% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "fairy-king-spear",
-    "name": "Fairy King Spear",
-    "series": "",
-    "image": "images/cards/fairy-king-spear.webp",
-    "base": {
-      "atk": 14065,
-      "hp": 93764,
-      "def": 0,
-      "status": 0,
-      "odds": 319000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Spirit Spear Chastiefol",
-      "desc": "King's Chastiefol splits into a hundred blades. 56% chance to attack twice (each hit does 0.75x damage). Every 2nd attack also hits the card behind for 35%. Blocks the first 2 hits completely."
     },
     "skill": {
       "name": "",
@@ -5092,40 +4764,6 @@
     "passive": {
       "name": "Fire Fist",
       "desc": "Ace: Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Once, takes the killing blow for Luffy."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "flame-colonel",
-    "name": "Flame Colonel",
-    "series": "",
-    "image": "images/cards/flame-colonel.webp",
-    "base": {
-      "atk": 13582,
-      "hp": 90544,
-      "def": 0,
-      "status": 0,
-      "odds": 412000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Flame Alchemy",
-      "desc": "Roy snaps. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Every 3rd attack does 2.2x damage. Can't be burned."
     },
     "skill": {
       "name": "",
@@ -5348,74 +4986,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "hamon-trickster",
-    "name": "Hamon Trickster",
-    "series": "",
-    "image": "images/cards/hamon-trickster.webp",
-    "base": {
-      "atk": 12414,
-      "hp": 82758,
-      "def": 0,
-      "status": 0,
-      "odds": 334000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Your Next Line Is...",
-      "desc": "Joseph always has a trick. 35% chance to dodge each hit. +50% damage against Demon cards. Survives its first killing blow with 1 HP. Each hit: 60% chance to do 1.8x damage, otherwise 0.8x."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "hollow-ninja",
-    "name": "Hollow Ninja",
-    "series": "",
-    "image": "images/cards/hollow-ninja.webp",
-    "base": {
-      "atk": 12849,
-      "hp": 85658,
-      "def": 0,
-      "status": 0,
-      "odds": 367000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Ninpo: Fire Dance",
-      "desc": "Gabimaru the Hollow. Each hit adds 2 Burn stacks (2.2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 4.4% of its max HP every turn. 22% chance to dodge each hit. +11% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "incursio-armor",
     "name": "Incursio Armor",
     "series": "",
@@ -5432,40 +5002,6 @@
     "passive": {
       "name": "Incursio Evolved",
       "desc": "Tatsumi: Takes 25% less damage. Takes 15% less from an attack each time it has seen it (up to 4 times). 20% chance to dodge each hit. +20% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "invincible-gang-boss",
-    "name": "Invincible Gang Boss",
-    "series": "",
-    "image": "images/cards/invincible-gang-boss.webp",
-    "base": {
-      "atk": 14517,
-      "hp": 96778,
-      "def": 0,
-      "status": 0,
-      "odds": 474000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Invincible Mikey",
-      "desc": "Mikey's dark impulse. Its first hit on each new enemy does 3x damage. 35% chance to dodge each hit. +10% damage every time it is hit."
     },
     "skill": {
       "name": "",
@@ -5534,74 +5070,6 @@
     "passive": {
       "name": "Vanishing Rasengan + Karma",
       "desc": "Boruto: Its attacks can't be dodged. +8% damage every time it is hit. 20% chance to crit for 1.7x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "lich-shopkeeper",
-    "name": "Lich Shopkeeper",
-    "series": "",
-    "image": "images/cards/lich-shopkeeper.webp",
-    "base": {
-      "atk": 14357,
-      "hp": 95710,
-      "def": 0,
-      "status": 0,
-      "odds": 463000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Drain Touch",
-      "desc": "Wiz is a Lich. Heals 30% of the damage it deals. 30% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Comes back once with 40% HP. Takes 10% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "lightning-dragon-heir",
-    "name": "Lightning Dragon Heir",
-    "series": "",
-    "image": "images/cards/lightning-dragon-heir.webp",
-    "base": {
-      "atk": 18784,
-      "hp": 125224,
-      "def": 0,
-      "status": 0,
-      "odds": 312000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Dragon Force",
-      "desc": "Laxus: Every hit also hits the whole enemy bench for 20%. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Takes 15% less damage."
     },
     "skill": {
       "name": "",
@@ -5738,40 +5206,6 @@
     "passive": {
       "name": "Future Sight Mochi",
       "desc": "Katakuri sees the future. 30% chance to dodge each hit. 30% chance to counter-attack when hit (0.8x damage). 20% chance per hit to Stun the enemy for 1 turn."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "number-one-captain",
-    "name": "Number One Captain",
-    "series": "",
-    "image": "images/cards/number-one-captain.webp",
-    "base": {
-      "atk": 14811,
-      "hp": 98740,
-      "def": 0,
-      "status": 0,
-      "odds": 376000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Optical Eye",
-      "desc": "Narumi's suit sees the enemy's next move. 40% chance to dodge each hit. 30% chance to crit for 1.8x damage. +30% damage against Kaiju cards."
     },
     "skill": {
       "name": "",
@@ -6010,40 +5444,6 @@
     "passive": {
       "name": "Lariat & Ink",
       "desc": "Killer Bee: 25% chance per hit to Stun the enemy for 1 turn. Takes 15% less damage. Heals 4% of its max HP every turn."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "retired-hitman",
-    "name": "Retired Hitman",
-    "series": "",
-    "image": "images/cards/retired-hitman.webp",
-    "base": {
-      "atk": 13137,
-      "hp": 87580,
-      "def": 0,
-      "status": 0,
-      "odds": 384000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Legendary Hitman",
-      "desc": "Sakamoto turns anything into a weapon. 35% chance to dodge each hit. 45% chance to attack twice. 25% chance to crit for 1.8x damage. Every other card in your deck gets +8% damage."
     },
     "skill": {
       "name": "",
@@ -6334,74 +5734,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "steel-arm-alchemist",
-    "name": "Steel Arm Alchemist",
-    "series": "",
-    "image": "images/cards/steel-arm-alchemist.webp",
-    "base": {
-      "atk": 16480,
-      "hp": 109866,
-      "def": 0,
-      "status": 0,
-      "odds": 422000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Equivalent Exchange",
-      "desc": "Edward Elric: Blocks the first 2 hits completely. 25% chance to crit for 1.8x damage. With Alphonse Elric in the deck, both get +15% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "strongest-flame-captain",
-    "name": "Strongest Flame Captain",
-    "series": "",
-    "image": "images/cards/strongest-flame-captain.webp",
-    "base": {
-      "atk": 12707,
-      "hp": 84712,
-      "def": 0,
-      "status": 0,
-      "odds": 359000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Crimson Moon",
-      "desc": "Benimaru Shinmon: Every hit sets the whole enemy deck on fire for 1 turn. Every hit also hits the whole enemy bench for 19%. Can't be burned. Each hit adds 2 Burn stacks (1.1% of the enemy's max HP per turn each, up to 4, 3 turns)."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "superd-spear-warrior",
     "name": "Superd Spear Warrior",
     "series": "",
@@ -6606,108 +5938,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "true-warrior",
-    "name": "True Warrior",
-    "series": "",
-    "image": "images/cards/true-warrior.webp",
-    "base": {
-      "atk": 14042,
-      "hp": 93610,
-      "def": 0,
-      "status": 0,
-      "odds": 442000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "I Have No Enemies",
-      "desc": "Thorfinn the true warrior refuses to kill. 40% chance to dodge each hit. 40% chance to counter-attack when hit. 30% chance to attack twice."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "turbo-granny",
-    "name": "Turbo Granny",
-    "series": "",
-    "image": "images/cards/turbo-granny.webp",
-    "base": {
-      "atk": 13432,
-      "hp": 89546,
-      "def": 0,
-      "status": 0,
-      "odds": 403000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Turbo Speed",
-      "desc": "Turbo Granny is impossibly fast. Always attacks twice (each hit does 0.75x damage). 35% chance to dodge each hit. Comes back once with 40% HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "undying-fox-sin",
-    "name": "Undying Fox Sin",
-    "series": "",
-    "image": "images/cards/undying-fox-sin.webp",
-    "base": {
-      "atk": 12155,
-      "hp": 81034,
-      "def": 0,
-      "status": 0,
-      "odds": 327000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Snatch & Immortality",
-      "desc": "Ban: Heals 23% of the damage it deals. Each hit lowers the enemy's damage by 5.4% (up to 5 times). Heals 8% of its max HP every turn. Comes back once with 45% HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "veteran-devil-hunter",
     "name": "Veteran Devil Hunter",
     "series": "",
@@ -6842,102 +6072,6 @@
     },
     "tier": "",
     "updated": "2026-10-28"
-  },
-  {
-    "id": "ice-admiral",
-    "name": "Ice Admiral",
-    "series": "",
-    "image": "images/cards/ice-admiral.webp",
-    "base": {
-      "atk": 66841,
-      "hp": 445608,
-      "def": 0,
-      "status": 0,
-      "odds": 306000
-    },
-    "exact": {},
-    "obtain": "Weather card: only drops during a Snowstorm",
-    "passive": {
-      "name": "Ice Age",
-      "desc": "Aokiji freezes the sea. 44% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2.25x damage against frozen enemies. Every enemy card starts with 13% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 2.0,
-      "hp": 2.0,
-      "passive": 64,
-      "skill": 64,
-      "matchup": 0.5,
-      "team": 66,
-      "overall": 33.0
-    },
-    "tier": "Utility",
-    "updated": "2026-10-30",
-    "prevTier": "",
-    "beats": [],
-    "losesTo": [
-      "founding-titan",
-      "sword-saint",
-      "octopus-teacher",
-      "shadow-monarch",
-      "slime-demon-lord",
-      "quirk-thief-overlord",
-      "ant-king",
-      "one-punch-caped-hero",
-      "sun-breath-origin",
-      "soul-king-father",
-      "sun-god-captain",
-      "divergent-fist-vessel",
-      "golden-wind-boss",
-      "destroyer-god",
-      "storm-dragon",
-      "witch-of-envy",
-      "dragon-king-of-ruin",
-      "spiral-drill-king",
-      "ultra-instinct-saiyan",
-      "no-life-king",
-      "full-moon-demon-king",
-      "destroyer-dragonoid",
-      "dragon-god",
-      "dragon-emperor-monarch",
-      "primordial-butler-demon",
-      "moon-eye-ghost",
-      "atomic-shadow-lord",
-      "hypnosis-traitor",
-      "hollow-mask-reaper",
-      "pirate-king",
-      "beast-emperor",
-      "rabbit-goddess",
-      "homunculus-father",
-      "white-hawk-godhand",
-      "pumpkin-sun-pride",
-      "golden-gate-king",
-      "infinity-sorcerer",
-      "demon-god-of-flame",
-      "soul-magic-father",
-      "hero-number-one",
-      "made-in-heaven-priest",
-      "wood-god-hokage",
-      "monk-of-names",
-      "demon-progenitor",
-      "king-of-curses",
-      "control-devil",
-      "black-wizard-brother",
-      "undead-overlord-king"
-    ],
-    "utilGain": 14.9,
-    "team": {
-      "bestSupport": [
-        "guild-master-giant",
-        "charge-commander",
-        "eternal-wish-dragon"
-      ],
-      "position": "",
-      "bestWith": []
-    }
   },
   {
     "id": "lightning-sorcerer",
