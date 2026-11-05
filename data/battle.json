@@ -469,7 +469,7 @@
     "gentle-priest": "teamHeal",
     "golden-shield-healer": { "shieldStart": "$0" },
     "hellsing-commander": { "first": "1+$0" },
-    "hero-of-legend": { "lowHp": { "under": 0.3, "dmg": "$0" } },
+    "hero-of-legend": { "lowHp": { "under": 0.5, "dmg": "$0" } },
     "reindeer-doctor": { "lowHeal": { "under": 0.4, "v": "$0" } },
     "sacred-arrow-priestess": { "sealFirst": 1 },
     "shadow-strategist": { "entryStun": { "p": "$0", "turns": 1 } },

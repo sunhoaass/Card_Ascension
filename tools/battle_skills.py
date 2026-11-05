@@ -194,7 +194,7 @@ SUPPORT = {
     "song-sorceress": {"everyN": {"n": 2, "m": "1+$0"}},
     "cherry-blossom-medic": {"everyN": {"n": 3, "m": "1+$0"}},
     "supreme-kai": {"dmgFrom": {"n": 3, "v": "$0"}},
-    "hero-of-legend": {"lowHp": {"under": 0.3, "dmg": "$0"}},
+    "hero-of-legend": {"lowHp": {"under": 0.5, "dmg": "$0"}},
     "salt-splash-mentor": {"weakenHit": {"p": "$0", "v": "$1", "n": 1}},
     "gentle-palm-heiress": {"weakenHit": {"p": 1, "v": "$0", "n": 5}},
     "sweet-tooth-detective": {"weakenHit": {"p": 1, "v": "$0", "n": 4}},
