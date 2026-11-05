@@ -37,6 +37,8 @@
 .bt-stage__in { margin: 0; display: flex; gap: 8px; align-items: center; }
 .bt-stage__in .tm-field__label { margin: 0; }
 .bt-stage__note { margin: 0; }
+.bt-stage__next { margin: 0; font: 700 var(--fs-sm)/1.2 var(--gc-font-num); color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+.bt-stat b small { font-size: 12px; color: var(--ink-faint); }
 .bt-watch { width: 100%; margin-top: 8px; }
 .bt-list li.bt-list__empty { display: block; background: none; padding: 4px 0; }
 .bt-loading { padding: var(--s-6) var(--s-4); }
@@ -45,7 +47,7 @@
 .bt-stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); margin-top: var(--s-3); }
 .bt-stat { padding: 10px 12px; border-radius: var(--r-chip); background: var(--glass); border: 1px solid var(--glass-line); }
 .bt-stat b { display: block; font: 700 19px/1.15 var(--gc-font-num); font-variant-numeric: tabular-nums; }
-.bt-stat span { font-size: 11px; color: var(--ink-faint); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.bt-stat > span { font-size: 11px; color: var(--ink-faint); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .bt-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
 .bt-list li { display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; background: var(--bt-wash-03); font-size: 13px; }
 .bt-list b { font-family: var(--gc-font-num); color: var(--gold-hi); font-weight: 600; }

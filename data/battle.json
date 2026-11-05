@@ -7,7 +7,7 @@
     "echo": { "rarity": "Godly", "v": 189.34 },
     "statusConfirmed": false
   },
-  "boss": { "id": "quirk-thief-overlord", "stage": 448, "atk": 460425250, "perStage": 0.006, "cardAtk": 3761530, "stageDmg": 60500000000 },
+  "boss": { "id": "quirk-thief-overlord", "stage": 0, "atk": 128080338, "perStage": 0.0028600930236, "cardAtk": 3761530, "stages": { "first": 10000, "early": 100, "at": 415, "atDmg": 642500000000, "rate": 1.03 } },
   "cards": {
     "one-punch-caped-hero": { "first": 3.68, "ignore": 1, "noCC": 1, "dmg": 0.15 },
     "cyborg-sister": { "perTurn": { "v": 0.05, "n": 6 }, "double": { "p": 0.25, "m": 1 } },

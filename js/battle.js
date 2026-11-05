@@ -8,7 +8,7 @@
    to C.state.support (the Cards page still shows only the finished ones).
    Skills: data/battle.json (cards / support / traits / groups / the clip's numbers) · a card not in it fights with
    ATK / HP only ("Skill not simulated yet").
-   Saved on this device: cbi:battle { v, teams { boss, a, b }, stage, fights [{ dmg, stage, at }] } · cbi:battleMute
+   Saved on this device: cbi:battle { v: 2, teams { boss, a, b }, stage (= the start stage), fights [{ dmg, stage, at }] } · cbi:battleMute
    CBI.battle = { init, show, Battle (engine, also for tests), teams }
    ========================================================== */
 (function () {
@@ -28,6 +28,7 @@
   };
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
   const fmtS = (n) => { const a = Math.abs(n); for (const [v, u] of [[1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]]) if (a >= v) return (n / v).toFixed(a / v >= 100 ? 0 : a / v >= 10 ? 1 : 2) + u; return String(Math.round(n)); };
+  const fmtG = (n) => { for (const [v, u] of [[1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]]) if (n >= v) return (n / v).toFixed(1) + u; return String(Math.round(n)); };   // the game's "next at 642.5B"
   const pct = (x, d = 0) => (x * 100).toFixed(d) + "%";
   const raw = (n) => String(Math.round(n));   // floating numbers like the game's clip: +567664559 (no commas)
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -57,7 +58,7 @@
   const emptyTeam = () => ({ name: "", rarity: "Godly", cards: [null, null, null, null], support: [null, null, null, null],
     cardRarity: [null, null, null, null], supRarity: [null, null, null, null], trait: [null, null, null, null], grades: [null, null, null, null], custom: [null, null, null, null], from: "" });
   const T = { boss: emptyTeam(), a: emptyTeam(), b: emptyTeam() };
-  let STAGE = 448, FIGHTS = [];
+  let START = 0, STAGE = 0, FIGHTS = [];   // START = the stage you start from (typed) · STAGE = the stage now (start + your damage)
   const four = (a, f) => { const o = []; for (let i = 0; i < SLOTS; i++) o.push(f(Array.isArray(a) ? a[i] : null)); return o; };
   const idOr = (v) => (typeof v === "string" && /^[a-z0-9-]{1,80}$/.test(v) ? v : null);
   const rarOr = (v) => (typeof v === "string" && rarities().includes(v) ? v : null);
@@ -73,7 +74,7 @@
     return d;
   }
   function save() {
-    const ok = store.set(SAVE_KEY, JSON.stringify({ v: 1, teams: T, stage: STAGE, fights: FIGHTS.slice(-200) }));
+    const ok = store.set(SAVE_KEY, JSON.stringify({ v: 2, teams: T, stage: START, fights: FIGHTS.slice(-200) }));
     if (!ok && !save.warned) { save.warned = true; FX.toast("Can't save on this device (private mode?) · teams last until you close the page"); }
   }
   function myDecks() { try { const a = JSON.parse(localStorage.getItem("cbi:decks") || "[]"); return Array.isArray(a) ? a.filter((d) => d && Array.isArray(d.cards)) : []; } catch (e) { return []; } }
@@ -92,12 +93,13 @@
     try { s = JSON.parse(store.get(SAVE_KEY) || "null"); } catch (e) { s = null; }
     if (s && s.teams) {
       ["boss", "a", "b"].forEach((k) => { T[k] = cleanTeam(s.teams[k]); });
-      const st = Math.round(Number(s.stage)); if (st >= 1 && st <= 1500) STAGE = st;
+      const st = Math.round(Number(s.stage)); if (s.v >= 2 && st >= 0 && st <= SMAX) START = st;   // v1 saved the boss's stage (448 by default), not a start
       FIGHTS = Array.isArray(s.fights) ? s.fights.filter((f) => f && Number(f.dmg) > 0).map((f) => ({ dmg: Number(f.dmg), stage: Math.round(Number(f.stage)) || 0, at: Number(f.at) || 0 })) : [];
+      restage();
       return;
     }
     // first visit: the first saved deck in both of your teams (a copy) · none = empty teams
-    STAGE = Number(BD.boss.stage) || 448;
+    START = 0; restage();
     const d0 = myDecks()[0];
     if (d0) { copyDeck(d0, T.boss); copyDeck(d0, T.a); }
   }
@@ -107,7 +109,22 @@
     const d = T[key], res = C.deckBuff.compute(d, { support: SUP });
     return res.map((r, i) => (r ? { ...r, real: { atk: r.atk, hp: r.hp }, atk: d.custom[i] && d.custom[i].atk != null ? d.custom[i].atk : r.atk, hp: d.custom[i] && d.custom[i].hp != null ? d.custom[i].hp : r.hp } : null));
   }
-  const bossAtk = (st) => (Number(BD.boss.atk) || 460425250) * Math.pow(1 + (Number(BD.boss.perStage) || 0.006), st - (Number(BD.boss.stage) || 448));   // a guess until the owner sends 2–3 stages
+  // boss ATK at a stage: the 2 clips (stage 0 = 128,080,338 · stage 448 = 460,425,250) · in between = a guess (the same % every stage)
+  const bossAtk = (st) => (Number(BD.boss.atk) || 128080338) * Math.pow(1 + (Number(BD.boss.perStage) || 0.002860093), st - (Number(BD.boss.stage) || 0));
+  /* Stages (data/battle.json boss.stages): the guild damage a stage needs · stage 1 = 10K · from stage early + 1 on, each stage
+     needs ×rate the one before (the clips: 625.4B = 414 · next at 642.5B · 1.726T = 448 · next at 1.8T · 2.45T = 460 → ×1.03) ·
+     stages 1 … early + 1 = the same % every stage from 10K up to that line (a guess until we have a low stage from the game) */
+  const SMAX = 1500;
+  function need(n) {
+    const g = BD.boss.stages || {}, first = Number(g.first) || 1e4, E = Number(g.early) || 100, at = Number(g.at) || 415, atD = Number(g.atDmg) || 642.5e9, r = Number(g.rate) || 1.03;
+    if (n <= 0) return 0;
+    if (n > E) return atD * Math.pow(r, n - at);
+    return first * Math.pow(atD * Math.pow(r, E + 1 - at) / first, (n - 1) / E);
+  }
+  const stageOf = (d) => { let lo = 0, hi = SMAX; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (need(m) <= d * (1 + 1e-12)) lo = m; else hi = m - 1; } return lo; };
+  const mine = () => FIGHTS.reduce((x, f) => x + f.dmg, 0);
+  const guildDmg = () => need(START) + mine();   // the start stage's line + everything you dealt since
+  function restage() { STAGE = stageOf(guildDmg()); }
 
   /* ---------- Card scaler: the card is laid out 300px wide and scaled to its box, so small type never hits a phone's
      minimum font size (the owner's phone, mockup round 2: the card text spilled out of the small team cards) ---------- */
@@ -767,22 +784,20 @@
   function endFight() { if (!F.b) return; F.token++; const b = F.b; b.E = null; while (!b.step()); showResult(b); }
 
   /* ==========================================================
-     RESULT (+ a Guild Boss fight is saved: best fights, your damage)
+     RESULT (+ a Guild Boss fight is saved: best fights, your damage, the stage it pushed to)
      ========================================================== */
   let lastResult = null;
-  const stageGain = (d) => Math.max(0, Math.floor(d / (Number(BD.boss.stageDmg) || 60.5e9)));   // a guess: the clip moved 448 → 460 with 725.5B
   const teamDmg = (b) => b.a.reduce((x, u) => x + u.st.dmg, 0);
   function showResult(b) {
     lastResult = b; closeFight();
     const total = teamDmg(b);
-    if (b.boss && !b.saved) { b.saved = true; FIGHTS.push({ dmg: total, stage: STAGE, at: Date.now() }); save(); paintBossStats(); }
+    if (b.boss && !b.saved) { b.saved = true; b.st0 = STAGE; FIGHTS.push({ dmg: total, stage: STAGE, at: Date.now() }); restage(); b.st1 = STAGE; save(); paintBossStats(); paintStage(); }
     if (location.hash !== "#battle/result") history.replaceState(null, "", "#battle/result");
     view = "result"; showView();
     const team = b.a, mvp = team.reduce((m, u) => (u.st.dmg > m.st.dmg ? u : m), team[0]);
-    const mine = FIGHTS.reduce((x, f) => x + f.dmg, 0);
     const hero = b.boss
       ? `<p class="bt-res__eyebrow">DAMAGE DEALT</p><p class="bt-res__big" id="bt-res-num">0</p><p class="bt-res__why">${esc(b.why)}${b.win === "lose" ? "" : " · " + b.alive("a") + "/" + team.length + " cards still standing"}</p>
-        <div class="bt-res__kv"><div><span>Your total</span><b>${fmtS(mine)}</b></div><div><span>Fights</span><b>${FIGHTS.length}</b></div><div><span>Stage (about)</span><b class="up">${STAGE} → ~${Math.min(1500, STAGE + stageGain(total))}</b></div></div>`
+        <div class="bt-res__kv"><div><span>Your total</span><b>${fmtS(mine())}</b></div><div><span>Stage</span><b class="up">${b.st0} → ${b.st1}</b></div><div><span>Next at</span><b>${b.st1 >= SMAX ? "Max" : fmtG(need(b.st1 + 1))}</b></div></div>`
       : `<p class="bt-res__eyebrow">ARENA</p><p class="bt-res__big ${b.win}">${b.win === "win" ? "VICTORY" : b.win === "lose" ? "DEFEAT" : "DRAW"}</p><p class="bt-res__why">${esc(b.why)}</p>
         <div class="bt-res__kv"><div><span>Damage dealt</span><b>${fmtS(total)}</b></div><div><span>Cards left</span><b>${b.alive("a")} vs ${b.alive("b")}</b></div><div><span>Rounds</span><b>${b.round}</b></div></div>`;
     const procs = (u) => Object.entries(u.st.procs).filter(([, r]) => r.exp > 0).map(([n, r]) => `<span class="chip glass">${esc(n)} ${r.n}<em>/ ${r.exp.toFixed(1)} expected</em></span>`).join("");
@@ -809,7 +824,7 @@
     const disp = tok("--font-display", "serif"), body = tok("--font-body", "sans-serif"), num = tok("--gc-font-num", "sans-serif");
     const total = teamDmg(b);
     ctx.textAlign = "center"; ctx.fillStyle = gold; ctx.font = `400 34px ${disp}`;
-    ctx.fillText(b.boss ? `GUILD BOSS · STAGE ${STAGE}` : "ARENA", W / 2, 80);
+    ctx.fillText(b.boss ? `GUILD BOSS · STAGE ${b.st0 != null ? b.st0 + " → " + b.st1 : STAGE}` : "ARENA", W / 2, 80);
     ctx.fillStyle = b.boss ? dmgC : b.win === "win" ? tok("--bt-win", "lime") : b.win === "lose" ? tok("--bt-lose", "red") : dim;
     ctx.font = `700 92px ${num}`;
     ctx.fillText(b.boss ? fmt(total) : b.win === "win" ? "VICTORY" : b.win === "lose" ? "DEFEAT" : "DRAW", W / 2, 185);
@@ -949,8 +964,8 @@
     const when = (t) => { const d = Math.floor((Date.now() - t) / 864e5); return d <= 0 ? "Today" : d === 1 ? "Yesterday" : d + " days ago"; };
     $("#bt-best").innerHTML = best.length ? best.map((f, i) => `<li><span class="bt-rk">${i + 1}</span><span>${when(f.at)} <span class="bt-faint">· Stage ${f.stage}</span></span><b>${fmtS(f.dmg)}</b></li>`).join("")
       : `<li class="bt-list__empty"><span class="empty__text">No fights yet.</span></li>`;
-    $("#bt-mine").textContent = fmtS(FIGHTS.reduce((x, f) => x + f.dmg, 0));
-    $("#bt-nfights").textContent = String(FIGHTS.length);
+    $("#bt-mine").textContent = fmtS(mine());
+    $("#bt-reached").textContent = fmt(STAGE);
   }
   function paintBoss() {
     const x = lookup("cards", BD.boss.id || "quirk-thief-overlord"), box = $("#bt-boss-card");
@@ -965,9 +980,24 @@
     paintBossStats();
   }
   function paintStage() {
-    $("#bt-stage").value = STAGE; $("#bt-stage-n").textContent = fmt(STAGE);
+    $("#bt-stage").value = START;
     $("#bt-boss-atk").textContent = fmt(bossAtk(STAGE));
-    $("#bt-stage-bar").style.setProperty("--p", (STAGE / 1500).toFixed(3));
+    // the bar = how far into this stage (like the game's bar) · next at = the damage the next stage needs
+    const lo = need(STAGE), hi = STAGE >= SMAX ? lo : need(STAGE + 1), g = guildDmg();
+    $("#bt-stage-bar").style.setProperty("--p", (STAGE >= SMAX ? 1 : Math.max(0, Math.min(1, (g - lo) / Math.max(1, hi - lo)))).toFixed(3));
+    $("#bt-next").textContent = STAGE >= SMAX ? "Max stage" : "Next at " + fmtG(hi);
+  }
+  // Refresh = a new week: your damage + best fights go, the stage goes back to the start stage
+  async function refreshWeek() {
+    const res = await dialog({
+      title: "Start a new week?",
+      html: `<p class="tm-dlg__text">Your damage and best fights are cleared, and the stage goes back to ${esc(fmt(START))}. This can’t be undone.</p>`,
+      actions: [{ label: "Cancel", value: "cancel" }, { label: "Refresh", value: "ok", submit: true, cls: "tm-btn--danger" }],
+    });
+    if (!res || res.action !== "ok") return;
+    FIGHTS = []; restage(); save(); paintStage(); paintBossStats();
+    const p = $("#bt-stage-bar").closest(".panel"); if (p && !reduced()) FX.flash(p);
+    FX.toast("New week · stage " + fmt(STAGE));
   }
   function drawSound() { const b = $("#bt-sound"); b.innerHTML = SND.muted ? ICON.mute : ICON.sound; b.setAttribute("aria-label", SND.muted ? "Sound off" : "Sound on"); b.setAttribute("aria-pressed", String(!SND.muted)); }
   function moveTo(slot) {
@@ -994,6 +1024,7 @@
         if (act === "simn") { simN = Number(t.dataset.n); const seg = t.parentNode; seg.style.setProperty("--i", [...seg.querySelectorAll(".seg__btn")].indexOf(t)); seg.querySelectorAll(".seg__btn").forEach((x) => x.setAttribute("aria-pressed", String(x === t))); return; }
         if (act === "apply") { applyTip(Number(t.dataset.tip)); return; }
         if (act === "save") { saveImage(t); return; }
+        if (act === "refresh") { refreshWeek(); return; }
         if (act === "go") { go(t.dataset.to); return; }
       }
       const item = e.target.closest(".dk-item[data-id]");
@@ -1002,8 +1033,8 @@
     });
     page.addEventListener("keydown", (e) => { const item = e.target.closest(".dk-item[data-id]"); if (item && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); item.click(); } });
     $("#bt-stage").addEventListener("change", (e) => {
-      let v = Math.round(Number(e.target.value)); if (!v || v < 1) v = 1; if (v > 1500) v = 1500; STAGE = v; save();
-      paintStage(); if (!reduced()) FX.flash($("#bt-boss-atk").closest(".panel"));
+      let v = Math.round(Number(e.target.value)); if (!(v >= 0)) v = 0; if (v > SMAX) v = SMAX; START = v; restage(); save();
+      paintStage(); paintBossStats(); if (!reduced()) FX.flash($("#bt-boss-atk").closest(".panel"));
     });
     // fight controls
     const f = fightRoot();
