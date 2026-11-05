@@ -287,6 +287,9 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-db--stun { --bg: var(--bt-db-stun); --line: var(--bt-db-stun-line); --glow: var(--bt-d-crit); color: var(--bt-db-stun-ink); }
 .bt-db--paralyze { --bg: var(--bt-db-para); --line: var(--bt-db-para-line); --glow: var(--bt-d-pierce); }
 .bt-db--weak { --bg: var(--bt-db-weak); --line: var(--bt-db-weak-line); }
+.bt-db--freeze { --bg: var(--bt-db-freeze); --line: var(--bt-db-freeze-line); --glow: var(--bt-d-pierce); }
+.bt-db--seal, .bt-db--mark { --bg: var(--bt-db-seal); --line: var(--bt-db-seal-line); }
+.bt-db--confuse { --bg: var(--bt-db-confuse); --line: var(--bt-db-confuse-line); --glow: var(--bt-d-pct); }
 .bt-db.in { animation: bt-dbin calc(340ms * var(--bt-k)) var(--ease) both; }
 .bt-db.tick { animation: bt-dbtick calc(400ms * var(--bt-k)) var(--ease); }
 @keyframes bt-dbin { from { transform: translateY(40%) scale(.6); opacity: 0; } }

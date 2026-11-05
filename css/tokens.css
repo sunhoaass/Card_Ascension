@@ -369,6 +369,9 @@
   --bt-db-para: linear-gradient(180deg, #5fe3ff, #1688c4); --bt-db-para-line: #032a3d;
   --bt-db-weak: linear-gradient(180deg, #6c7aa8, #3d4770); --bt-db-weak-line: #12162a;
   --bt-db-turns: rgba(0, 0, 0, .45);
+  --bt-db-freeze: linear-gradient(180deg, #9fe8ff, #3a8fd0); --bt-db-freeze-line: #06263d;
+  --bt-db-seal: linear-gradient(180deg, #8a8fa8, #4a4f68); --bt-db-seal-line: #14162a;
+  --bt-db-confuse: linear-gradient(180deg, #ff8ae0, #b0329a); --bt-db-confuse-line: #3a0a30;
   /* dodge + statuses on the card (owner 2026-11-05) */
   --bt-dodge-ghost: rgba(170, 210, 255, .22); --bt-dodge-line: rgba(190, 225, 255, .85);
   --bt-st-poison: rgba(181, 98, 255, .6); --bt-st-burn: rgba(255, 110, 40, .6); --bt-st-bleed: rgba(255, 42, 90, .55);
