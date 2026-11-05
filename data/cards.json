@@ -6622,5 +6622,829 @@
     "tier": "",
     "updated": "2026-10-29",
     "redraw": true
+  },
+  {
+    "id": "anti-magic-devil-knight",
+    "name": "Anti-Magic Devil Knight",
+    "series": "",
+    "image": "images/cards/art/anti-magic-devil-knight.webp",
+    "base": {
+      "atk": 65681,
+      "hp": 437874,
+      "def": 0,
+      "status": 0,
+      "odds": 5500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Devil Union",
+      "desc": "Asta: 40% chance per hit to Seal the enemy's ability for 2 turns. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. With Yuno in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "crash-magic-ace",
+    "name": "Crash Magic Ace",
+    "series": "",
+    "image": "images/cards/art/crash-magic-ace.webp",
+    "base": {
+      "atk": 77885,
+      "hp": 519236,
+      "def": 0,
+      "status": 0,
+      "odds": 6200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Crash",
+      "desc": "Gildarts breaks everything he touches. Ignores shields, dodges and barriers. Every 2nd attack also hits the card behind for 35%. Each hit lowers the enemy's damage by 6.1% (up to 5 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "demon-lord-brother",
+    "name": "Demon Lord Brother",
+    "series": "",
+    "image": "images/cards/art/demon-lord-brother.webp",
+    "base": {
+      "atk": 32947,
+      "hp": 219648,
+      "def": 0,
+      "status": 0,
+      "odds": 4800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bakusaiga",
+      "desc": "Sesshomaru: Each hit crushes the enemy for 4.5% of its max HP per turn for 2 turns. Every 2nd attack also hits the card behind for 35%. Each hit adds 2 Poison stacks (1.4% of the enemy's max HP per turn each, up to 4, 3 turns). 14% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "fire-dragon-slayer",
+    "name": "Fire Dragon Slayer",
+    "series": "",
+    "image": "images/cards/art/fire-dragon-slayer.webp",
+    "base": {
+      "atk": 39275,
+      "hp": 261836,
+      "def": 0,
+      "status": 0,
+      "odds": 6000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Etherious Natsu Dragneel",
+      "desc": "Natsu eats fire and gets stronger. Can't be burned. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 40% HP: +80% damage. +40% damage against Dragon cards. With Zeref in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "grace-archangel",
+    "name": "Grace Archangel",
+    "series": "",
+    "image": "images/cards/art/grace-archangel.webp",
+    "base": {
+      "atk": 37864,
+      "hp": 252426,
+      "def": 0,
+      "status": 0,
+      "odds": 6500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sunshine",
+      "desc": "Mael's Sunshine burns brighter than anything. Each hit adds 3 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). +50% damage against Demon cards. Takes 25% less damage. +8% damage every turn (up to 6 times)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "hundred-percent-brother",
+    "name": "Hundred Percent Brother",
+    "series": "",
+    "image": "images/cards/art/hundred-percent-brother.webp",
+    "base": {
+      "atk": 54919,
+      "hp": 366128,
+      "def": 0,
+      "status": 0,
+      "odds": 5200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "100% Muscle",
+      "desc": "Toguro: +37% damage. Takes 16% less damage. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "little-devil-firefoot",
+    "name": "Little Devil Firefoot",
+    "series": "",
+    "image": "images/cards/art/little-devil-firefoot.webp",
+    "base": {
+      "atk": 41438,
+      "hp": 276256,
+      "def": 0,
+      "status": 0,
+      "odds": 8900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Adolla Burst",
+      "desc": "Shinra's devil feet. 28% chance to dodge each hit. 35% chance to attack twice. Each hit adds 2 Burn stacks (2.1% of the enemy's max HP per turn each, up to 4, 3 turns). Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "murasame-assassin",
+    "name": "Murasame Assassin",
+    "series": "",
+    "image": "images/cards/art/murasame-assassin.webp",
+    "base": {
+      "atk": 32020,
+      "hp": 213468,
+      "def": 0,
+      "status": 0,
+      "odds": 4400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "One-Cut Killer: Murasame",
+      "desc": "Akame's cursed blade kills with a single cut. 27% chance per hit to instantly kill an enemy under 15% HP (not bosses). Each hit adds 2 Poison stacks (3.1% of the enemy's max HP per turn each, up to 4, 4 turns). 23% chance to dodge each hit. Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "one-eyed-owl",
+    "name": "One-Eyed Owl",
+    "series": "",
+    "image": "images/cards/art/one-eyed-owl.webp",
+    "base": {
+      "atk": 68612,
+      "hp": 457410,
+      "def": 0,
+      "status": 0,
+      "odds": 7800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Kakuja: One-Eyed Owl",
+      "desc": "Eto: Every 2nd attack also hits the card behind for 35%. Heals 5.1% of its max HP every turn. +5.7% damage every time it is hit. Heals 8.7% of the damage it deals."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "psychic-hundred-esper",
+    "name": "Psychic Hundred Esper",
+    "series": "",
+    "image": "images/cards/art/psychic-hundred-esper.webp",
+    "base": {
+      "atk": 51164,
+      "hp": 341090,
+      "def": 0,
+      "status": 0,
+      "odds": 8500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "???%",
+      "desc": "Mob: From its 3rd attack on: +44% damage. Every hit also hits the whole enemy bench for 20%. Blocks the first 3 hits completely. Takes 5.6% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "regeneration-priest",
+    "name": "Regeneration Priest",
+    "series": "",
+    "image": "images/cards/art/regeneration-priest.webp",
+    "base": {
+      "atk": 34429,
+      "hp": 229528,
+      "def": 0,
+      "status": 0,
+      "odds": 4600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Regeneration",
+      "desc": "Anderson: Heals 11% of its max HP every turn. Each hit adds 2 Bleed stacks (1.9% of the enemy's max HP per turn each, up to 4, 3 turns). +56% damage against Vampire cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "killer-queen-salaryman",
+    "name": "Killer Queen Salaryman",
+    "series": "",
+    "image": "images/cards/art/killer-queen-salaryman.webp",
+    "base": {
+      "atk": 38960,
+      "hp": 259732,
+      "def": 0,
+      "status": 0,
+      "odds": 7100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bites the Dust",
+      "desc": "Kira: 41% chance per hit to plant a bomb that explodes next turn for 1.54x the hit. Every 2nd attack also hits the card behind for 35%. Comes back once with 33% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "king-of-conquerors",
+    "name": "King of Conquerors",
+    "series": "",
+    "image": "images/cards/art/king-of-conquerors.webp",
+    "base": {
+      "atk": 33298,
+      "hp": 221986,
+      "def": 0,
+      "status": 0,
+      "odds": 4000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ionioi Hetairoi",
+      "desc": "Iskandar summons his army. Every other card in your deck gets +15% damage. Every hit also hits the whole enemy bench for 20%. Takes 11% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 65,
+      "skill": 65,
+      "matchup": 0.1,
+      "team": 81,
+      "overall": 36.2
+    },
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 15.0,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    },
+    "redraw": true
+  },
+  {
+    "id": "spider-half-demon",
+    "name": "Spider Half-Demon",
+    "series": "",
+    "image": "images/cards/art/spider-half-demon.webp",
+    "base": {
+      "atk": 33421,
+      "hp": 222804,
+      "def": 0,
+      "status": 0,
+      "odds": 5000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Shikon Jewel",
+      "desc": "Naraku's body is made of demons. Each kill gives it 14% of the defeated card's damage and HP. Each hit adds 2 Poison stacks (1.7% of the enemy's max HP per turn each, up to 4, 3 turns). Blocks the first 2 hits completely. Comes back once with 28% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "thousand-year-witch",
+    "name": "Thousand-Year Witch",
+    "series": "",
+    "image": "images/cards/art/thousand-year-witch.webp",
+    "base": {
+      "atk": 39100,
+      "hp": 260664,
+      "def": 0,
+      "status": 0,
+      "odds": 8100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Demon Hunter",
+      "desc": "Frieren has hunted demons for a thousand years. +59% damage against Demon cards. Every enemy card starts with 15% less damage. Blocks the first 2 hits completely. 39% chance to attack twice. Party cards in your deck get +15% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 75,
+      "skill": 75,
+      "matchup": 0.5,
+      "team": 74,
+      "overall": 37.9
+    },
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 17.6,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    },
+    "redraw": true
+  },
+  {
+    "id": "ultimate-life-form",
+    "name": "Ultimate Life Form",
+    "series": "",
+    "image": "images/cards/art/ultimate-life-form.webp",
+    "base": {
+      "atk": 37300,
+      "hp": 248668,
+      "def": 0,
+      "status": 0,
+      "odds": 6800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ultimate Life Form",
+      "desc": "Kars: Takes 11% less from an attack each time it has seen it (up to 4 times). Heals 7.7% of its max HP every turn. Every 2nd attack also hits the card behind for 38%. Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "undefeated-reaper",
+    "name": "Undefeated Reaper",
+    "series": "",
+    "image": "images/cards/art/undefeated-reaper.webp",
+    "base": {
+      "atk": 42180,
+      "hp": 281198,
+      "def": 0,
+      "status": 0,
+      "odds": 7400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "IXA and Narukami",
+      "desc": "Arima, the CCG's Reaper. +50% damage against Ghoul cards. Blocks the first 2 hits completely. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). 40% chance to counter-attack when hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "unlimited-blade-archer",
+    "name": "Unlimited Blade Archer",
+    "series": "",
+    "image": "images/cards/art/unlimited-blade-archer.webp",
+    "base": {
+      "atk": 35986,
+      "hp": 239906,
+      "def": 0,
+      "status": 0,
+      "odds": 4200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Unlimited Blade Works",
+      "desc": "EMIYA's reality marble. Copies the ability of every enemy card it faces. Blocks the first 2 hits completely."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "wind-spirit-rival",
+    "name": "Wind Spirit Rival",
+    "series": "",
+    "image": "images/cards/art/wind-spirit-rival.webp",
+    "base": {
+      "atk": 56858,
+      "hp": 379052,
+      "def": 0,
+      "status": 0,
+      "odds": 5700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Spirit of Zephyr",
+      "desc": "Yuno: Every 2nd attack also hits the card behind for 35%. 24% chance to dodge each hit. Every 3rd attack does 1.67x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "star-fist-delinquent",
+    "name": "Star Fist Delinquent",
+    "series": "",
+    "image": "images/cards/art/star-fist-delinquent.webp",
+    "base": {
+      "atk": 215300,
+      "hp": 1435332,
+      "def": 0,
+      "status": 0,
+      "odds": 9200000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Starfall Night",
+    "passive": {
+      "name": "ORA ORA ORA",
+      "desc": "Star Platinum's rush. Always attacks twice (each hit does 0.8x damage). Its attacks can't be dodged. 38% chance per hit to Stun the enemy for 1 turn. +50% damage against Vampire cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
   }
 ]
