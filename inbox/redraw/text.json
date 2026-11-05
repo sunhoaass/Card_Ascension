@@ -1,161 +1,46 @@
 {
- "chainsaw-pup-devil": {
-  "support": true,
-  "odds": "220.4M",
-  "obtain": "Rolls anywhere",
-  "effect": {
-   "name": "Chainsaw Heart",
-   "desc": "Chainsaw Pup Devil gives his heart: the supported card has an {0}% chance to come back once with {1}% HP.",
-   "normal": [
-    80,
-    61
-   ],
-   "text": "Chainsaw Pup Devil gives his heart: the supported card has an 80% chance to come back once with 61% HP."
+  "chainsaw-pup-devil": {
+    "support": true,
+    "odds": "220.4M",
+    "obtain": "Rolls anywhere",
+    "effect": {
+      "name": "Chainsaw Heart",
+      "desc": "Chainsaw Pup Devil gives his heart: the supported card has an {0}% chance to come back once with {1}% HP.",
+      "normal": [
+        80,
+        61
+      ],
+      "text": "Chainsaw Pup Devil gives his heart: the supported card has an 80% chance to come back once with 61% HP."
+    },
+    "note": "game buffed it: data vals [53, 40] → [80, 61] at Normal (1 in 220.4M) · 80% at Normal is above the default chance knee 75 → needs effect.knee (or the owner's all-rarity screenshots) or Normal shows 79.5% · Tier/Value were made with the old values"
   },
-  "note": "game buffed it: data vals [53, 40] → [80, 61] at Normal (1 in 220.4M) · 80% at Normal is above the default chance knee 75 → needs effect.knee (or the owner's all-rarity screenshots) or Normal shows 79.5% · Tier/Value were made with the old values"
- },
- "rewind-girl": {
-  "support": true,
-  "odds": "204.1M",
-  "obtain": "Rolls anywhere",
-  "effect": {
-   "name": "Rewind",
-   "desc": "Rewind Girl rewinds the supported card's body: it heals {0}% of its max HP the first time it drops under 20% HP.",
-   "normal": [
-    57
-   ],
-   "text": "Rewind Girl rewinds the supported card's body: it heals 57% of its max HP the first time it drops under 20% HP."
+  "rewind-girl": {
+    "support": true,
+    "odds": "204.1M",
+    "obtain": "Rolls anywhere",
+    "effect": {
+      "name": "Rewind",
+      "desc": "Rewind Girl rewinds the supported card's body: it heals {0}% of its max HP the first time it drops under 20% HP.",
+      "normal": [
+        57
+      ],
+      "text": "Rewind Girl rewinds the supported card's body: it heals 57% of its max HP the first time it drops under 20% HP."
+    },
+    "note": "game buffed it: data vals [24] → [57] at Normal (1 in 204.1M) · small game star above the text (right of REWIND) · the screenshot had the Index list showing through the panel: look at the sheet that the card picture itself is clean · Tier/Value were made with the old value"
   },
-  "note": "game buffed it: data vals [24] → [57] at Normal (1 in 204.1M) · small game star above the text (right of REWIND) · the screenshot had the Index list showing through the panel: look at the sheet that the card picture itself is clean · Tier/Value were made with the old value"
- },
- "flower-healer-captain": {
-  "support": true,
-  "odds": "189.0M",
-  "obtain": "Rolls anywhere",
-  "effect": {
-   "name": "Minazuki",
-   "desc": "Flower Healer Captain's Minazuki swallows the wounds: the supported card has a {0}% chance each turn to heal {1}% of its max HP.",
-   "normal": [
-    69,
-    22
-   ],
-   "text": "Flower Healer Captain's Minazuki swallows the wounds: the supported card has a 69% chance each turn to heal 22% of its max HP."
-  },
-  "note": "the new text PROGRESS ▶️ 'ค่า Support ตามระดับ' was waiting for (⏳ FHC): data vals [35, 15] → [69, 22] (knee 69 / 22 as measured) · Tier/Value were made with the old values"
- },
- "skull-knight": {
-  "hp": 1712280,
-  "atk": 256842,
-  "odds": "175.1M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Sword of Beherit",
-   "desc": "Skull Knight cuts through dimensions. +60% damage against Apostle cards. Ignores the enemy's shields, dodges and barriers. Every 2nd attack also hits the card behind for 50% of its normal hit (no crits or bonuses). 30% chance to dodge each hit."
+  "flower-healer-captain": {
+    "support": true,
+    "odds": "189.0M",
+    "obtain": "Rolls anywhere",
+    "effect": {
+      "name": "Minazuki",
+      "desc": "Flower Healer Captain's Minazuki swallows the wounds: the supported card has a {0}% chance each turn to heal {1}% of its max HP.",
+      "normal": [
+        69,
+        22
+      ],
+      "text": "Flower Healer Captain's Minazuki swallows the wounds: the supported card has a 69% chance each turn to heal 22% of its max HP."
+    },
+    "note": "the new text PROGRESS ▶️ 'ค่า Support ตามระดับ' was waiting for (⏳ FHC): data vals [35, 15] → [69, 22] (knee 69 / 22 as measured) · Tier/Value were made with the old values"
   }
- },
- "great-mage-founder": {
-  "hp": 927364,
-  "atk": 139105,
-  "odds": "162.1M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Every Spell There Is",
-   "desc": "Great Mage Founder knows every spell. Copies the ability of every new enemy card it faces. Blocks the first 2 hits completely. 2.6% chance to dodge each hit. Every hit also hits the whole enemy bench for 8.7% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers."
-  }
- },
- "one-eyed-ghoul": {
-  "hp": 1466190,
-  "atk": 219929,
-  "odds": "150.2M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Dragon: One-Eyed King",
-   "desc": "One-Eyed Ghoul's dragon kakuja devours everything. Each kill gives it 15% of the defeated card's damage and HP. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Heals 5% of its max HP every turn. Survives its first killing blow with 1 HP."
-  }
- },
- "time-stop-vampire": {
-  "hp": 956678,
-  "atk": 143502,
-  "odds": "139.1M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "ZA WARUDO",
-   "desc": "Time Stop Vampire stops time. 26% chance per hit to Stun the enemy for 2 turns (it skips those turns). 32% chance to attack twice. Heals 20% of the damage it deals. Heals 5.2% of its max HP every turn. Takes 2x damage from Hamon cards."
-  }
- },
- "demon-kings-executioner": {
-  "hp": 1013674,
-  "atk": 152051,
-  "odds": "128.8M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Ruler",
-   "desc": "Demon King's Executioner: Sends 40% of the damage it takes back at the attacker. Its first hit on each new enemy does 2x damage. Heals 25% of the damage it deals. Takes 15% less damage."
-  },
-  "note": "small game star at the right edge beside the text (erase it)"
- },
- "time-wizard-king": {
-  "hp": 841054,
-  "atk": 126158,
-  "odds": "119.3M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Time Magic: Chrono Stasis",
-   "desc": "Time Wizard King stops time. 29% chance per hit to Stun the enemy for 2 turns (it skips those turns). 29% chance to attack twice. Comes back once with 36% HP. 18% chance to dodge each hit."
-  },
-  "note": "small game star at the right edge above ×916 (erase it)"
- },
- "spirit-gun-delinquent": {
-  "hp": 872588,
-  "atk": 130888,
-  "odds": "110.5M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Spirit Gun Mega",
-   "desc": "Spirit Gun Delinquent's demon blood awakens. Every 3rd attack does 1.89x damage. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Under 18% HP: +32% damage. Comes back once with 22% HP. Spirit Detective cards in your deck get +6.7% damage."
-  },
-  "note": "small game star at the bottom next to ×998 (erase it)"
- },
- "excalibur-king": {
-  "hp": 1518646,
-  "atk": 227797,
-  "odds": "102.3M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Excalibur",
-   "desc": "Excalibur King: Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. Heals 4.4% of its max HP every turn. 11% chance to dodge each hit."
-  }
- },
- "twelve-labors-giant": {
-  "hp": 717666,
-  "atk": 107650,
-  "odds": "94.7M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "God Hand",
-   "desc": "Twelve Labors Giant's twelve lives. Comes back once with 79% HP. Survives its first killing blow with 1 HP. Each time an enemy card's attack hits it, that attack does 12% less to it next time (up to 48% less). +32% damage."
-  },
-  "note": "new wording of the 12% part (data: 'Takes 12% less from an attack each time it has seen it (up to 4 times)') → tools/matchup_sim.py --parse shows it as unknown (was adapt (0.12, 4)): add a regex"
- },
- "wrath-shield-hero": {
-  "hp": 691860,
-  "atk": 103779,
-  "odds": "87.7M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Wrath Shield: Blood Sacrifice",
-   "desc": "Wrath Shield Hero is the ultimate defender. Takes 28% less damage. Whoever hits it gets 2 Burn stacks (each stack: 2.1% of their max HP per turn, max 4 stacks, 3 turns). Sends 17% of the damage it takes back at the attacker. Every other card in your deck gets +7% damage."
-  },
-  "note": "Burn now 'each stack: … of their max HP per turn, max 4 stacks, 3 turns' → tools/matchup_sim.py --parse shows it as unknown (was thorns burn): add a regex"
- },
- "bloody-valkyrie": {
-  "hp": 666982,
-  "atk": 100047,
-  "odds": "81.3M",
-  "obtain": "Rolls anywhere",
-  "passive": {
-   "name": "Einherjar",
-   "desc": "Bloody Valkyrie's blood frenzy. Heals 26% of the damage it deals. 35% chance to attack twice. Under 44% HP: +53% damage. Comes back once with 35% HP."
-  }
- }
 }

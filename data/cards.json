@@ -5222,5 +5222,705 @@
       "bestWith": []
     },
     "redraw": true
+  },
+  {
+    "id": "bloody-valkyrie",
+    "name": "Bloody Valkyrie",
+    "series": "",
+    "image": "images/cards/art/bloody-valkyrie.webp",
+    "base": {
+      "atk": 100047,
+      "hp": 666982,
+      "def": 0,
+      "status": 0,
+      "odds": 81300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Einherjar",
+      "desc": "Bloody Valkyrie's blood frenzy. Heals 26% of the damage it deals. 35% chance to attack twice. Under 44% HP: +53% damage. Comes back once with 35% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "captain-commander-flame",
+    "name": "Captain-Commander Flame",
+    "series": "",
+    "image": "images/cards/art/captain-commander-flame.webp",
+    "base": {
+      "atk": 90665,
+      "hp": 604434,
+      "def": 0,
+      "status": 0,
+      "odds": 40700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ryujin Jakka: Zanka no Tachi",
+      "desc": "Yamamoto: Every hit sets the whole enemy deck on fire for 1 turn. Each hit adds 3 Burn stacks (0.9% of the enemy's max HP per turn each, up to 4, 3 turns). Ignores shields, dodges and barriers. Can't be burned. Every enemy card starts with 4.3% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "clown-court-mage",
+    "name": "Clown Court Mage",
+    "series": "",
+    "image": "images/cards/art/clown-court-mage.webp",
+    "base": {
+      "atk": 137613,
+      "hp": 917420,
+      "def": 0,
+      "status": 0,
+      "odds": 69700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Al Goa / Al Huma / Al Fula",
+      "desc": "Roswaal masters every element. Every hit sets the whole enemy deck on fire for 1 turn. 22% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Every hit also hits the whole enemy bench for 20%. Takes 11% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "crimson-ogre-general",
+    "name": "Crimson Ogre General",
+    "series": "",
+    "image": "images/cards/art/crimson-ogre-general.webp",
+    "base": {
+      "atk": 117524,
+      "hp": 783496,
+      "def": 0,
+      "status": 0,
+      "odds": 59800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hell Flare",
+      "desc": "Benimaru: Every hit sets the whole enemy deck on fire for 1 turn. Every hit also hits the whole enemy bench for 20%. Each hit adds 3 Burn stacks (1.2% of the enemy's max HP per turn each, up to 4, 3 turns). Can't be burned."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "decay-villain",
+    "name": "Decay Villain",
+    "series": "",
+    "image": "images/cards/art/decay-villain.webp",
+    "base": {
+      "atk": 85941,
+      "hp": 572940,
+      "def": 0,
+      "status": 0,
+      "odds": 47500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Decay",
+      "desc": "Shigaraki's Decay spreads. Each hit crushes the enemy for 5.1% of its max HP per turn for 2 turns. Every 2nd attack also hits the card behind for 35%. Heals 4.1% of its max HP every turn. +5.1% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "demon-kings-executioner",
+    "name": "Demon King's Executioner",
+    "series": "",
+    "image": "images/cards/art/demon-kings-executioner.webp",
+    "base": {
+      "atk": 152051,
+      "hp": 1013674,
+      "def": 0,
+      "status": 0,
+      "odds": 128800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ruler",
+      "desc": "Demon King's Executioner: Sends 40% of the damage it takes back at the attacker. Its first hit on each new enemy does 2x damage. Heals 25% of the damage it deals. Takes 15% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "excalibur-king",
+    "name": "Excalibur King",
+    "series": "",
+    "image": "images/cards/art/excalibur-king.webp",
+    "base": {
+      "atk": 227797,
+      "hp": 1518646,
+      "def": 0,
+      "status": 0,
+      "odds": 102300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Excalibur",
+      "desc": "Excalibur King: Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers. Heals 4.4% of its max HP every turn. 11% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "great-mage-founder",
+    "name": "Great Mage Founder",
+    "series": "",
+    "image": "images/cards/art/great-mage-founder.webp",
+    "base": {
+      "atk": 139105,
+      "hp": 927364,
+      "def": 0,
+      "status": 0,
+      "odds": 162100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Every Spell There Is",
+      "desc": "Great Mage Founder knows every spell. Copies the ability of every new enemy card it faces. Blocks the first 2 hits completely. 2.6% chance to dodge each hit. Every hit also hits the whole enemy bench for 8.7% of its normal hit (no crits or bonuses). Ignores the enemy's shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "greed-archbishop",
+    "name": "Greed Archbishop",
+    "series": "",
+    "image": "images/cards/art/greed-archbishop.webp",
+    "base": {
+      "atk": 123701,
+      "hp": 824672,
+      "def": 0,
+      "status": 0,
+      "odds": 64600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lion's Heart",
+      "desc": "Regulus stops his own time. Takes 82% less damage until it has been hit 5 times. Ignores shields, dodges and barriers. Attackers take 25% of their damage back."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "guardian-overseer",
+    "name": "Guardian Overseer",
+    "series": "",
+    "image": "images/cards/art/guardian-overseer.webp",
+    "base": {
+      "atk": 143710,
+      "hp": 958068,
+      "def": 0,
+      "status": 0,
+      "odds": 75300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hermes Trismegistus",
+      "desc": "Albedo is the strongest shield of Nazarick. Takes 40% less damage. Blocks the first 2 hits completely. Attackers take 20% of their damage back. Once, takes the killing blow for Ainz."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "human-monster",
+    "name": "Human Monster",
+    "series": "",
+    "image": "images/cards/art/human-monster.webp",
+    "base": {
+      "atk": 94138,
+      "hp": 627584,
+      "def": 0,
+      "status": 0,
+      "odds": 55400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Cosmic Fear Mode",
+      "desc": "Garou: Copies the ability of every enemy card it faces. Takes 8.4% less from an attack each time it has seen it (up to 4 times). Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "hundred-hand-chairman",
+    "name": "Hundred Hand Chairman",
+    "series": "",
+    "image": "images/cards/art/hundred-hand-chairman.webp",
+    "base": {
+      "atk": 102257,
+      "hp": 681714,
+      "def": 0,
+      "status": 0,
+      "odds": 44000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "100-Type Guanyin Bodhisattva",
+      "desc": "Netero: 51% chance to attack twice (each hit does 0.75x damage). Every hit also hits the whole enemy bench for 20%. Its attacks can't be dodged. When knocked out, it explodes for 41% of its max HP on the enemy in front."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "one-eyed-ghoul",
+    "name": "One-Eyed Ghoul",
+    "series": "",
+    "image": "images/cards/art/one-eyed-ghoul.webp",
+    "base": {
+      "atk": 219929,
+      "hp": 1466190,
+      "def": 0,
+      "status": 0,
+      "odds": 150200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Dragon: One-Eyed King",
+      "desc": "One-Eyed Ghoul's dragon kakuja devours everything. Each kill gives it 15% of the defeated card's damage and HP. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Heals 5% of its max HP every turn. Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "skull-knight",
+    "name": "Skull Knight",
+    "series": "",
+    "image": "images/cards/art/skull-knight.webp",
+    "base": {
+      "atk": 256842,
+      "hp": 1712280,
+      "def": 0,
+      "status": 0,
+      "odds": 175100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sword of Beherit",
+      "desc": "Skull Knight cuts through dimensions. +60% damage against Apostle cards. Ignores the enemy's shields, dodges and barriers. Every 2nd attack also hits the card behind for 50% of its normal hit (no crits or bonuses). 30% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "spirit-gun-delinquent",
+    "name": "Spirit Gun Delinquent",
+    "series": "",
+    "image": "images/cards/art/spirit-gun-delinquent.webp",
+    "base": {
+      "atk": 130888,
+      "hp": 872588,
+      "def": 0,
+      "status": 0,
+      "odds": 110500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Spirit Gun Mega",
+      "desc": "Spirit Gun Delinquent's demon blood awakens. Every 3rd attack does 1.89x damage. Every 2nd attack also hits the card behind for 35% of its normal hit (no crits or bonuses). Under 18% HP: +32% damage. Comes back once with 22% HP. Spirit Detective cards in your deck get +6.7% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "strongest-soldier",
+    "name": "Strongest Soldier",
+    "series": "",
+    "image": "images/cards/art/strongest-soldier.webp",
+    "base": {
+      "atk": 82721,
+      "hp": 551476,
+      "def": 0,
+      "status": 0,
+      "odds": 51300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Humanity's Strongest",
+      "desc": "Levi spins through Titans. 88% chance to attack twice (each hit does 0.8x damage). +44% damage against Titan cards. Each hit adds 2 Bleed stacks (1.8% of the enemy's max HP per turn each, up to 4, 3 turns). 31% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "time-stop-vampire",
+    "name": "Time Stop Vampire",
+    "series": "",
+    "image": "images/cards/art/time-stop-vampire.webp",
+    "base": {
+      "atk": 143502,
+      "hp": 956678,
+      "def": 0,
+      "status": 0,
+      "odds": 139100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "ZA WARUDO",
+      "desc": "Time Stop Vampire stops time. 26% chance per hit to Stun the enemy for 2 turns (it skips those turns). 32% chance to attack twice. Heals 20% of the damage it deals. Heals 5.2% of its max HP every turn. Takes 2x damage from Hamon cards."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "time-wizard-king",
+    "name": "Time Wizard King",
+    "series": "",
+    "image": "images/cards/art/time-wizard-king.webp",
+    "base": {
+      "atk": 126158,
+      "hp": 841054,
+      "def": 0,
+      "status": 0,
+      "odds": 119300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Time Magic: Chrono Stasis",
+      "desc": "Time Wizard King stops time. 29% chance per hit to Stun the enemy for 2 turns (it skips those turns). 29% chance to attack twice. Comes back once with 36% HP. 18% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "twelve-labors-giant",
+    "name": "Twelve Labors Giant",
+    "series": "",
+    "image": "images/cards/art/twelve-labors-giant.webp",
+    "base": {
+      "atk": 107650,
+      "hp": 717666,
+      "def": 0,
+      "status": 0,
+      "odds": 94700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "God Hand",
+      "desc": "Twelve Labors Giant's twelve lives. Comes back once with 79% HP. Survives its first killing blow with 1 HP. Each time an enemy card's attack hits it, that attack does 12% less to it next time (up to 48% less). +32% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "wrath-shield-hero",
+    "name": "Wrath Shield Hero",
+    "series": "",
+    "image": "images/cards/art/wrath-shield-hero.webp",
+    "base": {
+      "atk": 103779,
+      "hp": 691860,
+      "def": 0,
+      "status": 0,
+      "odds": 87700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Wrath Shield: Blood Sacrifice",
+      "desc": "Wrath Shield Hero is the ultimate defender. Takes 28% less damage. Whoever hits it gets 2 Burn stacks (each stack: 2.1% of their max HP per turn, max 4 stacks, 3 turns). Sends 17% of the damage it takes back at the attacker. Every other card in your deck gets +7% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
   }
 ]
