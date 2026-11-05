@@ -7446,5 +7446,705 @@
     "tier": "",
     "updated": "2026-10-29",
     "redraw": true
+  },
+  {
+    "id": "bell-hair-berserker",
+    "name": "Bell Hair Berserker",
+    "series": "",
+    "image": "images/cards/art/bell-hair-berserker.webp",
+    "base": {
+      "atk": 26578,
+      "hp": 177186,
+      "def": 0,
+      "status": 0,
+      "odds": 1700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Nozarashi",
+      "desc": "Kenpachi lives for the fight. +12% damage every turn. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "chainsaw-hero",
+    "name": "Chainsaw Hero",
+    "series": "",
+    "image": "images/cards/art/chainsaw-hero.webp",
+    "base": {
+      "atk": 26600,
+      "hp": 177330,
+      "def": 0,
+      "status": 0,
+      "odds": 2500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Chainsaw Man",
+      "desc": "Denji: Each hit adds 2 Bleed stacks (1.9% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 16% of the damage it deals. Comes back once with 36% HP. +4.8% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "flame-pillar",
+    "name": "Flame Pillar",
+    "series": "",
+    "image": "images/cards/art/flame-pillar.webp",
+    "base": {
+      "atk": 24798,
+      "hp": 165318,
+      "def": 0,
+      "status": 0,
+      "odds": 1700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ninth Form: Rengoku",
+      "desc": "Rengoku sets his heart ablaze. Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). +40% damage against Demon cards. Survives its first killing blow with 1 HP. When knocked out, the next card in the deck gets +35% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "flower-wind-captain",
+    "name": "Flower Wind Captain",
+    "series": "",
+    "image": "images/cards/art/flower-wind-captain.webp",
+    "base": {
+      "atk": 34663,
+      "hp": 231084,
+      "def": 0,
+      "status": 0,
+      "odds": 1800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Katen Kyokotsu",
+      "desc": "Kyoraku forces children's games. Each hit: 55% chance to do 2.5x damage, otherwise it misses. After an unlucky hit, its next hit does 1.6x damage. Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "frost-insect-general",
+    "name": "Frost Insect General",
+    "series": "",
+    "image": "images/cards/art/frost-insect-general.webp",
+    "base": {
+      "atk": 33393,
+      "hp": 222622,
+      "def": 0,
+      "status": 0,
+      "odds": 3500000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Four-Armed Warrior",
+      "desc": "Cocytus fights with four weapons. Always attacks twice (each hit does 0.8x damage). 25% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Takes 20% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "giant-bodyguard",
+    "name": "Giant Bodyguard",
+    "series": "",
+    "image": "images/cards/art/giant-bodyguard.webp",
+    "base": {
+      "atk": 38285,
+      "hp": 255232,
+      "def": 0,
+      "status": 0,
+      "odds": 2400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Endurance",
+      "desc": "Gigantomachia never stops. Takes 27% less damage. Heals 4.6% of its max HP every turn. Every hit also hits the whole enemy bench for 20%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "number-one-hero",
+    "name": "Number One Hero",
+    "series": "",
+    "image": "images/cards/art/number-one-hero.webp",
+    "base": {
+      "atk": 27014,
+      "hp": 180094,
+      "def": 0,
+      "status": 0,
+      "odds": 2200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "United States of Smash",
+      "desc": "All Might: Every 3rd attack does 2.5x damage. Ignores shields, dodges and barriers. Survives its first killing blow with 1 HP. When knocked out, Deku gets +40% damage and HP. +30% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "one-for-all-heir",
+    "name": "One For All Heir",
+    "series": "",
+    "image": "images/cards/art/one-for-all-heir.webp",
+    "base": {
+      "atk": 33089,
+      "hp": 220596,
+      "def": 0,
+      "status": 0,
+      "odds": 2300000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "One For All: 100%",
+      "desc": "Deku draws on every past user. +8% damage every turn (up to 8 times). Every 2nd attack also hits the card behind for 50%. 25% chance to dodge each hit. With All Might in the deck: +25% damage and HP. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "phantom-joker-magician",
+    "name": "Phantom Joker Magician",
+    "series": "",
+    "image": "images/cards/art/phantom-joker-magician.webp",
+    "base": {
+      "atk": 34922,
+      "hp": 232814,
+      "def": 0,
+      "status": 0,
+      "odds": 2100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bungee Gum",
+      "desc": "Hisoka: Each hit swaps the enemy's front card with a random one (not bosses). 30% chance to dodge each hit. Survives its first killing blow with 1 HP. +10% damage every time it is hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "purple-ogre-secretary",
+    "name": "Purple Ogre Secretary",
+    "series": "",
+    "image": "images/cards/art/purple-ogre-secretary.webp",
+    "base": {
+      "atk": 28566,
+      "hp": 190442,
+      "def": 0,
+      "status": 0,
+      "odds": 3100000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Result Alteration",
+      "desc": "Shion's unique skill rewrites the outcome. Survives its first killing blow with 1 HP. Under 40% HP: +70% damage. Takes 20% less damage. Each hit adds 1 Poison stack (3% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "quagmire-mage",
+    "name": "Quagmire Mage",
+    "series": "",
+    "image": "images/cards/art/quagmire-mage.webp",
+    "base": {
+      "atk": 34176,
+      "hp": 227838,
+      "def": 0,
+      "status": 0,
+      "odds": 3700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Magic Armor Version One",
+      "desc": "Rudeus: Takes 30% less damage. 25% chance per hit to Stun the enemy for 1 turn. Every 3rd attack does 2.5x damage. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "shadow-garden-alpha",
+    "name": "Shadow Garden Alpha",
+    "series": "",
+    "image": "images/cards/art/shadow-garden-alpha.webp",
+    "base": {
+      "atk": 33133,
+      "hp": 220886,
+      "def": 0,
+      "status": 0,
+      "odds": 3800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Shadow Garden Command",
+      "desc": "Alpha leads the Shadow Garden. Shadow Garden cards in your deck get +15% damage and HP. Every 2nd attack also hits the card behind for 35%. 23% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "jajanken-kid",
+    "name": "Jajanken Kid",
+    "series": "",
+    "image": "images/cards/art/jajanken-kid.webp",
+    "base": {
+      "atk": 32719,
+      "hp": 218126,
+      "def": 0,
+      "status": 0,
+      "odds": 1900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Jajanken: Rock",
+      "desc": "Adult Gon gives up everything for one moment. Its first attack of the fight does 4x damage. Under 50% HP: +80% damage. Loses 6% of its max HP every attack. With Killua in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "jewel-eye-demon",
+    "name": "Jewel Eye Demon",
+    "series": "",
+    "image": "images/cards/art/jewel-eye-demon.webp",
+    "base": {
+      "atk": 31745,
+      "hp": 211630,
+      "def": 0,
+      "status": 0,
+      "odds": 3400000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Commanding Voice",
+      "desc": "Demiurge's Commanding Voice. 40% chance per hit to Confuse the enemy (it hits itself instead). Every hit sets the whole enemy deck on fire for 2 turns. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "space-pirate-overlord",
+    "name": "Space Pirate Overlord",
+    "series": "",
+    "image": "images/cards/art/space-pirate-overlord.webp",
+    "base": {
+      "atk": 28162,
+      "hp": 187744,
+      "def": 0,
+      "status": 0,
+      "odds": 2900000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Meteoric Burst",
+      "desc": "Boros goes all out. +62% damage. Heals 7.9% of its max HP every turn. Every 3rd attack does 2.32x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "spider-head",
+    "name": "Spider Head",
+    "series": "",
+    "image": "images/cards/art/spider-head.webp",
+    "base": {
+      "atk": 24768,
+      "hp": 165120,
+      "def": 0,
+      "status": 0,
+      "odds": 2000000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Skill Hunter",
+      "desc": "Chrollo steals abilities with his book. Copies the ability of every enemy card it faces. Each hit drains 3.2% of the enemy's max HP per turn for 3 turns, healing it. 13% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "sword-demon",
+    "name": "Sword Demon",
+    "series": "",
+    "image": "images/cards/art/sword-demon.webp",
+    "base": {
+      "atk": 36511,
+      "hp": 243404,
+      "def": 0,
+      "status": 0,
+      "odds": 3200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sword Demon",
+      "desc": "Wilhelm's Sword Demon style. Its first hit on each new enemy does 2.2x damage. Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). With Reinhard in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "the-goliath",
+    "name": "The Goliath",
+    "series": "",
+    "image": "images/cards/art/the-goliath.webp",
+    "base": {
+      "atk": 31748,
+      "hp": 211656,
+      "def": 0,
+      "status": 0,
+      "odds": 2700000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Goliath Mode",
+      "desc": "Thomas Andre is a living fortress. Takes 30% less damage. +10% damage every time it is hit. Survives its first killing blow with 1 HP. Ignores shields, dodges and barriers."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "tornado-esper",
+    "name": "Tornado Esper",
+    "series": "",
+    "image": "images/cards/art/tornado-esper.webp",
+    "base": {
+      "atk": 31927,
+      "hp": 212846,
+      "def": 0,
+      "status": 0,
+      "odds": 2800000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Psychic Tornado",
+      "desc": "Tatsumaki throws the whole battlefield. Every hit also hits the whole enemy bench for 20%. Blocks the first 3 hits completely. Can't be stunned, frozen or paralyzed. +9.1% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "war-devil-girl",
+    "name": "War Devil Girl",
+    "series": "",
+    "image": "images/cards/art/war-devil-girl.webp",
+    "base": {
+      "atk": 55582,
+      "hp": 370548,
+      "def": 0,
+      "status": 0,
+      "odds": 2600000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Weapon Creation",
+      "desc": "Yoru turns things into weapons. Every 2nd attack also hits the card behind for 35%. Its first hit on each new enemy does 1.76x damage. Loses 4% of its max HP every attack. +23% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
   }
 ]
