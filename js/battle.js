@@ -636,19 +636,21 @@
       }
       return this.nextTurn(side, foe);
     }
-    finish() {
-      this.done = true;
-      const A = this.alive("a"), B = this.alive("b");
-      if (this.boss) { this.win = A ? "end" : "lose"; this.why = A ? "30 rounds done" : "Your team was wiped in round " + this.round; return true; }
+    // stop = the End button (owner 2026-11-05): the fight ends where it is · Guild Boss keeps the damage so far · Arena is judged
+    // now with the 30-round rules (cards alive → team HP → front HP)
+    finish(stop = false) {
+      this.done = true; this.stopped = !!stop;
+      const A = this.alive("a"), B = this.alive("b"), at = stop ? "Ended in round " + this.round : "30 rounds";
+      if (this.boss) { this.win = A ? "end" : "lose"; this.why = A ? (stop ? at : "30 rounds done") : "Your team was wiped in round " + this.round; return true; }
       if (!A && !B) { this.win = "draw"; this.why = "Both teams fell"; return true; }
       if (!B) { this.win = "win"; this.why = "Enemy team wiped in round " + this.round; return true; }
       if (!A) { this.win = "lose"; this.why = "Your team was wiped in round " + this.round; return true; }
       const thp = (s) => { const t = this[s]; return t.reduce((x, u) => x + Math.max(0, u.hp), 0) / t.reduce((x, u) => x + u.max, 0); };
       const fhp = (s) => { const f = this.front(s); return f ? f.hp / f.max : 0; };
-      if (A !== B) { this.win = A > B ? "win" : "lose"; this.why = "30 rounds · cards alive " + A + " vs " + B; }
-      else if (Math.abs(thp("a") - thp("b")) > 1e-9) { this.win = thp("a") > thp("b") ? "win" : "lose"; this.why = "30 rounds · same cards alive · team HP " + pct(thp("a")) + " vs " + pct(thp("b")); }
-      else if (Math.abs(fhp("a") - fhp("b")) > 1e-9) { this.win = fhp("a") > fhp("b") ? "win" : "lose"; this.why = "30 rounds · front card HP " + pct(fhp("a")) + " vs " + pct(fhp("b")); }
-      else { this.win = "draw"; this.why = "30 rounds · all equal"; }
+      if (A !== B) { this.win = A > B ? "win" : "lose"; this.why = at + " · cards alive " + A + " vs " + B; }
+      else if (Math.abs(thp("a") - thp("b")) > 1e-9) { this.win = thp("a") > thp("b") ? "win" : "lose"; this.why = at + " · same cards alive · team HP " + pct(thp("a")) + " vs " + pct(thp("b")); }
+      else if (Math.abs(fhp("a") - fhp("b")) > 1e-9) { this.win = fhp("a") > fhp("b") ? "win" : "lose"; this.why = at + " · front card HP " + pct(fhp("a")) + " vs " + pct(fhp("b")); }
+      else { this.win = "draw"; this.why = at + " · all equal"; }
       return true;
     }
     run() { this.start(); while (!this.step()); return this; }
@@ -692,12 +694,17 @@
      ========================================================== */
   const F = { b: null, token: 0, k: 1, mode: "boss", seed: (Date.now() % 2147483647) || 7, hud: true, shown: { a: null, b: null } };
   const fightRoot = () => $("#bt-fight");
+  /* the fight card's text (owner 2026-11-05 · C.RDC places replaced on this card only, cqw of the card · css .bt-hpbar):
+     the ability name never meets the Trait / Grade pills (they end at 67.2) → its capitals start at 71 at the highest ·
+     the text ends 3 above the HP bar (108.5–117.5, bigger) · a long text gets smaller, line pitch kept (room between lines) */
+  const FIGHT_RDC = { txtTop: 71 + 5.83 + 4.2, txtEnd: 104.8 };
   function fightCard(u) {
     const card = C.renderCard(u.x, u.rar, { mini: false, tilt: false });
     card.removeAttribute("role"); card.tabIndex = -1; card.setAttribute("aria-hidden", "true");
     card.classList.add("bt-fc");
     P().paintTG(card, u.trait && u.trait.id, u.grade, false);
-    const bar = document.createElement("span"); bar.className = "bt-hpbar" + (u.inf ? " is-inf" : ""); bar.innerHTML = `<i></i><b>HP</b>`;
+    card._rdc = FIGHT_RDC;   // fitted again by setNums → C.setCardNums
+    const bar = document.createElement("span"); bar.className = "bt-hpbar"; bar.innerHTML = `<i></i><b>HP</b>`;   // the boss's bar = ours (full: HP ∞)
     card.appendChild(bar);
     if (!u.sim && !u.shadow) { const w = document.createElement("span"); w.className = "bt-warn"; w.textContent = "Skill not simulated yet"; card.appendChild(w); }
     if (u.shadow) card.insertAdjacentHTML("beforeend", `<span class="bt-copy">SHADOW</span>`);
@@ -771,12 +778,12 @@
     if (!b.a.length) { FX.toast("Add at least one card to your team"); return; }
     if (!b.b.length) { FX.toast(mode === "boss" ? "The boss card isn't in the library" : "Add at least one card to the enemy team"); return; }
     F.token++; const my = F.token; F.mode = mode;
-    F.b = b; openFight();
+    F.b = b; F.started = false; openFight();
     $("#bt-mode").textContent = mode === "boss" ? "Stage " + STAGE : "Arena";
     $("#bt-round").innerHTML = "1<em> / 30</em>";
     drawSlot(b.front("a"), true); drawSlot(b.front("b"), true); drawBench(); SND.play("enter");
     await sleep(500 * F.k); if (my !== F.token) return;
-    b.start(); for (const e of queue.splice(0)) showEv(e);
+    b.start(); F.started = true; for (const e of queue.splice(0)) showEv(e);
     await sleep(450 * F.k);
     while (my === F.token) {
       const done = b.step(), evs = queue.splice(0), t0 = performance.now();
@@ -806,7 +813,9 @@
     const sp = $('[data-spd][aria-pressed="true"]', f); if (sp) sp.focus({ preventScroll: true });
   }
   function closeFight() { F.token++; const f = fightRoot(); if (f) f.hidden = true; document.documentElement.classList.remove("bt-fighting"); $$(".bt-banner").forEach((x) => x.remove()); }
-  function endFight() { if (!F.b) return; F.token++; const b = F.b; b.E = null; while (!b.step()); showResult(b); }
+  // Skip = play the rest at once (same result as watching) · End = stop here (b.finish(true))
+  function skipFight() { if (!F.b) return; F.token++; const b = F.b; b.E = null; if (!F.started) { b.start(); F.started = true; } while (!b.step()); showResult(b); }
+  function endFight() { if (!F.b) return; F.token++; const b = F.b; b.E = null; if (!b.done) b.finish(true); showResult(b); }
 
   /* ==========================================================
      RESULT (+ a Guild Boss fight is saved: best fights, your damage, the stage it pushed to)
@@ -1067,6 +1076,7 @@
       const sp = e.target.closest("[data-spd]");
       if (sp) { const v = Number(sp.dataset.spd); F.k = v === 1 ? 1 : v === 2 ? .5 : 1 / 3; f.style.setProperty("--bt-k", F.k.toFixed(3)); $$("[data-spd]", f).forEach((x) => x.setAttribute("aria-pressed", String(x === sp))); return; }
       if (e.target.closest("#bt-hide")) { F.hud = !F.hud; f.classList.toggle("hud-off", !F.hud); $("#bt-hide span").textContent = F.hud ? "Hide" : "Show"; return; }
+      if (e.target.closest("#bt-skip")) { skipFight(); return; }
       if (e.target.closest("#bt-end")) { endFight(); return; }
       if (e.target.closest("#bt-sound")) { SND.unlock(); SND.muted = !SND.muted; store.set(MUTE_KEY, SND.muted ? "1" : "0"); drawSound(); FX.toast(SND.muted ? "Sound off" : "Sound on"); }
     });

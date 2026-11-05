@@ -202,16 +202,15 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-arena { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; align-items: center; align-content: center; width: 100%; max-width: 680px; margin: 0 auto; }
 .bt-fslot { position: relative; min-width: 0; }
 .bt-fwrap { position: relative; }
-/* the game's fight card on the site card: an HP bar above the ATK row, the ability block moved up · no 1 IN X pill */
+/* the game's fight card on the site card: an HP bar above the ATK row · no 1 IN X pill · the ability name + text sit between the
+   Trait / Grade pills and the bar (js/battle.js FIGHT_RDC · owner 2026-11-05: the name never under the pills, a bigger bar,
+   the boss's bar = ours) · bar 108.5–117.5cqw of the 133.3cqw card, the ATK row's capitals start at 120.2 */
 .bt-fc .rd__pill:not(.rd__pill--rar) { display: none; }
-.bt-fc .rd__ab { transform: translateY(-8cqw); }
-.bt-hpbar { position: absolute; z-index: 6; left: 7cqw; right: 7cqw; bottom: 17cqw; height: 6.6cqw; border-radius: 99cqw; overflow: hidden; background: var(--bt-bar-bg);
-  box-shadow: 0 0 0 .7cqw var(--bt-line), inset 0 .6cqw 1cqw var(--bt-shade-55); pointer-events: none; }
-.bt-hpbar > i { position: absolute; inset: .9cqw; border-radius: 99cqw; transform-origin: left; transform: scaleX(var(--p, 1)); background: var(--bt-bar-hi); transition: transform calc(380ms * var(--bt-k)) var(--ease); }
+.bt-hpbar { position: absolute; z-index: 6; left: 6cqw; right: 6cqw; bottom: 15.8cqw; height: 9cqw; border-radius: 99cqw; overflow: hidden; background: var(--bt-bar-bg);
+  box-shadow: 0 0 0 .8cqw var(--bt-line), inset 0 .6cqw 1cqw var(--bt-shade-55); pointer-events: none; }
+.bt-hpbar > i { position: absolute; inset: 1.1cqw; border-radius: 99cqw; transform-origin: left; transform: scaleX(var(--p, 1)); background: var(--bt-bar-hi); transition: transform calc(380ms * var(--bt-k)) var(--ease); }
 .bt-hpbar > i.mid { background: var(--bt-bar-mid); } .bt-hpbar > i.lo { background: var(--bt-bar-lo); }
-.bt-hpbar.is-inf > i { right: -6cqw; background: repeating-linear-gradient(90deg, var(--bt-inf-a) 0 3cqw, var(--bt-inf-b) 3cqw 6cqw); animation: bt-infbar 1.4s linear infinite; }
-@keyframes bt-infbar { to { transform: translateX(-6cqw); } }
-.bt-hpbar > b { position: absolute; left: 3cqw; top: 50%; transform: translateY(-50%) skewX(-8deg); font: 400 5cqw/1 var(--gc-font-pop); letter-spacing: .03em; color: var(--bt-hp-ink); -webkit-text-stroke: .9cqw var(--bt-line); paint-order: stroke fill; }
+.bt-hpbar > b { position: absolute; left: 3.4cqw; top: 50%; transform: translateY(-50%) skewX(-8deg); font: 400 6.6cqw/1 var(--gc-font-pop); letter-spacing: .03em; color: var(--bt-hp-ink); -webkit-text-stroke: 1cqw var(--bt-line); paint-order: stroke fill; }
 .bt-zone { position: absolute; z-index: 6; left: 3.5cqw; top: 16cqw; display: flex; gap: 1.6cqw; align-items: center; padding: 1.2cqw 2.4cqw; border-radius: 99cqw; background: var(--bt-zone-bg);
   box-shadow: 0 0 0 .5cqw var(--bt-zone-ring); font: 400 4.4cqw/1 var(--gc-font-pop); letter-spacing: .05em; color: var(--bt-zone-ink); pointer-events: none; }
 .bt-zone i { width: 2.8cqw; height: 2.8cqw; transform: rotate(45deg); background: var(--bt-wash-22); transition: background var(--t-med); }
@@ -278,12 +277,14 @@ html.bt-fighting .nav, html.bt-fighting .topbar { visibility: hidden; }
 .bt-bench i.front { border-color: var(--gold); box-shadow: 0 0 8px rgba(var(--gold-rgb), .7); }
 .bt-bench i.dead img { filter: grayscale(1) brightness(.4); }
 .bt-bench i.dead::after { content: "✕"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--bt-lose); font-weight: 800; font-size: 13px; }
-.bt-ctl { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; }
+/* speed · Hide · Skip · End (owner 2026-11-05: Skip = play the rest at once · End = stop here) · one row down to 320px */
+.bt-ctl { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: 6px; align-items: center; }
+.bt-ctl .tm-btn { min-width: 0; padding-inline: 6px; white-space: nowrap; }
+@media (min-width: 700px) { .bt-ctl { grid-template-columns: auto 1fr auto auto; gap: 10px; } .bt-ctl .tm-btn { min-width: 120px; padding-inline: 20px; } #bt-hide { justify-self: center; } }
 .bt-spd { display: flex; gap: 4px; padding: 3px; border-radius: var(--r-pill); background: var(--glass-under); border: 1px solid var(--glass-line); }
 .bt-spd button { min-width: 44px; min-height: 40px; border-radius: var(--r-pill); border: 0; background: transparent; font: 700 15px/1 var(--gc-font-num); color: var(--ink-dim); }
 .bt-spd button[aria-pressed="true"] { background: var(--brass-gold); color: var(--on-gold); }
-#bt-hide { justify-self: center; }
-.bt-fight.hud-off .bt-ft__top, .bt-fight.hud-off .bt-teams, .bt-fight.hud-off .bt-spd, .bt-fight.hud-off #bt-end { opacity: 0; pointer-events: none; }
+.bt-fight.hud-off .bt-ft__top, .bt-fight.hud-off .bt-teams, .bt-fight.hud-off .bt-spd, .bt-fight.hud-off #bt-skip, .bt-fight.hud-off #bt-end { opacity: 0; pointer-events: none; }
 .bt-banner { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; pointer-events: none; }
 .bt-banner span { font: 400 clamp(46px, 14vw, 96px)/1 var(--gc-font-pop); letter-spacing: .06em; color: var(--bt-shout); paint-order: stroke fill; -webkit-text-stroke: 8px var(--bt-shout-line); text-shadow: 0 8px 30px var(--bt-shade-60); animation: bt-banner 1.4s var(--ease) forwards; }
 .bt-banner.lose span { color: var(--bt-lose-ink); -webkit-text-stroke-color: var(--bt-lose-line); }

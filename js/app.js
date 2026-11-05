@@ -615,40 +615,41 @@
       nm.style.top = cq(top - capOff(ANTON, two ? 0.98 : 1) * fs);
     }
   }
+  // el._rdc = places that replace RDC on this card only (js/battle.js: the fight card's text sits between the Trait / Grade pills and the HP bar)
   function fitRdCard(el, samples) {
-    const q = (s) => $(s, el);
+    const q = (s) => $(s, el), R = el._rdc ? Object.assign({}, RDC, el._rdc) : RDC;
     const nm = q(".rd__nm");
-    if (nm) fitRdName(nm, RDC.nameCap, RDC.nameTop);
+    if (nm) fitRdName(nm, R.nameCap, R.nameTop);
     const hp = q('.rd__hp [data-k="hp"]');
-    if (hp) { rdNum(hp, samples.hp || hp.textContent, RDC.hpCap, RDC.hpTop, RDC.hpRight - RDC.mid - RDC.gap); hp.style.right = cq(100 - RDC.hpRight - RDC.padNum); }
+    if (hp) { rdNum(hp, samples.hp || hp.textContent, R.hpCap, R.hpTop, R.hpRight - R.mid - R.gap); hp.style.right = cq(100 - R.hpRight - R.padNum); }
     const atk = q('.rd__bot [data-k="atk"]');
-    if (atk) rdNum(atk, samples.atk || atk.textContent, RDC.atkCap, RDC.atkTop, RDC.atkMax);   // centred by css (left 50% · owner 2026-11-03)
-    // owner 2026-11-03: the last line of the text always ends on RDC.txtEnd (= Destroyer God's "damage." → the gap to ATK is fixed)
-    // short text grows (up to txtGrow × the game's size), long text shrinks · the ability name sits RDC.abnGap above the text's first
+    if (atk) rdNum(atk, samples.atk || atk.textContent, R.atkCap, R.atkTop, R.atkMax);   // centred by css (left 50% · owner 2026-11-03)
+    // owner 2026-11-03: the last line of the text always ends on R.txtEnd (= Destroyer God's "damage." → the gap to ATK is fixed)
+    // short text grows (up to txtGrow × the game's size), long text shrinks · the ability name sits R.abnGap above the text's first
     // line (like the game's Six Paths Fox Sage), so the highest it goes is abnTop (the text then starts at txtTop)
     const abd = q(".rd__abd");
-    let capTop = RDC.txtTop;
+    let capTop = R.txtTop;
     if (abd) {
-      const words = wordsOf(abd.textContent), f0 = RDC.txtCap / OSW.c, k = RDC.txtPitch / f0;
-      let f = f0 * RDC.txtGrow, n = 1;
+      const words = wordsOf(abd.textContent), f0 = R.txtCap / OSW.c, k = R.txtPitch / f0;
+      let f = f0 * R.txtGrow, n = 1;
       for (let i = 0; i < 300; i++) {
-        [n] = rdLines(words, "t", f, RDC.txtR - RDC.txtL);
-        if (RDC.txtTop + OSW.c * f + (n - 1) * k * f <= RDC.txtEnd) break;
+        [n] = rdLines(words, "t", f, R.txtR - R.txtL);
+        if (R.txtTop + OSW.c * f + (n - 1) * k * f <= R.txtEnd) break;
         f *= 0.995;
       }
       const L = k * f;
-      capTop = RDC.txtEnd - OSW.c * f - (n - 1) * L;   // bottom-anchored: the last line's capitals end on txtEnd
+      capTop = R.txtEnd - OSW.c * f - (n - 1) * L;   // bottom-anchored: the last line's capitals end on txtEnd
       abd.style.fontSize = cq(f);
       abd.style.lineHeight = cq(L);
       abd.style.top = cq(capTop - capOff(OSW, L / f) * f);
     }
     const abn = q(".rd__abn");
     if (abn) {
-      const base = RDC.abnCap / BARLOW.c, w = nameW(abn.textContent.toUpperCase(), 0), fs = w * base > RDC.abnMax ? RDC.abnMax / w : base;
-      const top = capTop - RDC.abnGap - RDC.abnCap;
+      const base = R.abnCap / BARLOW.c, w = nameW(abn.textContent.toUpperCase(), 0), fs = w * base > R.abnMax ? R.abnMax / w : base;
+      const top = capTop - R.abnGap - R.abnCap;
       abn.style.fontSize = cq(fs);
-      abn.style.left = cq(RDC.abnX - RDC.padN);
-      abn.style.top = cq(top + (RDC.abnCap - BARLOW.c * fs) / 2 - capOff(BARLOW, 1) * fs);
+      abn.style.left = cq(R.abnX - R.padN);
+      abn.style.top = cq(top + (R.abnCap - BARLOW.c * fs) / 2 - capOff(BARLOW, 1) * fs);
     }
   }
   // a support (owner 2026-11-03 "Support Layout Lab"): measured on the game's Hat and Clogs Shopkeeper (Deck view, 600×840)
