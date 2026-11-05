@@ -133,10 +133,11 @@
   const SOFT = { chance: [75, 25], other: [150, 75] };
   /* effect.knee[i] (owner + game 2026-11-02 · PROGRESS ▶️ "ค่า Support ตามระดับ"): the knee is not the same on every card
      (Nine Tails Fox damage + HP 35, less damage 40 · Hat and Clogs miss chance 90, damage 35) · past it a chance closes in
-     on 100 (room = 100 − knee), anything else on 1.5 × knee (room = knee ÷ 2) · no knee = SOFT above */
+     on 100 (room = 100 − knee), anything else on 1.5 × knee (room = knee ÷ 2) · no knee = SOFT above
+     · effect.room[i] (game 2026-11-05) = that room instead (Angel Attendant dodge: knee 60, room 30 → 64.4 / 71.2 / … / 84.5) */
   const softOf = (s, i, k) => {
-    const kn = s && s.effect && Array.isArray(s.effect.knee) ? Number(s.effect.knee[i]) : NaN;
-    return kn > 0 ? [kn, k === "chance" ? 100 - kn : kn / 2] : SOFT[k];
+    const e = s && s.effect, kn = e && Array.isArray(e.knee) ? Number(e.knee[i]) : NaN, rm = e && Array.isArray(e.room) ? Number(e.room[i]) : NaN;
+    return kn > 0 ? [kn, rm > 0 ? rm : k === "chance" ? 100 - kn : kn / 2] : SOFT[k];
   };
   const supKind = (s, i) => {
     const d = (s && s.effect && s.effect.desc) || "";

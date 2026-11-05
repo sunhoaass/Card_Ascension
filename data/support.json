@@ -259,9 +259,10 @@
     "image": "images/support/art/wish-granter.webp",
     "effect": {
       "name": "Nanika's Wish",
-      "desc": "Wish Granter grants any wish: the supported card always comes back once with 100% HP, heals {0}% of its max HP every turn and blocks the first 2 debuffs that would hit it each fight.",
+      "desc": "Wish Granter grants any wish: the supported card always comes back once with {1}% HP, heals {0}% of its max HP every turn and blocks the first 2 debuffs that would hit it each fight.",
       "vals": [
-        2
+        2,
+        35
       ],
       "type": "heal"
     },
@@ -275,7 +276,7 @@
       "value": 52.8
     },
     "tier": "S",
-    "updated": "2026-10-30",
+    "updated": "2026-11-05",
     "prevTier": "",
     "bestDeck": [],
     "redraw": true
@@ -521,11 +522,19 @@
       "name": "Angel's Grace",
       "desc": "Angel Attendant moves like an angel: the supported card dodges {0}% of hits and gets {1}% more damage and {2}% more max HP.",
       "vals": [
-        29,
-        12.43,
-        12.43
+        37,
+        12.5,
+        12.5
       ],
-      "type": "dodge"
+      "type": "dodge",
+      "knee": [
+        60,
+        35,
+        35
+      ],
+      "room": [
+        30
+      ]
     },
     "odds": 1900000000,
     "obtain": "Rolls anywhere",
@@ -537,7 +546,7 @@
       "value": 80.9
     },
     "tier": "SS",
-    "updated": "2026-11-03",
+    "updated": "2026-11-05",
     "prevTier": "S",
     "bestDeck": [
       "pvp-doom-opener"

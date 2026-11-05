@@ -57,7 +57,8 @@ def sup_val(s, i, rarity="Godly"):
     cp = (e.get("cap") or [])[i] if i < len(e.get("cap") or []) else None   # effect.cap (app.js supValAt)
     if cp: return min(float(cp), plain)
     kn = (e.get("knee") or [None] * (i + 1))[i] if i < len(e.get("knee") or []) else None   # effect.knee (app.js softOf)
-    t, c = (kn, 100 - kn if k == "chance" else kn / 2) if kn else SOFT[k]
+    rm = (e.get("room") or [])[i] if i < len(e.get("room") or []) else None   # effect.room (app.js softOf)
+    t, c = (kn, rm or (100 - kn if k == "chance" else kn / 2)) if kn else SOFT[k]
     if v <= t: return plain
     v = t + c * (1 - math.exp(-(v - t) / c))
     return round(v, 1) if dp else round(v)
@@ -164,7 +165,7 @@ SUP = {
     "angel-attendant": lambda v: dict(dodge=v[0], flat=v[1], maxhp=v[2]),
     "first-master-fairy": lambda v: dict(fairy=v[0]),
     "nine-tails-fox": lambda v: dict(flat=v[0], maxhp=v[1], dr=v[2]),
-    "wish-granter": lambda v: dict(revive=(1.0, 1.0), regen=v[0], dblock=2),
+    "wish-granter": lambda v: dict(revive=(1.0, v[1]), regen=v[0], dblock=2),
     "eternal-wish-dragon": lambda v: dict(revive=(v[0], v[2]), team_others=v[1]),
     "immortal-witch": lambda v: dict(revive=(v[0], v[1])),
     "library-spirit": lambda v: dict(leech=v[0]),

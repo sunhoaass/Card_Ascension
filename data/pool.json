@@ -5172,9 +5172,9 @@
       "series": "",
       "odds": 1900000000,
       "vals": [
-        29,
-        12.43,
-        12.43
+        37,
+        12.5,
+        12.5
       ],
       "type": "dodge",
       "src": "RobloxScreenShot20261028_123600958.png",
@@ -5752,7 +5752,8 @@
       "series": "",
       "odds": 21400000000,
       "vals": [
-        2
+        2,
+        35
       ],
       "type": "heal",
       "src": "RobloxScreenShot20261028_124043205.png",
