@@ -2467,3 +2467,13 @@
 - **ทดสอบ (Chromium + Playwright):** `CBI.supText` ทั้ง 9 ระดับ × 2 ใบ = รูปเกม 18/18 (ต่างแค่ Angel Divine เกม "25.0%" เว็บ "25%") · `deck_sim.sup_val` ได้ค่าเดียวกัน · หน้า `#support/wish-granter` + `#support/angel-attendant` ไม่มี error
 - **ไม่ได้ทำ:** ไม่แก้ `scores` / `tier` (ค่าเก่า → งาน B)
 - **ไฟล์:** `index.html` · `js/app.js` · `data/support.json` · `data/pool.json` · `data/battle.json` · `tools/battle_skills.py` · `tools/deck_sim.py` · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-05 · 🛠 แก้ Eternal Wish Dragon ให้ตรงเกม (`?v=116` → `117`)
+- **ที่มา:** เจ้าของแนบรูปเกม 7 ระดับ (Normal–Ascended) · Godlike / Godly ให้เดา
+- **ข้อมูลเดิมผิด:** `[24.33, 3.33, 22]` = ค่าในรูป Normal (73 / 10 / 66) ถูกหาร 3 เหมือนเป็นรูป Godly → Normal จริง **`[73, 10, 66]`**
+- **ค่าตามระดับไม่ใช่ ×(1 + 0.25L):** ดาเมจ 10 → 15.2 = 10 × (1 + 0.0875L) ตรง 7/7 (ปัดคู่ 12.625 → 12.6 · 15.25 → 15.2) · โอกาสคืนชีพไม่เข้า soft curve แบบ step 0.25 ทุกค่า knee/room (ค้นแล้ว 0 คำตอบ) → step 0.28 + knee 72 + room 28 (= 100 − knee เหมือนกฎ chance เดิม) ตรง 7/7 (ช่วงที่ตรง step 0.27–0.287 · knee 71.3–72.9 · ทุกคำตอบให้ Godlike 99.8 / Godly 99.9) · โมเดลอื่นที่ตรง (โอกาสพลาด 27 × 0.482^L) ก็ให้ 99.8 / 99.9 เท่ากัน · HP เส้นตรงตัน 100 ตรงเดิม
+- **ของใหม่:** `effect.step[i]` ใน `js/app.js` (`supMultAt` / `supAtStep` · ใช้ใน `supValAt` + `supBuffAt`) + `tools/deck_sim.py` (`sup_at_step`)
+- **Mutation:** รูปเกมมีบรรทัด Mutation ครบ (+3 / 5 / 8 / 13 / 18 / 25) → คำถามรอบรูปว่าง Support 2 ตอบแล้ว · เว็บถูก
+- **ทดสอบ (Chromium + Playwright):** `CBI.supText` 7 ระดับที่มีรูป = รูปเกม 7/7 ทุกตัวอักษร · Wish Granter / Angel Attendant ยังตรง 18/18 · `deck_sim.sup_val` ค่าเดียวกัน · ไม่มี error
+- **ไม่ได้ทำ:** ไม่แก้ `scores` / `tier` (Meta · ค่าเก่า → งาน B) · battle.json ไม่ต้องแก้ (`$0` `$1` `$2` ตำแหน่งเดิม)
+- **ไฟล์:** `index.html` · `js/app.js` · `data/support.json` · `data/pool.json` · `tools/deck_sim.py` · `PROGRESS.md` · `HISTORY.md`

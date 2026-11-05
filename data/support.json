@@ -488,11 +488,18 @@
       "name": "Wish Granted",
       "desc": "Eternal Wish Dragon grants one wish: the supported card has a {0}% chance to come back once with {2}% HP and makes every OTHER card in your deck deal {1}% more damage.",
       "vals": [
-        24.33,
-        3.33,
-        22
+        73,
+        10,
+        66
       ],
-      "type": "revive"
+      "type": "revive",
+      "step": [
+        0.28,
+        0.0875
+      ],
+      "knee": [
+        72
+      ]
     },
     "odds": 211000000000,
     "obtain": "Rolls anywhere",
@@ -504,7 +511,7 @@
       "value": 82.1
     },
     "tier": "Meta",
-    "updated": "2026-11-02",
+    "updated": "2026-11-05",
     "prevTier": "",
     "bestDeck": [
       "tower-predator-court",
