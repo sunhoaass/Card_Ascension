@@ -73,7 +73,7 @@ def sup_val(s, i, rarity="Godly"):
 
 
 # ---------- support effects (v = effect.vals at the rarity, as fractions: 15% → 0.15) ----------
-# keys: flat (+dmg) · maxhp · rand_boost · double (p) · crit (p, x) · dodge · dr · regen · regen_chance (p, x) · lifesteal
+# keys: flat (+dmg) · maxhp · rand_boost (dmg, hp) · double (p) · crit (p, x) · dodge · dr · regen · regen_chance (p, x) · lifesteal
 # · heal_taken · heal_all (every card of the side, at the start of this card's turns) · low_heal (under x, heal y, once)
 # · ko_heal · shield (start) · shield_every (n turns, x) · nullify (first n hits do no damage) · big_guard (once, a hit > x max HP)
 # · survive_p · revive (p, hp) · counter · reflect · dblock (debuffs blocked) · cc_immune · ignore · undodgeable
@@ -88,7 +88,7 @@ SUP = {
     "flying-cat-partner": lambda v: dict(double=v[0]),
     "fox-kit-trickster": lambda v: dict(dot=("burn", v[0], 3)),
     "gate-healer": lambda v: dict(heal_all=v[0]),
-    "inventor-girl": lambda v: dict(rand_boost=v[0]),
+    "inventor-girl": lambda v: dict(rand_boost=(v[0], v[1])),   # 50/50 per fight: +v[0]% damage or +v[1]% max HP
     "navigation-pixie": lambda v: dict(flat=v[0]),
     "pig-captain": lambda v: dict(survive_p=v[0], maxhp=v[1]),
     "plant-healer": lambda v: dict(heal_taken=v[0]),
@@ -201,8 +201,8 @@ class U:
         e = s.e
         if "maxhp" in e: s.max *= 1 + e["maxhp"]
         if "rand_boost" in e:
-            if rnd() < 0.5: s.flat += e["rand_boost"]
-            else: s.max *= 1 + e["rand_boost"]
+            if rnd() < 0.5: s.flat += e["rand_boost"][0]
+            else: s.max *= 1 + e["rand_boost"][1]
         s.flat += e.get("flat", 0.0)
         s.hp = s.max
         s.alive = True

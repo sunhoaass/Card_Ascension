@@ -2295,5 +2295,548 @@
       "overall-beerus-squad"
     ],
     "redraw": true
+  },
+  {
+    "id": "automail-mechanic",
+    "name": "Automail Mechanic",
+    "image": "images/support/art/automail-mechanic.webp",
+    "effect": {
+      "name": "Automail Tune-Up",
+      "desc": "Automail Mechanic tunes up the automail: the supported card gets {0}% more max HP.",
+      "vals": [
+        4.6
+      ],
+      "type": "max-hp"
+    },
+    "odds": 146,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 9.6,
+      "reliability": 63.5,
+      "flexibility": 29.2,
+      "synergy": 20.8,
+      "value": 26.5
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "flying-cat-partner",
+    "name": "Flying Cat Partner",
+    "image": "images/support/art/flying-cat-partner.webp",
+    "effect": {
+      "name": "Max Speed",
+      "desc": "Flying Cat Partner flies at max speed: the supported card has a {0}% chance to attack twice.",
+      "vals": [
+        11.3
+      ],
+      "type": "double-attack"
+    },
+    "odds": 256,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 6.8,
+      "reliability": 57.9,
+      "flexibility": 31.2,
+      "synergy": 13.1,
+      "value": 23.2
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "fox-kit-trickster",
+    "name": "Fox Kit Trickster",
+    "image": "images/support/art/fox-kit-trickster.webp",
+    "effect": {
+      "name": "Fox Fire",
+      "desc": "Fox Kit Trickster's fox fire: the supported card adds 1 Burn stack with each hit (each stack: {0}% of the enemy's max HP per turn, max 3 stacks, 3 turns).",
+      "vals": [
+        0.4
+      ],
+      "type": "burn"
+    },
+    "odds": 204,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 15.4,
+      "reliability": 73.5,
+      "flexibility": 39.6,
+      "synergy": 23.6,
+      "value": 33.5
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "gate-healer",
+    "name": "Gate Healer",
+    "image": "images/support/art/gate-healer.webp",
+    "effect": {
+      "name": "Healer's Light",
+      "desc": "Gate Healer's healing light: the supported card heals EVERY card in your deck {0}% of its max HP at the start of each of its turns.",
+      "vals": [
+        0.4
+      ],
+      "type": "heal"
+    },
+    "odds": 130,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 23.4,
+      "reliability": 68.0,
+      "flexibility": 31.2,
+      "synergy": 40.8,
+      "value": 37.4
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "inventor-girl",
+    "name": "Inventor Girl",
+    "image": "images/support/art/inventor-girl.webp",
+    "effect": {
+      "name": "My Babies!",
+      "desc": "Inventor Girl's newest baby: the supported card randomly gets {0}% more damage or {1}% more max HP each fight.",
+      "vals": [
+        3.3,
+        1.1
+      ],
+      "type": "random-boost"
+    },
+    "odds": 359,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 4.7,
+      "reliability": 57.6,
+      "flexibility": 25.0,
+      "synergy": 11.5,
+      "value": 20.7
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "navigation-pixie",
+    "name": "Navigation Pixie",
+    "image": "images/support/art/navigation-pixie.webp",
+    "effect": {
+      "name": "Navigation Assist",
+      "desc": "Navigation Pixie maps out the enemy's weak spots: the supported card gets {0}% more damage.",
+      "vals": [
+        3.9
+      ],
+      "type": "dmg"
+    },
+    "odds": 183,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 3.2,
+      "reliability": 59.2,
+      "flexibility": 22.9,
+      "synergy": 7.3,
+      "value": 19.2
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "pig-captain",
+    "name": "Pig Captain",
+    "image": "images/support/art/pig-captain.webp",
+    "effect": {
+      "name": "Leftover Duty",
+      "desc": "Pig Captain refuses to quit: the supported card has a {0}% chance to survive its first killing blow with 1 HP and gets {1}% more max HP.",
+      "vals": [
+        27,
+        3.5
+      ],
+      "type": "revive"
+    },
+    "odds": 287,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 9.9,
+      "reliability": 71.5,
+      "flexibility": 39.6,
+      "synergy": 16.5,
+      "value": 29.5
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "plant-healer",
+    "name": "Plant Healer",
+    "image": "images/support/art/plant-healer.webp",
+    "effect": {
+      "name": "Flower Cradle",
+      "desc": "Plant Healer's flower cradle: the supported card heals {0}% of the damage it takes.",
+      "vals": [
+        4.9
+      ],
+      "type": "heal"
+    },
+    "odds": 163,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 13.0,
+      "reliability": 64.8,
+      "flexibility": 25.0,
+      "synergy": 29.2,
+      "value": 29.0
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "portal-playboy",
+    "name": "Portal Playboy",
+    "image": "images/support/art/portal-playboy.webp",
+    "effect": {
+      "name": "Spatial Escape",
+      "desc": "Portal Playboy opens a portal: the supported card dodges {0}% of hits.",
+      "vals": [
+        7.5
+      ],
+      "type": "dodge"
+    },
+    "odds": 229,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 12.5,
+      "reliability": 50.2,
+      "flexibility": 16.7,
+      "synergy": 33.1,
+      "value": 25.0
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "spirit-sidekick",
+    "name": "Spirit Sidekick",
+    "image": "images/support/art/spirit-sidekick.webp",
+    "effect": {
+      "name": "Evil Spirit Grudge",
+      "desc": "Spirit Sidekick holds a grudge: the supported card gets {0}% more damage every time it is hit.",
+      "vals": [
+        1.93
+      ],
+      "type": "dmg"
+    },
+    "odds": 321,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 7.6,
+      "reliability": 57.6,
+      "flexibility": 18.8,
+      "synergy": 20.5,
+      "value": 22.4
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "desert-princess",
+    "name": "Desert Princess",
+    "image": "images/support/art/desert-princess.webp",
+    "effect": {
+      "name": "Peacock Slashers",
+      "desc": "Desert Princess's Peacock String Slashers: the supported card has a {0}% chance to attack twice.",
+      "vals": [
+        11.97
+      ],
+      "type": "double-attack"
+    },
+    "odds": 3183,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 8.2,
+      "reliability": 59.8,
+      "flexibility": 29.2,
+      "synergy": 15.1,
+      "value": 24.1
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "doctor-hunter",
+    "name": "Doctor Hunter",
+    "image": "images/support/art/doctor-hunter.webp",
+    "effect": {
+      "name": "Remote Punch",
+      "desc": "Doctor Hunter's warp punch: the supported card hits the enemy in front for {0}% of its max HP when it comes in (can't knock it out).",
+      "vals": [
+        8.2
+      ],
+      "type": "max-hp-hit"
+    },
+    "odds": 2740,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 14.2,
+      "reliability": 71.9,
+      "flexibility": 79.2,
+      "synergy": 14.3,
+      "value": 38.8
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "fox-mask-mentor",
+    "name": "Fox Mask Mentor",
+    "image": "images/support/art/fox-mask-mentor.webp",
+    "effect": {
+      "name": "Water Breathing Drills",
+      "desc": "Fox Mask Mentor's training pays off: the supported card gets {0}% more damage every turn (up to 5 times).",
+      "vals": [
+        2
+      ],
+      "type": "dmg"
+    },
+    "odds": 2479,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 6.0,
+      "reliability": 62.9,
+      "flexibility": 20.8,
+      "synergy": 14.0,
+      "value": 21.9
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "master-spy-father",
+    "name": "Master Spy Father",
+    "image": "images/support/art/master-spy-father.webp",
+    "effect": {
+      "name": "Agent Twilight",
+      "desc": "Master Spy Father aims for the weak spot: the supported card has an {0}% chance to crit for 2x damage.",
+      "vals": [
+        16.7
+      ],
+      "type": "crit"
+    },
+    "odds": 2880,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 15.0,
+      "reliability": 66.2,
+      "flexibility": 29.2,
+      "synergy": 28.0,
+      "value": 30.7
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "mind-transfer-kunoichi",
+    "name": "Mind Transfer Kunoichi",
+    "image": "images/support/art/mind-transfer-kunoichi.webp",
+    "effect": {
+      "name": "Mind Transfer Jutsu",
+      "desc": "Mind Transfer Kunoichi takes over the enemy's mind: the supported card has an {0}% chance per hit to Confuse the enemy (it skips its next turn and hits itself for half damage).",
+      "vals": [
+        8.5
+      ],
+      "type": "confuse"
+    },
+    "odds": 3346,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 21.9,
+      "reliability": 72.5,
+      "flexibility": 35.4,
+      "synergy": 36.2,
+      "value": 37.6
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "namekian-healer",
+    "name": "Namekian Healer",
+    "image": "images/support/art/namekian-healer.webp",
+    "effect": {
+      "name": "Namekian Healing",
+      "desc": "Namekian Healer's hands glow: the supported card heals {0}% of its max HP every turn.",
+      "vals": [
+        1.3
+      ],
+      "type": "heal"
+    },
+    "odds": 2358,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 27.3,
+      "reliability": 58.1,
+      "flexibility": 27.1,
+      "synergy": 55.1,
+      "value": 39.0
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "salt-splash-mentor",
+    "name": "Salt Splash Mentor",
+    "image": "images/support/art/salt-splash-mentor.webp",
+    "effect": {
+      "name": "Salt Splash",
+      "desc": "Salt Splash Mentor throws salt in their eyes: the supported card has a {0}% chance per hit to Weaken the enemy (it deals {1}% less damage).",
+      "vals": [
+        29,
+        10.9
+      ],
+      "type": "weaken"
+    },
+    "odds": 3028,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 40.8,
+      "reliability": 78.2,
+      "flexibility": 52.1,
+      "synergy": 53.8,
+      "value": 53.1
+    },
+    "tier": "S",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "senzu-bean-cat",
+    "name": "Senzu Bean Cat",
+    "image": "images/support/art/senzu-bean-cat.webp",
+    "effect": {
+      "name": "Senzu Bean",
+      "desc": "Senzu Bean Cat tosses a Senzu Bean: the supported card heals {0}% of its max HP the first time it drops under 30% HP.",
+      "vals": [
+        9
+      ],
+      "type": "heal"
+    },
+    "odds": 3518,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 9.1,
+      "reliability": 55.3,
+      "flexibility": 33.3,
+      "synergy": 15.0,
+      "value": 24.4
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "silent-healer-elf",
+    "name": "Silent Healer Elf",
+    "image": "images/support/art/silent-healer-elf.webp",
+    "effect": {
+      "name": "Silent Chant",
+      "desc": "Silent Healer Elf heals without a word: the supported card heals EVERY card in your deck {0}% of its max HP at the start of each of its turns.",
+      "vals": [
+        0.63
+      ],
+      "type": "heal"
+    },
+    "odds": 3698,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 54.4,
+      "reliability": 72.3,
+      "flexibility": 39.6,
+      "synergy": 80.1,
+      "value": 60.2
+    },
+    "tier": "S",
+    "updated": "2026-10-31",
+    "prevTier": "SS",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "song-sorceress",
+    "name": "Song Sorceress",
+    "image": "images/support/art/song-sorceress.webp",
+    "effect": {
+      "name": "Solo Forbidden Area",
+      "desc": "Song Sorceress's song amplifies the next technique: the supported card does {0}% more damage every 2nd attack.",
+      "vals": [
+        34
+      ],
+      "type": "dmg"
+    },
+    "odds": 2606,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 7.9,
+      "reliability": 60.4,
+      "flexibility": 29.2,
+      "synergy": 16.1,
+      "value": 24.3
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
   }
 ]

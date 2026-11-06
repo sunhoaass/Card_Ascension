@@ -166,7 +166,7 @@ SUPPORT = {
     "gun-captain": {"dot": DOT("burn")},
     "doctor-demon": {"dot": DOT("poison")},
     "inventor-girl": {"todo": ["every fight a random boost to its damage or its max HP"]},
-    "doctor-hunter": {"entryHit": "$0"},
+    "doctor-hunter": {"entryHit": "$0", "todo": ["can't knock it out (the entry hit can still kill)"]},
     "toad-boss": {"entryHit": "$0", "todo": ["can't knock it out (the entry hit can still kill)"]},
     "food-mage": {"killHeal": "$0"},
     "fox-mask-mentor": {"perTurn": {"v": "$0", "n": 5}},
