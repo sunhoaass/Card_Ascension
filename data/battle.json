@@ -423,7 +423,7 @@
     "fox-kit-trickster": { "dot": { "kind": "burn", "add": 1, "pct": "$0", "max": 3, "turns": 3 } },
     "inventor-girl": { "todo": ["every fight a random boost to its damage or its max HP"] },
     "desert-princess": { "double": { "p": "$0", "m": 1 } },
-    "doctor-hunter": { "entryHit": "$0" },
+    "doctor-hunter": { "entryHit": "$0", "todo": ["can't knock it out (the entry hit can still kill)"] },
     "food-mage": { "killHeal": "$0" },
     "fox-mask-mentor": { "perTurn": { "v": "$0", "n": 5 } },
     "lonely-crimson-mage": { "stun": { "p": "$0", "turns": 2, "lose": 0.5, "kind": "Paralyze" } },
