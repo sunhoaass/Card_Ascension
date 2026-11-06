@@ -2583,3 +2583,11 @@
 - **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 20 ใบ · `todo` 10 ใบ (ดู ▶️) · `matchup_sim.py --parse` `unknown` 6 ใบ = ช่องว่าง engine เดิม ไม่ใช่ regex พัง · `deckbuff_report.js` ชื่อไม่รู้จัก 4 ชื่อเดิม (Spirit Detective · Zeref · Party)
 - **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด · หน้าดูการ์ด 20 ใบ รูป 600×800 ตรง id · `gc--rd` ครบ · ไม่มี error / 404
 - **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-06 · 🖼 รอบรูปว่าง 14: การ์ด 20 ใบจากรูปที่เจ้าของแนบ (ไม่เปลี่ยน `?v=` · ไม่แตะ CSS/JS)
+- **รูปเจ้าของ:** แนบ 20 รูป · 864×1200 ล้วน artwork · ย่อกว้าง 600 ตัดล่างเหลือ **600×800** ชิดบน + thumb 300×400 (webp q86 / q83)
+- **จับคู่:** sheet รูปว่างคู่รูปครอบใน `cropped_cards/` (20 ใบล่าสุด) เปิดดูด้วยตาทุกใบ ตัวละคร/ฉากตรงทั้ง 20 · HP/ATK ใน pending ตรงกับตัวเลขบนรูปครอบ 20/20 (ไม่ได้ใช้ SIFT รอบนี้ — ไม่มี cv2 ในเครื่อง)
+- **การ์ด 20 ใบ:** `restore_pending.py` → `redraw: true` + `image` = `images/cards/art/<id>.webp` · ข้อมูล = ของเดิมใน pending · `tier` / `scores` ไม่แตะ · pending เหลือการ์ด 140 ใบ · เว็บมีการ์ด 260 ใบ
+- **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 20 ใบ · `todo` 1 ใบ (Explosion Witch) · `matchup_sim.py --parse` `unknown` 2 ใบ (Explosion Witch · Mochi Commander) = ช่องว่าง engine เดิม · `deckbuff_report.js` ชื่อไม่รู้จัก 4 ชื่อเดิม
+- **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด · หน้าดูการ์ด 20 ใบ รูป 600×800 ตรง id · `gc--rd` ครบ · ไม่มี error / 404 · JSON ถูกต้อง
+- **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`

@@ -2068,74 +2068,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "asaemon-swordswoman",
-    "name": "Asaemon Swordswoman",
-    "series": "",
-    "image": "images/cards/asaemon-swordswoman.webp",
-    "base": {
-      "atk": 4781,
-      "hp": 31872,
-      "def": 0,
-      "status": 0,
-      "odds": 34000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Yamada Asaemon",
-      "desc": "Sagiri reads the flow of Tao. Its first hit on each new enemy does 1.8x damage. With Gabimaru in the deck, both get +15% damage and HP. 15% chance to dodge each hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "axe-prodigy",
-    "name": "Axe Prodigy",
-    "series": "",
-    "image": "images/cards/axe-prodigy.webp",
-    "base": {
-      "atk": 4907,
-      "hp": 32712,
-      "def": 0,
-      "status": 0,
-      "odds": 35000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Kaiju Axe",
-      "desc": "Kikoru: +30% damage against Kaiju cards. Its first hit on each new enemy does 1.8x damage. +10% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "axe-warrior-kid",
     "name": "Axe Warrior Kid",
     "series": "",
@@ -2510,40 +2442,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "cannon-captain",
-    "name": "Cannon Captain",
-    "series": "",
-    "image": "images/cards/cannon-captain.webp",
-    "base": {
-      "atk": 4282,
-      "hp": 28548,
-      "def": 0,
-      "status": 0,
-      "odds": 34000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Fortitude Cannon",
-      "desc": "Mina Ashiro: Every 3rd attack does 2.5x damage. Ignores shields, dodges and barriers. Takes 15% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "cart-titan-girl",
     "name": "Cart Titan Girl",
     "series": "",
@@ -2816,40 +2714,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "destruction-alchemist",
-    "name": "Destruction Alchemist",
-    "series": "",
-    "image": "images/cards/destruction-alchemist.webp",
-    "base": {
-      "atk": 4477,
-      "hp": 29848,
-      "def": 0,
-      "status": 0,
-      "odds": 37000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Destruction Alchemy",
-      "desc": "Scar's right arm breaks things down. Ignores shields, dodges and barriers. Each hit also deals 8% of the enemy's max HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "draculina-gunner",
     "name": "Draculina Gunner",
     "series": "",
@@ -2866,40 +2730,6 @@
     "passive": {
       "name": "Harkonnen",
       "desc": "Seras: Every 2nd attack also hits the card behind for 35%. Heals 20% of the damage it deals."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "explosion-witch",
-    "name": "Explosion Witch",
-    "series": "",
-    "image": "images/cards/explosion-witch.webp",
-    "base": {
-      "atk": 4497,
-      "hp": 29978,
-      "def": 0,
-      "status": 0,
-      "odds": 41000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "EXPLOSION!",
-      "desc": "Megumin casts one huge EXPLOSION. Its first attack of the fight does 3.64x damage. Its first attack also hits the whole enemy bench for 44%. Naps every other turn, but its hits do 1.3x damage."
     },
     "skill": {
       "name": "",
@@ -2968,40 +2798,6 @@
     "passive": {
       "name": "Flame Bomb",
       "desc": "Choi Jong-In: Every hit sets the whole enemy deck on fire for 2 turns. Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "flash-lightning-swordswoman",
-    "name": "Flash Lightning Swordswoman",
-    "series": "",
-    "image": "images/cards/flash-lightning-swordswoman.webp",
-    "base": {
-      "atk": 4458,
-      "hp": 29718,
-      "def": 0,
-      "status": 0,
-      "odds": 40000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Stacia Account",
-      "desc": "Asuna: Blocks the first 2 hits completely. 40% chance to attack twice. With Kirito in the deck, both get +20% damage and HP. Heals 4% of its max HP every turn."
     },
     "skill": {
       "name": "",
@@ -3292,40 +3088,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "gun-exorcist-twin",
-    "name": "Gun Exorcist Twin",
-    "series": "",
-    "image": "images/cards/gun-exorcist-twin.webp",
-    "base": {
-      "atk": 4905,
-      "hp": 32702,
-      "def": 0,
-      "status": 0,
-      "odds": 39000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Dragoon Exorcist",
-      "desc": "Yukio's twin pistols. Always attacks twice (each hit does 0.7x damage). +30% damage against Demon cards. With Rin Okumura in the deck, both get +15% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "hair-psychic",
     "name": "Hair Psychic",
     "series": "",
@@ -3376,74 +3138,6 @@
     "passive": {
       "name": "Bloodcurdle",
       "desc": "Stain licks the blood off his blade. 35% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Each hit adds 1 Bleed stack (2% of the enemy's max HP per turn each, up to 4, 3 turns). +30% damage against Hero cards."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "horned-darling-pilot",
-    "name": "Horned Darling Pilot",
-    "series": "",
-    "image": "images/cards/horned-darling-pilot.webp",
-    "base": {
-      "atk": 4576,
-      "hp": 30506,
-      "def": 0,
-      "status": 0,
-      "odds": 42000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Strelizia",
-      "desc": "Zero Two's Strelizia. 30% chance to attack twice. Under 50% HP: +40% damage. Heals 5% of its max HP every turn."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "sparkle-strongarm",
-    "name": "Sparkle Strongarm",
-    "series": "",
-    "image": "images/cards/sparkle-strongarm.webp",
-    "base": {
-      "atk": 7228,
-      "hp": 48188,
-      "def": 0,
-      "status": 0,
-      "odds": 38000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Strong Arm Alchemy",
-      "desc": "Armstrong: Every 2nd attack also hits the card behind for 35%. +25% damage."
     },
     "skill": {
       "name": "",
@@ -3666,40 +3360,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "thorn-princess-assassin",
-    "name": "Thorn Princess Assassin",
-    "series": "",
-    "image": "images/cards/thorn-princess-assassin.webp",
-    "base": {
-      "atk": 4945,
-      "hp": 32964,
-      "def": 0,
-      "status": 0,
-      "odds": 41000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Thorn Princess",
-      "desc": "Yor's stiletto kills. 25% chance per hit to instantly kill an enemy under 15% HP (not bosses). Its first hit on each new enemy does 1.8x damage. 15% chance to dodge each hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "thunder-coward",
     "name": "Thunder Coward",
     "series": "",
@@ -3716,74 +3376,6 @@
     "passive": {
       "name": "Thunderclap and Flash: Godspeed",
       "desc": "Zenitsu fights asleep. Naps every other turn, but its hits do 2.5x damage. Its first attack of the fight does 2x damage. +25% damage against Demon cards."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "turbo-ghost-kid",
-    "name": "Turbo Ghost Kid",
-    "series": "",
-    "image": "images/cards/turbo-ghost-kid.webp",
-    "base": {
-      "atk": 4231,
-      "hp": 28204,
-      "def": 0,
-      "status": 0,
-      "odds": 36000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Turbo Form",
-      "desc": "Okarun borrows Turbo Granny's speed. 40% chance to attack twice. 30% chance to dodge each hit. With Momo Ayase in the deck, both get +20% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "ultimate-shield-homunculus",
-    "name": "Ultimate Shield Homunculus",
-    "series": "",
-    "image": "images/cards/ultimate-shield-homunculus.webp",
-    "base": {
-      "atk": 4560,
-      "hp": 30398,
-      "def": 0,
-      "status": 0,
-      "odds": 38000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Ultimate Shield",
-      "desc": "Greed: Takes 35% less damage. Attackers take 20% of their damage back."
     },
     "skill": {
       "name": "",
@@ -3904,40 +3496,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "candy-beam-majin",
-    "name": "Candy Beam Majin",
-    "series": "",
-    "image": "images/cards/candy-beam-majin.webp",
-    "base": {
-      "atk": 6659,
-      "hp": 44390,
-      "def": 0,
-      "status": 0,
-      "odds": 77000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Pure Evil Regeneration",
-      "desc": "Kid Buu regenerates from a single cell. Heals 5.8% of its max HP every turn. Comes back once with 36% HP. Every 2nd attack also hits the card behind for 35%."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "half-hot-half-cold",
     "name": "Half-Hot Half-Cold",
     "series": "",
@@ -3954,108 +3512,6 @@
     "passive": {
       "name": "Phosphor",
       "desc": "Todoroki uses both sides. 41% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Each hit adds 2 Burn stacks (2.8% of the enemy's max HP per turn each, up to 4, 3 turns). 2.38x damage against frozen enemies."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "mochi-commander",
-    "name": "Mochi Commander",
-    "series": "",
-    "image": "images/cards/mochi-commander.webp",
-    "base": {
-      "atk": 6808,
-      "hp": 45386,
-      "def": 0,
-      "status": 0,
-      "odds": 81000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Future Sight Mochi",
-      "desc": "Katakuri sees the future. 30% chance to dodge each hit. 30% chance to counter-attack when hit (0.8x damage). 20% chance per hit to Stun the enemy for 1 turn."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "oni-princess",
-    "name": "Oni Princess",
-    "series": "",
-    "image": "images/cards/oni-princess.webp",
-    "base": {
-      "atk": 8147,
-      "hp": 54314,
-      "def": 0,
-      "status": 0,
-      "odds": 83000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Thunder Bagua",
-      "desc": "Yamato's club crackles with lightning. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). Its first hit on each new enemy does 1.8x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "perfect-bio-android",
-    "name": "Perfect Bio-Android",
-    "series": "",
-    "image": "images/cards/perfect-bio-android.webp",
-    "base": {
-      "atk": 6486,
-      "hp": 43238,
-      "def": 0,
-      "status": 0,
-      "odds": 79000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Perfect Absorption",
-      "desc": "Cell: Each kill gives it 20% of the defeated card's damage and HP. Heals 5% of its max HP every turn. Every 3rd attack does 2.5x damage."
     },
     "skill": {
       "name": "",
@@ -4192,74 +3648,6 @@
     "passive": {
       "name": "Ice Devil Slayer",
       "desc": "Gray's Devil Slayer magic. +50% damage against Demon cards. 25% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). With Natsu in the deck, both get +15% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "knight-king",
-    "name": "Knight King",
-    "series": "",
-    "image": "images/cards/knight-king.webp",
-    "base": {
-      "atk": 4494,
-      "hp": 29960,
-      "def": 0,
-      "status": 0,
-      "odds": 33000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Excalibur Plasma",
-      "desc": "Arthur believes he's a knight king, so he is. +40% damage. Ignores shields, dodges and barriers. With Shinra in the deck, both get +15% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "leopard-agent",
-    "name": "Leopard Agent",
-    "series": "",
-    "image": "images/cards/leopard-agent.webp",
-    "base": {
-      "atk": 5078,
-      "hp": 33850,
-      "def": 0,
-      "status": 0,
-      "odds": 43000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Six Powers",
-      "desc": "Lucci's Shigan strikes twice. 35% chance to attack twice. Takes 12% less damage."
     },
     "skill": {
       "name": "",
@@ -4850,40 +4238,6 @@
     "updated": "2026-10-29"
   },
   {
-    "id": "psychic-shrine-girl",
-    "name": "Psychic Shrine Girl",
-    "series": "",
-    "image": "images/cards/psychic-shrine-girl.webp",
-    "base": {
-      "atk": 5249,
-      "hp": 34994,
-      "def": 0,
-      "status": 0,
-      "odds": 36000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Psychic Hands",
-      "desc": "Momo Ayase: 25% chance per hit to Stun the enemy for 1 turn. Every 2nd attack also hits the card behind for 35%. Takes 10% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
     "id": "ranger-android",
     "name": "Ranger Android",
     "series": "",
@@ -5376,40 +4730,6 @@
     "passive": {
       "name": "Unseen Hands",
       "desc": "Petelgeuse: Every 2nd attack also hits the card behind for 35%. Comes back once with 40% HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-29"
-  },
-  {
-    "id": "smoke-card-joker",
-    "name": "Smoke Card Joker",
-    "series": "",
-    "image": "images/cards/smoke-card-joker.webp",
-    "base": {
-      "atk": 4050,
-      "hp": 27000,
-      "def": 0,
-      "status": 0,
-      "odds": 33000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Smoke Cards",
-      "desc": "Joker's smoke cards. 30% chance to dodge each hit. 25% chance per hit to Confuse the enemy (it hits itself instead)."
     },
     "skill": {
       "name": "",
