@@ -77,7 +77,7 @@ def sup_val(s, i, rarity="Godly"):
 # · heal_taken · heal_all (every card of the side, at the start of this card's turns) · low_heal (under x, heal y, once)
 # · ko_heal · shield (start) · shield_every (n turns, x) · nullify (first n hits do no damage) · big_guard (once, a hit > x max HP)
 # · survive_p · revive (p, hp) · counter · reflect · dblock (debuffs blocked) · cc_immune · ignore · undodgeable
-# · turn_ramp (x, cap) · hit_ramp · low_hp (under x, +y) · after3 (+x from the 3rd attack) · first_fight (+x on its first attack)
+# · turn_ramp (x, cap) · hit_ramp · low_hp (under x, +y) · after3 (+x after its first 3 attacks) · first_fight (+x on its first attack)
 # · first_new (×x on the first hit of each new enemy) · every_n [(n, ×x)] · maxhp_hit · shape (+x of the enemy's ATK per hit)
 # · dot (kind, pct, cap) · leech (pct) · mark (p, x) · weaken (p, x, cap stacks) · stun / paralyze / freeze / seal / confuse (p[, turns])
 # · vs_frozen · gem (p, x) · execute · splash (x of the hit on the whole bench) · fairy (x of each enemy's max HP, once)
@@ -126,14 +126,14 @@ SUP = {
     "erasure-teacher": lambda v: dict(seal=(v[0], 1)),
     "fate-thread-witch": lambda v: dict(nullify=1, dodge=v[1]),        # 152.9% less on the first hit = no damage
     "foresight-hero": lambda v: dict(dodge=v[0]),
-    "gem-mage": lambda v: dict(gem=(v[0], 0.5)),
+    "gem-mage": lambda v: dict(gem=(v[0], v[1])),
     "genius-inventor": lambda v: dict(shield=v[0]),
     "goddess-princess": lambda v: dict(cc_immune=True, regen=v[0]),
     "gun-captain": lambda v: dict(dot=("burn", v[0], 3)),
     "half-elf-ice-mage": lambda v: dict(freeze=(v[0], 1)),
     "hawks-eye-sniper": lambda v: dict(crit=(v[0], 2.0)),
     "healing-hero": lambda v: dict(heal_all=v[0]),
-    "pacifier-prince": lambda v: dict(big_guard=0.20),                   # 166% weaker = no damage, once
+    "pacifier-prince": lambda v: dict(big_guard=0.20, dr=v[1]),         # 100% less on the first big hit = no damage, once · {1} less from every hit
     "star-key-mage": lambda v: dict(flat=v[0]),
     "supreme-kai": lambda v: dict(after3=v[0]),
     "turtle-hermit": lambda v: dict(maxhp=v[0], turn_ramp=(v[1], 5)),
@@ -179,7 +179,7 @@ SUP = {
     "library-spirit": lambda v: dict(leech=v[0]),
     "little-witch": lambda v: dict(dblock=2, dr=v[0]),
     "mind-reader-child": lambda v: dict(dodge=v[0]),
-    "notebook-genius": lambda v: dict(mark=(1.0, v[0]), execute=0.06),
+    "notebook-genius": lambda v: dict(mark=(1.0, v[0]), execute=v[1]),
     "ogre-shrine-princess": lambda v: dict(flat=v[0]),
     "reverse-cursed-doctor": lambda v: dict(heal_taken=v[0]),
     "shapeshift-actor": lambda v: dict(shape=v[0]),
@@ -294,7 +294,7 @@ class Battle:
         lh = u.get("low_hp")
         if lh and u.hp < u.max * lh[0]: b += lh[1]
         if "low_hp" in u.e and u.hp < u.max * u.e["low_hp"][0]: b += u.e["low_hp"][1]
-        if "after3" in u.e and u.attacks >= 3: b += u.e["after3"]
+        if "after3" in u.e and u.attacks >= 4: b += u.e["after3"]
         return b
 
     def lethal(s, u, doom=False):

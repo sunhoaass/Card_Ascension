@@ -1186,5 +1186,562 @@
     "prevTier": "",
     "bestDeck": [],
     "redraw": true
+  },
+  {
+    "id": "boomerang-demon-slayer",
+    "name": "Boomerang Demon Slayer",
+    "image": "images/support/art/boomerang-demon-slayer.webp",
+    "effect": {
+      "name": "Hiraikotsu",
+      "desc": "Boomerang Demon Slayer's giant boomerang comes back around: the supported card hits again for {0}% of the damage every 2nd attack.",
+      "vals": [
+        41.53
+      ],
+      "type": "echo"
+    },
+    "odds": 61000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 13.3,
+      "reliability": 64.8,
+      "flexibility": 31.2,
+      "synergy": 26.2,
+      "value": 29.8
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "corps-master",
+    "name": "Corps Master",
+    "image": "images/support/art/corps-master.webp",
+    "effect": {
+      "name": "Master's Calm Voice",
+      "desc": "Corps Master's calm voice steadies the whole Corps: the supported card gives EVERY card in your deck {0}% more damage and max HP.",
+      "vals": [
+        1.2
+      ],
+      "type": "dmg"
+    },
+    "odds": 54000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 44.6,
+      "reliability": 92.0,
+      "flexibility": 100.0,
+      "synergy": 27.0,
+      "value": 61.6
+    },
+    "tier": "SS",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "crusader-tank",
+    "name": "Crusader Tank",
+    "image": "images/support/art/crusader-tank.webp",
+    "effect": {
+      "name": "Unbreakable Crusader",
+      "desc": "Crusader Tank takes every hit with joy: the supported card gets {1}% more damage every time it is hit and gets {0}% more max HP.",
+      "vals": [
+        9,
+        2.07
+      ],
+      "type": "max-hp"
+    },
+    "odds": 56000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 16.0,
+      "reliability": 68.0,
+      "flexibility": 20.8,
+      "synergy": 36.0,
+      "value": 31.4
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "dwarf-warrior-guard",
+    "name": "Dwarf Warrior Guard",
+    "image": "images/support/art/dwarf-warrior-guard.webp",
+    "effect": {
+      "name": "Dwarf Warrior's Body",
+      "desc": "Dwarf Warrior Guard takes the hit for everyone: the supported card takes {0}% less damage and sends {1}% of the damage it takes back at the attacker.",
+      "vals": [
+        9,
+        9.5
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 64000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 17.4,
+      "reliability": 78.6,
+      "flexibility": 31.2,
+      "synergy": 30.9,
+      "value": 35.1
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "fate-thread-witch",
+    "name": "Fate Thread Witch",
+    "image": "images/support/art/fate-thread-witch.webp",
+    "effect": {
+      "name": "Red Thread of Fate",
+      "desc": "Fate Thread Witch's red thread twists fate: the supported card takes {0}% less damage from the first hit each fight and dodges {1}% of hits.",
+      "vals": [
+        31.67,
+        7
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 63000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 13.5,
+      "reliability": 67.0,
+      "flexibility": 33.3,
+      "synergy": 23.7,
+      "value": 30.2
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "foresight-hero",
+    "name": "Foresight Hero",
+    "image": "images/support/art/foresight-hero.webp",
+    "effect": {
+      "name": "Foresight",
+      "desc": "Foresight Hero has seen this fight: the supported card dodges {0}% of hits.",
+      "vals": [
+        23.93
+      ],
+      "type": "dodge"
+    },
+    "odds": 70000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 19.5,
+      "reliability": 53.2,
+      "flexibility": 18.8,
+      "synergy": 49.1,
+      "value": 32.0
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "gem-mage",
+    "name": "Gem Mage",
+    "image": "images/support/art/gem-mage.webp",
+    "effect": {
+      "name": "Jewel Magic",
+      "desc": "Gem Mage throws a charged jewel: the supported card has a {0}% chance per hit to plant a bomb that explodes at the start of the enemy's next turn for the hit's damage +{1}%.",
+      "vals": [
+        9.5,
+        72
+      ],
+      "type": "gems",
+      "knee": [
+        0,
+        216
+      ]
+    },
+    "odds": 59000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 5.5,
+      "reliability": 55.2,
+      "flexibility": 27.1,
+      "synergy": 11.8,
+      "value": 21.0
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "genius-inventor",
+    "name": "Genius Inventor",
+    "image": "images/support/art/genius-inventor.webp",
+    "effect": {
+      "name": "Capsule Corp Shield",
+      "desc": "Genius Inventor's capsule gadget: the supported card starts each fight with a shield worth {0}% of its max HP.",
+      "vals": [
+        20.97
+      ],
+      "type": "shield"
+    },
+    "odds": 52000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 12.7,
+      "reliability": 64.9,
+      "flexibility": 39.6,
+      "synergy": 20.8,
+      "value": 30.1
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "gun-captain",
+    "name": "Gun Captain",
+    "image": "images/support/art/gun-captain.webp",
+    "effect": {
+      "name": "Pyro Bullets",
+      "desc": "Gun Captain's bullets are pyrokinetic: the supported card adds 1 Burn stack with each hit (each stack: {0}% of the enemy's max HP per turn, max 3 stacks, 3 turns).",
+      "vals": [
+        1
+      ],
+      "type": "burn"
+    },
+    "odds": 65000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 24.0,
+      "reliability": 78.0,
+      "flexibility": 45.8,
+      "synergy": 33.1,
+      "value": 41.0
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "half-elf-ice-mage",
+    "name": "Half-Elf Ice Mage",
+    "image": "images/support/art/half-elf-ice-mage.webp",
+    "effect": {
+      "name": "Icebrand Arts",
+      "desc": "Half-Elf Ice Mage's icicles: the supported card has a {0}% chance per hit to Freeze the enemy for 1 turn (it skips that turn and takes 25% more damage).",
+      "vals": [
+        21.1
+      ],
+      "type": "freeze"
+    },
+    "odds": 51000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 21.0,
+      "reliability": 62.9,
+      "flexibility": 20.8,
+      "synergy": 45.5,
+      "value": 34.2
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "hawks-eye-sniper",
+    "name": "Hawk's Eye Sniper",
+    "image": "images/support/art/hawks-eye-sniper.webp",
+    "effect": {
+      "name": "Hawk's Eye",
+      "desc": "Hawk's Eye Sniper aims for the vitals: the supported card has a {0}% chance to crit for 2x damage.",
+      "vals": [
+        18.67
+      ],
+      "type": "crit"
+    },
+    "odds": 68000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 21.0,
+      "reliability": 70.1,
+      "flexibility": 29.2,
+      "synergy": 38.3,
+      "value": 35.9
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "pacifier-prince",
+    "name": "Pacifier Prince",
+    "image": "images/support/art/pacifier-prince.webp",
+    "effect": {
+      "name": "Mafuken",
+      "desc": "Pacifier Prince's pacifier seals a huge blast: the supported card takes {0}% less from the first hit bigger than 20% of its max HP (once per fight) and takes {1}% less damage from every hit.",
+      "vals": [
+        56,
+        11
+      ],
+      "type": "damage-reduction",
+      "cap": [
+        100
+      ]
+    },
+    "odds": 62000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 7.9,
+      "reliability": 52.1,
+      "flexibility": 27.1,
+      "synergy": 13.8,
+      "value": 21.8
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "star-key-mage",
+    "name": "Star Key Mage",
+    "image": "images/support/art/star-key-mage.webp",
+    "effect": {
+      "name": "Star Dress",
+      "desc": "Star Key Mage puts on a Star Dress: the supported card gets {0}% more damage.",
+      "vals": [
+        16.5
+      ],
+      "type": "dmg"
+    },
+    "odds": 58000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 12.2,
+      "reliability": 69.2,
+      "flexibility": 29.2,
+      "synergy": 22.9,
+      "value": 29.1
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "supreme-kai",
+    "name": "Supreme Kai",
+    "image": "images/support/art/supreme-kai.webp",
+    "effect": {
+      "name": "Potential Unleashed",
+      "desc": "Supreme Kai unlocks hidden potential: the supported card deals {0}% more damage after its first 3 attacks.",
+      "vals": [
+        82
+      ],
+      "type": "dmg",
+      "knee": [
+        246
+      ]
+    },
+    "odds": 69000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 13.6,
+      "reliability": 58.3,
+      "flexibility": 22.9,
+      "synergy": 28.4,
+      "value": 27.4
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "turtle-hermit",
+    "name": "Turtle Hermit",
+    "image": "images/support/art/turtle-hermit.webp",
+    "effect": {
+      "name": "MAX Power",
+      "desc": "Turtle Hermit bulks up to MAX Power: the supported card gets {1}% more damage every turn (up to 5 times) and gets {0}% more max HP.",
+      "vals": [
+        6.5,
+        4.8
+      ],
+      "type": "max-hp"
+    },
+    "odds": 53000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 12.6,
+      "reliability": 70.2,
+      "flexibility": 22.9,
+      "synergy": 27.6,
+      "value": 29.2
+    },
+    "tier": "C",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "wind-tunnel-monk",
+    "name": "Wind Tunnel Monk",
+    "image": "images/support/art/wind-tunnel-monk.webp",
+    "effect": {
+      "name": "Wind Tunnel",
+      "desc": "Wind Tunnel Monk's Wind Tunnel swallows everything: the supported card heals {0}% of the damage it deals.",
+      "vals": [
+        11.5
+      ],
+      "type": "lifesteal"
+    },
+    "odds": 60000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 26.2,
+      "reliability": 58.1,
+      "flexibility": 29.2,
+      "synergy": 49.8,
+      "value": 37.9
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "zero-gravity-hero",
+    "name": "Zero Gravity Hero",
+    "image": "images/support/art/zero-gravity-hero.webp",
+    "effect": {
+      "name": "Zero Gravity",
+      "desc": "Zero Gravity Hero sets the enemy floating: the supported card has a {0}% chance per hit to Stun the enemy for 1 turn.",
+      "vals": [
+        16.5
+      ],
+      "type": "stun"
+    },
+    "odds": 55000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 22.1,
+      "reliability": 64.1,
+      "flexibility": 25.0,
+      "synergy": 46.9,
+      "value": 36.0
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "library-spirit",
+    "name": "Library Spirit",
+    "image": "images/support/art/library-spirit.webp",
+    "effect": {
+      "name": "Minya",
+      "desc": "Library Spirit's Yin magic drains the enemy: the supported card plants a leech with each hit: the enemy loses {0}% of its max HP per turn for 3 turns and the supported card heals that much.",
+      "vals": [
+        0.97
+      ],
+      "type": "leech"
+    },
+    "odds": 52000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 18.4,
+      "reliability": 74.8,
+      "flexibility": 29.2,
+      "synergy": 33.3,
+      "value": 34.8
+    },
+    "tier": "B",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "little-witch",
+    "name": "Little Witch",
+    "image": "images/support/art/little-witch.webp",
+    "effect": {
+      "name": "Elemental Ward",
+      "desc": "Little Witch's elemental spirits ward the supported card: it blocks the first 2 debuffs that would hit it each fight and takes {0}% less damage.",
+      "vals": [
+        15.17
+      ],
+      "type": "damage-reduction"
+    },
+    "odds": 67000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 7.9,
+      "reliability": 59.6,
+      "flexibility": 31.2,
+      "synergy": 15.7,
+      "value": 24.5
+    },
+    "tier": "D",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
+  },
+  {
+    "id": "notebook-genius",
+    "name": "Notebook Genius",
+    "image": "images/support/art/notebook-genius.webp",
+    "effect": {
+      "name": "The Notebook's Judgment",
+      "desc": "Notebook Genius writes the enemy's name: the supported card instantly finishes any enemy under {1}% HP it hits (not bosses) and Marks the enemy with every hit (it takes {0}% more damage from every card).",
+      "vals": [
+        13.5,
+        5
+      ],
+      "type": "mark"
+    },
+    "odds": 72000,
+    "obtain": "Rolls anywhere",
+    "scores": {
+      "effect": 20.9,
+      "reliability": 73.1,
+      "flexibility": 52.1,
+      "synergy": 28.6,
+      "value": 39.1
+    },
+    "tier": "A",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "bestDeck": [],
+    "redraw": true
   }
 ]
