@@ -3870,40 +3870,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "ackerman-blade",
-    "name": "Ackerman Blade",
-    "series": "",
-    "image": "images/cards/ackerman-blade.webp",
-    "base": {
-      "atk": 10601,
-      "hp": 70676,
-      "def": 0,
-      "status": 0,
-      "odds": 170000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Ackerman Awakening",
-      "desc": "Mikasa's Ackerman power. 30% chance to dodge each hit. 30% chance to crit for 2x damage. +30% damage against Titan cards. Once, takes the killing blow for Eren."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "ant-shadow-general",
     "name": "Ant Shadow General",
     "series": "",
@@ -3920,74 +3886,6 @@
     "passive": {
       "name": "Ant King's Hunger",
       "desc": "Beru devours his prey. Heals 30% of the damage it deals. 40% chance to attack twice. Shadows raised by your deck are 20% stronger. +20% damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "bat-wing-espada",
-    "name": "Bat Wing Espada",
-    "series": "",
-    "image": "images/cards/bat-wing-espada.webp",
-    "base": {
-      "atk": 7973,
-      "hp": 53154,
-      "def": 0,
-      "status": 0,
-      "odds": 135000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Lanza del Relampago",
-      "desc": "Ulquiorra: Heals 9% of its max HP every turn. Every 3rd attack does 2.5x damage. Ignores shields, dodges and barriers."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "beast-titan-ape",
-    "name": "Beast Titan Ape",
-    "series": "",
-    "image": "images/cards/beast-titan-ape.webp",
-    "base": {
-      "atk": 16215,
-      "hp": 108098,
-      "def": 0,
-      "status": 0,
-      "odds": 174000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Rock Barrage",
-      "desc": "Zeke: Every hit also hits the whole enemy bench for 20%. 25% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
     },
     "skill": {
       "name": "",
@@ -4142,40 +4040,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "bomb-girl",
-    "name": "Bomb Girl",
-    "series": "",
-    "image": "images/cards/bomb-girl.webp",
-    "base": {
-      "atk": 9313,
-      "hp": 62088,
-      "def": 0,
-      "status": 0,
-      "odds": 187000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Bomb Devil",
-      "desc": "Reze: 35% chance per hit to plant a bomb that explodes next turn for 1.42x the hit. Every 2nd attack also hits the card behind for 35%. When knocked out, it explodes for 42% of its max HP on the enemy in front."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "calm-water-pillar",
     "name": "Calm Water Pillar",
     "series": "",
@@ -4244,170 +4108,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "cat-guard-royal",
-    "name": "Cat Guard Royal",
-    "series": "",
-    "image": "images/cards/cat-guard-royal.webp",
-    "base": {
-      "atk": 8626,
-      "hp": 57508,
-      "def": 0,
-      "status": 0,
-      "odds": 138000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Terpsichora",
-      "desc": "Neferpitou's Nen boosts her body. Its first hit on each new enemy does 2.2x damage. 25% chance to dodge each hit. Heals 5% of its max HP every turn. Once, takes the killing blow for Meruem."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "chain-scarlet-eye",
-    "name": "Chain Scarlet Eye",
-    "series": "",
-    "image": "images/cards/chain-scarlet-eye.webp",
-    "base": {
-      "atk": 10282,
-      "hp": 68546,
-      "def": 0,
-      "status": 0,
-      "odds": 152000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Emperor Time",
-      "desc": "Kurapika's Scarlet Eyes unlock every chain. +60% damage against Spider cards. 30% chance per hit to Seal the enemy's ability for 2 turns. Heals 5% of its max HP every turn. +40% damage. Loses 4% of its max HP every attack."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "colossal-strategist",
-    "name": "Colossal Strategist",
-    "series": "",
-    "image": "images/cards/colossal-strategist.webp",
-    "base": {
-      "atk": 9655,
-      "hp": 64368,
-      "def": 0,
-      "status": 0,
-      "odds": 178000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Colossal Detonation",
-      "desc": "Armin's plan. When knocked out, it explodes for 80% of its max HP on the enemy in front. Every other card in your deck gets +10% damage. Takes 10% less damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 2.0,
-      "hp": 2.0,
-      "passive": 55,
-      "skill": 55,
-      "matchup": 0.0,
-      "team": 66,
-      "overall": 30.2
-    },
-    "tier": "Utility",
-    "updated": "2026-10-30",
-    "prevTier": "",
-    "beats": [],
-    "losesTo": [
-      "founding-titan",
-      "sword-saint",
-      "octopus-teacher",
-      "shadow-monarch",
-      "slime-demon-lord",
-      "quirk-thief-overlord",
-      "ant-king",
-      "one-punch-caped-hero",
-      "sun-breath-origin",
-      "soul-king-father",
-      "sun-god-captain",
-      "divergent-fist-vessel",
-      "golden-wind-boss",
-      "destroyer-god",
-      "storm-dragon",
-      "witch-of-envy",
-      "dragon-king-of-ruin",
-      "spiral-drill-king",
-      "ultra-instinct-saiyan",
-      "no-life-king",
-      "full-moon-demon-king",
-      "destroyer-dragonoid",
-      "dragon-god",
-      "dragon-emperor-monarch",
-      "primordial-butler-demon",
-      "moon-eye-ghost",
-      "atomic-shadow-lord",
-      "hypnosis-traitor",
-      "hollow-mask-reaper",
-      "pirate-king",
-      "beast-emperor",
-      "rabbit-goddess",
-      "homunculus-father",
-      "white-hawk-godhand",
-      "pumpkin-sun-pride",
-      "golden-gate-king",
-      "infinity-sorcerer",
-      "demon-god-of-flame",
-      "soul-magic-father",
-      "hero-number-one",
-      "made-in-heaven-priest",
-      "wood-god-hokage",
-      "monk-of-names",
-      "demon-progenitor",
-      "king-of-curses",
-      "control-devil",
-      "black-wizard-brother",
-      "undead-overlord-king"
-    ],
-    "utilGain": 10.0,
-    "team": {
-      "bestSupport": [
-        "guild-master-giant",
-        "charge-commander",
-        "eternal-wish-dragon"
-      ],
-      "position": "",
-      "bestWith": []
-    }
-  },
-  {
     "id": "copy-eye-sensei",
     "name": "Copy Eye Sensei",
     "series": "",
@@ -4442,74 +4142,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "dragon-grandpa-assassin",
-    "name": "Dragon Grandpa Assassin",
-    "series": "",
-    "image": "images/cards/dragon-grandpa-assassin.webp",
-    "base": {
-      "atk": 17145,
-      "hp": 114302,
-      "def": 0,
-      "status": 0,
-      "odds": 145000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Dragon Dive",
-      "desc": "Zeno: Every 2nd attack also hits the card behind for 35%. Ignores shields, dodges and barriers. With Killua in the deck, both get +15% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "explosion-rival",
-    "name": "Explosion Rival",
-    "series": "",
-    "image": "images/cards/explosion-rival.webp",
-    "base": {
-      "atk": 11633,
-      "hp": 77554,
-      "def": 0,
-      "status": 0,
-      "odds": 159000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Howitzer Impact",
-      "desc": "Bakugo: Every 2nd attack also hits the card behind for 35%. Every 3rd attack does 2.32x damage. +5.3% damage every turn (up to 6 times). With Deku in the deck, both get +13% damage and HP."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "fire-fist-brother",
     "name": "Fire Fist Brother",
     "series": "",
@@ -4526,40 +4158,6 @@
     "passive": {
       "name": "Fire Fist",
       "desc": "Ace: Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Once, takes the killing blow for Luffy."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "flame-hero",
-    "name": "Flame Hero",
-    "series": "",
-    "image": "images/cards/flame-hero.webp",
-    "base": {
-      "atk": 8522,
-      "hp": 56812,
-      "def": 0,
-      "status": 0,
-      "odds": 155000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Prominence Burn",
-      "desc": "Endeavor: Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Under 40% HP: +60% damage. Can't be burned. Takes 10% less damage."
     },
     "skill": {
       "name": "",
@@ -4628,40 +4226,6 @@
     "passive": {
       "name": "Musical Score",
       "desc": "Tengen reads the enemy's rhythm. Every 3rd attack does 2.5x damage. 35% chance per hit to plant a bomb that explodes next turn for 1.5x the hit. +25% damage against Demon cards."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "godspeed-assassin",
-    "name": "Godspeed Assassin",
-    "series": "",
-    "image": "images/cards/godspeed-assassin.webp",
-    "base": {
-      "atk": 8335,
-      "hp": 55566,
-      "def": 0,
-      "status": 0,
-      "odds": 148000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Godspeed: Whirlwind",
-      "desc": "Killua reacts before the enemy moves. 40% chance to dodge each hit. 50% chance to attack twice. 30% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn). With Gon in the deck, both get +20% damage and HP."
     },
     "skill": {
       "name": "",
@@ -4968,74 +4532,6 @@
     "passive": {
       "name": "Perfect Absorption",
       "desc": "Cell: Each kill gives it 20% of the defeated card's damage and HP. Heals 5% of its max HP every turn. Every 3rd attack does 2.5x damage."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "phase-through-hero",
-    "name": "Phase Through Hero",
-    "series": "",
-    "image": "images/cards/phase-through-hero.webp",
-    "base": {
-      "atk": 8713,
-      "hp": 58088,
-      "def": 0,
-      "status": 0,
-      "odds": 163000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Permeation",
-      "desc": "Mirio: 40% chance to dodge each hit. 40% chance to counter-attack when hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "rage-royal-guard",
-    "name": "Rage Royal Guard",
-    "series": "",
-    "image": "images/cards/rage-royal-guard.webp",
-    "base": {
-      "atk": 8560,
-      "hp": 57064,
-      "def": 0,
-      "status": 0,
-      "odds": 141000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Rage Form",
-      "desc": "Youpi turns his anger into power. +12% damage every time it is hit. Under 40% HP: +60% damage. Takes 20% less damage. Once, takes the killing blow for Meruem."
     },
     "skill": {
       "name": "",
@@ -5394,40 +4890,6 @@
     "updated": "2026-10-28"
   },
   {
-    "id": "veteran-devil-hunter",
-    "name": "Veteran Devil Hunter",
-    "series": "",
-    "image": "images/cards/veteran-devil-hunter.webp",
-    "base": {
-      "atk": 9579,
-      "hp": 63858,
-      "def": 0,
-      "status": 0,
-      "odds": 183000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Strongest Devil Hunter",
-      "desc": "Kishibe's experience. 35% chance to counter-attack when hit. 30% chance to crit for 1.8x damage. 25% chance to dodge each hit."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
     "id": "volcano-head-curse",
     "name": "Volcano Head Curse",
     "series": "",
@@ -5478,40 +4940,6 @@
     "passive": {
       "name": "Marechi Blood",
       "desc": "Sanemi's rare blood makes demons drunk. Demon cards that hit it have a 50% chance to be Confused. Every 2nd attack also hits the card behind for 35%. +30% damage against Demon cards."
-    },
-    "skill": {
-      "name": "",
-      "desc": ""
-    },
-    "scores": {
-      "atk": 0,
-      "hp": 0,
-      "passive": 0,
-      "skill": 0,
-      "matchup": 0,
-      "team": 0,
-      "overall": 0
-    },
-    "tier": "",
-    "updated": "2026-10-28"
-  },
-  {
-    "id": "wing-hero",
-    "name": "Wing Hero",
-    "series": "",
-    "image": "images/cards/wing-hero.webp",
-    "base": {
-      "atk": 9692,
-      "hp": 64610,
-      "def": 0,
-      "status": 0,
-      "odds": 166000
-    },
-    "exact": {},
-    "obtain": "Rolls anywhere",
-    "passive": {
-      "name": "Fierce Wings",
-      "desc": "Hawks is the fastest hero. 38% chance to attack twice. Every 2nd attack also hits the card behind for 35%. 19% chance to dodge each hit."
     },
     "skill": {
       "name": "",
