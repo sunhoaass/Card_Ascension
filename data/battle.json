@@ -439,7 +439,7 @@
     "sister-of-prayer": { "shieldStart": "$0", "todo": ["the first debuff that would hit it each fight is blocked"] },
     "song-sorceress": { "everyN": { "n": 2, "m": "1+$0" } },
     "spirit-ferry-girl": { "b": { "lucky": "$0" }, "regen": "$1" },
-    "spirit-medium-granny": { "dr": "$0", "todo": ["protects the whole deck from splash, card-behind and bench hits"] },
+    "spirit-medium-granny": { "dr": "$0", "guard": true },
     "toad-boss": { "entryHit": "$0", "todo": ["can't knock it out (the entry hit can still kill)"] },
     "boomerang-demon-slayer": { "b": { "echo": "$0" } },
     "crusader-tank": { "onHitHp": "$0", "onHitAtk": "$1" },

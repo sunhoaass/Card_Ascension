@@ -489,6 +489,8 @@
       const bu = this.boss ? bossUnit() : null;
       this.b = this.boss ? (bu ? [bu] : []) : mkTeamUnits(bKey, "b");
       this.round = 1; this.turn = "a"; this.done = false; this.why = "";
+      // Spirit Medium Granny in any support slot: that side takes no splash / card-behind / bench damage (guard persists even if the supported card falls)
+      this.guard = { a: this.a.some((u) => u.supK && u.supK.guard), b: this.b.some((u) => u.supK && u.supK.guard) };
       this.wkUsed = { a: 0, b: 0 }; this.wkM = { a: 1, b: 1 };   // "starts with X% less damage": used once per side · the ATK × on each side
     }
     ev(t, u, v, o) { if (this.E) this.E({ t, u, v, o }); }
@@ -645,7 +647,7 @@
       const ls = (a.k.lifesteal || 0) + ((a.trait && a.trait.fx.lifesteal) || 0) + ((a.sup && a.sup.b.lifesteal) || 0);
       if (ls && !a.inf && a.hp > 0) { if (a.sup && a.sup.b.lifesteal) this.supOn(a); this.heal(a, dmg * ls, "ls"); }
       const spl = (a.k.splash || 0) + (a.k.splashFirst && !a.used.splashFirst && !extra ? (a.used.splashFirst = 1, a.k.splashFirst) : 0);
-      if (spl) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * spl); this.take(x, s, a); a.st.dmg += s; this.ev("splash", x, s); this.checkDeath(x, a, true); } this.ev("bench", d); }
+      if (spl && !this.guard[d.side]) { const base = dmg / m; for (const x of this[d.side]) if (x.alive && x !== d && !x.inf) { const s = Math.round(base * spl); this.take(x, s, a); a.st.dmg += s; this.ev("splash", x, s); this.checkDeath(x, a, true); } this.ev("bench", d); }
       // counter-attack when hit (a counter never starts another counter)
       if (d.k.counter && !o.counter && d.hp > 0 && a.hp > 0) { const cp = typeof d.k.counter === "object" ? d.k.counter.p : d.k.counter, cm = typeof d.k.counter === "object" ? d.k.counter.m || 1 : 1;
         const ok = R() < cp; this.proc(d, (d.copied || d.skill) + " counter", ok, cp); if (ok) { this.ev("shout", d, "COUNTER!", { k: "skill" }); this.ev("atk", d); this.hit(d, a, cm, true, { counter: 1 }); } }
@@ -656,6 +658,7 @@
     }
     // the card behind the one fighting (every 2nd attack: % of a normal hit, no crits or bonuses)
     behind(a, d) {
+      if (this.guard[d.side]) return;
       const t = this[d.side], i = t.indexOf(d), x = t.slice(i + 1).find((u) => u.alive && !u.inf); if (!x) return;
       const v = Math.max(1, Math.round(a.atk * a.k.behind.m)); a.st.dmg += v; this.take(x, v, a);
       this.ev("shout", a, "EXTRA HIT", { k: "extra", y: "26%" }); this.ev("splash", x, v); this.ev("bench", d); this.checkDeath(x, a, true);

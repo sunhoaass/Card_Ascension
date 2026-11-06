@@ -2570,3 +2570,8 @@
 - **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 5 ใบ · `todo`: Blood-Red Knight · Ant Shadow General · `matchup_sim.py --parse` ไม่มี `unknown` ของ 5 ใบนี้
 - **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด · หน้าดูการ์ด 5 ใบ รูป 600×800 · `gc--rd` ครบ · ไม่มี error / 404
 - **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (5 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-06 · Spirit Medium Granny กันดาเมจทะลุใน Battle
+- **เปลี่ยน:** `data/battle.json` `spirit-medium-granny` = `dr` + `guard: true` (เอา `todo` ออก) · `js/battle.js` สร้าง `this.guard[side]` ตอนเริ่ม (มีใบนี้ในช่อง Support ใบใดก็ได้ของฝั่งนั้น) → splash / card-behind ฝั่งนั้นเป็น 0 · ตรงกับ `tools/deck_sim.py` (`bench_guard`) · `battle.js?v=123`
+- **ทดสอบ:** `node --check` ผ่าน · JSON ถูกต้อง
+- **ไฟล์:** `js/battle.js` · `data/battle.json` · `index.html`
