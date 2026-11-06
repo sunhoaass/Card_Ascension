@@ -403,7 +403,7 @@
 .rd__txt .rd__abd, .rd__mut { line-height: 1.385; text-wrap: wrap; }
 .rd__mut { margin: 0; font-family: var(--rd-font-text); font-weight: 500; color: var(--rd-ink); text-align: center; }
 .rd__mut b { font-weight: inherit; color: var(--rd-num); }
-.rd__sup { position: absolute; left: 0; right: 0; text-align: center; }
+.rd__sup { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }   /* flex: no inherited 16px line strut, so the word sits on its js line on small cards too (it was pushed onto the frame under ~160px wide · owner 2026-11-06) */
 .rd__sup .rd-ot { display: inline-block; font-family: var(--rd-font-text); font-weight: 700; font-size: 10.3cqw; line-height: 1; padding: 0 .6cqw; --fill: var(--rd-sup); }
 
 /* support · owner 2026-11-03 "Support Layout Lab": places measured on the game's Hat and Clogs Shopkeeper (Deck view) ·
