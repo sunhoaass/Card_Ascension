@@ -2575,3 +2575,11 @@
 - **เปลี่ยน:** `data/battle.json` `spirit-medium-granny` = `dr` + `guard: true` (เอา `todo` ออก) · `js/battle.js` สร้าง `this.guard[side]` ตอนเริ่ม (มีใบนี้ในช่อง Support ใบใดก็ได้ของฝั่งนั้น) → splash / card-behind ฝั่งนั้นเป็น 0 · ตรงกับ `tools/deck_sim.py` (`bench_guard`) · `battle.js?v=123`
 - **ทดสอบ:** `node --check` ผ่าน · JSON ถูกต้อง
 - **ไฟล์:** `js/battle.js` · `data/battle.json` · `index.html`
+
+### 2026-11-06 · 🖼 รอบรูปว่าง 13: การ์ด 20 ใบจากรูปที่เจ้าของแนบ (ไม่เปลี่ยน `?v=` · ไม่แตะ CSS/JS)
+- **รูปเจ้าของ:** แนบ 20 รูป · 864×1200 ล้วน artwork · ย่อกว้าง 600 ตัดล่างเหลือ **600×800** ชิดบน + thumb 300×400 (webp q86 / q83)
+- **จับคู่:** SIFT + CLAHE + RANSAC กับ pending 180 ใบ + sheet รูปว่างคู่รูปเก่าดูด้วยตา ตรงทุกใบ · inlier อันดับ 1 / 2: Flashy Sound Pillar 119/18 · Flash Goddess 101/11 · Sakura Blade Noble 162/20 · Lone Wolf Espada 122/11 · Mist Prodigy 127/15 · Sickle Upper Moon 123/8 · Wind Scar Pillar 243/11 · Ten Shadows Heir 112/10 · Volcano Head Curse 133/17 · Patchwork Curse 112/18 · Judge Domain Lawyer 101/21 · Snake Sannin 96/41 · Rapping Eight Tails 210/10 · Toad Sage 167/11 · Copy Eye Sensei 164/22 · Karma Boy 141/12 · Second Hokage 159/12 · Black Leg Cook 106/26 · Fire Fist Brother 201/18 · Surgeon of Death 142/19
+- **การ์ด 20 ใบ:** `restore_pending.py` → `redraw: true` + `image` = `images/cards/art/<id>.webp` · ข้อมูล = ของเดิมใน pending · `tier` / `scores` ไม่แตะ · pending เหลือการ์ด 160 ใบ · เว็บมีการ์ด 240 ใบ
+- **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 20 ใบ · `todo` 10 ใบ (ดู ▶️) · `matchup_sim.py --parse` `unknown` 6 ใบ = ช่องว่าง engine เดิม ไม่ใช่ regex พัง · `deckbuff_report.js` ชื่อไม่รู้จัก 4 ชื่อเดิม (Spirit Detective · Zeref · Party)
+- **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด · หน้าดูการ์ด 20 ใบ รูป 600×800 ตรง id · `gc--rd` ครบ · ไม่มี error / 404
+- **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
