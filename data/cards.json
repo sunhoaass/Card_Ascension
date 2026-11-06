@@ -11085,5 +11085,180 @@
     "tier": "",
     "updated": "2026-10-28",
     "redraw": true
+  },
+  {
+    "id": "ant-shadow-general",
+    "name": "Ant Shadow General",
+    "series": "",
+    "image": "images/cards/art/ant-shadow-general.webp",
+    "base": {
+      "atk": 9903,
+      "hp": 66020,
+      "def": 0,
+      "status": 0,
+      "odds": 196000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ant King's Hunger",
+      "desc": "Beru devours his prey. Heals 30% of the damage it deals. 40% chance to attack twice. Shadows raised by your deck are 20% stronger. +20% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "blade-dancer",
+    "name": "Blade Dancer",
+    "series": "",
+    "image": "images/cards/art/blade-dancer.webp",
+    "base": {
+      "atk": 10515,
+      "hp": 70098,
+      "def": 0,
+      "status": 0,
+      "odds": 205000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sword Dance",
+      "desc": "Cha Hae-In's sword dance. 35% chance to dodge each hit. 40% chance to attack twice. With Sung Jinwoo in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "blood-fiend",
+    "name": "Blood Fiend",
+    "series": "",
+    "image": "images/cards/art/blood-fiend.webp",
+    "base": {
+      "atk": 10830,
+      "hp": 72198,
+      "def": 0,
+      "status": 0,
+      "odds": 191000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Blood Hammer",
+      "desc": "Power: Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 20% of the damage it deals. With Denji in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "blood-red-knight",
+    "name": "Blood-Red Knight",
+    "series": "",
+    "image": "images/cards/art/blood-red-knight.webp",
+    "base": {
+      "atk": 12517,
+      "hp": 83446,
+      "def": 0,
+      "status": 0,
+      "odds": 200000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Blood-Red Commander",
+      "desc": "Igris, the knight who never yields. Its first hit on each new enemy does 2x damage. Shadows raised by your deck are 25% stronger. Once, takes the killing blow for Sung Jinwoo. Takes 15% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "silver-fang",
+    "name": "Silver Fang",
+    "series": "",
+    "image": "images/cards/art/silver-fang.webp",
+    "base": {
+      "atk": 10435,
+      "hp": 69568,
+      "def": 0,
+      "status": 0,
+      "odds": 210000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Water Stream Rock Smashing Fist",
+      "desc": "Bang: 30% chance to dodge each hit. 40% chance to counter-attack when hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
   }
 ]

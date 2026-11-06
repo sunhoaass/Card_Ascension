@@ -2562,3 +2562,11 @@
 - **ทดสอบ (Chromium 390×844 · `http.server`):** หน้า Cards โหลดได้ (50 ใบต่อหน้า) · หน้าดูการ์ดทั้ง 15 ใบ (`#card/<id>`): รูป 600×800 โหลดครบ · `gc--rd` ครบ · ไม่มี error / 404 · เปิดดู screenshot Bomb Girl: ชื่อ HP ป้ายโอกาส ข้อความ ATK อ่านได้ ไม่ทับกัน (ตัวนับในหน้า = 200/215)
 - **หมายเหตุ:** `inbox/blank/skeleton-unmatched.jpg` ยังไม่ตรงใบไหน (ไม่ได้อยู่ในชุดนี้)
 - **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (15 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-06 · 🖼 รอบรูปว่าง 12: การ์ด 5 ใบจากรูปที่เจ้าของแนบต่อจากรอบ 11 (ไม่เปลี่ยน `?v=` · ยัง `122`)
+- **รูปเจ้าของ:** แนบ 5 รูป · 728×1024 ×3 (Silver Fang · Blade Dancer · Blood Fiend) + 765×1024 ×2 (Blood-Red Knight · Ant Shadow General) ล้วน artwork · ย่อกว้าง 600 ตัดล่างเหลือ **600×800** ชิดบน + thumb 300×400 (webp q86 / q83)
+- **จับคู่:** SIFT + CLAHE + RANSAC กับ pending 200 ใบ + sheet ดูด้วยตา ตรงทุกใบ · inlier อันดับ 1 (อันดับ 2 ≤ 16): Silver Fang 268 · Blade Dancer 214 · Ant Shadow General 195 · Blood-Red Knight 121 · Blood Fiend 113
+- **การ์ด 5 ใบ:** Silver Fang · Blade Dancer · Blood-Red Knight · Ant Shadow General · Blood Fiend (`restore_pending.py` → `redraw: true` + `image` = `images/cards/art/<id>.webp`) · ข้อมูล = ของเดิมใน pending · `tier` / `scores` ไม่แตะ · pending เหลือการ์ด 180 ใบ · เว็บมีการ์ด 220 ใบ
+- **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 5 ใบ · `todo`: Blood-Red Knight · Ant Shadow General · `matchup_sim.py --parse` ไม่มี `unknown` ของ 5 ใบนี้
+- **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด · หน้าดูการ์ด 5 ใบ รูป 600×800 · `gc--rd` ครบ · ไม่มี error / 404
+- **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (5 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
