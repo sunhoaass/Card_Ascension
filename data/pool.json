@@ -1388,7 +1388,7 @@
       "series": "",
       "odds": 61000,
       "vals": [
-        19
+        41.53
       ],
       "type": "echo",
       "src": "RobloxScreenShot20261028_115613336.png",
@@ -1492,7 +1492,7 @@
       "series": "",
       "odds": 54000,
       "vals": [
-        2.7
+        1.2
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_115648111.png",
@@ -1546,8 +1546,8 @@
       "series": "",
       "odds": 56000,
       "vals": [
-        4.5,
-        1.1
+        9,
+        2.07
       ],
       "type": "max-hp",
       "src": "RobloxScreenShot20261028_115703099.png",
@@ -1641,8 +1641,8 @@
       "series": "",
       "odds": 64000,
       "vals": [
-        3.8,
-        4
+        9,
+        9.5
       ],
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_115736438.png",
@@ -1685,8 +1685,8 @@
       "series": "",
       "odds": 63000,
       "vals": [
-        51,
-        3.4
+        31.67,
+        7
       ],
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_115754000.png",
@@ -1739,7 +1739,7 @@
       "series": "",
       "odds": 70000,
       "vals": [
-        14
+        23.93
       ],
       "type": "dodge",
       "src": "RobloxScreenShot20261028_115809323.png",
@@ -1791,7 +1791,8 @@
       "series": "",
       "odds": 59000,
       "vals": [
-        6.3
+        9.5,
+        72
       ],
       "type": "gems",
       "src": "RobloxScreenShot20261028_115829127.png",
@@ -1806,7 +1807,7 @@
       "series": "",
       "odds": 52000,
       "vals": [
-        11
+        20.97
       ],
       "type": "shield",
       "src": "RobloxScreenShot20261028_115834078.png",
@@ -1901,7 +1902,7 @@
       "series": "",
       "odds": 65000,
       "vals": [
-        0.7
+        1
       ],
       "type": "burn",
       "src": "RobloxScreenShot20261028_120240130.png",
@@ -1942,7 +1943,7 @@
       "series": "",
       "odds": 51000,
       "vals": [
-        12
+        21.1
       ],
       "type": "freeze",
       "src": "RobloxScreenShot20261028_120251888.png",
@@ -1957,7 +1958,7 @@
       "series": "",
       "odds": 68000,
       "vals": [
-        15
+        18.67
       ],
       "type": "crit",
       "src": "RobloxScreenShot20261028_120256067.png",
@@ -2013,7 +2014,8 @@
       "series": "",
       "odds": 62000,
       "vals": [
-        56
+        56,
+        11
       ],
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_120544015.png",
@@ -2054,7 +2056,7 @@
       "series": "",
       "odds": 58000,
       "vals": [
-        7.5
+        16.5
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_120947794.png",
@@ -2107,7 +2109,7 @@
       "series": "",
       "odds": 69000,
       "vals": [
-        13
+        82
       ],
       "type": "dmg",
       "src": "RobloxScreenShot20261028_121005568.png",
@@ -2187,8 +2189,8 @@
       "series": "",
       "odds": 53000,
       "vals": [
-        2,
-        1.5
+        6.5,
+        4.8
       ],
       "type": "max-hp",
       "src": "RobloxScreenShot20261028_121039135.png",
@@ -2244,7 +2246,7 @@
       "series": "",
       "odds": 60000,
       "vals": [
-        10
+        11.5
       ],
       "type": "lifesteal",
       "src": "RobloxScreenShot20261028_121057710.png",
@@ -2259,7 +2261,7 @@
       "series": "",
       "odds": 55000,
       "vals": [
-        13
+        16.5
       ],
       "type": "stun",
       "src": "RobloxScreenShot20261028_121101841.png",
@@ -6038,7 +6040,7 @@
       "series": "",
       "odds": 52000,
       "vals": [
-        0.6
+        0.97
       ],
       "type": "leech",
       "src": "RobloxScreenShot20261028_120339903.png",
@@ -6079,7 +6081,7 @@
       "series": "",
       "odds": 67000,
       "vals": [
-        2
+        15.17
       ],
       "type": "damage-reduction",
       "src": "RobloxScreenShot20261028_120351467.png",
@@ -6187,7 +6189,8 @@
       "series": "",
       "odds": 72000,
       "vals": [
-        7.5
+        13.5,
+        5
       ],
       "type": "mark",
       "src": "RobloxScreenShot20261028_120504413.png",
