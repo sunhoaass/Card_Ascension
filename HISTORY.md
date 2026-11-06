@@ -2599,3 +2599,11 @@
 - **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 20 ใบ · `todo` 1 ใบ (Rose Whip Fox) · `matchup_sim.py --parse` `unknown` 2 ใบ (Gourmet Ghoul "Heals 40% … after each kill" · Rose Whip Fox drain) = ช่องว่าง engine เดิม · `deckbuff_report.js` ชื่อไม่รู้จัก 4 ชื่อเดิม
 - **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด (50 ใบ/หน้า) · หน้าดูการ์ด 20 ใบ รูป 600×800 ตรง id · `gc--rd` ครบ · ไม่มี error / 404 · JSON ถูกต้อง
 - **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-06 · 🖼 รอบรูปว่าง 16: การ์ด 20 ใบจากรูปที่เจ้าของแนบ (ไม่เปลี่ยน `?v=` · ไม่แตะ CSS/JS)
+- **รูปเจ้าของ:** แนบ 20 รูป · 728×1024 ล้วน artwork · ย่อกว้าง 600 ตัดล่างเหลือ **600×800** ชิดบน + thumb 300×400 (webp q86 / q83)
+- **จับคู่:** sheet รูปว่างคู่รูปครอบ 20 ใบล่าสุดใน `cropped_cards/` เปิดดูด้วยตาทุกใบ ตัวละคร/ฉากตรงทั้ง 20 (ไม่ได้ใช้ SIFT — ไม่มี cv2 ในเครื่อง) · HP/ATK ใน pending = ตัวเลขบนรูปครอบ
+- **การ์ด 20 ใบ:** `restore_pending.py` → `redraw: true` + `image` = `images/cards/art/<id>.webp` · ข้อมูล = ของเดิมใน pending · `tier` / `scores` ไม่แตะ · pending เหลือการ์ด 100 ใบ · เว็บมีการ์ด 300 ใบ
+- **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 20 ใบ · `todo` 4 ใบ (Lifespan Angel · Fox Devil Hunter · Orc Shaman Shadow · Morning Star Maid) · `matchup_sim.py --parse` `unknown` 4 ใบ (Lifespan Angel · Fox Devil Hunter · Cyborg Disciple · Sword Saint Father) = ช่องว่าง engine เดิม · `deckbuff_report.js` ชื่อไม่รู้จัก 4 ชื่อเดิม
+- **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด · หน้าดูการ์ด 20 ใบ รูป 600×800 ตรง id · ไม่มี error / 404 · JSON ถูกต้อง
+- **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
