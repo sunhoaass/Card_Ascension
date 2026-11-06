@@ -13360,5 +13360,767 @@
     "tier": "",
     "updated": "2026-10-29",
     "redraw": true
+  },
+  {
+    "id": "bird-queen",
+    "name": "Bird Queen",
+    "series": "",
+    "image": "images/cards/art/bird-queen.webp",
+    "base": {
+      "atk": 3402,
+      "hp": 22680,
+      "def": 0,
+      "status": 0,
+      "odds": 23000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Haikuikku",
+      "desc": "Filo is ridiculously fast. 30% chance to dodge each hit. 40% chance to attack twice. With Naofumi in the deck: +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "bowel-hunter",
+    "name": "Bowel Hunter",
+    "series": "",
+    "image": "images/cards/art/bowel-hunter.webp",
+    "base": {
+      "atk": 3229,
+      "hp": 21524,
+      "def": 0,
+      "status": 0,
+      "odds": 20000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Bowel Hunter",
+      "desc": "Elsa: Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Heals 5% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "cart-titan-girl",
+    "name": "Cart Titan Girl",
+    "series": "",
+    "image": "images/cards/art/cart-titan-girl.webp",
+    "base": {
+      "atk": 3051,
+      "hp": 20338,
+      "def": 0,
+      "status": 0,
+      "odds": 17000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Endurance Titan",
+      "desc": "Pieck's Cart Titan never tires. Heals 5% of its max HP every turn. 35% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "crossbow-fiend-hunter",
+    "name": "Crossbow Fiend Hunter",
+    "series": "",
+    "image": "images/cards/art/crossbow-fiend-hunter.webp",
+    "base": {
+      "atk": 3048,
+      "hp": 20318,
+      "def": 0,
+      "status": 0,
+      "odds": 17000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "First Devil Hunter",
+      "desc": "Quanxi: Always attacks twice (each hit does 0.65x damage). Its attacks can't be dodged. 25% chance to crit for 1.8x damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "cyborg-disciple",
+    "name": "Cyborg Disciple",
+    "series": "",
+    "image": "images/cards/art/cyborg-disciple.webp",
+    "base": {
+      "atk": 3145,
+      "hp": 20968,
+      "def": 0,
+      "status": 0,
+      "odds": 19000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Incineration Cannon",
+      "desc": "Genos: Every 3rd attack does 2.5x damage. Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). Loses 3% of its max HP every attack. With Saitama in the deck: +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "flame-guild-master",
+    "name": "Flame Guild Master",
+    "series": "",
+    "image": "images/cards/art/flame-guild-master.webp",
+    "base": {
+      "atk": 3064,
+      "hp": 20426,
+      "def": 0,
+      "status": 0,
+      "odds": 18000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Flame Bomb",
+      "desc": "Choi Jong-In: Every hit sets the whole enemy deck on fire for 2 turns. Each hit adds 2 Burn stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "fox-devil-hunter",
+    "name": "Fox Devil Hunter",
+    "series": "",
+    "image": "images/cards/art/fox-devil-hunter.webp",
+    "base": {
+      "atk": 4716,
+      "hp": 31442,
+      "def": 0,
+      "status": 0,
+      "odds": 17000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Future Devil + Curse Devil",
+      "desc": "Aki: 30% chance to dodge each hit. Each hit puts a nail on the enemy (up to 3). At 3 nails, an enemy under 15% HP dies instantly (not bosses)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "sword-saint-father",
+    "name": "Sword Saint Father",
+    "series": "",
+    "image": "images/cards/art/sword-saint-father.webp",
+    "base": {
+      "atk": 3676,
+      "hp": 24506,
+      "def": 0,
+      "status": 0,
+      "odds": 22000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sword God Style",
+      "desc": "Paul's three sword styles. Its first hit on each new enemy does 1.8x damage. 30% chance to counter-attack when hit (0.9x damage)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "tempest-star-wolf",
+    "name": "Tempest Star Wolf",
+    "series": "",
+    "image": "images/cards/art/tempest-star-wolf.webp",
+    "base": {
+      "atk": 4769,
+      "hp": 31792,
+      "def": 0,
+      "status": 0,
+      "odds": 20000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Death Storm",
+      "desc": "Ranga: Every hit also hits the whole enemy bench for 20%. 20% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "white-tiger-master",
+    "name": "White Tiger Master",
+    "series": "",
+    "image": "images/cards/art/white-tiger-master.webp",
+    "base": {
+      "atk": 3338,
+      "hp": 22254,
+      "def": 0,
+      "status": 0,
+      "odds": 19000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Beast Form",
+      "desc": "Baek Yoonho: +10% damage every time it is hit. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "hunter-chairman",
+    "name": "Hunter Chairman",
+    "series": "",
+    "image": "images/cards/art/hunter-chairman.webp",
+    "base": {
+      "atk": 3463,
+      "hp": 23084,
+      "def": 0,
+      "status": 0,
+      "odds": 18000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Chairman's Will",
+      "desc": "Go Gun-Hee's iron will. Takes 15% less damage. Under 40% HP: +60% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "lifespan-angel",
+    "name": "Lifespan Angel",
+    "series": "",
+    "image": "images/cards/art/lifespan-angel.webp",
+    "base": {
+      "atk": 3011,
+      "hp": 20074,
+      "def": 0,
+      "status": 0,
+      "odds": 18000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lifespan Drain",
+      "desc": "Angel Devil's touch drains life. Each hit drains 5.3% of the enemy's max HP per turn for 3 turns, healing it. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "lion-beast-fist",
+    "name": "Lion Beast Fist",
+    "series": "",
+    "image": "images/cards/art/lion-beast-fist.webp",
+    "base": {
+      "atk": 3600,
+      "hp": 24002,
+      "def": 0,
+      "status": 0,
+      "odds": 23000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lionel",
+      "desc": "Leone: Heals 6% of its max HP every turn. +25% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "morning-star-maid",
+    "name": "Morning Star Maid",
+    "series": "",
+    "image": "images/cards/art/morning-star-maid.webp",
+    "base": {
+      "atk": 3677,
+      "hp": 24516,
+      "def": 0,
+      "status": 0,
+      "odds": 22000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Oni Mode",
+      "desc": "Rem: 30% chance per hit to Stun the enemy for 1 turn. Under 50% HP: +50% damage. Once, takes the killing blow for Subaru."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "one-horn-oni-maid",
+    "name": "One Horn Oni Maid",
+    "series": "",
+    "image": "images/cards/art/one-horn-oni-maid.webp",
+    "base": {
+      "atk": 5270,
+      "hp": 35130,
+      "def": 0,
+      "status": 0,
+      "odds": 21000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "El Fura",
+      "desc": "Ram: Every 2nd attack also hits the card behind for 35%. With Rem in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "orc-shaman-shadow",
+    "name": "Orc Shaman Shadow",
+    "series": "",
+    "image": "images/cards/art/orc-shaman-shadow.webp",
+    "base": {
+      "atk": 3118,
+      "hp": 20786,
+      "def": 0,
+      "status": 0,
+      "odds": 19000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Shaman's Fire",
+      "desc": "Tusk: Each hit adds 2 Burn stacks (3% of the enemy's max HP per turn each, up to 4, 3 turns). While on the bench, heals the card in front 4% of its max HP every turn. Shadows raised by your deck are 10% stronger."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 2.0,
+      "hp": 2.0,
+      "passive": 69,
+      "skill": 69,
+      "matchup": 1.1,
+      "team": 71,
+      "overall": 35.7
+    },
+    "tier": "Utility",
+    "updated": "2026-10-30",
+    "prevTier": "",
+    "beats": [],
+    "losesTo": [
+      "founding-titan",
+      "sword-saint",
+      "octopus-teacher",
+      "shadow-monarch",
+      "slime-demon-lord",
+      "quirk-thief-overlord",
+      "ant-king",
+      "one-punch-caped-hero",
+      "sun-breath-origin",
+      "soul-king-father",
+      "sun-god-captain",
+      "divergent-fist-vessel",
+      "golden-wind-boss",
+      "destroyer-god",
+      "storm-dragon",
+      "witch-of-envy",
+      "dragon-king-of-ruin",
+      "spiral-drill-king",
+      "ultra-instinct-saiyan",
+      "no-life-king",
+      "full-moon-demon-king",
+      "destroyer-dragonoid",
+      "dragon-god",
+      "dragon-emperor-monarch",
+      "primordial-butler-demon",
+      "moon-eye-ghost",
+      "atomic-shadow-lord",
+      "hypnosis-traitor",
+      "hollow-mask-reaper",
+      "pirate-king",
+      "beast-emperor",
+      "rabbit-goddess",
+      "homunculus-father",
+      "white-hawk-godhand",
+      "pumpkin-sun-pride",
+      "golden-gate-king",
+      "infinity-sorcerer",
+      "demon-god-of-flame",
+      "soul-magic-father",
+      "hero-number-one",
+      "made-in-heaven-priest",
+      "wood-god-hokage",
+      "monk-of-names",
+      "demon-progenitor",
+      "king-of-curses",
+      "control-devil",
+      "black-wizard-brother",
+      "undead-overlord-king"
+    ],
+    "utilGain": 36.4,
+    "team": {
+      "bestSupport": [
+        "guild-master-giant",
+        "charge-commander",
+        "eternal-wish-dragon"
+      ],
+      "position": "",
+      "bestWith": []
+    },
+    "redraw": true
+  },
+  {
+    "id": "shadow-garden-hound",
+    "name": "Shadow Garden Hound",
+    "series": "",
+    "image": "images/cards/art/shadow-garden-hound.webp",
+    "base": {
+      "atk": 3809,
+      "hp": 25396,
+      "def": 0,
+      "status": 0,
+      "odds": 23000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Hunting Instinct",
+      "desc": "Delta charges straight in. Its first hit on each new enemy does 2x damage. Under 50% HP: +40% damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "shadow-ogre-spy",
+    "name": "Shadow Ogre Spy",
+    "series": "",
+    "image": "images/cards/art/shadow-ogre-spy.webp",
+    "base": {
+      "atk": 3205,
+      "hp": 21364,
+      "def": 0,
+      "status": 0,
+      "odds": 20000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Clone Threads",
+      "desc": "Souei's clones. 40% chance to attack twice. 25% chance per hit to Paralyze the enemy for 2 turns (50% chance to lose each turn)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "shield-tiger",
+    "name": "Shield Tiger",
+    "series": "",
+    "image": "images/cards/art/shield-tiger.webp",
+    "base": {
+      "atk": 3482,
+      "hp": 23216,
+      "def": 0,
+      "status": 0,
+      "odds": 21000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Earth Spirit Protection",
+      "desc": "Garfiel draws power from the ground. Takes 20% less damage. Heals 6% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "sloth-archbishop",
+    "name": "Sloth Archbishop",
+    "series": "",
+    "image": "images/cards/art/sloth-archbishop.webp",
+    "base": {
+      "atk": 3778,
+      "hp": 25186,
+      "def": 0,
+      "status": 0,
+      "odds": 21000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Unseen Hands",
+      "desc": "Petelgeuse: Every 2nd attack also hits the card behind for 35%. Comes back once with 40% HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
   }
 ]
