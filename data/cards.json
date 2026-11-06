@@ -12660,5 +12660,705 @@
     "tier": "",
     "updated": "2026-10-29",
     "redraw": true
+  },
+  {
+    "id": "axe-warrior-kid",
+    "name": "Axe Warrior Kid",
+    "series": "",
+    "image": "images/cards/art/axe-warrior-kid.webp",
+    "base": {
+      "atk": 4298,
+      "hp": 28656,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lightning Strike",
+      "desc": "Stark is terrified but never runs. Takes 20% less damage. Every 3rd attack does 2.2x damage. With Frieren in the deck: +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "battle-maniac",
+    "name": "Battle Maniac",
+    "series": "",
+    "image": "images/cards/art/battle-maniac.webp",
+    "base": {
+      "atk": 3616,
+      "hp": 24108,
+      "def": 0,
+      "status": 0,
+      "odds": 26000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Lightning Magic",
+      "desc": "Luck's lightning boots. 30% chance to dodge each hit. 45% chance to attack twice."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "draculina-gunner",
+    "name": "Draculina Gunner",
+    "series": "",
+    "image": "images/cards/art/draculina-gunner.webp",
+    "base": {
+      "atk": 5672,
+      "hp": 37810,
+      "def": 0,
+      "status": 0,
+      "odds": 24000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Harkonnen",
+      "desc": "Seras: Every 2nd attack also hits the card behind for 35%. Heals 20% of the damage it deals."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "giant-earth-sin",
+    "name": "Giant Earth Sin",
+    "series": "",
+    "image": "images/cards/art/giant-earth-sin.webp",
+    "base": {
+      "atk": 4157,
+      "hp": 27716,
+      "def": 0,
+      "status": 0,
+      "odds": 27000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Heavy Metal",
+      "desc": "Diane: Takes 25% less damage. 25% chance per hit to Stun the enemy for 1 turn. With King in the deck, both get +20% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "goat-sin-doll",
+    "name": "Goat Sin Doll",
+    "series": "",
+    "image": "images/cards/art/goat-sin-doll.webp",
+    "base": {
+      "atk": 3744,
+      "hp": 24962,
+      "def": 0,
+      "status": 0,
+      "odds": 28000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Invasion",
+      "desc": "Gowther rewrites memories. 40% chance per hit to Confuse the enemy (it hits itself instead). Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "golden-land-demon",
+    "name": "Golden Land Demon",
+    "series": "",
+    "image": "images/cards/art/golden-land-demon.webp",
+    "base": {
+      "atk": 3882,
+      "hp": 25880,
+      "def": 0,
+      "status": 0,
+      "odds": 29000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Diagolze",
+      "desc": "Macht's curse turns things to gold. 30% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). 2x damage against frozen enemies. Heals 4% of its max HP every turn."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "gourmet-ghoul",
+    "name": "Gourmet Ghoul",
+    "series": "",
+    "image": "images/cards/art/gourmet-ghoul.webp",
+    "base": {
+      "atk": 4229,
+      "hp": 28196,
+      "def": 0,
+      "status": 0,
+      "odds": 29000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Koukaku Rapier",
+      "desc": "Tsukiyama savours his food. Heals 40% of its max HP after each kill. 25% chance to crit for 1.8x damage. Takes 10% less damage."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "guillotine-demon",
+    "name": "Guillotine Demon",
+    "series": "",
+    "image": "images/cards/art/guillotine-demon.webp",
+    "base": {
+      "atk": 6242,
+      "hp": 41616,
+      "def": 0,
+      "status": 0,
+      "odds": 30000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Scales of Obedience",
+      "desc": "Aura weighs mana. Its first hit on each new enemy Seals its ability for 2 turns. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "hair-psychic",
+    "name": "Hair Psychic",
+    "series": "",
+    "image": "images/cards/art/hair-psychic.webp",
+    "base": {
+      "atk": 5019,
+      "hp": 33458,
+      "def": 0,
+      "status": 0,
+      "odds": 32000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Psychic Barrier",
+      "desc": "Teru: Blocks the first 2 hits completely. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "spirit-sword-punk",
+    "name": "Spirit Sword Punk",
+    "series": "",
+    "image": "images/cards/art/spirit-sword-punk.webp",
+    "base": {
+      "atk": 4051,
+      "hp": 27008,
+      "def": 0,
+      "status": 0,
+      "odds": 25000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Spirit Sword",
+      "desc": "Kuwabara: Every 2nd attack also hits the card behind for 40%. Survives its first killing blow with 1 HP. With Yusuke in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "stitched-scythe-kid",
+    "name": "Stitched Scythe Kid",
+    "series": "",
+    "image": "images/cards/art/stitched-scythe-kid.webp",
+    "base": {
+      "atk": 3777,
+      "hp": 25182,
+      "def": 0,
+      "status": 0,
+      "odds": 28000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Thirteen's Jason",
+      "desc": "Juuzou feels no pain. Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns). Survives its first killing blow with 1 HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "zoltraak-apprentice",
+    "name": "Zoltraak Apprentice",
+    "series": "",
+    "image": "images/cards/art/zoltraak-apprentice.webp",
+    "base": {
+      "atk": 4340,
+      "hp": 28934,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Zoltraak Barrage",
+      "desc": "Fern fires Zoltraak faster than anyone. Always attacks twice (each hit does 0.7x damage). Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "calm-water-pillar",
+    "name": "Calm Water Pillar",
+    "series": "",
+    "image": "images/cards/art/calm-water-pillar.webp",
+    "base": {
+      "atk": 22097,
+      "hp": 147310,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Rain Storm",
+    "passive": {
+      "name": "Dead Calm",
+      "desc": "Giyu: The first attack from each new enemy does nothing and it strikes back. +60% damage against Demon cards. Takes 25% less damage. 45% chance to counter-attack when hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "half-hot-half-cold",
+    "name": "Half-Hot Half-Cold",
+    "series": "",
+    "image": "images/cards/art/half-hot-half-cold.webp",
+    "base": {
+      "atk": 22097,
+      "hp": 147310,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Snowstorm",
+    "passive": {
+      "name": "Phosphor",
+      "desc": "Todoroki uses both sides. 41% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). Each hit adds 2 Burn stacks (2.8% of the enemy's max HP per turn each, up to 4, 3 turns). 2.38x damage against frozen enemies."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "rose-whip-fox",
+    "name": "Rose Whip Fox",
+    "series": "",
+    "image": "images/cards/art/rose-whip-fox.webp",
+    "base": {
+      "atk": 22097,
+      "hp": 147310,
+      "def": 0,
+      "status": 0,
+      "odds": 31000
+    },
+    "exact": {},
+    "obtain": "Weather card: only drops during a Sakura Love",
+    "passive": {
+      "name": "Rose Whip & Death Tree",
+      "desc": "Kurama: Every 2nd attack also hits the card behind for 37%. Each hit drains 4.1% of the enemy's max HP per turn for 3 turns, healing it. 17% chance to crit for 1.85x damage. 14% chance to dodge each hit."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-28",
+    "redraw": true
+  },
+  {
+    "id": "ice-make-mage",
+    "name": "Ice Make Mage",
+    "series": "",
+    "image": "images/cards/art/ice-make-mage.webp",
+    "base": {
+      "atk": 4563,
+      "hp": 30418,
+      "def": 0,
+      "status": 0,
+      "odds": 27000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Ice Devil Slayer",
+      "desc": "Gray's Devil Slayer magic. +50% damage against Demon cards. 25% chance per hit to Freeze the enemy for 1 turn (frozen cards take 25% more damage). With Natsu in the deck, both get +15% damage and HP."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "pink-pumpkin-sniper",
+    "name": "Pink Pumpkin Sniper",
+    "series": "",
+    "image": "images/cards/art/pink-pumpkin-sniper.webp",
+    "base": {
+      "atk": 3946,
+      "hp": 26308,
+      "def": 0,
+      "status": 0,
+      "odds": 24000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Roman Artillery: Pumpkin",
+      "desc": "Mine's Pumpkin gets stronger in a pinch. Under 50% HP: +80% damage. Its attacks can't be dodged."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "satan-soul-demon",
+    "name": "Satan Soul Demon",
+    "series": "",
+    "image": "images/cards/art/satan-soul-demon.webp",
+    "base": {
+      "atk": 5326,
+      "hp": 35504,
+      "def": 0,
+      "status": 0,
+      "odds": 26000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Satan Soul",
+      "desc": "Mirajane's demon takeover. Under 50% HP: +60% damage. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "scissor-cut-mage",
+    "name": "Scissor Cut Mage",
+    "series": "",
+    "image": "images/cards/art/scissor-cut-mage.webp",
+    "base": {
+      "atk": 3950,
+      "hp": 26336,
+      "def": 0,
+      "status": 0,
+      "odds": 30000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Reelseiden",
+      "desc": "Ubel cuts anything she believes she can cut. Ignores shields, dodges and barriers. Each hit adds 2 Bleed stacks (2% of the enemy's max HP per turn each, up to 4, 3 turns)."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
+  },
+  {
+    "id": "sea-dragon-princess",
+    "name": "Sea Dragon Princess",
+    "series": "",
+    "image": "images/cards/art/sea-dragon-princess.webp",
+    "base": {
+      "atk": 4768,
+      "hp": 31784,
+      "def": 0,
+      "status": 0,
+      "odds": 25000
+    },
+    "exact": {},
+    "obtain": "Rolls anywhere",
+    "passive": {
+      "name": "Sea Dragon's Cradle",
+      "desc": "Noelle: Blocks the first 2 hits completely. Every 2nd attack also hits the card behind for 35%."
+    },
+    "skill": {
+      "name": "",
+      "desc": ""
+    },
+    "scores": {
+      "atk": 0,
+      "hp": 0,
+      "passive": 0,
+      "skill": 0,
+      "matchup": 0,
+      "team": 0,
+      "overall": 0
+    },
+    "tier": "",
+    "updated": "2026-10-29",
+    "redraw": true
   }
 ]
