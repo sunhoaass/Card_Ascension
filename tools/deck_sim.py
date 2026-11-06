@@ -123,7 +123,7 @@ SUP = {
     "crusader-tank": lambda v: dict(maxhp=v[0], hit_ramp=v[1]),
     "doctor-demon": lambda v: dict(dot=("poison", v[0], 3)),
     "dwarf-warrior-guard": lambda v: dict(dr=v[0], reflect=v[1]),
-    "erasure-teacher": lambda v: dict(seal=(v[0], 1)),
+    "erasure-teacher": lambda v: dict(seal=(v[0], 2)),
     "fate-thread-witch": lambda v: dict(nullify=1, dodge=v[1]),        # 152.9% less on the first hit = no damage
     "foresight-hero": lambda v: dict(dodge=v[0]),
     "gem-mage": lambda v: dict(gem=(v[0], v[1])),
