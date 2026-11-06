@@ -2607,3 +2607,4 @@
 - **Battle / regex:** ไม่แก้ `tools/` · `battle.json` มีสกิลครบ 20 ใบ · `todo` 4 ใบ (Lifespan Angel · Fox Devil Hunter · Orc Shaman Shadow · Morning Star Maid) · `matchup_sim.py --parse` `unknown` 4 ใบ (Lifespan Angel · Fox Devil Hunter · Cyborg Disciple · Sword Saint Father) = ช่องว่าง engine เดิม · `deckbuff_report.js` ชื่อไม่รู้จัก 4 ชื่อเดิม
 - **ทดสอบ (Chromium 390×844):** หน้า Cards โหลด · หน้าดูการ์ด 20 ใบ รูป 600×800 ตรง id · ไม่มี error / 404 · JSON ถูกต้อง
 - **ไฟล์:** `data/cards.json` · `data/pending/cards.json` · `images/cards/art/` + `art/thumb/` (20 ใบใหม่) · `PROGRESS.md` · `HISTORY.md`
+- **อัปเดตข่าว 2026-11-06:** ลบอัปเดตเก่าทั้งหมด เหลือ "The Big Update" 1 รายการ · โค้ดใหม่ 4 ตัว (UPDATE DUNGEON BOSSES EVENT · reward ยังไม่ระบุ) · systems แทนที่ด้วย 4 รายการ · `data/news.json`

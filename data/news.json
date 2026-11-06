@@ -1,76 +1,64 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-06",
   "note": "Home page news (PROGRESS.md §5.2 · routine E). updates: game patches, newest first, kind major|minor · codes: redeem codes (expires optional) · systems: new features in the game. All text in English.",
   "updates": [
     {
-      "date": "2026-11-01",
+      "date": "2026-11-06",
       "kind": "major",
-      "title": "Guild Boss & Guild Stats",
+      "title": "The Big Update",
       "items": [
-        "Guild Boss: 1,500 stages, much harder the higher you go; rewards buffed a lot (gems, roll packs, Huge Luck, Mutation & Weather potions); fixed a bug that gave fake huge damage",
-        "Guild Stats: owners & officers spend bank gems on Luck (up to x50), Mutation Luck, Roll Speed & Gems for every member; member upgrade is now Guild Room Upgrade; Guild Master moved to the counter; donate box fixed",
-        "Deck: pick a separate team for Battle 2; Favorite cards go to the top, get their own filter & can't be merged; Equip as Cosmetic to wear a card on your back; search & filters in the Card Grader and Trait pickers",
-        "Towers & Battles: Auto Tower never stops on its own; battles reopen after you rejoin or reconnect; battle buttons react instantly, shorter intro, smooth show/hide; hidden battles play the world music; copy-ability cards no longer copy traits or support effects",
-        "Fixed dark screen tint, and buttons shrinking & flickering with 2 battles",
-        "Backpack: potion popup stays open so you can use more than once; new % / amount toggle, up to 1,000,000 at once",
-        "Other: new Titan Serum & Progenitor's Blood art; Leaderboard & Weather hide arrows fixed on all devices; offline rewards removed; performance & security fixes; new text translated to all languages"
-      ]
-    },
-    {
-      "date": "2026-10-31",
-      "kind": "major",
-      "title": "Two Battles at Once",
-      "items": [
-        "Two Battles at Once: hide your battle, then start a second battle with any fight (towers too); Battle 1 uses your equipped deck, Battle 2 uses your next deck with cards",
-        "Buttons now say SHOW BATTLE · B1 / B2; when B1 ends, B2 becomes B1; a hidden battle that finishes turns its button gold (SEE RESULT); climbs keep going hidden while you watch your other battle",
-        "Climb Bar: new smaller top bar with one STOP per battle when you run two climbs; tap the arrow to slide it away; Tower is back to normal so you get a lot of packs again",
-        "Cards you haven't found now show faintly behind a dark overlay instead of solid black (Index + Weather); battle music keeps playing while any battle is going; the rest of the UI stays hidden while a battle is on screen",
-        "Smaller, cleaner SHOW BATTLE buttons on phone & tablet; Guild Hall text updated (guilds are here!)",
-        "Console: full controller pass for every menu, both battles, the climb bar and the guild team picker",
-        "Translations: everything new is translated into all 45 languages, plus battle status tags and the Teleport buildings list",
-        "Fixes: gem counter sometimes showing negative gems (gems were always safe); tower climbs stopping when you used another battle; a Shop error when switching tabs; performance improvements & less lag"
-      ]
-    },
-    {
-      "date": "2026-10-30",
-      "kind": "minor",
-      "title": "Mini Update",
-      "items": [
-        "Tower: lower rolls that still grow as you climb; floors past 1,000 are harder; Hard mode gives ~1.5x Normal rewards",
-        "Battles: buffs now show live on card stats; Slime Demon Lord deck damage +8% (was 3.6%); fixed wrong card picture sometimes showing",
-        "Supports: equip multiple copies + drag & drop, same as attack cards",
-        "Boss drops: world end bosses 10% card drop; timed world bosses 3-5% card drop",
-        "Guild Planets: FIGHT runs through every guard team back to back with no healing; losing = 30 min wait; only 1 member can attack at a time; progress resets after 5h",
-        "Guild Planets: each guild sees its own DEFEATED teams; 5 min shield after a capture; leaders + officers can abandon planets; new planet map, VIEW TEAM button, full guild names",
-        "Guilds: new glow look on every screen, icons/tiles/chips for power, gems, boss rewards and planet buffs, instant donating with a coin sound, new rank medals, bigger menu for phones + iPads",
-        "Guilds fixes: overlapping text/buttons, crown covering LEADER, jumping button icons, typed text not showing, member count after leaving, flash when switching systems",
-        "iPad / Tablet: proper tablet sizes; bigger side/top buttons, leaderboard, VIP + DASH; roll bar, auto-roll preview, Card Grader, Titles + Guild menus sized for tablets; SHOW BATTLE no longer flashes during hidden auto-climb",
-        "Climb bars: sit in the top bar on phone + PC and move aside for the leaderboard; fixed STOP button not clickable; Shard Tower bar hides when a menu opens",
-        "Less lag in menus, card lists, pickups and bosses"
+        "New Content: 5 new worlds (Hero City, Devil District, Monster City, Stand Desert, Dragon Kingdom); 8 new weathers up to the ultra rare Heaven's Gate; 100 new cards (50 fighters + 20 supports + 30 weather cards); 4 new World Bosses in a remade space Boss Wing, each with boss-only cards to craft; Dungeons (team up, fight through floors, buy upgrades in the Dungeon shop); Key Tower (1,000 floors that earn Dungeon Keys); Nightmare difficulty for every story fighter",
+        "New Upgrades: Card Skill Trees (spend a card's kills on its own upgrades); Multi Roll + Roll Luck in the Skill Tree; 2 new traits, Plaguebringer (status effects) and Transcendent, the new rarest (1 in 50,000); 3 new titles",
+        "Quality of Life: multi-pop weather potions with Stop On to pick the weathers you want; HIDE stays on between fights and hidden fights show their result on their own; AUTO Dungeon can run AFK and resumes when you rejoin; shorter tutorial; Dungeon added to the Teleport menu",
+        "Balance: story difficulties give up to x200 luck, Skill Tree up to x50; Ascension luck now grows evenly past floor 100; Support team boosts stack up to +25%; Skill Tree costs more, some supports nerfed; Infinite Tower rewards grow slower past floor 3,000",
+        "Admin Abuse: new wheel with much bigger prizes; events now reach every server, private servers too",
+        "Shop: new passes Quick Roll+ and 2x Dungeon Tokens; potions in x10 (-20%) and x100 (-40%) plus the Mega Potion Pack; private server over-cap luck is now Free Buys for the owner",
+        "Fixes: cards now do what their text says (\"can't be dodged\", seal and more); security and performance fixes; everything translated to all languages"
       ]
     }
   ],
-  "codes": [],
+  "codes": [
+    {
+      "code": "UPDATE",
+      "reward": "Update reward",
+      "date": "2026-11-06"
+    },
+    {
+      "code": "DUNGEON",
+      "reward": "Update reward",
+      "date": "2026-11-06"
+    },
+    {
+      "code": "BOSSES",
+      "reward": "Update reward",
+      "date": "2026-11-06"
+    },
+    {
+      "code": "EVENT",
+      "reward": "Update reward",
+      "date": "2026-11-06"
+    }
+  ],
   "systems": [
     {
-      "date": "2026-11-01",
-      "title": "Guild Stats",
-      "desc": "Owners and officers spend bank gems on Luck (up to x50), Mutation Luck, Roll Speed and Gems for every member."
+      "date": "2026-11-06",
+      "title": "Dungeons",
+      "desc": "Team up and fight through floors, then buy upgrades in the Dungeon shop. AUTO Dungeon can run AFK and resumes when you rejoin."
     },
     {
-      "date": "2026-11-01",
-      "title": "Favorite & Cosmetic Cards",
-      "desc": "Favorite cards go to the top with their own filter and can't be merged. Equip a card as a cosmetic to wear it on your back."
+      "date": "2026-11-06",
+      "title": "Key Tower",
+      "desc": "A 1,000-floor tower that earns Dungeon Keys."
     },
     {
-      "date": "2026-10-31",
-      "title": "Two Battles at Once",
-      "desc": "Hide a battle and start a second one with any fight, towers included. Battle 1 uses your equipped deck and Battle 2 your next deck with cards."
+      "date": "2026-11-06",
+      "title": "Card Skill Trees",
+      "desc": "Spend a card's kills on its own upgrades."
     },
     {
-      "date": "2026-10-31",
-      "title": "Climb Bar",
-      "desc": "A smaller top bar with one STOP per battle when you run two climbs. Tap the arrow to slide it away."
+      "date": "2026-11-06",
+      "title": "World Bosses",
+      "desc": "4 new bosses in a remade space Boss Wing, each with boss-only cards to craft."
     }
   ]
 }
