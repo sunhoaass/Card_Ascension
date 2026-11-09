@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "include": [
+    "/PROGRESS.md",
+    "/HISTORY.md",
+    "/CLAUDE.md",
+    "/SUPPORT-CHANGES.md",
+    "/inbox/*",
+    "/cropped_cards/*",
+    "/mockup/*",
+    "/tools/*",
+    "/docs/*",
+    "/functions/*",
+    "/data/pending/cards.json",
+    "/images/silver/portrait-src/*",
+    "/.gitignore",
+    "/netlify.toml",
+    "/_routes.json"
+  ],
+  "exclude": []
+}
