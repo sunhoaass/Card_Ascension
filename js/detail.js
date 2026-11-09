@@ -2287,6 +2287,21 @@
     C.openCard(n.dataset.id, n);
   }
 
+  /* ---------- Share (PROGRESS ▶️ แผนปรับปรุงเว็บ รอบ 8) ----------
+     The card's own page c/<id>/ (tools/card_pages.py: name, art, stats · Google keeps it, Discord / LINE show the art)
+     · the phone's share sheet, else copy the link (FX.flash on the button + toast) · hidden on the wheel (css) */
+  async function shareCard() {
+    if (!cur || wheelOn) return;
+    const canon = document.querySelector('link[rel="canonical"]');
+    const url = new URL("c/" + encodeURIComponent(cur.id) + "/", (canon && canon.href) || location.origin + "/").href;
+    if (navigator.share) {
+      try { await navigator.share({ title: `${cur.name} — Card Battle Infinity`, url }); return; }
+      catch (err) { if (err && err.name === "AbortError") return; }   // closed the sheet = nothing to do
+    }
+    try { await navigator.clipboard.writeText(url); FX.flash(el.share); FX.toast("Link copied"); }
+    catch { FX.toast(url, { duration: 6000 }); }                       // no clipboard: show the link to copy by hand
+  }
+
   /* ---------- init ---------- */
   function init() {
     state.cards.forEach((c) => byId.set(c.id, c));
@@ -2305,7 +2320,7 @@
       wheel: g("bs-wheel"), cw: g("bs-cw"), cwName: g("bs-cwName"), cwTools: g("bs-cwTools"), cwQ: g("bs-cwQ"), cwClear: g("bs-cwClear"), cwEmpty: g("bs-cwEmpty"), cwClear2: g("bs-cwClear2"),
       palace: g("bs-palace"), palaceImg: g("bs-palaceImg"), pdust: [g("bs-pdust0"), g("bs-pdust1")], gold: g("bs-gold"), city: g("bs-city"), still: g("bs-still"), fall: g("bs-fall"),
       scrim: g("bs-scrim"), sheet: g("bs-sheet"), sheetHead: g("bs-sheetHead"), shThumb: g("bs-shThumb"), shTitle: g("bs-shTitle"), shSub: g("bs-shSub"), sheetX: g("bs-sheetX"), sheetBody: g("bs-sheetBody"),
-      shLv: g("bs-shLv"), shLvName: g("bs-shLvName"), tabs: g("bs-tabs"),
+      shLv: g("bs-shLv"), shLvName: g("bs-shLvName"), tabs: g("bs-tabs"), share: g("bs-share"),
     });
     coronaFront = g("bs-coronaA"); coronaBack = g("bs-coronaB");
 
@@ -2325,6 +2340,7 @@
       }
     });
     el.close.addEventListener("click", () => { if (wheelOn) { if (!wBusy) C.closeCard(); } else toWheel(); });
+    if (el.share) el.share.addEventListener("click", shareCard);
     // W8: card ⇄ wheel share one URL (#card/<id>): history steps between them fire popstate only, no hashchange
     addEventListener("popstate", () => { const m = location.hash.match(/^#\/?card\/([^/?#]+)/); if (isOpen && m) open(decodeURIComponent(m[1])); });
     document.addEventListener("cbi:rarity", onRarity);

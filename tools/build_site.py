@@ -37,6 +37,7 @@ WEB = [
     "data/*.json",
     "data/pending/support.json",                     # js/battle.js loads it (the rest of data/pending/ is internal)
     "images/**",
+    "c/**",                                          # card pages (tools/card_pages.py · round 8)
 ]
 NOT_WEB = [
     "images/silver/portrait-src/**",
@@ -86,12 +87,14 @@ def clean(ref, base=""):
     """A link / src as written → repo path, or None when it is not a file of this site."""
     ref = ref.strip()
     if ref.startswith(SITE):
-        ref = ref[len(SITE):]
+        ref, base = ref[len(SITE):], ""             # the site's own full URL = from the root
     elif re.match(r"^(?:[a-z]+:|//|#)", ref, re.I) or not ref:
         return None
     ref = ref.split("#")[0].split("?")[0]
     if not ref or ref.endswith("/") or "${" in ref:
         return None
+    if ref.startswith("/"):                          # root path (card pages: /css/…, /images/…)
+        base = ""
     path = os.path.normpath(os.path.join(base, ref.lstrip("/"))).replace(os.sep, "/")
     return None if path.startswith("..") else path
 
@@ -113,7 +116,9 @@ def references(dist):
         files += [os.path.relpath(os.path.join(top, n), dist).replace(os.sep, "/") for n in names]
     for rel in files:
         if rel.endswith(".html"):
-            for ref in re.findall(r'\b(?:src|href|content)\s*=\s*"([^"]+)"', read(rel)):
+            for attr, ref in re.findall(r'\b(src|href|content)\s*=\s*"([^"]+)"', read(rel)):
+                if attr == "content" and not ref.startswith(SITE):
+                    continue                         # meta text (description, generator …), not a file
                 if re.search(r"\.\w{2,5}(?:[?#].*)?$", ref):
                     add(clean(ref, os.path.dirname(rel)), rel)
         elif rel.endswith(".webmanifest"):
