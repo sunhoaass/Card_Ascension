@@ -14,8 +14,8 @@
       } catch (e) {}
     })();
   </script>
-  <title>Card Battle Infinity — Tier List &amp; Card Database</title>
-  <meta name="description" content="Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.">
+  <title>Card Battle Infinity — Card Database, Codes &amp; Decks</title>
+  <meta name="description" content="Card stats for all 9 rarities, the latest redeem codes, support cards, meta decks and a boss battle simulator for the Roblox card battle game.">
   <meta name="theme-color" content="#0f1638">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow, max-image-preview:large">
@@ -24,8 +24,8 @@
   <!-- Link previews (Facebook, LINE, Discord, X) -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Card Battle Infinity">
-  <meta property="og:title" content="Card Battle Infinity — Tier List &amp; Card Database">
-  <meta property="og:description" content="Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.">
+  <meta property="og:title" content="Card Battle Infinity — Card Database, Codes &amp; Decks">
+  <meta property="og:description" content="Card stats for all 9 rarities, the latest redeem codes, support cards, meta decks and a boss battle simulator for the Roblox card battle game.">
   <meta property="og:url" content="https://card-battle-infinity.pages.dev/">
   <meta property="og:image" content="https://card-battle-infinity.pages.dev/images/og.png">
   <meta property="og:image:type" content="image/png">
@@ -34,8 +34,8 @@
   <meta property="og:image:alt" content="Card Battle Infinity: tier list, card stats and support picks for the Roblox card battle game">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Card Battle Infinity — Tier List &amp; Card Database">
-  <meta name="twitter:description" content="Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.">
+  <meta name="twitter:title" content="Card Battle Infinity — Card Database, Codes &amp; Decks">
+  <meta name="twitter:description" content="Card stats for all 9 rarities, the latest redeem codes, support cards, meta decks and a boss battle simulator for the Roblox card battle game.">
   <meta name="twitter:image" content="https://card-battle-infinity.pages.dev/images/og.png">
   <meta name="twitter:image:alt" content="Card Battle Infinity: tier list, card stats and support picks for the Roblox card battle game">
 
@@ -44,9 +44,9 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Card Battle Infinity",
-    "alternateName": "Card Battle Infinity Tier List",
+    "alternateName": "Card Battle Infinity Card Database",
     "url": "https://card-battle-infinity.pages.dev/",
-    "description": "Tier list, card stats for all 7 rarities, support rankings and meta decks for the Roblox card battle game.",
+    "description": "Card stats for all 9 rarities, the latest redeem codes, support cards, meta decks and a boss battle simulator for the Roblox card battle game.",
     "inLanguage": "en"
   }
   </script>
@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=122">
-  <link rel="stylesheet" href="css/base.css?v=122">
-  <link rel="stylesheet" href="css/fx.css?v=122">
-  <link rel="stylesheet" href="css/cards.css?v=122">
-  <link rel="stylesheet" href="css/tier.css?v=122">
-  <link rel="stylesheet" href="css/deck.css?v=122">
-  <link rel="stylesheet" href="css/support.css?v=122">
-  <link rel="stylesheet" href="css/tiermaker.css?v=122">
-  <link rel="stylesheet" href="css/detail.css?v=122">
-  <link rel="stylesheet" href="css/home.css?v=122">
-  <link rel="stylesheet" href="css/battle.css?v=122">
+  <link rel="stylesheet" href="css/tokens.css?v=124">
+  <link rel="stylesheet" href="css/base.css?v=124">
+  <link rel="stylesheet" href="css/fx.css?v=124">
+  <link rel="stylesheet" href="css/cards.css?v=124">
+  <link rel="stylesheet" href="css/tier.css?v=124">
+  <link rel="stylesheet" href="css/deck.css?v=124">
+  <link rel="stylesheet" href="css/support.css?v=124">
+  <link rel="stylesheet" href="css/tiermaker.css?v=124">
+  <link rel="stylesheet" href="css/detail.css?v=124">
+  <link rel="stylesheet" href="css/home.css?v=124">
+  <link rel="stylesheet" href="css/battle.css?v=124">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -202,15 +202,16 @@
       </div>
 
       <div class="home">
+        <!-- codes first: on phones they were under a screen or two of patch notes (audit 2026-11-09) · PC places both with grid areas -->
+        <section class="home__sec home__sec--codes" aria-labelledby="home-codes-t">
+          <h2 id="home-codes-t" class="home__h">Latest codes</h2>
+          <div id="home-codes" aria-live="polite"><div class="skeleton home__skel home__skel--sm"></div></div>
+        </section>
+
         <section class="home__sec home__sec--updates" aria-labelledby="home-updates-t">
           <h2 id="home-updates-t" class="home__h">Game updates</h2>
           <div id="home-updates" class="home__list" aria-live="polite"><div class="skeleton home__skel"></div><div class="skeleton home__skel"></div></div>
           <button id="home-older" class="tm-btn home__more fx-press" type="button" hidden>Show older updates</button>
-        </section>
-
-        <section class="home__sec home__sec--codes" aria-labelledby="home-codes-t">
-          <h2 id="home-codes-t" class="home__h">Latest codes</h2>
-          <div id="home-codes" aria-live="polite"><div class="skeleton home__skel home__skel--sm"></div></div>
         </section>
 
         <section class="home__sec home__sec--new" aria-labelledby="home-new-t">
@@ -841,19 +842,19 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=122"></script>
-  <script src="js/app.js?v=122"></script>
-  <script src="js/deckbuff.js?v=122"></script>
-  <script src="js/teamscore.js?v=122"></script>
-  <script src="js/share.js?v=122"></script>
-  <script src="js/cards.js?v=122"></script>
-  <script src="js/detail.js?v=122"></script>
-  <script src="js/tier.js?v=122"></script>
-  <script src="js/deck.js?v=122"></script>
-  <script src="js/support.js?v=122"></script>
-  <script src="js/home.js?v=122"></script>
-  <script src="js/tiermaker.js?v=122"></script>
-  <script src="js/battle.js?v=123"></script>
+  <script src="js/fx.js?v=124"></script>
+  <script src="js/app.js?v=124"></script>
+  <script src="js/deckbuff.js?v=124"></script>
+  <script src="js/teamscore.js?v=124"></script>
+  <script src="js/share.js?v=124"></script>
+  <script src="js/cards.js?v=124"></script>
+  <script src="js/detail.js?v=124"></script>
+  <script src="js/tier.js?v=124"></script>
+  <script src="js/deck.js?v=124"></script>
+  <script src="js/support.js?v=124"></script>
+  <script src="js/home.js?v=124"></script>
+  <script src="js/tiermaker.js?v=124"></script>
+  <script src="js/battle.js?v=124"></script>
 </body>
 </html>
 

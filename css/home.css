@@ -1,6 +1,6 @@
 /* ==========================================================
    Card Battle Infinity — Home (plan 2026-10-30 item 5 · js/home.js)
-   Phone: one column (updates → codes → new cards → systems) · PC (≥ 1100): updates | codes + systems, new cards below
+   Phone: one column (codes → updates → new cards → systems · codes first 2026-11-09) · PC (≥ 1100): updates | codes + systems, new cards below
    Shared bits: .panel (gold box), .tm-btn, .card-grid, .skeleton, the NEW badge .gc__new (css/fx.css)
    ========================================================== */
 .home { display: grid; gap: var(--s-8); }

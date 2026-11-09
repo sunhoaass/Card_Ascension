@@ -1358,9 +1358,9 @@
     const tierNames = state.meta.tiers.filter((t) => isCard || !t.cardsOnly).map((t) => t.name);   // Utility = cards only
     let filters = `<div class="tm-chips" role="group" aria-label="Filter by tier">${tierNames.map((t) => chipHTML("tier", t, t, `--sw:var(${C.TIER_COLOR[t] || "--t-d"});--sw-line:var(${C.TIER_COLOR[t] || "--t-d"})`)).join("")}${chipHTML("tier", "-", "Unranked")}</div>`;
     if (isCard) {
-      const roles = [...new Set(state.cards.map((c) => c.role).filter(Boolean))].sort();
+      const roles = C.fieldValues(state.cards, "role").sort();   // [] until ~every card has one (audit 2026-11-09)
       if (roles.length) filters += `<div class="tm-chips" role="group" aria-label="Filter by role">${roles.map((r) => chipHTML("role", r, r)).join("")}</div>`;
-      const series = [...new Set(state.cards.map((c) => c.series).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      const series = C.fieldValues(state.cards, "series").sort((a, b) => a.localeCompare(b));
       if (series.length > 1) filters += `<label class="field"><span class="sr-only">Series</span><select data-pk-select="series"><option value="">All series</option>${series.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("")}</select></label>`;
     }
     const res = await dialog({
