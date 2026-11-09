@@ -1,0 +1,126 @@
+/* ==========================================================
+   Card pages c/<id>/ + the list c/ (PROGRESS ▶️ แผนปรับปรุงเว็บ รอบ 8 · tools/card_pages.py writes them)
+   Static pages for Google and link previews. Shared theme: tokens.css + base.css (.main, page head, .panel)
+   + fx.css (.fx-page-in, .fx-up, .fx-press) + tiermaker.css (.tm-btn). Only the layout of these pages lives here.
+   No side menu / bottom bar: .main is plain (no rail margin, no space for the menu bar).
+   ========================================================== */
+#backdrop { background: radial-gradient(120vmax 60vmax at 50% 112%, var(--haze), transparent 62%), var(--sky); }
+.cp .main { max-width: 1080px; margin: 0 auto; padding: var(--s-2) var(--gutter) calc(var(--s-10) + var(--safe-b)); }
+@media (min-width: 1100px) { .cp .main { max-width: 1080px; margin: 0 auto; padding: var(--s-4) var(--gutter) var(--s-12); } }
+
+/* ---------- Top bar: site name + links (glass, like the site's top bar) ---------- */
+.cp-top {
+  position: relative; z-index: 2; display: flex; align-items: center; gap: var(--s-2);
+  max-width: 1080px; margin: 0 auto; padding: var(--s-2) var(--gutter);
+  border-bottom: 1px solid var(--glass-line);
+}
+.cp-brand {
+  display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; min-width: 0;
+  color: var(--gold-hi); text-decoration: none; font-family: var(--font-display); font-size: var(--fs-md); letter-spacing: .04em;
+}
+.cp-brand img { width: 28px; height: 28px; flex: none; }
+.cp-brand { min-width: 44px; justify-content: center; }
+.cp-brand span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cp-top__links { margin-left: auto; display: flex; flex: none; }
+.cp-link {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); border-radius: var(--r-chip);
+  color: var(--ink-dim); text-decoration: none; font-size: var(--fs-sm); font-weight: 700;
+}
+.cp-link:hover, .cp-link[aria-current="page"] { color: var(--gold-hi); }
+@media (max-width: 479px) {
+  .cp-brand span { display: none; }   /* phones: the crest alone, the 3 links fit */
+}
+@media (min-width: 700px) { .cp-link { padding: 0 var(--s-3); } }
+
+/* ---------- Breadcrumb ---------- */
+.cp-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-2); margin: var(--s-2) 0 var(--s-3); font-size: var(--fs-xs); color: var(--ink-faint); }
+.cp-crumbs a { display: inline-flex; align-items: center; min-height: 32px; color: var(--ink-dim); text-decoration: none; }
+.cp-crumbs a:hover { color: var(--gold-hi); }
+.cp-crumbs [aria-current] { color: var(--ink-dim); }
+.page__title { overflow-wrap: anywhere; }
+
+/* ---------- Art + facts ---------- */
+.cp-hero { display: grid; gap: var(--s-5); }
+.cp-art {
+  justify-self: center; width: min(100%, 320px); margin: 0; aspect-ratio: 3 / 4; overflow: hidden;
+  border-radius: var(--r-panel); background: var(--void-2);
+  box-shadow: 0 0 0 1px rgba(var(--gold-rgb), .5), 0 14px 34px rgba(4, 6, 24, .55), 0 0 40px rgba(var(--gold-rgb), .12);
+}
+.cp-art img { width: 100%; height: 100%; object-fit: cover; }
+.cp-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); margin: 0 0 var(--s-4); }
+.cp-fact { min-width: 0; padding: var(--s-2) var(--s-3); border-radius: var(--r-chip); background: rgba(var(--gold-rgb), .06); box-shadow: inset 0 0 0 1px rgba(var(--gold-rgb), .22); }
+.cp-fact--wide { grid-column: 1 / -1; }
+.cp-fact dt { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.cp-fact dd { margin: 2px 0 0; font-family: var(--font-display); font-size: var(--fs-lg); color: var(--gold-hi); overflow-wrap: anywhere; }
+.cp-fact--wide dd { font-family: var(--font-body); font-size: var(--fs-md); font-weight: 700; color: var(--ink); }
+.cp-fact--hp dd { color: var(--hp); }
+.cp-fact--atk dd { color: var(--atk); }
+.cp-fact--tier dd { color: var(--tc, var(--gold-hi)); }
+.cp-open { width: 100%; min-height: 50px; font-size: var(--fs-md); text-decoration: none; }
+.cp-open svg { width: 20px; height: 20px; }
+
+/* ---------- Ability / table panels (.panel = the site's gold box) ---------- */
+.cp-sec { margin-top: var(--s-4); padding: var(--s-4) var(--s-5) var(--s-5); }
+.cp-sec h2 { font-size: var(--fs-lg); color: var(--gold-hi); margin-bottom: var(--s-2); }
+.cp-sec h2 small { display: block; margin-bottom: 2px; font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.cp-sec p { max-width: 72ch; color: var(--ink); }
+.cp-table { overflow-x: auto; margin: 0 calc(var(--s-2) * -1); }
+.cp-table table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+.cp-table th, .cp-table td { padding: 7px var(--s-2); text-align: right; white-space: nowrap; border-bottom: 1px solid rgba(var(--gold-rgb), .14); }
+.cp-table thead th { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.cp-table th:first-child { text-align: left; }
+.cp-table tbody th { font-weight: 700; color: var(--ink); }
+.cp-table tbody tr:last-child > * { border-bottom: 0; }
+.cp-rar--sup { max-width: 640px; }
+.cp-table .cp-hp { color: var(--hp); }
+.cp-table .cp-atk { color: var(--atk); }
+.cp-dot { display: inline-block; width: 10px; height: 10px; margin-right: var(--s-2); border-radius: 50%; vertical-align: 0; box-shadow: 0 0 0 1px rgba(255, 255, 255, .25); background: var(--r-normal); }
+/* = RARITY_SWATCH in js/app.js */
+.cp-dot[data-r="Shiny"] { background: var(--r-shiny); }
+.cp-dot[data-r="Rainbow"] { background: linear-gradient(135deg, #e8607a, #e9a75a, #7fd39a, #69b9e0, #8a7be0); }
+.cp-dot[data-r="Secret"] { background: var(--r-secret); }
+.cp-dot[data-r="Divine"] { background: var(--r-divine-2); }
+.cp-dot[data-r="Cosmic"] { background: linear-gradient(135deg, var(--r-cosmic), var(--r-cosmic-2)); }
+.cp-dot[data-r="Ascended"] { background: linear-gradient(135deg, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8); }
+.cp-dot[data-r="Godlike"] { background: linear-gradient(135deg, #fffdf4, #f6e2a8); }
+.cp-dot[data-r="Godly"] { background: linear-gradient(135deg, #ff7aa8, #f7a35c, #ffd36a); }
+
+/* ---------- Previous / next ---------- */
+.cp-pn { display: flex; flex-wrap: wrap; gap: var(--s-3); justify-content: space-between; margin-top: var(--s-5); }
+.cp-pn .tm-btn { flex: 1 1 140px; max-width: 100%; min-width: 0; text-decoration: none; }
+.cp-pn .tm-btn > :not(span) { overflow: hidden; }
+.cp-pn a { overflow: hidden; text-overflow: ellipsis; }
+.cp-pn__next { margin-left: auto; }
+
+/* ---------- The list (c/) ---------- */
+.cp-group { margin-top: var(--s-6); }
+.cp-group h2 small { font-family: var(--font-body); font-size: var(--fs-sm); color: var(--ink-faint); letter-spacing: 0; }
+.cp-tiles { list-style: none; margin: var(--s-3) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--s-3); }
+.cp-tile { display: grid; gap: 6px; text-decoration: none; color: var(--ink); font-size: var(--fs-xs); font-weight: 700; line-height: 1.25; text-align: center; }
+.cp-tile img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--r-card); background: var(--void-2); box-shadow: 0 0 0 1px rgba(var(--gold-rgb), .35); }
+.cp-tile:hover { color: var(--gold-hi); }
+.cp-tile:hover img { box-shadow: 0 0 0 1px var(--gold), 0 0 16px rgba(var(--gold-rgb), .3); }
+
+.cp-foot { max-width: 1080px; margin: 0 auto; padding: var(--s-5) var(--gutter) calc(var(--s-6) + var(--safe-b)); text-align: center; font-size: var(--fs-xs); color: var(--ink-faint); }
+.cp-foot a { color: var(--ink-dim); }
+
+@media (min-width: 760px) {
+  .cp-hero { grid-template-columns: minmax(240px, 320px) minmax(0, 1fr); align-items: start; gap: var(--s-6); }
+  .cp-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cp-tiles { grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: var(--s-4); }
+}
+@media (min-width: 900px) { .cp .main { padding-top: var(--s-4); } }
+
+/* phones: the table as two lines per rarity (a Godly ATK of 13 digits does not fit a 4-column row): rarity · odds on top,
+   HP · ATK under it, each number labelled (the column heads are hidden) · last in the file so it wins over the table rules */
+@media (max-width: 479px) {
+  .cp-table { overflow: visible; margin: 0; }
+  .cp-table thead { display: none; }
+  .cp-table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px var(--s-3); padding: 9px 0; border-bottom: 1px solid rgba(var(--gold-rgb), .14); }
+  .cp-table tbody tr:last-child { border-bottom: 0; }
+  .cp-table th, .cp-table td { display: block; padding: 0; border: 0; white-space: nowrap; }
+  .cp-table .cp-hp { text-align: left; }
+  .cp-table .cp-hp::before, .cp-table .cp-atk::before { margin-right: 6px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: .08em; color: var(--ink-faint); }
+  .cp-table .cp-hp::before { content: "HP"; }
+  .cp-table .cp-atk::before { content: "ATK"; }
+}

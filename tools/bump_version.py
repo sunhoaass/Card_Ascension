@@ -6,6 +6,7 @@
     python3 tools/bump_version.py --check   # exit 1 when the numbers are not all the same (no change)
 
 Site icons use their own number (?v=2 · images/ + site.webmanifest) and are never touched here.
+After a bump it runs tools/card_pages.py (the card pages c/<id>/ use the same ?v=).
 """
 import re
 import sys
@@ -46,6 +47,10 @@ def main(argv):
             print(f"PROGRESS.md rule 9: now {new} · next {new + 1}")
         else:
             print("PROGRESS.md rule 9 pattern not found (update it by hand)")
+    pages = ROOT / "tools" / "card_pages.py"   # the card pages c/<id>/ load css/js with the same ?v= (round 8)
+    if pages.exists():
+        import subprocess
+        subprocess.run([sys.executable, str(pages)], check=False)
 
 
 if __name__ == "__main__":
