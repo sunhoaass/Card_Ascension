@@ -95,7 +95,7 @@
   const cellEls = new Map();     // support id -> grid cell (the card + its tier badge · C.cardCell, js/cards.js)
   const elOf = (id) => {
     let cell = cellEls.get(id);
-    if (!cell) { const el = C.renderCard(byId.get(id), state.rarity); cardEls.set(id, el); cell = C.cardCell(el, byId.get(id)); cellEls.set(id, cell); }
+    if (!cell) { const el = C.renderCard(byId.get(id), state.rarity, { grid: true }); cardEls.set(id, el); cell = C.cardCell(el, byId.get(id)); cellEls.set(id, cell); }
     return cell;
   };
   function paint({ animate = false } = {}) {

@@ -326,7 +326,7 @@
   const elOf = (id) => {
     let cell = cellEls.get(id);
     if (!cell) {
-      const el = C.renderCard(cardById.get(id), state.rarity);
+      const el = C.renderCard(cardById.get(id), state.rarity, { grid: true });   // thumbnail or big picture by screen (improvement round 3)
       cardEls.set(id, el);
       cell = cardCell(el, cardById.get(id));
       cellEls.set(id, cell);

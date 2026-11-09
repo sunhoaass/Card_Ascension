@@ -8,7 +8,7 @@
    js/support.js · a support opens the same card detail as a card (#card/<id>) · renderCard() draws both kinds
    The Grade and Traits pages + the Thai switch were removed 2026-11-03 (docs/archive-grade-traits.md · old #grade / #traits
    links land on the Cards page, #grade/<id>/… opens that card)
-   The Home page (game updates, codes, new cards, new systems from data/news.json + data/pool.json) lives in js/home.js
+   The Home page (game updates, codes, new cards, new systems from data/news.json + each card's "added") lives in js/home.js
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    ========================================================== */
 (function () {
@@ -38,8 +38,8 @@
 
   // page: current tab · loaded: data ready · origin: element a card detail should grow from
   // kind: the Cards page's side ("cards" | "support", #cards / #support)
-  // pool: data/pool.json (every card + support with its round and the date it was added · NEW badge, Home's new cards)
-  const state = { meta: null, cards: [], support: [], teams: [], pool: null, rarity: "Normal", page: null, kind: "cards", loaded: false, origin: null };
+  // (data/pool.json is no longer loaded · improvement round 3, 2026-11-09: the date each card was added is its own "added")
+  const state = { meta: null, cards: [], support: [], teams: [], rarity: "Normal", page: null, kind: "cards", loaded: false, origin: null };
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -205,15 +205,15 @@
   const supText = (s, text, rarity) => String(mutText(s, text, rarity) || "").replace(/\{(\d)\}/g, (m, i) => (supVals(s)[+i] == null ? m : String(supValAt(s, +i, rarity))));
   const isSupport = (x) => !!(x && x.kind === "support");   // support objects get kind "support" when the data loads (boot)
 
-  /* NEW badge (plan 2026-10-30 item 5): a card / support added to the site in the last NEW_DAYS days (x.added from
-     data/pool.json, set at boot) · counted from today on the viewer's clock, so it drops off by itself · shown on the
-     Cards page, the Tier List (Global) and Home only (css/fx.css .gc__new scopes it) */
+  /* NEW badge (plan 2026-10-30 item 5): a card / support added to the site in the last NEW_DAYS days (x.added, in
+     data/cards.json / support.json since improvement round 3 · was data/pool.json) · counted from today on the viewer's clock,
+     so it drops off by itself · shown on the Cards page, the Tier List (Global) and Home only (css/fx.css .gc__new scopes it) */
   const NEW_DAYS = 14;
   const dayOf = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) / 864e5 : NaN; };
   const today = () => { const d = new Date(); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5; };
-  // pool.json newAfter: cards added on or before that date never count as new (owner 2026-10-30: the whole-game import isn't "new")
+  // meta.json newAfter: cards added on or before that date never count as new (owner 2026-10-30: the whole-game import isn't "new")
   const isNew = (x) => {
-    const d = dayOf(x && x.added), cut = dayOf(state.pool && state.pool.newAfter), age = today() - d;
+    const d = dayOf(x && x.added), cut = dayOf(state.meta && state.meta.newAfter), age = today() - d;
     return age >= 0 && age < NEW_DAYS && !(d <= cut);
   };
   const newHTML = (x, cls = "") => (isNew(x) ? `<span class="gc__new${cls ? " " + cls : ""}" aria-hidden="true">New</span>` : "");
@@ -270,10 +270,26 @@
      ask for the 300×420 thumbnail images/cards/thumb/<id>.webp first; if it isn't there they fall back to the big
      image, and if that is missing too, to the generated art. Routine A makes both files (§7).
      defer (W4, cards from renderCard): no src yet, only data-src — the card's own on-screen watcher below loads it and the
-     cards next to it. loading="lazy" made Chrome keep checking every picture not seen yet on every scroll frame. */
+     cards next to it. loading="lazy" made Chrome keep checking every picture not seen yet on every scroll frame.
+     grid (improvement round 3, 2026-11-09 · renderCard { grid: true }: the Cards / Support grids + Home's new cards): both
+     pictures in srcset (thumb 300w, big 600w) + GRID_SIZES, so the browser takes the 300×400 thumbnail (≈ 24 KB instead of
+     ≈ 72 KB) on phones and on computers where it is sharp enough, and the big picture on tablets and big or sharp screens ·
+     deferred too (data-srcset) · no thumbnail file -> the big picture */
   const thumbOf = (src) => { const i = src.lastIndexOf("/"); return src.slice(0, i + 1) + "thumb/" + src.slice(i + 1); };
-  function artImg(src, small = false, defer = false) {
+  /* how wide the picture is in .card-grid (css/base.css: 3 a row under PAGE_WIDE 900px, 5 from there · gaps 12px, 20px from
+     1000px · --gutter 16 / 32 (≥ 1100, + the 252px menu rail) / 40 (≥ 1600) · tokens.css · the picture = 0.97 of the card,
+     css/fx.css .gc--rd .gc__art inset 1.7cqw) · Chrome and Safari take the thumbnail only while 300 ≥ this width × the
+     screen's pixel ratio · 5 a row: the real width · 3 a row (phones): the width ÷ 1.25, so a phone takes the thumbnail up to
+     1.25× enlarged (the picture Home's new cards always showed on phones · 390–430px phones at ×2.6–3 need 297–360px) and a
+     tablet (768px ×2 = 458px) the big one · change it with the grid, or phones get the big pictures again */
+  const GRID_SIZES = "(min-width: 1600px) calc((100vw - 412px) * .194), (min-width: 1100px) calc((100vw - 396px) * .194), " +
+    "(min-width: 1000px) calc((100vw - 112px) * .194), (min-width: 900px) calc((100vw - 80px) * .194), calc((100vw - 56px) * .259)";
+  function artImg(src, small = false, defer = false, grid = false) {
     const [w, h] = small ? [300, 400] : [600, 800];
+    if (grid) {
+      const set = esc(`${thumbOf(src)} 300w, ${src} 600w`);
+      return `<img ${defer ? "data-srcset" : "srcset"}="${set}" sizes="${GRID_SIZES}" ${defer ? "data-src" : "src"}="${esc(src)}" alt="" width="${w}" height="${h}"${defer ? "" : ` loading="lazy"`} decoding="async">`;
+    }
     const url = esc(small ? thumbOf(src) : src);
     return `<img ${defer ? "data-src" : "src"}="${url}"${small ? ` data-full="${esc(src)}"` : ""} alt="" width="${w}" height="${h}"${defer ? "" : ` loading="lazy"`} decoding="async">`;
   }
@@ -282,6 +298,7 @@
     if (!img) return;
     img.addEventListener("error", function onError() {
       if (img.dataset.full) { const full = img.dataset.full; delete img.dataset.full; img.src = full; return; }   // no thumbnail -> big image
+      if (img.hasAttribute("srcset")) { img.removeAttribute("srcset"); img.removeAttribute("sizes"); return; }   // grid: no thumbnail -> src (big image · sizes off, or Chrome keeps the thumbnail's scale)
       img.removeEventListener("error", onError);
       const gc = img.closest(".gc");
       if (gc) gc.classList.add("gc--noart");                                                                       // game card: draw the name (it was in the picture)
@@ -312,8 +329,28 @@
   function loadArt(el) {
     const img = el && $(".gc__art img[data-src]", el);
     if (!img) return;
+    if (img.dataset.srcset) { img.srcset = img.dataset.srcset; delete img.dataset.srcset; }   // grid card: thumb or big, the browser picks (artImg)
     img.src = img.dataset.src;
     delete img.dataset.src;
+  }
+  /* improvement round 3 (2026-11-09): the card detail's big card (js/detail.js makeFace) · the grids now mostly hold the
+     thumbnail, so the big picture may not be downloaded yet when a card opens → while it downloads, the card shows the picture
+     the page already has for that card (a grid card's thumbnail · no empty card) and swaps in the big one once it is decoded
+     (the card wheel's wSharp does the same) · big picture in memory already, or no loaded copy on the page (a #card/<id>
+     link) = straight to the big picture, like loadArt */
+  function loadArtSharp(el) {
+    const img = el && $(".gc__art img[data-src]", el);
+    if (!img || img.dataset.srcset || img.dataset.full) { loadArt(el); return; }
+    const full = img.dataset.src, pre = new Image();
+    pre.decoding = "async"; pre.src = full;   // starts the download now (or finds it in memory)
+    const id = el.dataset.id && window.CSS && CSS.escape ? CSS.escape(el.dataset.id) : "";
+    const have = id ? [...document.querySelectorAll(`.card[data-id="${id}"] .gc__art img`)].find((i) => i !== img && i.complete && i.naturalWidth > 0 && i.currentSrc) : null;
+    if ((pre.complete && pre.naturalWidth) || !have || have.currentSrc === pre.src) { loadArt(el); return; }
+    delete img.dataset.src;
+    img.dataset.full = full;   // bindArt: a broken stand-in still falls back to the big picture
+    img.src = have.currentSrc;
+    const swap = () => { if (img.dataset.full === full) { delete img.dataset.full; img.src = full; } };
+    (pre.decode ? pre.decode() : Promise.resolve()).then(swap, swap);
   }
   function loadNear(el) {
     loadArt(el);
@@ -714,7 +751,7 @@
     fitRedraw(el);
     return el;
   }
-  function renderRedraw(item, rarity, { mini = false, tilt = true } = {}) {
+  function renderRedraw(item, rarity, { mini = false, tilt = true, grid = false } = {}) {
     const sup = isSupport(item);
     const el = document.createElement("article");
     el.className = "card gc gc--rd" + (sup ? " gc--sup" : "") + (mini ? " card--mini gc--mini" : "");
@@ -726,7 +763,7 @@
     el.setAttribute("aria-label", cardLabel(item, rarity));
     el.innerHTML = `
       <span class="gc__glow"></span>
-      <div class="gc__art">${artImg(item.image, mini, true)}</div>
+      <div class="gc__art">${artImg(item.image, mini, true, grid)}</div>
       <span class="gc__ring"><i></i></span>
       <span class="gc__sweep"></span>
       <div class="gc__face">${redrawHTML(item, rarity)}</div>
@@ -756,10 +793,11 @@
 
   /* ---------- Shared card renderer (used by every page) ----------
      The game's own card (§3.5): cleaned picture + HP / 1 IN X / rarity / ATK drawn on top.
-     .card = tap / tilt / keyboard · .gc = the look (see css/fx.css). tilt:false = no finger tilt (the detail scene turns its card by itself) */
-  function renderCard(card, rarity, { mini = false, tilt = true } = {}) {
-    if (isRedraw(card)) return renderRedraw(card, rarity, { mini, tilt });
-    if (isSupport(card)) return renderSupport(card, rarity, { mini, tilt });
+     .card = tap / tilt / keyboard · .gc = the look (see css/fx.css). tilt:false = no finger tilt (the detail scene turns its card by itself)
+     grid:true = a card in a .card-grid (Cards, Support, Home): its picture is the thumbnail or the big one by screen (artImg) */
+  function renderCard(card, rarity, { mini = false, tilt = true, grid = false } = {}) {
+    if (isRedraw(card)) return renderRedraw(card, rarity, { mini, tilt, grid });
+    if (isSupport(card)) return renderSupport(card, rarity, { mini, tilt, grid });
     const el = document.createElement("article");
     el.className = "card gc" + (mini ? " card--mini gc--mini" : "") + (card.image ? "" : " gc--noart");
     el.dataset.rarity = rarity;
@@ -770,7 +808,7 @@
     const atk = statAt(card, "atk", rarity), hp = statAt(card, "hp", rarity);
     el.innerHTML = `
       <span class="gc__glow"></span>
-      <div class="gc__art">${card.image ? artImg(card.image, mini, true) : placeholderArt(card)}</div>
+      <div class="gc__art">${card.image ? artImg(card.image, mini, true, grid) : placeholderArt(card)}</div>
       <span class="gc__name">${esc(card.name)}</span>
       <span class="gc__ring"><i></i></span>
       <span class="gc__sweep"></span>
@@ -878,7 +916,7 @@
     const pos = supPos(s);
     el.querySelectorAll(".gc__svn").forEach((n) => { const p = pos.find((x) => x.i === +n.dataset.sv); if (p) fitSv(n, s, p, samples[p.i]); });
   }
-  function renderSupport(s, rarity, { mini = false, tilt = true } = {}) {
+  function renderSupport(s, rarity, { mini = false, tilt = true, grid = false } = {}) {
     const el = document.createElement("article");
     el.className = "card gc gc--sup" + (mini ? " card--mini gc--mini" : "") + (s.image ? "" : " gc--noart");
     el.dataset.rarity = rarity;
@@ -890,7 +928,7 @@
     const odds = Number(s.odds) > 0 ? oddsAt(s, rarity) : 0;
     el.innerHTML = `
       <span class="gc__glow"></span>
-      <div class="gc__art">${s.image ? artImg(s.image, mini, true) : placeholderArt(s)}</div>
+      <div class="gc__art">${s.image ? artImg(s.image, mini, true, grid) : placeholderArt(s)}</div>
       <span class="gc__name">${esc(s.name)}</span>
       <span class="gc__ring"><i></i></span>
       <span class="gc__sweep"></span>
@@ -1199,23 +1237,18 @@
     route();
 
     try {
-      const [meta, cards, support, teams, pool, buffs, traits] = await Promise.all([
+      // data/pool.json (152 KB) is not loaded any more: the date each card was added rides in cards.json / support.json ("added")
+      const [meta, cards, support, teams, buffs, traits] = await Promise.all([
         loadJSON("data/meta.json"),
         loadJSON("data/cards.json"),
         loadJSON("data/support.json").catch(() => []),   // support cards (step 4); the page copes without it
         loadJSON("data/teams.json").catch(() => []),     // Meta Decks; the page copes without it
-        loadJSON("data/pool.json").catch(() => null),    // dates added (NEW badge, Home); the site copes without it
         loadJSON("data/buffs.json").catch(() => null),   // names in ability texts -> card ids (js/deckbuff.js); the site copes without it
         loadJSON("data/traits.json").catch(() => null),  // Trait Shop (Deck: trait per card slot · 2026-11-04); the Deck copes without it
       ]);
       state.meta = meta; state.cards = cards; state.support = support; state.teams = teams; state.buffs = buffs;
       state.traits = traits && Array.isArray(traits.traits) ? traits.traits.filter((t) => t && t.id && t.name) : [];
-      state.pool = pool && Array.isArray(pool.items) ? pool : null;
       if (Array.isArray(support)) support.forEach((x) => { if (x && x.id) { x.kind = "support"; if (!x.name) x.name = x.id.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); } });
-      if (state.pool) {   // the date each card / support was added (pool.json "added") rides on the object: C.isNew(x)
-        const added = new Map(state.pool.items.filter((i) => i && i.id && i.added).map((i) => [i.id, i.added]));
-        [cards, support].forEach((list) => Array.isArray(list) && list.forEach((x) => { if (x && added.has(x.id)) x.added = added.get(x.id); }));
-      }
       topOnly(cards, (c) => c.scores && c.scores.overall, rankTop());
       topOnly(support, (s) => s.scores && s.scores.value, rankTopSupport());
     } catch (err) {
@@ -1229,7 +1262,7 @@
     if (state.meta.rarities.some((r) => r.name === savedRarity)) state.rarity = savedRarity;
 
     const dates = (list) => (Array.isArray(list) ? list.map((x) => x && x.updated) : []);
-    noteUpdated(state.meta.updated, state.pool && state.pool.updated, dates(state.cards), dates(state.support));
+    noteUpdated(state.meta.updated, dates(state.cards), dates(state.support));
 
     state.loaded = true;
     CBI.tier.init();
@@ -1258,7 +1291,7 @@
   }
 
   /* "Updated …" in the top bar + PC menu rail (audit 2026-11-09): the NEWEST date the data carries — meta.updated, each card's /
-     support's "updated", pool.json, and news.json (js/home.js calls C.noteUpdated) — so a round that forgets meta.updated can't
+     support's "updated", and news.json (js/home.js calls C.noteUpdated) — so a round that forgets meta.updated can't
      leave an old date up · only goes forward · dates after today (typos) are ignored */
   let updatedAt = "";
   function noteUpdated(...dates) {
@@ -1292,7 +1325,7 @@
     isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, RDC, RDU, capOff, ANTON, OSW, BARLOW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
     openCard, closeCard, swapCard, route,
-    lazy, artImg, bindArt, watchLive, livePause, loadArt,   // step 9.5 · livePause step 12 · loadArt W4
+    lazy, artImg, bindArt, watchLive, livePause, loadArt, loadArtSharp,   // step 9.5 · livePause step 12 · loadArt W4 · loadArtSharp improvement round 3
     covered: false, later, flushCovered,   // speed 2026-11-03: the card detail covers the page (js/detail.js settled) · its deferred work
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support grids (2026-10-28 · box 2026-10-29)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js

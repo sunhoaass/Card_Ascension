@@ -549,7 +549,7 @@
   function makeFace(card) {
     const c = C.renderCard(card, state.rarity, { tilt: false });
     c.removeAttribute("role"); c.tabIndex = -1; c.setAttribute("aria-hidden", "true");
-    C.loadArt(c);   // W4: card pictures wait to be on screen · the intro reads this one before it is shown
+    C.loadArtSharp(c);   // W4: card pictures wait to be on screen · the intro reads this one before it is shown · round 3: the grid's thumbnail stands in while the big picture downloads
     return c;
   }
   function faces(card) {

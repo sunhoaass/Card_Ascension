@@ -1,8 +1,8 @@
 /* ==========================================================
    Card Battle Infinity — Home (plan 2026-10-30 item 5)
    · the first menu button and the first page on a first visit (#home)
-   · Game updates (major / minor, newest first) · Latest codes (Copy) · New cards (the newest "added" date in
-     data/pool.json, game cards, tap = #card/<id>) · New systems
+   · Game updates (major / minor, newest first) · Latest codes (Copy) · New cards (the newest "added" date of the cards /
+     support on the site · data/cards.json + support.json, improvement round 3 · tap = #card/<id>) · New systems
    · news text comes from data/news.json ({ updates, codes, systems } · routine E "อัปเดตข่าว" fills it) · a missing or
      empty file = "nothing yet" lines, never an error
    · the NEW badge itself (cards added in the last 14 days) is drawn by C.renderCard (js/app.js C.isNew)
@@ -83,14 +83,14 @@
     } else FX.toast("Couldn't copy. Press and hold the code to copy it.");
   }
 
-  /* ---------- New cards (newest "added" date in data/pool.json) ---------- */
+  /* ---------- New cards (newest "added" date of the cards / support on the site · was data/pool.json until improvement round 3) ---------- */
+  const oddsOf = (x) => Number(C.isSupport(x) ? x.odds : x.base && x.base.odds) || 0;
   function newest() {
-    const items = state.pool ? state.pool.items.filter((i) => i && i.id && i.added) : [];
-    const last = items.reduce((m, i) => (i.added > m ? i.added : m), "");
+    const all = [state.cards, state.support].map((arr) => (Array.isArray(arr) ? arr : []).filter((x) => x && x.id && typeof x.added === "string"));
+    const last = all.flat().reduce((m, x) => (x.added > m ? x.added : m), "");
     if (!last) return { date: "", cards: [], support: [] };
-    const odds = new Map(items.filter((i) => i.added === last).map((i) => [i.id, Number(i.odds) || 0]));
-    const pick = (arr) => (arr || []).filter((x) => x && odds.has(x.id)).sort((a, b) => odds.get(b.id) - odds.get(a.id) || a.name.localeCompare(b.name));   // rarest first, like the Cards page
-    return { date: last, cards: pick(state.cards), support: pick(state.support) };
+    const pick = (arr) => arr.filter((x) => x.added === last).sort((a, b) => oddsOf(b) - oddsOf(a) || a.name.localeCompare(b.name));   // rarest first, like the Cards page
+    return { date: last, cards: pick(all[0]), support: pick(all[1]) };
   }
   // one grid per kind (cards never mix with support when swiping in the detail) · two rows at first, then a page more per tap
   function fillGrid(box, more, items, noun) {
@@ -99,7 +99,7 @@
     const add = (n) => {
       const wrap = batch("home__batch--grid"), made = [];
       items.slice(shown, shown + n).forEach((x) => {
-        const el = C.renderCard(x, state.rarity, { mini: true });
+        const el = C.renderCard(x, state.rarity, { mini: true, grid: true });   // thumbnail, or the big picture on big / sharp screens (improvement round 3)
         cardEls.set(x.id, [el, x]);
         made.push(el); wrap.appendChild(el);
       });
@@ -147,7 +147,7 @@
 
   /* ---------- Build (first time Home shows) ---------- */
   async function build() {
-    paintNew();   // pool.json is already in (boot) · the news file comes next
+    paintNew();   // the cards (and their "added" dates) are already in (boot) · the news file comes next
     try { news = await C.loadJSON("data/news.json"); } catch { news = null; }   // missing file = empty news, not an error
     if (!news || typeof news !== "object") news = {};
     C.noteUpdated(news.updated);   // "Updated …" in the top bar follows the newest news too (audit 2026-11-09)

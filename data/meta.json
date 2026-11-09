@@ -1,5 +1,6 @@
 {
   "updated": "2026-11-06",
+  "newAfter": "2026-10-29",
   "rarities": [
     { "name": "Normal",  "stat": 1,  "odds": 1 },
     { "name": "Shiny",  "stat": 3.5,  "odds": 20.2531370 },
