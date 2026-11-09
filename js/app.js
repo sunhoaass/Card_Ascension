@@ -16,7 +16,7 @@
   // "tier" removed 2026-11-04 (owner: Tier List page out until everything is ranked again · #tier -> Home)
   // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
   const PAGE_TITLES = {
-    home: "Card Battle Infinity — Tier List & Card Database",
+    home: "Card Battle Infinity — Card Database, Codes & Decks",   // no "Tier List" while its menu is hidden (audit 2026-11-09)
     tier: "Tier List — Card Battle Infinity",
     cards: "Cards — Card Battle Infinity",
     support: "Support — Card Battle Infinity",
@@ -1228,12 +1228,8 @@
     const savedRarity = store.get(RARITY_KEY);
     if (state.meta.rarities.some((r) => r.name === savedRarity)) state.rarity = savedRarity;
 
-    const d = new Date(state.meta.updated + "T00:00:00");
-    const when = "Updated " + d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-    document.querySelectorAll("[data-updated]").forEach((el) => {   // top bar + PC menu rail
-      el.textContent = when;
-      el.setAttribute("title", "Data last updated " + state.meta.updated);
-    });
+    const dates = (list) => (Array.isArray(list) ? list.map((x) => x && x.updated) : []);
+    noteUpdated(state.meta.updated, state.pool && state.pool.updated, dates(state.cards), dates(state.support));
 
     state.loaded = true;
     CBI.tier.init();
@@ -1261,8 +1257,37 @@
     });
   }
 
+  /* "Updated …" in the top bar + PC menu rail (audit 2026-11-09): the NEWEST date the data carries — meta.updated, each card's /
+     support's "updated", pool.json, and news.json (js/home.js calls C.noteUpdated) — so a round that forgets meta.updated can't
+     leave an old date up · only goes forward · dates after today (typos) are ignored */
+  let updatedAt = "";
+  function noteUpdated(...dates) {
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const best = dates.flat().filter((d) => typeof d === "string" && /^\d{4}-\d{2}-\d{2}/.test(d))
+      .map((d) => d.slice(0, 10)).filter((d) => d <= today).sort().pop();
+    if (!best || best <= updatedAt) return;
+    const d = new Date(best + "T00:00:00");
+    if (isNaN(d)) return;
+    updatedAt = best;
+    const when = "Updated " + d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    document.querySelectorAll("[data-updated]").forEach((el) => {
+      el.textContent = when;
+      el.setAttribute("title", "Data last updated " + best);
+    });
+  }
+
+  /* Role / series filters (Cards, Deck picker, Tier Maker pool) only show when nearly every card has that field
+     (audit 2026-11-09: 4 of 300 cards had them, so "DPS" left 2 cards and "Naruto" 1) · [] = hide the filter */
+  const FIELD_MIN = 0.9;
+  function fieldValues(list, field) {
+    const all = Array.isArray(list) ? list : [];
+    const vals = all.map((x) => x && x[field]).filter(Boolean);
+    return all.length && vals.length / all.length >= FIELD_MIN ? [...new Set(vals)] : [];
+  }
+
   const CBI = window.CBI = {
-    state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY,
+    state, $, esc, store, TIER_COLOR, RARITY_SWATCH, RARITY_KEY, noteUpdated, fieldValues,
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, RDC, RDU, capOff, ANTON, OSW, BARLOW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table

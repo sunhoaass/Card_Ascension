@@ -150,6 +150,7 @@
     paintNew();   // pool.json is already in (boot) · the news file comes next
     try { news = await C.loadJSON("data/news.json"); } catch { news = null; }   // missing file = empty news, not an error
     if (!news || typeof news !== "object") news = {};
+    C.noteUpdated(news.updated);   // "Updated …" in the top bar follows the newest news too (audit 2026-11-09)
     paintUpdates(); paintCodes(); paintSystems();
     [ui.updates, $(".hcodes", ui.codes), ui.systems].forEach((box) => { if (box) FX.stagger(box, 50, { cls: "fx-up", max: 8, cleanup: true }); });
   }

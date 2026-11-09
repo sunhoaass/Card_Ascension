@@ -205,11 +205,11 @@
   }
 
   function buildFilters() {
-    const roles = [...new Set(state.cards.map((c) => c.role).filter(Boolean))]
+    const roles = C.fieldValues(state.cards, "role")   // hidden until ~every card has a role (audit 2026-11-09)
       .sort((a, b) => ((ROLE_ORDER.indexOf(a) + 1) || 99) - ((ROLE_ORDER.indexOf(b) + 1) || 99) || a.localeCompare(b));
     ui.role.innerHTML = `<option value="">All roles</option>` + roles.map((r) => `<option value="${esc(r)}">${esc(r)}</option>`).join("");
     ui.roleField.hidden = roles.length < 2;
-    const series = [...new Set(state.cards.map((c) => c.series).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    const series = C.fieldValues(state.cards, "series").sort((a, b) => a.localeCompare(b));
     ui.series.innerHTML = `<option value="">All series</option>` + series.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
     ui.seriesField.hidden = series.length < 2;
     ui.selects.hidden = ui.roleField.hidden && ui.seriesField.hidden;
