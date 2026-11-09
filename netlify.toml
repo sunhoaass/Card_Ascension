@@ -1,0 +1,5 @@
+# Netlify (site hilarious-gecko-af13aa · a second copy of the site that also builds every pull request):
+# publish only the web files, like Cloudflare should (tools/build_site.py · PROGRESS rule 14) — not the whole repo.
+[build]
+  command = "python3 tools/build_site.py"
+  publish = "dist"

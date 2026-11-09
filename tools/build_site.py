@@ -33,6 +33,7 @@ WEB = [
     "index.html", "robots.txt", "sitemap.xml", "site.webmanifest",
     "googleac6eef435a8d1c66.html",                   # Google Search Console check · never remove
     "_headers", "_redirects", "404.html",            # Cloudflare Pages extras (only if one is ever added)
+    "_routes.json",                                  # Pages: which paths run functions/_middleware.js (internal → 404)
     "css/*.css", "js/*.js",
     "data/*.json",
     "data/pending/support.json",                     # js/battle.js loads it (the rest of data/pending/ is internal)
@@ -45,7 +46,7 @@ NOT_WEB = [
 SKIP_DIRS = {".git", "dist", "node_modules", "__pycache__", ".claude"}
 
 # Never on the web, whatever WEB says (second lock).
-INTERNAL_TOP = {"inbox", "cropped_cards", "mockup", "tools", "docs", ".git", ".claude"}
+INTERNAL_TOP = {"inbox", "cropped_cards", "mockup", "tools", "docs", "functions", ".git", ".claude"}
 INTERNAL_EXT = (".md", ".py", ".pyc", ".sh")
 INTERNAL_PATHS = {"data/pending/cards.json"}
 SITE = "https://card-battle-infinity.pages.dev/"
