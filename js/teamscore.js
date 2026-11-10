@@ -26,7 +26,7 @@
    An empty slot gives 0. A part with no data in the whole library yet scores half of what is filled
    ("Not enough data yet"), so missing data never breaks the page and never reaches 100.
    100 ("Perfect") only when every part is full; everything else is rounded down (max 99).
-   Needs js/app.js (CBI.state, CBI.isRanked). No DOM.
+   Needs js/app.js (CBI.state, CBI.isRanked). No DOM. Loads on demand with the Deck code (CBI.need("deck") · round 4).
    ========================================================== */
 (function () {
   const C = window.CBI;

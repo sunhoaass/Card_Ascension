@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=126">
-  <link rel="stylesheet" href="css/base.css?v=126">
-  <link rel="stylesheet" href="css/fx.css?v=126">
-  <link rel="stylesheet" href="css/cards.css?v=126">
-  <link rel="stylesheet" href="css/tier.css?v=126">
-  <link rel="stylesheet" href="css/deck.css?v=126">
-  <link rel="stylesheet" href="css/support.css?v=126">
-  <link rel="stylesheet" href="css/tiermaker.css?v=126">
-  <link rel="stylesheet" href="css/detail.css?v=126">
-  <link rel="stylesheet" href="css/home.css?v=126">
-  <link rel="stylesheet" href="css/battle.css?v=126">
+  <link rel="stylesheet" href="css/tokens.css?v=127">
+  <link rel="stylesheet" href="css/base.css?v=127">
+  <link rel="stylesheet" href="css/fx.css?v=127">
+  <link rel="stylesheet" href="css/cards.css?v=127">
+  <link rel="stylesheet" href="css/tier.css?v=127">
+  <link rel="stylesheet" href="css/deck.css?v=127">
+  <link rel="stylesheet" href="css/support.css?v=127">
+  <link rel="stylesheet" href="css/tiermaker.css?v=127">
+  <link rel="stylesheet" href="css/detail.css?v=127">
+  <link rel="stylesheet" href="css/home.css?v=127">
+  <link rel="stylesheet" href="css/battle.css?v=127">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -843,19 +843,14 @@
     </section>
   </div>
 
-  <script src="js/fx.js?v=126"></script>
-  <script src="js/app.js?v=126"></script>
-  <script src="js/deckbuff.js?v=126"></script>
-  <script src="js/teamscore.js?v=126"></script>
-  <script src="js/share.js?v=126"></script>
-  <script src="js/cards.js?v=126"></script>
-  <script src="js/detail.js?v=126"></script>
-  <script src="js/tier.js?v=126"></script>
-  <script src="js/deck.js?v=126"></script>
-  <script src="js/support.js?v=126"></script>
-  <script src="js/home.js?v=126"></script>
-  <script src="js/tiermaker.js?v=126"></script>
-  <script src="js/battle.js?v=126"></script>
+  <!-- Improvement round 4: only the code every page needs loads here. share · tier · tiermaker · deckbuff · teamscore ·
+       deck · battle · detail load the first time they are needed (need() + MODS in js/app.js, same ?v= as app.js) ·
+       don't add them back here · a new page script that only one page needs → add it to MODS instead -->
+  <script src="js/fx.js?v=127"></script>
+  <script src="js/app.js?v=127"></script>
+  <script src="js/cards.js?v=127"></script>
+  <script src="js/support.js?v=127"></script>
+  <script src="js/home.js?v=127"></script>
 </body>
 </html>
 

@@ -8,8 +8,9 @@
    · Undo / Redo: 50 steps per list (buttons + Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y), kept while the page is open.
    · Step 9 (js/share.js): list menu has Save as image / Share link · #tier/s/<data> opens a shared list view only
      (with "Save a copy") · Backup button (export / import everything) · registers its lists with the backup file
-   Loaded after every other page script (needs C.renderCard from app.js).
-   tier.js calls C.tm.init() once and C.tm.show(listId|null) whenever the My Lists tab is showing.
+   Loads on demand (improvement round 4 · CBI.need("tiermaker")): the first time My Lists shows (js/tier.js) or a backup
+   opens · after js/share.js (C.dialog, icons) · CBI.need runs C.tm.init() once · tier.js calls C.tm.show(listId|null)
+   whenever the My Lists tab is showing.
    ========================================================== */
 (function () {
   const C = window.CBI;
@@ -899,46 +900,8 @@
   /* ==========================================================
      Dialogs (in the page, never alert / confirm)
      ========================================================== */
-  let dlgOpen = false;
-  function dialog({ title, html = "", actions, onMount }) {
-    if (dlgOpen) return Promise.resolve(null);
-    dlgOpen = true;
-    return new Promise((resolve) => {
-      const d = ui.dlg;
-      d.innerHTML = `<div class="tm-dlg__scrim" data-dlg="cancel"></div>
-        <form class="tm-dlg__sheet glass" method="dialog" novalidate>
-          <h2 class="tm-dlg__title" id="tm-dlg-title">${esc(title)}</h2>
-          ${html}
-          <div class="tm-dlg__actions">${actions.map((a) => `<button type="${a.submit ? "submit" : "button"}" class="tm-btn fx-press ${a.cls || ""}" value="${esc(a.value)}"${a.submit ? "" : ` data-dlg="${esc(a.value)}"`}>${esc(a.label)}</button>`).join("")}</div>
-        </form>`;
-      const form = $("form", d);
-      let done = false;
-      const finish = (v) => {
-        if (done) return;
-        done = true;
-        closeDialog().then(() => { dlgOpen = false; resolve(v); });
-      };
-      d.onclick = (e) => {
-        const b = e.target.closest("[data-dlg]");
-        if (!b) return;
-        e.preventDefault();
-        finish(b.dataset.dlg === "cancel" ? null : { action: b.dataset.dlg, form });
-      };
-      form.onsubmit = (e) => { e.preventDefault(); finish({ action: (e.submitter && e.submitter.value) || "ok", form }); };
-      d.oncancel = (e) => { e.preventDefault(); finish(null); };
-      d.showModal();
-      if (onMount) onMount(d, finish);
-    });
-  }
-  function closeDialog() {
-    const d = ui.dlg;
-    const sheet = $(".tm-dlg__sheet", d), scrim = $(".tm-dlg__scrim", d);
-    const runs = [
-      FX.fade(scrim, 0, { duration: 160 }),
-      sheet.animate(FX.reduced ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(12px) scale(.98)" }], { duration: 160, easing: EASE, fill: "forwards" }),
-    ];
-    return Promise.all(runs.map((a) => (a ? a.finished.catch(() => {}) : null))).then(() => { d.close(); d.innerHTML = ""; });
-  }
+  // the dialog itself lives in js/share.js since improvement round 4 (this file now loads only when My Lists opens)
+  const dialog = (o) => C.dialog(o);
   // a .seg inside a dialog used as a 2-way picker
   function bindPick(root, onChange) {
     root.querySelectorAll("[data-pick]").forEach((seg) => {
@@ -1538,7 +1501,7 @@
   // Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y while the editor is on screen
   function onGlobalKey(e) {
     if (!(e.ctrlKey || e.metaKey) || e.altKey || mode !== "editor") return;
-    if (state.page !== "tier" || ui.my.hidden || ui.editor.hidden || dlgOpen || drag.on) return;
+    if (state.page !== "tier" || ui.my.hidden || ui.editor.hidden || C.dialogOpen() || drag.on) return;
     if (document.documentElement.classList.contains("is-detail")) return;
     if (e.target.matches && e.target.matches("input, textarea, select, [contenteditable]")) return;
     const k = e.key.toLowerCase();
@@ -1600,17 +1563,12 @@
     ui.layer.className = "tm-layer";
     ui.layer.setAttribute("aria-hidden", "true");
     document.body.appendChild(ui.layer);
-    ui.dlg = document.createElement("dialog");
-    ui.dlg.className = "tm-dlg";
-    ui.dlg.setAttribute("aria-labelledby", "tm-dlg-title");
-    document.body.appendChild(ui.dlg);
 
     // storage test: private browsing / blocked storage still works, it just can't keep anything
     try { localStorage.setItem("cbi:test", "1"); localStorage.removeItem("cbi:test"); } catch { canSave = false; }
     loadPrefs();
     load();
     ui.warn.hidden = canSave;
-    C.dialog = dialog;                                    // js/share.js (and the Deck page later) use the same in-page dialogs
     if (C.share) C.share.provide("tierlists", {
       label: "Tier lists", kind: "array",
       get: () => JSON.parse(JSON.stringify(lists)),

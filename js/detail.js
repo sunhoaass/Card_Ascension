@@ -34,6 +34,8 @@
      ring = Value · Details: Overview (effect + values) / Score (Value) / Team (cards, decks)
    Rules (PROGRESS §4.1, §11): rAF only while something moves (intro ~2.6 s, card physics, parallax) ·
    per-frame changes = paused Web Animations, never style.transform · auras only on screen (.is-live).
+   Loads on demand (improvement round 4 · CBI.need("detail") in js/app.js): 3.6 s after the site opens (with prewarm), or
+   the first tap on a card / a #card/<id> link before that · CBI.need runs init() once the data is in.
    ========================================================== */
 (function () {
   const C = window.CBI;

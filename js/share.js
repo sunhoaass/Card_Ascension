@@ -5,7 +5,8 @@
    · Share link     — the list is packed into the URL hash (deflate-raw through CompressionStream, then base64url).
                       Nothing is uploaded. #tier/s/<data> opens a view-only copy with a "Save a copy" button
    · Backup         — Export / Import everything as one .json file (tier lists, decks)
-   Loaded after app.js and before the page scripts. The dialogs use C.dialog (made in js/tiermaker.js).
+   Loads on demand (improvement round 4 · CBI.need in js/app.js): before the Deck, Battle, Tier List and Tier Maker
+   code, which all use it. It also makes the in-page dialogs C.dialog (moved here from js/tiermaker.js).
 
    API (window.CBI.share)
      imageDialog(spec, { flashEl })     preview + save a tier list board as PNG (JPEG with captions)    (spec: see tierImage)
@@ -18,6 +19,7 @@
      provide(id, provider)              a page registers what goes into the backup file:
                                         { label, kind: "array"|"object", get(), count(data), noun(n), apply(data, "merge"|"replace") -> changed }
      icons                              small SVG strings (download, upload, link, image, share, check, archive)
+   Also: C.dialog({ title, html, actions, onMount }) -> Promise (in-page dialog, never alert / confirm) · C.dialogOpen()
    ========================================================== */
 (function () {
   const C = window.CBI;
@@ -52,22 +54,66 @@
   };
 
   /* ==========================================================
+     Dialogs (in the page, never alert / confirm) · moved from js/tiermaker.js (improvement round 4): the Deck, Battle and
+     Tier Maker code all load this file first, so the dialog is there whichever page opens first
+     ========================================================== */
+  const EASE = "cubic-bezier(.2,.8,.2,1)";
+  let dlgEl = null, dlgOpen = false;
+  function dlgBox() {
+    if (!dlgEl) {
+      dlgEl = document.createElement("dialog");
+      dlgEl.className = "tm-dlg";
+      dlgEl.setAttribute("aria-labelledby", "tm-dlg-title");
+      document.body.appendChild(dlgEl);
+    }
+    return dlgEl;
+  }
+  function dialog({ title, html = "", actions, onMount }) {
+    if (dlgOpen) return Promise.resolve(null);
+    dlgOpen = true;
+    return new Promise((resolve) => {
+      const d = dlgBox();
+      d.innerHTML = `<div class="tm-dlg__scrim" data-dlg="cancel"></div>
+        <form class="tm-dlg__sheet glass" method="dialog" novalidate>
+          <h2 class="tm-dlg__title" id="tm-dlg-title">${esc(title)}</h2>
+          ${html}
+          <div class="tm-dlg__actions">${actions.map((a) => `<button type="${a.submit ? "submit" : "button"}" class="tm-btn fx-press ${a.cls || ""}" value="${esc(a.value)}"${a.submit ? "" : ` data-dlg="${esc(a.value)}"`}>${esc(a.label)}</button>`).join("")}</div>
+        </form>`;
+      const form = $("form", d);
+      let done = false;
+      const finish = (v) => {
+        if (done) return;
+        done = true;
+        closeDialog().then(() => { dlgOpen = false; resolve(v); });
+      };
+      d.onclick = (e) => {
+        const b = e.target.closest("[data-dlg]");
+        if (!b) return;
+        e.preventDefault();
+        finish(b.dataset.dlg === "cancel" ? null : { action: b.dataset.dlg, form });
+      };
+      form.onsubmit = (e) => { e.preventDefault(); finish({ action: (e.submitter && e.submitter.value) || "ok", form }); };
+      d.oncancel = (e) => { e.preventDefault(); finish(null); };
+      d.showModal();
+      if (onMount) onMount(d, finish);
+    });
+  }
+  function closeDialog() {
+    const d = dlgBox();
+    const sheet = $(".tm-dlg__sheet", d), scrim = $(".tm-dlg__scrim", d);
+    const runs = [
+      FX.fade(scrim, 0, { duration: 160 }),
+      sheet.animate(FX.reduced ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(12px) scale(.98)" }], { duration: 160, easing: EASE, fill: "forwards" }),
+    ];
+    return Promise.all(runs.map((a) => (a ? a.finished.catch(() => {}) : null))).then(() => { d.close(); d.innerHTML = ""; });
+  }
+  C.dialog = dialog;
+  C.dialogOpen = () => dlgOpen;
+
+  /* ==========================================================
      Small tools: copy, download, share sheet
      ========================================================== */
-  async function copyText(text, inputEl) {
-    try {
-      if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; }
-    } catch {}
-    try {                                                    // older browsers / http: select + execCommand
-      const el = inputEl || Object.assign(document.createElement("textarea"), { value: text, readOnly: true });
-      if (!inputEl) { el.style.cssText = "position:fixed;opacity:0;left:-9999px;top:0"; document.body.appendChild(el); }
-      el.focus(); el.select();
-      if (el.setSelectionRange) el.setSelectionRange(0, text.length);
-      const ok = document.execCommand("copy");
-      if (!inputEl) el.remove();
-      return ok;
-    } catch { return false; }
-  }
+  const copyText = (text, inputEl) => C.copyText(text, inputEl);   // js/app.js (Home copies codes without this file)
 
   function download(blob, name) {
     const url = URL.createObjectURL(blob);
@@ -1392,6 +1438,7 @@
      Backup: Export / Import one .json file
      ========================================================== */
   const providers = new Map();
+  const BACKUP_FROM = ["deck", "tiermaker"];   // CBI.need() names of the code that calls provide() · a new page with saves → add it
   function provide(id, p) { providers.set(id, p); }
   const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
   const copyDeep = (v) => JSON.parse(JSON.stringify(v));
@@ -1455,6 +1502,11 @@
   }
 
   async function backupDialog() {
+    // the file holds every page's saves: the Deck and Tier Maker code (loaded on demand, round 4) register theirs here first
+    if (C.need) {
+      try { await Promise.all(BACKUP_FROM.map((m) => C.need(m))); }
+      catch { FX.toast("Couldn’t open the backup. Check your connection and try again."); return; }
+    }
     const snap = snapshot();
     const have = snap.filter((s) => s.n > 0);
     const res = await C.dialog({
