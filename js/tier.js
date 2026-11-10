@@ -2,8 +2,8 @@
    Card Battle Infinity — Tier List (step 3, reshaped in step 7)
    · Global | My Lists tabs (#tier = Global, #tier/my = My Lists, #tier/my/<id> = one list in the Tier Maker,
      #tier/s/<data> = a list someone shared, view only, shown inside My Lists)
-   · My Lists (the Tier Maker, step 8) lives in js/tiermaker.js: this file calls C.tm.init() once and
-     C.tm.show(listId|null, sharedData|null) every time My Lists is showing
+   · My Lists (the Tier Maker, step 8) lives in js/tiermaker.js: loaded the first time My Lists shows (CBI.need runs
+     C.tm.init() · improvement round 4), then this file calls C.tm.show(listId|null, sharedData|null) every time it shows
    · Global is view-only and has a Cards | Support switch (they never share a list)
      - Cards: rows Meta–D by Overall (only the top meta.rankTop cards are ranked) + the Utility row (by utilGain), rarity picker shared with the Cards page
      - Support: rows Meta–D by Value (data/support.json · ranked at Godly) · the same mini game cards as the Cards side
@@ -166,7 +166,7 @@
   }
 
   function setLead() {
-    const shared = view === "my" && C.tm && C.tm.mode && C.tm.mode() === "shared";
+    const shared = view === "my" && C.has("tiermaker") && C.tm.mode() === "shared";
     if (ui.lead) ui.lead.textContent = shared ? LEADS.shared : view === "my" ? LEADS.my : LEADS[kind];
   }
 
@@ -179,6 +179,12 @@
   // #tier/s/<data> -> a list somebody shared (packed in the link by js/share.js), or null
   const sharedFromHash = () => { const m = location.hash.match(/^#\/?tier\/s\/([^/?#]+)/); return m ? m[1] : null; };
 
+  // My Lists = the Tier Maker (js/tiermaker.js): its code loads the first time My Lists shows (improvement round 4)
+  function showMy() {
+    if (C.has("tiermaker")) { C.tm.show(listFromHash(), sharedFromHash()); return; }   // all lists, the list in the link, or a shared list (also sets the title)
+    C.need("tiermaker").then(() => { if (view === "my" && state.page === "tier") { C.tm.show(listFromHash(), sharedFromHash()); setLead(); } }, C.loadFailed);
+  }
+
   /* Global | My Lists. Called by the router on every hash change and tab tap. */
   function show(name) {
     if (!ui.root) return;
@@ -188,7 +194,7 @@
     view = next;
     if (next === "global" && state.page === "tier") buildGlobal();
     pageTitle();                                  // showPage() resets the title on every route, so set it every time
-    if (next === "my" && C.tm) C.tm.show(listFromHash(), sharedFromHash());   // all lists, the list in the link, or a shared list (also sets the title)
+    if (next === "my") showMy();
     setLead();
     if (!changed) return;
 
@@ -284,7 +290,6 @@
     ui.rarity.innerHTML = C.rarityChipsHTML();
     bind();
     setKind(C.store.get(KIND_KEY), { animate: false });   // rows are built later by buildGlobal()
-    if (C.tm) C.tm.init();
   }
 
   C.tier = { init, enter, show };

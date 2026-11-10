@@ -33,8 +33,8 @@
      (the editor's score ring went 2026-11-02 · the shared view and Compare still have one). "Compare" = a dialog with two decks side by side (stacked on a phone).
    · ATK / HP on the cards of the editor, the shared view and the image include the deck's buffs (js/deckbuff.js) · the buff
      pill under a card (.dk-buff) opens where its buffs come from.
-   Needs js/fx.js, js/app.js, js/teamscore.js, js/share.js, js/cards.js loaded first (C.dialog is made by later
-   scripts and only used when something is tapped).
+   Loads on demand (improvement round 4 · CBI.need("deck") in js/app.js, the first time the Deck or Battle opens, or a
+   backup): after js/share.js (C.dialog, icons), js/deckbuff.js and js/teamscore.js · CBI.need runs init() once the data is in.
    ========================================================== */
 (function () {
   const C = window.CBI;

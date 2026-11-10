@@ -10,12 +10,13 @@
    ATK / HP only ("Skill not simulated yet").
    Saved on this device: cbi:battle { v: 2, teams { boss, a, b }, stage (= the start stage), fights [{ dmg, stage, at }] } · cbi:battleMute
    CBI.battle = { init, show, Battle (engine, also for tests), teams }
+   Loads on demand (improvement round 4 · CBI.need("battle") in js/app.js, the first time Battle opens), after the Deck code.
    ========================================================== */
 (function () {
   "use strict";
   const C = window.CBI, { state, $, esc } = C;
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const P = () => C.deckParts;        // js/deck.js (loaded before this file)
+  const P = () => C.deckParts;        // js/deck.js (CBI.need("battle") loads and inits it first)
   const SLOTS = 4, KINDS = ["cards", "support"], RKEY = { cards: "cardRarity", support: "supRarity" }, GRADE_MAX = 10;
   const SAVE_KEY = "cbi:battle", MUTE_KEY = "cbi:battleMute", MUSIC_VOL = 0.3;
   const reduced = () => !!(window.FX && FX.reduced);

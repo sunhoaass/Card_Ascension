@@ -10,8 +10,12 @@
    links land on the Cards page, #grade/<id>/… opens that card)
    The Home page (game updates, codes, new cards, new systems from data/news.json + each card's "added") lives in js/home.js
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
+   Improvement round 4: index.html loads only fx · app · cards · support · home. The rest (share · tier · tiermaker ·
+   deckbuff · teamscore · deck · battle · detail) loads the first time it is needed: need(name) below (MODS)
    ========================================================== */
 (function () {
+  // the ?v= this file was loaded with: the files need() loads get the same one (tools/bump_version.py changes index.html only)
+  const VER = ((document.currentScript && document.currentScript.src.match(/[?&]v=([^&#]+)/)) || [])[1] || "";
   const PAGES = ["home", "cards", "deck", "battle"];   // "battle" added 2026-11-04 (js/battle.js · PROGRESS §14)
   // "tier" removed 2026-11-04 (owner: Tier List page out until everything is ranked again · #tier -> Home)
   // #support = the Cards page, Support side (no menu button since 2026-10-28) · Home first (plan 2026-10-30 item 5)
@@ -427,6 +431,80 @@
     if (!q || !state.loaded) return;
     delete lazyQ[page];
     q.forEach((fn) => fn());
+  }
+
+  /* ---------- Page code on demand (improvement round 4) ----------
+     need(name) -> Promise: loads that code's js files (+ the code it needs first), then runs its init once the data is in
+     (once per visit). The files of one call download together and run in order (async = false). has(name) = ready.
+     A file that doesn't load (no connection) = rejected, and the next need() tries again. */
+  const MODS = {
+    share: { files: ["share"] },                                                     // dialogs (C.dialog), Save as image, links, backup
+    tiermaker: { needs: ["share"], files: ["tiermaker"], init: () => CBI.tm.init() },  // My Lists (js/tier.js asks for it)
+    tier: { needs: ["share"], files: ["tier"], init: () => CBI.tier.init() },           // the Tier List page (menu off since 2026-11-04)
+    deck: { needs: ["share"], files: ["deckbuff", "teamscore", "deck"], init: () => CBI.deck.init() },
+    battle: { needs: ["deck"], files: ["battle"] },                                   // battle.js starts itself in show()
+    detail: { files: ["detail"], init: () => CBI.detail.init() },                      // the card detail ("Black Sun")
+  };
+  const PAGE_MOD = { tier: "tier", deck: "deck", battle: "battle" };   // a tab whose code loads the first time it shows
+  const fileQ = {};
+  function loadFile(f) {
+    return fileQ[f] || (fileQ[f] = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "js/" + f + ".js" + (VER ? "?v=" + VER : "");
+      s.async = false;
+      s.onload = resolve;
+      s.onerror = () => { delete fileQ[f]; s.remove(); reject(new Error("js/" + f + ".js didn't load")); };
+      document.head.appendChild(s);
+    }));
+  }
+  let dataIn = null;
+  const dataReady = new Promise((r) => { dataIn = r; });
+  function need(name) {
+    const m = MODS[name];
+    if (!m) return Promise.reject(new Error("no code called " + name));
+    if (!m.p) {
+      const files = Promise.all([...(m.needs || []).map(need), ...m.files.map(loadFile)]);
+      files.catch(() => { m.p = null; });
+      m.p = files.then(() => dataReady).then(() => { if (m.init) m.init(); m.ready = true; });
+    }
+    return m.p;
+  }
+  const has = (name) => !!(MODS[name] && MODS[name].ready);
+  function loadFailed(err) {
+    console.error(err);
+    FX.toast("Couldn’t load this part of the site. Check your connection and try again.");
+  }
+  // a tab / card whose code isn't here yet: load it, then route() again (the hash may have moved on meanwhile) · once at a time
+  function routeWhen(name) {
+    const m = MODS[name];
+    if (m.wait) return;
+    m.wait = true;
+    need(name).then(() => {
+      m.wait = false;
+      const e = m.enter; m.enter = null;
+      if (e && state.page === e.page) enterPage(e.page, e.keep);   // the entrance it would have played on the first visit
+      route();
+    }, (err) => { m.wait = false; m.enter = null; loadFailed(err); });
+  }
+  function enterPage(page, keep) {
+    if (page === "tier") CBI.tier.enter({ restore: keep });
+    else if (page === "deck") CBI.deck.enter({ restore: keep });
+  }
+
+  /* Copy text (Home codes, share links · was in js/share.js, which now loads later) -> true when it worked */
+  async function copyText(text, inputEl) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; }
+    } catch {}
+    try {                                                    // older browsers / http: select + execCommand
+      const el = inputEl || Object.assign(document.createElement("textarea"), { value: text, readOnly: true });
+      if (!inputEl) { el.style.cssText = "position:fixed;opacity:0;left:-9999px;top:0"; document.body.appendChild(el); }
+      el.focus(); el.select();
+      if (el.setSelectionRange) el.setSelectionRange(0, text.length);
+      const ok = document.execCommand("copy");
+      if (!inputEl) el.remove();
+      return ok;
+    } catch { return false; }
   }
 
   /* ---------- Game card numbers fit their spot (step 13, §3.5.1) ----------
@@ -1110,11 +1188,16 @@
     const side = page === "cards" && state.kind === "support" ? "support" : page;
     document.title = PAGE_TITLES[side];   // tab / history / share title follows the page
     store.set(STORE_KEY, side);           // "support" = the Cards tab, Support side · still saved, no longer opened (no hash = Home)
-    runLazy(page);   // first visit to this tab: build its cards now (step 9.5)
-    if (page === "cards" && state.loaded) CBI.cards.view(state.kind, { animate: kindChanged && !changed });
-    if (changed && state.loaded) {
-      if (page === "tier") CBI.tier.enter({ restore: keep });
-      else if (page === "deck") CBI.deck.enter({ restore: keep });
+    const mod = PAGE_MOD[page];
+    if (mod && !has(mod)) {
+      // round 4: this tab's code loads now (its skeleton / loader shows meanwhile) · then its lazy build + entrance + route()
+      if (page === "battle") { const bl = $("#bt-loading"); if (bl) bl.hidden = false; }
+      if (changed && state.loaded) MODS[mod].enter = { page, keep };
+      routeWhen(mod);
+    } else {
+      runLazy(page);   // first visit to this tab: build its cards now (step 9.5)
+      if (page === "cards" && state.loaded) CBI.cards.view(state.kind, { animate: kindChanged && !changed });
+      if (changed && state.loaded) enterPage(page, keep);
     }
     if ((changed || scroll) && !keep) window.scrollTo({ top: 0 });
     requestAnimationFrame(() => revealChip());
@@ -1137,7 +1220,8 @@
     const m = location.hash.match(/^#\/?card\/([^/?#]+)/);
     if (m) {
       showPage(state.page || "cards");
-      if (state.loaded) CBI.detail.open(decodeURIComponent(m[1]));
+      if (!has("detail")) routeWhen("detail");   // round 4: the detail's code first (a #card/<id> link, or before it preloaded)
+      else if (state.loaded) CBI.detail.open(decodeURIComponent(m[1]));
       return;
     }
     // an old #support/<id> link (the support detail used to live in the Support tab): the Support side + the card detail
@@ -1159,14 +1243,15 @@
       if (id && state.cards.some((c) => c.id === id)) openCard(id, null, { list: CBI.cards.order() });
       return;
     }
-    if (state.loaded) CBI.detail.close();
+    if (has("detail")) CBI.detail.close();
     const first = "home";   // opening the site with no hash = Home every time (owner 2026-10-30 · cbi:lastPage is not read)
     const k = kindFromHash();
     if (k) state.kind = k;
     showPage(pageFromHash() || first);
-    if (state.loaded) CBI.tier.show(tierViewFromHash());
-    if (state.loaded && CBI.battle) CBI.battle.show();   // #battle = Guild Boss · #battle/arena · #battle/result · #battle/fight (js/battle.js)
-    if (state.loaded) CBI.deck.show();   // #deck = My Decks · #deck/meta · #deck/my/<id> = the editor · #deck/s/<data> = a shared deck
+    // has(): only once that code is in (round 4 · loading it = showPage above)
+    if (has("tier")) CBI.tier.show(tierViewFromHash());
+    if (has("battle")) CBI.battle.show();   // #battle = Guild Boss · #battle/arena · #battle/result · #battle/fight (js/battle.js)
+    if (has("deck")) CBI.deck.show();   // #deck = My Decks · #deck/meta · #deck/my/<id> = the editor · #deck/s/<data> = a shared deck
   }
 
   // Tab buttons: no history entries, same as before · tapping a tab always lands on its list (Tier List = Global)
@@ -1180,8 +1265,10 @@
     showPage(page, { scroll: true });
     if (depth > 1) { leaveTo = h; history.go(1 - depth); }
     else if (location.hash !== "#" + h) history.replaceState(null, "", "#" + h);
-    if (fromCard && state.loaded) CBI.detail.close();
-    if (state.loaded) { CBI.tier.show("global"); CBI.deck.show(); if (CBI.battle) CBI.battle.show(); }
+    if (fromCard && has("detail")) CBI.detail.close();
+    if (has("tier")) CBI.tier.show("global");
+    if (has("deck")) CBI.deck.show();
+    if (has("battle")) CBI.battle.show();
   }
 
   /* Card detail: each open pushes history entries so the phone's Back button walks out of it.
@@ -1190,7 +1277,18 @@
      Details) adds one more {v:"card"} over the same wheel.
      The entries also keep the list of cards it was opened from (cl), so swiping left / right in the detail walks
      that list (Cards grid order, a tier row board, a Tier Maker list, a deck…). opts.list overrides it. */
+  let openWait = null;
   function openCard(id, originEl, opts = {}) {
+    if (!has("detail")) {
+      // round 4: the first tap before the detail's code is in → load it, then open (the last tap wins · a tab change cancels)
+      const first = !openWait;
+      openWait = { args: [id, originEl, opts], hash: location.hash };
+      if (first) need("detail").then(() => {
+        const w = openWait; openWait = null;
+        if (w && location.hash === w.hash) openCard(...w.args);
+      }, (err) => { openWait = null; loadFailed(err); });
+      return;
+    }
     state.origin = originEl || null;
     const auto = CBI.detail.listFor ? CBI.detail.listFor(originEl, id) : null;   // also remembers where to fly back to
     const list = opts.list || auto;
@@ -1223,6 +1321,21 @@
     document.querySelector(".nav").addEventListener("click", (e) => {
       const b = e.target.closest(".nav__btn");
       if (b) go(b.dataset.page);
+    });
+    // round 4: a finger on a tab starts loading that tab's code (≈ the tap's 100 ms head start) · failures show on the tap
+    document.querySelector(".nav").addEventListener("pointerdown", (e) => {
+      const b = e.target.closest(".nav__btn"), mod = b && PAGE_MOD[b.dataset.page];
+      if (mod && !has(mod)) need(mod).catch(() => {});
+    });
+    // round 4: until js/detail.js is in, a tapped card (or Enter / Space on one) opens through here (detail.js has its own after)
+    const tapCard = (n) => {
+      if (has("detail") || n.closest(".bs-wrap, [data-no-detail]") || !n.closest(".main, #detail")) return false;
+      openCard(n.dataset.id, n);
+      return true;
+    };
+    document.addEventListener("click", (e) => { const n = e.target.closest(".card[data-id]"); if (n) tapCard(n); });
+    document.addEventListener("keydown", (e) => {
+      if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches(".card[role=button]") && tapCard(e.target)) e.preventDefault();
     });
     window.addEventListener("hashchange", route);
     // W8: go() stepped back out of a card → that entry becomes the tab (the same hash = no hashchange, so do it here)
@@ -1265,16 +1378,18 @@
     noteUpdated(state.meta.updated, dates(state.cards), dates(state.support));
 
     state.loaded = true;
-    CBI.tier.init();
-    CBI.deck.init();
     CBI.cards.init();
-    CBI.detail.init();
     CBI.support.init();
     CBI.home.init();
+    dataIn();   // round 4: the tier / deck / detail code inits once it loads (need) · was here before
     route();   // opens a #card/<id> or #support/<id> deep link (or an old #grade/<id>) now that the data is here
     hideBoot();
-    setTimeout(FX.probe, 800);   // lite mode check: 2 s of frames once the first page has settled (step 9.5)
-    setTimeout(() => CBI.detail.prewarm(), 3600);   // paint the detail scene while idle, after the probe (step 12)
+    // lite mode check: 2 s of frames once the first page has settled (step 9.5 · round 4: a #deck / #battle / #card link
+    // waits for its code first, so building that page never lands inside the 2 s and turns lite mode on by mistake)
+    const firstCode = /^#\/?card\//.test(location.hash) ? "detail" : PAGE_MOD[state.page];
+    (firstCode && !has(firstCode) ? need(firstCode).catch(() => {}) : Promise.resolve()).then(() => setTimeout(FX.probe, 800));
+    // the detail's code + painting its scene while idle, after the probe (step 12 · round 4: the code loads here too)
+    setTimeout(() => need("detail").then(() => CBI.detail.prewarm(), () => {}), 3600);
   }
 
   /* Boot screen (crest + pocket watch, step 9.6b): fades out once the data is in and the fonts are ready
@@ -1325,13 +1440,14 @@
     isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, RDC, RDU, capOff, ANTON, OSW, BARLOW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
     openCard, closeCard, swapCard, route,
+    need, has, loadFailed, copyText,   // improvement round 4: page code on demand (MODS) · copy text (was C.share.copyText)
     lazy, artImg, bindArt, watchLive, livePause, loadArt, loadArtSharp,   // step 9.5 · livePause step 12 · loadArt W4 · loadArtSharp improvement round 3
     covered: false, later, flushCovered,   // speed 2026-11-03: the card detail covers the page (js/detail.js settled) · its deferred work
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support grids (2026-10-28 · box 2026-10-29)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js
-    detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js
-    tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js
-    deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js
+    detail: { init() {}, open() {}, close() {}, prewarm() {} },     // replaced by js/detail.js (loads on demand · need("detail"))
+    tier: { init() {}, enter() {}, show() {} },      // replaced by js/tier.js (loads on demand · need("tier"))
+    deck: { init() {}, enter() {}, show() {} },        // replaced by js/deck.js (loads on demand · need("deck"))
     support: { init() {}, order() { return []; }, open() {} },   // replaced by js/support.js
     home: { init() {} },   // replaced by js/home.js
   };

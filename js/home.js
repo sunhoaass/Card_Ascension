@@ -6,7 +6,7 @@
    · news text comes from data/news.json ({ updates, codes, systems } · routine E "อัปเดตข่าว" fills it) · a missing or
      empty file = "nothing yet" lines, never an error
    · the NEW badge itself (cards added in the last 14 days) is drawn by C.renderCard (js/app.js C.isNew)
-   Needs js/fx.js, js/app.js and js/share.js (copyText) loaded first. Built the first time Home shows (C.lazy).
+   Needs js/fx.js and js/app.js (C.copyText) loaded first. Built the first time Home shows (C.lazy).
    ========================================================== */
 (function () {
   const C = window.CBI;
@@ -76,7 +76,7 @@
   }
   async function copyCode(btn) {
     const code = btn.dataset.code;
-    const ok = C.share && C.share.copyText ? await C.share.copyText(code) : false;
+    const ok = await C.copyText(code);
     if (ok) {
       FX.flash(btn.closest(".hcode") || btn);
       FX.toast("Copied");

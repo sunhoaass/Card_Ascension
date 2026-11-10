@@ -45,7 +45,8 @@
      wideFirst(supports[4]) -> [bool × 4]: false = a 2nd+ copy of a whole-deck support (gives nothing)
      supportRules(s), cardRules(c), deckWide(s), report()   (report = the table for the owner, also run by tools/deckbuff_report.js)
    }
-   No DOM. Works in Node too (the report) with a stand-in CBI.
+   No DOM. Works in Node too (the report) with a stand-in CBI. On the site it loads on demand with the Deck code
+   (CBI.need("deck") in js/app.js · improvement round 4).
    ========================================================== */
 (function (root) {
   const C = root.CBI;
