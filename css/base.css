@@ -370,6 +370,18 @@ html.lite .bd-shoot { display: none; }
                 var(--orn-bl) bottom left / var(--orn-s) no-repeat, var(--orn-br) bottom right / var(--orn-s) no-repeat;
 }
 .panel { padding: var(--s-6); }
+/* three weights of box (look round 1 · Home lobby): .panel--hi = loud (gold → level edge, raised, outer shadow · no cut corners,
+   so the shadow shows) · .panel = normal (above) · .panel--lite = light (a gold line on top, no fill) · --lvl = the level colour (look round 4) */
+.panel.panel--hi {
+  clip-path: none; border: 1.5px solid transparent; border-radius: var(--r-panel);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--haze) 78%, var(--void)), color-mix(in srgb, var(--void-2) 82%, var(--void))) padding-box,
+    linear-gradient(160deg, var(--gold-hi), var(--gold-lo) 40%, color-mix(in srgb, var(--lvl, var(--gold-lo)) 70%, var(--gold-lo))) border-box;
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--city-1) 60%, transparent), inset 0 1px 0 rgba(var(--gold-rgb), .25);
+}
+.panel.panel--hi::before { display: none; }
+.panel.panel--lite { clip-path: none; background: none; border-top: 1px solid var(--glass-line); padding: var(--s-4) 0 0; }
+.panel.panel--lite::before { display: none; }
 
 /* ---------- Empty / error panels ---------- */
 .empty { text-align: center; padding: var(--s-10) var(--s-6); }

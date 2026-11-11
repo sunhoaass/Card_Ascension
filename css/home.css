@@ -1,9 +1,12 @@
 /* ==========================================================
-   Card Battle Infinity — Home (plan 2026-10-30 item 5 · js/home.js)
-   Phone: one column (codes → updates → new cards → systems · codes first 2026-11-09) · PC (≥ 1100): updates | codes + systems, new cards below
-   Shared bits: .panel (gold box), .tm-btn, .card-grid, .skeleton, the NEW badge .gc__new (css/fx.css)
+   Card Battle Infinity — Home (plan 2026-10-30 item 5 · js/home.js · look round 1 2026-11-11: the top = mockup C "Lobby")
+   Phone: one column (new-card wall → codes → menu plates → updates → systems → new support)
+   PC (≥ 1100): wall | codes + plates · then updates | systems · new support across the bottom
+   Shared bits: .panel / .panel--hi (base.css), .tm-btn, .card-grid, .skeleton, the NEW badge .gc__new (css/fx.css),
+   --f-hud (Russo One labels) / --f-num (Anton figures) (tokens.css)
    ========================================================== */
 .home { display: grid; gap: var(--s-8); }
+.home__low { display: grid; gap: var(--s-8); }
 .home__sec { min-width: 0; }
 .home__h {
   display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4);
@@ -36,35 +39,91 @@
 .hnews__items { margin: var(--s-2) 0 0; padding-left: 1.2em; color: var(--ink-dim); font-size: var(--fs-sm); display: grid; gap: 4px; max-width: var(--measure, none); }
 .hnews__items li::marker { color: var(--gold); }
 
-/* ---------- Codes ---------- */
-.hcodes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
-.hcode {
-  display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-3) var(--s-3) var(--s-4);
-  border: 1px dashed var(--gold-lo); border-radius: var(--r-panel);
-  background-color: var(--glass-under); background-image: linear-gradient(var(--glass), var(--glass));
-}
-.hcode__main { flex: 1; min-width: 0; display: grid; gap: 2px; }
-.hcode__code {
-  font-family: var(--font-body); font-size: var(--fs-lg); font-weight: 600; letter-spacing: .06em; color: var(--gold-hi);   /* Inter: codes are case-sensitive (the display face Marcellus SC has no lowercase) */
-  overflow-wrap: anywhere; user-select: all; -webkit-user-select: all;
-}
-.hcode__reward { color: var(--ink-dim); font-size: var(--fs-sm); }
-.hcode__copy { flex: none; padding: 0 14px; }
-.hcode__copy svg { width: 18px; height: 18px; }
-
 /* ---------- New systems ---------- */
 .hsys { padding: var(--s-4) var(--s-5) var(--s-5); --orn-s: 18px; }
 .hsys__title { margin-top: 4px; }
 .hsys__desc { margin-top: var(--s-2); color: var(--ink-dim); font-size: var(--fs-sm); max-width: var(--measure, none); }
 
-/* ---------- PC: two columns, the new cards across the bottom ---------- */
+/* ==========================================================
+   Lobby (look round 1) · labels in --f-hud, figures in --f-num
+   ========================================================== */
+.hud { font: 400 var(--fs-sm)/1 var(--f-hud); letter-spacing: .08em; text-transform: uppercase; color: var(--gold-hi); }
+.hud--dim { color: var(--ink-faint); font-size: var(--fs-xs); }
+.hud--dim b { font-weight: 400; color: var(--ink); font-variant-numeric: tabular-nums; }
+.hlob { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+.hlob > * { min-width: 0; }
+.hlob__stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+.hlob__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3);
+  text-shadow: 0 1px 2px var(--void), 0 0 10px var(--void-2); }   /* readable over the moon (phones: it sits behind this line) */
+.hlob__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); }
+.hlob__cta [hidden] { display: none; }
+
+/* ---------- The wall: the newest update's cards drift past in rows (js/home.js buildWall) ----------
+   one layer per row, moved by a Web Animation of transform only (no blur / mask on it · a CSS animation whose keyframes
+   used var() ran on the main thread: style + paint every frame) · moves only while on screen and stops under the mouse /
+   a focused card (js/home.js) · the row's first cards are copied after its end and the row moves by its own length
+   (a % of its width), so it loops without a seam · every 2nd row goes the other way */
+.hwall.panel { --cw: 92px; --wg: 8px; position: relative; overflow: hidden; padding: 0;
+  margin-inline: calc(-1 * var(--gutter)); border-radius: 0; border-inline-width: 0; }
+.hwall__rows { display: grid; gap: var(--wg); padding-block: 12px; }
+.hwall__row { display: flex; width: max-content; will-change: transform; }
+.hwall .card { flex: none; width: var(--cw); margin-right: var(--wg); }   /* a margin, not a gap: every card + its space = one step of the loop */
+.hwall .card:active { transform: translateY(var(--lift, 0px)) scale(.94); }
+/* the frame's ends fade into it (a still gradient over the rows, not a mask on them) */
+.hwall.panel::after { display: block; content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit;
+  opacity: 1; -webkit-mask: none; mask: none;   /* .panel::after is the (hidden) corner ornaments */
+  background: linear-gradient(90deg, color-mix(in srgb, var(--void) 85%, transparent), transparent 9%, transparent 91%, color-mix(in srgb, var(--void) 85%, transparent)); }
+.hwall__skel { width: auto; height: calc(var(--cw) * 4 + 16px); aspect-ratio: auto; margin: 0 var(--wg); border-radius: var(--r-chip); }
+.hwall .home__empty { padding: var(--s-8) var(--s-5); text-align: center; }
+
+/* ---------- Codes: one strip (tap a code = copy) ---------- */
+.hcodes.panel { display: flex; align-items: center; gap: var(--s-3); padding: 6px 6px 6px 12px; }
+.hcodes__tag { flex: none; display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); }
+.hcodes__tag svg { width: 18px; height: 18px; color: var(--gold); }
+.hcodes__tag b { display: grid; place-items: center; min-width: 20px; height: 20px; padding: 1px 5px 0; border-radius: 10px;
+  background: var(--wine); color: var(--ink); font: 400 var(--fs-xs)/1 var(--f-num); letter-spacing: 0; }
+.hcodes__tag b[hidden] { display: none; }
+.hcodes__row { flex: 1; min-width: 0; display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none; padding-block: 4px; }
+.hcodes__row::-webkit-scrollbar { display: none; }
+.hcodes__row .home__empty { padding: var(--s-2) 0; }
+.hcode { flex: none; display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 10px 0 12px; overflow: hidden;
+  border-radius: 10px; border: 1px dashed var(--gold-lo); background-color: var(--glass-under); background-image: linear-gradient(var(--glass), var(--glass));
+  color: var(--gold-hi); }
+.hcode__code { font: 400 var(--fs-sm)/1 var(--f-hud); letter-spacing: .08em; white-space: nowrap; }   /* codes are case-sensitive: the face keeps lower case */
+.hcode__ico { width: 16px; height: 16px; flex: none; color: var(--ink-dim); }
+.hcode.is-done { border-style: solid; border-color: var(--gold); }
+.hcode.is-done .hcode__ico { color: var(--gold-hi); }
+.home__skel--chip { flex: none; width: 104px; height: 44px; aspect-ratio: auto; border-radius: 10px; }
+
+/* ---------- Menu plates: the four menu pages as big game tiles ---------- */
+.hplates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.hplate { position: relative; overflow: hidden; isolation: isolate; height: 104px; padding: 12px; border-radius: var(--r-panel); text-align: left;
+  display: grid; align-content: space-between; justify-items: start;
+  background: var(--brass); border: 2px solid var(--gold-lo); color: var(--ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--void) 70%, transparent), inset 0 -6px 0 color-mix(in srgb, var(--void) 55%, transparent), 0 6px 14px color-mix(in srgb, var(--city-1) 55%, transparent); }
+.hplate__art { position: absolute; z-index: -2; right: -6px; top: -8px; width: 62%; height: 130%; max-width: none; object-fit: cover; object-position: 50% 12%; }
+/* the picture fades into the plate from the left: a still gradient over it (no mask) */
+.hplate::before { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, var(--void-2) 38%, color-mix(in srgb, var(--void-2) 55%, transparent) 62%, transparent 92%); }
+.hplate__name { font-size: var(--fs-md); text-shadow: 0 2px 0 var(--void); }
+.hplate__n { font: 400 var(--fs-3xl)/1 var(--f-num); color: var(--ink); text-shadow: 0 2px 0 var(--void); font-variant-numeric: tabular-nums; }
+.hplate__txt { font: 600 var(--fs-xs)/1.25 var(--font-body); color: var(--ink-dim); text-shadow: 0 1px 0 var(--void); }
+
 @media (min-width: 1100px) {
-  .home {
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start;
-    grid-template-areas: "updates codes" "updates systems" "new new";
-  }
-  .home__sec--updates { grid-area: updates; }
-  .home__sec--codes { grid-area: codes; }
-  .home__sec--systems { grid-area: systems; }
-  .home__sec--new { grid-area: new; }
+  .hlob { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: auto 1fr; gap: var(--s-6) var(--s-8); align-items: start; }
+  .hlob__stage { grid-row: 1 / span 2; }
+  .hwall.panel { --cw: 118px; --wg: 10px; margin-inline: 0; border-radius: var(--r-panel); border-inline-width: 1.5px; }
+  .hplates { align-self: end; }
+  .hplate { height: 132px; }
+  .home__low { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; }
+  .home__sec--new { grid-column: 1 / -1; }
+}
+
+/* reduced motion: the rows stand still and scroll sideways instead (no copies) */
+@media (prefers-reduced-motion: reduce) {
+  .hwall__rows { overflow-x: auto; scrollbar-width: none; }
+  .hwall__rows::-webkit-scrollbar { display: none; }
+  .hwall__row { will-change: auto; padding-left: var(--wg); }
+  .hwall .card[data-copy] { display: none; }
+  .hwall .card:active { transform: translateY(var(--lift, 0px)); }
 }
