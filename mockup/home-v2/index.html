@@ -1,0 +1,723 @@
+<meta charset="utf-8">
+<title>Infinity Home Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&family=Anton&family=Russo+One&display=swap">
+<style>
+/* Card Battle Infinity — Home mockups (look round 0 · 2026-11-10 · PROGRESS ▶️ "🎨 แผนหน้าตาใหม่")
+   Three different Home pages on the same data: A "Altar" (a drifting wall of every card) ·
+   B "Gazette" (the update as a front page) · C "Lobby" (a game hub: the card wall in a frame + big menu plates).
+   Layout concept: phone first, one column; from 1100px the site's left menu + a wide grid.
+   Colours: every value below is copied from css/tokens.css ("Castle Night": night navy, never black). Nothing else sets a colour.
+   Cards are pictures of the site's own cards (C.renderCard), not game files. The castle is the site's own FX.backdrop drawing. */
+:root {
+  color-scheme: dark;
+  /* night city */
+  --void: #0f1638; --void-2: #18215a; --nebula: #1b2352; --haze: #3b2c6c;
+  --sky: linear-gradient(180deg, #0f1638 0%, #18215a 45%, #2a2a6e 78%, #3b2c6c 100%);
+  --gold-rgb: 242, 196, 90;
+  --city-1: #0c1230; --city-2: #182152; --city-3: #232c63; --city-win: #ffcf6e;
+  /* panels */
+  --glass: rgba(var(--gold-rgb), 0.05); --glass-strong: rgba(var(--gold-rgb), 0.11); --glass-line: rgba(var(--gold-rgb), 0.28);
+  --glass-under: rgba(17, 23, 58, 0.92);
+  --panel-fill: linear-gradient(180deg, rgba(22, 29, 70, 0.9), rgba(14, 19, 50, 0.9));
+  /* metals */
+  --gold: #f2c45a; --gold-hi: #ffe29a; --gold-lo: #c9932d; --silver: #c9cfdb; --wine: #a83a52; --wine-hi: #d5546e;
+  --brass: linear-gradient(180deg, #232b62, #161d4a);
+  --brass-gold: linear-gradient(180deg, #ffe29a, #f2c45a 55%, #c9932d);
+  --on-gold: #2b1a00;
+  /* ink */
+  --ink: #f1edff; --ink-dim: #abb1da; --ink-faint: #7c82ad;
+  --flux: #9fb4ff; --lamp: #ffcf6e;
+  --rift-glow: 0 0 0 1px rgba(var(--gold-rgb), .45), 0 0 18px rgba(var(--gold-rgb), .30);
+  /* card numbers (the game's colours on the site's cards) */
+  --gc-hp: #52b257; --gc-atk: #ec453b;
+  /* the 9 levels: one flat colour (--lvl) + the gem fill (--gem), all from the rarity tokens */
+  --r-normal: #c9cfdb; --r-shiny: #ecc768; --r-secret: #c9344b; --r-divine: #fff4d8; --r-divine-2: #d6ad5c; --r-cosmic: #8f7dff;
+  --r-godlike: #fffaf0; --r-godlike-2: #e9c877; --r-godly: #f06a92; --r-godly-2: #ffcf6a;
+  --r-rainbow: conic-gradient(from 0deg, #e8607a, #e9a75a, #e8dc78, #7fd39a, #69b9e0, #8a7be0, #d36cc0, #e8607a);
+  --r-ascended: conic-gradient(from 0deg, #fffaf0, #a9eef5, #c5a8f5, #f5b4dc, #f8e7a8, #b4f0d2, #fffaf0);
+  --glow-rainbow: rgb(200, 140, 220); --glow-ascended: rgb(220, 210, 255);   /* --gc-glow-rainbow / -ascended without the alpha */
+  /* type */
+  --f-display: "Marcellus SC", "Palatino Linotype", Georgia, serif;
+  --f-body: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num: "Anton", "Oswald", "Arial Narrow", Impact, sans-serif;          /* figures: odds, ATK, HP, counts */
+  --f-hud: "Russo One", "Nunito Sans", "Arial Black", sans-serif;           /* game-menu labels (Lobby) */
+  --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-lg: 20px; --fs-xl: 25px; --fs-2xl: 31px; --fs-3xl: 39px;
+  --r-chip: 12px; --r-panel: 14px; --ease: cubic-bezier(.2, .8, .2, 1); --t-fast: 150ms; --t-med: 250ms; --t-slow: 400ms;
+  --side-w: 252px; --bar-h: 48px;
+  --lvl: var(--r-normal); --gem: var(--r-normal);
+}
+[data-lvl="shiny"] { --lvl: var(--r-shiny); }       [data-lvl="rainbow"] { --lvl: var(--glow-rainbow); }
+[data-lvl="secret"] { --lvl: var(--r-secret); }     [data-lvl="divine"] { --lvl: var(--r-divine); }
+[data-lvl="cosmic"] { --lvl: var(--r-cosmic); }     [data-lvl="ascended"] { --lvl: var(--glow-ascended); }
+[data-lvl="godlike"] { --lvl: var(--r-godlike-2); } [data-lvl="godly"] { --lvl: var(--r-godly); }
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { background: var(--void); }
+body { margin: 0; background: var(--void); color: var(--ink); font: 400 var(--fs-md)/1.5 var(--f-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+h1, h2, h3, p, ul, dl, dd, figure { margin: 0; } ul { padding: 0; list-style: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; } svg { display: block; }
+:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; border-radius: 6px; }
+.num { font-family: var(--f-num); font-weight: 400; letter-spacing: .01em; font-variant-numeric: tabular-nums; line-height: 1; }
+.ico { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- mockup switcher (not part of the design) ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--city-1); }
+.lab { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; height: var(--bar-h); display: flex; align-items: center; gap: 8px;
+  padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px));
+  background: var(--city-1); border-bottom: 1px dashed var(--glass-line); font-size: var(--fs-xs); }
+.lab__tag { color: var(--ink-faint); letter-spacing: .12em; text-transform: uppercase; font-weight: 800; }
+.lab__seg { display: flex; gap: 4px; margin-right: auto; }
+.lab__btn { min-width: 44px; height: 40px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--glass-line); color: var(--ink-dim); font-weight: 800; letter-spacing: .04em; white-space: nowrap; }
+.lab__btn b { font-weight: 800; color: var(--gold); } .lab__btn span { display: none; }
+.lab__btn[aria-pressed="true"] { background: var(--brass-gold); color: var(--on-gold); border-color: transparent; } .lab__btn[aria-pressed="true"] b { color: inherit; }
+@media (min-width: 520px) { .lab__btn span { display: inline; } }
+
+/* ---------- the scene (fixed, behind everything) ---------- */
+.scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; contain: strict;
+  background: radial-gradient(120vmax 60vmax at 50% 112%, var(--haze), transparent 62%), var(--sky); }
+.scene > * { position: absolute; }
+.sc-stars { inset: 0 -240px 30% 0; opacity: .85; background-size: 240px 250px; animation: starsdrift 120s linear infinite;
+  background-image: radial-gradient(1.3px 1.3px at 20px 30px, var(--ink), transparent), radial-gradient(1px 1px at 120px 80px, var(--ink), transparent),
+    radial-gradient(1.6px 1.6px at 180px 20px, var(--ink), transparent), radial-gradient(1px 1px at 60px 140px, var(--flux), transparent),
+    radial-gradient(1.2px 1.2px at 200px 170px, var(--ink), transparent), radial-gradient(1px 1px at 90px 230px, var(--ink), transparent); }
+@keyframes starsdrift { to { transform: translate3d(-240px, 0, 0); } }
+.sc-stars::after { content: ""; position: absolute; inset: 0; background-size: 240px 270px;
+  background-image: radial-gradient(2px 2px at 70px 60px, var(--ink), transparent), radial-gradient(1.6px 1.6px at 210px 120px, var(--ink), transparent), radial-gradient(2px 2px at 30px 190px, var(--gold-hi), transparent);
+  animation: twinkle 2.6s ease-in-out infinite alternate; }
+@keyframes twinkle { to { opacity: .2; } }
+.sc-moon { right: 7%; top: calc(var(--bar-h) + 8%); width: clamp(54px, 11vw, 96px); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, var(--ink), color-mix(in srgb, var(--flux) 55%, var(--ink)) 70%, var(--flux));
+  box-shadow: 0 0 40px 10px color-mix(in srgb, var(--flux) 30%, transparent); }
+.sc-tod { inset: 0; opacity: 0; transition: opacity var(--t-slow) var(--ease); }     /* time of day: a wash made from the same tokens */
+/* the sky moves: stars drift, an aurora waves, mist rolls past the castle, lanterns rise from the town, a star falls now and then (transform / opacity only) */
+.sc-aurora { inset: var(--bar-h) -20% auto -20%; height: 46%; opacity: .6; }
+.sc-aurora i { position: absolute; inset: 0; transform-origin: 50% 0; }   /* soft by its own gradient: no live blur */
+.sc-aurora i:first-child { background: radial-gradient(50% 50% at 38% 45%, color-mix(in srgb, var(--flux) 42%, transparent), transparent), radial-gradient(46% 50% at 64% 50%, color-mix(in srgb, var(--r-cosmic) 42%, transparent), transparent); animation: aurora 17s ease-in-out infinite alternate; }
+.sc-aurora i:last-child { inset: 18% 0 0; background: radial-gradient(44% 50% at 42% 50%, color-mix(in srgb, var(--wine-hi) 30%, transparent), transparent), radial-gradient(40% 50% at 68% 46%, color-mix(in srgb, var(--gold) 20%, transparent), transparent); animation: aurora 23s ease-in-out infinite alternate-reverse; }
+@keyframes aurora { from { transform: translate3d(-7%, 0, 0) skewX(-14deg) scaleY(.8); opacity: .5; } to { transform: translate3d(7%, 6%, 0) skewX(12deg) scaleY(1.15); opacity: 1; } }
+.sc-moon::before { content: ""; position: absolute; inset: -60%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--flux) 28%, transparent), transparent); animation: halo 4s ease-in-out infinite alternate; }
+@keyframes halo { to { transform: scale(1.18); } }
+.sc-shoot { top: 13%; left: 64%; width: 120px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--ink)); opacity: 0; animation: shoot 9s ease-in infinite 2s; }
+@keyframes shoot { 0%, 86% { opacity: 0; transform: rotate(155deg) translate3d(-120px, 0, 0); } 89% { opacity: 1; } 100% { opacity: 0; transform: rotate(155deg) translate3d(280px, 0, 0); } }
+.sc-mist { left: -60%; right: -60%; bottom: 5%; height: 30%; }
+.sc-mist i { position: absolute; width: 44%; height: 60%; background: radial-gradient(closest-side, color-mix(in srgb, var(--flux) 26%, transparent), transparent); animation: mist 70s ease-in-out infinite alternate; }
+.sc-mist i:nth-child(2) { left: 30%; top: 40%; animation-duration: 95s; animation-delay: -40s; } .sc-mist i:nth-child(3) { left: 56%; top: 14%; animation-duration: 120s; animation-direction: alternate-reverse; }
+@keyframes mist { from { transform: translate3d(-30%, 0, 0); } to { transform: translate3d(50%, 0, 0); } }
+.sc-lanterns { inset: 0; }
+.sc-lanterns i { position: absolute; bottom: 12%; width: 26px; height: 28px; background: radial-gradient(closest-side, var(--lamp) 0 16%, rgba(var(--gold-rgb), .5) 22%, transparent); opacity: 0; animation: lantern linear infinite; will-change: transform; }
+@keyframes lantern { 0% { opacity: 0; transform: translate3d(0, 0, 0); } 12% { opacity: .95; } 70% { opacity: .8; } 100% { opacity: 0; transform: translate3d(var(--dx), -72vh, 0) scale(.6); } }
+[data-scene="dawn"] .sc-aurora { opacity: .15; } [data-scene="dusk"] .sc-aurora { opacity: .3; }
+.sc-city { left: 0; right: 0; bottom: 0; height: min(44vh, 440px); }
+.sc-city svg { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.sc-city .c1 { fill: var(--city-1); } .sc-city .c2 { fill: var(--city-2); } .sc-city .c3 { fill: var(--city-3); } .sc-city .w { fill: var(--city-win); }
+.sc-city .bd-win2 { animation: twinkle 3.4s ease-in-out infinite alternate; }
+.sc-snow { inset: 0; display: none; }
+.sc-snow i { position: absolute; top: -12px; border-radius: 50%; background: var(--ink); opacity: .85; animation: snow linear infinite; will-change: transform; }
+@keyframes snow { to { transform: translate3d(var(--dx), 104vh, 0); } }
+.sc-drift { left: 0; right: 0; bottom: 0; height: 26px; display: none; background: linear-gradient(0deg, color-mix(in srgb, var(--ink) 55%, transparent), transparent); }
+[data-scene="dusk"] .sc-tod { opacity: 1; background: linear-gradient(180deg, transparent 22%, color-mix(in srgb, var(--wine-hi) 42%, transparent) 70%, color-mix(in srgb, var(--gold) 55%, transparent)); }
+[data-scene="dusk"] .sc-moon { top: 46%; right: 14%; background: radial-gradient(circle at 40% 40%, var(--gold-hi), var(--gold) 70%, var(--gold-lo)); box-shadow: 0 0 60px 18px rgba(var(--gold-rgb), .35); }
+[data-scene="dusk"] .sc-stars { opacity: .35; }
+[data-scene="dawn"] .sc-tod { opacity: 1; background: linear-gradient(180deg, color-mix(in srgb, var(--flux) 26%, transparent), color-mix(in srgb, var(--wine-hi) 26%, transparent) 62%, color-mix(in srgb, var(--gold-hi) 46%, transparent)); }
+[data-scene="dawn"] .sc-moon { opacity: .45; top: calc(var(--bar-h) + 4%); right: 70%; } [data-scene="dawn"] .sc-stars { opacity: .2; }
+[data-scene="snow"] .sc-snow, [data-scene="snow"] .sc-drift { display: block; }
+[data-scene="snow"] .sc-city .c1 { stroke: color-mix(in srgb, var(--ink) 70%, transparent); stroke-width: 1.2; stroke-dasharray: 9 30; }   /* snow caught on the roofs */
+@media (min-width: 1100px) { .sc-city { left: var(--side-w); } }
+
+/* ---------- site chrome (the same in every mockup: menu and routes do not change) ---------- */
+.app { position: relative; min-height: 100vh; overflow-x: clip; }
+.topbar { position: relative; z-index: 2; display: flex; align-items: center; gap: 10px; height: 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.topbar svg { width: 34px; height: 36px; }
+.topbar b { display: block; font: 400 var(--fs-md)/1.1 var(--f-display); letter-spacing: .05em; color: var(--gold-hi); }
+.topbar span { display: block; font-size: var(--fs-xs); color: var(--ink-faint); }
+.nav { position: fixed; z-index: 40; left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  height: 68px; border-radius: 20px; border: 1px solid var(--glass-line); background: color-mix(in srgb, var(--void) 88%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--city-1) 70%, transparent); }
+.nav__brand, .nav__foot { display: none; }
+.nav__list { display: grid; grid-template-columns: repeat(4, 1fr); height: 100%; padding: 6px; gap: 4px; }
+.nav__btn { display: grid; place-items: center; align-content: center; gap: 2px; width: 100%; height: 100%; border-radius: 14px; color: var(--ink-faint);
+  font: 400 11px/1 var(--f-display); letter-spacing: .08em; }
+.nav__btn .ico { width: 24px; height: 24px; }
+.nav__btn[aria-current="page"] { background: var(--brass-gold); color: var(--on-gold); box-shadow: var(--rift-glow); }
+.main { position: relative; z-index: 1; padding-bottom: 110px; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 1100px) {
+  .topbar { display: none; }
+  .nav { left: 0; right: auto; top: var(--bar-h); bottom: 0; width: var(--side-w); height: auto; border-radius: 0; border: 0; border-right: 1px solid var(--glass-line);
+    display: flex; flex-direction: column; padding: 28px 16px 20px; box-shadow: none; }
+  .nav__brand { display: grid; justify-items: center; gap: 10px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--glass-line);
+    font: 400 var(--fs-md)/1.2 var(--f-display); letter-spacing: .06em; color: var(--gold-hi); }
+  .nav__brand svg { width: 66px; height: 70px; }
+  .nav__list { grid-template-columns: 1fr; height: auto; padding: 0; gap: 6px; }
+  .nav__btn { grid-auto-flow: column; justify-content: start; gap: 14px; height: 48px; padding: 0 16px; font-size: var(--fs-sm); }
+  .nav__foot { display: block; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--glass-line); text-align: center; font-size: var(--fs-xs); color: var(--ink-faint); }
+  .main { margin-left: var(--side-w); padding-bottom: 64px; }
+  .wrap { padding-left: 32px; padding-right: 32px; }
+}
+
+/* ---------- shared parts ---------- */
+.eyebrow { font: 400 var(--fs-xs)/1 var(--f-display); letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+.sech { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; font: 400 var(--fs-lg)/1.2 var(--f-display); letter-spacing: .06em; color: var(--gold-hi); }
+.sech small { font: 600 var(--fs-xs)/1.2 var(--f-body); letter-spacing: 0; color: var(--ink-faint); }
+.sech::after { content: ""; flex: 1; align-self: center; height: 1px; background: linear-gradient(90deg, var(--gold-lo), transparent); }
+/* three weights of box: loud / normal / light */
+.box { border-radius: var(--r-panel); border: 1px solid var(--glass-line); background: var(--panel-fill); padding: 16px; }
+.box--hi { position: relative; border: 0; padding: 18px 16px; background:
+  linear-gradient(180deg, color-mix(in srgb, var(--haze) 78%, var(--void)), color-mix(in srgb, var(--void-2) 82%, var(--void))) padding-box,
+  linear-gradient(160deg, var(--gold-hi), var(--gold-lo) 40%, color-mix(in srgb, var(--lvl) 70%, var(--gold-lo)) 100%) border-box;
+  border: 1.5px solid transparent; box-shadow: 0 14px 34px color-mix(in srgb, var(--city-1) 60%, transparent), inset 0 1px 0 rgba(var(--gold-rgb), .25); }
+.box--lite { border-top: 1px solid var(--glass-line); padding: 14px 0 0; }
+.btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: var(--r-chip);
+  border: 1px solid var(--glass-line); background: var(--brass); color: var(--ink); font: 400 var(--fs-sm)/1 var(--f-display); letter-spacing: .08em;
+  transition: transform var(--t-fast) var(--ease); }
+.btn--gold { background: var(--brass-gold); color: var(--on-gold); border-color: transparent; box-shadow: var(--rift-glow); }
+.press:active { transform: scale(.96); }
+.press::after { content: ""; position: absolute; inset: -3px; border-radius: inherit; border: 2px solid var(--gold-hi); opacity: 0; pointer-events: none; }
+.press.is-hit::after { animation: ring 420ms var(--ease); }
+@keyframes ring { 0% { opacity: .9; transform: scale(.96); } 100% { opacity: 0; transform: scale(1.08); } }
+.kind { display: inline-flex; align-items: center; min-height: 24px; padding: 0 10px; border-radius: 999px; background: var(--brass-gold); color: var(--on-gold);
+  font: 400 var(--fs-xs)/1 var(--f-display); letter-spacing: .1em; text-transform: uppercase; }
+.date { font-size: var(--fs-xs); color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+/* a code you tap to copy */
+.code { position: relative; flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 10px 0 12px; border-radius: 10px;
+  border: 1px dashed var(--gold-lo); background: var(--glass); color: var(--gold-hi); font: 800 var(--fs-sm)/1 var(--f-body); letter-spacing: .08em;
+  transition: transform var(--t-fast) var(--ease); }
+.code .ico { width: 16px; height: 16px; color: var(--ink-dim); }
+.code.is-done { border-style: solid; border-color: var(--gold); } .code.is-done .ico { color: var(--gold-hi); }
+/* a picture of one of the site's cards */
+.gcimg { width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: 3.7% / 2.78%; }
+/* card that turns over: back (our own design) → face */
+.flip { position: relative; display: block; aspect-ratio: 3 / 4; perspective: 700px; flex: none; }
+.flip__in { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateY(180deg); transition: transform 520ms var(--ease); }
+.flip.is-up .flip__in { transform: rotateY(0deg); }
+.flip__f, .flip__b { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip__b { transform: rotateY(180deg); }
+.flip__b svg { width: 100%; height: 100%; }
+/* our card back (drawn here, tokens only) */
+.bk-field { fill: var(--void-2); } .bk-glow { fill: var(--haze); } .bk-line { fill: none; stroke: var(--gold); stroke-width: 3; }
+.bk-line2 { fill: none; stroke: var(--gold-lo); stroke-width: 1.2; stroke-dasharray: 2 5; } .bk-lat { fill: none; stroke: rgba(var(--gold-rgb), .22); stroke-width: 1; }
+.bk-ring { fill: var(--void); stroke: var(--gold); stroke-width: 2; } .bk-ring2 { fill: none; stroke: var(--gold-lo); stroke-width: 1; stroke-dasharray: 1.5 4; }
+.bk-c1 { fill: var(--flux); stroke: var(--gold-hi); stroke-width: 2; } .bk-c2 { fill: var(--r-cosmic); stroke: var(--gold-hi); stroke-width: 2; }
+.bk-inf { fill: none; stroke: var(--gold-hi); stroke-width: 6; stroke-linecap: round; } .bk-dot { fill: var(--gold-hi); } .bk-star { fill: var(--ink); opacity: .7; }
+/* the 9 levels */
+/* the wall: the cards that came with the newest update, drifting past in rows (transform only · one layer per row · stops under the pointer) */
+.wall { --cw: 84px; --wg: 8px; display: grid; gap: var(--wg); justify-self: stretch; margin-inline: -34px; padding-block: 12px; overflow: hidden; transform: rotate(-3deg); }
+.wall__row { display: flex; width: max-content; animation: drift var(--d, 400s) linear infinite; will-change: transform; }
+.wall__row:nth-child(even) { animation-direction: reverse; }
+@media (hover: hover) { .wall:hover .wall__row { animation-play-state: paused; } }
+@keyframes drift { to { transform: translate3d(-50%, 0, 0); } }
+.wc { flex: none; width: var(--cw); aspect-ratio: 3 / 4; margin-right: var(--wg); border-radius: 3.7% / 2.78%; background-size: 1000% 500%; background-repeat: no-repeat;
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--city-1) 70%, transparent); transition: transform var(--t-fast) var(--ease); }
+.wc:active { transform: scale(.94); }
+.s0 { background-image: url(img/new_0.webp); } .s1 { background-image: url(img/new_1.webp); }
+  border: 1px solid color-mix(in srgb, var(--lvl) 70%, transparent); color: var(--ink); font: 400 var(--fs-xs)/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; }
+/* update sections as tabs (A) or tiles (C) */
+.cats { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; } .cats::-webkit-scrollbar { display: none; }
+.cat { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--glass-line);
+  color: var(--ink-dim); font: 600 var(--fs-sm)/1 var(--f-body); white-space: nowrap; transition: transform var(--t-fast) var(--ease); }
+.cat b { font: 400 var(--fs-sm)/1 var(--f-num); color: var(--gold); }
+.cat[aria-selected="true"] { background: var(--brass-gold); color: var(--on-gold); border-color: transparent; } .cat[aria-selected="true"] b { color: inherit; }
+.items { display: grid; gap: 8px; margin-top: 12px; color: var(--ink-dim); font-size: var(--fs-sm); max-width: 72ch; }
+.items li { position: relative; padding-left: 18px; }
+.items li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 7px; height: 7px; transform: rotate(45deg); background: var(--gold); }
+.items.is-in li { animation: up 320ms var(--ease) both; animation-delay: calc(var(--i) * 40ms); }
+@keyframes up { from { opacity: 0; transform: translateY(8px); } }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 14px 0; }
+.fig { padding: 0 12px; border-left: 1px solid var(--glass-line); }
+.fig b { display: block; font: 400 var(--fs-3xl)/1 var(--f-num); color: var(--gold-hi); }
+.fig span { display: block; margin-top: 4px; font-size: var(--fs-xs); color: var(--ink-dim); white-space: nowrap; }
+.toast { position: fixed; z-index: 70; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px); padding: 10px 16px; border-radius: 999px;
+  background: var(--brass-gold); color: var(--on-gold); font: 800 var(--fs-sm)/1 var(--f-body); opacity: 0; pointer-events: none; transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease); }
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.hrow { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; margin-inline: -16px; padding-inline: 16px; }
+.hrow::-webkit-scrollbar { display: none; } .hrow > * { scroll-snap-align: start; }
+.mock { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding-top: 4px; }
+/* one-column grids never grow wider than the screen (rows that scroll sideways live inside them) */
+.a-hero, .a-info, .a-news, .a-sys, .a-pack__txt, .b-sheet, .b-lead, .b-mast, .c-stage, .c-board, .c-read { grid-template-columns: minmax(0, 1fr); }
+.mock *, .b-sheet > * { min-width: 0; }
+.mock.is-in > * { animation: up 380ms var(--ease) both; }
+.mock.is-in > :nth-child(2) { animation-delay: 60ms; } .mock.is-in > :nth-child(3) { animation-delay: 120ms; } .mock.is-in > :nth-child(n+4) { animation-delay: 180ms; }
+
+/* ==========================================================
+   A · ALTAR — the whole collection drifts past as a wall of cards
+   ========================================================== */
+.a-codes { position: relative; z-index: 3; display: flex; align-items: center; gap: 10px; height: 52px; margin-inline: -16px; padding-inline: 16px; border-block: 1px solid var(--glass-line);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--void) 80%, transparent), color-mix(in srgb, var(--void-2) 60%, transparent)); }
+.a-codes__tag { flex: none; display: inline-flex; align-items: center; gap: 6px; font: 400 var(--fs-xs)/1 var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.a-codes__tag b { font: 400 var(--fs-md)/1 var(--f-num); color: var(--gold-hi); }
+.a-codes__row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; padding-block: 4px; } .a-codes__row::-webkit-scrollbar { display: none; }
+.a-hero { display: grid; gap: 10px; }
+.pack__sheen { pointer-events: none; }
+.a-hero__head { display: flex; align-items: center; justify-content: space-between; }
+.a-info { display: grid; gap: 14px; justify-items: center; text-align: center; }
+.a-count { display: flex; align-items: baseline; gap: 10px; font: 400 var(--fs-lg)/1 var(--f-display); letter-spacing: .06em; color: var(--ink); }
+.a-count b { font: 400 54px/.9 var(--f-num); letter-spacing: .01em; color: var(--gold-hi); }
+.a-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.a-pack { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; align-items: center; }
+.pack { position: relative; width: 112px; aspect-ratio: 5 / 7; border-radius: 8px; overflow: hidden; display: grid; place-items: center; align-content: center; gap: 4px;
+  background: linear-gradient(155deg, var(--haze), var(--void-2) 50%, var(--void)); border: 1.5px solid var(--gold); box-shadow: 0 10px 24px color-mix(in srgb, var(--city-1) 70%, transparent); }
+.pack::before, .pack::after { content: ""; position: absolute; left: 0; right: 0; height: 9px; background: repeating-linear-gradient(90deg, var(--gold-lo) 0 3px, var(--gold-hi) 3px 6px); }
+.pack::before { top: 0; } .pack::after { bottom: 0; }
+.pack svg { width: 58px; height: 34px; }
+.pack b { font: 400 var(--fs-2xl)/1 var(--f-num); color: var(--gold-hi); } .pack span { font: 400 9px/1 var(--f-display); letter-spacing: .2em; color: var(--ink-dim); text-transform: uppercase; }
+.pack__sheen { position: absolute; inset: -20% -60%; background: linear-gradient(100deg, transparent 42%, color-mix(in srgb, var(--ink) 35%, transparent) 50%, transparent 58%); animation: sheen 3.8s var(--ease) infinite; }
+@keyframes sheen { from { transform: translateX(-60%); } 60%, to { transform: translateX(60%); } }
+.pack.is-open { animation: tear 700ms var(--ease) forwards; }
+@keyframes tear { 0% { transform: rotate(0); } 15% { transform: rotate(-5deg); } 30% { transform: rotate(5deg); } 45% { transform: rotate(-3deg) scale(1.06); } 100% { transform: translateY(-14px) scale(.9); opacity: .35; } }
+.a-pack__txt { display: grid; gap: 8px; justify-items: start; }
+.a-pack__txt h2 { font: 400 var(--fs-lg)/1.15 var(--f-display); letter-spacing: .05em; color: var(--gold-hi); }
+.a-pack__txt p { font-size: var(--fs-sm); color: var(--ink-dim); }
+.a-pull { grid-column: 1 / -1; }
+.a-pull .flip { width: 124px; }
+.a-pull__more { grid-column: 1 / -1; justify-self: center; }
+.a-news { display: grid; gap: 14px; }
+.a-news__head { display: flex; align-items: center; gap: 10px; }
+.a-news h2 { font: 400 var(--fs-2xl)/1.05 var(--f-display); letter-spacing: .04em;
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold) 60%, var(--gold-lo)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.a-sys { display: grid; gap: 14px; }
+.sys { display: grid; grid-template-columns: 36px 1fr; gap: 2px 12px; align-items: start; }
+.sys .ico { grid-row: span 2; width: 36px; height: 36px; padding: 8px; border-radius: 10px; background: var(--glass-strong); color: var(--gold-hi); }
+.sys b { font: 400 var(--fs-md)/1.2 var(--f-display); letter-spacing: .04em; } .sys span { font-size: var(--fs-sm); color: var(--ink-dim); }
+@media (min-width: 1100px) {
+  .mock--a { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 28px 32px; align-items: start; padding-top: 24px; max-width: 1320px; }
+  .a-codes { grid-column: 1 / -1; margin: 0; border: 1px solid var(--glass-line); border-radius: var(--r-panel); }
+  .a-hero { grid-column: 1 / -1; gap: 14px; } .a-hero .wall { --cw: 108px; --wg: 10px; margin-inline: -32px; } .a-count b { font-size: 64px; }
+  .a-news { grid-column: 1; } .a-sys { grid-column: 2; }
+  .a-pull .hrow { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; } .a-pull .flip { width: calc((100% - 20px) / 3); }
+}
+
+/* ==========================================================
+   B · GAZETTE — the update is the front page; cards are its pictures
+   ========================================================== */
+[data-m="b"] .sc-city, [data-m="b"] .sc-moon { opacity: .5; }
+.b-sheet { display: grid; gap: 24px; padding-block: 18px 26px; border-block: 3px double var(--gold-lo);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--nebula) 96%, transparent), color-mix(in srgb, var(--void) 96%, transparent)); }
+.mock--b { margin-inline: -16px; display: block; } .mock--b .b-sheet { padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+.b-mast { display: grid; gap: 8px; text-align: center; }
+.b-mast__rule, .b-mast__meta { display: flex; justify-content: space-between; gap: 8px; font: 400 10px/1 var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); }
+.b-mast__meta { padding-block: 7px; border-block: 1px solid var(--glass-line); color: var(--ink-dim); }
+.b-mast__name { font: 400 clamp(26px, 8.4vw, 54px)/1 var(--f-display); letter-spacing: .03em; color: var(--ink); white-space: nowrap; }
+.b-lead { display: grid; gap: 10px; }
+.b-kicker { display: flex; align-items: center; gap: 10px; }
+.stamp { display: inline-block; padding: 4px 8px; border: 1.5px solid var(--wine-hi); border-radius: 4px; color: var(--wine-hi); font: 400 var(--fs-xs)/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; transform: rotate(-3deg); }
+.b-head { font: 400 clamp(46px, 14.5vw, 104px)/.92 var(--f-display); letter-spacing: .01em; text-wrap: balance;
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold) 55%, var(--gold-lo)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.b-deck { font-size: var(--fs-md); color: var(--ink-dim); max-width: 46ch; }
+.b-fan { position: relative; height: 240px; margin-top: 2px; }
+.b-fan button { position: absolute; left: 50%; bottom: 30px; width: 136px; margin-left: -68px; transform-origin: 50% 160%; transform: rotate(var(--r)) translateY(var(--y, 0)); transition: transform var(--t-med) var(--ease); }
+.b-fan button:hover, .b-fan button:focus-visible { transform: rotate(var(--r)) translateY(-14px); z-index: 6; }
+.b-fan .gcimg { box-shadow: 0 10px 22px color-mix(in srgb, var(--city-1) 80%, transparent); }
+.b-cap { font-size: var(--fs-xs); color: var(--ink-faint); font-style: italic; text-align: center; }
+.b-figs { padding-block: 12px; border-block: 1px solid var(--glass-line); }
+.b-h { display: flex; align-items: baseline; gap: 10px; padding-bottom: 6px; margin-bottom: 12px; border-bottom: 3px double var(--glass-line);
+  font: 400 var(--fs-md)/1.2 var(--f-display); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-hi); }
+.b-h small { margin-left: auto; font: 600 var(--fs-xs)/1 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--ink-faint); }
+.coupon { flex: none; display: grid; grid-template-columns: 1fr auto; align-items: center; width: 168px; min-height: 60px; border-radius: 8px; color: var(--on-gold); text-align: left;
+  background: radial-gradient(circle at 0 50%, transparent 7px, var(--gold) 7.5px) left / 51% 100% no-repeat, radial-gradient(circle at 100% 50%, transparent 7px, var(--gold) 7.5px) right / 51% 100% no-repeat;
+  transition: transform var(--t-fast) var(--ease); position: relative; }
+.coupon__c { padding: 8px 6px 8px 18px; display: grid; gap: 2px; min-width: 0; }
+.coupon__c b { font: 800 var(--fs-md)/1.1 var(--f-body); letter-spacing: .06em; overflow-wrap: anywhere; } .coupon__c span { font-size: 11px; opacity: .8; }
+.coupon__x { align-self: stretch; display: grid; place-items: center; padding: 0 16px 0 10px; border-left: 1.5px dashed color-mix(in srgb, var(--on-gold) 55%, transparent); }
+.coupon__x .ico { width: 18px; height: 18px; }
+.b-sec { border-bottom: 1px solid var(--glass-line); }
+.b-sec summary { display: flex; align-items: center; gap: 10px; min-height: 48px; cursor: pointer; list-style: none; font: 400 var(--fs-md)/1.2 var(--f-display); letter-spacing: .06em; color: var(--ink); }
+.b-sec summary::-webkit-details-marker { display: none; }
+.b-sec summary .ico { color: var(--gold); } .b-sec summary b { margin-left: auto; font: 400 var(--fs-md)/1 var(--f-num); color: var(--gold); }
+.b-sec summary .chev { width: 16px; height: 16px; color: var(--ink-faint); transition: transform var(--t-med) var(--ease); } .b-sec[open] summary .chev { transform: rotate(180deg); }
+.b-sec .items { margin: 0 0 14px; }
+.b-sec .items li:first-child::first-letter { color: var(--gold-hi); font-weight: 800; }
+.b-roster { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; justify-items: center; }
+.b-roster .b-h { justify-self: stretch; margin-bottom: 0; }
+.b-roster .wall { --cw: 72px; transform: none; margin-inline: -16px; padding-block: 0; }
+.b-fresh .cardcap { width: 112px; flex: none; display: grid; gap: 6px; text-align: left; }
+.cardcap span { font: 600 11px/1.2 var(--f-body); color: var(--ink-dim); } .cardcap span b { display: block; font: 400 var(--fs-sm)/1.2 var(--f-num); color: var(--gold-hi); letter-spacing: .03em; }
+.b-brief { display: grid; gap: 12px; }
+.b-brief li { display: grid; gap: 2px; padding-bottom: 12px; border-bottom: 1px solid var(--glass-line); } .b-brief li:last-child { border-bottom: 0; padding-bottom: 0; }
+.b-brief b { font: 400 var(--fs-md)/1.2 var(--f-display); letter-spacing: .06em; color: var(--gold-hi); } .b-brief span { font-size: var(--fs-sm); color: var(--ink-dim); }
+@media (min-width: 1100px) {
+  .mock--b { margin: 24px 0 0; } .mock--b .b-sheet { max-width: 1180px; margin-inline: auto; padding: 28px 36px 36px; border: 3px double var(--gold-lo); border-radius: 4px;
+    grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 28px 32px; align-items: start; }
+  .b-mast { grid-column: 1 / -1; } .b-lead { grid-column: 1 / 8; grid-row: 2 / 4; } .b-fan { height: 322px; } .b-fan button { width: 196px; margin-left: -98px; bottom: 44px; }
+  .b-coupons { grid-column: 8 / -1; } .b-coupons .hrow { flex-wrap: wrap; margin: 0; padding: 0; overflow: visible; } .coupon { width: calc(50% - 5px); }
+  .b-roster { grid-column: 8 / -1; padding-top: 4px; } .b-roster .wall { margin-inline: 0; }
+  .b-cols { grid-column: 1 / -1; } .b-cols__grid { columns: 3; column-gap: 32px; column-rule: 1px solid var(--glass-line); }
+  .b-sec { break-inside: avoid; border-bottom: 0; } .b-sec summary { pointer-events: none; min-height: 36px; } .b-sec summary .chev { display: none; }
+  .b-side { grid-column: 1 / -1; } .b-brief { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; } .b-brief li { border-bottom: 0; padding-bottom: 0; }
+}
+
+/* ==========================================================
+   C · LOBBY — a game hub: the card wall in a gold frame, big menu plates, a quest board
+   ========================================================== */
+[data-m="c"] .sc-city { opacity: .55; }
+@media (max-width: 1099px) { [data-m="c"] .sc-moon { display: none; } }
+.hud { font: 400 var(--fs-sm)/1 var(--f-hud); letter-spacing: .08em; text-transform: uppercase; color: var(--gold-hi); }
+.hud--dim { color: var(--ink-faint); font-size: var(--fs-xs); } .hud--dim b { font-weight: 400; color: var(--ink); font-variant-numeric: tabular-nums; }
+.c-stage { display: grid; gap: 12px; }
+.c-stage__head { display: flex; align-items: center; justify-content: space-between; }
+.c-stage .a-cta { justify-content: center; }
+.c-frame { margin-inline: -16px; overflow: hidden; border-block: 2px solid var(--gold-lo); background: color-mix(in srgb, var(--void) 55%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--void) 70%, transparent), 0 10px 24px color-mix(in srgb, var(--city-1) 55%, transparent); }
+.c-frame .wall { --cw: 92px; transform: none; margin-inline: 0; }
+.c-codes { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px; border-radius: var(--r-panel); background: var(--brass); border: 1px solid var(--glass-line);
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--void) 70%, transparent); }
+.c-codes .hud { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); flex: none; }
+.c-codes .hud b { display: grid; place-items: center; min-width: 20px; height: 20px; padding-top: 1px; border-radius: 10px; background: var(--wine-hi); color: var(--ink); font: 400 var(--fs-xs)/1 var(--f-num); }
+.c-codes .a-codes__row .code { font-family: var(--f-hud); font-weight: 400; }
+.c-menu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.plate { position: relative; overflow: hidden; height: 104px; padding: 12px; border-radius: var(--r-panel); text-align: left; display: grid; align-content: space-between; justify-items: start;
+  background: var(--brass); border: 2px solid var(--gold-lo); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--void) 70%, transparent), inset 0 -6px 0 color-mix(in srgb, var(--void) 55%, transparent), 0 6px 14px color-mix(in srgb, var(--city-1) 55%, transparent);
+  transition: transform var(--t-fast) var(--ease); }
+.plate img { position: absolute; right: -6px; top: -8px; width: 62%; height: 130%; object-fit: cover; object-position: 50% 12%; opacity: .9;
+  -webkit-mask-image: linear-gradient(90deg, transparent, var(--void) 55%); mask-image: linear-gradient(90deg, transparent, var(--void) 55%); }
+.plate > :not(img) { position: relative; }
+.plate .hud { font-size: var(--fs-md); text-shadow: 0 2px 0 var(--void); }
+.plate b { font: 400 var(--fs-3xl)/1 var(--f-num); color: var(--ink); text-shadow: 0 2px 0 var(--void); }
+.plate b.txt { font: 600 var(--fs-xs)/1.2 var(--f-body); color: var(--ink-dim); }
+.c-board { display: grid; gap: 12px; }
+.c-board__head { display: grid; gap: 6px; }
+.c-board__head h2 { font: 400 var(--fs-xl)/1.05 var(--f-hud); letter-spacing: .03em; text-transform: uppercase; color: var(--gold-hi); }
+.c-board__head p { display: flex; align-items: center; gap: 10px; }
+.c-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.tile { position: relative; display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 8px; min-height: 48px; padding: 0 12px; border-radius: 10px; text-align: left;
+  background: var(--glass); border: 1px solid var(--glass-line); color: var(--ink-dim); font: 600 var(--fs-sm)/1.15 var(--f-body); transition: transform var(--t-fast) var(--ease); }
+.tile .ico { color: var(--gold); } .tile b { font: 400 var(--fs-lg)/1 var(--f-num); color: var(--gold-hi); }
+.tile[aria-selected="true"] { background: var(--brass-gold); color: var(--on-gold); border-color: transparent; } .tile[aria-selected="true"] .ico, .tile[aria-selected="true"] b { color: inherit; }
+.c-new { overflow: hidden; margin-inline: -16px; }
+.c-new .sech { margin-inline: 16px; font-family: var(--f-hud); font-size: var(--fs-md); text-transform: uppercase; }
+.c-new__track { display: flex; gap: 10px; width: max-content; padding-left: 16px; animation: marquee 46s linear infinite; }
+.c-new__track:hover, .c-new__track:active { animation-play-state: paused; }
+.c-new__track button { width: 104px; flex: none; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+.c-sys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px; }
+.c-sys .sech { grid-column: 1 / -1; margin: 0; font-family: var(--f-hud); font-size: var(--fs-md); text-transform: uppercase; }
+.c-sys .sys { grid-template-columns: 1fr; align-content: start; gap: 6px; } .c-sys .sys .ico { grid-row: auto; } .c-sys .sys b { font: 400 var(--fs-sm)/1.2 var(--f-hud); letter-spacing: .03em; }
+@media (min-width: 1100px) {
+  .mock--c { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px 32px; align-items: start; padding-top: 24px; max-width: 1320px; }
+  .c-stage { grid-row: span 2; } .c-frame { margin-inline: 0; border: 2px solid var(--gold-lo); border-radius: var(--r-panel); } .c-frame .wall { --cw: 118px; }
+  .c-read { padding-top: 14px; } .c-read__name { font-size: var(--fs-2xl); } .c-chip { height: 40px; padding-top: 10px; } .c-chip b { font-size: var(--fs-xl); }
+  .plate { height: 132px; } .c-board { grid-column: 1; } .c-tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .c-new { grid-column: 1 / -1; margin: 0; } .c-new .sech { margin-inline: 0; } .c-new__track { padding-left: 0; } .c-new__track button { width: 132px; }
+  .c-sys { grid-column: 2; grid-row: 3; }
+}
+
+/* small phones (360px): the level strip runs edge to edge so every gem keeps a 40px target */
+@media (max-width: 379px) {
+  .lab__tag { display: none; }
+}
+
+/* ---------- view transition between mockups / levels (opacity only) ---------- */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 260ms; animation-timing-function: var(--ease); }
+/* ---------- reduced motion: fades only ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; }
+  .flip__in { transition: none; } .sc-snow i { top: var(--rest); }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- menu icons + crest: the site's own drawings (index.html) -->
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M2.8 11.6 12 3.8l9.2 7.8"/><path d="M5.4 9.6V20.2h13.2V9.6"/><path d="M10 20.2v-4.4a2 2 0 0 1 4 0v4.4"/><path d="M16.2 7V3.8h2.2v5"/><path d="M3.6 20.2h16.8"/></symbol>
+    <symbol id="i-fan" viewBox="0 0 24 24"><rect x="5" y="5" width="9" height="13" rx="1.2" transform="rotate(-20 12 20)"/><rect x="7.5" y="4" width="9" height="13" rx="1.2" transform="rotate(20 12 20)"/><rect x="7.5" y="4.5" width="9" height="13.5" rx="1.2"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H18v14H5.5c-.8 0-1.5.7-1.5 1.5z"/><path d="M4 19.5C4 20.3 4.7 21 5.5 21H19"/><path d="M8 8h6M8 11h4"/></symbol>
+    <symbol id="i-swords" viewBox="0 0 24 24"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4"/><path d="m7 17-3 3"/><path d="m3 19 2 2"/></symbol>
+    <symbol id="i-crest" viewBox="0 0 120 128">
+      <circle cx="60" cy="64" r="56" style="fill:var(--void-2);stroke:var(--gold);stroke-width:2.5"/><circle cx="60" cy="64" r="49" style="fill:none;stroke:var(--gold-lo);stroke-width:1"/>
+      <circle cx="60" cy="64" r="44" style="fill:none;stroke:var(--gold);stroke-width:.8;stroke-dasharray:2 3.5"/>
+      <path d="M60 30 74 56 60 98 46 56z" style="fill:var(--city-3);stroke:var(--gold);stroke-width:1.6;stroke-linejoin:round"/>
+      <path d="M40 40c-6 6-7 16-3 24M80 40c6 6 7 16 3 24M40 88c4 4 10 6 20 6s16-2 20-6" style="fill:none;stroke:var(--gold-hi);stroke-width:1.4;stroke-linecap:round"/><circle cx="60" cy="56" r="4" style="fill:var(--gold-hi)"/>
+    </symbol>
+    <!-- new icons for this mockup -->
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="5" rx="1"/><path d="M5.5 13v7.5h13V13M12 8v12.5M12 8c-1.5-4-6-4-5.5-1.5S10 8 12 8zm0 0c1.5-4 6-4 5.5-1.5S14 8 12 8z"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V6M6 11l6-6 6 6M5 20h14"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+    <symbol id="i-scales" viewBox="0 0 24 24"><path d="M12 4v16M7 20h10M5 7h14M5 7l-2.5 6a2.7 2.7 0 0 0 5 0zM19 7l-2.5 6a2.7 2.7 0 0 0 5 0z"/></symbol>
+    <symbol id="i-horn" viewBox="0 0 24 24"><path d="M4 10v4l3 .5V9.5zM7 9.5 19 5v14L7 14.5M9.5 15.2 11 20h2.5l-1-4"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12.5H6zM9 8V7a3 3 0 0 1 6 0v1"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.5 6.5a4.5 4.5 0 0 0-6 5.6L3.5 17l3.5 3.5 4.9-5a4.5 4.5 0 0 0 5.6-6l-3 3-2.5-2.5z"/></symbol>
+    <symbol id="i-door" viewBox="0 0 24 24"><path d="M5 21V10a7 7 0 0 1 14 0v11M3 21h18M9 21V11a3 3 0 0 1 6 0v10M12 11v10"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4.5"/><path d="M12.5 12H21M17 12v3.5M20 12v2.5"/></symbol>
+    <symbol id="i-tree" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><circle cx="5.5" cy="18.5" r="2.2"/><circle cx="18.5" cy="18.5" r="2.2"/><circle cx="12" cy="18.5" r="2.2"/><path d="M12 7.2v9.1M12 11.5H5.5v4.8M12 11.5h6.5v4.8"/></symbol>
+    <symbol id="i-skull" viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 1 14 0c0 2.2-1 3.6-2.5 4.6V20h-9v-3.4C6 15.600 5 14.200 5 12z"/><circle cx="9.300" cy="12" r="1.500"/><circle cx="14.700" cy="12" r="1.500"/><path d="M10.500 20v-2M13.500 20v-2"/></symbol>
+    <!-- the ∞ of two crossed cards (the site's icon idea, redrawn) -->
+    <symbol id="inf" viewBox="0 0 120 70"><path class="bk-inf" d="M60 35c-12-20-46-20-46 0s34 20 46 0c12-20 46-20 46 0s-34 20-46 0z"/></symbol>
+    <!-- card back: our own design -->
+    <symbol id="back" viewBox="0 0 300 400">
+      <rect class="bk-field" width="300" height="400" rx="12"/><ellipse class="bk-glow" cx="150" cy="200" rx="150" ry="170" opacity=".55"/>
+      <g class="bk-star"><circle cx="46" cy="60" r="1.6"/><circle cx="250" cy="48" r="1.2"/><circle cx="70" cy="330" r="1.3"/><circle cx="238" cy="346" r="1.7"/><circle cx="42" cy="212" r="1.1"/><circle cx="262" cy="188" r="1.2"/><circle cx="150" cy="52" r="1.4"/><circle cx="150" cy="352" r="1.4"/></g>
+      <path class="bk-lat" d="M150 30 272 200 150 370 28 200zM150 76 238 200 150 324 62 200zM28 30l244 340M272 30 28 370"/>
+      <rect class="bk-line" x="8" y="8" width="284" height="384" rx="9"/><rect class="bk-line2" x="18" y="18" width="264" height="364" rx="5"/>
+      <circle class="bk-ring" cx="150" cy="200" r="72"/><circle class="bk-ring2" cx="150" cy="200" r="63"/>
+      <rect class="bk-c1" x="124" y="158" width="52" height="84" rx="6" transform="rotate(-26 150 200)"/><rect class="bk-c2" x="124" y="158" width="52" height="84" rx="6" transform="rotate(26 150 200)"/>
+      <path class="bk-inf" d="M150 200c-9-15-36-15-36 0s27 15 36 0c9-15 36-15 36 0s-27 15-36 0z" style="stroke-width:5"/>
+      <g class="bk-dot"><path d="M150 22l6 8-6 8-6-8zM150 362l6 8-6 8-6-8zM22 200l8-6 8 6-8 6zM262 200l8-6 8 6-8 6z"/></g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="lab" role="group" aria-label="Mockup switcher">
+  <span class="lab__tag">Mockup</span>
+  <div class="lab__seg">
+    <button class="lab__btn" type="button" data-go="a" aria-pressed="true"><b>A</b> <span>Altar</span></button>
+    <button class="lab__btn" type="button" data-go="b" aria-pressed="false"><b>B</b> <span>Gazette</span></button>
+    <button class="lab__btn" type="button" data-go="c" aria-pressed="false"><b>C</b> <span>Lobby</span></button>
+  </div>
+  <button class="lab__btn" type="button" id="scene-btn" aria-label="Change the scene">Scene: Auto</button>
+</div>
+
+<div class="app" id="app" data-m="a" data-lvl="normal" data-scene="night">
+  <div class="scene" aria-hidden="true">
+    <div class="sc-stars"></div><div class="sc-aurora"><i></i><i></i></div><div class="sc-tod"></div><div class="sc-moon"></div><i class="sc-shoot"></i>
+    <div class="sc-city"><svg class="bd-town" viewBox="0 -20 1200 280" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path class="c3" d="M0 260V176Q120 148 240 170T480 158T720 164T960 152T1200 166V260Z"></path><g class="c2"><rect x="-10" y="116" width="24" height="144"></rect><rect x="16" y="129" width="30" height="131"></rect><polygon points="16,129 31,109 46,129"></polygon><rect x="48" y="127" width="34" height="133"></rect><polygon points="48,127 65,107 82,127"></polygon><rect x="84" y="132" width="40" height="128"></rect><polygon points="84,132 104,112 124,132"></polygon><rect x="126" y="163" width="49" height="97"></rect><rect x="177" y="131" width="45" height="129"></rect><rect x="224" y="147" width="45" height="113"></rect><polygon points="224,147 246,127 269,147"></polygon><rect x="271" y="171" width="48" height="89"></rect><polygon points="271,171 295,151 319,171"></polygon><rect x="321" y="132" width="52" height="128"></rect><polygon points="321,132 347,112 373,132"></polygon><rect x="375" y="116" width="41" height="144"></rect><polygon points="375,116 395,96 416,116"></polygon><rect x="418" y="157" width="35" height="103"></rect><polygon points="418,157 436,137 453,157"></polygon><rect x="455" y="169" width="34" height="91"></rect><rect x="491" y="159" width="37" height="101"></rect><polygon points="491,159 510,139 528,159"></polygon><rect x="530" y="129" width="41" height="131"></rect><polygon points="530,129 550,109 571,129"></polygon><rect x="573" y="161" width="26" height="99"></rect><polygon points="573,161 586,141 598,161"></polygon><rect x="600" y="150" width="39" height="110"></rect><rect x="642" y="176" width="51" height="84"></rect><rect x="695" y="133" width="34" height="127"></rect><polygon points="695,133 712,113 729,133"></polygon><rect x="731" y="168" width="39" height="92"></rect><rect x="773" y="154" width="33" height="106"></rect><rect x="807" y="143" width="34" height="117"></rect><polygon points="807,143 824,123 841,143"></polygon><rect x="843" y="117" width="31" height="143"></rect><rect x="876" y="136" width="50" height="124"></rect><polygon points="876,136 901,116 926,136"></polygon><rect x="928" y="145" width="39" height="115"></rect><polygon points="928,145 948,125 968,145"></polygon><rect x="970" y="152" width="52" height="108"></rect><polygon points="970,152 996,132 1022,152"></polygon><rect x="1024" y="139" width="32" height="121"></rect><rect x="1057" y="153" width="34" height="107"></rect><polygon points="1057,153 1074,133 1091,153"></polygon><rect x="1093" y="172" width="50" height="88"></rect><polygon points="1093,172 1118,152 1144,172"></polygon><rect x="1146" y="152" width="26" height="108"></rect><rect x="1174" y="110" width="26" height="150"></rect><rect x="1202" y="170" width="43" height="90"></rect></g><g class="c1"><rect x="-6" y="228" width="35" height="32"></rect><polygon points="-9,228 12,205 32,228"></polygon><rect x="33" y="233" width="24" height="27"></rect><polygon points="30,233 45,213 60,233"></polygon><rect x="61" y="222" width="41" height="38"></rect><polygon points="58,222 82,204 105,222"></polygon><rect x="106" y="221" width="42" height="39"></rect><polygon points="103,221 127,197 151,221"></polygon><rect x="152" y="226" width="34" height="34"></rect><polygon points="149,226 169,204 189,226"></polygon><rect x="190" y="221" width="42" height="39"></rect><polygon points="187,221 211,200 235,221"></polygon><rect x="236" y="195" width="27" height="65"></rect><polygon points="233,195 250,172 266,195"></polygon><rect x="267" y="188" width="31" height="72"></rect><polygon points="264,188 283,168 301,188"></polygon><rect x="302" y="213" width="31" height="47"></rect><polygon points="299,213 318,196 336,213"></polygon><rect x="337" y="198" width="33" height="62"></rect><polygon points="334,198 354,176 373,198"></polygon><rect x="374" y="197" width="37" height="63"></rect><polygon points="371,197 393,177 414,197"></polygon><rect x="415" y="194" width="29" height="66"></rect><polygon points="412,194 430,178 447,194"></polygon><rect x="448" y="184" width="24" height="76"></rect><polygon points="445,184 460,162 475,184"></polygon><rect x="736" y="190" width="39" height="70"></rect><polygon points="733,190 756,169 778,190"></polygon><rect x="779" y="216" width="24" height="44"></rect><polygon points="776,216 791,196 806,216"></polygon><rect x="807" y="190" width="31" height="70"></rect><polygon points="804,190 823,168 841,190"></polygon><rect x="842" y="210" width="23" height="50"></rect><polygon points="839,210 854,188 868,210"></polygon><rect x="869" y="196" width="27" height="64"></rect><polygon points="866,196 883,180 899,196"></polygon><rect x="900" y="199" width="36" height="61"></rect><polygon points="897,199 918,180 939,199"></polygon><rect x="940" y="206" width="22" height="54"></rect><polygon points="937,206 951,191 965,206"></polygon><rect x="966" y="186" width="41" height="74"></rect><polygon points="963,186 987,164 1010,186"></polygon><rect x="1011" y="201" width="37" height="59"></rect><polygon points="1008,201 1030,180 1051,201"></polygon><rect x="1052" y="214" width="24" height="46"></rect><polygon points="1049,214 1064,191 1079,214"></polygon><rect x="1080" y="197" width="27" height="63"></rect><polygon points="1077,197 1094,182 1110,197"></polygon><rect x="1111" y="219" width="41" height="41"></rect><polygon points="1108,219 1132,198 1155,219"></polygon><rect x="1156" y="208" width="26" height="52"></rect><polygon points="1153,208 1169,192 1185,208"></polygon><rect x="1186" y="228" width="22" height="32"></rect><polygon points="1183,228 1197,210 1211,228"></polygon><rect x="1212" y="207" width="43" height="53"></rect><polygon points="1209,207 1234,191 1258,207"></polygon><rect x="468" y="176" width="264" height="84"></rect><rect x="470" y="168" width="11" height="10"></rect><rect x="492" y="168" width="11" height="10"></rect><rect x="514" y="168" width="11" height="10"></rect><rect x="536" y="168" width="11" height="10"></rect><rect x="558" y="168" width="11" height="10"></rect><rect x="580" y="168" width="11" height="10"></rect><rect x="602" y="168" width="11" height="10"></rect><rect x="624" y="168" width="11" height="10"></rect><rect x="646" y="168" width="11" height="10"></rect><rect x="668" y="168" width="11" height="10"></rect><rect x="690" y="168" width="11" height="10"></rect><rect x="712" y="168" width="11" height="10"></rect><rect x="478" y="112" width="38" height="148"></rect><polygon points="472,114 497,52 522,114"></polygon><rect x="684" y="112" width="38" height="148"></rect><polygon points="678,114 703,52 728,114"></polygon><rect x="540" y="122" width="120" height="138"></rect><rect x="528" y="98" width="24" height="70"></rect><polygon points="524,100 540,62 556,100"></polygon><rect x="648" y="98" width="24" height="70"></rect><polygon points="644,100 660,62 676,100"></polygon><rect x="560" y="90" width="20" height="40"></rect><polygon points="556,92 570,58 584,92"></polygon><rect x="620" y="90" width="20" height="40"></rect><polygon points="616,92 630,58 644,92"></polygon><rect x="584" y="56" width="32" height="80"></rect><polygon points="578,58 600,0 622,58"></polygon><rect x="599" y="-14" width="2" height="16"></rect><polygon points="601,-14 614,-10 601,-6"></polygon></g><g class="w"><rect x="19" y="243" width="4" height="6"></rect><rect x="196" y="242" width="4" height="6"></rect><rect x="286" y="212" width="4" height="6"></rect><rect x="326" y="236" width="4" height="6"></rect><rect x="398" y="219" width="4" height="6"></rect><rect x="425" y="212" width="4" height="6"></rect><rect x="464" y="227" width="4" height="6"></rect><rect x="787" y="233" width="4" height="6"></rect><rect x="849" y="242" width="4" height="6"></rect><rect x="985" y="222" width="4" height="6"></rect><rect x="1066" y="243" width="4" height="6"></rect><rect x="1097" y="230" width="4" height="6"></rect><rect x="1092" y="239" width="4" height="6"></rect><rect x="1173" y="225" width="4" height="6"></rect><rect x="1163" y="225" width="4" height="6"></rect><rect x="1217" y="239" width="4" height="6"></rect><path d="M588 260V236a12 12 0 0 1 24 0V260Z"></path><rect x="595" y="72" width="10" height="16" rx="5"></rect><rect x="494" y="130" width="6" height="11" rx="3"></rect><rect x="700" y="130" width="6" height="11" rx="3"></rect><rect x="562" y="150" width="6" height="12" rx="3"></rect><rect x="632" y="150" width="6" height="12" rx="3"></rect></g></svg> <svg class="bd-win2" viewBox="0 -20 1200 280" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g class="w"><rect x="5" y="236" width="4" height="6"></rect><rect x="44" y="243" width="4" height="6"></rect><rect x="69" y="237" width="4" height="6"></rect><rect x="84" y="243" width="4" height="6"></rect><rect x="131" y="233" width="4" height="6"></rect><rect x="173" y="239" width="4" height="6"></rect><rect x="224" y="240" width="4" height="6"></rect><rect x="311" y="236" width="4" height="6"></rect><rect x="352" y="213" width="4" height="6"></rect><rect x="742" y="204" width="4" height="6"></rect><rect x="786" y="227" width="4" height="6"></rect><rect x="907" y="222" width="4" height="6"></rect><rect x="953" y="237" width="4" height="6"></rect><rect x="988" y="211" width="4" height="6"></rect><rect x="1037" y="244" width="4" height="6"></rect><rect x="1040" y="243" width="4" height="6"></rect><rect x="1200" y="237" width="4" height="6"></rect><rect x="494" y="170" width="6" height="11" rx="3"></rect><rect x="700" y="170" width="6" height="11" rx="3"></rect><rect x="537" y="118" width="6" height="10" rx="3"></rect><rect x="657" y="118" width="6" height="10" rx="3"></rect><rect x="580" y="196" width="6" height="12" rx="3"></rect><rect x="614" y="196" width="6" height="12" rx="3"></rect></g></svg></div>
+    <div class="sc-mist"><i></i><i></i><i></i></div><div class="sc-lanterns" id="lanterns"></div>
+    <div class="sc-drift"></div><div class="sc-snow" id="snow"></div>
+  </div>
+
+  <header class="topbar">
+    <svg aria-hidden="true"><use href="#i-crest"/></svg>
+    <div><b>Card Battle Infinity</b><span>Updated Nov 6, 2026</span></div>
+  </header>
+
+  <nav class="nav" aria-label="Main">
+    <div class="nav__brand"><svg aria-hidden="true"><use href="#i-crest"/></svg>Card Battle Infinity</div>
+    <ul class="nav__list">
+      <li><button class="nav__btn" type="button" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg>Home</button></li>
+      <li><button class="nav__btn" type="button"><svg class="ico" aria-hidden="true"><use href="#i-fan"/></svg>Cards</button></li>
+      <li><button class="nav__btn" type="button"><svg class="ico" aria-hidden="true"><use href="#i-book"/></svg>Deck</button></li>
+      <li><button class="nav__btn" type="button"><svg class="ico" aria-hidden="true"><use href="#i-swords"/></svg>Battle</button></li>
+    </ul>
+    <div class="nav__foot">Updated Nov 6, 2026</div>
+  </nav>
+
+  <main class="main wrap">
+    <section class="mock mock--a" id="m-a" aria-label="Mockup A: Altar"></section>
+    <section class="mock mock--b" id="m-b" aria-label="Mockup B: Gazette" hidden></section>
+    <section class="mock mock--c" id="m-c" aria-label="Mockup C: Lobby" hidden></section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+  /* ---------- real data, copied from the repo on 2026-11-10 ---------- */
+  const NEWS = {"updated":"2026-11-06","updates":[{"date":"2026-11-06","kind":"major","title":"The Big Update","items":["New Content: 5 new worlds (Hero City, Devil District, Monster City, Stand Desert, Dragon Kingdom); 8 new weathers up to the ultra rare Heaven's Gate; 100 new cards (50 fighters + 20 supports + 30 weather cards); 4 new World Bosses in a remade space Boss Wing, each with boss-only cards to craft; Dungeons (team up, fight through floors, buy upgrades in the Dungeon shop); Key Tower (1,000 floors that earn Dungeon Keys); Nightmare difficulty for every story fighter","New Upgrades: Card Skill Trees (spend a card's kills on its own upgrades); Multi Roll + Roll Luck in the Skill Tree; 2 new traits, Plaguebringer (status effects) and Transcendent, the new rarest (1 in 50,000); 3 new titles","Quality of Life: multi-pop weather potions with Stop On to pick the weathers you want; HIDE stays on between fights and hidden fights show their result on their own; AUTO Dungeon can run AFK and resumes when you rejoin; shorter tutorial; Dungeon added to the Teleport menu","Balance: story difficulties give up to x200 luck, Skill Tree up to x50; Ascension luck now grows evenly past floor 100; Support team boosts stack up to +25%; Skill Tree costs more, some supports nerfed; Infinite Tower rewards grow slower past floor 3,000","Admin Abuse: new wheel with much bigger prizes; events now reach every server, private servers too","Shop: new passes Quick Roll+ and 2x Dungeon Tokens; potions in x10 (-20%) and x100 (-40%) plus the Mega Potion Pack; private server over-cap luck is now Free Buys for the owner","Fixes: cards now do what their text says (\"can't be dodged\", seal and more); security and performance fixes; everything translated to all languages"]}],"codes":[{"code":"UPDATE","reward":"Update reward","date":"2026-11-06"},{"code":"DUNGEON","reward":"Update reward","date":"2026-11-06"},{"code":"BOSSES","reward":"Update reward","date":"2026-11-06"},{"code":"EVENT","reward":"Update reward","date":"2026-11-06"}],"systems":[{"date":"2026-11-06","title":"Dungeons","desc":"Team up and fight through floors, then buy upgrades in the Dungeon shop. AUTO Dungeon can run AFK and resumes when you rejoin."},{"date":"2026-11-06","title":"Key Tower","desc":"A 1,000-floor tower that earns Dungeon Keys."},{"date":"2026-11-06","title":"Card Skill Trees","desc":"Spend a card's kills on its own upgrades."},{"date":"2026-11-06","title":"World Bosses","desc":"4 new bosses in a remade space Boss Wing, each with boss-only cards to craft."}]};                     // data/news.json
+  const CARDS = {"octopus-teacher":{"name":"Octopus Teacher","atk":4527428,"hp":30182850,"odds":179000000000,"ab":"Mach 20","desc":"Koro-sensei: 38% chance to dodge each hit. 69% chance to attack twice (each hit does 0.8x damage). Heals 6.9% of its max HP every turn. Survives its first killing blow with 1 HP.","tier":"Meta"},"sword-saint":{"name":"Sword Saint","atk":5095674,"hp":33971158,"odds":151800000000,"ab":"Divine Protections","desc":"Reinhard holds every blessing. Comes back once with 53% HP. Ignores shields, dodges and barriers. Its first hit on each new enemy does 1.8x damage. Can't be stunned, frozen or paralyzed.","tier":"SS"},"slime-demon-lord":{"name":"Slime Demon Lord","atk":4340934,"hp":28939562,"odds":128800000000,"ab":"Beelzebuth","desc":"Rimuru's Predator eats anything. Copies the ability of every enemy card it faces. Each kill gives it 11% of the defeated card's damage and HP. 14% chance to dodge each hit. Every other card in your deck gets +3.6% damage.","tier":"SS"},"one-punch-caped-hero":{"name":"One Punch Caped Hero","atk":3111096,"hp":20740640,"odds":109300000000,"ab":"Serious Punch","desc":"One Punch Caped Hero ends fights in one punch. Its first hit on each new enemy does 3.68x damage. Ignores the enemy's shields, dodges and barriers. Can't be stunned, frozen, paralyzed, confused, sealed or weakened. +15% damage.","tier":"S"},"shadow-monarch":{"name":"Shadow Monarch","atk":4487019,"hp":29913460,"odds":92700000000,"ab":"Arise","desc":"Sung Jinwoo raises the dead. Once, raises a defeated enemy as its shadow at 54% strength. +7.2% damage every turn (up to 10 times). 36% chance to dodge each hit. Ignores shields, dodges and barriers.","tier":"SS"},"founding-titan":{"name":"Founding Titan","atk":5823678,"hp":38824518,"odds":78600000000,"ab":"The Rumbling","desc":"Eren unleashes the Wall Titans. Every hit also hits the whole enemy bench for 20%. Every enemy card starts with 7.7% less damage. Takes 9.1% less damage.","tier":"Meta"},"quirk-thief-overlord":{"name":"Quirk Thief Overlord","atk":3761530,"hp":25076868,"odds":66700000000,"ab":"All For One","desc":"All For One steals quirks. Copies the ability of every enemy card it faces. Each kill gives it 11% of the defeated card's damage and HP. Every enemy card starts with 7.4% less damage. With Shigaraki in the deck, both get +9.7% damage and HP.","tier":"Meta"},"ant-king":{"name":"Ant King","atk":3636746,"hp":24244976,"odds":56600000000,"ab":"King of the Chimera Ants","desc":"Meruem evolves through battle. Each kill gives it 25% of the defeated card's damage and HP. Takes 12% less from an attack each time it has seen it (up to 3 times). Heals 4.1% of its max HP every turn. +4.9% damage every turn (up to 10 times).","tier":"SS"},"eternal-wish-dragon":{"name":"Eternal Wish Dragon","odds":211000000000,"ab":"Wish Granted"},"wish-granter":{"name":"Wish Granter","odds":21400000000,"ab":"Nanika's Wish"},"first-master-fairy":{"name":"First Master Fairy","odds":2200000000,"ab":"Fairy Law"}};                   // data/cards.json + support.json (only the cards on this page)
+  const COUNTS = {"cards":300,"support":100,"newDate":"2026-10-29","newCards":99,"newSupport":16};                 // cards / support on the site · the newest "added" date and how many
+  const ALL = [["octopus-teacher","Octopus Teacher"],["sword-saint","Sword Saint"],["slime-demon-lord","Slime Demon Lord"],["one-punch-caped-hero","One Punch Caped Hero"],["shadow-monarch","Shadow Monarch"],["founding-titan","Founding Titan"],["quirk-thief-overlord","Quirk Thief Overlord"],["ant-king","Ant King"],["soul-king-father","Soul King Father"],["sun-breath-origin","Sun Breath Origin"],["divergent-fist-vessel","Divergent Fist Vessel"],["sun-god-captain","Sun God Captain"],["ultra-instinct-saiyan","Ultra Instinct Saiyan"],["golden-wind-boss","Golden Wind Boss"],["full-moon-demon-king","Full Moon Demon King"],["dragon-king-of-ruin","Dragon King of Ruin"],["spiral-drill-king","Spiral Drill King"],["no-life-king","No-Life King"],["dragon-god","Dragon God"],["primordial-butler-demon","Primordial Butler Demon"],["destroyer-dragonoid","Destroyer Dragonoid"],["hypnosis-traitor","Hypnosis Traitor"],["hollow-mask-reaper","Hollow Mask Reaper"],["rabbit-goddess","Rabbit Goddess"],["pirate-king","Pirate King"],["demon-god-of-flame","Demon God of Flame"],["homunculus-father","Homunculus Father"],["white-hawk-godhand","White Hawk Godhand"],["made-in-heaven-priest","Made in Heaven Priest"],["pumpkin-sun-pride","Pumpkin Sun Pride"],["black-wizard-brother","Black Wizard Brother"],["soul-magic-father","Soul Magic Father"],["golden-gate-king","Golden Gate King"],["undead-overlord-king","Undead Overlord King"],["destroyer-god","Destroyer God"],["storm-dragon","Storm Dragon"],["witch-of-envy","Witch of Envy"],["hero-number-one","Hero Number One"],["control-devil","Control Devil"],["monk-of-names","Monk of Names"],["demon-progenitor","Demon Progenitor"],["infinity-sorcerer","Infinity Sorcerer"],["king-of-curses","King of Curses"],["wood-god-hokage","Wood God Hokage"],["otsutsuki-vessel","Otsutsuki Vessel"],["six-paths-fox-sage","Six Paths Fox Sage"],["fist-hero-vice-admiral","Fist Hero Vice Admiral"],["soul-queen-emperor","Soul Queen Emperor"],["earthquake-emperor","Earthquake Emperor"],["legendary-berserker","Legendary Berserker"],["potara-fusion-warrior","Potara Fusion Warrior"],["fusion-dance-warrior","Fusion Dance Warrior"],["ultra-ego-prince","Ultra Ego Prince"],["galactic-tyrant","Galactic Tyrant"],["skull-knight","Skull Knight"],["great-mage-founder","Great Mage Founder"],["one-eyed-ghoul","One-Eyed Ghoul"],["time-stop-vampire","Time Stop Vampire"],["demon-kings-executioner","Demon King's Executioner"],["time-wizard-king","Time Wizard King"],["spirit-gun-delinquent","Spirit Gun Delinquent"],["excalibur-king","Excalibur King"],["twelve-labors-giant","Twelve Labors Giant"],["moon-breath-swordsman","Moon Breath Swordsman"],["wrath-shield-hero","Wrath Shield Hero"],["guardian-overseer","Guardian Overseer"],["greed-archbishop","Greed Archbishop"],["human-monster","Human Monster"],["strongest-soldier","Strongest Soldier"],["decay-villain","Decay Villain"],["hundred-hand-chairman","Hundred Hand Chairman"],["upper-moon-fist","Upper Moon Fist"],["ice-fan-upper-moon","Ice Fan Upper Moon"],["sorcerer-killer","Sorcerer Killer"],["divine-general","Divine General"],["darkness-emperor","Darkness Emperor"],["red-hair-emperor","Red Hair Emperor"],["ice-empress-general","Ice Empress General"],["masked-moon-plotter","Masked Moon Plotter"],["star-fist-delinquent","Star Fist Delinquent"],["leopard-agent","Leopard Agent"],["psychic-shrine-girl","Psychic Shrine Girl"],["knight-king","Knight King"],["smoke-card-joker","Smoke Card Joker"],["scissor-cut-mage","Scissor Cut Mage"],["ice-make-mage","Ice Make Mage"],["satan-soul-demon","Satan Soul Demon"],["sea-dragon-princess","Sea Dragon Princess"],["pink-pumpkin-sniper","Pink Pumpkin Sniper"],["lion-beast-fist","Lion Beast Fist"],["shadow-garden-hound","Shadow Garden Hound"],["morning-star-maid","Morning Star Maid"],["one-horn-oni-maid","One Horn Oni Maid"],["shield-tiger","Shield Tiger"],["sloth-archbishop","Sloth Archbishop"],["shadow-ogre-spy","Shadow Ogre Spy"],["orc-shaman-shadow","Orc Shaman Shadow"],["hunter-chairman","Hunter Chairman"],["lifespan-angel","Lifespan Angel"]];                       // the cards of the newest update (newest "added" date), rarest first: [id, name] · picture = cell i of the sheets img/new_0…1.webp (10 × 5 each)
+  const TODAY = new Date(2026, 10, 11);      // the day the mockup was made (the Gazette's date line)
+  const FAN = [["founding-titan", "Rainbow"], ["shadow-monarch", "Secret"], ["octopus-teacher", "Godly"], ["sword-saint", "Ascended"], ["slime-demon-lord", "Cosmic"]];
+  // the big figures of the update (taken by hand from its text · the real page would read an optional "figures" list in news.json)
+  const FIGS = [[100, "new cards"], [5, "new worlds"], [8, "new weathers"], [4, "World Bosses"], ["1,000", "Key Tower floors"]];
+
+  /* ---------- helpers (number formats are the site's own: js/app.js shortNum) ---------- */
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const SHORT = [[1e18, "Qi"], [1e15, "Qd"], [1e12, "T"], [1e9, "B"], [1e6, "M"]];
+  function shortNum(n) {
+    if (Math.round(n) < 1e4) return Math.round(n).toLocaleString("en-US");
+    if (Math.round(n / 1e3) < 1000) return Math.round(n / 1e3) + "K";
+    for (let i = 0; i < SHORT.length; i++) {
+      const [v, s] = SHORT[i];
+      if (n < v && v !== 1e6) continue;
+      const x = n / v, r = x >= 100 ? Math.round(x) : Number(x.toFixed(1));
+      return r >= 1000 && i > 0 ? "1" + SHORT[i - 1][1] : r + s;
+    }
+  }
+  const fmtDate = (iso, opt) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso); return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString("en-US", opt || { month: "short", day: "numeric", year: "numeric" }); };
+  const use = (id, cls = "ico") => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
+  const back = () => `<svg viewBox="0 0 300 400" aria-hidden="true"><use href="#back"/></svg>`;
+  const img = (file, alt, extra = "") => `<img class="gcimg" src="img/${file}.webp" alt="${esc(alt)}" width="300" height="400" decoding="async" ${extra}>`;
+  const vt = (fn) => (document.startViewTransition && !reduced ? document.startViewTransition(fn) : fn());
+  const hit = (el) => { el.classList.remove("is-hit"); void el.offsetWidth; el.classList.add("is-hit"); };
+  let toastT = 0;
+  function toast(text) { const t = $("#toast"); t.textContent = text; t.classList.add("is-on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("is-on"), 1600); }
+
+  /* the update's lines are "Section: a; b; c" → sections with their own short lines (no change to news.json needed) */
+  const SEC_ICON = [[/content/i, "i-globe"], [/upgrade/i, "i-up"], [/quality/i, "i-sliders"], [/balance/i, "i-scales"], [/admin/i, "i-horn"], [/shop/i, "i-bag"], [/fix/i, "i-wrench"]];
+  const SYS_ICON = [[/dungeon/i, "i-door"], [/key|tower/i, "i-key"], [/tree/i, "i-tree"], [/boss/i, "i-skull"]];
+  const iconOf = (table, name) => (table.find(([re]) => re.test(name)) || [0, "i-globe"])[1];
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const UPDATE = NEWS.updates[0];
+  const SECS = UPDATE.items.map((line) => {
+    const k = line.indexOf(": ");
+    const name = k > 0 && k < 24 ? line.slice(0, k) : "Notes";
+    return { name: name.replace(/^New /, ""), icon: iconOf(SEC_ICON, name), items: (k > 0 && k < 24 ? line.slice(k + 2) : line).split("; ").map(cap) };
+  });
+  const itemsHTML = (sec) => sec.items.map((t, i) => `<li style="--i:${i}">${esc(t)}</li>`).join("");
+  const figsHTML = () => FIGS.map(([n, l]) => `<div class="fig"><b>${n}</b><span>${esc(l)}</span></div>`).join("");
+  const codesHTML = () => NEWS.codes.map((c) => `<button class="code press" type="button" data-code="${esc(c.code)}" aria-label="Copy code ${esc(c.code)}">${esc(c.code)}${use("i-copy")}</button>`).join("");
+  const sysHTML = () => NEWS.systems.map((s) => `<div class="sys">${use(iconOf(SYS_ICON, s.title))}<b>${esc(s.title)}</b><span>${esc(s.desc)}</span></div>`).join("");
+  function wallHTML(n) {   // the new cards dealt into n rows · every row is written twice so the drift loops without a seam
+    const rows = Array.from({ length: n }, () => []);
+    ALL.forEach((c, i) => rows[i % n].push(i));
+    const cell = (i, dup) => `<button class="wc s${Math.floor(i / 50)}" type="button" data-i="${i}" style="background-position:${((i % 10) / 9 * 100).toFixed(2)}% ${(Math.floor((i % 50) / 10) / 4 * 100).toFixed(0)}%" ${dup ? 'tabindex="-1" aria-hidden="true"' : `aria-label="${esc(ALL[i][1])}"`}></button>`;
+    return `<div class="wall">${rows.map((r, k) => `<div class="wall__row" style="--d:${Math.round(r.length * 3.9) + k * 14}s">${r.map((i) => cell(i)).join("")}${r.map((i) => cell(i, true)).join("")}</div>`).join("")}</div>`;
+  }
+  const newLine = `${COUNTS.newCards} cards · ${COUNTS.newSupport} support`;
+
+  /* ==================== A · Altar ==================== */
+  $("#m-a").innerHTML = `
+    <div class="a-codes" aria-label="Codes">
+      <span class="a-codes__tag">${use("i-gift")}Codes <b>${NEWS.codes.length}</b></span>
+      <div class="a-codes__row">${codesHTML()}</div>
+    </div>
+    <div class="a-hero">
+      <div class="a-hero__head"><p class="eyebrow">New this update</p><p class="date">Added ${fmtDate(COUNTS.newDate)}</p></div>
+      ${wallHTML(3)}
+      <div class="a-info">
+        <h1 class="a-count"><b>${COUNTS.newCards}</b>new cards</h1>
+        <div class="a-cta"><button class="btn btn--gold press" type="button">See the new cards</button><button class="btn press" type="button">All ${COUNTS.cards} cards</button></div>
+      </div>
+    </div>
+    <section class="a-news box" aria-label="Game update">
+      <div class="a-news__head"><span class="kind">Major update</span><time class="date" datetime="${UPDATE.date}">${fmtDate(UPDATE.date)}</time></div>
+      <h2>${esc(UPDATE.title)}</h2>
+      <div class="figs">${figsHTML()}</div>
+      <div>
+        <div class="cats" role="tablist" data-cats>${SECS.map((s, i) => `<button class="cat press" type="button" role="tab" aria-selected="${i === 0}" data-sec="${i}">${use(s.icon)}${esc(s.name)} <b>${s.items.length}</b></button>`).join("")}</div>
+        <ul class="items" data-items>${itemsHTML(SECS[0])}</ul>
+      </div>
+    </section>
+    <section class="a-sys" aria-label="New systems">
+      <h2 class="sech">New systems</h2>
+      <div class="box--lite" style="display:grid;gap:14px">${sysHTML()}</div>
+    </section>`;
+
+  /* ==================== B · Gazette ==================== */
+  const dayNo = Math.round((TODAY - new Date(TODAY.getFullYear(), 0, 0)) / 864e5);
+  $("#m-b").innerHTML = `<div class="b-sheet">
+    <header class="b-mast">
+      <div class="b-mast__rule"><span>Night edition</span><span>No. ${dayNo}</span></div>
+      <p class="b-mast__name">The Infinity Gazette</p>
+      <div class="b-mast__meta"><span>${TODAY.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</span><span>${COUNTS.cards} cards · ${COUNTS.support} support</span></div>
+    </header>
+    <article class="b-lead">
+      <p class="b-kicker"><span class="stamp">Major update</span><time class="date" datetime="${UPDATE.date}">${fmtDate(UPDATE.date)}</time></p>
+      <h1 class="b-head">${esc(UPDATE.title)}</h1>
+      <p class="b-deck">Five new worlds, a hundred new cards, Dungeons you can run AFK and a 1,000-floor Key Tower.</p>
+      <div class="b-fan">${FAN.map(([id], i) => `<button type="button" aria-label="${esc(CARDS[id].name)}" style="--r:${(i - 2) * 11}deg;z-index:${i === 2 ? 5 : 4 - Math.abs(i - 2)}">${img("f_" + id, CARDS[id].name)}</button>`).join("")}</div>
+      <p class="b-cap">${FAN.map(([id]) => CARDS[id].name).join(" · ")}</p>
+      <div class="figs b-figs">${figsHTML()}</div>
+    </article>
+    <aside class="b-coupons" aria-label="Codes">
+      <h2 class="b-h">Clip and redeem <small>${NEWS.codes.length} codes</small></h2>
+      <div class="hrow">${NEWS.codes.map((c) => `<button class="coupon press" type="button" data-code="${esc(c.code)}" aria-label="Copy code ${esc(c.code)}"><span class="coupon__c"><b>${esc(c.code)}</b><span>${esc(c.reward)}</span></span><span class="coupon__x">${use("i-copy")}</span></button>`).join("")}</div>
+    </aside>
+    <section class="b-roster" aria-label="New cards">
+      <h2 class="b-h">New this update <small>${newLine}</small></h2>
+      ${wallHTML(2)}
+      <button class="btn press" type="button">See the new cards</button>
+    </section>
+    <section class="b-cols" aria-label="Inside this update">
+      <h2 class="b-h">Inside this update <small>${SECS.reduce((n, s) => n + s.items.length, 0)} changes</small></h2>
+      <div class="b-cols__grid">${SECS.map((s, i) => `<details class="b-sec"${i === 0 ? " open" : ""}><summary>${use(s.icon)}${esc(s.name)}<b>${s.items.length}</b>${use("i-chev", "ico chev")}</summary><ul class="items">${itemsHTML(s)}</ul></details>`).join("")}</div>
+    </section>
+    <section class="b-side" aria-label="New systems">
+      <h2 class="b-h">In brief <small>New systems</small></h2>
+      <ul class="b-brief">${NEWS.systems.map((s) => `<li><b>${esc(s.title)}</b><span>${esc(s.desc)}</span></li>`).join("")}</ul>
+    </section>
+  </div>`;
+
+  /* ==================== C · Lobby ==================== */
+  const PLATES = [["Cards", COUNTS.cards, "t_cards"], ["Support", COUNTS.support, "t_support"], ["Deck", "Build a team of 6", "t_deck"], ["Battle", "Guild Boss · Custom", "t_battle"]];
+  $("#m-c").innerHTML = `
+    <div class="c-stage">
+      <div class="c-stage__head"><p class="hud">New cards</p><p class="hud hud--dim">Added ${fmtDate(COUNTS.newDate, { month: "short", day: "numeric" })} · <b>${COUNTS.newCards}</b></p></div>
+      <div class="c-frame">${wallHTML(3)}</div>
+      <div class="a-cta"><button class="btn btn--gold press" type="button">See the new cards</button><button class="btn press" type="button">All ${COUNTS.cards} cards</button></div>
+    </div>
+    <div class="c-codes" aria-label="Codes"><span class="hud">${use("i-gift")}Codes <b>${NEWS.codes.length}</b></span><div class="a-codes__row">${codesHTML()}</div></div>
+    <div class="c-menu">${PLATES.map(([name, n, file]) => `<button class="plate press" type="button"><img src="img/${file}.webp" alt="" loading="lazy" width="300" height="400"><span class="hud">${name}</span><b class="${typeof n === "number" ? "" : "txt"}">${n}</b></button>`).join("")}</div>
+    <section class="c-board" aria-label="Game update">
+      <div class="c-board__head"><p><span class="kind">Major update</span><time class="date" datetime="${UPDATE.date}">${fmtDate(UPDATE.date)}</time></p><h2>${esc(UPDATE.title)}</h2></div>
+      <div class="c-tiles" role="tablist" data-cats>${SECS.map((s, i) => `<button class="tile press" type="button" role="tab" aria-selected="${i === 0}" data-sec="${i}">${use(s.icon)}<span>${esc(s.name)}</span><b>${s.items.length}</b></button>`).join("")}</div>
+      <div class="box"><ul class="items" style="margin:0" data-items>${itemsHTML(SECS[0])}</ul></div>
+    </section>
+    <section class="c-sys" aria-label="New systems"><h2 class="sech">New systems</h2>${sysHTML()}</section>`;
+
+  const app = $("#app");
+  document.addEventListener("click", (e) => {
+    const code = e.target.closest("[data-code]");
+    if (code) { copy(code); return; }
+    const cat = e.target.closest("[data-sec]");
+    if (cat) {
+      const box = cat.closest("section"), list = $("[data-items]", box);
+      $$("[data-sec]", box).forEach((b) => b.setAttribute("aria-selected", String(b === cat)));
+      hit(cat);
+      list.classList.remove("is-in"); list.innerHTML = itemsHTML(SECS[+cat.dataset.sec]); void list.offsetWidth; list.classList.add("is-in");
+      return;
+    }
+    const wc = e.target.closest(".wc");
+    if (wc) { toast("Opens " + ALL[+wc.dataset.i][1]); return; }
+    const go = e.target.closest("[data-go]");
+    if (go) { show(go.dataset.go, true); return; }
+    const p = e.target.closest(".press");
+    if (p) hit(p);
+  });
+  async function copy(btn) {
+    const code = btn.dataset.code;
+    hit(btn);
+    let ok = false;
+    try { await navigator.clipboard.writeText(code); ok = true; } catch (err) { ok = false; }
+    if (ok) { btn.classList.add("is-done"); const u = $("use", btn); if (u) u.setAttribute("href", "#i-check"); toast("Copied " + code); }
+    else toast("Couldn't copy. Press and hold the code.");
+  }
+
+  /* ---------- the scene follows the clock and the season (Auto) · the button steps through them for the mockup ---------- */
+  const SCENES = ["auto", "night", "dusk", "dawn", "snow"];
+  let scene = "auto";
+  function autoScene() {
+    const d = new Date(), h = d.getHours();
+    if (d.getMonth() === 11) return "snow";            // December
+    if (h >= 5 && h < 8) return "dawn";
+    if (h >= 17 && h < 19) return "dusk";
+    return "night";
+  }
+  function paintScene() {
+    const real = scene === "auto" ? autoScene() : scene;
+    app.dataset.scene = real;
+    $("#scene-btn").textContent = "Scene: " + (scene === "auto" ? "Auto (" + cap(real) + ")" : cap(scene));
+    const lan = $("#lanterns");
+    if (!lan.childElementCount) {
+      let s2 = 5; const r2 = () => (s2 = (s2 * 16807) % 2147483647) / 2147483647;
+      lan.innerHTML = Array.from({ length: 14 }, () => `<i style="left:${(4 + r2() * 92).toFixed(1)}%;--dx:${(r2() * 90 - 45).toFixed(0)}px;animation-duration:${(16 + r2() * 14).toFixed(1)}s;animation-delay:-${(r2() * 28).toFixed(1)}s"></i>`).join("");
+    }
+    const snow = $("#snow");
+    if (real === "snow" && !snow.childElementCount) {
+      let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      snow.innerHTML = Array.from({ length: 26 }, () => { const s = 2 + rnd() * 3;
+        return `<i style="left:${(rnd() * 100).toFixed(1)}%;width:${s.toFixed(1)}px;height:${s.toFixed(1)}px;--dx:${(rnd() * 60 - 30).toFixed(0)}px;--rest:${(rnd() * 90).toFixed(0)}vh;animation-duration:${(7 + rnd() * 8).toFixed(1)}s;animation-delay:-${(rnd() * 12).toFixed(1)}s"></i>`; }).join("");
+    }
+  }
+  $("#scene-btn").addEventListener("click", () => { scene = SCENES[(SCENES.indexOf(scene) + 1) % SCENES.length]; paintScene(); });
+
+  /* ---------- A / B / C ---------- */
+  function show(m, user) {
+    if (!["a", "b", "c"].includes(m)) m = "a";
+    const swap = () => {
+      app.dataset.m = m;
+      ["a", "b", "c"].forEach((k) => { $("#m-" + k).hidden = k !== m; });
+      $$("[data-go]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.go === m)));
+      const el = $("#m-" + m); el.classList.remove("is-in"); void el.offsetWidth; el.classList.add("is-in");
+      if (user) { window.scrollTo(0, 0); try { history.replaceState(null, "", "#" + m); } catch (err) { /* sandboxed viewers */ } }
+    };
+    if (user) vt(swap); else swap();
+  }
+  if (matchMedia("(min-width: 1100px)").matches) $$(".b-sec").forEach((d) => { d.open = true; });
+  window.addEventListener("hashchange", () => show(location.hash.slice(1)));
+  paintScene(); show(location.hash.slice(1) || "a");
+})();
+</script>
