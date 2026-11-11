@@ -2735,3 +2735,18 @@
 - **ผลวัด (§11.3 · CPU ×6):** A 60.4 ว่าง / 60.0 เลื่อน · B 60.3 / 59.9 · C 60.2 / 60.2 · C + หิมะ 60.3 / 59.6 (เฟรมช้าสุด ≤ 33.4ms) · Home จริง 60.2 / 60.3
 - **ผลทดสอบ:** 360 / 390 / 768 / 1280 / 1920: ไม่มี scroll แนวนอน · ปุ่มเล็กกว่า 40px = 0 · console error = 0 · reduced-motion = animation เล่น 0 ตัว
 - **ไฟล์:** `mockup/home-v2/index.html` · `img/new_0.webp` `new_1.webp` · `shots/` 6 รูป (`a|b|c-390` · `a|b|c-1280`) · `PROGRESS.md` · `HISTORY.md`
+
+### 2026-11-11 · แผนหน้าตาใหม่ รอบ 1 · Home ส่วนบนแบบ C Lobby (`?v=128` · branch `ccr-60185e4d-7ykryu` · รอเจ้าของดูก่อน merge)
+- **สิ่งที่เปลี่ยน:** หัวหน้า Home เอาออก (h1 ซ่อน) · **กำแพงการ์ดใหม่** (การ์ด `added` 2026-10-29 = 99 ใบ · 3 แถว × 33 + สำเนา 12 · การ์ดแบบเว็บ mini ตามระดับทั้งเว็บ · ไหลสลับทิศ · แตะ = เปิด + ปัดดูทั้งชุด) + ปุ่ม See the new cards / All 300 cards · **โค้ดแถบเดียว** (แตะ = คัดลอก → ✓) · **แผ่นเมนู 4 แผ่น** Cards 300 / Support 100 / Deck / Battle (รูปย่อการ์ดตามแบบใน mockup) · ส่วนล่างเดิม (Game updates · New systems · New support ตาราง) อยู่ต่อจนรอบ 2 · ตารางการ์ดใหม่เดิม (Cards) เอาออก (= กำแพง) · ของกลางใหม่: `--f-num` `--f-hud` · `.panel--hi` / `.panel--lite` · `C.go` `C.PAGE_MOD` `C.unwatch` (app.js) · ไอคอน `#i-gift` `#i-copy` `#i-check`
+- **ความเร็ว — ปัญหาที่เจอระหว่างทำ (แก้แล้ว):** (1) CSS keyframes ที่ใช้ `var()` → style ทุกเฟรม → เปลี่ยนเป็น Web Animation % (2) การ์ดที่ยังไม่มีรูปถูกตัว watch `.is-live` เฝ้า → IntersectionObserver วัดการ์ดที่ขยับทุกเฟรม (~45ms/วิ) → `C.unwatch` + กำแพงโหลดรูปเอง (3) รูปที่มาถึงทีละรูป = layerize ทั้งหน้า ~40ms ต่อรูป (เฟรมช้าสุด 67–117ms) → decode ก่อน ใส่เป็นชุด (6+8 ใบ/แถว แล้ว 4 ใบ/แถวทุก 12 วิ) + ที่ว่างเป็นรูปทึบ 3×4 → ชุดละ ~18ms
+- **ผลวัด (§11.3 · 390×844 ×2.75 · CPU ×6 · fps / เฟรมช้าสุด · TaskDuration ว่าง 0.37–0.50 วิ ต่อ 3 วิ เทียบเดิม 0.41):**
+
+| กรณี | เดิม (`main`) | ใหม่ |
+|---|---|---|
+| ว่าง | 60.0 / 17ms | 60.0 / 17ms |
+| เลื่อน | 60.0 / 17ms | 60.0 / 17ms |
+| lite ว่าง / เลื่อน | 60.0 / 60.0 | 60.0 / 60.0 |
+| ช่วงที่รูปชุด 12 วิมาถึง (ว่าง) | — | 59.0–59.7 / 33–50ms |
+
+- **ผลทดสอบ (Chromium):** 390 + 1280: ไม่มี scroll แนวนอน · console error 0 · แตะการ์ดในกำแพง → `#card/shadow-monarch` "5 / 99" · Back 2 ครั้ง = Home + กำแพงเล่นต่อ (นิ้ว / เมาส์) · ระหว่างหน้าดูการ์ด / อยู่หน้าอื่น = กำแพงหยุด · คัดลอกโค้ด = clipboard "UPDATE" + toast · แผ่นเมนู → `#support` (ฝั่ง Support) / `#cards` / `#deck` / `#battle` · See the new cards → `#card/octopus-teacher` · เปลี่ยนเป็น Ascended ที่หน้า Cards → กำแพง 135 ใบเป็น Ascended · reduced-motion: ไม่มี animation แถวเลื่อนข้างได้ · `bump_version --check` / `card_pages --check` / `card_pages_test` / `build_site` ok
+- **ไฟล์:** `index.html` · `css/tokens.css` `base.css` `home.css` · `js/app.js` `home.js` · `c/**` (เลข `?v=` · card_pages.py) · `PROGRESS.md` · `HISTORY.md`

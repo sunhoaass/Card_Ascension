@@ -217,6 +217,8 @@
   /* ---- Type ---- */
   --font-display: "Marcellus SC", "Cinzel", Georgia, serif;   /* one weight (400): bold is never faked (base.css font-synthesis) */
   --font-body: "Nunito Sans", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num: "Anton", "Oswald", "Arial Narrow", sans-serif;           /* big figures on the page (counts on the Home menu plates …) · look round 1 */
+  --f-hud: "Russo One", "Nunito Sans", "Arial Black", sans-serif;     /* game-menu labels (Home lobby: NEW CARDS, plates, codes) · look round 1 */
   /* 1.25 scale */
   --fs-xs: 0.75rem;   /* 12 */
   --fs-sm: 0.875rem;  /* 14 */

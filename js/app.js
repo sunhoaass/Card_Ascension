@@ -379,6 +379,9 @@
     if (window.WeakRef && !seen.has(el)) { seen.add(el); watched.add(new WeakRef(el)); }
     if (!livePaused || !el.isConnected || el.closest("#detail")) liveIO.observe(el);
   }
+  // look round 1: a card that loads its own picture and never loops (the Home wall's moving cards) leaves the watcher at once
+  // (it stays in "watched", so web fonts still refit it) · moving targets made the observer measure them on every frame
+  function unwatch(el) { if (liveIO) liveIO.unobserve(el); }
   /* Step 12: while the card detail covers the whole screen, the page underneath is hidden — stop checking its cards
      every frame (the detail's own cards made from now on are still watched). resume = watch them all again. */
   function livePause(on) {
@@ -1439,9 +1442,9 @@
     renderCard, setCardRarity, setCardNums, flashCard, fitCard, statAt, oddsAt, fmtOdds, fmtStat, fmtHp, fmtKey, isRanked, tierMove, tierMoveText, tierMoveHTML, rankTop, rankTopSupport, extraTiers, supValue, supText, supLevelMult, rarityOf, placeholderArt, rarityChipsHTML, revealChip, hash,
     isSupport, isNew, newHTML, NEW_DAYS, loadJSON, supAt, supValAt, supBuffAt, supVals, supNumsHTML, fitSupport, setSupportNums,   // support cards in the game's look (2026-10-28)
     isRedraw, syncT, mutAt, hasMut, mutText, MUT_RE, redrawEl, RDS, RDC, RDU, capOff, ANTON, OSW, BARLOW, rdW,   // redrawn card (owner 2026-11-02) · Mutation bonus table
-    openCard, closeCard, swapCard, route,
+    openCard, closeCard, swapCard, route, go, PAGE_MOD,   // go / PAGE_MOD: the Home menu plates act like the menu buttons (look round 1)
     need, has, loadFailed, copyText,   // improvement round 4: page code on demand (MODS) · copy text (was C.share.copyText)
-    lazy, artImg, bindArt, watchLive, livePause, loadArt, loadArtSharp,   // step 9.5 · livePause step 12 · loadArt W4 · loadArtSharp improvement round 3
+    lazy, artImg, bindArt, watchLive, unwatch, livePause, loadArt, loadArtSharp,   // step 9.5 · livePause step 12 · loadArt W4 · loadArtSharp improvement round 3
     covered: false, later, flushCovered,   // speed 2026-11-03: the card detail covers the page (js/detail.js settled) · its deferred work
     get PAGE_SIZE() { return PAGE.size; }, pager, bindPager, pageTop, pageKeep,   // pages of the Cards / Support grids (2026-10-28 · box 2026-10-29)
     cards: { init() {}, setRarity() {}, order() { return []; }, view() {}, kind() { return "cards"; } },   // replaced by js/cards.js

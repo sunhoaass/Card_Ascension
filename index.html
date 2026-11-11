@@ -74,17 +74,17 @@
       fit(); addEventListener("resize", fit);
     })();
   </script>
-  <link rel="stylesheet" href="css/tokens.css?v=127">
-  <link rel="stylesheet" href="css/base.css?v=127">
-  <link rel="stylesheet" href="css/fx.css?v=127">
-  <link rel="stylesheet" href="css/cards.css?v=127">
-  <link rel="stylesheet" href="css/tier.css?v=127">
-  <link rel="stylesheet" href="css/deck.css?v=127">
-  <link rel="stylesheet" href="css/support.css?v=127">
-  <link rel="stylesheet" href="css/tiermaker.css?v=127">
-  <link rel="stylesheet" href="css/detail.css?v=127">
-  <link rel="stylesheet" href="css/home.css?v=127">
-  <link rel="stylesheet" href="css/battle.css?v=127">
+  <link rel="stylesheet" href="css/tokens.css?v=128">
+  <link rel="stylesheet" href="css/base.css?v=128">
+  <link rel="stylesheet" href="css/fx.css?v=128">
+  <link rel="stylesheet" href="css/cards.css?v=128">
+  <link rel="stylesheet" href="css/tier.css?v=128">
+  <link rel="stylesheet" href="css/deck.css?v=128">
+  <link rel="stylesheet" href="css/support.css?v=128">
+  <link rel="stylesheet" href="css/tiermaker.css?v=128">
+  <link rel="stylesheet" href="css/detail.css?v=128">
+  <link rel="stylesheet" href="css/home.css?v=128">
+  <link rel="stylesheet" href="css/battle.css?v=128">
 </head>
 <body>
   <!-- Icons, crest and ornaments: drawn for this site (no game art), used with <use href="#…"> -->
@@ -119,6 +119,10 @@
       <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H18v14H5.5c-.8 0-1.5.7-1.5 1.5z"/><path d="M4 19.5C4 20.3 4.7 21 5.5 21H19"/><path d="M8 8h6M8 11h4"/><path d="M15 4v5l1.5-1 1.5 1V4" stroke-width="1.2"/></g></symbol>
       <symbol id="i-swords" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4"/><path d="m7 17-3 3"/><path d="m3 19 2 2"/></g></symbol>
       <symbol id="i-lens" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3.6" stroke-width=".8" stroke-dasharray="1.6 1.6"/><path d="M14.5 14.5 20.5 20.5" stroke-width="2.6"/><path d="M7.5 7.8a3.4 3.4 0 0 1 2.5-1.3"/></g></symbol>
+      <!-- Home lobby (look round 1): codes strip · stroke icons, colour from currentColor -->
+      <symbol id="i-gift" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="5" rx="1"/><path d="M5.5 13v7.5h13V13M12 8v12.5M12 8c-1.5-4-6-4-5.5-1.5S10 8 12 8zm0 0c1.5-4 6-4 5.5-1.5S14 8 12 8z"/></g></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></g></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <!-- Card detail label icons (W6): Tier = i-crown · Passive / Skill = star · Strongest = sword · Weakness = cracked shield -->
       <symbol id="i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="m12 3.2 2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/><path d="M12 7.6v5.2M9.6 10.6h4.8" stroke-width="1"/></g></symbol>
       <symbol id="i-sword" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M19.5 3.5h1v1L10 15l-1-1z"/><path d="M17.8 5.2 9.5 13.5" stroke-width="1"/><path d="m6.2 12.8 5 5M8.2 15.8l-3.6 3.6"/><circle cx="4" cy="20" r="1.1" fill="currentColor"/></g></symbol>
@@ -195,45 +199,58 @@
 
     <!-- Home (plan 2026-10-30 item 5): game updates · codes · new cards · new systems, in js/home.js (data/news.json + each card's "added" date) -->
     <section id="page-home" class="page" hidden aria-labelledby="home-title">
-      <div class="page__head">
-        <p class="page__eyebrow">The Gazette</p>
-        <h1 id="home-title" class="page__title">Home</h1>
-        <div class="page__rule" aria-hidden="true"><svg><use href="#i-flourish"/></svg></div>
-      </div>
+      <h1 id="home-title" class="sr-only">Home</h1>
 
       <div class="home">
-        <!-- codes first: on phones they were under a screen or two of patch notes (audit 2026-11-09) · PC places both with grid areas -->
-        <section class="home__sec home__sec--codes" aria-labelledby="home-codes-t">
-          <h2 id="home-codes-t" class="home__h">Latest codes</h2>
-          <div id="home-codes" aria-live="polite"><div class="skeleton home__skel home__skel--sm"></div></div>
-        </section>
+        <!-- look round 1 (mockup/home-v2 · C "Lobby"): the new cards of the newest update drift past in a gold frame ·
+             codes in one strip · big menu plates · the rest (updates, systems, new support) is round 2's -->
+        <div class="hlob">
+          <section class="hlob__stage" aria-labelledby="home-wall-t">
+            <div class="hlob__head">
+              <h2 id="home-wall-t" class="hud">New cards</h2>
+              <p id="home-wall-sub" class="hud hud--dim"></p>
+            </div>
+            <div id="home-wall" class="hwall panel panel--hi" aria-busy="true" data-no-detail>
+              <div class="hwall__rows"><div class="skeleton hwall__skel"></div></div>
+            </div>
+            <div class="hlob__cta">
+              <button id="home-see-new" class="tm-btn tm-btn--primary fx-press" type="button" hidden>See the new cards</button>
+              <button class="tm-btn fx-press" type="button" data-go="cards"><span id="home-all-cards">All cards</span></button>
+            </div>
+          </section>
 
-        <section class="home__sec home__sec--updates" aria-labelledby="home-updates-t">
-          <h2 id="home-updates-t" class="home__h">Game updates</h2>
-          <div id="home-updates" class="home__list" aria-live="polite"><div class="skeleton home__skel"></div><div class="skeleton home__skel"></div></div>
-          <button id="home-older" class="tm-btn home__more fx-press" type="button" hidden>Show older updates</button>
-        </section>
+          <section id="home-codes" class="hcodes panel" aria-labelledby="home-codes-t" aria-live="polite">
+            <h2 id="home-codes-t" class="hud hcodes__tag"><svg aria-hidden="true"><use href="#i-gift"/></svg>Codes <b id="home-codes-n" hidden></b></h2>
+            <div id="home-codes-row" class="hcodes__row"><div class="skeleton home__skel home__skel--chip"></div><div class="skeleton home__skel home__skel--chip"></div></div>
+          </section>
 
-        <section class="home__sec home__sec--new" aria-labelledby="home-new-t">
-          <h2 id="home-new-t" class="home__h">New cards</h2>
-          <p id="home-new-sub" class="home__sub"></p>
-          <p id="home-new-none" class="home__empty" hidden>No new cards yet.</p>
-          <div id="home-new-cards-wrap" class="home__grp" hidden>
-            <h3 class="home__h3">Cards</h3>
-            <div id="home-new-cards" class="card-grid" data-card-list="home-cards"></div>
-            <button id="home-more-cards" class="tm-btn home__more fx-press" type="button" hidden>Show more cards</button>
-          </div>
-          <div id="home-new-sup-wrap" class="home__grp" hidden>
-            <h3 class="home__h3">Support</h3>
+          <nav class="hplates" aria-label="Menu">
+            <button class="hplate fx-press" type="button" data-go="cards" data-art="cards"><span class="hud hplate__name">Cards</span><b class="hplate__n" data-n="cards"></b></button>
+            <button class="hplate fx-press" type="button" data-go="support" data-art="support"><span class="hud hplate__name">Support</span><b class="hplate__n" data-n="support"></b></button>
+            <button class="hplate fx-press" type="button" data-go="deck" data-art="deck"><span class="hud hplate__name">Deck</span><span class="hplate__txt">My Decks · Meta Decks</span></button>
+            <button class="hplate fx-press" type="button" data-go="battle" data-art="battle"><span class="hud hplate__name">Battle</span><span class="hplate__txt">Guild Boss · Custom</span></button>
+          </nav>
+        </div>
+
+        <div class="home__low">
+          <section class="home__sec home__sec--updates" aria-labelledby="home-updates-t">
+            <h2 id="home-updates-t" class="home__h">Game updates</h2>
+            <div id="home-updates" class="home__list" aria-live="polite"><div class="skeleton home__skel"></div><div class="skeleton home__skel"></div></div>
+            <button id="home-older" class="tm-btn home__more fx-press" type="button" hidden>Show older updates</button>
+          </section>
+
+          <section class="home__sec home__sec--systems" aria-labelledby="home-systems-t">
+            <h2 id="home-systems-t" class="home__h">New systems</h2>
+            <div id="home-systems" class="home__list" aria-live="polite"><div class="skeleton home__skel"></div></div>
+          </section>
+
+          <!-- the new support stays a grid until round 2 (a small row under the wall) -->
+          <section id="home-new-sup-wrap" class="home__sec home__sec--new" aria-labelledby="home-new-sup-t" hidden>
+            <h2 id="home-new-sup-t" class="home__h">New support</h2>
             <div id="home-new-sup" class="card-grid" data-card-list="home-support"></div>
             <button id="home-more-sup" class="tm-btn home__more fx-press" type="button" hidden>Show more support</button>
-          </div>
-        </section>
-
-        <section class="home__sec home__sec--systems" aria-labelledby="home-systems-t">
-          <h2 id="home-systems-t" class="home__h">New systems</h2>
-          <div id="home-systems" class="home__list" aria-live="polite"><div class="skeleton home__skel"></div></div>
-        </section>
+          </section>
+        </div>
       </div>
     </section>
 
@@ -846,11 +863,11 @@
   <!-- Improvement round 4: only the code every page needs loads here. share · tier · tiermaker · deckbuff · teamscore ·
        deck · battle · detail load the first time they are needed (need() + MODS in js/app.js, same ?v= as app.js) ·
        don't add them back here · a new page script that only one page needs → add it to MODS instead -->
-  <script src="js/fx.js?v=127"></script>
-  <script src="js/app.js?v=127"></script>
-  <script src="js/cards.js?v=127"></script>
-  <script src="js/support.js?v=127"></script>
-  <script src="js/home.js?v=127"></script>
+  <script src="js/fx.js?v=128"></script>
+  <script src="js/app.js?v=128"></script>
+  <script src="js/cards.js?v=128"></script>
+  <script src="js/support.js?v=128"></script>
+  <script src="js/home.js?v=128"></script>
 </body>
 </html>
 
