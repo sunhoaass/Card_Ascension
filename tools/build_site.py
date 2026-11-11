@@ -31,6 +31,7 @@ DIST = os.path.join(ROOT, "dist")
 # Patterns are per path segment: "*" never crosses "/", "**" = any number of folders.
 WEB = [
     "index.html", "robots.txt", "sitemap.xml", "site.webmanifest",
+    "sw.js",                                         # service worker (improvement round 5 · js/app.js registers it)
     "googleac6eef435a8d1c66.html",                   # Google Search Console check · never remove
     "_headers", "_redirects", "404.html",            # Cloudflare Pages extras (only if one is ever added)
     "_routes.json",                                  # Pages: which paths run functions/_middleware.js (internal → 404)
@@ -137,6 +138,36 @@ def references(dist):
     return refs
 
 
+def sw_problems(root=ROOT):
+    """sw.js (improvement round 5) keeps every css/js file (CORE) and every data file the site loads (DATA_FILES):
+    the lists must match the repo, or offline that file is missing → list of problems ([] = ok)."""
+    sw = os.path.join(root, "sw.js")
+    if not os.path.isfile(sw):
+        return ["sw.js is missing"]
+    with open(sw, encoding="utf-8") as fh:
+        text = fh.read()
+
+    def listed(name):
+        m = re.search(r"const %s = \[(.*?)\];" % name, text, re.S)
+        return set(re.findall(r'"([^"]+)"', m.group(1))) if m else None
+
+    core, data = listed("CORE"), listed("DATA_FILES")
+    if core is None or data is None:
+        return ["sw.js: CORE / DATA_FILES list not found"]
+    have = {"%s/%s" % (d, f) for d in ("css", "js") for f in os.listdir(os.path.join(root, d))
+            if f.endswith("." + d)}
+    loads = set()
+    for f in os.listdir(os.path.join(root, "js")):
+        if f.endswith(".js"):
+            with open(os.path.join(root, "js", f), encoding="utf-8") as fh:
+                loads |= set(re.findall(r"""loadJSON\(\s*["'`]([^"'`]+)["'`]""", fh.read()))
+    out = ["sw.js CORE is missing %s (add it, or offline it won't load)" % x for x in sorted(have - core)]
+    out += ["sw.js CORE has %s, not in the repo" % x for x in sorted(core - have)]
+    out += ["sw.js DATA_FILES is missing %s (the site loads it)" % x for x in sorted(loads - data)]
+    out += ["sw.js DATA_FILES has %s, the site doesn't load it" % x for x in sorted(data - loads)]
+    return out
+
+
 def build(listing=False):
     if os.path.basename(DIST) != "dist" or os.path.dirname(DIST) != ROOT:
         sys.exit("refusing to clear " + DIST)
@@ -170,6 +201,7 @@ def build(listing=False):
             continue
         (gone if os.path.isfile(os.path.join(ROOT, path)) else broken).append("%s (from %s)" % (path, src))
     errors += ["the site loads it but it is not in dist/ (add it to WEB): " + g for g in gone]
+    errors += sw_problems()
 
     print("dist/: %d files · %.1f MB" % (len(web), total / 1e6))
     print("kept off the web: " + " · ".join(
@@ -179,7 +211,7 @@ def build(listing=False):
     if errors:
         print("\n".join("ERROR: " + e for e in errors))
         sys.exit(1)
-    print("ok: every path the site loads is in dist/ · no internal files")
+    print("ok: every path the site loads is in dist/ · no internal files · sw.js lists match")
 
 
 if __name__ == "__main__":

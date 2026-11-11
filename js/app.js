@@ -12,6 +12,8 @@
    Save image / share link / backup (shared by Tier Maker and Deck) live in js/share.js
    Improvement round 4: index.html loads only fx · app · cards · support · home. The rest (share · tier · tiermaker ·
    deckbuff · teamscore · deck · battle · detail) loads the first time it is needed: need(name) below (MODS)
+   Improvement round 5: /sw.js (service worker · startWorker below) keeps this version's css/js + every MODS file, the data
+   and the pictures seen → a fast second visit + the site opens offline · a new MODS file → add it to CORE in sw.js too
    ========================================================== */
 (function () {
   // the ?v= this file was loaded with: the files need() loads get the same one (tools/bump_version.py changes index.html only)
@@ -1316,8 +1318,38 @@
     else { history.replaceState(null, "", "#" + (state.page === "cards" && state.kind === "support" ? "support" : state.page || "cards")); route(); }
   }
 
+  /* ---------- Service worker (improvement round 5 · /sw.js) ----------
+     Registered as sw.js?v=<this file's ?v=> 5 s after the data is in (never competes with the first page): a new ?v=
+     in index.html = a new worker that keeps that version's css/js (+ the MODS code) and drops the old ones.
+     /?sw=off = this visit runs without it and its caches are deleted (the next normal visit starts clean). */
+  const SW_OFF = /[?&]sw=off(&|$)/.test(location.search);
+  function dropWorker() {
+    try {
+      const sw = navigator.serviceWorker, nav = performance.getEntriesByType("navigation")[0];
+      const clear = () => window.caches && caches.keys().then((ks) => Promise.all(ks.filter((k) => k.startsWith("cbi-")).map((k) => caches.delete(k))));
+      sw.getRegistrations().then((rs) => Promise.all(rs.map((r) => r.unregister()))).then(clear).then(() => {
+        // a page the worker still controls keeps filling its caches → open it once more without it (never twice)
+        if (sw.controller && !(nav && nav.type === "reload")) location.reload();
+      }).catch(() => {});
+    } catch {}
+  }
+  function startWorker() {
+    if (!("serviceWorker" in navigator) || !window.isSecureContext || !VER || SW_OFF) return;
+    const sw = navigator.serviceWorker, first = !sw.controller;
+    sw.register("sw.js?v=" + VER, { updateViaCache: "none" }).then(() => {
+      if (!first) return;
+      // first visit: pictures / fonts that came before the worker took over → it keeps them from the browser's cache
+      return sw.ready.then((reg) => {
+        const urls = performance.getEntriesByType("resource").map((r) => r.name)
+          .filter((u) => /\/images\/|\/\/fonts\.(googleapis|gstatic)\.com\//.test(u));
+        if (reg.active && urls.length) reg.active.postMessage({ type: "warm", urls });
+      });
+    }).catch(() => {});
+  }
+
   /* ---------- Boot ---------- */
   async function boot() {
+    if (SW_OFF && "serviceWorker" in navigator) dropWorker();
     FX.press(document);
     FX.backdrop($("#backdrop"));   // step 9.6b: the night city (was FX.starfield)
 
@@ -1393,6 +1425,7 @@
     (firstCode && !has(firstCode) ? need(firstCode).catch(() => {}) : Promise.resolve()).then(() => setTimeout(FX.probe, 800));
     // the detail's code + painting its scene while idle, after the probe (step 12 · round 4: the code loads here too)
     setTimeout(() => need("detail").then(() => CBI.detail.prewarm(), () => {}), 3600);
+    setTimeout(startWorker, 5000);   // round 5: offline + fast second visit (sw.js)
   }
 
   /* Boot screen (crest + pocket watch, step 9.6b): fades out once the data is in and the fonts are ready
